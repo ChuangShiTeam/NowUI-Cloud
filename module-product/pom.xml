@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>rpc</module>
-        <module>web</module>
+        <module>api</module>
     </modules>
 
 
