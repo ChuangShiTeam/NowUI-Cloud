@@ -12,7 +12,6 @@
     <artifactId>module-product</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>entity</module>
         <module>rpc</module>
         <module>web</module>
     </modules>
