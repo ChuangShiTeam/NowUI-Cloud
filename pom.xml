@@ -17,6 +17,7 @@
         <module>server-eureka</module>
         <module>server-zuul</module>
         <module>server-config</module>
+        <module>common</module>
     </modules>
 
     <parent>
