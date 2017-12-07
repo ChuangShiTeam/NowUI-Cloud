@@ -18,6 +18,7 @@
         <module>server-config</module>
         <module>common</module>
         <module>module-shop</module>
+        <module>module-cms</module>
     </modules>
 
     <parent>
