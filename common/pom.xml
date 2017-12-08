@@ -11,5 +11,12 @@
 
     <artifactId>common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+    </dependencies>
 
 </project>
