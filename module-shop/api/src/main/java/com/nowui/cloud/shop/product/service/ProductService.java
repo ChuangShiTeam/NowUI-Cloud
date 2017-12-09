@@ -11,10 +11,22 @@ import java.util.List;
 public interface ProductService extends BaseService {
 
     /**
+     * admin count
+     *
+     * @param appId
+     * @param productName
+     * @return count
+     */
+    Integer adminCount(String appId, String productName);
+
+    /**
      * admin list
      *
-     * @param
-     * @return
+     * @param appId
+     * @param productName
+     * @param m
+     * @param n
+     * @return List<Product>
      */
-    List<Product> adminList();
+    List<Product> adminList(String appId, String productName, Integer m, Integer n);
 }

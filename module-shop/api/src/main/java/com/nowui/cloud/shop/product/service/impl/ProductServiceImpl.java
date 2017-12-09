@@ -20,10 +20,18 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public List<Product> adminList() {
+    public Integer adminCount(String appId, String productName) {
+        Integer count = productMapper.selectCount(
+                new EntityWrapper<Product>().eq("appId", appId).eq("productName", productName)
+        );
+        return count;
+    }
+
+    @Override
+    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
         List<Product> productList = productMapper.selectPage(
-                new Page<Product>(1, 10),
-                new EntityWrapper<Product>()
+                new Page<Product>(pageIndex, pageSize),
+                new EntityWrapper<Product>().eq("appId", appId).eq("productName", productName)
         );
         return productList;
     }

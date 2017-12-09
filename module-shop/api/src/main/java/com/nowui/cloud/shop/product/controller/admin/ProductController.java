@@ -19,11 +19,20 @@ public class ProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "创建用户")
+    @ApiOperation(value = "admin list")
     @RequestMapping(value = "/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     String home(@RequestBody String body) {
-        List<Product> productList = productService.adminList();
-        System.out.println(productList.size());
+        validateRequest();
+
+        String appId = "";
+        String productName = "";
+        Integer pageIndex = 0;
+        Integer pageSize = 0;
+
+        Integer resultCount = productService.adminCount(appId, productName);
+        List<Product> resultList = productService.adminList(appId, productName, pageIndex, pageSize);
+
+        validateResponse();
 
         return "{\"aaa\":\"333\"}";
     }

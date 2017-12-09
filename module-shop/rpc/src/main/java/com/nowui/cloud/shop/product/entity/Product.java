@@ -17,6 +17,12 @@ public class Product {
     private String productId;
 
     /**
+     * 应用编号
+     */
+    @TableField
+    private String appId;
+
+    /**
      * 商品名称
      */
     @TableField
@@ -24,6 +30,14 @@ public class Product {
 
     public String getProductId() {
         return productId;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public void setProductId(String productId) {

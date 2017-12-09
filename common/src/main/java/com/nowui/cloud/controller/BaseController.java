@@ -5,4 +5,12 @@ package com.nowui.cloud.controller;
  */
 public class BaseController {
 
+    public void validateRequest(String... keys) {
+
+    }
+
+    public void validateResponse(String... keys) {
+
+    }
+
 }
