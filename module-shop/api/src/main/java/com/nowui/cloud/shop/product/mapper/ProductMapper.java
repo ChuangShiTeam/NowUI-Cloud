@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @author ZhongYongQiang
  */
 @Mapper
-@Component
+@Component(value = "productMapper")
 public interface ProductMapper extends BaseMapper<Product> {
 
 }

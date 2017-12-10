@@ -5,8 +5,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ModuleBannerApplication {
+public class ModuleCMSApplication {
     public static void main(String[] args){
-        SpringApplication.run(ModuleBannerApplication.class,args);
+        SpringApplication.run(ModuleCMSApplication.class,args);
     }
 }
