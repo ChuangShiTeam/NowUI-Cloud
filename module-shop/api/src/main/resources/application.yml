@@ -64,9 +64,9 @@ mybatis-plus:
     logic-delete-value: 0
     logic-not-delete-value: 1
     #自定义填充策略接口实现
-    #meta-object-handler: com.baomidou.springboot.xxx
+    #meta-object-handler: com.nowui.cloud.config.CommonMetaObjectHandler
     #自定义SQL注入器
-    #sql-injector: com.baomidou.springboot.xxx
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
