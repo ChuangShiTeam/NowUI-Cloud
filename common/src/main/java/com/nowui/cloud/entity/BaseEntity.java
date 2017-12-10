@@ -10,6 +10,9 @@ import com.baomidou.mybatisplus.enums.FieldFill;
 
 /**
  * 实体父类
+ * @author marcus
+ *
+ * @param <T>
  */
 public abstract class BaseEntity<T extends Model> extends Model<T> {
 
