@@ -1,5 +1,4 @@
 package com.nowui.cloud.shop.product.service.impl;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.shop.product.entity.Product;
