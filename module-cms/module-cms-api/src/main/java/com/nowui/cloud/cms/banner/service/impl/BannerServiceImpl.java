@@ -18,7 +18,7 @@ public class BannerServiceImpl implements BannerService {
     public List<Banner> Query(String appId, String title, Integer pageIndex, Integer pageSize) {
         List<Banner> list = BannerMapper.selectPage(
                 new Page<Banner>(pageIndex, pageSize),
-                new EntityWrapper<Banner>().eq("appId", appId).eq("title", title)
+                new EntityWrapper<Banner>().eq("appId", appId).eq("bannerTitle", title)
         );
         return list;
     }

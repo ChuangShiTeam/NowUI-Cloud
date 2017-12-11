@@ -19,17 +19,14 @@ public class BannerController extends BaseController {
 
     @ApiOperation(value = "广告查询列表")
     @RequestMapping(value = "/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    String home(@RequestBody String body){
+
+    List<Banner> home(String appId,String title,Integer pageIndex){
         validateRequest();
-        String appId = "";
-        String title = "";
-        Integer pageIndex = 0;
-        Integer pageSize = 0;
-
-//        List<Banner> resultList = bannerService.Query(appId,title , pageIndex, pageSize);
-
+        Integer pageSize = 10;
+        List<Banner> resultList = bannerService.Query(appId,title,pageIndex,pageSize);
         validateResponse();
-
-        return "{\"banner\":\"list\"}";
+        return resultList;
     }
 }
+
+//    List<Banner> home(@RequestBody String body){
