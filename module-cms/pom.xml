@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cms</artifactId>
+    <artifactId>module-cms</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>api</module>
-        <module>rpc</module>
+        <module>module-cms-api</module>
+        <module>module-cms-rpc</module>
     </modules>
 
 
