@@ -1,8 +1,8 @@
 package com.nowui.cloud.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
@@ -12,9 +12,11 @@ import com.baomidou.mybatisplus.enums.FieldFill;
  * 实体父类
  * @author marcus
  *
- * @param <T>
+ * @param
  */
-public abstract class BaseEntity<T extends Model> extends Model<T> {
+public abstract class BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 创建人id

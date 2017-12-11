@@ -2,12 +2,13 @@ package com.nowui.cloud.shop.product.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * @author ZhongYongQiang
  */
 @TableName(value = "productInfo")
-public class Product {
+public class Product extends BaseEntity {
 
     /**
      * 商品编号

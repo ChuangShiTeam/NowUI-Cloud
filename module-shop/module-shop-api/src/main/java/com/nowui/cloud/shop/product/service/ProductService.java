@@ -27,5 +27,5 @@ public interface ProductService extends BaseService {
      * @param n
      * @return List<Product>
      */
-    List<Product> adminList(String appId, String productName, Integer m, Integer n);
+    List<Product> adminList(String appId, String productName, int m, int n);
 }

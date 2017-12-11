@@ -1,4 +1,5 @@
 package com.nowui.cloud.shop.product.service.impl;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.shop.product.entity.Product;
@@ -21,16 +22,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Integer adminCount(String appId, String productName) {
         Integer count = productMapper.selectCount(
-                new EntityWrapper<Product>().eq("appId", appId).eq("productName", productName)
+                new EntityWrapper<Product>()
+                        .eq("appId", appId)
+                        .like("productName", productName)
         );
         return count;
     }
 
     @Override
-    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
+    public List<Product> adminList(String appId, String productName, int pageIndex, int pageSize) {
         List<Product> productList = productMapper.selectPage(
                 new Page<Product>(pageIndex, pageSize),
-                new EntityWrapper<Product>().eq("appId", appId).eq("productName", productName)
+                new EntityWrapper<Product>()
+                        .eq("appId", appId)
+                        .like("productName", productName)
         );
         return productList;
     }
