@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ZhongYongQiang
@@ -21,19 +22,20 @@ public class ProductController extends BaseController {
 
     @ApiOperation(value = "admin list")
     @RequestMapping(value = "/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    String home(@RequestBody String body) {
+    public Map<String, Object> home(@RequestBody String body) {
         validateRequest();
-        String appId = "";
-        String productName = "";
+
+        String appId = "11";
+        String productName = "111";
         Integer pageIndex = 0;
         Integer pageSize = 0;
 
-        Integer resultCount = productService.adminCount(appId, productName);
+        Integer resultTotal = productService.adminCount(appId, productName);
         List<Product> resultList = productService.adminList(appId, productName, pageIndex, pageSize);
 
         validateResponse();
 
-        return "{\"aaa\":\"333\"}";
+        return renderJson(resultTotal, resultList);
     }
 
 }

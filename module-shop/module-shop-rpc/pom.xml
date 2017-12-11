@@ -11,4 +11,12 @@
 
     <artifactId>module-shop-rpc</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.nowui.cloud</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>
