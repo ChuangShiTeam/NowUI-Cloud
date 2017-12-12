@@ -11,10 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ModuleShopApplication {
-
+public class ModuleShopApplication{
     public static void main(String[] args) {
         SpringApplication.run(ModuleShopApplication.class, args);
     }
-
 }

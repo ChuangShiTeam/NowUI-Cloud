@@ -9,6 +9,5 @@ import java.util.List;
  */
 @Service
 public interface BannerService extends BaseService{
-
     List<Banner> Query(String appId, String title, Integer m, Integer n);
 }

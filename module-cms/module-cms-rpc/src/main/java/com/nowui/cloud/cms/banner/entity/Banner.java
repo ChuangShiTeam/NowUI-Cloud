@@ -9,7 +9,7 @@ public class Banner {
     /**
      * 应用编号
      */
-    @TableField
+    @TableId
     private String bannerId;
 
     /**
@@ -17,4 +17,21 @@ public class Banner {
      */
     @TableField
     private String appId;
+
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public String getBannerId() {
+        return bannerId;
+    }
+
+    public void setAppId(String appId){
+        this.appId = appId;
+    }
+
+    public void setBannerId(String bannerId){
+        this.bannerId = bannerId;
+    }
 }

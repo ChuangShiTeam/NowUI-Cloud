@@ -9,27 +9,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
+import java.util.Map;
+
 @RestController
 public class BannerController extends BaseController {
-
     @Autowired
     private BannerService bannerService;
 
     @ApiOperation(value = "广告查询列表")
     @RequestMapping(value = "/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    String home(@RequestBody String body){
+    public Map<String, Object> home(String appId,String title,Integer pageIndex) {
         validateRequest();
-        String appId = "";
-        String title = "";
-        Integer pageIndex = 0;
-        Integer pageSize = 0;
-
-//        List<Banner> resultList = bannerService.Query(appId,title , pageIndex, pageSize);
-
+        Integer pageSize = 10;
+        Integer resultTotal = 0;
+        List<Banner> resultList = bannerService.Query(appId, title, pageIndex, pageSize);
         validateResponse();
-
-        return "{\"banner\":\"list\"}";
+        return renderJson(resultTotal, resultList);
     }
 }
