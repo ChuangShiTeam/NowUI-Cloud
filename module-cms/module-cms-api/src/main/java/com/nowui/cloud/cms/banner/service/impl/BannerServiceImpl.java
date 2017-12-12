@@ -9,8 +9,7 @@ import com.nowui.cloud.cms.banner.mapper.BannerMapper;
 import java.util.List;
 
 @Service
-public class BannerServiceImpl implements BannerService {
-
+public class BannerServiceImpl implements BannerService{
     @Autowired
     private BannerMapper BannerMapper;
 

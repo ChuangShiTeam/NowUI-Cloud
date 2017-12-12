@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class BaseController {
 
-    public void validateRequest(BaseEntity entity, String... columns) {
+    public void validateRequest() {
         for (String column : columns) {
             Set<ConstraintViolation<BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateProperty(
                     entity,
