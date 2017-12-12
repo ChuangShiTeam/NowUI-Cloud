@@ -4,6 +4,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+/**
+ * @author ZhongYongQiang
+ */
 public class ValidateUtil {
 
     private static Validator validator;

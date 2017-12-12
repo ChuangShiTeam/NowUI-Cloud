@@ -5,7 +5,6 @@ import java.util.Date;
 import org.apache.ibatis.reflection.MetaObject;
 
 import com.baomidou.mybatisplus.mapper.MetaObjectHandler;
-import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * 自定义填充公共字段(创建时间、更新时间、删除标志、版本号等字段)
@@ -20,33 +19,36 @@ public class CommonMetaObjectHandler extends MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         //创建时间
-//        Object systemCreateTime = getFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, metaObject);
-//        if (systemCreateTime == null) {
-//            setFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, new Date(), metaObject);
-//        }
-//        //更新时间
-//        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
-//        if (systemUpdateTime == null) {
-//            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
-//        }
-//        //版本号
-//        Object systemVersion = getFieldValByName(BaseEntity.SYSTEM_VERSION, metaObject);
-//        if (systemVersion == null) {
-//            setFieldValByName(BaseEntity.SYSTEM_VERSION, 0, metaObject);
-//        }
-//        //删除标志
-//        Object systemStatus = getFieldValByName(BaseEntity.SYSTEM_STATUS, metaObject);
-//        if (systemStatus == null) {
-//            setFieldValByName(BaseEntity.SYSTEM_STATUS, false, metaObject);
-//        }
+        Object systemCreateTime = getFieldValByName("systemCreateTime", metaObject);
+        if (systemCreateTime == null) {
+            setFieldValByName("systemCreateTime", new Date(), metaObject);
+        }
+
+        //更新时间
+        Object systemUpdateTime = getFieldValByName("systemUpdateTime", metaObject);
+        if (systemUpdateTime == null) {
+            setFieldValByName("systemUpdateTime", new Date(), metaObject);
+        }
+
+        //版本号
+        Object systemVersion = getFieldValByName("systemVersion", metaObject);
+        if (systemVersion == null) {
+            setFieldValByName("systemVersion", 0, metaObject);
+        }
+
+        //删除标志
+        Object systemStatus = getFieldValByName("systemStatus", metaObject);
+        if (systemStatus == null) {
+            setFieldValByName("systemStatus", false, metaObject);
+        }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         //更新时间
-//        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
-//        if (systemUpdateTime == null) {
-//            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
-//        }
+        Object systemUpdateTime = getFieldValByName("systemUpdateTime", metaObject);
+        if (systemUpdateTime == null) {
+            setFieldValByName("systemUpdateTime", new Date(), metaObject);
+        }
     }
 }

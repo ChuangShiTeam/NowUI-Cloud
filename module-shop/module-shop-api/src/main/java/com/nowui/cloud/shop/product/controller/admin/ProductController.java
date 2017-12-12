@@ -22,8 +22,8 @@ public class ProductController extends BaseController {
 
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> adminList(@RequestBody Product entity) {
-        validateRequest(entity, "productName");
+    public Map<String, Object> adminList(@RequestBody Product body) {
+        validateRequest(body, "productName");
 
         String appId = "11";
         String productName = "111";
