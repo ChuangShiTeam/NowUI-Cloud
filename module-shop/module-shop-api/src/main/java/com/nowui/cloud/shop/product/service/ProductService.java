@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductService extends BaseService {
 
     /**
-     * admin count
+     * 商品总数
      *
      * @param appId
      * @param productName
@@ -19,7 +19,7 @@ public interface ProductService extends BaseService {
     Integer adminCount(String appId, String productName);
 
     /**
-     * admin list
+     * 商品列表
      *
      * @param appId
      * @param productName

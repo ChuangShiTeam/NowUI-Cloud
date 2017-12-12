@@ -29,7 +29,7 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("PRODUCT API")
+                .title("电商服务接口")
                 .description("")
                 .version("1.0.0")
                 .build();

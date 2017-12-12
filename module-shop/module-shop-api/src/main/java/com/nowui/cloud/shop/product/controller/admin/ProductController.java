@@ -20,20 +20,23 @@ public class ProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "admin list")
+    @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> home(@RequestBody String body) {
-        validateRequest();
+    public Map<String, Object> adminList(@RequestBody Product entity) {
+        validateRequest(entity, "productName");
 
         String appId = "11";
         String productName = "111";
-        Integer pageIndex = 0;
-        Integer pageSize = 0;
+        Integer pageIndex = 1;
+        Integer pageSize = 10;
 
         Integer resultTotal = productService.adminCount(appId, productName);
         List<Product> resultList = productService.adminList(appId, productName, pageIndex, pageSize);
+        for (Product product : resultList) {
+            System.out.println(product.getProductId());
+        }
 
-        validateResponse();
+        validateResponse("productId");
 
         return renderJson(resultTotal, resultList);
     }

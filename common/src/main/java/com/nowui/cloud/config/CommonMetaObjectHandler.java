@@ -20,33 +20,33 @@ public class CommonMetaObjectHandler extends MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         //创建时间
-        Object systemCreateTime = getFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, metaObject);
-        if (systemCreateTime == null) {
-            setFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, new Date(), metaObject);
-        }
-        //更新时间
-        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
-        if (systemUpdateTime == null) {
-            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
-        }
-        //版本号
-        Object systemVersion = getFieldValByName(BaseEntity.SYSTEM_VERSION, metaObject);
-        if (systemVersion == null) {
-            setFieldValByName(BaseEntity.SYSTEM_VERSION, 0, metaObject);
-        }
-        //删除标志
-        Object systemStatus = getFieldValByName(BaseEntity.SYSTEM_STATUS, metaObject);
-        if (systemStatus == null) {
-            setFieldValByName(BaseEntity.SYSTEM_STATUS, false, metaObject);
-        }
+//        Object systemCreateTime = getFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, metaObject);
+//        if (systemCreateTime == null) {
+//            setFieldValByName(BaseEntity.SYSTEM_CREATE_TIME, new Date(), metaObject);
+//        }
+//        //更新时间
+//        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
+//        if (systemUpdateTime == null) {
+//            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
+//        }
+//        //版本号
+//        Object systemVersion = getFieldValByName(BaseEntity.SYSTEM_VERSION, metaObject);
+//        if (systemVersion == null) {
+//            setFieldValByName(BaseEntity.SYSTEM_VERSION, 0, metaObject);
+//        }
+//        //删除标志
+//        Object systemStatus = getFieldValByName(BaseEntity.SYSTEM_STATUS, metaObject);
+//        if (systemStatus == null) {
+//            setFieldValByName(BaseEntity.SYSTEM_STATUS, false, metaObject);
+//        }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         //更新时间
-        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
-        if (systemUpdateTime == null) {
-            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
-        }
+//        Object systemUpdateTime = getFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, metaObject);
+//        if (systemUpdateTime == null) {
+//            setFieldValByName(BaseEntity.SYSTEM_UPDATE_TIME, new Date(), metaObject);
+//        }
     }
 }
