@@ -1,5 +1,8 @@
 package com.nowui.cloud.constant;
 
+/**
+ * @author ZhongYongQiang
+ */
 public class Constant {
 
     public static final String CODE = "code";

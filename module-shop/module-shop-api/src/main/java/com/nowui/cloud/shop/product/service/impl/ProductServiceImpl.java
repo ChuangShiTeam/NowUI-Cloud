@@ -41,4 +41,28 @@ public class ProductServiceImpl implements ProductService {
         return productList;
     }
 
+    @Override
+    public Product find(String productId) {
+        Product product = productMapper.selectById(productId);
+        return product;
+    }
+
+    @Override
+    public Boolean save(Product product) {
+        Boolean success = productMapper.insert(product) != 0;
+        return success;
+    }
+
+    @Override
+    public Boolean update(Product product) {
+        Boolean success = productMapper.updateById(product) != 0;
+        return success;
+    }
+
+    @Override
+    public Boolean delete(String productId) {
+        Boolean success = productMapper.deleteById(productId) != 0;
+        return success;
+    }
+
 }
