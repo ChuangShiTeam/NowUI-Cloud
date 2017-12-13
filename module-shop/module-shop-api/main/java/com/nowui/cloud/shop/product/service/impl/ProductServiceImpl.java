@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> adminList(String appId, String productName, int pageIndex, int pageSize) {
+    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
         List<Product> productList = productMapper.selectPage(
                 new Page<Product>(pageIndex, pageSize),
                 new EntityWrapper<Product>()

@@ -27,7 +27,7 @@ public interface ProductService extends ProductRpc {
      * @param 取n条数据
      * @return 商品列表
      */
-    List<Product> adminList(String appId, String productName, int m, int n);
+    List<Product> adminList(String appId, String productName, Integer m, Integer n);
 
     /**
      * 商品查询

@@ -19,7 +19,7 @@ public class Product extends BaseEntity {
      */
     @TableId
     @NotNull(message = "商品编号不能为空")
-    @Length(max = 100, message = "商品编号字数超出限制")
+    @Length(max = 32, message = "商品编号字数超出限制")
     private String productId;
 
     /**
@@ -27,7 +27,7 @@ public class Product extends BaseEntity {
      */
     @TableField
     @NotNull(message = "应用编号不能为空")
-    @Length(max = 100, message = "应用编号字数超出限制")
+    @Length(max = 32, message = "应用编号字数超出限制")
     private String appId;
 
     /**
