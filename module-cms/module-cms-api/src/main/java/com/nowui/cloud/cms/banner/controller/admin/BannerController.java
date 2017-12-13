@@ -25,4 +25,41 @@ public class BannerController extends BaseController {
         validateResponse();
         return renderJson(resultTotal, resultList);
     }
+
+    @ApiOperation(value = "根据bannerId获取Banner信息")
+    @RequestMapping(value = "/banner/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(String bannerId){
+        Integer resultTotal = 0;
+        Banner banner = bannerService.find(bannerId);
+        validateResponse();
+        return renderJson(resultTotal,banner);
+    }
+
+    @ApiOperation(value = "创建Banner")
+    @RequestMapping(value = "/banner/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> save(Banner banner){
+        Integer resultTotal = 0;
+        Boolean success = bannerService.save(banner);
+        validateResponse();
+        return renderJson(resultTotal,success);
+    }
+
+    @ApiOperation(value = "更新Banner")
+    @RequestMapping(value = "/banner/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> update(Banner banner){
+        Integer resultTotal = 0;
+        Boolean success = bannerService.update(banner);
+        validateResponse();
+        return renderJson(resultTotal,success);
+    }
+
+    @ApiOperation(value = "删除Banner")
+    @RequestMapping(value = "/banner/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> delete(String productId){
+        Integer resultTotal = 0;
+        Boolean success = bannerService.delete(productId);
+        validateResponse();
+        return renderJson(resultTotal,success);
+    }
+
 }

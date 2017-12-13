@@ -1,12 +1,10 @@
 package com.nowui.cloud.controller;
-
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
 import com.nowui.cloud.util.ValidateUtil;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.validation.ConstraintViolation;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,7 +14,7 @@ import java.util.Set;
 /**
  * @author ZhongYongQiang
  */
-public class BaseController {
+public class BaseController{
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
