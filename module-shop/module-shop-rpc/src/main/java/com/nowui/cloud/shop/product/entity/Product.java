@@ -18,24 +18,24 @@ public class Product extends BaseEntity {
      * 商品编号
      */
     @TableId
-    @NotNull(message = "productId must not be null")
-    @Length(max = 32, message = "productId length must not exceed 32")
+    @NotNull(message = "商品编号不能为空")
+    @Length(max = 100, message = "商品编号字数超出限制")
     private String productId;
 
     /**
      * 应用编号
      */
     @TableField
-    @NotNull(message = "appId must not be null")
-    @Length(max = 32, message = "appId length must not exceed 32")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 100, message = "应用编号字数超出限制")
     private String appId;
 
     /**
      * 商品名称
      */
     @TableField
-    @NotNull(message = "productName must not be null")
-    @Length(max = 32, message = "productName length must not exceed 100")
+    @NotNull(message = "商品名称不能为空")
+    @Length(max = 100, message = "商品名称字数超出限制")
     private String productName;
 
     public String getProductId() {

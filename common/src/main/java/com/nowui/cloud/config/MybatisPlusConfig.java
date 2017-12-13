@@ -19,9 +19,9 @@ import com.baomidou.mybatisplus.plugins.parser.ISqlParser;
  * @author marcus
  *
  */
-@EnableTransactionManagement
-@Configuration
-@MapperScan("com.nowui.cloud.**.**.mapper")
+//@EnableTransactionManagement
+//@Configuration
+//@MapperScan("com.nowui.cloud.**.**.mapper")
 public class MybatisPlusConfig {
     
     /**
