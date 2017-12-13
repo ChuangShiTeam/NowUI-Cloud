@@ -1,5 +1,4 @@
 package com.nowui.cloud.shop.product.controller.admin;
-
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
@@ -38,7 +37,6 @@ public class ProductController extends BaseController {
         for (Product product : resultList) {
             System.out.println(product.getProductId());
         }
-
         validateResponse("productId");
 
         return renderJson(resultTotal, resultList);

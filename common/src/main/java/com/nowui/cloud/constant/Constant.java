@@ -14,5 +14,4 @@ public class Constant {
     public static final String LIST = "list";
 
     public static final String MESSAGE = "message";
-
 }

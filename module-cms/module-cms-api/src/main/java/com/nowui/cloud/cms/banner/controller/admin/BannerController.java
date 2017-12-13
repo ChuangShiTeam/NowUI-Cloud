@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestController
 public class BannerController extends BaseController {
+
     @Autowired
     private BannerService bannerService;
 
@@ -24,5 +25,15 @@ public class BannerController extends BaseController {
         List<Banner> resultList = bannerService.Query(appId, title, pageIndex, pageSize);
         validateResponse();
         return renderJson(resultTotal, resultList);
+    }
+
+
+    @ApiOperation(value = "根据bannerId获取Banner信息")
+    @RequestMapping(value = "/banner/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(String bannerId){
+        Integer resultTotal = 0;
+        Banner banner = bannerService.find(bannerId);
+        validateResponse();
+        return renderJson(resultTotal,banner);
     }
 }

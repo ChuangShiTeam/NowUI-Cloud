@@ -1,12 +1,10 @@
 package com.nowui.cloud.controller;
-
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
 import com.nowui.cloud.util.ValidateUtil;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.validation.ConstraintViolation;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,11 +14,8 @@ import java.util.Set;
 /**
  * @author ZhongYongQiang
  */
-public class BaseController {
+public class BaseController{
 
-<<<<<<< HEAD
-    public void validateRequest() {
-=======
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Map<String, Object> handleException(Exception e) {
@@ -33,7 +28,6 @@ public class BaseController {
     }
 
     public void validateRequest(BaseEntity entity, String... columns) {
->>>>>>> 75b8766f6f6230fabfec7060dc09d25b0a7331d0
         for (String column : columns) {
             Set<ConstraintViolation<BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateProperty(
                     entity,
