@@ -1,8 +1,10 @@
 package com.nowui.cloud.shop.product.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
+@Api(value = "商品", description = "商品管理")
 @RestController
 public class ProductController extends BaseController {
 
@@ -21,7 +24,7 @@ public class ProductController extends BaseController {
     private ProductService productService;
 
     @ApiOperation(value = "商品列表")
-    @RequestMapping(value = "/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> adminList(@RequestBody Product body) {
         validateRequest(body, "productName");
 

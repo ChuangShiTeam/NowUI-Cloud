@@ -1,13 +1,13 @@
 package com.nowui.cloud.shop.product.service;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.shop.product.entity.Product;
+import com.nowui.cloud.shop.product.rpc.ProductRpc;
 
 import java.util.List;
 
 /**
  * @author ZhongYongQiang
  */
-public interface ProductService extends BaseService {
+public interface ProductService extends ProductRpc {
 
     /**
      * 商品计数
@@ -24,7 +24,7 @@ public interface ProductService extends BaseService {
      * @param 应用编号
      * @param 商品名称
      * @param 从m条开始
-     * @param 取n条
+     * @param 取n条数据
      * @return 商品列表
      */
     List<Product> adminList(String appId, String productName, int m, int n);
