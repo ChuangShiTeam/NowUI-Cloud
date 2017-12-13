@@ -25,47 +25,62 @@ public abstract class BaseEntity implements Serializable {
      * 创建人编号
      */
     @TableField("systemCreateUserId")
-    @NotNull(message = "systemCreateUserId must not be null")
-    @Length(max = 32, message = "systemCreateUserId length must not exceed 32")
-    protected String systemCreateUserId;
+    @NotNull(message = "创建人编号不能为空")
+    @Length(max = 32, message = "创建人编号字数超出限制")
+    private String systemCreateUserId;
 
     /**
      * 创建时间
      */
     @TableField(value = "systemCreateTime", fill = FieldFill.INSERT)
-    protected Date systemCreateTime;
+    @NotNull(message = "创建时间不能为空")
+    private Date systemCreateTime;
 
     /**
      * 更新人编号
      */
     @TableField(value = "systemUpdateUserId")
-    @NotNull(message = "systemUpdateUserId must not be null")
-    @Length(max = 32, message = "systemUpdateUserId length must not exceed 32")
-    protected String systemUpdateUserId;
+    @NotNull(message = "更新人编号不能为空")
+    @Length(max = 32, message = "更新人编号字数超出限制")
+    private String systemUpdateUserId;
 
     /**
      * 更新时间
      */
     @TableField(value = "systemUpdateTime", fill = FieldFill.INSERT_UPDATE)
     @NotNull(message = "systemUpdateTime must not be null")
-    protected Date systemUpdateTime;
+    private Date systemUpdateTime;
 
     /**
      * 版本号
      */
     @Version
     @TableField(value = "systemVersion", fill = FieldFill.INSERT)
-    @NotNull(message = "systemVersion must not be null")
+    @NotNull(message = "版本号不能为空")
     @Max(11)
-    protected Integer systemVersion;
+    private Integer systemVersion;
 
     /**
      * 删除标识
      */
     @TableField(value = "systemStatus", fill = FieldFill.INSERT)
-    @NotNull(message = "systemStatus must not be null")
+    @NotNull(message = "删除标识不能为空")
     @TableLogic
-    protected Boolean systemStatus;
+    private Boolean systemStatus;
+
+    /**
+     * 分页页数
+     */
+    @TableField(exist=false)
+    @NotNull(message = "分页页数不能为空")
+    private Integer pageIndex;
+
+    /**
+     * 分页页数
+     */
+    @TableField(exist=false)
+    @NotNull(message = "每页数量不能为空")
+    private Integer pageSize;
 
     public String getSystemCreateUserId() {
         return systemCreateUserId;
@@ -115,5 +130,32 @@ public abstract class BaseEntity implements Serializable {
         this.systemStatus = systemStatus;
     }
 
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getM() {
+        if (pageIndex > 0) {
+            return (pageIndex - 1) * pageSize;
+        } else {
+            return 0;
+        }
+    }
+
+    public Integer getN() {
+        return pageSize > 0 ? pageSize : 0;
+    }
 }
 
