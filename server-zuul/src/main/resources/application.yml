@@ -1,9 +1,15 @@
 server:
-  port: 8071
+  port: 8080
 spring:
   application:
-    name: zuul
+    name: server-zuul
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
+zuul:
+  routes:
+    shop:
+      path: /product/**
+      serviceId: module-shop
+      stripPrefix: false
