@@ -60,12 +60,12 @@ public class LogAspect {
 
     /**
      * 环绕通知：
-     *   环绕通知非常强大，可以决定目标方法是否执行，什么时候执行，执行时是否需要替换方法参数，执行完毕是否需要替换返回值。
-     *   环绕通知第一个参数必须是org.aspectj.lang.ProceedingJoinPoint类型
+     * 环绕通知非常强大，可以决定目标方法是否执行，什么时候执行，执行时是否需要替换方法参数，执行完毕是否需要替换返回值。
+     * 环绕通知第一个参数必须是org.aspectj.lang.ProceedingJoinPoint类型
      */
     @Around("execution(* com.nowui.cloud.*.*.controller..*.*(..))")
-    public Object doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint){
-        System.out.println("环绕通知的目标方法名："+proceedingJoinPoint.getSignature().getName());
+    public Object doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+        System.out.println("环绕通知的目标方法名：" + proceedingJoinPoint.getSignature().getName());
         try {//obj之前可以写目标方法执行前的逻辑
             Object obj = proceedingJoinPoint.proceed();//调用执行目标方法
             System.out.println(JSON.toJSONString(obj));
