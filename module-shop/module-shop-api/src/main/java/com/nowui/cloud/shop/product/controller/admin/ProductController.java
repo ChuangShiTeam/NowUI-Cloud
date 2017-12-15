@@ -24,17 +24,25 @@ public class ProductController extends BaseController {
 
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> adminList(@RequestBody Product body) {
+    public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
-        for (Product product : resultList) {
-            System.out.println(product.getProductId());
-        }
+
         validateResponse("productId");
 
         return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "商品新增")
+    @RequestMapping(value = "/product/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> save(@RequestBody Product body) {
+        validateRequest(body, "appId", "productName");
+
+        Boolean result = productService.save(body);
+
+        return renderJson(result);
     }
 
 }

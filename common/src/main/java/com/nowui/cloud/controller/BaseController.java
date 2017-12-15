@@ -17,8 +17,8 @@ import java.util.Set;
 public class BaseController{
 
     @ResponseBody
-    @ExceptionHandler(Exception.class)
-    public Map<String, Object> handleException(Exception e) {
+    @ExceptionHandler(RuntimeException.class)
+    public Map<String, Object> handleException(RuntimeException e) {
         e.printStackTrace();
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -29,10 +29,7 @@ public class BaseController{
 
     public void validateRequest(BaseEntity entity, String... columns) {
         for (String column : columns) {
-            Set<ConstraintViolation<BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateProperty(
-                    entity,
-                    column
-            );
+            Set<ConstraintViolation<BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateProperty(entity, column);
 
             Iterator<ConstraintViolation<BaseEntity>> iterator = constraintViolations.iterator();
             while (iterator.hasNext()) {

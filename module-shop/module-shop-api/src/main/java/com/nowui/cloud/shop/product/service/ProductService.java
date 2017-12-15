@@ -12,9 +12,9 @@ public interface ProductService extends ProductRpc {
     /**
      * 商品计数
      *
-     * @param 应用编号
-     * @param 商品名称
-     * @return 商品计数
+     * @param appId 应用编号
+     * @param productName 商品名称
+     * @return 商品数量
      */
     Integer adminCount(String appId, String productName);
 
