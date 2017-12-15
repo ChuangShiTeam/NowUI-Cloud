@@ -3,9 +3,11 @@ import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
 import com.nowui.cloud.util.ValidateUtil;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.ConstraintViolation;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,8 +19,8 @@ import java.util.Set;
 public class BaseController{
 
     @ResponseBody
-    @ExceptionHandler(RuntimeException.class)
-    public Map<String, Object> handleException(RuntimeException e) {
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class, SQLException.class})
+    public Map<String, Object> handleException(Exception e) {
         e.printStackTrace();
 
         Map<String, Object> map = new HashMap<String, Object>();

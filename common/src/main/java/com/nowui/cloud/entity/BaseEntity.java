@@ -3,6 +3,7 @@ package com.nowui.cloud.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
@@ -146,6 +147,7 @@ public abstract class BaseEntity implements Serializable {
         this.pageSize = pageSize;
     }
 
+    @JSONField(serialize=false)
     public Integer getM() {
         if (pageIndex > 0) {
             return (pageIndex - 1) * pageSize;
@@ -154,6 +156,7 @@ public abstract class BaseEntity implements Serializable {
         }
     }
 
+    @JSONField(serialize=false)
     public Integer getN() {
         return pageSize > 0 ? pageSize : 0;
     }

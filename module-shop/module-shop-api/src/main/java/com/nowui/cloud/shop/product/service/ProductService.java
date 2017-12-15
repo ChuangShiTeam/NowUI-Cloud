@@ -43,7 +43,7 @@ public interface ProductService extends ProductRpc {
      * @param 商品
      * @return 是否成功
      */
-    Boolean save(Product product);
+    Boolean save(Product product, String systemCreateUserId);
 
     /**
      * 商品修改

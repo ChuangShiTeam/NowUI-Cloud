@@ -40,7 +40,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> save(@RequestBody Product body) {
         validateRequest(body, "appId", "productName");
 
-        Boolean result = productService.save(body);
+        Boolean result = productService.save(body, "123");
 
         return renderJson(result);
     }

@@ -47,7 +47,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean save(Product product) {
+    public Boolean save(Product product, String systemCreateUserId) {
+        product.setSystemCreateUserId(systemCreateUserId);
+        product.setSystemUpdateUserId(systemCreateUserId);
+
         Boolean success = productMapper.insert(product) != 0;
         return success;
     }
