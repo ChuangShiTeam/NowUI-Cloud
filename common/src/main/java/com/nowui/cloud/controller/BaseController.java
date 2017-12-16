@@ -1,11 +1,13 @@
 package com.nowui.cloud.controller;
+
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
 import com.nowui.cloud.util.ValidateUtil;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.validation.ConstraintViolation;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,16 +18,27 @@ import java.util.Set;
 /**
  * @author ZhongYongQiang
  */
-public class BaseController{
+public class BaseController {
 
     @ResponseBody
-    @ExceptionHandler(value = {Exception.class, RuntimeException.class, SQLException.class})
-    public Map<String, Object> handleException(Exception e) {
+    @ExceptionHandler(value = {RuntimeException.class})
+    public Map<String, Object> handleRuntimeException(RuntimeException e) {
         e.printStackTrace();
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(Constant.CODE, 400);
         map.put(Constant.MESSAGE, e.toString());
+        return map;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class})
+    public Map<String, Object> handleException(Exception e) {
+        e.printStackTrace();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(Constant.CODE,500);
+        map.put(Constant.MESSAGE, "网络出现错误");
         return map;
     }
 
