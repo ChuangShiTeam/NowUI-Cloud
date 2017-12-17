@@ -15,14 +15,14 @@ import java.util.Map;
 public class BannerMobileController extends BaseController {
     @Autowired
     private BannerService bannerService;
-
-    @ApiOperation(value = "广告查询列表")
+    @ApiOperation(value = "首页Banner图展示列表")
     @RequestMapping(value = "/banner/mobile/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> home(String appId,String title,Integer pageIndex) {
         Integer pageSize = 10;
         Integer resultTotal = 0;
-        List<Banner> resultList = bannerService.Query(appId, title, pageIndex, pageSize);
-        validateResponse();
+        List<Banner> resultList = null;
+//                bannerService.Query(appId, title, pageIndex, pageSize);
+//        validateResponse();
         return renderJson(resultTotal, resultList);
     }
 }

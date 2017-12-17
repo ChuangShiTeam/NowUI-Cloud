@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableEurekaClient
 @ComponentScan(basePackages = {"com.nowui.cloud"})
 public class ModuleCMSApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(ModuleCMSApplication.class, args);
     }
-
 }

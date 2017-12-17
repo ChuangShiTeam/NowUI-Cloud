@@ -13,12 +13,14 @@ import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.plugins.parser.ISqlParser;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * MybatisPlus插件配置
  *
  * @author marcus
  */
+@EnableTransactionManagement
 @Configuration
 @MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
 public class MybatisPlusConfig {
