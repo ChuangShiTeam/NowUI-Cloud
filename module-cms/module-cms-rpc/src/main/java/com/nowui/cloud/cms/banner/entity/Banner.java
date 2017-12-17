@@ -12,23 +12,36 @@ public class Banner extends BaseEntity{
      * 应用编号
      */
     @TableId
+    @NotNull(message = "bannerId不能为空")
+    @Length(max = 32, message = "应用编号字数超出限制")
     private String bannerId;
+
     /**
      * 应用编号
      */
     @TableField
+    @NotNull(message = "appId不能为空")
+    @Length(max = 32, message = "应用编号字数超出限制")
     private String appId;
 
     /*
     *  广告分类编码
     * */
+    @NotNull(message = "bannerCategoryCode不能为空")
     private String bannerCategoryCode;
 
     /**
      * 广告标题
      * */
+    @TableField
+    @NotNull(message = "广告标题不能为空")
     private String bannerTitle;
 
+    /**
+     * 广告位置
+     * */
+    @TableField
+    @NotNull(message = "广告位置不能为空")
     private String bannerPosition;
 
     private String bannerLink;
@@ -36,6 +49,16 @@ public class Banner extends BaseEntity{
     private String bannerImage;
 
     private int bannerSort;
+
+    private int openStatus;
+
+    public int getOpenStatus() {
+        return openStatus;
+    }
+
+    public void setOpenStatus(int openStatus) {
+        this.openStatus = openStatus;
+    }
 
     public String getAppId() {
         return appId;
