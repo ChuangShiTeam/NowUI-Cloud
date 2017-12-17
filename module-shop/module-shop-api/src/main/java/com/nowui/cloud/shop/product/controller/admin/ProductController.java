@@ -28,7 +28,7 @@ public class ProductController extends BaseController {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
+        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), 1, 10);
 
         validateResponse("productId");
 

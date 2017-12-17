@@ -24,9 +24,7 @@ public class CommonMetaObjectHandler extends MetaObjectHandler {
 //        if (systemCreateTime == null) {
 //            setFieldValByName("systemCreateTime", new Date(), metaObject);
 //        }
-        System.out.println("++++++");
-        System.out.println(JSON.toJSONString(metaObject));
-        System.out.println("++++++");
+
         setFieldValByName("systemCreateTime", new Date(), metaObject);
 
         //更新时间

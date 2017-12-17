@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author marcus
  */
 @EnableTransactionManagement
-@Configuration
-@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
+//@Configuration
+//@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
 public class MybatisPlusConfig {
 
     /**

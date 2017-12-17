@@ -83,6 +83,14 @@ public abstract class BaseEntity implements Serializable {
     @NotNull(message = "每页数量不能为空")
     private Integer pageSize;
 
+    @TableField(exist=false)
+    @JSONField(serialize=false)
+    private Integer m;
+
+    @TableField(exist=false)
+    @JSONField(serialize=false)
+    private Integer n;
+
     public String getSystemCreateUserId() {
         return systemCreateUserId;
     }
@@ -147,18 +155,32 @@ public abstract class BaseEntity implements Serializable {
         this.pageSize = pageSize;
     }
 
-    @JSONField(serialize=false)
     public Integer getM() {
-        if (pageIndex > 0) {
-            return (pageIndex - 1) * pageSize;
+        int index = 0;
+        if (getPageIndex() != null) {
+            index = getPageIndex();
+        }
+
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+
+        if (index > 0) {
+            return (index - 1) * size;
         } else {
             return 0;
         }
     }
 
-    @JSONField(serialize=false)
     public Integer getN() {
-        return pageSize > 0 ? pageSize : 0;
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+        return size > 0 ? size : 0;
     }
 }
 
