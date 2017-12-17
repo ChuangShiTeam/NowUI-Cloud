@@ -47,7 +47,13 @@ public class ResponseFilter extends ZuulFilter {
 
             System.out.println(body);
 
-            requestContext.setResponseBody(body);
+
+            RequestContext context = RequestContext.getCurrentContext();
+            if (context.sendZuulResponse()) {
+                requestContext.setResponseBody(body);
+            } else {
+                requestContext.setResponseBody(context.getResponseBody());
+            }
         } catch (IOException e) {
             rethrowRuntimeException(e);
         }
