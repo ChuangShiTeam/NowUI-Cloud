@@ -56,7 +56,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean update(Product product) {
+    public Boolean update(Product product, String systemUpdateUserId) {
+        product.setSystemUpdateUserId(systemUpdateUserId);
+
         Boolean success = productMapper.updateById(product) != 0;
         return success;
     }

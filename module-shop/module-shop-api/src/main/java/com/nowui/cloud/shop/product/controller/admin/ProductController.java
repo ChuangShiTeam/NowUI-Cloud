@@ -30,9 +30,21 @@ public class ProductController extends BaseController {
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), 1, 10);
 
-        validateResponse("productId");
+        validateResponse("productId", "productName");
 
         return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "商品信息")
+    @RequestMapping(value = "/product/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(@RequestBody Product body) {
+        validateRequest(body, "appId", "productId");
+
+        Product result = productService.find(body.getProductId());
+
+        validateResponse("productId", "productName", "systemVersion");
+
+        return renderJson(result);
     }
 
     @ApiOperation(value = "商品新增")
@@ -41,6 +53,16 @@ public class ProductController extends BaseController {
         validateRequest(body, "appId", "productName");
 
         Boolean result = productService.save(body, "123456789");
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "商品修改")
+    @RequestMapping(value = "/product/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> update(@RequestBody Product body) {
+        validateRequest(body, "appId", "productName");
+
+        Boolean result = productService.update(body, "123456789");
 
         return renderJson(result);
     }

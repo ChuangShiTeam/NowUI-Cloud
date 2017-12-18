@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -16,8 +17,8 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class LogAspect {
 
     /**
@@ -27,7 +28,6 @@ public class LogAspect {
      */
     @Before("execution(* com.nowui.cloud.*.*.controller..*.*(..))")
     public void doBeforeAdvice(JoinPoint joinPoint) {
-        System.out.println("我是前置通知!!!");
         //获取目标方法的参数信息
         Object[] obj = joinPoint.getArgs();
         //AOP代理类的信息
@@ -47,16 +47,16 @@ public class LogAspect {
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
         //如果要获取Session信息的话，可以这样写：
-        Enumeration<String> enumeration = request.getParameterNames();
-        Map<String, String> parameterMap = Maps.newHashMap();
-        while (enumeration.hasMoreElements()) {
-            String parameter = enumeration.nextElement();
-            parameterMap.put(parameter, request.getParameter(parameter));
-        }
-        String str = JSON.toJSONString(parameterMap);
-        if (obj.length > 0) {
-            System.out.println("请求的参数信息为：" + str);
-        }
+//        Enumeration<String> enumeration = request.getParameterNames();
+//        Map<String, String> parameterMap = Maps.newHashMap();
+//        while (enumeration.hasMoreElements()) {
+//            String parameter = enumeration.nextElement();
+//            parameterMap.put(parameter, request.getParameter(parameter));
+//        }
+//        String str = JSON.toJSONString(parameterMap);
+//        if (obj.length > 0) {
+//            System.out.println("请求的参数信息为：" + str);
+//        }
     }
 
     /**

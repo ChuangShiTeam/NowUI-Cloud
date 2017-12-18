@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
@@ -74,6 +75,7 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField(exist=false)
     @NotNull(message = "分页页数不能为空")
+    @JsonIgnore
     private Integer pageIndex;
 
     /**
@@ -81,14 +83,17 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField(exist=false)
     @NotNull(message = "每页数量不能为空")
+    @JsonIgnore
     private Integer pageSize;
 
     @TableField(exist=false)
     @JSONField(serialize=false)
+    @JsonIgnore
     private Integer m;
 
     @TableField(exist=false)
     @JSONField(serialize=false)
+    @JsonIgnore
     private Integer n;
 
     public String getSystemCreateUserId() {
