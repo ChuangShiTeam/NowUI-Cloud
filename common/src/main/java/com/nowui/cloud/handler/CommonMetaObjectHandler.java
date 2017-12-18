@@ -2,7 +2,6 @@ package com.nowui.cloud.handler;
 
 import java.util.Date;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.ibatis.reflection.MetaObject;
 
 import com.baomidou.mybatisplus.mapper.MetaObjectHandler;
@@ -20,33 +19,28 @@ public class CommonMetaObjectHandler extends MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         //创建时间
-//        Object systemCreateTime = getFieldValByName("systemCreateTime", metaObject);
-//        if (systemCreateTime == null) {
-//            setFieldValByName("systemCreateTime", new Date(), metaObject);
-//        }
-
-        setFieldValByName("systemCreateTime", new Date(), metaObject);
+        Object systemCreateTime = getFieldValByName("systemCreateTime", metaObject);
+        if (systemCreateTime == null) {
+            setFieldValByName("systemCreateTime", new Date(), metaObject);
+        }
 
         //更新时间
-//        Object systemUpdateTime = getFieldValByName("systemUpdateTime", metaObject);
-//        if (systemUpdateTime == null) {
-//            setFieldValByName("systemUpdateTime", new Date(), metaObject);
-//        }
-        setFieldValByName("systemUpdateTime", new Date(), metaObject);
+        Object systemUpdateTime = getFieldValByName("systemUpdateTime", metaObject);
+        if (systemUpdateTime == null) {
+            setFieldValByName("systemUpdateTime", new Date(), metaObject);
+        }
 
         //版本号
-//        Object systemVersion = getFieldValByName("systemVersion", metaObject);
-//        if (systemVersion == null) {
-//            setFieldValByName("systemVersion", 0, metaObject);
-//        }
-        setFieldValByName("systemVersion", 0, metaObject);
+        Object systemVersion = getFieldValByName("systemVersion", metaObject);
+        if (systemVersion == null) {
+            setFieldValByName("systemVersion", 0, metaObject);
+        }
 
         //删除标志
-//        Object systemStatus = getFieldValByName("systemStatus", metaObject);
-//        if (systemStatus == null) {
-//            setFieldValByName("systemStatus", false, metaObject);
-//        }
-        setFieldValByName("systemStatus", true, metaObject);
+        Object systemStatus = getFieldValByName("systemStatus", metaObject);
+        if (systemStatus == null) {
+            setFieldValByName("systemStatus", false, metaObject);
+        }
     }
 
     @Override

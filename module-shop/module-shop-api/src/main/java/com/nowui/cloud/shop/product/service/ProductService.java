@@ -59,5 +59,5 @@ public interface ProductService extends ProductRpc {
      * @param 商品编号
      * @return 是否成功
      */
-    Boolean delete(String productId, Integer systemVersion);
+    Boolean delete(String productId, String systemUpdateUserId, Integer systemVersion);
 }

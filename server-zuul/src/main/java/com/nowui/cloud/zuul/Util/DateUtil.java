@@ -1,4 +1,4 @@
-package com.nowui.cloud.zuul.Util;
+package com.nowui.cloud.zuul.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

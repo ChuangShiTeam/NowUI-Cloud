@@ -1,5 +1,7 @@
 package com.nowui.cloud.config;
 
+import com.baomidou.mybatisplus.entity.GlobalConfiguration;
+import com.baomidou.mybatisplus.mapper.LogicSqlInjector;
 import com.nowui.cloud.mapper.BaseMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
+@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface = BaseMapper.class)
 public class MybatisPlusConfig {
 
     /**
@@ -44,6 +46,20 @@ public class MybatisPlusConfig {
         performanceInterceptor.setFormat(true);
 
         return performanceInterceptor;
+    }
+
+    /**
+     * 逻辑删除
+     *
+     * @return
+     */
+    @Bean
+    public GlobalConfiguration globalConfiguration() {
+        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
+        conf.setLogicDeleteValue("-1");
+        conf.setLogicNotDeleteValue("1");
+        conf.setIdType(3);
+        return conf;
     }
 
 //    /**

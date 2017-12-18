@@ -37,22 +37,23 @@ public class ResponseFilter extends ZuulFilter {
     @Override
     public Object run() {
         try {
-            RequestContext requestContext = RequestContext.getCurrentContext();
-            InputStream stream = requestContext.getResponseDataStream();
+            RequestContext context = RequestContext.getCurrentContext();
+            InputStream stream = context.getResponseDataStream();
             String body = StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
+            context.getResponse().setContentType("application/json;charset=utf-8");
 
             if (StringUtils.isNotBlank(body)) {
 
             }
 
-            System.out.println(body);
-
-
-            RequestContext context = RequestContext.getCurrentContext();
             if (context.sendZuulResponse()) {
-                requestContext.setResponseBody(body);
+                System.out.println(body);
+
+                context.setResponseBody(body);
             } else {
-                requestContext.setResponseBody(context.getResponseBody());
+                System.out.println(context.getResponseBody());
+
+                context.setResponseBody(context.getResponseBody());
             }
         } catch (IOException e) {
             rethrowRuntimeException(e);

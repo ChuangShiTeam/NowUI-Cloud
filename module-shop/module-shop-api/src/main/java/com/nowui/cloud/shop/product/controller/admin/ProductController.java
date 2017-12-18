@@ -72,7 +72,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> delete(@RequestBody Product body) {
         validateRequest(body, "productId", "systemVersion");
 
-        Boolean result = productService.delete(body.getProductId(), body.getSystemVersion());
+        Boolean result = productService.delete(body.getProductId(), "123456789", body.getSystemVersion());
 
         return renderJson(result);
     }

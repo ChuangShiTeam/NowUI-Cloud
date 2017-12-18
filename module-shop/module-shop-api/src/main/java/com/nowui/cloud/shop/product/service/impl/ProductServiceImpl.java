@@ -25,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
                 new EntityWrapper<Product>()
                         .eq("appId", appId)
                         .like("productName", productName)
+                        .eq("systemStatus", true)
         );
         return count;
     }
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
                 new EntityWrapper<Product>()
                         .eq("appId", appId)
                         .like("productName", productName)
+                        .eq("systemStatus", true)
         );
         return productList;
     }
@@ -58,14 +60,32 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean update(Product product, String systemUpdateUserId, Integer systemVersion) {
         product.setSystemUpdateUserId(systemUpdateUserId);
+        product.setSystemVersion(systemVersion + 1);
 
-        Boolean success = productMapper.updateById(product) != 0;
+        Boolean success = productMapper.update(
+                product,
+                new EntityWrapper<Product>()
+                        .eq("productId", product.getProductId())
+                        .eq("systemVersion", systemVersion)
+                        .eq("systemStatus", true)
+        ) != 0;
         return success;
     }
 
     @Override
-    public Boolean delete(String productId, Integer systemVersion) {
-        Boolean success = productMapper.deleteById(productId) != 0;
+    public Boolean delete(String productId, String systemUpdateUserId, Integer systemVersion) {
+        Product product = new Product();
+        product.setSystemUpdateUserId(systemUpdateUserId);
+        product.setSystemVersion(systemVersion + 1);
+        product.setSystemStatus(false);
+
+        Boolean success = productMapper.update(
+                product,
+                new EntityWrapper<Product>()
+                        .eq("productId", product.getProductId())
+                        .eq("systemVersion", systemVersion)
+                        .eq("systemStatus", true)
+        ) != 0;
         return success;
     }
 

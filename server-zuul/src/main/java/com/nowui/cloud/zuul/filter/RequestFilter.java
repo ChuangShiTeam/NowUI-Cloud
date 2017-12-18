@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.nowui.cloud.zuul.Util.DateUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -58,6 +57,7 @@ public class RequestFilter extends ZuulFilter {
                 signStringBuilder.append(entry.getValue());
             }
         }
+        System.out.println(signStringBuilder.toString());
 
         String signParameter = parameterJSONObject.getString("sign");
         String sign = DigestUtils.md5Hex(signStringBuilder.toString());
@@ -67,10 +67,12 @@ public class RequestFilter extends ZuulFilter {
             map.put("code", 400);
             map.put("message", "签名不对");
 
+            System.out.println(signParameter);
+            System.out.println(sign);
+
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(200);
             context.setResponseBody(JSON.toJSONString(map));
-            context.getResponse().setContentType("application/json;charset=utf-8");
         }
 
         String httpUrl = request.getRequestURI();
