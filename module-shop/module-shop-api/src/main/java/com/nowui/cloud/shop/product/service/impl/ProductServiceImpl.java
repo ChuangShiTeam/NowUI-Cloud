@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean update(Product product, String systemUpdateUserId) {
+    public Boolean update(Product product, String systemUpdateUserId, Integer systemVersion) {
         product.setSystemUpdateUserId(systemUpdateUserId);
 
         Boolean success = productMapper.updateById(product) != 0;
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean delete(String productId) {
+    public Boolean delete(String productId, Integer systemVersion) {
         Boolean success = productMapper.deleteById(productId) != 0;
         return success;
     }

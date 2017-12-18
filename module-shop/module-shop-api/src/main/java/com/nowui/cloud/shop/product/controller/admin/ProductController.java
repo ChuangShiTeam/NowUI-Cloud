@@ -60,9 +60,19 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品修改")
     @RequestMapping(value = "/product/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody Product body) {
-        validateRequest(body, "appId", "productName");
+        validateRequest(body, "appId", "productId", "productName", "systemVersion");
 
-        Boolean result = productService.update(body, "123456789");
+        Boolean result = productService.update(body, "123456789", body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "商品删除")
+    @RequestMapping(value = "/product/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> delete(@RequestBody Product body) {
+        validateRequest(body, "productId", "systemVersion");
+
+        Boolean result = productService.delete(body.getProductId(), body.getSystemVersion());
 
         return renderJson(result);
     }

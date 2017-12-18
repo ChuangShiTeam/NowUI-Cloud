@@ -58,6 +58,8 @@ public class BaseController {
             }
 
             return list;
+        } else if (data instanceof Boolean) {
+            return data;
         }
 
         return null;

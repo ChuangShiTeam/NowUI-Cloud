@@ -17,8 +17,8 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class LogAspect {
 
     /**

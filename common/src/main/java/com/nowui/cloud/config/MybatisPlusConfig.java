@@ -1,18 +1,12 @@
 package com.nowui.cloud.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.nowui.cloud.mapper.BaseMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
-import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
-import com.baomidou.mybatisplus.plugins.parser.ISqlParser;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -21,8 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author marcus
  */
 @EnableTransactionManagement
-//@Configuration
-//@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
+@Configuration
+@MapperScan(basePackages = {"com.nowui.cloud.**.**.mapper"}, markerInterface=BaseMapper.class)
 public class MybatisPlusConfig {
 
     /**
@@ -41,7 +35,6 @@ public class MybatisPlusConfig {
      * @return
      */
     @Bean
-    @Profile({"dev", "test"})
     public PerformanceInterceptor performanceInterceptor() {
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
 
@@ -53,24 +46,24 @@ public class MybatisPlusConfig {
         return performanceInterceptor;
     }
 
-    /**
-     * mybatis-plus分页插件<br>
-     * 文档：http://mp.baomidou.com<br>
-     *
-     * @return
-     */
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-
-        // 开启 PageHelper 的支持
-        paginationInterceptor.setLocalPage(true);
-
-        List<ISqlParser> sqlParserList = new ArrayList<>();
-
-        paginationInterceptor.setSqlParserList(sqlParserList);
-
-        return paginationInterceptor;
-    }
+//    /**
+//     * mybatis-plus分页插件<br>
+//     * 文档：http://mp.baomidou.com<br>
+//     *
+//     * @return
+//     */
+//    @Bean
+//    public PaginationInterceptor paginationInterceptor() {
+//        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+//
+//        // 开启 PageHelper 的支持
+//        paginationInterceptor.setLocalPage(true);
+//
+//        List<ISqlParser> sqlParserList = new ArrayList<>();
+//
+//        paginationInterceptor.setSqlParserList(sqlParserList);
+//
+//        return paginationInterceptor;
+//    }
 
 }
