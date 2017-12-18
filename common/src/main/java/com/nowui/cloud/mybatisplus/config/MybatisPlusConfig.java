@@ -1,4 +1,4 @@
-package com.nowui.cloud.config;
+package com.nowui.cloud.mybatisplus.config;
 
 import com.baomidou.mybatisplus.entity.GlobalConfiguration;
 import com.baomidou.mybatisplus.mapper.LogicSqlInjector;
