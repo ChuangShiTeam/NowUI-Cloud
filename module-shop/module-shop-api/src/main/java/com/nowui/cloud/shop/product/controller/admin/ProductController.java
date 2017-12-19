@@ -15,7 +15,7 @@ import java.util.Map;
  * @author ZhongYongQiang
  */
 @Api(value = "商品", description = "商品后台接口管理")
-@RestController
+@RestController(value = "productAdminController")
 public class ProductController extends BaseController {
 
     @Autowired
