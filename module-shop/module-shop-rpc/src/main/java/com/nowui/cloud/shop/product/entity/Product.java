@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * @author ZhongYongQiang
  */
+@Component(value = "product")
 @TableName(value = "shop_product")
 public class Product extends BaseEntity {
 

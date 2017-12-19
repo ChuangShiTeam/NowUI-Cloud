@@ -33,6 +33,7 @@ public interface BannerService extends BaseService{
      * @param 标题
      * @return Banner
      */
+    @Override
     Banner find(String bannerId);
 
     /**

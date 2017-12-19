@@ -61,7 +61,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> update(@RequestBody Product body) {
         validateRequest(body, "appId", "productId", "productName", "systemVersion");
 
-        Boolean result = productService.update(body, "123456789", body.getSystemVersion());
+        Boolean result = productService.update(body, body.getProductId(), "123456789", body.getSystemVersion());
 
         return renderJson(result);
     }
