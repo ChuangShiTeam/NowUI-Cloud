@@ -5,13 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.http.ServletInputStreamWrapper;
+import com.nowui.cloud.zuul.util.AesUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -42,10 +48,6 @@ public class RequestFilter extends ZuulFilter {
 
         String body = readData(request);
 
-        JSONObject parameterJSONObject = JSON.parseObject(body);
-        parameterJSONObject.put("systemCreateUserId", "ZhongYongQiang");
-        context.setResponseBody(parameterJSONObject.toJSONString());
-
         SortedMap<String, Object> jsonMap = JSON.parseObject(body, new TypeReference<TreeMap<String, Object>>() {
 
         });
@@ -57,7 +59,8 @@ public class RequestFilter extends ZuulFilter {
                 signStringBuilder.append(entry.getValue());
             }
         }
-        System.out.println(signStringBuilder.toString());
+
+        JSONObject parameterJSONObject = JSON.parseObject(body);
 
         String signParameter = parameterJSONObject.getString("sign");
         String sign = DigestUtils.md5Hex(signStringBuilder.toString());
@@ -67,13 +70,53 @@ public class RequestFilter extends ZuulFilter {
             map.put("code", 400);
             map.put("message", "签名不对");
 
-            System.out.println(signParameter);
-            System.out.println(sign);
-
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(200);
             context.setResponseBody(JSON.toJSONString(map));
         }
+
+        String systemRequestUserId = "";
+
+        String token = parameterJSONObject.getString("token");
+        if (token != null) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, ""));
+            } catch (Exception e) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("code", 400);
+                map.put("message", "Token不对");
+
+                context.setSendZuulResponse(false);
+                context.setResponseStatusCode(200);
+                context.setResponseBody(JSON.toJSONString(map));
+            }
+            systemRequestUserId = jsonObject.getString("userId");
+        }
+
+        parameterJSONObject.put("systemRequestUserId", systemRequestUserId);
+
+        final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
+        context.setRequest(new HttpServletRequestWrapper(context.getRequest()) {
+            @Override
+            public ServletInputStream getInputStream() throws IOException {
+                return new ServletInputStreamWrapper(reqBodyBytes);
+            }
+
+            @Override
+            public int getContentLength() {
+                return reqBodyBytes.length;
+            }
+
+            @Override
+            public long getContentLengthLong() {
+                return reqBodyBytes.length;
+            }
+        });
+
+        System.out.println("+++++++123");
+        System.out.println(parameterJSONObject.toJSONString());
+        System.out.println("+++++++456");
 
         String httpUrl = request.getRequestURI();
 

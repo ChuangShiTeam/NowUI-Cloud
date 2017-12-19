@@ -1,4 +1,5 @@
 package com.nowui.cloud.shop.product.controller.admin;
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -25,6 +26,8 @@ public class ProductController extends BaseController {
     @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
+
+        System.out.println(JSON.toJSONString(body));
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
