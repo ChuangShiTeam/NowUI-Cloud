@@ -16,7 +16,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     protected M mapper;
 
     @Autowired
-    protected T entity;
+    private T entity;
 
     public T find(String id) {
         T baseEntity = mapper.selectById(id);
