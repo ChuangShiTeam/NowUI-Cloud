@@ -64,8 +64,8 @@ public class MybatisPlusConfig {
         // 开启 PageHelper 的支持
         paginationInterceptor.setLocalPage(true);
         
-        List<ISqlParser> sqlParserList = new ArrayList<>();
-        
+        List<ISqlParser> sqlParserList = new ArrayList<ISqlParser>();
+
         paginationInterceptor.setSqlParserList(sqlParserList);
         
         return paginationInterceptor;
