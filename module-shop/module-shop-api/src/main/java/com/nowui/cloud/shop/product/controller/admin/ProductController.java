@@ -1,5 +1,4 @@
 package com.nowui.cloud.shop.product.controller.admin;
-import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -15,7 +14,7 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
-@Api(value = "商品", description = "商品管理")
+@Api(value = "商品", description = "商品后台接口管理")
 @RestController
 public class ProductController extends BaseController {
 
@@ -28,7 +27,7 @@ public class ProductController extends BaseController {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), 1, 10);
+        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
 
         validateResponse("productId", "productName");
 
@@ -40,7 +39,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> find(@RequestBody Product body) {
         validateRequest(body, "appId", "productId");
 
-        Product result = productService.find(body.getProductId());
+        Product result = productService.find(body.getProductId(), true);
 
         validateResponse("productId", "productName", "systemVersion");
 

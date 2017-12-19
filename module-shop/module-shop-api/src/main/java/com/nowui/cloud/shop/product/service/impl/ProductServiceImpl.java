@@ -8,6 +8,8 @@ import com.nowui.cloud.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +40,7 @@ public class ProductServiceImpl implements ProductService {
                         .eq("appId", appId)
                         .like("productName", productName)
                         .eq("systemStatus", true)
+                        .orderDesc(Arrays.asList("systemCreateTime"))
         );
         return productList;
     }
@@ -49,9 +52,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product find(String productId, Boolean systemStatus) {
+        Product product = productMapper.selectById(productId);
+        return product;
+    }
+
+    @Override
     public Boolean save(Product product, String systemCreateUserId) {
         product.setSystemCreateUserId(systemCreateUserId);
+        product.setSystemCreateTime(new Date());
         product.setSystemUpdateUserId(systemCreateUserId);
+        product.setSystemUpdateTime(new Date());
+        product.setSystemVersion(0);
+        product.setSystemStatus(true);
 
         Boolean success = productMapper.insert(product) != 0;
         return success;
@@ -60,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean update(Product product, String systemUpdateUserId, Integer systemVersion) {
         product.setSystemUpdateUserId(systemUpdateUserId);
+        product.setSystemUpdateTime(new Date());
         product.setSystemVersion(systemVersion + 1);
 
         Boolean success = productMapper.update(
@@ -76,13 +90,14 @@ public class ProductServiceImpl implements ProductService {
     public Boolean delete(String productId, String systemUpdateUserId, Integer systemVersion) {
         Product product = new Product();
         product.setSystemUpdateUserId(systemUpdateUserId);
+        product.setSystemUpdateTime(new Date());
         product.setSystemVersion(systemVersion + 1);
         product.setSystemStatus(false);
 
         Boolean success = productMapper.update(
                 product,
                 new EntityWrapper<Product>()
-                        .eq("productId", product.getProductId())
+                        .eq("productId", productId)
                         .eq("systemVersion", systemVersion)
                         .eq("systemStatus", true)
         ) != 0;

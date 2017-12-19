@@ -8,6 +8,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 zuul:
+  host:
+      connect-timeout-millis: 10000
+      socket-timeout-millis: 60000
   routes:
     shop:
       path: /product/**

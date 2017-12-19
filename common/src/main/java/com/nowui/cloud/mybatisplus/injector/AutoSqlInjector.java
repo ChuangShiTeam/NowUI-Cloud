@@ -1,16 +1,14 @@
 package com.nowui.cloud.mybatisplus.injector;
 
 import com.baomidou.mybatisplus.entity.TableInfo;
-import com.baomidou.mybatisplus.mapper.AutoSqlInjector;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
 
-public class BaseSqlInjector extends AutoSqlInjector {
+public class AutoSqlInjector extends com.baomidou.mybatisplus.mapper.AutoSqlInjector {
 
     @Override
-    public void inject(Configuration configuration, MapperBuilderAssistant builderAssistant, Class<?> mapperClass,
-                       Class<?> modelClass, TableInfo table) {
+    public void inject(Configuration configuration, MapperBuilderAssistant builderAssistant, Class<?> mapperClass, Class<?> modelClass, TableInfo table) {
         /* 添加一个自定义方法 */
         deleteAllUser(mapperClass, modelClass, table);
     }

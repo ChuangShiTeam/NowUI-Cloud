@@ -39,7 +39,7 @@ public class CommonMetaObjectHandler extends MetaObjectHandler {
         //删除标志
         Object systemStatus = getFieldValByName("systemStatus", metaObject);
         if (systemStatus == null) {
-            setFieldValByName("systemStatus", false, metaObject);
+            setFieldValByName("systemStatus", true, metaObject);
         }
     }
 
