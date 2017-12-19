@@ -1,10 +1,12 @@
 package com.nowui.cloud.entity;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.FieldFill;
@@ -69,6 +71,13 @@ public abstract class BaseEntity implements Serializable {
     @NotNull(message = "删除标识不能为空")
     @TableLogic
     private Boolean systemStatus;
+
+    /**
+     * 关键编号
+     */
+    @TableField(exist=false)
+    @JsonIgnore
+    private String primary;
 
     /**
      * 分页页数
@@ -142,6 +151,20 @@ public abstract class BaseEntity implements Serializable {
 
     public void setSystemStatus(Boolean systemStatus) {
         this.systemStatus = systemStatus;
+    }
+
+    public String getPrimary() {
+        if (primary == null) {
+            Field[] fields = this.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                boolean isPrimary = field.isAnnotationPresent(TableId.class);
+                if (isPrimary) {
+                    field.setAccessible(true);
+                    return field.getName();
+                }
+            }
+        }
+        return primary;
     }
 
     public Integer getPageIndex() {

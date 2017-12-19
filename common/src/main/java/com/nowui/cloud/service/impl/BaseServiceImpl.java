@@ -1,10 +1,12 @@
 package com.nowui.cloud.service.impl;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -48,7 +50,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<T>()
-                        .eq("productId", id)
+                        .eq(entity.getPrimary(), id)
                         .eq("systemVersion", systemVersion)
                         .eq("systemStatus", true)
         ) != 0;
@@ -64,7 +66,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         Boolean success = mapper.update(
                 entity,
                 new EntityWrapper<T>()
-                        .eq("productId", id)
+                        .eq(entity.getPrimary(), id)
                         .eq("systemVersion", systemVersion)
                         .eq("systemStatus", true)
         ) != 0;
