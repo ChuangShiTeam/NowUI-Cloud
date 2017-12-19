@@ -6,7 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.http.ServletInputStreamWrapper;
-import com.nowui.cloud.zuul.util.AesUtil;
+import com.nowui.cloud.util.AesUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -77,11 +75,27 @@ public class RequestFilter extends ZuulFilter {
 
         String systemRequestUserId = "";
 
+//        Date date = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        calendar.add(Calendar.YEAR, 1);
+//
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("userId", "ffb11c2d4a3043ec8eb28c8cca9d1fc8");
+//        jsonObject.put("expireTime", calendar.getTime());
+//
+//        try {
+//            System.out.println(AesUtil.aesEncrypt(jsonObject.toJSONString(), "0123456789012345"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         String token = parameterJSONObject.getString("token");
         if (token != null) {
             JSONObject jsonObject = null;
             try {
-                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, ""));
+                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, "0123456789012345"));
+                systemRequestUserId = jsonObject.getString("userId");
             } catch (Exception e) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("code", 400);
@@ -91,10 +105,11 @@ public class RequestFilter extends ZuulFilter {
                 context.setResponseStatusCode(200);
                 context.setResponseBody(JSON.toJSONString(map));
             }
-            systemRequestUserId = jsonObject.getString("userId");
         }
 
         parameterJSONObject.put("systemRequestUserId", systemRequestUserId);
+        System.out.println(systemRequestUserId);
+        System.out.println(parameterJSONObject.toJSONString());
 
         final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
         context.setRequest(new HttpServletRequestWrapper(context.getRequest()) {

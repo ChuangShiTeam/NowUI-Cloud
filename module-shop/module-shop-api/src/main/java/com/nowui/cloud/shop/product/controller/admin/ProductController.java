@@ -54,7 +54,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> save(@RequestBody Product body) {
         validateRequest(body, "appId", "productName");
 
-        Boolean result = productService.save(body, "123456789");
+        Boolean result = productService.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -64,7 +64,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> update(@RequestBody Product body) {
         validateRequest(body, "appId", "productId", "productName", "systemVersion");
 
-        Boolean result = productService.update(body, body.getProductId(), "123456789", body.getSystemVersion());
+        Boolean result = productService.update(body, body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -74,7 +74,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> delete(@RequestBody Product body) {
         validateRequest(body, "productId", "systemVersion");
 
-        Boolean result = productService.delete(body.getProductId(), "123456789", body.getSystemVersion());
+        Boolean result = productService.delete(body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
