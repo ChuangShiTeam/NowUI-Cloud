@@ -42,7 +42,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> find(@RequestBody Product body) {
         validateRequest(body, "appId", "productId");
 
-        Product result = productService.find(body.getProductId(), true);
+        Product result = productService.find(body.getProductId());
 
         validateResponse("productId", "productName", "systemVersion");
 
