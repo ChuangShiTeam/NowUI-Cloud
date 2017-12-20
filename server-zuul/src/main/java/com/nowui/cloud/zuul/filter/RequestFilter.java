@@ -5,12 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.http.ServletInputStreamWrapper;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.util.AesUtil;
+import com.nowui.cloud.util.Util;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
 import java.util.*;
 
@@ -40,84 +45,89 @@ public class RequestFilter extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
 
-        String body = readData(request);
+        String requestBody = Util.readData(request);
 
-        JSONObject parameterJSONObject = JSON.parseObject(body);
-        parameterJSONObject.put("systemCreateUserId", "ZhongYongQiang");
-        context.setResponseBody(parameterJSONObject.toJSONString());
-
-        SortedMap<String, Object> jsonMap = JSON.parseObject(body, new TypeReference<TreeMap<String, Object>>() {
+        SortedMap<String, Object> jsonMap = JSON.parseObject(requestBody, new TypeReference<TreeMap<String, Object>>() {
 
         });
 
         StringBuilder signStringBuilder = new StringBuilder();
         for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-            if (!entry.getKey().equals("sign")) {
+            if (entry.getKey() != "sign") {
                 signStringBuilder.append(entry.getKey());
                 signStringBuilder.append(entry.getValue());
             }
         }
-        System.out.println(signStringBuilder.toString());
+
+        JSONObject parameterJSONObject = JSON.parseObject(requestBody);
 
         String signParameter = parameterJSONObject.getString("sign");
         String sign = DigestUtils.md5Hex(signStringBuilder.toString());
 
         if (!signParameter.equals(sign)) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
             map.put("code", 400);
             map.put("message", "签名不对");
-
-            System.out.println(signParameter);
-            System.out.println(sign);
 
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(200);
             context.setResponseBody(JSON.toJSONString(map));
         }
 
-        String httpUrl = request.getRequestURI();
+        String systemRequestUserId = "";
+///
+//        Date date = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        calendar.add(Calendar.YEAR, 1);
+//
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("userId", "ffb11c2d4a3043ec8eb28c8cca9d1fc8");
+//        jsonObject.put("expireTime", calendar.getTime());
+//
+//        try {
+//            System.out.println(AesUtil.aesEncrypt(jsonObject.toJSONString(), "0123456789012345"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-//        System.out.println("----------------------------------------------------------------------------------------------------------------");
-//        System.out.println("url: " + httpUrl);
-//        System.out.println("time: " + DateUtil.getDateTimeString(http.getSystem_create_time()));
-//        System.out.println("app_id: " + app_id);
-//        System.out.println("user_id: " + http.getSystem_create_user_id());
-//        System.out.println("http_token: " + http.getHttp_token());
-//        System.out.println("request: " + http.getHttp_request());
-//        System.out.println("response: " + http.getHttp_response());
-//        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        String token = parameterJSONObject.getString("token");
+        if (token != null) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, "0123456789012345"));
+                systemRequestUserId = jsonObject.getString("userId");
+            } catch (Exception e) {
+                Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+                map.put("code", 400);
+                map.put("message", "Token不对");
 
-        System.out.println(body);
+                context.setSendZuulResponse(false);
+                context.setResponseStatusCode(200);
+                context.setResponseBody(JSON.toJSONString(map));
+            }
+        }
+
+        parameterJSONObject.put("systemRequestUserId", systemRequestUserId);
+
+        final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
+        context.setRequest(new HttpServletRequestWrapper(context.getRequest()) {
+            @Override
+            public ServletInputStream getInputStream() throws IOException {
+                return new ServletInputStreamWrapper(reqBodyBytes);
+            }
+
+            @Override
+            public int getContentLength() {
+                return reqBodyBytes.length;
+            }
+
+            @Override
+            public long getContentLengthLong() {
+                return reqBodyBytes.length;
+            }
+        });
 
         return null;
-    }
-
-    public static String readData(HttpServletRequest request) {
-        BufferedReader br = null;
-
-        try {
-            StringBuilder result = new StringBuilder();
-
-            String line;
-            for (br = request.getReader(); (line = br.readLine()) != null; result.append(line)) {
-                if (result.length() > 0) {
-                    result.append("\n");
-                }
-            }
-
-            line = result.toString();
-            return line;
-        } catch (IOException var12) {
-            throw new RuntimeException(var12);
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException var11) {
-
-                }
-            }
-
-        }
     }
 }

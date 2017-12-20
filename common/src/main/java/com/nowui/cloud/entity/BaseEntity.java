@@ -73,9 +73,18 @@ public abstract class BaseEntity implements Serializable {
     private Boolean systemStatus;
 
     /**
+     * 请求人编号
+     */
+    @TableField(exist=false)
+    @NotNull(message = "请求人编号不能为空")
+    @Length(max = 32, message = "请求人编号字数超出限制")
+    private String systemRequestUserId;
+
+    /**
      * 关键编号
      */
     @TableField(exist=false)
+    @JSONField(serialize=false)
     @JsonIgnore
     private String primary;
 
@@ -151,6 +160,14 @@ public abstract class BaseEntity implements Serializable {
 
     public void setSystemStatus(Boolean systemStatus) {
         this.systemStatus = systemStatus;
+    }
+
+    public String getSystemRequestUserId() {
+        return systemRequestUserId;
+    }
+
+    public void setSystemRequestUserId(String systemRequestUserId) {
+        this.systemRequestUserId = systemRequestUserId;
     }
 
     public String getPrimary() {

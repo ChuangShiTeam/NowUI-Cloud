@@ -1,4 +1,5 @@
 package com.nowui.cloud.shop.product.controller.admin;
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -26,6 +27,8 @@ public class ProductController extends BaseController {
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
+        System.out.println(JSON.toJSONString(body));
+
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
 
@@ -39,7 +42,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> find(@RequestBody Product body) {
         validateRequest(body, "appId", "productId");
 
-        Product result = productService.find(body.getProductId(), true);
+        Product result = productService.find(body.getProductId());
 
         validateResponse("productId", "productName", "systemVersion");
 
@@ -51,7 +54,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> save(@RequestBody Product body) {
         validateRequest(body, "appId", "productName");
 
-        Boolean result = productService.save(body, "123456789");
+        Boolean result = productService.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -61,7 +64,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> update(@RequestBody Product body) {
         validateRequest(body, "appId", "productId", "productName", "systemVersion");
 
-        Boolean result = productService.update(body, body.getProductId(), "123456789", body.getSystemVersion());
+        Boolean result = productService.update(body, body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -71,7 +74,7 @@ public class ProductController extends BaseController {
     public Map<String, Object> delete(@RequestBody Product body) {
         validateRequest(body, "productId", "systemVersion");
 
-        Boolean result = productService.delete(body.getProductId(), "123456789", body.getSystemVersion());
+        Boolean result = productService.delete(body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

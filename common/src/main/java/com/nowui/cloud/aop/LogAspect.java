@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Map;
 
+//@Aspect
+//@Component
 /**
  * @author ZhongYongQiang
  */
-//@Aspect
-//@Component
 public class LogAspect {
 
     /**

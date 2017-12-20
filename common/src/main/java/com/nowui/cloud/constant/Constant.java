@@ -14,4 +14,6 @@ public class Constant {
     public static final String LIST = "list";
 
     public static final String MESSAGE = "message";
+
+    public static final int DEFAULT_LOAD_FACTOR = 1;
 }
