@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class DateUtil {
 
-    public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     public static String getDateTimeString(Date dateTime) {
         if (dateTime == null) {
             return null;
         }
+
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateTimeFormat.format(dateTime);
     }
 
