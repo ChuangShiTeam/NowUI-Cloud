@@ -1,5 +1,4 @@
 package com.nowui.cloud.shop.product.controller.admin;
-import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -15,8 +14,8 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
-@Api(value = "商品", description = "商品管理")
-@RestController
+@Api(value = "商品", description = "商品后台接口管理")
+@RestController(value = "productAdminController")
 public class ProductController extends BaseController {
 
     @Autowired
@@ -24,17 +23,57 @@ public class ProductController extends BaseController {
 
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> adminList(@RequestBody Product body) {
+    public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
-        for (Product product : resultList) {
-            System.out.println(product.getProductId());
-        }
-        validateResponse("productId");
+
+        validateResponse("productId", "productName");
 
         return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "商品信息")
+    @RequestMapping(value = "/product/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(@RequestBody Product body) {
+        validateRequest(body, "appId", "productId");
+
+        Product result = productService.find(body.getProductId(), true);
+
+        validateResponse("productId", "productName", "systemVersion");
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "商品新增")
+    @RequestMapping(value = "/product/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> save(@RequestBody Product body) {
+        validateRequest(body, "appId", "productName");
+
+        Boolean result = productService.save(body, "123456789");
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "商品修改")
+    @RequestMapping(value = "/product/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> update(@RequestBody Product body) {
+        validateRequest(body, "appId", "productId", "productName", "systemVersion");
+
+        Boolean result = productService.update(body, body.getProductId(), "123456789", body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "商品删除")
+    @RequestMapping(value = "/product/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> delete(@RequestBody Product body) {
+        validateRequest(body, "productId", "systemVersion");
+
+        Boolean result = productService.delete(body.getProductId(), "123456789", body.getSystemVersion());
+
+        return renderJson(result);
     }
 
 }

@@ -9,6 +9,11 @@ import java.util.List;
  */
 @Service
 public interface BannerService extends BaseService{
+
+    Integer adminBannerCount(String appId,String bannerTitle);
+
+    List<Banner> adminBannerList(String appId,String bannerTitle, Integer pageIndex, Integer pageSize);
+
     /**
      * Banner列表
      *
@@ -18,7 +23,9 @@ public interface BannerService extends BaseService{
      * @param 取n条数据
      * @return Banner列表
      */
-    List<Banner> Query(String appId, String title, Integer m, Integer n);
+//    List<Banner> Query(String appId, String title, Integer m, Integer n);
+
+    List<Banner> QueryBannerByAppId(String appId);
 
     /**
      * Banner查询
@@ -26,6 +33,7 @@ public interface BannerService extends BaseService{
      * @param 标题
      * @return Banner
      */
+    @Override
     Banner find(String bannerId);
 
     /**

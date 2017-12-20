@@ -28,7 +28,6 @@ public class LogAspect {
      */
     @Before("execution(* com.nowui.cloud.*.*.controller..*.*(..))")
     public void doBeforeAdvice(JoinPoint joinPoint) {
-        System.out.println("我是前置通知!!!");
         //获取目标方法的参数信息
         Object[] obj = joinPoint.getArgs();
         //AOP代理类的信息
@@ -48,17 +47,16 @@ public class LogAspect {
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
         //如果要获取Session信息的话，可以这样写：
-        //HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
-        Enumeration<String> enumeration = request.getParameterNames();
-        Map<String, String> parameterMap = Maps.newHashMap();
-        while (enumeration.hasMoreElements()) {
-            String parameter = enumeration.nextElement();
-            parameterMap.put(parameter, request.getParameter(parameter));
-        }
-        String str = JSON.toJSONString(parameterMap);
-        if (obj.length > 0) {
-            System.out.println("请求的参数信息为：" + str);
-        }
+//        Enumeration<String> enumeration = request.getParameterNames();
+//        Map<String, String> parameterMap = Maps.newHashMap();
+//        while (enumeration.hasMoreElements()) {
+//            String parameter = enumeration.nextElement();
+//            parameterMap.put(parameter, request.getParameter(parameter));
+//        }
+//        String str = JSON.toJSONString(parameterMap);
+//        if (obj.length > 0) {
+//            System.out.println("请求的参数信息为：" + str);
+//        }
     }
 
     /**
@@ -69,8 +67,9 @@ public class LogAspect {
     @Around("execution(* com.nowui.cloud.*.*.controller..*.*(..))")
     public Object doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
         System.out.println("环绕通知的目标方法名：" + proceedingJoinPoint.getSignature().getName());
-        try {//obj之前可以写目标方法执行前的逻辑
-            Object obj = proceedingJoinPoint.proceed();//调用执行目标方法
+        try {
+            //obj之前可以写目标方法执行前的逻辑
+            Object obj = proceedingJoinPoint.proceed();
             System.out.println(JSON.toJSONString(obj));
             return obj;
         } catch (Throwable throwable) {

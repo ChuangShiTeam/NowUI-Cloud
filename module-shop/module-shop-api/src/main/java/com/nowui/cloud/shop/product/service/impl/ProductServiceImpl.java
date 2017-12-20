@@ -2,66 +2,43 @@ package com.nowui.cloud.shop.product.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.mapper.ProductMapper;
 import com.nowui.cloud.shop.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author ZhongYongQiang
  */
 @Service
-public class ProductServiceImpl implements ProductService {
-
-    @Autowired
-    private ProductMapper productMapper;
+public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Override
     public Integer adminCount(String appId, String productName) {
-        Integer count = productMapper.selectCount(
+        Integer count = mapper.selectCount(
                 new EntityWrapper<Product>()
                         .eq("appId", appId)
                         .like("productName", productName)
+                        .eq("systemStatus", true)
         );
         return count;
     }
 
     @Override
     public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
-        List<Product> productList = productMapper.selectPage(
+        List<Product> productList = mapper.selectPage(
                 new Page<Product>(pageIndex, pageSize),
                 new EntityWrapper<Product>()
                         .eq("appId", appId)
                         .like("productName", productName)
+                        .eq("systemStatus", true)
+                        .orderDesc(Arrays.asList("systemCreateTime"))
         );
         return productList;
-    }
-
-    @Override
-    public Product find(String productId) {
-        Product product = productMapper.selectById(productId);
-        return product;
-    }
-
-    @Override
-    public Boolean save(Product product) {
-        Boolean success = productMapper.insert(product) != 0;
-        return success;
-    }
-
-    @Override
-    public Boolean update(Product product) {
-        Boolean success = productMapper.updateById(product) != 0;
-        return success;
-    }
-
-    @Override
-    public Boolean delete(String productId) {
-        Boolean success = productMapper.deleteById(productId) != 0;
-        return success;
     }
 
 }

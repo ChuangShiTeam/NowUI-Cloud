@@ -1,12 +1,16 @@
 package com.nowui.cloud.entity;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.FieldFill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
@@ -69,10 +73,18 @@ public abstract class BaseEntity implements Serializable {
     private Boolean systemStatus;
 
     /**
+     * 关键编号
+     */
+    @TableField(exist=false)
+    @JsonIgnore
+    private String primary;
+
+    /**
      * 分页页数
      */
     @TableField(exist=false)
     @NotNull(message = "分页页数不能为空")
+    @JsonIgnore
     private Integer pageIndex;
 
     /**
@@ -80,7 +92,18 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField(exist=false)
     @NotNull(message = "每页数量不能为空")
+    @JsonIgnore
     private Integer pageSize;
+
+    @TableField(exist=false)
+    @JSONField(serialize=false)
+    @JsonIgnore
+    private Integer m;
+
+    @TableField(exist=false)
+    @JSONField(serialize=false)
+    @JsonIgnore
+    private Integer n;
 
     public String getSystemCreateUserId() {
         return systemCreateUserId;
@@ -130,6 +153,20 @@ public abstract class BaseEntity implements Serializable {
         this.systemStatus = systemStatus;
     }
 
+    public String getPrimary() {
+        if (primary == null) {
+            Field[] fields = this.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                boolean isPrimary = field.isAnnotationPresent(TableId.class);
+                if (isPrimary) {
+                    field.setAccessible(true);
+                    return field.getName();
+                }
+            }
+        }
+        return primary;
+    }
+
     public Integer getPageIndex() {
         return pageIndex;
     }
@@ -147,15 +184,31 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public Integer getM() {
-        if (pageIndex > 0) {
-            return (pageIndex - 1) * pageSize;
+        int index = 0;
+        if (getPageIndex() != null) {
+            index = getPageIndex();
+        }
+
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+
+        if (index > 0) {
+            return (index - 1) * size;
         } else {
             return 0;
         }
     }
 
     public Integer getN() {
-        return pageSize > 0 ? pageSize : 0;
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+        return size > 0 ? size : 0;
     }
 }
 
