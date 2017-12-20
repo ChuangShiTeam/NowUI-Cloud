@@ -6,6 +6,9 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * @author ZhongYongQiang
+ */
 public class AesUtil {
 
     private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";

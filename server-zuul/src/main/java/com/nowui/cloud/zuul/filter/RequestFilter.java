@@ -6,6 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.http.ServletInputStreamWrapper;
+import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.util.AesUtil;
 import com.nowui.cloud.util.Util;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -64,7 +65,7 @@ public class RequestFilter extends ZuulFilter {
         String sign = DigestUtils.md5Hex(signStringBuilder.toString());
 
         if (!signParameter.equals(sign)) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
             map.put("code", 400);
             map.put("message", "签名不对");
 
@@ -74,7 +75,7 @@ public class RequestFilter extends ZuulFilter {
         }
 
         String systemRequestUserId = "";
-
+///
 //        Date date = new Date();
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.setTime(date);
@@ -97,7 +98,7 @@ public class RequestFilter extends ZuulFilter {
                 jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, "0123456789012345"));
                 systemRequestUserId = jsonObject.getString("userId");
             } catch (Exception e) {
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
                 map.put("code", 400);
                 map.put("message", "Token不对");
 

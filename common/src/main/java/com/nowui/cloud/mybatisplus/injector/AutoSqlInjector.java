@@ -5,6 +5,9 @@ import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
 
+/**
+ * @author ZhongYongQiang
+ */
 public class AutoSqlInjector extends com.baomidou.mybatisplus.mapper.AutoSqlInjector {
 
     @Override

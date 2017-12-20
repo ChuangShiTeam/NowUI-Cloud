@@ -70,7 +70,7 @@ public class BaseController {
     public Map<String, Object> handleRuntimeException(RuntimeException e) {
         e.printStackTrace();
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 400);
         map.put(Constant.MESSAGE, e.toString());
         return map;
@@ -81,7 +81,7 @@ public class BaseController {
     public Map<String, Object> handleException(Exception e) {
         e.printStackTrace();
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 500);
         map.put(Constant.MESSAGE, "网络出现错误");
         return map;
@@ -106,7 +106,8 @@ public class BaseController {
     protected Map<String, Object> renderJson(Object data) {
         data = checkFirstResponse(data);
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        //noinspection AlibabaCollectionInitShouldAssignCapacity
+        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 200);
         map.put(Constant.DATA, data);
         return map;
@@ -115,11 +116,11 @@ public class BaseController {
     protected Map<String, Object> renderJson(int total, Object data) {
         data = checkFirstResponse(data);
 
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         dataMap.put(Constant.TOTAL, total);
         dataMap.put(Constant.LIST, data);
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 200);
         map.put(Constant.DATA, dataMap);
         return map;
