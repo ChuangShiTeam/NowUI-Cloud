@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.app.app.entity.App;
 import com.nowui.cloud.app.app.entity.AppConfig;
 import com.nowui.cloud.app.app.service.AppConfigService;
 import com.nowui.cloud.controller.BaseController;
@@ -43,44 +42,44 @@ public class AppConfigController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "应用信息")
+    @ApiOperation(value = "应用配置信息")
     @RequestMapping(value = "/app/config/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> find(@RequestBody AppConfig body) {
-        validateRequest(body, "appId");
+        validateRequest(body, "configId");
 
-        AppConfig result = appConfigService.find(body.getAppId());
+        AppConfig result = appConfigService.find(body.getConfigId());
 
-        validateResponse("appId", "appName", "systemVersion");
+        validateResponse("configId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription", "systemVersion");
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "应用新增")
+    @ApiOperation(value = "应用配置新增")
     @RequestMapping(value = "/app/config/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody AppConfig body) {
-        validateRequest(body, "appName");
+        validateRequest(body, "appId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription");
 
         Boolean result = appConfigService.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "应用修改")
+    @ApiOperation(value = "应用配置修改")
     @RequestMapping(value = "/app/config/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody AppConfig body) {
-        validateRequest(body, "appId", "appName", "systemVersion");
+        validateRequest(body, "appId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription", "systemVersion");
 
-        Boolean result = appConfigService.update(body, body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = appConfigService.update(body, body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "应用删除")
+    @ApiOperation(value = "应用配置删除")
     @RequestMapping(value = "/app/config/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody App body) {
-        validateRequest(body, "appId", "systemVersion");
+    public Map<String, Object> delete(@RequestBody AppConfig body) {
+        validateRequest(body, "configId", "systemVersion");
 
-        Boolean result = appConfigService.delete(body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = appConfigService.delete(body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

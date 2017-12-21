@@ -38,6 +38,7 @@ public class BaseEntity implements Serializable {
      */
     @TableField(value = "systemCreateTime", fill = FieldFill.INSERT)
     @NotNull(message = "创建时间不能为空")
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss") 
     private Date systemCreateTime;
 
     /**
@@ -53,6 +54,7 @@ public class BaseEntity implements Serializable {
      */
     @TableField(value = "systemUpdateTime", fill = FieldFill.INSERT_UPDATE)
     @NotNull(message = "systemUpdateTime must not be null")
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date systemUpdateTime;
 
     /**

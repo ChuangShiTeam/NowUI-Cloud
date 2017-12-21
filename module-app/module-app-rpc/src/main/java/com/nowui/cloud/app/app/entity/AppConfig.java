@@ -26,7 +26,7 @@ public class AppConfig extends BaseEntity {
     @TableId
     @NotNull(message = "应用配置编号不能为空")
     @Length(max = 32, message = "应用配置编号字数超出限制")
-    private String appConfigId;
+    private String configId;
     
     /**
      * 应用编号
@@ -75,12 +75,12 @@ public class AppConfig extends BaseEntity {
     @Length(max = 500, message = "描述字数超出限制")
     private String configDescription;
 
-    public String getAppConfigId() {
-        return appConfigId;
+    public String getConfigId() {
+        return configId;
     }
 
-    public void setAppConfigId(String appConfigId) {
-        this.appConfigId = appConfigId;
+    public void setConfigId(String configId) {
+        this.configId = configId;
     }
 
     public String getAppId() {
