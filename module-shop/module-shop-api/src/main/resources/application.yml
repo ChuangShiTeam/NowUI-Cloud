@@ -6,6 +6,10 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+feign:
+  hystrix:
+    enabled: true
+
 spring:
   application:
     name: module-shop

@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 /**
  * @author ZhongYongQiang
  */
-@Component(value = "product")
-@TableName(value = "shop_product")
+@Component
+@TableName(value = "product_info")
 public class Product extends BaseEntity {
 
     /**
