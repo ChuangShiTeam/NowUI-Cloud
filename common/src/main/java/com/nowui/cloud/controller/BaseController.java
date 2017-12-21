@@ -54,6 +54,8 @@ public class BaseController {
             for (Object item : (List) data) {
                 if (item instanceof BaseEntity) {
                     list.add(checkMap(item));
+                } else if (item instanceof Map) {
+                    list.add(checkMap(item));
                 }
             }
 

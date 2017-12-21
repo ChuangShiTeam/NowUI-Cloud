@@ -8,11 +8,11 @@ eureka:
 
 spring:
   application:
-    name: shop
+    name: module-app
   datasource:
-      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: root
-      password: shengli.2010
+      url: jdbc:mysql://118.31.229.16:3306/app?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: chuangshi
+      password: Chuangshi123!
       driver-class-name: com.mysql.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
@@ -43,10 +43,10 @@ spring:
 
 #mybatis
 mybatis-plus:
-  mapper-locations: classpath:/com/nowui/cloud/shop/**/sql/*.xml
+  mapper-locations: classpath:/com/nowui/cloud/app/**/sql/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.nowui.cloud.shop.**.entity
-  #typeEnumsPackage: com.nowui.cloud.shop.**.entity.enum
+  #typeAliasesPackage: com.nowui.cloud.app.**.entity
+  #typeEnumsPackage: com.nowui.cloud.app.**.entity.enum
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
     id-type: 3
@@ -64,9 +64,15 @@ mybatis-plus:
     logic-delete-value: 0
     logic-not-delete-value: 1
     #自定义填充策略接口实现
-    #meta-object-handler: com.baomidou.springboot.xxx
+    #meta-object-handler: com.nowui.cloud.mybatisplus.handler.CommonMetaObjectHandler
     #自定义SQL注入器
-    #sql-injector: com.baomidou.springboot.xxx
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
+#配置
+config:
+  #代码生成数据库名
+  tableSchema: app
+  #代码生成输出目录
+  codeGenerateUrl: /develop/code/

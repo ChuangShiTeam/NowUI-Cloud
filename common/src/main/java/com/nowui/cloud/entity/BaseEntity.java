@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author marcus
  */
-public abstract class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

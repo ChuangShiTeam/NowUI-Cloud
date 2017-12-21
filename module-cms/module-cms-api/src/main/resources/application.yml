@@ -70,3 +70,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
+
+#配置
+config:
+  tableSchema: cms
