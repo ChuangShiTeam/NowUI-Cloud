@@ -57,7 +57,7 @@ public class AppConfigCategoryController extends BaseController {
     @ApiOperation(value = "应用配置分类新增")
     @RequestMapping(value = "/app/config/category/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody AppConfigCategory body) {
-        validateRequest(body, "appId", "configCategoryName", "configCategoryCode");
+        validateRequest(body, "appId", "configCategoryName", "configCategoryCode", "configCategoryDescription");
 
         Boolean result = appConfigCategoryService.save(body, body.getSystemRequestUserId());
 
@@ -67,7 +67,7 @@ public class AppConfigCategoryController extends BaseController {
     @ApiOperation(value = "应用配置分类修改")
     @RequestMapping(value = "/app/config/category/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody AppConfigCategory body) {
-        validateRequest(body, "appId", "configCategoryId", "configCategoryName", "configCategoryCode", "systemVersion");
+        validateRequest(body, "appId", "configCategoryId", "configCategoryName", "configCategoryCode", "configCategoryDescription", "systemVersion");
 
         Boolean result = appConfigCategoryService.update(body, body.getConfigCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
 

@@ -57,7 +57,7 @@ public class AppConfigCategory extends BaseEntity {
      */
     @TableField
     @NotNull(message = "描述不能为空")
-    @Length(max = 50, message = "描述字数超出限制")
+    @Length(max = 500, message = "描述字数超出限制")
     private String configCategoryDescription;
 
     public String getConfigCategoryId() {
