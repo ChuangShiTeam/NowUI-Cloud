@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
  * @since 2017-12-20
  */
 @Api(value = "代码生成", description = "代码生成接口管理")
-@RestController
+//@RestController
 public class CodeController extends BaseController {
     
     @Autowired

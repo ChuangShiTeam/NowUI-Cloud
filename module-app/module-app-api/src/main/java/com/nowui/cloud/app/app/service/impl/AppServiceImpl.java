@@ -1,8 +1,10 @@
 package com.nowui.cloud.app.app.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -18,6 +20,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * @since 2017-12-20
  */
 @Service
+//@CacheConfig(cacheNames = "appService")
 public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements AppService {
 
     @Override
@@ -35,11 +38,17 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
         List<App> appList = mapper.selectPage(
                 new Page<App>(m, n),
                 new EntityWrapper<App>()
+                        .setSqlSelect("appId")
                         .like("appName", appName)
                         .eq("systemStatus", true)
                         .orderDesc(Arrays.asList("systemCreateTime"))
         );
-        return appList;
+        
+        List<App> resultList = new ArrayList<App>();
+        for (App app : appList) {
+            resultList.add(find(app.getAppId()));
+        }
+        return resultList;
     }
 
 }

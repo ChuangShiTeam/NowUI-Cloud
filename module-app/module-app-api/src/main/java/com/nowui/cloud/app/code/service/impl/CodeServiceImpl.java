@@ -15,7 +15,7 @@ import com.nowui.cloud.app.code.service.CodeService;
  * @author marcus
  *
  */
-@Service
+//@Service
 public class CodeServiceImpl implements CodeService {
     
     @Autowired

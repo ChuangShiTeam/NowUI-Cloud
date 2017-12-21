@@ -1,11 +1,14 @@
 package com.nowui.cloud.service.impl;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 /**
  * @author ZhongYongQiang
@@ -18,13 +21,15 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     @Autowired
     private T entity;
 
+    @Cacheable(key = "id")
     public T find(String id) {
         T baseEntity = mapper.selectById(id);
         return baseEntity;
     }
 
+    @Cacheable(key = "id")
     public T find(String id, Boolean systemStatus) {
-        T baseEntity = mapper.selectById(id);
+        T baseEntity = mapper.selectOne(entity);
         return baseEntity;
     }
 
@@ -40,6 +45,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return success;
     }
 
+    @CacheEvict(key = "id")
     public Boolean update(T baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
@@ -55,6 +61,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return success;
     }
 
+    @CacheEvict(key = "id")
     public Boolean delete(String id, String systemUpdateUserId, Integer systemVersion) {
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());

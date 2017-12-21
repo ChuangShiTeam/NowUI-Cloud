@@ -44,12 +44,11 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
-
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/com/nowui/cloud/app/**/sql/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  #typeAliasesPackage: com.nowui.cloud.app.**.entity
+  typeAliasesPackage: com.nowui.cloud.app.**.entity
   #typeEnumsPackage: com.nowui.cloud.app.**.entity.enum
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
@@ -74,6 +73,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
+    
 #配置
 config:
   #代码生成数据库名

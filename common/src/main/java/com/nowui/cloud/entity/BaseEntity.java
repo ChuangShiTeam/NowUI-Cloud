@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
-import com.baomidou.mybatisplus.enums.FieldFill;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
 
 /**
  * 实体父类
@@ -36,7 +36,7 @@ public class BaseEntity implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "systemCreateTime", fill = FieldFill.INSERT)
+    @TableField(value = "systemCreateTime")
     @NotNull(message = "创建时间不能为空")
     @JSONField(format = "yyyy-MM-dd hh:mm:ss") 
     private Date systemCreateTime;
@@ -52,7 +52,7 @@ public class BaseEntity implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(value = "systemUpdateTime", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "systemUpdateTime")
     @NotNull(message = "systemUpdateTime must not be null")
     @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date systemUpdateTime;
@@ -61,7 +61,7 @@ public class BaseEntity implements Serializable {
      * 版本号
      */
     @Version
-    @TableField(value = "systemVersion", fill = FieldFill.INSERT)
+    @TableField(value = "systemVersion")
     @NotNull(message = "版本号不能为空")
     @Max(11)
     private Integer systemVersion;
@@ -69,7 +69,7 @@ public class BaseEntity implements Serializable {
     /**
      * 删除标识
      */
-    @TableField(value = "systemStatus", fill = FieldFill.INSERT)
+    @TableField(value = "systemStatus")
     @NotNull(message = "删除标识不能为空")
     @TableLogic
     private Boolean systemStatus;
@@ -77,7 +77,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求人编号
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     @NotNull(message = "请求人编号不能为空")
     @Length(max = 32, message = "请求人编号字数超出限制")
     private String systemRequestUserId;
@@ -85,15 +85,15 @@ public class BaseEntity implements Serializable {
     /**
      * 关键编号
      */
-    @TableField(exist=false)
-    @JSONField(serialize=false)
+    @TableField(exist = false)
+    @JSONField(serialize = false)
     @JsonIgnore
     private String primary;
 
     /**
      * 分页页数
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     @NotNull(message = "分页页数不能为空")
     @JsonIgnore
     private Integer pageIndex;
@@ -101,18 +101,18 @@ public class BaseEntity implements Serializable {
     /**
      * 分页页数
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     @NotNull(message = "每页数量不能为空")
     @JsonIgnore
     private Integer pageSize;
 
-    @TableField(exist=false)
-    @JSONField(serialize=false)
+    @TableField(exist = false)
+    @JSONField(serialize = false)
     @JsonIgnore
     private Integer m;
 
-    @TableField(exist=false)
-    @JSONField(serialize=false)
+    @TableField(exist = false)
+    @JSONField(serialize = false)
     @JsonIgnore
     private Integer n;
 
