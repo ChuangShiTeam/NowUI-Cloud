@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author ZhongYongQiang
  */
-@Api(value = "商品", description = "商品后台接口管理")
-@RestController(value = "productDesktopController")
-public class ProductController extends BaseController {
+@Api(value = "商品", description = "商品桌面端接口管理")
+@RestController
+public class ProductDesktopController extends BaseController {
 
 }
