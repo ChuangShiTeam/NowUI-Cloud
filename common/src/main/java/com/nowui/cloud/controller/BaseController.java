@@ -7,6 +7,7 @@ import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
 import com.nowui.cloud.util.ValidateUtil;
 import org.mybatis.spring.MyBatisSystemException;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -79,7 +80,7 @@ public class BaseController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class})
+    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class, RedisConnectionFailureException.class})
     public Map<String, Object> handleException(Exception e) {
         e.printStackTrace();
 

@@ -3,6 +3,7 @@ package com.nowui.cloud.entity;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.Map;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField(SYSTEM_CREATE_USER_ID)
     @NotNull(message = "创建人编号不能为空")
-    @Length(max = 32, message = "创建人编号字数超出限制")
+    @Length(max = 32, message = "创建人编号长度超出限制")
     private String systemCreateUserId;
     public static final String SYSTEM_CREATE_USER_ID = "systemCreateUserId";
 
@@ -49,7 +50,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField(value = SYSTEM_UPDATE_USER_ID)
     @NotNull(message = "更新人编号不能为空")
-    @Length(max = 32, message = "更新人编号字数超出限制")
+    @Length(max = 32, message = "更新人编号长度超出限制")
     private String systemUpdateUserId;
     public static final String SYSTEM_UPDATE_USER_ID = "systemUpdateUserId";
 
@@ -86,7 +87,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField(exist = false)
     @NotNull(message = "请求人编号不能为空")
-    @Length(max = 32, message = "请求人编号字数超出限制")
+    @Length(max = 32, message = "请求人编号长度超出限制")
     private String systemRequestUserId;
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
@@ -128,11 +129,8 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     private Integer n;
 
     @TableField(exist = false)
-    int threshold;
+    private final Map<String, Object> map = null;
 
-    @TableField(exist = false)
-    float loadFactor;
-    
     public String getSystemCreateUserId() {
         return getString(SYSTEM_CREATE_USER_ID);
     }

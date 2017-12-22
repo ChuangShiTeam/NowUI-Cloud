@@ -5,6 +5,7 @@ import com.nowui.cloud.shop.product.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,17 @@ public class ProductAdminController extends BaseController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME, Product.PAGE_INDEX, Product.PAGE_SIZE);
+
+        redisTemplate.opsForValue().set("test", "test123456");
+        String value = redisTemplate.opsForValue().get("test");
+        System.out.println(value);
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());

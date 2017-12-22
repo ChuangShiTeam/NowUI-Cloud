@@ -25,7 +25,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableId
     @NotNull(message = "应用配置编号不能为空")
-    @Length(max = 32, message = "应用配置编号字数超出限制")
+    @Length(max = 32, message = "应用配置编号长度超出限制")
     private String configId;
     public static final String CONFIG_ID = "configId";
     
@@ -34,7 +34,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableField
     @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号字数超出限制")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
     
@@ -43,7 +43,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableField
     @NotNull(message = "应用配置分类编号不能为空")
-    @Length(max = 32, message = "应用配置分类编号字数超出限制")
+    @Length(max = 32, message = "应用配置分类编号长度超出限制")
     private String configCategoryId;
     public static final String CONFIG_CATEGORY_ID = "configCategoryId";
     
@@ -52,7 +52,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableField
     @NotNull(message = "键不能为空")
-    @Length(max = 50, message = "键字数超出限制")
+    @Length(max = 50, message = "键长度超出限制")
     private String configKey;
     public static final String CONFIG_KEY = "configKey";
     
@@ -61,7 +61,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableField
     @NotNull(message = "值不能为空")
-    @Length(max = 2000, message = "值字数超出限制")
+    @Length(max = 2000, message = "值长度超出限制")
     private String configValue;
     public static final String CONFIG_VALUE = "configValue";
     
@@ -78,7 +78,7 @@ public class AppConfig extends BaseEntity {
      */
     @TableField
     @NotNull(message = "描述不能为空")
-    @Length(max = 500, message = "描述字数超出限制")
+    @Length(max = 500, message = "描述长度超出限制")
     private String configDescription;
     public static final String CONFIG_DESCRIPTION = "configDescription";
 

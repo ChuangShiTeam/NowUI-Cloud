@@ -25,7 +25,7 @@ public class App extends BaseEntity {
      */
     @TableId
     @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号字数超出限制")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
     
@@ -34,7 +34,7 @@ public class App extends BaseEntity {
      */
     @TableField
     @NotNull(message = "应用名称不能为空")
-    @Length(max = 100, message = "应用名称字数超出限制")
+    @Length(max = 100, message = "应用名称长度超出限制")
     private String appName;
     public static final String APP_NAME = "appName";
 

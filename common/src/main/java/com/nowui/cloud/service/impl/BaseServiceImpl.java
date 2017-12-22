@@ -1,15 +1,15 @@
 package com.nowui.cloud.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import com.nowui.cloud.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @author ZhongYongQiang
@@ -22,16 +22,34 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     @Autowired
     private T entity;
 
-    @Cacheable(key = "id")
+    @Autowired
+    private RedisTemplate<String, Object> redis;
+
     public T find(String id) {
-        T baseEntity = mapper.selectById(id);
+        T baseEntity = (T) redis.opsForValue().get("user");
+
+        if (baseEntity == null) {
+            baseEntity = mapper.selectById(id);
+
+            if (baseEntity != null) {
+                redis.opsForValue().set("user", baseEntity);
+            }
+        }
+
         return baseEntity;
     }
 
-    @Cacheable(key = "id")
     public T find(String id, Boolean systemStatus) {
-        T baseEntity = mapper.selectOne(entity);
-        return baseEntity;
+        List<T> list = mapper.selectList(
+                new EntityWrapper<T>()
+                        .eq(entity.getPrimary(), id)
+                        .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
+        );
+        if (list.size() == 0) {
+            return null;
+        } else {
+            return list.get(0);
+        }
     }
 
     public Boolean save(T baseEntity, String systemCreateUserId) {
@@ -47,7 +65,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return success;
     }
 
-    @CacheEvict(key = "id")
     public Boolean update(T baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
@@ -57,13 +74,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
                 baseEntity,
                 new EntityWrapper<T>()
                         .eq(entity.getPrimary(), id)
-                        .eq("systemVersion", systemVersion)
-                        .eq("systemStatus", true)
+                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
+                        .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
         return success;
     }
 
-    @CacheEvict(key = "id")
     public Boolean delete(String id, String systemUpdateUserId, Integer systemVersion) {
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
@@ -74,8 +90,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
                 entity,
                 new EntityWrapper<T>()
                         .eq(entity.getPrimary(), id)
-                        .eq("systemVersion", systemVersion)
-                        .eq("systemStatus", true)
+                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
+                        .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
         return success;
     }
