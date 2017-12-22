@@ -3,11 +3,16 @@ package com.nowui.cloud.util;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author ZhongYongQiang
  */
 public class Util {
+
+    public static String getRandomUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 
     public static String readData(HttpServletRequest request) {
         BufferedReader br = null;

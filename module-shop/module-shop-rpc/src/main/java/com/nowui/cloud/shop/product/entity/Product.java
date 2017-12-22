@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 /**
  * @author ZhongYongQiang
  */
-@Component(value = "product")
-@TableName(value = "shop_product")
+@Component
+@TableName(value = "product_info")
 public class Product extends BaseEntity {
 
     /**
@@ -23,6 +23,7 @@ public class Product extends BaseEntity {
     @NotNull(message = "商品编号不能为空")
     @Length(max = 32, message = "商品编号字数超出限制")
     private String productId;
+    public static final String PRODUCT_ID = "productId";
 
     /**
      * 应用编号
@@ -31,6 +32,7 @@ public class Product extends BaseEntity {
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号字数超出限制")
     private String appId;
+    public static final String APP_ID = "appId";
 
     /**
      * 商品名称
@@ -39,29 +41,30 @@ public class Product extends BaseEntity {
     @NotNull(message = "商品名称不能为空")
     @Length(max = 100, message = "商品名称字数超出限制")
     private String productName;
+    public static final String PRODUCT_NAME = "productName";
 
     public String getProductId() {
-        return productId;
+        return getString(PRODUCT_ID);
     }
 
     public void setProductId(String productId) {
-        this.productId = productId;
+        put(PRODUCT_ID, productId);
     }
 
     public String getAppId() {
-        return appId;
+        return getString(APP_ID);
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        put(APP_ID, appId);
     }
 
     public String getProductName() {
-        return productName;
+        return getString(PRODUCT_NAME);
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+        put(PRODUCT_NAME, productName);
     }
 
 }

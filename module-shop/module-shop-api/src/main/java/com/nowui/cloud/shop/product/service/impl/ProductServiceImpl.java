@@ -21,9 +21,9 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
     public Integer adminCount(String appId, String productName) {
         Integer count = mapper.selectCount(
                 new EntityWrapper<Product>()
-                        .eq("appId", appId)
-                        .like("productName", productName)
-                        .eq("systemStatus", true)
+                        .eq(Product.APP_ID, appId)
+                        .like(Product.PRODUCT_NAME, productName)
+                        .eq(Product.SYSTEM_STATUS, true)
         );
         return count;
     }
@@ -33,10 +33,10 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
         List<Product> productList = mapper.selectPage(
                 new Page<Product>(pageIndex, pageSize),
                 new EntityWrapper<Product>()
-                        .eq("appId", appId)
-                        .like("productName", productName)
-                        .eq("systemStatus", true)
-                        .orderDesc(Arrays.asList("systemCreateTime"))
+                        .eq(Product.APP_ID, appId)
+                        .like(Product.PRODUCT_NAME, productName)
+                        .eq(Product.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Product.SYSTEM_CREATE_TIME))
         );
         return productList;
     }

@@ -54,6 +54,8 @@ public class BaseController {
             for (Object item : (List) data) {
                 if (item instanceof BaseEntity) {
                     list.add(checkMap(item));
+                } else if (item instanceof Map) {
+                    list.add(checkMap(item));
                 }
             }
 
@@ -89,9 +91,9 @@ public class BaseController {
 
     public void validateRequest(BaseEntity entity, String... columns) {
         for (String column : columns) {
-            Set<ConstraintViolation<BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateProperty(entity, column);
+            Set<? extends ConstraintViolation<? extends BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateValue(entity.getClass(), column, entity.get(column));
 
-            Iterator<ConstraintViolation<BaseEntity>> iterator = constraintViolations.iterator();
+            Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
             while (iterator.hasNext()) {
                 ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
                 throw new BaseException(constraintViolation.getMessage());
@@ -106,7 +108,6 @@ public class BaseController {
     protected Map<String, Object> renderJson(Object data) {
         data = checkFirstResponse(data);
 
-        //noinspection AlibabaCollectionInitShouldAssignCapacity
         Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 200);
         map.put(Constant.DATA, data);

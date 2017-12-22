@@ -1,5 +1,4 @@
 package com.nowui.cloud.shop.product.controller.admin;
-import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -15,9 +14,9 @@ import java.util.Map;
 /**
  * @author ZhongYongQiang
  */
-@Api(value = "商品", description = "商品后台接口管理")
-@RestController(value = "productAdminController")
-public class ProductController extends BaseController {
+@Api(value = "商品", description = "商品后台端接口管理")
+@RestController
+public class ProductAdminController extends BaseController {
 
     @Autowired
     private ProductService productService;
@@ -25,14 +24,12 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
-        validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
-
-        System.out.println(JSON.toJSONString(body));
+        validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME, Product.PAGE_INDEX, Product.PAGE_SIZE);
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
 
-        validateResponse("productId", "productName");
+        validateResponse(Product.PRODUCT_ID, Product.PRODUCT_NAME);
 
         return renderJson(resultTotal, resultList);
     }
@@ -40,11 +37,11 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品信息")
     @RequestMapping(value = "/product/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> find(@RequestBody Product body) {
-        validateRequest(body, "appId", "productId");
+        validateRequest(body, Product.APP_ID, Product.PRODUCT_ID);
 
         Product result = productService.find(body.getProductId());
 
-        validateResponse("productId", "productName", "systemVersion");
+        validateResponse(Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
 
         return renderJson(result);
     }
@@ -52,7 +49,7 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品新增")
     @RequestMapping(value = "/product/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody Product body) {
-        validateRequest(body, "appId", "productName");
+        validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME);
 
         Boolean result = productService.save(body, body.getSystemRequestUserId());
 
@@ -62,7 +59,7 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品修改")
     @RequestMapping(value = "/product/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody Product body) {
-        validateRequest(body, "appId", "productId", "productName", "systemVersion");
+        validateRequest(body, Product.APP_ID, Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
 
         Boolean result = productService.update(body, body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
@@ -72,7 +69,7 @@ public class ProductController extends BaseController {
     @ApiOperation(value = "商品删除")
     @RequestMapping(value = "/product/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> delete(@RequestBody Product body) {
-        validateRequest(body, "productId", "systemVersion");
+        validateRequest(body, Product.PRODUCT_ID, Product.SYSTEM_VERSION);
 
         Boolean result = productService.delete(body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
 

@@ -1,4 +1,4 @@
-package com.nowui.cloud.shop;
+package com.nowui.cloud.app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("PRODUCT API")
+                .title("APP API")
                 .description("")
                 .version("1.0.0")
                 .build();
