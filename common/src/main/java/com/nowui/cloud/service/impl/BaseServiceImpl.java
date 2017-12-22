@@ -26,13 +26,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     private RedisTemplate<String, Object> redis;
 
     public T find(String id) {
-        T baseEntity = (T) redis.opsForValue().get("user");
+        T baseEntity = (T) redis.opsForValue().get(entity.getTableName());
 
         if (baseEntity == null) {
             baseEntity = mapper.selectById(id);
 
             if (baseEntity != null) {
-                redis.opsForValue().set("user", baseEntity);
+                redis.opsForValue().set(entity.getTableName(), baseEntity);
             }
         }
 
@@ -42,7 +42,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     public T find(String id, Boolean systemStatus) {
         List<T> list = mapper.selectList(
                 new EntityWrapper<T>()
-                        .eq(entity.getPrimary(), id)
+                        .eq(entity.getTableId(), id)
                         .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
         );
         if (list.size() == 0) {
@@ -53,7 +53,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public Boolean save(T baseEntity, String systemCreateUserId) {
-        baseEntity.put(entity.getPrimary(), Util.getRandomUUID());
+        baseEntity.put(entity.getTableId(), Util.getRandomUUID());
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -73,7 +73,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<T>()
-                        .eq(entity.getPrimary(), id)
+                        .eq(entity.getTableId(), id)
                         .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
@@ -89,7 +89,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         Boolean success = mapper.update(
                 entity,
                 new EntityWrapper<T>()
-                        .eq(entity.getPrimary(), id)
+                        .eq(entity.getTableId(), id)
                         .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;

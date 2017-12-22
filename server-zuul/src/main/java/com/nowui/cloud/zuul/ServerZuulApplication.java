@@ -16,12 +16,12 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 public class ServerZuulApplication {
 
     public static void main(String[] args) {
-    	try {
+///    	try {
+//    		SpringApplication.run(ServerZuulApplication.class, args);
+//    	} catch (Exception e) {
+//    		e.printStackTrace();
+//    	}
     		SpringApplication.run(ServerZuulApplication.class, args);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-        
     }
 
 }

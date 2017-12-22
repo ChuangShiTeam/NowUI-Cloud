@@ -8,14 +8,11 @@ import java.util.Map;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import com.baomidou.mybatisplus.annotations.*;
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableLogic;
-import com.baomidou.mybatisplus.annotations.Version;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -41,7 +38,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField(value = SYSTEM_CREATE_TIME)
     @NotNull(message = "创建时间不能为空")
-    @JSONField(format = "yyyy-MM-dd hh:mm:ss") 
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date systemCreateTime;
     public static final String SYSTEM_CREATE_TIME = "systemCreateTime";
 
@@ -92,13 +89,22 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
     /**
+     * 数据库名称
+     */
+    @TableField(exist = false)
+    @JSONField(serialize = false)
+    @JsonIgnore
+    private String tableName;
+    public static final String TABLE_NAME = "tableName";
+
+    /**
      * 关键编号
      */
     @TableField(exist = false)
     @JSONField(serialize = false)
     @JsonIgnore
-    private String primary;
-    public static final String PRIMARY = "primary";
+    private String tableId;
+    public static final String TABLE_ID = "tableId";
 
     /**
      * 分页页数
@@ -187,18 +193,30 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         put(SYSTEM_REQUEST_USER_ID, systemRequestUserId);
     }
 
-    public String getPrimary() {
-        if (primary == null) {
+    public String getTableName() {
+        if (tableName == null) {
+            TableName table = this.getClass().getAnnotation(TableName.class);
+            if (table != null) {
+                tableName = table.value();
+                return tableName;
+            }
+        }
+        return tableName;
+    }
+
+    public String getTableId() {
+        if (tableId == null) {
             Field[] fields = this.getClass().getDeclaredFields();
             for (Field field : fields) {
-                boolean isPrimary = field.isAnnotationPresent(TableId.class);
-                if (isPrimary) {
+                boolean isTableId = field.isAnnotationPresent(TableId.class);
+                if (isTableId) {
                     field.setAccessible(true);
-                    return field.getName();
+                    tableId = field.getName();
+                    return tableId;
                 }
             }
         }
-        return primary;
+        return tableId;
     }
 
     public Integer getPageIndex() {
