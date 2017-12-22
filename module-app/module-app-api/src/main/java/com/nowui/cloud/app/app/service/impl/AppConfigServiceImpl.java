@@ -24,11 +24,11 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     public Integer adminCount(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {
         Integer count = mapper.selectCount(
                 new EntityWrapper<AppConfig>()
-                        .eq("appId", appId)
-                        .eq("configCategoryId", configCategoryId)
-                        .like("configKey", configKey)
-                        .eq("configIsDisabled", configIsDisabled)
-                        .eq("systemStatus", true)
+                        .eq(AppConfig.APP_ID, appId)
+                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
+                        .eq(AppConfig.SYSTEM_STATUS, true)
         );
         return count;
     }
@@ -39,12 +39,12 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
         List<AppConfig> appConfigList = mapper.selectPage(
                 new Page<AppConfig>(m, n),
                 new EntityWrapper<AppConfig>()
-                        .eq("appId", appId)
-                        .eq("configCategoryId", configCategoryId)
-                        .like("configKey", configKey)
-                        .eq("configIsDisabled", configIsDisabled)
-                        .eq("systemStatus", true)
-                        .orderDesc(Arrays.asList("systemCreateTime"))
+                        .eq(AppConfig.APP_ID, appId)
+                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
+                        .eq(AppConfig.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME))
         );
         return appConfigList;
     }

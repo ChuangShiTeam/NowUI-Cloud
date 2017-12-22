@@ -16,7 +16,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * @author marcus
  *
  */
-@Component(value = "app_config_category")
+@Component(value = "appConfigCategory")
 @TableName(value = "app_config_category_info")
 public class AppConfigCategory extends BaseEntity {
     
@@ -27,6 +27,7 @@ public class AppConfigCategory extends BaseEntity {
     @NotNull(message = "应用配置分类编号不能为空")
     @Length(max = 32, message = "应用配置分类编号字数超出限制")
     private String configCategoryId;
+    public static final String CONFIG_CATEGORY_ID = "configCategoryId";
     
     /**
      * 应用编号
@@ -35,6 +36,7 @@ public class AppConfigCategory extends BaseEntity {
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号字数超出限制")
     private String appId;
+    public static final String APP_ID = "appId";
     
     /**
      * 名称
@@ -43,6 +45,7 @@ public class AppConfigCategory extends BaseEntity {
     @NotNull(message = "名称不能为空")
     @Length(max = 50, message = "名称字数超出限制")
     private String configCategoryName;
+    public static final String CONFIG_CATEGORY_NAME = "configCategoryName";
     
     /** 
      * 编码
@@ -51,6 +54,7 @@ public class AppConfigCategory extends BaseEntity {
     @NotNull(message = "编码不能为空")
     @Length(max = 50, message = "编码字数超出限制")
     private String configCategoryCode;
+    public static final String CONFIG_CATEGORY_CODE = "configCategoryCode";
     
     /** 
      * 描述
@@ -59,6 +63,7 @@ public class AppConfigCategory extends BaseEntity {
     @NotNull(message = "描述不能为空")
     @Length(max = 500, message = "描述字数超出限制")
     private String configCategoryDescription;
+    public static final String CONFIG_CATEGORY_DESCRIPTION = "configCategoryDescription";
 
     public String getConfigCategoryId() {
         return configCategoryId;

@@ -27,8 +27,8 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
     public Integer adminCount(String appName) {
         Integer count = mapper.selectCount(
                 new EntityWrapper<App>()
-                        .like("appName", appName)
-                        .eq("systemStatus", true)
+                        .like(App.APP_NAME, appName)
+                        .eq(App.SYSTEM_STATUS, true)
         );
         return count;
     }
@@ -38,10 +38,10 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
         List<App> appList = mapper.selectPage(
                 new Page<App>(m, n),
                 new EntityWrapper<App>()
-                        .setSqlSelect("appId")
-                        .like("appName", appName)
-                        .eq("systemStatus", true)
-                        .orderDesc(Arrays.asList("systemCreateTime"))
+                        .setSqlSelect(App.APP_ID)
+                        .like(App.APP_NAME, appName)
+                        .eq(App.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(App.SYSTEM_CREATE_TIME))
         );
         
         List<App> resultList = new ArrayList<App>();

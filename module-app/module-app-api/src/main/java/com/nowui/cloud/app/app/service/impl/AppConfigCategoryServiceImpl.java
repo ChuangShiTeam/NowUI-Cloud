@@ -24,10 +24,10 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
     public Integer adminCount(String appId, String configCategoryName, String configCategoryCode) {
         Integer count = mapper.selectCount(
                 new EntityWrapper<AppConfigCategory>()
-                        .eq("appId", appId)
-                        .like("configCategoryName", configCategoryName)
-                        .like("configCategoryCode", configCategoryCode)
-                        .eq("systemStatus", true)
+                        .eq(AppConfigCategory.APP_ID, appId)
+                        .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
+                        .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
+                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
         );
         return count;
     }
@@ -38,11 +38,11 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
         List<AppConfigCategory> appCategoryList = mapper.selectPage(
                 new Page<AppConfigCategory>(m, n),
                 new EntityWrapper<AppConfigCategory>()
-                        .eq("appId", appId)
-                        .like("configCategoryName", configCategoryName)
-                        .like("configCategoryCode", configCategoryCode)
-                        .eq("systemStatus", true)
-                        .orderDesc(Arrays.asList("systemCreateTime"))
+                        .eq(AppConfigCategory.APP_ID, appId)
+                        .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
+                        .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
+                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
         );
         return appCategoryList;
     }

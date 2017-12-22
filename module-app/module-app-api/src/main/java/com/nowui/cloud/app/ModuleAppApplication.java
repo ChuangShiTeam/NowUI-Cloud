@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -41,7 +42,11 @@ public class ModuleAppApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ModuleAppApplication.class, args);
+        try {
+            ApplicationContext app = SpringApplication.run(ModuleAppApplication.class, args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     @Bean

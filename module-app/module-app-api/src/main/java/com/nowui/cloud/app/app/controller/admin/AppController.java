@@ -30,12 +30,12 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用列表")
     @RequestMapping(value = "/app/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody App body) {
-        validateRequest(body, "appName", "pageIndex", "pageSize");
+        validateRequest(body, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
 
         Integer resultTotal = appService.adminCount(body.getAppName());
         List<App> resultList = appService.adminList(body.getAppName(), body.getM(), body.getN());
 
-        validateResponse("appId", "appName");
+        validateResponse(App.APP_ID, App.APP_NAME);
 
         return renderJson(resultTotal, resultList);
     }
@@ -43,11 +43,11 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用信息")
     @RequestMapping(value = "/app/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> find(@RequestBody App body) {
-        validateRequest(body, "appId");
+        validateRequest(body, App.APP_ID);
 
         App result = appService.find(body.getAppId());
 
-        validateResponse("appId", "appName", "systemVersion");
+        validateResponse(App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
         return renderJson(result);
     }
@@ -55,7 +55,7 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用新增")
     @RequestMapping(value = "/app/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody App body) {
-        validateRequest(body, "appName");
+        validateRequest(body, App.APP_NAME);
 
         Boolean result = appService.save(body, body.getSystemRequestUserId());
 
@@ -65,7 +65,7 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用修改")
     @RequestMapping(value = "/app/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody App body) {
-        validateRequest(body, "appId", "appName", "systemVersion");
+        validateRequest(body, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
         Boolean result = appService.update(body, body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
@@ -75,7 +75,7 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用删除")
     @RequestMapping(value = "/app/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> delete(@RequestBody App body) {
-        validateRequest(body, "appId", "systemVersion");
+        validateRequest(body, App.APP_ID, App.APP_NAME);
 
         Boolean result = appService.delete(body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 

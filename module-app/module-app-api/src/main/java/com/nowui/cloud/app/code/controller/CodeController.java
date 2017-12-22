@@ -30,9 +30,6 @@ public class CodeController extends BaseController {
     @Autowired
     private CodeService codeService;
     
-    @Autowired
-    private Config config;
-    
     @ApiOperation(value = "数据库表列表")
     @RequestMapping(value = "/app/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> tableList(@RequestBody JSONObject jsonObject) {
@@ -40,7 +37,7 @@ public class CodeController extends BaseController {
         
         String tableName = jsonObject.getString("tableName");
 
-        List<Map<String, Object>> resultList = codeService.selectTableListByTableSchema(config.getTableSchema(), tableName);
+        List<Map<String, Object>> resultList = codeService.selectTableListByTableSchema("", tableName);
 
         validateResponse("table_name", "engine", "table_rows", "create_time", "update_time", "table_comment");
         
@@ -54,7 +51,7 @@ public class CodeController extends BaseController {
         
         String tableName = jsonObject.getString("tableName");
 
-        List<Map<String, Object>> resultList = codeService.selectTableFieldListByTableName(config.getTableSchema(), tableName);
+        List<Map<String, Object>> resultList = codeService.selectTableFieldListByTableName("", tableName);
 
         validateResponse("column_name", "column_key", "character_maximum_length", "column_type", "data_type", "column_comment");
         

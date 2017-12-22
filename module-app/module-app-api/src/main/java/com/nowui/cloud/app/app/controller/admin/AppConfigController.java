@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.app.app.entity.AppConfig;
+import com.nowui.cloud.app.app.entity.AppConfigCategory;
 import com.nowui.cloud.app.app.service.AppConfigService;
 import com.nowui.cloud.controller.BaseController;
 
@@ -32,12 +33,12 @@ public class AppConfigController extends BaseController {
     @ApiOperation(value = "应用配置列表")
     @RequestMapping(value = "/app/config/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody AppConfig body) {
-        validateRequest(body, "appId", "configCategoryId", "configKey", "configIsDisabled", "pageIndex", "pageSize");
+        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_IS_DISABLED, AppConfig.PAGE_INDEX, AppConfig.PAGE_SIZE);
 
         Integer resultTotal = appConfigService.adminCount(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled());
         List<AppConfig> resultList = appConfigService.adminList(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled(), body.getM(), body.getN());
 
-        validateResponse("appId", "configCategoryName", "configKey", "configValue", "configIsDisabled");
+        validateResponse(AppConfig.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED);
 
         return renderJson(resultTotal, resultList);
     }
@@ -45,11 +46,11 @@ public class AppConfigController extends BaseController {
     @ApiOperation(value = "应用配置信息")
     @RequestMapping(value = "/app/config/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> find(@RequestBody AppConfig body) {
-        validateRequest(body, "configId");
+        validateRequest(body, AppConfig.CONFIG_ID);
 
         AppConfig result = appConfigService.find(body.getConfigId());
 
-        validateResponse("configId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription", "systemVersion");
+        validateResponse(AppConfig.CONFIG_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION, AppConfig.SYSTEM_VERSION);
 
         return renderJson(result);
     }
@@ -57,7 +58,7 @@ public class AppConfigController extends BaseController {
     @ApiOperation(value = "应用配置新增")
     @RequestMapping(value = "/app/config/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody AppConfig body) {
-        validateRequest(body, "appId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription");
+        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION);
 
         Boolean result = appConfigService.save(body, body.getSystemRequestUserId());
 
@@ -67,7 +68,7 @@ public class AppConfigController extends BaseController {
     @ApiOperation(value = "应用配置修改")
     @RequestMapping(value = "/app/config/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> update(@RequestBody AppConfig body) {
-        validateRequest(body, "appId", "configCategoryId", "configKey", "configValue", "configIsDisabled", "configDescription", "systemVersion");
+        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION, AppConfig.SYSTEM_VERSION);
 
         Boolean result = appConfigService.update(body, body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
@@ -77,7 +78,7 @@ public class AppConfigController extends BaseController {
     @ApiOperation(value = "应用配置删除")
     @RequestMapping(value = "/app/config/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> delete(@RequestBody AppConfig body) {
-        validateRequest(body, "configId", "systemVersion");
+        validateRequest(body, AppConfig.CONFIG_ID, AppConfig.SYSTEM_VERSION);
 
         Boolean result = appConfigService.delete(body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
 

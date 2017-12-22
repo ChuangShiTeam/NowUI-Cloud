@@ -16,7 +16,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * @author marcus
  *
  */
-@Component(value = "app_config")
+@Component(value = "appConfig")
 @TableName(value = "app_config_info")
 public class AppConfig extends BaseEntity {
     
@@ -27,6 +27,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "应用配置编号不能为空")
     @Length(max = 32, message = "应用配置编号字数超出限制")
     private String configId;
+    public static final String CONFIG_ID = "configId";
     
     /**
      * 应用编号
@@ -35,6 +36,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号字数超出限制")
     private String appId;
+    public static final String APP_ID = "appId";
     
     /**
      * 应用配置分类编号
@@ -43,6 +45,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "应用配置分类编号不能为空")
     @Length(max = 32, message = "应用配置分类编号字数超出限制")
     private String configCategoryId;
+    public static final String CONFIG_CATEGORY_ID = "configCategoryId";
     
     /**
      * 键
@@ -51,6 +54,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "键不能为空")
     @Length(max = 50, message = "键字数超出限制")
     private String configKey;
+    public static final String CONFIG_KEY = "configKey";
     
     /**
      * 值
@@ -59,6 +63,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "值不能为空")
     @Length(max = 2000, message = "值字数超出限制")
     private String configValue;
+    public static final String CONFIG_VALUE = "configValue";
     
     /**
      * 是否禁用
@@ -66,6 +71,7 @@ public class AppConfig extends BaseEntity {
     @TableField
     @NotNull(message = "是否禁用不能为空")
     private Boolean configIsDisabled;
+    public static final String CONFIG_IS_DISABLED = "configIsDisabled";
     
     /**
      * 描述
@@ -74,6 +80,7 @@ public class AppConfig extends BaseEntity {
     @NotNull(message = "描述不能为空")
     @Length(max = 500, message = "描述字数超出限制")
     private String configDescription;
+    public static final String CONFIG_DESCRIPTION = "configDescription";
 
     public String getConfigId() {
         return configId;
