@@ -23,7 +23,7 @@ public class ProductController extends BaseController {
     private ProductService productService;
 
     @ApiOperation(value = "商品列表")
-    @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/product/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, "appId", "productName", "pageIndex", "pageSize");
 
