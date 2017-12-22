@@ -194,19 +194,19 @@ public class BaseEntity extends HashMap<String, Object> implements Serializable 
     }
 
     public Integer getPageIndex() {
-        return pageIndex;
+        return (Integer) get("pageIndex");
     }
 
     public void setPageIndex(Integer pageIndex) {
-        this.pageIndex = pageIndex;
+        put("pageIndex", pageIndex);
     }
 
     public Integer getPageSize() {
-        return pageSize;
+        return (Integer) get("pageSize");
     }
 
     public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+        put("pageSize", pageSize);
     }
 
     public Integer getM() {

@@ -108,7 +108,6 @@ public class BaseController {
     protected Map<String, Object> renderJson(Object data) {
         data = checkFirstResponse(data);
 
-        //noinspection AlibabaCollectionInitShouldAssignCapacity
         Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 200);
         map.put(Constant.DATA, data);
