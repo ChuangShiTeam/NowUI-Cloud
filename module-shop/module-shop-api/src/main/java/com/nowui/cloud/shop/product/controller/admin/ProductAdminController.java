@@ -26,7 +26,7 @@ public class ProductAdminController extends BaseController {
     private StringRedisTemplate redisTemplate;
 
     @ApiOperation(value = "商品列表")
-    @RequestMapping(value = "/product/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/product/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME, Product.PAGE_INDEX, Product.PAGE_SIZE);
 
