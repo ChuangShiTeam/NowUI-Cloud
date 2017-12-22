@@ -3,6 +3,7 @@ package com.nowui.cloud.entity;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  * @author marcus
  */
-public class BaseEntity implements Serializable {
+public class BaseEntity extends HashMap<String, Object> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -116,60 +117,66 @@ public class BaseEntity implements Serializable {
     @JsonIgnore
     private Integer n;
 
+    @TableField(exist = false)
+    int threshold;
+
+    @TableField(exist = false)
+    float loadFactor;
+
     public String getSystemCreateUserId() {
-        return systemCreateUserId;
+        return get("systemCreateUserId").toString();
     }
 
     public void setSystemCreateUserId(String systemCreateUserId) {
-        this.systemCreateUserId = systemCreateUserId;
+        put("systemCreateUserId", systemCreateUserId);
     }
 
     public Date getSystemCreateTime() {
-        return systemCreateTime;
+        return (Date) get("systemCreateTime");
     }
 
     public void setSystemCreateTime(Date systemCreateTime) {
-        this.systemCreateTime = systemCreateTime;
+        put("systemCreateTime", systemCreateTime);
     }
 
     public String getSystemUpdateUserId() {
-        return systemUpdateUserId;
+        return get("systemUpdateUserId").toString();
     }
 
     public void setSystemUpdateUserId(String systemUpdateUserId) {
-        this.systemUpdateUserId = systemUpdateUserId;
+        put("systemUpdateUserId", systemUpdateUserId);
     }
 
     public Date getSystemUpdateTime() {
-        return systemUpdateTime;
+        return (Date) get("systemUpdateTime");
     }
 
     public void setSystemUpdateTime(Date systemUpdateTime) {
-        this.systemUpdateTime = systemUpdateTime;
+        put("systemUpdateTime", systemUpdateTime);
     }
 
     public Integer getSystemVersion() {
-        return systemVersion;
+        return (Integer) get("systemVersion");
     }
 
     public void setSystemVersion(Integer systemVersion) {
-        this.systemVersion = systemVersion;
+        put("systemVersion", systemVersion);
     }
 
     public Boolean getSystemStatus() {
-        return systemStatus;
+        return (Boolean) get("systemStatus");
     }
 
     public void setSystemStatus(Boolean systemStatus) {
-        this.systemStatus = systemStatus;
+        put("systemStatus", systemStatus);
     }
 
     public String getSystemRequestUserId() {
-        return systemRequestUserId;
+        return get("systemRequestUserId").toString();
     }
 
     public void setSystemRequestUserId(String systemRequestUserId) {
-        this.systemRequestUserId = systemRequestUserId;
+        put("systemRequestUserId", systemRequestUserId);
     }
 
     public String getPrimary() {

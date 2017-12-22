@@ -2,6 +2,7 @@ package com.nowui.cloud.service.impl;
 
 import java.util.Date;
 
+import com.nowui.cloud.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,6 +35,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public Boolean save(T baseEntity, String systemCreateUserId) {
+        baseEntity.put(entity.getPrimary(), Util.getRandomUUID());
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);

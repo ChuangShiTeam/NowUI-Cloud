@@ -38,6 +38,9 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
                         .eq("systemStatus", true)
                         .orderDesc(Arrays.asList("systemCreateTime"))
         );
+        for (Product product : productList) {
+            product.put("aaa", "123456");
+        }
         return productList;
     }
 

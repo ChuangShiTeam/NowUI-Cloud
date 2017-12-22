@@ -38,30 +38,30 @@ public class Product extends BaseEntity {
     @TableField
     @NotNull(message = "商品名称不能为空")
     @Length(max = 100, message = "商品名称字数超出限制")
-    private String productName;
+    private String productName = "productName";
 
     public String getProductId() {
-        return productId;
+        return get("productId").toString();
     }
 
     public void setProductId(String productId) {
-        this.productId = productId;
+        put("productId", productId);
     }
 
     public String getAppId() {
-        return appId;
+        return get("appId").toString();
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        put("appId", appId);
     }
 
     public String getProductName() {
-        return productName;
+        return get("productName").toString();
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+        put("productName", productName);
     }
 
 }
