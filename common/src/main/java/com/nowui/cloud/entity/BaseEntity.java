@@ -2,8 +2,7 @@ package com.nowui.cloud.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -27,7 +26,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 创建人编号
      */
-    @TableField(SYSTEM_CREATE_USER_ID)
+    @TableField
     @NotNull(message = "创建人编号不能为空")
     @Length(max = 32, message = "创建人编号长度超出限制")
     private String systemCreateUserId;
@@ -36,7 +35,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = SYSTEM_CREATE_TIME)
+    @TableField
     @NotNull(message = "创建时间不能为空")
     @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date systemCreateTime;
@@ -105,6 +104,15 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     @JsonIgnore
     private String tableId;
     public static final String TABLE_ID = "tableId";
+
+    /**
+     * 关键编号
+     */
+    @TableField(exist = false)
+    @JSONField(serialize = false)
+    @JsonIgnore
+    private List<String> tableFieldList;
+    public static final String TABLE_FIELD_LIST = "tableFieldList";
 
     /**
      * 分页页数
@@ -219,6 +227,27 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         return tableId;
     }
 
+    public List<String> getTableFieldList() {
+        if (tableFieldList == null) {
+            tableFieldList = new ArrayList<String>();
+
+            tableFieldList.add(getTableId());
+
+            Field[] fields = this.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                boolean isTableField = field.isAnnotationPresent(TableField.class);
+                if (isTableField) {
+                    TableField tableField = field.getAnnotation(TableField.class);
+                    if (tableField.exist()) {
+                        field.setAccessible(true);
+                        tableFieldList.add(field.getName());
+                    }
+                }
+            }
+        }
+        return tableFieldList;
+    }
+
     public Integer getPageIndex() {
         return getInteger(PAGE_INDEX);
     }
@@ -262,5 +291,27 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
 
         return size > 0 ? size : 0;
     }
+
+    public void keepTableFieldValue() {
+        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            Boolean isExit = false;
+
+            for (String tableField : getTableFieldList()) {
+
+                if (tableField.equals(entry.getKey())) {
+                    isExit = true;
+
+                    break;
+                }
+            }
+
+            if (!isExit) {
+//                iterator.remove();
+            }
+        }
+    }
+
 }
 

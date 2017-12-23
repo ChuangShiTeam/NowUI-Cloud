@@ -3,7 +3,10 @@ package com.nowui.cloud.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.util.Util;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -25,6 +28,21 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     @Autowired
     private RedisTemplate<String, Object> redis;
 
+    public Integer count(@Param("ew") Wrapper<T> var1) {
+        Integer count = mapper.selectCount(var1);
+        return count;
+    }
+
+    public List<T> list(@Param("ew") Wrapper<T> var1, Integer pageIndex, Integer pageSize) {
+        List<T> list = mapper.selectPage(new Page<T>(pageIndex, pageSize), var1.setSqlSelect(entity.getTableId()));
+
+        for (T baseEntity : list) {
+            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
+        }
+
+        return list;
+    }
+
     public T find(String id) {
         T baseEntity = (T) redis.opsForValue().get(entity.getTableName());
 
@@ -40,15 +58,29 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public T find(String id, Boolean systemStatus) {
-        List<T> list = mapper.selectList(
-                new EntityWrapper<T>()
-                        .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
-        );
-        if (list.size() == 0) {
-            return null;
+        T baseEntity = (T) redis.opsForValue().get(entity.getTableName());
+
+        if (baseEntity == null) {
+            List<T> list = mapper.selectList(
+                    new EntityWrapper<T>()
+                            .eq(entity.getTableId(), id)
+                            .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
+            );
+            if (list.size() == 0) {
+                return null;
+            } else {
+                baseEntity = list.get(0);
+
+                redis.opsForValue().set(entity.getTableName(), baseEntity);
+
+                return baseEntity;
+            }
         } else {
-            return list.get(0);
+            if (baseEntity.getSystemStatus().equals(systemStatus)) {
+                return baseEntity;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -62,6 +94,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         baseEntity.setSystemStatus(true);
 
         Boolean success = mapper.insert(baseEntity) != 0;
+
+        if (success) {
+            baseEntity.keepTableFieldValue();
+
+            redis.opsForValue().set(entity.getTableName(), baseEntity);
+        }
+
         return success;
     }
 
@@ -77,6 +116,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
                         .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
+
+        if (success) {
+            baseEntity.keepTableFieldValue();
+
+            redis.opsForValue().set(entity.getTableName(), baseEntity);
+        }
+
         return success;
     }
 
@@ -93,6 +139,11 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
                         .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
+
+        if (success) {
+            redis.delete(entity.getTableName());
+        }
+
         return success;
     }
 

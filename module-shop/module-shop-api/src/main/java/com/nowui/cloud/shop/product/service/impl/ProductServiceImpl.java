@@ -19,7 +19,7 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
 
     @Override
     public Integer adminCount(String appId, String productName) {
-        Integer count = mapper.selectCount(
+        Integer count = count(
                 new EntityWrapper<Product>()
                         .eq(Product.APP_ID, appId)
                         .like(Product.PRODUCT_NAME, productName)
@@ -30,13 +30,14 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
 
     @Override
     public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
-        List<Product> productList = mapper.selectPage(
-                new Page<Product>(pageIndex, pageSize),
+        List<Product> productList = list(
                 new EntityWrapper<Product>()
                         .eq(Product.APP_ID, appId)
                         .like(Product.PRODUCT_NAME, productName)
                         .eq(Product.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Product.SYSTEM_CREATE_TIME))
+                        .orderDesc(Arrays.asList(Product.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
         );
         return productList;
     }

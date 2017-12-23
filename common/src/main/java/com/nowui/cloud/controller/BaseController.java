@@ -80,7 +80,7 @@ public class BaseController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class, RedisConnectionFailureException.class})
+    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class, RedisConnectionFailureException.class, IllegalStateException.class})
     public Map<String, Object> handleException(Exception e) {
         e.printStackTrace();
 
