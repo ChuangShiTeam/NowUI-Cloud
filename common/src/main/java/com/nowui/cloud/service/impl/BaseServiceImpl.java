@@ -28,6 +28,10 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     @Autowired
     private RedisTemplate<String, Object> redis;
 
+    private String getItemCacheName(String id) {
+        return entity.getTableName() + "_" + id;
+    }
+
     public Integer count(@Param("ew") Wrapper<T> var1) {
         Integer count = mapper.selectCount(var1);
         return count;
@@ -44,7 +48,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public T find(String id) {
-        T baseEntity = (T) redis.opsForValue().get(entity.getTableName());
+        T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {
             baseEntity = mapper.selectById(id);
@@ -58,7 +62,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public T find(String id, Boolean systemStatus) {
-        T baseEntity = (T) redis.opsForValue().get(entity.getTableName());
+        T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {
             List<T> list = mapper.selectList(
@@ -85,7 +89,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public Boolean save(T baseEntity, String systemCreateUserId) {
-        baseEntity.put(entity.getTableId(), Util.getRandomUUID());
+        String id = Util.getRandomUUID();
+
+        baseEntity.put(entity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -98,7 +104,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         if (success) {
             baseEntity.keepTableFieldValue();
 
-            redis.opsForValue().set(entity.getTableName(), baseEntity);
+            redis.opsForValue().set(getItemCacheName(id), baseEntity);
         }
 
         return success;
@@ -108,6 +114,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
+
+        System.out.println(systemVersion);
 
         Boolean success = mapper.update(
                 baseEntity,
@@ -120,7 +128,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         if (success) {
             baseEntity.keepTableFieldValue();
 
-            redis.opsForValue().set(entity.getTableName(), baseEntity);
+            redis.opsForValue().set(getItemCacheName(id), baseEntity);
         }
 
         return success;
@@ -141,7 +149,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         ) != 0;
 
         if (success) {
-            redis.delete(entity.getTableName());
+            redis.delete(getItemCacheName(id));
         }
 
         return success;

@@ -74,7 +74,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField(value = SYSTEM_STATUS)
     @NotNull(message = "删除标识不能为空")
-    @TableLogic
     private Boolean systemStatus;
     public static final String SYSTEM_STATUS = "systemStatus";
 

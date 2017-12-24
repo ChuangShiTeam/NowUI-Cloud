@@ -48,20 +48,6 @@ public class MybatisPlusConfig {
         return performanceInterceptor;
     }
 
-    /**
-     * 逻辑删除
-     *
-     * @return
-     */
-    @Bean
-    public GlobalConfiguration globalConfiguration() {
-        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
-        conf.setLogicDeleteValue("-1");
-        conf.setLogicNotDeleteValue("1");
-        conf.setIdType(3);
-        return conf;
-    }
-
 //    /**
 //     * mybatis-plus分页插件<br>
 //     * 文档：http://mp.baomidou.com<br>
