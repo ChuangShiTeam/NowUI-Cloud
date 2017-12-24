@@ -1,4 +1,4 @@
-package com.nowui.cloud.mybatisplus.handler;
+package com.nowui.cloud.mybatisplus;
 
 import java.util.Date;
 

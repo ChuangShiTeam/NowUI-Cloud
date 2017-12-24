@@ -26,10 +26,10 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     private T entity;
 
     @Autowired
-    private RedisTemplate<String, Object> redis;
+    protected RedisTemplate<String, Object> redis;
 
-    private String getItemCacheName(String id) {
-        return entity.getTableName() + "_" + id;
+    protected String getItemCacheName(String id) {
+        return entity.getTableName() + "_item_" + id;
     }
 
     public Integer count(@Param("ew") Wrapper<T> var1) {

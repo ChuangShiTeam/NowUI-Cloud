@@ -1,5 +1,6 @@
 package com.nowui.cloud.shop.product.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -30,16 +31,23 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
     }
 
     @Override
-    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
+    public List<Product> adminList(String appId, String productName, Integer m, Integer n) {
         List<Product> productList = list(
                 new BaseWrapper<Product>()
+                        .setSqlSelect("imageId")
                         .eq(Product.APP_ID, appId)
                         .like(Product.PRODUCT_NAME, productName)
                         .eq(Product.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Product.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                m,
+                n
         );
+
+        for(Product product: productList) {
+            //image list
+            //product
+        }
+
         return productList;
     }
 

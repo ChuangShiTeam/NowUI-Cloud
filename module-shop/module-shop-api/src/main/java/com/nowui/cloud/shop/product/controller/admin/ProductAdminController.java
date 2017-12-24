@@ -30,10 +30,6 @@ public class ProductAdminController extends BaseController {
     public Map<String, Object> list(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME, Product.PAGE_INDEX, Product.PAGE_SIZE);
 
-        redisTemplate.opsForValue().set("test", "test123456");
-        String value = redisTemplate.opsForValue().get("test");
-        System.out.println(value);
-
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
 

@@ -1,4 +1,4 @@
-package com.nowui.cloud.mybatisplus.injector;
+package com.nowui.cloud.mybatisplus;
 
 import com.baomidou.mybatisplus.entity.TableInfo;
 import org.apache.ibatis.builder.MapperBuilderAssistant;

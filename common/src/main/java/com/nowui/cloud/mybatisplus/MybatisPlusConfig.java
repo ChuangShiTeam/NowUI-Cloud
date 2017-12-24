@@ -1,7 +1,5 @@
-package com.nowui.cloud.mybatisplus.config;
+package com.nowui.cloud.mybatisplus;
 
-import com.baomidou.mybatisplus.entity.GlobalConfiguration;
-import com.baomidou.mybatisplus.mapper.LogicSqlInjector;
 import com.nowui.cloud.mapper.BaseMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
