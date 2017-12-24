@@ -1,0 +1,20 @@
+//查找镜像
+docker search mysql
+
+//下载镜像到本地
+docker pull mysql
+
+//查看镜像信息
+docker images
+
+//创建并启动一个MySQL容器
+–name：给新创建的容器命名，此处命名为pwc-mysql
+-e：配置信息，此处配置mysql的root用户的登陆密码
+-p：端口映射，此处映射主机3306端口到容器pwc-mysql的3306端口
+-d：成功启动容器后输出容器的完整ID，例如上图 73f8811f669ee...
+最后一个mysql指的是mysql镜像名字
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql
+
+//查看容器运行状态
+docker ps
+
