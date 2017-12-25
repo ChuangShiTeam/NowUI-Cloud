@@ -15,6 +15,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 
  * @author marcus
  *
+ * 2017年12月25日
  */
 @Component(value = "appConfig")
 @TableName(value = "app_config_info")
@@ -83,59 +84,59 @@ public class AppConfig extends BaseEntity {
     public static final String CONFIG_DESCRIPTION = "configDescription";
 
     public String getConfigId() {
-        return configId;
+        return getString(CONFIG_ID);
     }
 
     public void setConfigId(String configId) {
-        this.configId = configId;
+        put(CONFIG_ID, configId);
     }
 
     public String getAppId() {
-        return appId;
+        return getString(APP_ID);
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        put(APP_ID, appId);
     }
 
     public String getConfigCategoryId() {
-        return configCategoryId;
+        return getString(CONFIG_CATEGORY_ID);
     }
 
     public void setConfigCategoryId(String configCategoryId) {
-        this.configCategoryId = configCategoryId;
+        put(CONFIG_CATEGORY_ID, configCategoryId);
     }
 
     public String getConfigKey() {
-        return configKey;
+        return getString(CONFIG_KEY);
     }
 
     public void setConfigKey(String configKey) {
-        this.configKey = configKey;
+        put(CONFIG_KEY, configKey);
     }
 
     public String getConfigValue() {
-        return configValue;
+        return getString(CONFIG_VALUE);
     }
 
     public void setConfigValue(String configValue) {
-        this.configValue = configValue;
+        put(CONFIG_VALUE, configValue);
     }
 
     public Boolean getConfigIsDisabled() {
-        return configIsDisabled;
+        return getBoolean(CONFIG_IS_DISABLED);
     }
 
     public void setConfigIsDisabled(Boolean configIsDisabled) {
-        this.configIsDisabled = configIsDisabled;
+        put(CONFIG_IS_DISABLED, configIsDisabled);
     }
 
     public String getConfigDescription() {
-        return configDescription;
+        return getString(CONFIG_DESCRIPTION);
     }
 
     public void setConfigDescription(String configDescription) {
-        this.configDescription = configDescription;
+        put(CONFIG_DESCRIPTION, configDescription);
     }
 
 }

@@ -30,5 +30,20 @@ public interface AppService extends BaseService<App>, AppRpc {
      * @return List<App> 应用列表
      */
     List<App> adminList(String appName, Integer m, Integer n);
+    
+    /**
+     * 验证名称唯一性
+     * @param appName
+     * @return true 重复 false 不重复
+     */
+    Boolean checkName(String appName);
+    
+    /**
+     * 验证名称唯一性
+     * @param appId
+     * @param appName
+     * @return true 重复 false 不重复
+     */
+    Boolean checkName(String appId, String appName);
 
 }

@@ -49,7 +49,7 @@ public class AppConfigCategoryController extends BaseController {
 
         AppConfigCategory result = appConfigCategoryService.find(body.getConfigCategoryId());
 
-        validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.SYSTEM_VERSION);
+        validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.CONFIG_CATEGORY_DESCRIPTION, AppConfigCategory.SYSTEM_VERSION);
 
         return renderJson(result);
     }

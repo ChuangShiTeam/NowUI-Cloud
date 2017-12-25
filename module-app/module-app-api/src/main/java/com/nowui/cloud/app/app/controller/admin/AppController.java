@@ -56,7 +56,12 @@ public class AppController extends BaseController {
     @RequestMapping(value = "/app/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> save(@RequestBody App body) {
         validateRequest(body, App.APP_NAME);
-
+        
+        //验证应用名称是否重复
+        if (appService.checkName(body.getAppName())) {
+            throw new RuntimeException("应用名称重复");
+        }
+        
         Boolean result = appService.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);
@@ -67,6 +72,10 @@ public class AppController extends BaseController {
     public Map<String, Object> update(@RequestBody App body) {
         validateRequest(body, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
+        if (appService.checkName(body.getAppId(), body.getAppName())) {
+            throw new RuntimeException("应用名称重复");
+        }
+        
         Boolean result = appService.update(body, body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);

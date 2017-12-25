@@ -15,6 +15,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 
  * @author marcus
  *
+ * 2017年12月25日
  */
 @Component(value = "appConfigCategory")
 @TableName(value = "app_config_category_info")
@@ -66,43 +67,43 @@ public class AppConfigCategory extends BaseEntity {
     public static final String CONFIG_CATEGORY_DESCRIPTION = "configCategoryDescription";
 
     public String getConfigCategoryId() {
-        return configCategoryId;
+        return getString(CONFIG_CATEGORY_ID);
     }
 
     public void setConfigCategoryId(String configCategoryId) {
-        this.configCategoryId = configCategoryId;
+        put(CONFIG_CATEGORY_ID, configCategoryId);
     }
 
     public String getAppId() {
-        return appId;
+        return getString(APP_ID);
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        put(APP_ID, appId);
     }
 
     public String getConfigCategoryName() {
-        return configCategoryName;
+        return getString(CONFIG_CATEGORY_NAME);
     }
 
     public void setConfigCategoryName(String configCategoryName) {
-        this.configCategoryName = configCategoryName;
+        put(CONFIG_CATEGORY_NAME, configCategoryName);
     }
 
     public String getConfigCategoryCode() {
-        return configCategoryCode;
+        return getString(CONFIG_CATEGORY_CODE);
     }
 
     public void setConfigCategoryCode(String configCategoryCode) {
-        this.configCategoryCode = configCategoryCode;
+        put(CONFIG_CATEGORY_CODE, configCategoryCode);
     }
 
     public String getConfigCategoryDescription() {
-        return configCategoryDescription;
+        return getString(CONFIG_CATEGORY_DESCRIPTION);
     }
 
     public void setConfigCategoryDescription(String configCategoryDescription) {
-        this.configCategoryDescription = configCategoryDescription;
+        put(CONFIG_CATEGORY_DESCRIPTION, configCategoryDescription);
     }
 
 }

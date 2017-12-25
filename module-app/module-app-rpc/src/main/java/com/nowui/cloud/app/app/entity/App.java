@@ -15,6 +15,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 
  * @author marcus
  *
+ * 2017年12月25日
  */
 @Component(value = "app")
 @TableName(value = "app_info")
@@ -39,19 +40,19 @@ public class App extends BaseEntity {
     public static final String APP_NAME = "appName";
 
     public String getAppId() {
-        return appId;
+        return getString(APP_ID);
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        put(APP_ID, appId);
     }
 
     public String getAppName() {
-        return appName;
+        return getString(APP_NAME);
     }
 
     public void setAppName(String appName) {
-        this.appName = appName;
+        put(APP_NAME, appName);
     }
 
 }

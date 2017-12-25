@@ -1,10 +1,8 @@
 package com.nowui.cloud.app.app.service.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -20,7 +18,6 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * @since 2017-12-20
  */
 @Service
-//@CacheConfig(cacheNames = "appService")
 public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements AppService {
 
     @Override
@@ -44,11 +41,31 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
                         .orderDesc(Arrays.asList(App.SYSTEM_CREATE_TIME))
         );
         
-        List<App> resultList = new ArrayList<App>();
         for (App app : appList) {
-            resultList.add(find(app.getAppId()));
+            app.putAll(find(app.getAppId()));
         }
-        return resultList;
+        return appList;
+    }
+
+    @Override
+    public Boolean checkName(String appName) {
+        Integer count = mapper.selectCount(
+                new EntityWrapper<App>()
+                        .eq(App.APP_NAME, appName)
+                        .eq(App.SYSTEM_STATUS, true)
+        );
+        return count > 0;
+    }
+
+    @Override
+    public Boolean checkName(String appId, String appName) {
+        App app = find(appId);
+        
+        if (appName.equals(app.getAppName())) {
+            return false;
+        }
+        
+        return checkName(appName);
     }
 
 }

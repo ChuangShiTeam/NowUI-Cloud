@@ -35,16 +35,21 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
     @Override
     public List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode,
             Integer m, Integer n) {
-        List<AppConfigCategory> appCategoryList = mapper.selectPage(
+        List<AppConfigCategory> appConfigCategoryList = mapper.selectPage(
                 new Page<AppConfigCategory>(m, n),
                 new EntityWrapper<AppConfigCategory>()
+                        .setSqlSelect(AppConfigCategory.CONFIG_CATEGORY_ID)
                         .eq(AppConfigCategory.APP_ID, appId)
                         .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
                         .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
                         .eq(AppConfigCategory.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
         );
-        return appCategoryList;
+        
+        for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
+            appConfigCategory.putAll(find(appConfigCategory.getConfigCategoryId()));
+        }
+        return appConfigCategoryList;
     }
 
 }
