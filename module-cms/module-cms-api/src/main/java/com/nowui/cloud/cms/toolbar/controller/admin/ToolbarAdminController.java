@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "工具栏", description = "工具栏接口后台端管理")
 @RestController
-public class ToolbarController extends BaseController {
+public class ToolbarAdminController extends BaseController {
     
     @Autowired
     private ToolbarService toolbarService;

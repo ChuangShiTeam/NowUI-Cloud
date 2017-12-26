@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
  */
 @Api(value = "广告", description = "广告系统端接口管理")
 @RestController
-public class AdvertisementController extends BaseController {
+public class AdvertisementSystemController extends BaseController {
     
     @Autowired
     private AdvertisementService advertisementService;

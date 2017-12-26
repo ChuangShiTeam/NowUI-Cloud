@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
  */
 @Api(value = "文章", description = "文章接系统端管理")
 @RestController
-public class ArticleController extends BaseController {
+public class ArticleSystemController extends BaseController {
     
     @Autowired
     private ArticleService articleService;

@@ -8,11 +8,11 @@ eureka:
 
 spring:
   application:
-    name: cms
+    name: module-cms
   datasource:
-      url: jdbc:mysql://localhost:3306/nowui_cms?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: root
-      password: 1qaz!QAZ
+      url: jdbc:mysql://118.31.229.16:3306/cms?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: chuangshi
+      password: Chuangshi123!
       driver-class-name: com.mysql.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
@@ -73,4 +73,7 @@ mybatis-plus:
 
 #配置
 config:
+  #代码生成数据库名
   tableSchema: cms
+  #代码生成输出目录
+  codeGenerateUrl: /develop/code/

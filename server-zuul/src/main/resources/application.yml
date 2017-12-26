@@ -20,6 +20,10 @@ zuul:
       path: /app/**
       serviceId: module-app
       stripPrefix: false
+  	cms:
+      path: /cms/**
+      serviceId: module-cms
+      stripPrefix: false
 hystrix:
   command:
     default:

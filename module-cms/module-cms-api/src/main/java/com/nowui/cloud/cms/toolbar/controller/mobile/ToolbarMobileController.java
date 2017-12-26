@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
  */
 @Api(value = "工具栏", description = "工具栏接口移动端管理")
 @RestController
-public class ToolbarController extends BaseController {
+public class ToolbarMobileController extends BaseController {
     
     @Autowired
     private ToolbarService toolbarService;
