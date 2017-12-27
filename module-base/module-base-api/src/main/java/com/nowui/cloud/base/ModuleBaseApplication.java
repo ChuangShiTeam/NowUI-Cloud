@@ -1,4 +1,4 @@
-package com.nowui.cloud.app;
+package com.nowui.cloud.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -29,7 +29,7 @@ import com.nowui.cloud.shop.product.rpc.ProductRpc;
 @EnableFeignClients(basePackages = {"com.nowui.cloud"})
 @ComponentScan(basePackages = {"com.nowui.cloud"})
 @RestController
-public class ModuleAppApplication {
+public class ModuleBaseApplication {
 
     @Autowired
     private ProductRpc productRpc;
@@ -42,11 +42,14 @@ public class ModuleAppApplication {
     }
 
     public static void main(String[] args) {
-        try {
-            ApplicationContext app = SpringApplication.run(ModuleAppApplication.class, args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ApplicationContext app = SpringApplication.run(ModuleBaseApplication.class, args);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
+        SpringApplication.run(ModuleBaseApplication.class, args);
     }
     
     @Bean

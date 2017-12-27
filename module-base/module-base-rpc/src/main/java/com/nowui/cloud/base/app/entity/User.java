@@ -109,7 +109,7 @@ public class User extends BaseEntity {
     @Length(max = 20, message = "邮箱长度超出限制")
     private String userEmail;
     public static final String USER_EMAIL = "userEmail";
-    
+
     /**
      * 头像
      */
@@ -118,6 +118,15 @@ public class User extends BaseEntity {
     @Length(max = 32, message = "头像长度超出限制")
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
+
+    /**
+     * 性别
+     */
+    @TableField
+    @NotNull(message = "性别不能为空")
+    @Length(max = 1, message = "性别长度超出限制")
+    private String userSex;
+    public static final String USER_SEX = "userSex";
     
     /**
      * 微信openID
@@ -224,6 +233,14 @@ public class User extends BaseEntity {
     
     public void setUserAvatar(String userAvatar) {
         put(USER_AVATAR, userAvatar);
+    }
+
+    public String getUserSex() {
+        return getString(USER_SEX);
+    }
+
+    public void setUserSex(String userSex) {
+        put(USER_SEX, userSex);
     }
     
     public String getWeixinOpenId() {

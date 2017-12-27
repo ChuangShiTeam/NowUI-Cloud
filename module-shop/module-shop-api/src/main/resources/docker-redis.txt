@@ -2,8 +2,10 @@ docker search  redis
 
 docker pull redis
 
-docker run -p 6379:6379 -v $PWD/data:/data  -d redis redis-server --appendonly yes
+docker run -p 6379:6379 --name redis -d redis redis-server --appendonly yes
 
-docker stop some-redis
+docker stop redis
+
+docker rm /redis
 
 docker ps

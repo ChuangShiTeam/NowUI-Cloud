@@ -12,12 +12,12 @@ feign:
 
 spring:
   application:
-    name: module-app
+    name: module-base
   datasource:
-      url: jdbc:mysql://118.31.229.16:3306/app?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: chuangshi
-      password: Chuangshi123!
-      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
       # 下面为连接池的补充设置，应用到上面所有数据源中
