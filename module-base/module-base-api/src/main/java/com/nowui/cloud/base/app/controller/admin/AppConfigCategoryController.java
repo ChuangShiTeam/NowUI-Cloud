@@ -41,6 +41,17 @@ public class AppConfigCategoryController extends BaseController {
 
         return renderJson(resultTotal, resultList);
     }
+    
+    @ApiOperation(value = "所有应用配置分类列表")
+    @RequestMapping(value = "/app/config/category/admin/all/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> allList(@RequestBody AppConfigCategory body) {
+
+        List<AppConfigCategory> resultList = appConfigCategoryService.appList(body.getAppId());
+
+        validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME);
+
+        return renderJson(resultList);
+    }
 
     @ApiOperation(value = "应用配置分类信息")
     @RequestMapping(value = "/app/config/category/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

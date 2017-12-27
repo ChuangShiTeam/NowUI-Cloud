@@ -38,7 +38,7 @@ public class AppConfigController extends BaseController {
         Integer resultTotal = appConfigService.adminCount(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled());
         List<AppConfig> resultList = appConfigService.adminList(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled(), body.getM(), body.getN());
 
-        validateResponse(AppConfig.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED);
+        validateResponse(AppConfig.APP_ID, AppConfig.CONFIG_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED);
 
         return renderJson(resultTotal, resultList);
     }

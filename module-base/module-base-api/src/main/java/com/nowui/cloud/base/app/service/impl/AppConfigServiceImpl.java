@@ -3,6 +3,7 @@ package com.nowui.cloud.base.app.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.mapper.AppConfigMapper;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.service.AppConfigService;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
@@ -28,11 +30,11 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     
     @Override
     public Integer adminCount(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {
-        Integer count = mapper.selectCount(
+        Integer count = count(
                 new EntityWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
-                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eq( AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .eq(AppConfig.CONFIG_KEY, configKey)
                         .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
         );
@@ -42,16 +44,17 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     @Override
     public List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled,
             Integer m, Integer n) {
-        List<AppConfig> appConfigList = mapper.selectPage(
-                new Page<AppConfig>(m, n),
-                new EntityWrapper<AppConfig>()
+        List<AppConfig> appConfigList = list(
+                new BaseWrapper<AppConfig>()
                         .setSqlSelect(AppConfig.CONFIG_ID, AppConfig.CONFIG_CATEGORY_ID)
                         .eq(AppConfig.APP_ID, appId)
                         .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eq(AppConfig.CONFIG_KEY, configKey)
                         .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME))
+                        .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME)),
+                        m, 
+                        n
         );
         for (AppConfig appConfig : appConfigList) {
             appConfig.putAll(find(appConfig.getConfigId()));

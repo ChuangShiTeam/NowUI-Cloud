@@ -1,4 +1,4 @@
-package com.nowui.cloud.app;
+package com.nowui.cloud.base;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

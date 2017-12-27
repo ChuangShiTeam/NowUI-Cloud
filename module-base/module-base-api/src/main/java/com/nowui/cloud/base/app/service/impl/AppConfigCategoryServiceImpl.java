@@ -52,4 +52,20 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
         return appConfigCategoryList;
     }
 
+    @Override
+    public List<AppConfigCategory> appList(String appId) {
+        List<AppConfigCategory> appConfigCategoryList = mapper.selectList(
+                new EntityWrapper<AppConfigCategory>()
+                        .setSqlSelect(AppConfigCategory.CONFIG_CATEGORY_ID)
+                        .eq(AppConfigCategory.APP_ID, appId)
+                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
+        );
+        
+        for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
+            appConfigCategory.putAll(find(appConfigCategory.getConfigCategoryId()));
+        }
+        return appConfigCategoryList;
+    }
+
 }
