@@ -22,14 +22,14 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.nowui.cloud.app"))
+                .apis(RequestHandlerSelectors.basePackage("com.nowui.cloud.base"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("APP API")
+                .title("Base API")
                 .description("")
                 .version("1.0.0")
                 .build();

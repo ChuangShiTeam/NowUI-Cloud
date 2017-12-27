@@ -80,7 +80,7 @@ public class CodeController extends BaseController {
 
 
     @ApiOperation(value = "数据库表字段列表")
-    @RequestMapping(value = "/code/test")
+    @RequestMapping(value = "/code/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String test() {
         try {
             ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("template");
