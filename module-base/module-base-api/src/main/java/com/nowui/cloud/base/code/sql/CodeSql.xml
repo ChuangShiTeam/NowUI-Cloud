@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowui.cloud.base.code.mapper.CodeMapper">
+
+	<!-- 查询数据库表列表 -->
+	<select id="selectTableListByTableSchema" resultType="java.util.Map">
+		SELECT table_name, engine, table_rows, create_time, update_time, table_comment FROM information_schema.tables
+	    WHERE table_schema = #{tableSchema}
+	    <if test="tableName != null and tableName !=''">
+			AND table_name LIKE CONCAT('%','${tableName}','%')
+		</if>
+		order by create_time desc
+	</select>
+	
+	<!-- 查询数据库表字段列表 -->
+	<select id="selectTableFieldListByTableName" resultType="java.util.Map">
+		SELECT 
+		column_name,
+	    column_key,
+	    character_maximum_length,
+	    column_type,
+	    data_type,
+	    column_comment
+	    FROM information_schema.columns
+	    WHERE table_schema = #{tableSchema}
+	    AND table_name = #{tableName}
+	</select>
+
+</mapper>
