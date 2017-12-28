@@ -100,6 +100,13 @@ public class Code extends BaseEntity {
     private String packageName;
     public static final String PACKAGE_NAME = "packageName";
 
+    /**
+     * 开发者
+     */
+    @TableField(exist = false)
+    private String author;
+    public static final String AUTHOR = "author";
+
     public String getTableSchema() {
         return getString(TABLE_SCHEMA);
     }
@@ -197,4 +204,11 @@ public class Code extends BaseEntity {
         put(PACKAGE_NAME, packageName);
     }
 
+    public String getAuthor() {
+        return getString(AUTHOR);
+    }
+
+    public void setAuthor(String author) {
+        put(AUTHOR, author);
+    }
 }

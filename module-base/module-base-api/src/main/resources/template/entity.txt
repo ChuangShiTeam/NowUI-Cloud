@@ -10,61 +10,36 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author ZhongYongQiang
+ * @author ${author}
  */
 @Component
-@TableName(value = "product_info")
-public class Product extends BaseEntity {
+@TableName(value = "${tableName}")
+public class ${firstUpperEntityName} extends BaseEntity {
 
+    <%for(column in columnList){%>
     /**
-     * 商品编号
+     * ${column.columnComment}
      */
+    <%if(column.columnName == tableId){%>
     @TableId
-    @NotNull(message = "商品编号不能为空")
-    @Length(max = 32, message = "商品编号长度超出限制")
-    private String productId;
-    public static final String PRODUCT_ID = "productId";
-
-    /**
-     * 应用编号
-     */
+    <%}else{%>
     @TableField
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
-    private String appId;
-    public static final String APP_ID = "appId";
+    <%}%>
+    @NotNull(message = "${column.columnComment}不能为空")
+    @Length(max = ${column.characterMaximumLength}, message = "${column.columnComment}长度超出限制")
+    private String ${column.columnName};
+    public static final String ${column.upperWithUnderlineColumnName} = "${column.columnName}";
 
-    /**
-     * 商品名称
-     */
-    @TableField
-    @NotNull(message = "商品名称不能为空")
-    @Length(max = 100, message = "商品名称长度超出限制")
-    private String productName;
-    public static final String PRODUCT_NAME = "productName";
+    <%}%>
 
-    public String getProductId() {
-        return getString(PRODUCT_ID);
+    <%for(column in columnList){%>
+    public String get${column.firstUpperColumnName}() {
+        return getString(${column.upperWithUnderlineColumnName});
     }
 
-    public void setProductId(String productId) {
-        put(PRODUCT_ID, productId);
+    public void set${column.firstUpperColumnName}(String ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getProductName() {
-        return getString(PRODUCT_NAME);
-    }
-
-    public void setProductName(String productName) {
-        put(PRODUCT_NAME, productName);
-    }
+    <%}%>
 
 }
