@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.mapper.AppConfigCategoryMapper;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
@@ -22,8 +21,8 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
 
     @Override
     public Integer adminCount(String appId, String configCategoryName, String configCategoryCode) {
-        Integer count = mapper.selectCount(
-                new EntityWrapper<AppConfigCategory>()
+        Integer count = count(
+                new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)
                         .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
                         .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
@@ -35,36 +34,29 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
     @Override
     public List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode,
             Integer m, Integer n) {
-        List<AppConfigCategory> appConfigCategoryList = mapper.selectPage(
-                new Page<AppConfigCategory>(m, n),
-                new EntityWrapper<AppConfigCategory>()
-                        .setSqlSelect(AppConfigCategory.CONFIG_CATEGORY_ID)
+        List<AppConfigCategory> appConfigCategoryList = list(
+                new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)
                         .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
                         .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
                         .eq(AppConfigCategory.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
+                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME)),
+                m,
+                n
         );
         
-        for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
-            appConfigCategory.putAll(find(appConfigCategory.getConfigCategoryId()));
-        }
         return appConfigCategoryList;
     }
 
     @Override
     public List<AppConfigCategory> appList(String appId) {
-        List<AppConfigCategory> appConfigCategoryList = mapper.selectList(
-                new EntityWrapper<AppConfigCategory>()
-                        .setSqlSelect(AppConfigCategory.CONFIG_CATEGORY_ID)
+        List<AppConfigCategory> appConfigCategoryList = list(
+                new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)
                         .eq(AppConfigCategory.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
         );
         
-        for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
-            appConfigCategory.putAll(find(appConfigCategory.getConfigCategoryId()));
-        }
         return appConfigCategoryList;
     }
 

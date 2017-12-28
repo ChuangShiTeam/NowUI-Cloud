@@ -37,8 +37,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return count;
     }
 
-    public List<T> list(@Param("ew") Wrapper<T> var1, Integer pageIndex, Integer pageSize) {
-        List<T> list = mapper.selectPage(new Page<T>(pageIndex, pageSize), var1.setSqlSelect(entity.getTableId()));
+    public List<T> list(@Param("ew") Wrapper<T> var1, Integer m, Integer n) {
+        List<T> list = mapper.selectPage(new Page<T>(m, n), var1.setSqlSelect(entity.getTableId()));
 
         for (T baseEntity : list) {
             baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
