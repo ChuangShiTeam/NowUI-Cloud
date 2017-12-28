@@ -18,7 +18,11 @@ zuul:
       stripPrefix: false
     app:
       path: /app/**
-      serviceId: module-app
+      serviceId: module-base
+      stripPrefix: false
+    code:
+      path: /code/**
+      serviceId: module-base
       stripPrefix: false
     cms:
       path: /cms/**

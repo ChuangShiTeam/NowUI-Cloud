@@ -1,5 +1,8 @@
 package com.nowui.cloud.base.code.service;
 
+import com.nowui.cloud.base.code.entity.Code;
+import com.nowui.cloud.service.BaseService;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,23 +13,23 @@ import java.util.Map;
  *
  */
 
-public interface CodeService {
+public interface CodeService extends BaseService<Code> {
     
     /**
      * 查询数据库表列表
-     * @param table_schema
-     * @param table_name
+     * @param tableSchema 数据库名称
+     * @param tableName 数据表名称
      * @return
      */
-    public List<Map<String, Object>> selectTableListByTableSchema(String table_schema, String table_name);
+    List<Code> tableSchemaList(String tableSchema, String tableName);
     
     /**
      * 查询数据库表字段列表
-     * @param table_schema
-     * @param table_name
+     * @param tableSchema 数据库名称
+     * @param tableName 数据表名称
      * @return
      */
-    public List<Map<String, Object>> selectTableFieldListByTableName(String table_schema, String table_name);
+    List<Code> tableNameList(String tableSchema, String tableName);
 
 
 }

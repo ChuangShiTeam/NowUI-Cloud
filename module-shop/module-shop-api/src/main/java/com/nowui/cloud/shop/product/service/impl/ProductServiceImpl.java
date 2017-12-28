@@ -1,8 +1,5 @@
 package com.nowui.cloud.shop.product.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.shop.product.entity.Product;
@@ -42,11 +39,6 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
                 m,
                 n
         );
-
-        for(Product product: productList) {
-            //image list
-            //product
-        }
 
         return productList;
     }

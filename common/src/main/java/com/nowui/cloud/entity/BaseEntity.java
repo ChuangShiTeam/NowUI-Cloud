@@ -37,7 +37,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      */
     @TableField
     @NotNull(message = "创建时间不能为空")
-    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date systemCreateTime;
     public static final String SYSTEM_CREATE_TIME = "systemCreateTime";
 
@@ -54,8 +53,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
      * 更新时间
      */
     @TableField(value = SYSTEM_UPDATE_TIME)
-    @NotNull(message = "systemUpdateTime must not be null")
-    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
+    @NotNull(message = "更新时间不能为空")
     private Date systemUpdateTime;
     public static final String SYSTEM_UPDATE_TIME = "systemUpdateTime";
 
@@ -87,9 +85,11 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
     /**
-     * 数据库名称
+     * 数据表名称
      */
     @TableField(exist = false)
+    @NotNull(message = "数据表名称不能为空")
+    @Length(max = 100, message = "数据表名称长度超出限制")
     @JSONField(serialize = false)
     @JsonIgnore
     private String tableName;
@@ -152,6 +152,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         put(SYSTEM_CREATE_USER_ID, systemCreateUserId);
     }
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getSystemCreateTime() {
         return getDate(SYSTEM_CREATE_TIME);
     }
@@ -168,6 +169,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         put(SYSTEM_UPDATE_USER_ID, systemUpdateUserId);
     }
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getSystemUpdateTime() {
         return getDate(SYSTEM_UPDATE_TIME);
     }

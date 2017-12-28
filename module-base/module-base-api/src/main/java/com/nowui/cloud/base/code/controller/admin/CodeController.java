@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.base.code.entity.Code;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -32,51 +33,47 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class CodeController extends BaseController {
 
-//    @Autowired
-//    private CodeService codeService;
-//
-//    @ApiOperation(value = "数据库表列表")
-//    @RequestMapping(value = "/app/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Map<String, Object> tableList(@RequestBody JSONObject jsonObject) {
-//        //validateRequest(jsonObject, "tableName");
-//
-//        String tableName = jsonObject.getString("tableName");
-//
-//        List<Map<String, Object>> resultList = codeService.selectTableListByTableSchema("", tableName);
-//
-//        validateResponse("table_name", "engine", "table_rows", "create_time", "update_time", "table_comment");
-//
-//        return renderJson(resultList.size(), resultList);
-//    }
-//
-//    @ApiOperation(value = "数据库表字段列表")
-//    @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Map<String, Object> fieldlLst(@RequestBody JSONObject jsonObject) {
-//       // validateRequest(jsonObject, "tableName");
-//
-//        String tableName = jsonObject.getString("tableName");
-//
-//        List<Map<String, Object>> resultList = codeService.selectTableFieldListByTableName("", tableName);
-//
-//        validateResponse("column_name", "column_key", "character_maximum_length", "column_type", "data_type", "column_comment");
-//
-//        return renderJson(resultList);
-//    }
-//
-//    @ApiOperation(value = "数据库表映射代码生成")
-//    @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Map<String, Object> generate(@RequestBody JSONObject jsonObject) {
-//        //validateRequest(jsonObject, "tableName", "tableComment", "packageName", "tableFieldList", "author");
-//
-//        String tableName = jsonObject.getString("tableName");
-//        String tableComment = jsonObject.getString("tableComment");
-//        String packageName = jsonObject.getString("packageName");
-//        String author = jsonObject.getString("author");
-//        JSONArray jsonArray = jsonObject.getJSONArray("tableFieldList");
-//
-//
-//        return renderJson(true);
-//    }
+    @Autowired
+    private CodeService codeService;
+
+    @ApiOperation(value = "数据库表列表")
+    @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> tableList(@RequestBody Code body) {
+        validateRequest(body, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+
+        List<Code> resultList = codeService.tableSchemaList(body.getTableSchema(), body.getTableName());
+
+        validateResponse(Code.TABLE_SCHEMA, Code.TABLE_NAME, Code.ENGINE, Code.TABLE_COMMENT, Code.SYSTEM_CREATE_TIME);
+
+        return renderJson(resultList.size(), resultList);
+    }
+
+    @ApiOperation(value = "数据库表字段列表")
+    @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> fieldlLst(@RequestBody Code body) {
+        validateRequest(body, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+
+        List<Code> resultList = codeService.tableNameList(body.getTableSchema(), body.getTableName());
+
+        validateResponse("column_name", "column_key", "character_maximum_length", "column_type", "data_type", "column_comment");
+
+        return renderJson(resultList);
+    }
+
+    @ApiOperation(value = "数据库表映射代码生成")
+    @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> generate(@RequestBody JSONObject jsonObject) {
+        //validateRequest(jsonObject, "tableName", "tableComment", "packageName", "tableFieldList", "author");
+
+        String tableName = jsonObject.getString("tableName");
+        String tableComment = jsonObject.getString("tableComment");
+        String packageName = jsonObject.getString("packageName");
+        String author = jsonObject.getString("author");
+        JSONArray jsonArray = jsonObject.getJSONArray("tableFieldList");
+
+
+        return renderJson(true);
+    }
 
 
     @ApiOperation(value = "数据库表字段列表")
