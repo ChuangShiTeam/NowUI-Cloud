@@ -80,6 +80,10 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_PUBLISH_TIME,
             Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
+            Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_TAGS,
+            Article.ARTICLE_SOURCE,
+            Article.ARTICLE_WEIGHT,
             Article.SYSTEM_VERSION
         );
 
@@ -106,7 +110,11 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_OUTER_LINK,
             Article.ARTICLE_PUBLISH_TIME,
             Article.ARTICLE_TOP_END_TIME,
-            Article.ARTICLE_SORT
+            Article.ARTICLE_SORT,
+            Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_TAGS,
+            Article.ARTICLE_SOURCE,
+            Article.ARTICLE_WEIGHT
         );
 
         Boolean result = articleService.save(body, body.getSystemRequestUserId());
@@ -135,6 +143,10 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_PUBLISH_TIME,
             Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
+            Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_TAGS,
+            Article.ARTICLE_SOURCE,
+            Article.ARTICLE_WEIGHT,
             Article.SYSTEM_VERSION
         );
 

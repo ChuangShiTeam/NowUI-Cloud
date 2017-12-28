@@ -69,6 +69,15 @@ public class Article extends BaseEntity {
     public static final String ARTICLE_AUTHOR = "articleAuthor";
     
     /**
+     * 文章来源
+     */
+    @TableField
+    @NotNull(message = "文章来源不能为空")
+    @Length(max = 200, message = "文章来源长度超出限制")
+    private String articleSource;
+    public static final String ARTICLE_SOURCE = "articleSource";
+    
+    /**
      * 文章封面
      */
     @TableField
@@ -93,6 +102,15 @@ public class Article extends BaseEntity {
     @NotNull(message = "文章内容不能为空")
     private String articleContent;
     public static final String ARTICLE_CONTENT = "articleContent";
+    
+    /**
+     * 文章标签
+     */
+    @TableField
+    @NotNull(message = "文章标签不能为空")
+    @Length(max = 250, message = "文章标签长度超出限制")
+    private String articleTags;
+    public static final String ARTICLE_TAGS = "articleTags";
     
     /**
      * 文章关键字
@@ -159,6 +177,23 @@ public class Article extends BaseEntity {
     @NotNull(message = "文章是否草稿不能为空")
     private Boolean articleIsDraft;
     public static final String ARTICLE_IS_DRAFT = "articleIsDraft";
+    
+    /**
+     * 文章权重
+     */
+    @TableField
+    @Length(max = 11, message = "文章权重长度超出限制")
+    @NotNull(message = "文章权重不能为空")
+    private Integer articleWeight;
+    public static final String ARTICLE_WEIGHT = "articleWeight";
+    
+    /**
+     * 文章是否需要审核
+     */
+    @TableField
+    @NotNull(message = "文章是否需要审核不能为空")
+    private Boolean articleIsRequireAudit;
+    public static final String ARTICLE_IS_REQUIRE_AUDIT = "articleIsRequireAudit";
     
     /**
      * 文章排序
@@ -303,6 +338,38 @@ public class Article extends BaseEntity {
     
     public void setArticleSort(Integer articleSort) {
         put(ARTICLE_SORT, articleSort);
+    }
+    
+    public String getArticleSource() {
+        return getString(ARTICLE_SOURCE);
+    }
+
+    public void setArticleSource(String articleSource) {
+        put(ARTICLE_SOURCE, articleSource);
+    }
+
+    public String getArticleTags() {
+        return getString(ARTICLE_TAGS);
+    }
+
+    public void setArticleTags(String articleTags) {
+        put(ARTICLE_TAGS, articleTags);
+    }
+
+    public Integer getArticleWeight() {
+        return getInteger(ARTICLE_WEIGHT);
+    }
+
+    public void setArticleWeight(Integer articleWeight) {
+        put(ARTICLE_WEIGHT, articleWeight);
+    }
+
+    public Boolean getArticleIsRequireAudit() {
+        return getBoolean(ARTICLE_IS_REQUIRE_AUDIT);
+    }
+
+    public void setArticleIsRequireAudit(Boolean articleIsRequireAudit) {
+        put(ARTICLE_IS_REQUIRE_AUDIT, articleIsRequireAudit);
     }
 
 }

@@ -31,10 +31,10 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     @Override
     public Integer adminCount(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {
         Integer count = count(
-                new EntityWrapper<AppConfig>()
+                new BaseWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
-                        .eq( AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .eq(AppConfig.CONFIG_KEY, configKey)
+                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .eqAllowEmpty(AppConfig.CONFIG_KEY, configKey)
                         .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
         );
@@ -46,10 +46,9 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
             Integer m, Integer n) {
         List<AppConfig> appConfigList = list(
                 new BaseWrapper<AppConfig>()
-                        .setSqlSelect(AppConfig.CONFIG_ID, AppConfig.CONFIG_CATEGORY_ID)
                         .eq(AppConfig.APP_ID, appId)
                         .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .eq(AppConfig.CONFIG_KEY, configKey)
+                        .eqAllowEmpty(AppConfig.CONFIG_KEY, configKey)
                         .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME)),
@@ -57,7 +56,6 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
                         n
         );
         for (AppConfig appConfig : appConfigList) {
-            appConfig.putAll(find(appConfig.getConfigId()));
             appConfig.put(AppConfigCategory.CONFIG_CATEGORY_NAME, appConfigCategoryService.find(appConfig.getConfigCategoryId()).getConfigCategoryName());
         }
         return appConfigList;

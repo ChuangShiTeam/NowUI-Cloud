@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,22 +34,21 @@ public class ArticleCategoryAdminController extends BaseController {
     @Autowired
     private ArticleCategoryService articleCategoryService;
     
-    @ApiOperation(value = "文章分类分页列表")
+    @ApiOperation(value = "文章分类树形列表")
     @RequestMapping(value = "/article/category/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_NAME, 
+            ArticleCategory.ARTICLE_CATEGORY_NAME,
             ArticleCategory.PAGE_INDEX, 
             ArticleCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryParentId(), body.getArticleCategoryName());
-        List<ArticleCategory> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryParentId(), body.getArticleCategoryName(), body.getM(), body.getN());
+        Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryName());
+        List<Map<String, Object>> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
 
-        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, ArticleCategory.ARTICLE_CATEGORY_NAME);
+        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
         return renderJson(resultTotal, resultList);
     }
@@ -58,7 +60,14 @@ public class ArticleCategoryAdminController extends BaseController {
 
         ArticleCategory result = articleCategoryService.find(body.getArticleCategoryId());
 
-        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, ArticleCategory.SYSTEM_VERSION);
+        validateResponse(
+                ArticleCategory.ARTICLE_CATEGORY_ID, 
+                ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
+                ArticleCategory.ARTICLE_CATEGORY_NAME, 
+                ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
+                ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
+                ArticleCategory.ARTICLE_CATEGORY_SORT, 
+                ArticleCategory.SYSTEM_VERSION);
 
         return renderJson(result);
     }
@@ -74,7 +83,26 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
             ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION
         );
+        
+        String articleCategoryParentPath = "";
 
+        if (Util.isNullOrEmpty(body.getArticleCategoryParentId())) {
+
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(body.getArticleCategoryId());
+
+            articleCategoryParentPath = jsonArray.toJSONString();
+        } else {
+            ArticleCategory parent = articleCategoryService.find(body.getArticleCategoryParentId());
+
+            JSONArray jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
+            jsonArray.add(parent.getArticleCategoryId());
+
+            articleCategoryParentPath = jsonArray.toJSONString();
+        }
+        
+        body.setArticleCategoryParentPath(articleCategoryParentPath);
+        
         Boolean result = articleCategoryService.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);

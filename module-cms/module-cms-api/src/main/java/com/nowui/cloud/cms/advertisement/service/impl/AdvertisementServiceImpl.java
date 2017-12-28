@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.mapper.AdvertisementMapper;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
-import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
@@ -25,8 +23,8 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
 
     @Override
     public Integer adminCount(String appId, String advertisementCategoryCode, String advertisementTitle) {
-        Integer count = mapper.selectCount(
-                new EntityWrapper<Advertisement>()
+        Integer count = count(
+                new BaseWrapper<Advertisement>()
                         .eq(Advertisement.APP_ID, appId)
                         .like(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
                         .like(Advertisement.ADEVERTISEMENT_TITLE, advertisementTitle)
@@ -38,20 +36,17 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
     @Override
     public List<Advertisement> adminList(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m,
             Integer n) {
-        List<Advertisement> advertisementList = mapper.selectPage(
-                new Page<ArticleCategory>(m, n),
-                new EntityWrapper<Advertisement>()
-                        .setSqlSelect(Advertisement.ADEVERTISEMENT_ID)
+        List<Advertisement> advertisementList = list(
+                new BaseWrapper<Advertisement>()
                         .eq(Advertisement.APP_ID, appId)
                         .like(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
                         .like(Advertisement.ADEVERTISEMENT_TITLE, advertisementTitle)
                         .eq(Advertisement.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Advertisement.SYSTEM_CREATE_TIME))
+                ,m
+                ,n
         );
         
-        for (Advertisement advertisement : advertisementList) {
-            advertisement.putAll(find(advertisement.getAdvertisementId()));
-        }
         return advertisementList;
     }
     
