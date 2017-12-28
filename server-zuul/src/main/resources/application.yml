@@ -20,6 +20,10 @@ zuul:
       path: /app/**
       serviceId: module-base
       stripPrefix: false
+    code:
+      path: /code/**
+      serviceId: module-base
+      stripPrefix: false
     advertisement:
       path: /advertisement/**
       serviceId: module-cms

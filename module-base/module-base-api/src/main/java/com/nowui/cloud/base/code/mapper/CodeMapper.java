@@ -3,6 +3,8 @@ package com.nowui.cloud.base.code.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.code.entity.Code;
+import com.nowui.cloud.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -11,10 +13,10 @@ import org.apache.ibatis.annotations.Param;
  * @author marcus
  *
  */
-public interface CodeMapper {
+public interface CodeMapper extends BaseMapper<Code> {
     
-    public List<Map<String, Object>> selectTableListByTableSchema(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
+    List<Code> tableSchemaList(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
     
-    public List<Map<String, Object>> selectTableFieldListByTableName(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
+    List<Code> tableNameList(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
 
 }

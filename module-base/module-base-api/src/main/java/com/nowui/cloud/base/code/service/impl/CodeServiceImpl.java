@@ -3,10 +3,12 @@ package com.nowui.cloud.base.code.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nowui.cloud.base.code.entity.Code;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 import com.nowui.cloud.base.code.mapper.CodeMapper;
 import com.nowui.cloud.base.code.service.CodeService;
+import org.springframework.stereotype.Service;
 
 /**
  * 代码生成service实现
@@ -14,20 +16,17 @@ import com.nowui.cloud.base.code.service.CodeService;
  * @author marcus
  *
  */
-//@Service
-public class CodeServiceImpl implements CodeService {
-    
-    @Autowired
-    private CodeMapper codeMapper;
+@Service
+public class CodeServiceImpl extends BaseServiceImpl<CodeMapper, Code> implements CodeService {
 
     @Override
-    public List<Map<String, Object>> selectTableListByTableSchema(String tableSchema, String tableName) {
-        return codeMapper.selectTableListByTableSchema(tableSchema, tableName);
+    public List<Code> tableSchemaList(String tableSchema, String tableName) {
+        return mapper.tableSchemaList(tableSchema, tableName);
     }
 
     @Override
-    public List<Map<String, Object>> selectTableFieldListByTableName(String tableSchema, String tableName) {
-        return codeMapper.selectTableFieldListByTableName(tableSchema, tableName);
+    public List<Code> tableNameList(String tableSchema, String tableName) {
+        return mapper.tableNameList(tableSchema, tableName);
     }
 
 }
