@@ -15,7 +15,7 @@ public class BaseWrapper<T> extends Wrapper<T> {
             return this.isWhere != null ? (this.isWhere ? sqlWhere : sqlWhere.replaceFirst("WHERE", this.AND_OR)) : sqlWhere.replaceFirst("WHERE", this.AND_OR);
         }
     }
-    
+
     @Override
     public Wrapper<T> eq(String column, Object params) {
         return eq(!Util.isNullOrEmpty(params), column, params);

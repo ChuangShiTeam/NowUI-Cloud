@@ -1,11 +1,15 @@
 package com.nowui.cloud.base.code.controller.admin;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.code.entity.Code;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.util.FileUtil;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -55,42 +59,63 @@ public class CodeController extends BaseController {
 
         List<Code> resultList = codeService.tableNameList(body.getTableSchema(), body.getTableName());
 
-        validateResponse("column_name", "column_key", "character_maximum_length", "column_type", "data_type", "column_comment");
+        validateResponse(Code.COLUMN_NAME, Code.COLUMN_KEY, Code.CHARACTER_MAXIMUM_LENGTH, Code.COLUMN_TYPE, Code.DATA_TYPE, Code.COLUMN_COMMENT);
 
         return renderJson(resultList);
     }
 
     @ApiOperation(value = "数据库表映射代码生成")
     @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> generate(@RequestBody JSONObject jsonObject) {
-        //validateRequest(jsonObject, "tableName", "tableComment", "packageName", "tableFieldList", "author");
+    public Map<String, Object> generate(@RequestBody Code body) {
+        validateRequest(body, Code.TABLE_NAME, Code.COLUMN_LIST);
 
-        String tableName = jsonObject.getString("tableName");
-        String tableComment = jsonObject.getString("tableComment");
-        String packageName = jsonObject.getString("packageName");
-        String author = jsonObject.getString("author");
-        JSONArray jsonArray = jsonObject.getJSONArray("tableFieldList");
+        try {
+            String path = CodeController.class.getResource("/").toURI().getPath() + Constant.PUBLISH;
+            String packagePath = path + "/" + body.getPackageName();
+            String entityPath = packagePath + "/entity";
 
+            FileUtil.createPath(path);
+            FileUtil.createPath(packagePath);
+            FileUtil.createPath(entityPath);
+
+            List<Code> codeList = JSONArray.parseArray(body.getColumnList(), Code.class);
+
+            Map<String, Object> templateMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+
+            for (Code code : codeList) {
+
+            }
+
+//            write(templateMap,"sql.template", entityPath + "/sql/" + first_upper_model_name_without_underline + ".sql");
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+
+            throw new RuntimeException("代码生成发生错误");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+
+//            throw new RuntimeException("代码生成发生错误");
+        }
 
         return renderJson(true);
     }
 
 
-    @ApiOperation(value = "数据库表字段列表")
-    @RequestMapping(value = "/code/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test() {
+    private void write(Map<String, Object> templateMap, String templateName, String filePath) {
         try {
             ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("template");
             Configuration cfg = Configuration.defaultConfiguration();
             GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
-            Template template = gt.getTemplate("/entity.txt");
+            Template template = gt.getTemplate(templateName);
+
+            template.binding(templateMap);
 
             StringWriter writer = new StringWriter();
             template.renderTo(writer);
 
             OutputStreamWriter outWriter = new OutputStreamWriter(
-                    new FileOutputStream("/Users/zhongyongqiang/Documents/Publish/aaaaaa.txt", false), "UTF-8");
-            System.out.println(writer.toString());
+                    new FileOutputStream(filePath, false), "UTF-8");
 
             Writer out = new BufferedWriter(outWriter);
             out.write(writer.toString());
@@ -99,8 +124,6 @@ public class CodeController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return "Hello World 123";
     }
 
 }

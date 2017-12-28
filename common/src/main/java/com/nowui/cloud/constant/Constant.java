@@ -17,6 +17,8 @@ public class Constant {
 
     public static final String MESSAGE = "message";
 
+    public static final String PUBLISH = "publish";
+
     public static final int DEFAULT_LOAD_FACTOR = 1;
 
     static {

@@ -43,6 +43,63 @@ public class Code extends BaseEntity {
     private String tableComment;
     public static final String TABLE_COMMENT = "tableComment";
 
+    /**
+     * 列名称
+     */
+    @TableField(exist = false)
+    private String columnName;
+    public static final String COLUMN_NAME = "columnName";
+
+    /**
+     * 列关键字
+     */
+    @TableField(exist = false)
+    private String columnKey;
+    public static final String COLUMN_KEY = "columnKey";
+
+    /**
+     * 列长度
+     */
+    @TableField(exist = false)
+    private String characterMaximumLength;
+    public static final String CHARACTER_MAXIMUM_LENGTH = "characterMaximumLength";
+
+    /**
+     * 列类型
+     */
+    @TableField(exist = false)
+    private String columnType;
+    public static final String COLUMN_TYPE = "columnType";
+
+    /**
+     * 数据类型
+     */
+    @TableField(exist = false)
+    private String dataType;
+    public static final String DATA_TYPE = "dataType";
+
+    /**
+     * 列说明
+     */
+    @TableField(exist = false)
+    private String columnComment;
+    public static final String COLUMN_COMMENT = "columnComment";
+
+    /**
+     * 数据列表
+     */
+    @TableField(exist = false)
+    @NotNull(message = "数据列表不能为空")
+    private String columnList;
+    public static final String COLUMN_LIST = "columnList";
+
+    /**
+     * 命名空间
+     */
+    @TableField(exist = false)
+    private String packageName;
+    public static final String PACKAGE_NAME = "packageName";
+
     public String getTableSchema() {
         return getString(TABLE_SCHEMA);
     }
@@ -75,4 +132,69 @@ public class Code extends BaseEntity {
     public void setTableComment(String tableComment) {
         put(TABLE_COMMENT, tableComment);
     }
+
+    public String getColumnName() {
+        return getString(COLUMN_NAME);
+    }
+
+    public void setColumnName(String columnName) {
+        put(COLUMN_NAME, columnName);
+    }
+
+    public String getColumnKey() {
+        return getString(COLUMN_KEY);
+    }
+
+    public void setColumnKey(String columnKey) {
+        put(COLUMN_KEY, columnKey);
+    }
+
+    public String getCharacterMaximumLength() {
+        return getString(CHARACTER_MAXIMUM_LENGTH);
+    }
+
+    public void setCharacterMaximumLength(String characterMaximumLength) {
+        put(CHARACTER_MAXIMUM_LENGTH, characterMaximumLength);
+    }
+
+    public String getColumnType() {
+        return getString(COLUMN_TYPE);
+    }
+
+    public void setColumnType(String columnType) {
+        put(COLUMN_TYPE, columnType);
+    }
+
+    public String getDataType() {
+        return getString(DATA_TYPE);
+    }
+
+    public void setDataType(String dataType) {
+        put(DATA_TYPE, dataType);
+    }
+
+    public String getColumnComment() {
+        return getString(COLUMN_COMMENT);
+    }
+
+    public void setColumnComment(String columnComment) {
+        put(COLUMN_COMMENT, columnComment);
+    }
+
+    public String getColumnList() {
+        return getString(COLUMN_LIST);
+    }
+
+    public void setColumnList(String columnList) {
+        put(COLUMN_LIST, columnList);
+    }
+
+    public String getPackageName() {
+        return getString(PACKAGE_NAME);
+    }
+
+    public void setPackageName(String packageName) {
+        put(PACKAGE_NAME, packageName);
+    }
+
 }

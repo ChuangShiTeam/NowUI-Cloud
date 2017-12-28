@@ -40,6 +40,11 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
                 n
         );
 
+        for(Product product: productList) {
+            //image list
+            //product
+        }
+
         return productList;
     }
 
