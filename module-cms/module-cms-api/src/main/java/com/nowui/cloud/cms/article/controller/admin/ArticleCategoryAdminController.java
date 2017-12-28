@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 
 import io.swagger.annotations.Api;
@@ -31,22 +33,21 @@ public class ArticleCategoryAdminController extends BaseController {
     @Autowired
     private ArticleCategoryService articleCategoryService;
     
-    @ApiOperation(value = "文章分类分页列表")
+    @ApiOperation(value = "文章分类树形列表")
     @RequestMapping(value = "/article/category/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_NAME, 
+            ArticleCategory.ARTICLE_CATEGORY_NAME,
             ArticleCategory.PAGE_INDEX, 
             ArticleCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryParentId(), body.getArticleCategoryName());
-        List<ArticleCategory> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryParentId(), body.getArticleCategoryName(), body.getM(), body.getN());
+        Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryName());
+        List<Map<String, Object>> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
 
-        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, ArticleCategory.ARTICLE_CATEGORY_NAME);
+        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
 
         return renderJson(resultTotal, resultList);
     }

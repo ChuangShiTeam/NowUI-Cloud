@@ -16,8 +16,7 @@ public class BaseWrapper<T> extends Wrapper<T> {
         }
     }
     
-    @Override
-    public Wrapper<T> eq(String column, Object params) {
+    public Wrapper<T> eqAllowEmpty(String column, Object params) {
         return eq(!Util.isNullOrEmpty(params), column, params);
     }
 }

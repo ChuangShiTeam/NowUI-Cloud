@@ -46,6 +46,16 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
 
         return list;
     }
+    
+    public List<T> list(@Param("ew") Wrapper<T> var1) {
+        List<T> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
+
+        for (T baseEntity : list) {
+            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
+        }
+
+        return list;
+    }
 
     public T find(String id) {
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
