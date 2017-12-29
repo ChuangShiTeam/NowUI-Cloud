@@ -73,12 +73,50 @@ public class CodeController extends BaseController {
         try {
             String path = CodeController.class.getResource("/").toURI().getPath();
             path = new File(path).getParentFile().getCanonicalPath() + "/" + Constant.PUBLISH;
-            String packagePath = path + "/" + body.getPackageName();
-            String entityPath = packagePath + "/entity";
+            String apiPath = path + "/api";
+            String apiPackagePath = apiPath + "/" + body.getPackageName();
+            String sysPath = path + "/sys";
+            String sysPackagePath = sysPath + "/"  + body.getPackageName();
+            String webPath = path + "/web";
+            String webPackagePath = webPath + "/"  + body.getPackageName();
+            String entityPath = sysPackagePath + "/entity";
+            String rpcPath = sysPackagePath + "/rpc";
+            String rpcFallbackPath = rpcPath + "/fallback";
+            String sqlPath = apiPackagePath + "/sql";
+            String servicePath = apiPackagePath + "/service";
+            String serviceImplPath = servicePath + "/impl";
+            String controllerPath = apiPackagePath + "/controller";
+            String controllerAdminPath = controllerPath + "/admin";
+            String controllerDesktopPath = controllerPath + "/desktop";
+            String controllerMobilePath = controllerPath + "/mobile";
+            String controllerSystemPath = controllerPath + "/system";
+            String storePath = webPackagePath + "/store";
+            String routerPath = webPackagePath + "/router";
+            String viewPath = webPackagePath + "/view";
+            String viewPackagePath = viewPath + "/" + body.getPackageName();
 
             FileUtil.createPath(path);
-            FileUtil.createPath(packagePath);
+            FileUtil.createPath(apiPath);
+            FileUtil.createPath(apiPackagePath);
+            FileUtil.createPath(sysPath);
+            FileUtil.createPath(sysPackagePath);
+            FileUtil.createPath(webPath);
+            FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
+            FileUtil.createPath(rpcPath);
+            FileUtil.createPath(rpcFallbackPath);
+            FileUtil.createPath(sqlPath);
+            FileUtil.createPath(servicePath);
+            FileUtil.createPath(serviceImplPath);
+            FileUtil.createPath(controllerPath);
+            FileUtil.createPath(controllerAdminPath);
+            FileUtil.createPath(controllerDesktopPath);
+            FileUtil.createPath(controllerMobilePath);
+            FileUtil.createPath(controllerSystemPath);
+            FileUtil.createPath(storePath);
+            FileUtil.createPath(routerPath);
+            FileUtil.createPath(viewPath);
+            FileUtil.createPath(viewPackagePath);
 
             List<Code> codeList = JSONArray.parseArray(body.getColumnList(), Code.class);
 
@@ -124,7 +162,9 @@ public class CodeController extends BaseController {
                 code.setDataType(dataType.toUpperCase());
                 code.put("upperColumnName", columnName.toUpperCase());
 
-                columnList.add(code);
+                if (!code.getColumnName().startsWith("system")) {
+                    columnList.add(code);
+                }
 
                 if (code.getBoolean("isSearch")) {
                     searchColumnList.add(code);
@@ -144,8 +184,10 @@ public class CodeController extends BaseController {
                 firstUpperTableId = tableId.substring(0, 1).toUpperCase() + tableId.substring(1);
             }
             String upperTableId = tableId.toUpperCase();
+            String upperWithUnderlineTableId = insertUnderline(tableId);
 
             Map<String, Object> templateMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+            templateMap.put("moduleName", body.getModuleName());
             templateMap.put("packageName", body.getPackageName());
             templateMap.put("tableName", body.getTableName());
             templateMap.put("author", body.getAuthor());
@@ -153,6 +195,7 @@ public class CodeController extends BaseController {
             templateMap.put("tableId", tableId);
             templateMap.put("firstUpperTableId", firstUpperTableId);
             templateMap.put("upperTableId", upperTableId);
+            templateMap.put("upperWithUnderlineTableId", upperWithUnderlineTableId);
             templateMap.put("lowerEntityName", lowerEntityName);
             templateMap.put("urlEntityName", urlEntityName);
             templateMap.put("upperEntityName", upperEntityName);
@@ -166,6 +209,19 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
+            write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
+            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
+            write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.java");
+            write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");
+            write(templateMap, "serviceImpl.txt", serviceImplPath + "/" + firstUpperWithoutUnderlineEntityName + "ServiceImpl.java");
+            write(templateMap, "controllerAdmin.txt", controllerAdminPath + "/" + firstUpperWithoutUnderlineEntityName + "AdminController.java");
+            write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
+            write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
+            write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
+            write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
+            write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
+            write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");
+            write(templateMap, "detail.txt", viewPackagePath + "/" + "Detail.js");
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -193,8 +249,6 @@ public class CodeController extends BaseController {
                 sb.append(String.valueOf(chr).toUpperCase());
             }
         }
-
-        System.out.println(sb.toString());
 
         return sb.toString();
     }

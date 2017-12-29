@@ -1,0 +1,21 @@
+const initialState = {
+    <%for(column in searchColumnList){%>
+    ${column.columnName}: '',
+    <%}%>
+    total: 0,
+    list: [],
+    pageIndex: 1,
+    pageSize: 10
+};
+
+function ${lowerEntityName}(state = initialState, action) {
+    switch (action.type) {
+        case '${firstLowerEntityName}':
+            return Object.assign({}, state, action.data);
+
+        default :
+            return state;
+    }
+}
+
+export default ${lowerEntityName};

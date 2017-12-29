@@ -22,10 +22,17 @@ public class BaseWrapper<T> extends Wrapper<T> {
                     : sqlWhere.replaceFirst("WHERE", this.AND_OR);
         }
     }
-    
+
     public BaseWrapper<T> eqAllowEmpty(String column, Object params) {
         if (!Util.isNullOrEmpty(params)) {
             super.eq(column, params);
+        }
+        return this;
+    }
+
+    public BaseWrapper<T> likeAllowEmpty(String column, String value) {
+        if (!Util.isNullOrEmpty(column)) {
+            super.like(column, value);
         }
         return this;
     }

@@ -24,12 +24,21 @@ public class ProductAdminController extends BaseController {
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Product body) {
-        validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME, Product.PAGE_INDEX, Product.PAGE_SIZE);
+        validateRequest(
+                body,
+                Product.APP_ID,
+                Product.PRODUCT_NAME,
+                Product.PAGE_INDEX,
+                Product.PAGE_SIZE
+        );
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
         List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
 
-        validateResponse(Product.PRODUCT_ID, Product.PRODUCT_NAME);
+        validateResponse(
+                Product.PRODUCT_ID,
+                Product.PRODUCT_NAME
+        );
 
         return renderJson(resultTotal, resultList);
     }
