@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>module-shop-api</module>
-        <module>module-shop-rpc</module>
+        <module>module-shop-sys</module>
     </modules>
 
 </project>

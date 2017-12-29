@@ -5,14 +5,14 @@ import NDetail from '../../layout/NDetail';
 export default connect(function (state) {
     return {
         id: '${lowerEntityName}',
-        title: '${lowerEntityName}表单',
+        title: '${tableComment}表单',
         primaryKey: '${tableId}',
         store: state.${lowerEntityName},
         breadcrumbList: [{
-            name: '${lowerEntityName}管理',
+            name: '${tableComment}管理',
             url: '/${urlEntityName}/index'
         }, {
-            name: '${lowerEntityName}信息',
+            name: '${tableComment}信息',
             url: ''
         }],
         buttonList: [{

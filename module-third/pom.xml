@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>module-third-api</module>
-        <module>module-third-rpc</module>
+        <module>module-third-sys</module>
     </modules>
 
 

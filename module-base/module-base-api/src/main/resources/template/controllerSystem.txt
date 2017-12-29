@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * ${tableComment}系统端控制器
+ *
  * @author ${author}
+ *
+ * ${date}
  */
 @Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}系统端接口管理")
 @RestController

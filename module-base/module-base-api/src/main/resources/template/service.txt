@@ -5,7 +5,11 @@ import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperEntityNam
 import java.util.List;
 
 /**
+ * ${tableComment}业务接口
+ *
  * @author ${author}
+ *
+ * ${date}
  */
 public interface ${firstUpperEntityName}Service extends BaseService<${firstUpperEntityName}> {
 

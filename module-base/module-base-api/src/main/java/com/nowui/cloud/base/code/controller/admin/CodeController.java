@@ -2,7 +2,9 @@ package com.nowui.cloud.base.code.controller.admin;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class CodeController extends BaseController {
 
         return renderJson(resultList.size(), resultList);
     }
-
+ 
     @ApiOperation(value = "数据库表字段列表")
     @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> fieldlLst(@RequestBody Code body) {
@@ -68,7 +70,7 @@ public class CodeController extends BaseController {
     @ApiOperation(value = "数据库表映射代码生成")
     @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> generate(@RequestBody Code body) {
-        validateRequest(body, Code.TABLE_NAME, Code.AUTHOR, Code.COLUMN_LIST);
+        validateRequest(body, Code.TABLE_COMMENT, Code.TABLE_NAME, Code.AUTHOR, Code.COLUMN_LIST);
 
         try {
             String path = CodeController.class.getResource("/").toURI().getPath();
@@ -83,6 +85,7 @@ public class CodeController extends BaseController {
             String rpcPath = sysPackagePath + "/rpc";
             String rpcFallbackPath = rpcPath + "/fallback";
             String sqlPath = apiPackagePath + "/sql";
+            String mapperPath = apiPackagePath + "/mapper";
             String servicePath = apiPackagePath + "/service";
             String serviceImplPath = servicePath + "/impl";
             String controllerPath = apiPackagePath + "/controller";
@@ -106,6 +109,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
+            FileUtil.createPath(mapperPath);
             FileUtil.createPath(servicePath);
             FileUtil.createPath(serviceImplPath);
             FileUtil.createPath(controllerPath);
@@ -187,10 +191,12 @@ public class CodeController extends BaseController {
             String upperWithUnderlineTableId = insertUnderline(tableId);
 
             Map<String, Object> templateMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+            templateMap.put("tableComment", body.getTableComment());
             templateMap.put("moduleName", body.getModuleName());
             templateMap.put("packageName", body.getPackageName());
             templateMap.put("tableName", body.getTableName());
             templateMap.put("author", body.getAuthor());
+            templateMap.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             templateMap.put("upperTableName", upperTableName);
             templateMap.put("tableId", tableId);
             templateMap.put("firstUpperTableId", firstUpperTableId);
@@ -212,6 +218,7 @@ public class CodeController extends BaseController {
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
             write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.java");
+            write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
             write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");
             write(templateMap, "serviceImpl.txt", serviceImplPath + "/" + firstUpperWithoutUnderlineEntityName + "ServiceImpl.java");
             write(templateMap, "controllerAdmin.txt", controllerAdminPath + "/" + firstUpperWithoutUnderlineEntityName + "AdminController.java");

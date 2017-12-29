@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.nowui.cloud</groupId>
-            <artifactId>module-shop-rpc</artifactId>
+            <artifactId>module-shop-sys</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

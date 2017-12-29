@@ -11,7 +11,7 @@ export default connect(function (state) {
         store: state.${lowerEntityName},
         listUrl: '/${urlEntityName}/admin/list',
         breadcrumbList: [{
-            name: '${lowerEntityName}管理',
+            name: '${tableComment}管理',
             url: ''
         }],
         buttonList: [{

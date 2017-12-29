@@ -5,7 +5,11 @@ import com.nowui.cloud.shop.product.rpc.${firstUpperEntityName}Rpc;
 import org.springframework.stereotype.Component;
 
 /**
+ * ${tableComment}服务调用异常处理
+ *
  * @author ${author}
+ *
+ * ${date}
  */
 @Component(value = "${firstLowerEntityName}RpcFallback")
 public class ${firstUpperEntityName}RpcFallback implements ${firstUpperEntityName}Rpc {

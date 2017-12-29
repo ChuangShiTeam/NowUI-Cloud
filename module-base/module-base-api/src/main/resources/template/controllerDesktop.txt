@@ -5,7 +5,11 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * ${tableComment}桌面端控制器
+ *
  * @author ${author}
+ *
+ * ${date}
  */
 @Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}桌面端接口管理")
 @RestController
