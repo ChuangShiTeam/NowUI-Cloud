@@ -21,7 +21,7 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
         Integer count = count(
                 new BaseWrapper<Product>()
                         .eq(Product.APP_ID, appId)
-                        .like(Product.PRODUCT_NAME, productName)
+                        .likeAllowEmpty(Product.PRODUCT_NAME, productName)
                         .eq(Product.SYSTEM_STATUS, true)
         );
         return count;
@@ -31,7 +31,6 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
     public List<Product> adminList(String appId, String productName, Integer m, Integer n) {
         List<Product> productList = list(
                 new BaseWrapper<Product>()
-                        .setSqlSelect("imageId")
                         .eq(Product.APP_ID, appId)
                         .like(Product.PRODUCT_NAME, productName)
                         .eq(Product.SYSTEM_STATUS, true)

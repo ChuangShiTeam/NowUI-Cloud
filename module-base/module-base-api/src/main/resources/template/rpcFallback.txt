@@ -1,0 +1,13 @@
+package com.nowui.cloud.${moduleName}.${packageName}.rpc.fallback;
+
+import com.nowui.cloud.shop.product.entity.${firstUpperEntityName};
+import com.nowui.cloud.shop.product.rpc.${firstUpperEntityName}Rpc;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author ${author}
+ */
+@Component(value = "${firstLowerEntityName}RpcFallback")
+public class ${firstUpperEntityName}RpcFallback implements ${firstUpperEntityName}Rpc {
+
+}

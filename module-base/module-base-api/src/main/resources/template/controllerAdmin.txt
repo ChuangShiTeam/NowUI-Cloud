@@ -1,0 +1,120 @@
+package com.nowui.cloud.${moduleName}.${packageName}.controller.admin;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperEntityName};
+import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperEntityName}Service;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author ${author}
+ */
+@Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}管理端接口管理")
+@RestController
+public class ${firstUpperEntityName}AdminController extends BaseController {
+
+    @Autowired
+    private ${firstUpperEntityName}Service ${firstLowerEntityName}Service;
+
+    @ApiOperation(value = "列表")
+    @RequestMapping(value = "/${urlEntityName}/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> list(@RequestBody ${firstUpperEntityName} body) {
+        validateRequest(
+                body,
+                ${firstUpperEntityName}.APP_ID,
+                <%for(column in searchColumnList){%>
+                ${firstUpperEntityName}.${column.upperWithUnderlineColumnName},
+                <%}%>
+                ${firstUpperEntityName}.PAGE_INDEX,
+                ${firstUpperEntityName}.PAGE_SIZE
+        );
+
+        Integer resultTotal = ${firstLowerEntityName}Service.adminCount(body.getAppId(), body.getProductName());
+        List<Product> resultList = ${firstLowerEntityName}Service.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
+
+        validateResponse(
+                ${firstUpperEntityName}.${upperWithUnderlineTableId},
+                <%for(column in listColumnList){%>
+                ${firstUpperEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                <%}%>
+        );
+
+        return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "信息")
+    @RequestMapping(value = "/${urlEntityName}/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(@RequestBody ${firstUpperEntityName} body) {
+        validateRequest(
+                body,
+                ${firstUpperEntityName}.APP_ID,
+                ${firstUpperEntityName}.${upperWithUnderlineTableId}
+        );
+
+        Product result = ${firstLowerEntityName}Service.find(body.get${firstUpperTableId}());
+
+        validateResponse(
+                ${firstUpperEntityName}.${upperWithUnderlineTableId},
+                <%for(column in detailColumnList){%>
+                ${firstUpperEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                <%}%>
+        );
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "新增")
+    @RequestMapping(value = "/${urlEntityName}/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> save(@RequestBody ${firstUpperEntityName} body) {
+        validateRequest(
+                body,
+                ${firstUpperEntityName}.APP_ID,
+                <%for(column in detailColumnList){%>
+                ${firstUpperEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                <%}%>
+        );
+
+        Boolean result = ${firstLowerEntityName}Service.save(body, body.getSystemRequestUserId());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "修改")
+    @RequestMapping(value = "/${urlEntityName}/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> update(@RequestBody ${firstUpperEntityName} body) {
+        validateRequest(
+                body,
+                ${firstUpperEntityName}.${upperWithUnderlineTableId},
+                ${firstUpperEntityName}.APP_ID,
+                <%for(column in detailColumnList){%>
+                ${firstUpperEntityName}.${column.upperWithUnderlineColumnName},
+                <%}%>
+                ${firstUpperEntityName}.SYSTEM_VERSION
+        );
+
+        Boolean result = ${firstLowerEntityName}Service.update(body, body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "删除")
+    @RequestMapping(value = "/${urlEntityName}/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> delete(@RequestBody ${firstUpperEntityName} body) {
+        validateRequest(
+                body,
+                ${firstUpperEntityName}.${upperWithUnderlineTableId},
+                ${firstUpperEntityName}.APP_ID,
+                ${firstUpperEntityName}.SYSTEM_VERSION
+        );
+
+        Boolean result = ${firstLowerEntityName}Service.delete(body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+}

@@ -1,0 +1,50 @@
+import {connect} from 'react-redux';
+
+import NIndex from '../../layout/NIndex';
+
+export default connect(function (state) {
+    return {
+        id: '${lowerEntityName}',
+        type: 'TABLE',
+        title: '商品信息',
+        primaryKey: '${tableId}',
+        store: state.${lowerEntityName},
+        listUrl: '/${urlEntityName}/admin/list',
+        breadcrumbList: [{
+            name: '${lowerEntityName}管理',
+            url: ''
+        }],
+        buttonList: [{
+            name: '搜索',
+            icon: 'search',
+            type: 'SEARCH',
+            isLoad: true,
+            isPrimary: true
+        }, {
+            name: '新增',
+            icon: 'plus-circle',
+            type: 'ADD',
+            pathname: '/product/add'
+        }],
+        searchList: [{
+            <%for(column in searchColumnList){%>
+            <%if(!columnLP.first){%>
+            }, {
+            <%}%>
+            }
+            id: '${column.columnName}',
+            name: '${column.columnComment}',
+            type: 'VARCHAR'
+            <%}%>
+        }],
+        columnList: [{
+            <%for(column in listColumnList){%>
+            <%if(!columnLP.first){%>
+        }, {
+            <%}%>
+            id: '${column.columnName}',
+            name: '${column.columnComment}'
+            <%}%>
+        }]
+    }
+})(NIndex);

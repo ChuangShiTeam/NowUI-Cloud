@@ -1,0 +1,29 @@
+import util from '../common/util';
+
+export default {
+    childRoutes: [{
+        path: '/${urlEntityName}/index',
+        onEnter: util.handleEnter,
+        getComponent(location, cb) {
+            require.ensure([], (require) => {
+                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Index').default);
+            }, '${lowerEntityName}.index');
+        }
+    }, {
+        path: '/${urlEntityName}/add',
+        onEnter: util.handleEnter,
+        getComponent(location, cb) {
+            require.ensure([], (require) => {
+                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Detail').default);
+            }, '${lowerEntityName}.detail');
+        }
+    }, {
+        path: '/${urlEntityName}/edit/:${tableId}',
+        onEnter: util.handleEnter,
+        getComponent(location, cb) {
+            require.ensure([], (require) => {
+                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Detail').default);
+            }, '${lowerEntityName}.detail');
+        }
+    }]
+}

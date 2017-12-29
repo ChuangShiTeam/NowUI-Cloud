@@ -94,6 +94,13 @@ public class Code extends BaseEntity {
     public static final String COLUMN_LIST = "columnList";
 
     /**
+     * 模块名称
+     */
+    @TableField(exist = false)
+    private String moduleName;
+    public static final String MODULE_NAME = "moduleName";
+
+    /**
      * 命名空间
      */
     @TableField(exist = false)
@@ -194,6 +201,14 @@ public class Code extends BaseEntity {
 
     public void setColumnList(String columnList) {
         put(COLUMN_LIST, columnList);
+    }
+
+    public String getModuleName() {
+        return getString(MODULE_NAME);
+    }
+
+    public void setModuleName(String moduleName) {
+        put(MODULE_NAME, moduleName);
     }
 
     public String getPackageName() {

@@ -1,0 +1,19 @@
+package com.nowui.cloud.${moduleName}.${packageName}.controller.system;
+
+import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperEntityName};
+import com.nowui.cloud.${moduleName}.${packageName}.rpc.${firstUpperEntityName}Rpc;
+import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperEntityName}Service;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author ${author}
+ */
+@Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}系统端接口管理")
+@RestController
+public class ${firstUpperEntityName}SystemController implements ${firstUpperEntityName}Rpc {
+
+}

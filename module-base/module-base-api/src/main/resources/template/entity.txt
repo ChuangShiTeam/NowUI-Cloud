@@ -1,4 +1,4 @@
-package com.nowui.cloud.shop.product.entity;
+package com.nowui.cloud.${moduleName}.${packageName}.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -33,9 +33,31 @@ public class ${firstUpperEntityName} extends BaseEntity {
     <%}%>
 
     <%for(column in columnList){%>
+    <%if(column.dataType == "TINYINT"){%>
+    public Boolean get${column.firstUpperColumnName}() {
+        return getBoolean(${column.upperWithUnderlineColumnName});
+    }
+    <%}else if(column.dataType == "INT"){%>
+    public Integer get${column.firstUpperColumnName}() {
+        return getInteger(${column.upperWithUnderlineColumnName});
+    }
+    <%}else if(column.dataType == "DECIMAL"){%>
+    public BigDecimal get${column.firstUpperColumnName}() {
+        return getBigDecimal(${column.upperWithUnderlineColumnName});
+    }
+    <%}else if(column.dataType == "DATETIME"){%>
+    public Date get${column.firstUpperColumnName}() {
+        return getDate(${column.upperWithUnderlineColumnName});
+    }
+    <%}else if(column.dataType == "DATE"){%>
+    public Date get${column.firstUpperColumnName}() {
+        return getDate(${column.upperWithUnderlineColumnName});
+    }
+    <%}else{%>
     public String get${column.firstUpperColumnName}() {
         return getString(${column.upperWithUnderlineColumnName});
     }
+    <%}%>
 
     public void set${column.firstUpperColumnName}(String ${column.columnName}) {
         put(${column.upperWithUnderlineColumnName}, ${column.columnName});

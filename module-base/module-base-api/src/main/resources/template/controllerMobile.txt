@@ -1,0 +1,14 @@
+package com.nowui.cloud.${moduleName}.${packageName}.controller.desktop;
+
+import com.nowui.cloud.controller.BaseController;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author ${author}
+ */
+@Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}移动端接口管理")
+@RestController
+public class ${firstUpperEntityName}MobileController extends BaseController {
+
+}
