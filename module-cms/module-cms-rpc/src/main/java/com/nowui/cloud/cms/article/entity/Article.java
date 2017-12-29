@@ -42,15 +42,6 @@ public class Article extends BaseEntity {
     public static final String APP_ID = "appId";
     
     /**
-     * 文章分类编号
-     */
-    @TableField
-    @NotNull(message = "文章分类编号不能为空")
-    @Length(max = 32, message = "文章分类编号长度超出限制")
-    private String articleCategoryId;
-    public static final String ARTICLE_CATEGORY_ID = "articleCategoryId";
-    
-    /**
      * 文章标题
      */
     @TableField
@@ -163,6 +154,15 @@ public class Article extends BaseEntity {
     public static final String ARTICLE_IS_TOP = "articleIsTop";
     
     /**
+     * 文章置顶级别
+     */
+    @TableField
+    @NotNull(message = "文章置顶级别不能为空")
+    @Length(max = 5, message = "文章置顶级别长度超出限制")
+    private Integer articleTopLevel;
+    public static final String ARTICLE_TOP_LEVEL = "articleTopLevel";
+    
+    /**
      * 文章置顶截止时间
      */
     @TableField
@@ -218,14 +218,6 @@ public class Article extends BaseEntity {
     
     public void setAppId(String appId) {
         put(APP_ID, appId);
-    }
-    
-    public String getArticleCategoryId() {
-        return getString(ARTICLE_CATEGORY_ID);
-    }
-    
-    public void setArticleCategoryId(String articleCategoryId) {
-        put(ARTICLE_CATEGORY_ID, articleCategoryId);
     }
     
     public String getArticleTitle() {
@@ -314,6 +306,14 @@ public class Article extends BaseEntity {
     
     public void setArticleIsTop(Boolean articleIsTop) {
         put(ARTICLE_IS_TOP, articleIsTop);
+    }
+    
+    public Integer getArticleTopLevel() {
+        return getInteger(ARTICLE_TOP_LEVEL);
+    }
+    
+    public void setArticleTopLevel(Integer articleTopLevel) {
+        put(ARTICLE_TOP_LEVEL, articleTopLevel);
     }
     
     public Date getArticleTopEndTime() {

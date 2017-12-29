@@ -19,22 +19,20 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      * 文章统计
      *
      * @param appId 应用编号
-     * @param articleCategoryId 文章分类编号
      * @param articleName 文章名称
      * @return Integer 文章数量
      */
-    Integer adminCount(String appId, String articleCategoryId, String articleName);
+    Integer adminCount(String appId, String articleName);
 
     /**
      * 文章列表
      *
      * @param appId 应用编号
-     * @param articleCategoryId 文章分类编号
      * @param articleName 文章名称
      * @param m 从m条开始
      * @param n 取n条数据
      * @return List<Article> 文章列表
      */
-    List<Article> adminList(String appId, String articleCategoryId, String articleName, Integer m, Integer n);
+    List<Article> adminList(String appId, String articleName, Integer m, Integer n);
 
 }

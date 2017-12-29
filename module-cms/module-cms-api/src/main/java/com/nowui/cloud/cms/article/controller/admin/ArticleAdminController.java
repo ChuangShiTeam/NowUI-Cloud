@@ -38,14 +38,13 @@ public class ArticleAdminController extends BaseController {
         validateRequest(
             body, 
             Article.APP_ID, 
-            Article.ARTICLE_CATEGORY_ID, 
             Article.ARTICLE_TITLE, 
             Article.PAGE_INDEX, 
             Article.PAGE_SIZE
         );
 
-        Integer resultTotal = articleService.adminCount(body.getAppId(), body.getArticleCategoryId(), body.getArticleTitle());
-        List<Article> resultList = articleService.adminList(body.getAppId(), body.getArticleCategoryId(), body.getArticleTitle(), body.getM(), body.getN());
+        Integer resultTotal = articleService.adminCount(body.getAppId(), body.getArticleTitle());
+        List<Article> resultList = articleService.adminList(body.getAppId(), body.getArticleTitle(), body.getM(), body.getN());
 
         validateResponse(
             Article.ARTICLE_ID, 
@@ -65,7 +64,6 @@ public class ArticleAdminController extends BaseController {
 
         validateResponse(
             Article.ARTICLE_ID, 
-            Article.ARTICLE_CATEGORY_ID, 
             Article.ARTICLE_TITLE, 
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
@@ -96,7 +94,6 @@ public class ArticleAdminController extends BaseController {
         validateRequest(
             body, 
             Article.APP_ID, 
-            Article.ARTICLE_CATEGORY_ID, 
             Article.ARTICLE_TITLE, 
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
@@ -128,7 +125,6 @@ public class ArticleAdminController extends BaseController {
         validateRequest(
             body, 
             Article.ARTICLE_ID, 
-            Article.ARTICLE_CATEGORY_ID, 
             Article.ARTICLE_TITLE, 
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
