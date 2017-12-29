@@ -26,6 +26,17 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
     Integer adminCount(String appId, String articleCategoryName);
 
     /**
+     * 文章分类列表
+     *
+     * @param appId 应用编号
+     * @param articleCategoryName 文章分类名称
+     * @param m 从m条开始
+     * @param n 取n条数据
+     * @return List<Map<String, Object>> 文章分类列表
+     */
+    List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer m, Integer n);
+    
+    /**
      * 文章分类树形列表
      *
      * @param appId 应用编号
@@ -34,6 +45,6 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
      * @param n 取n条数据
      * @return List<Map<String, Object>> 文章分类树形列表
      */
-    List<Map<String, Object>> adminList(String appId, String articleCategoryName, Integer m, Integer n);
+    List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer m, Integer n);
     
 }

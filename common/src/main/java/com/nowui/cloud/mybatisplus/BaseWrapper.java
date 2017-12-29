@@ -24,8 +24,8 @@ public class BaseWrapper<T> extends Wrapper<T> {
     }
     
     public BaseWrapper<T> eqAllowEmpty(String column, Object params) {
-        if (!Util.isNullOrEmpty(column)) {
-            eq(column, params);
+        if (!Util.isNullOrEmpty(params)) {
+            super.eq(column, params);
         }
         return this;
     }

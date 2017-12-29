@@ -46,11 +46,22 @@ public class ArticleCategoryAdminController extends BaseController {
         );
 
         Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryName());
-        List<Map<String, Object>> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
+        if (Util.isNullOrEmpty(body.getArticleCategoryName())) {
+            
+            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
 
-        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
-        return renderJson(resultTotal, resultList);
+            return renderJson(resultTotal, resultList);
+            
+        } else {
+            List<ArticleCategory> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
+            
+            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+
+            return renderJson(resultTotal, resultList);
+        }
+        
     }
 
     @ApiOperation(value = "根据编号查询文章分类信息")
@@ -95,7 +106,12 @@ public class ArticleCategoryAdminController extends BaseController {
         } else {
             ArticleCategory parent = articleCategoryService.find(body.getArticleCategoryParentId());
 
-            JSONArray jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
+            JSONArray jsonArray;
+            if (Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
+                jsonArray = new JSONArray();
+            } else {
+                jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
+            }
             jsonArray.add(parent.getArticleCategoryId());
 
             articleCategoryParentPath = jsonArray.toJSONString();

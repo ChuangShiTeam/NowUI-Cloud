@@ -14,6 +14,7 @@ import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 文章分类业务接口实现
@@ -27,18 +28,43 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
 
     @Override
     public Integer adminCount(String appId, String articleCategoryName) {
-        Integer count = count(
-                new BaseWrapper<ArticleCategory>()
-                        .eq(ArticleCategory.APP_ID, appId)
-                        .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                        .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
-                        .eq(ArticleCategory.SYSTEM_STATUS, true)
-        );
+        Integer count = 0;
+        
+        if (Util.isNullOrEmpty(articleCategoryName)) {
+            count = count(
+                    new BaseWrapper<ArticleCategory>()
+                            .eq(ArticleCategory.APP_ID, appId)
+                            .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
+                            .eq(ArticleCategory.SYSTEM_STATUS, true)
+                    );
+        } else {
+            count = count(
+                    new BaseWrapper<ArticleCategory>()
+                            .eq(ArticleCategory.APP_ID, appId)
+                            .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                            .eq(ArticleCategory.SYSTEM_STATUS, true)
+                    );
+        }
+        
         return count;
     }
     
     @Override
-    public List<Map<String, Object>> adminList(String appId, String articleCategoryName, Integer m, Integer n) {
+    public List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer m, Integer n) {
+        List<ArticleCategory> articleCategoryList = list(
+                new BaseWrapper<ArticleCategory>()
+                        .eq(ArticleCategory.APP_ID, appId)
+                        .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                        .eq(ArticleCategory.SYSTEM_STATUS, true)
+                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
+                ,m
+                ,n
+        );
+        return articleCategoryList;
+    }
+    
+    @Override
+    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer m, Integer n) {
         List<ArticleCategory> topList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)

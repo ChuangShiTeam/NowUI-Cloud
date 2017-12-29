@@ -33,9 +33,9 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
         Integer count = count(
                 new BaseWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
-                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .eqAllowEmpty(AppConfig.CONFIG_KEY, configKey)
-                        .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
+                        .eqAllowEmpty(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eqAllowEmpty(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
         );
         return count;
@@ -47,9 +47,9 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
         List<AppConfig> appConfigList = list(
                 new BaseWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
-                        .eq(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
-                        .eqAllowEmpty(AppConfig.CONFIG_KEY, configKey)
-                        .eq(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
+                        .eqAllowEmpty(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .like(AppConfig.CONFIG_KEY, configKey)
+                        .eqAllowEmpty(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME)),
                         m, 
