@@ -82,6 +82,8 @@ public class CodeController extends BaseController {
             String webPath = path + "/web";
             String webPackagePath = webPath + "/"  + body.getPackageName();
             String entityPath = sysPackagePath + "/entity";
+            String mqPath = sysPackagePath + "/mq";
+            String mqImplPath = mqPath + "/impl";
             String rpcPath = sysPackagePath + "/rpc";
             String rpcFallbackPath = rpcPath + "/fallback";
             String sqlPath = apiPackagePath + "/sql";
@@ -93,6 +95,7 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
+            String listenerPath = apiPackagePath + "/listener";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
@@ -106,6 +109,8 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
+            FileUtil.createPath(mqPath);
+            FileUtil.createPath(mqImplPath);
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
@@ -117,6 +122,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerDesktopPath);
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
+            FileUtil.createPath(listenerPath);
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
@@ -215,6 +221,8 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
+            write(templateMap, "mq.txt", mqPath + "/" + firstUpperWithoutUnderlineEntityName + "Mq.java");
+            write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
             write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.java");
@@ -225,6 +233,7 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
+            write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");

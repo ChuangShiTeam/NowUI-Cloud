@@ -1,0 +1,12 @@
+package com.nowui.cloud.${moduleName}.${packageName}.mq;
+
+/**
+ * ${tableComment}消息队列接口
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+public interface ${firstUpperEntityName}Mq {
+
+}

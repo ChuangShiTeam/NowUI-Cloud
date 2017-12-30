@@ -49,6 +49,7 @@ spring:
     port: 6379
     database: 0
     password:
+
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/com/nowui/cloud/base/**/sql/*.xml

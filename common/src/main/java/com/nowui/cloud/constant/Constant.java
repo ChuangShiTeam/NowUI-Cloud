@@ -23,6 +23,8 @@ public class Constant {
 
     public static final int DEFAULT_LOAD_FACTOR = 1;
 
+    public static final String QUEUE = "queue";
+
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");
 

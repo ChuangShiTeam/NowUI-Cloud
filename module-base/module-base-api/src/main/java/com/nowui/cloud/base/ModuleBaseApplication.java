@@ -2,6 +2,7 @@ package com.nowui.cloud.base;
 
 import java.io.IOException;
 
+import com.nowui.cloud.shop.product.mq.ProductMq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,9 +39,14 @@ public class ModuleBaseApplication {
     @Autowired
     private ProductRpc productRpc;
 
+    @Autowired
+    private ProductMq productMq;
+
     @RequestMapping("/test")
     public String test() {
-        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
+//        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
+
+//        productMq.send("123456789");
 
         return "Hello World!";
     }

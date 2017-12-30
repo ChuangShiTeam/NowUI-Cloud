@@ -1,0 +1,24 @@
+package com.nowui.cloud.${moduleName}.${packageName}.listener;
+
+import com.nowui.cloud.constant.Constant;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+/**
+ * ${tableComment}消息队列接口
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+@Component
+@RabbitListener(queues = Constant.QUEUE)
+public class ${firstUpperEntityName}Listener {
+
+    @RabbitHandler
+    public void process(String message) {
+
+    }
+
+}
