@@ -4,6 +4,8 @@ docker pull redis
 
 docker run -p 6379:6379 --name redis -d redis redis-server --appendonly yes
 
+docker start redis
+
 docker stop redis
 
 docker rm /redis

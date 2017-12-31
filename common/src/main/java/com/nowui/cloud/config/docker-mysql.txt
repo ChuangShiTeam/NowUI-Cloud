@@ -15,6 +15,12 @@ docker images
 最后一个mysql指的是mysql镜像名字
 docker run --name mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql
 
+docker start mysql
+
+docker stop mysql
+
+docker rm /mysql
+
 //查看容器运行状态
 docker ps
 
