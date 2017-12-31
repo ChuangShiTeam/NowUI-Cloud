@@ -225,7 +225,7 @@ public class CodeController extends BaseController {
             write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
             write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
-            write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.java");
+            write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
             write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
             write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");
             write(templateMap, "serviceImpl.txt", serviceImplPath + "/" + firstUpperWithoutUnderlineEntityName + "ServiceImpl.java");

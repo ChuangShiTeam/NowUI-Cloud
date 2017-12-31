@@ -14,18 +14,18 @@ import java.util.List;
 public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseService<${firstUpperWithoutUnderlineEntityName}> {
 
     /**
-     * 统计
+     * ${tableComment}统计
      *
      * @param appId 应用编号
      <%for(column in searchColumnList){%>
      * @param ${column.columnName} ${column.columnComment}
      <%}%>
-     * @return Integer 统计
+     * @return Integer ${tableComment}统计
      */
     Integer adminCount(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
 
     /**
-     * 列表
+     * ${tableComment}列表
      *
      * @param appId 应用编号
      <%for(column in searchColumnList){%>
@@ -33,7 +33,7 @@ public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseServ
      <%}%>
      * @param m 从m条开始
      * @param n 取n条数据
-     * @return List<${firstUpperWithoutUnderlineEntityName}> 列表
+     * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
      */
     List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer m, Integer n);
 }

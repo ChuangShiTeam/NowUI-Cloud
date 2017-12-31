@@ -38,8 +38,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%> body.getM(), body.getN());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId() <%for(column in columnList){%>, body.get${column.firstUpperColumnName}()<%}%>);
+        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId()<%for(column in columnList){%>, body.get${column.firstUpperColumnName}()<%}%>, body.getM(), body.getN());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
@@ -57,7 +57,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         validateRequest(
                 body,
                 ${firstUpperWithoutUnderlineEntityName}.APP_ID,
-                ${firstLowerWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
+                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
         );
 
         ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.find(body.get${firstUpperTableId}());
