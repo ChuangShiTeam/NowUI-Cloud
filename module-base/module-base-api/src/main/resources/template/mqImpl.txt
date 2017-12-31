@@ -1,6 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.mq.impl;
 
-import com.nowui.cloud.{moduleName}.${packageName}.mq.${firstUpperEntityName}Mq;
+import com.nowui.cloud.${moduleName}.${packageName}.mq.${firstUpperWithoutUnderlineEntityName}Mq;
 import org.springframework.stereotype.Component;
 
 /**
