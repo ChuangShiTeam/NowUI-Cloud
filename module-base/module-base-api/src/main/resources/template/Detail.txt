@@ -4,10 +4,10 @@ import NDetail from '../../layout/NDetail';
 
 export default connect(function (state) {
     return {
-        id: '${lowerEntityName}',
+        id: '${firstLowerWithoutUnderlineEntityName}',
         title: '${tableComment}表单',
         primaryKey: '${tableId}',
-        store: state.${lowerEntityName},
+        store: state.${firstLowerWithoutUnderlineEntityName},
         breadcrumbList: [{
             name: '${tableComment}管理',
             url: '/${urlEntityName}/index'

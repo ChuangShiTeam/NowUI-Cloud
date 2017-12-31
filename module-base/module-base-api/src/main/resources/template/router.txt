@@ -6,24 +6,24 @@ export default {
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Index').default);
-            }, '${lowerEntityName}.index');
+                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Index').default);
+            }, '${firstLowerWithoutUnderlineEntityName}.index');
         }
     }, {
         path: '/${urlEntityName}/add',
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Detail').default);
-            }, '${lowerEntityName}.detail');
+                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
+            }, '${firstLowerWithoutUnderlineEntityName}.detail');
         }
     }, {
         path: '/${urlEntityName}/edit/:${tableId}',
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstUpperWithoutUnderlineEntityName}/Detail').default);
-            }, '${lowerEntityName}.detail');
+                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
+            }, '${firstLowerWithoutUnderlineEntityName}.detail');
         }
     }]
 }

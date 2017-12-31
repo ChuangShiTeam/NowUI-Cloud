@@ -4,11 +4,11 @@ import NIndex from '../../layout/NIndex';
 
 export default connect(function (state) {
     return {
-        id: '${lowerEntityName}',
+        id: '${firstLowerWithoutUnderlineEntityName}',
         type: 'TABLE',
         title: '${tableComment}',
         primaryKey: '${tableId}',
-        store: state.${lowerEntityName},
+        store: state.${firstLowerWithoutUnderlineEntityName},
         listUrl: '/${urlEntityName}/admin/list',
         breadcrumbList: [{
             name: '${tableComment}管理',
@@ -24,7 +24,7 @@ export default connect(function (state) {
             name: '新增',
             icon: 'plus-circle',
             type: 'ADD',
-            pathname: '/${firstUpperWithoutUnderlineEntityName}/add'
+            pathname: '/${firstLowerWithoutUnderlineEntityName}/add'
         }],
         searchList: [{
             <%for(column in searchColumnList){%>
