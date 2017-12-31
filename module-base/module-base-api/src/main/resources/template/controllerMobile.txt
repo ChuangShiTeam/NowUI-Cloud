@@ -1,4 +1,4 @@
-package com.nowui.cloud.${moduleName}.${packageName}.controller.desktop;
+package com.nowui.cloud.${moduleName}.${packageName}.controller.mobile;
 
 import com.nowui.cloud.controller.BaseController;
 import io.swagger.annotations.Api;
