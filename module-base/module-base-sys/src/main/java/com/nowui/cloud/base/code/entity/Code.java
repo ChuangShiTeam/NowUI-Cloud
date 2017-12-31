@@ -114,6 +114,13 @@ public class Code extends BaseEntity {
     private String author;
     public static final String AUTHOR = "author";
 
+    /**
+     * 是否消息队列
+     */
+    @TableField(exist = false)
+    private Boolean isMq;
+    public static final String IS_MQ = "isMq";
+
     public String getTableSchema() {
         return getString(TABLE_SCHEMA);
     }
@@ -226,4 +233,13 @@ public class Code extends BaseEntity {
     public void setAuthor(String author) {
         put(AUTHOR, author);
     }
+
+    public Boolean getIsMq() {
+        return getBoolean(IS_MQ);
+    }
+
+    public void setIsMq(String isMq) {
+        put(IS_MQ, isMq);
+    }
+
 }

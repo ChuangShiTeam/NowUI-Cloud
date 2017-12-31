@@ -109,8 +109,10 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
-            FileUtil.createPath(mqPath);
-            FileUtil.createPath(mqImplPath);
+            if (body.getIsMq()) {
+                FileUtil.createPath(mqPath);
+                FileUtil.createPath(mqImplPath);
+            }
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
@@ -122,7 +124,9 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerDesktopPath);
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
-            FileUtil.createPath(listenerPath);
+            if (body.getIsMq()) {
+                FileUtil.createPath(listenerPath);
+            }
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
@@ -221,8 +225,10 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
-            write(templateMap, "mq.txt", mqPath + "/" + firstUpperWithoutUnderlineEntityName + "Mq.java");
-            write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
+            if (body.getIsMq()) {
+                write(templateMap, "mq.txt", mqPath + "/" + firstUpperWithoutUnderlineEntityName + "Mq.java");
+                write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
+            }
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
             write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
@@ -233,7 +239,9 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
-            write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
+            if (body.getIsMq()) {
+                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
+            }
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");
