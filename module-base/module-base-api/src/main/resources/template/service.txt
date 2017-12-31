@@ -1,6 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperEntityName};
+import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 
 import java.util.List;
 

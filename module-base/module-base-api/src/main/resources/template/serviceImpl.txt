@@ -2,9 +2,9 @@ package com.nowui.cloud.${moduleName}.${packageName}.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperEntityName};
-import com.nowui.cloud.${moduleName}.${packageName}.mapper.${firstUpperEntityName}Mapper;
-import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperEntityName}Service;
+import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
+import com.nowui.cloud.${moduleName}.${packageName}.mapper.${firstUpperWithoutUnderlineEntityName}Mapper;
+import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
