@@ -23,7 +23,7 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServ
     @Override
     public Integer adminCount(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
         Integer count = count(
-                new BaseWrapper<Product>()
+                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
                         .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
                         <%for(column in searchColumnList){%>
                         .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperColumnName}, ${column.columnName})

@@ -39,7 +39,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         );
 
         Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%>);
-        List<Product> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%> body.getM(), body.getN());
+        List<firstUpperWithoutUnderlineEntityName> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%> body.getM(), body.getN());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
@@ -60,7 +60,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstLowerWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
         );
 
-        Product result = ${firstLowerWithoutUnderlineEntityName}Service.find(body.get${firstUpperTableId}());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.find(body.get${firstUpperTableId}());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
