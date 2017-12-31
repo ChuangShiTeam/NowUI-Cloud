@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * ${date}
  */
 @Component
-public class ${firstUpperEntityName}MqImpl implements ${firstUpperEntityName}Mq {
+public class ${firstUpperWithoutUnderlineEntityName}MqImpl implements ${firstUpperWithoutUnderlineEntityName}Mq {
 
 //    @Autowired
 //    private RabbitTemplate rabbit;

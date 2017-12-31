@@ -7,6 +7,6 @@ package com.nowui.cloud.${moduleName}.${packageName}.mq;
  *
  * ${date}
  */
-public interface ${firstUpperEntityName}Mq {
+public interface ${firstUpperWithoutUnderlineEntityName}Mq {
 
 }

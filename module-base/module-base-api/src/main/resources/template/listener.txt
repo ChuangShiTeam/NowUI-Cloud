@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RabbitListener(queues = Constant.QUEUE)
-public class ${firstUpperEntityName}Listener {
+public class ${firstUpperWithoutUnderlineEntityName}Listener {
 
     @RabbitHandler
     public void process(String message) {
