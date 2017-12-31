@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * ${date}
  */
-@Component(value = "${firstLowerEntityName}Rpc")
-@FeignClient(name = "module-${moduleName}", fallback = ${firstUpperEntityName}RpcFallback.class)
-public interface ${firstUpperEntityName}Rpc {
+@Component(value = "${firstUpperWithoutUnderlineEntityName}Rpc")
+@FeignClient(name = "module-${moduleName}", fallback = ${firstUpperWithoutUnderlineEntityName}RpcFallback.class)
+public interface ${firstUpperWithoutUnderlineEntityName}Rpc {
 
 }

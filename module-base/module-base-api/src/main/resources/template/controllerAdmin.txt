@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * ${date}
  */
-@Api(value = "${tableComment}", description = "${firstUpperEntityName}管理端接口管理")
+@Api(value = "${tableComment}", description = "${tableComment}管理端接口管理")
 @RestController
 public class ${firstUpperWithoutUnderlineEntityName}AdminController extends BaseController {
 
@@ -38,8 +38,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%>);
+        List<Product> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId(), <%for(column in columnList){%> body.get${column.firstUpperColumnName}(), <%}%> body.getM(), body.getN());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
@@ -53,14 +53,14 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
 
     @ApiOperation(value = "${tableComment}信息")
     @RequestMapping(value = "/${urlEntityName}/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ${firstUpperEntityName} body) {
+    public Map<String, Object> find(@RequestBody ${firstUpperWithoutUnderlineEntityName} body) {
         validateRequest(
                 body,
                 ${firstUpperWithoutUnderlineEntityName}.APP_ID,
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
+                ${firstLowerWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
         );
 
-        Product result = ${firstLowerEntityName}Service.find(body.get${firstUpperTableId}());
+        Product result = ${firstLowerWithoutUnderlineEntityName}Service.find(body.get${firstUpperTableId}());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
@@ -83,7 +83,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%}%>
         );
 
-        Boolean result = ${firstLowerEntityName}Service.save(body, body.getSystemRequestUserId());
+        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -101,7 +101,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        Boolean result = ${firstLowerEntityName}Service.update(body, body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.update(body, body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -116,7 +116,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        Boolean result = ${firstLowerEntityName}Service.delete(body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.delete(body.get${firstUpperTableId}(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

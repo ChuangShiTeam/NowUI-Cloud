@@ -18,36 +18,36 @@ import java.util.List;
  * ${date}
  */
 @Service
-public class ${firstUpperEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperEntityName}Mapper, ${firstUpperEntityName}> implements ${firstUpperEntityName}Service {
+public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}> implements ${firstUpperWithoutUnderlineEntityName}Service {
 
     @Override
     public Integer adminCount(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
         Integer count = count(
                 new BaseWrapper<Product>()
-                        .eq(Product.APP_ID, appId)
+                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
                         <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperEntityName}.${column.upperColumnName}, ${column.columnName})
+                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperColumnName}, ${column.columnName})
                          <%}%>
-                        .eq(${firstUpperEntityName}.SYSTEM_STATUS, true)
+                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<${firstUpperEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer m, Integer n) {
-        List<${firstUpperEntityName}> ${firstLowerEntityName}List = list(
-                new BaseWrapper<${firstUpperEntityName}>()
-                        .eq(Product.APP_ID, appId)
+    public List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer m, Integer n) {
+        List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = list(
+                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
+                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
                         <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperEntityName}.${column.upperColumnName}, ${column.columnName})
+                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperColumnName}, ${column.columnName})
                          <%}%>
-                        .eq(${firstUpperEntityName}.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(${firstUpperEntityName}.SYSTEM_CREATE_TIME)),
+                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(${firstUpperWithoutUnderlineEntityName}.SYSTEM_CREATE_TIME)),
                 m,
                 n
         );
 
-        return ${firstLowerEntityName}List;
+        return ${firstLowerWithoutUnderlineEntityName}List;
     }
 
 }

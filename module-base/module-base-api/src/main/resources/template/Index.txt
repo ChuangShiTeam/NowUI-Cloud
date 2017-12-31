@@ -6,7 +6,7 @@ export default connect(function (state) {
     return {
         id: '${lowerEntityName}',
         type: 'TABLE',
-        title: '商品信息',
+        title: '${tableComment}',
         primaryKey: '${tableId}',
         store: state.${lowerEntityName},
         listUrl: '/${urlEntityName}/admin/list',

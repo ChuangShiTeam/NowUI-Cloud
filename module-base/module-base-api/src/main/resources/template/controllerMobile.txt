@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * ${date}
  */
-@Api(value = "${firstUpperEntityName}", description = "${firstUpperEntityName}移动端接口管理")
+@Api(value = "${tableComment}", description = "${tableComment}移动端接口管理")
 @RestController
-public class ${firstUpperEntityName}MobileController extends BaseController {
+public class ${firstUpperWithoutUnderlineEntityName}MobileController extends BaseController {
 
 }
