@@ -31,7 +31,6 @@ export default connect(function (state) {
             <%if(!columnLP.first){%>
             }, {
             <%}%>
-            }
             id: '${column.columnName}',
             name: '${column.columnComment}',
             type: 'VARCHAR'
