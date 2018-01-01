@@ -99,7 +99,6 @@ public class CodeController extends BaseController {
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
-            String viewPackagePath = viewPath + "/" + body.getPackageName();
 
             FileUtil.createPath(path);
             FileUtil.createPath(apiPath);
@@ -130,7 +129,6 @@ public class CodeController extends BaseController {
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
-            FileUtil.createPath(viewPackagePath);
 
             List<Code> codeList = JSONArray.parseArray(body.getColumnList(), Code.class);
 
@@ -148,6 +146,9 @@ public class CodeController extends BaseController {
             String firstLowerWithoutUnderlineEntityName = removeUnderline(firstLowerEntityName);
             String firstUpperWithoutUnderlineEntityName = removeUnderline(firstUpperEntityName);
             String tableId = "";
+            
+            String viewPackagePath = viewPath + "/" + firstLowerWithoutUnderlineEntityName;
+            FileUtil.createPath(viewPackagePath);
 
             for (Code code : codeList) {
                 String columnName = code.getColumnName();
