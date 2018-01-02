@@ -53,31 +53,50 @@ public class ${firstUpperWithoutUnderlineEntityName} extends BaseEntity {
     public Boolean get${column.firstUpperColumnName}() {
         return getBoolean(${column.upperWithUnderlineColumnName});
     }
+    
+    public void set${column.firstUpperColumnName}(Boolean ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+    }
     <%}else if(column.dataType == "INT"){%>
     public Integer get${column.firstUpperColumnName}() {
         return getInteger(${column.upperWithUnderlineColumnName});
+    }
+    
+    public void set${column.firstUpperColumnName}(Integer ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
     <%}else if(column.dataType == "DECIMAL"){%>
     public BigDecimal get${column.firstUpperColumnName}() {
         return getBigDecimal(${column.upperWithUnderlineColumnName});
     }
+    
+    public void set${column.firstUpperColumnName}(BigDecimal ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+    }
     <%}else if(column.dataType == "DATETIME"){%>
     public Date get${column.firstUpperColumnName}() {
         return getDate(${column.upperWithUnderlineColumnName});
+    }
+    
+    public void set${column.firstUpperColumnName}(Date ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
     <%}else if(column.dataType == "DATE"){%>
     public Date get${column.firstUpperColumnName}() {
         return getDate(${column.upperWithUnderlineColumnName});
     }
+    public void set${column.firstUpperColumnName}(Date ${column.columnName}) {
+        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+    }
     <%}else{%>
     public String get${column.firstUpperColumnName}() {
         return getString(${column.upperWithUnderlineColumnName});
     }
-    <%}%>
-
     public void set${column.firstUpperColumnName}(String ${column.columnName}) {
         put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
+    <%}%>
+
     <%}%>
 
 }
