@@ -1,0 +1,13 @@
+docker search  elasticsearch
+
+docker pull elasticsearch
+
+docker run -d --name=elasticsearch
+
+docker start elasticsearch
+
+docker stop elasticsearch
+
+docker rm /elasticsearch
+
+docker ps
