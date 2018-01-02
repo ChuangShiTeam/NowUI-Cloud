@@ -21,34 +21,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.util.FileCopyUtils;
 
-import com.nowui.cloud.constant.Constant;
-
 public class FileUtil {
-
-    private static String webRootPath;
-
-    static {
-        createPath(getWebRootPath() + "/" + Constant.UPLOAD);
-    }
-
-    public static String getWebRootPath() {
-        if (webRootPath == null)
-            try {
-                String path = FileUtil.class.getResource("/").toURI().getPath();
-
-                if (path.contains("target/classes/")) {
-
-                    path = path.replace("target/classes/", "src/main/webapp/");
-
-                    webRootPath = new File(path).getCanonicalPath();
-                } else {
-                    webRootPath = new File(path).getParentFile().getParentFile().getCanonicalPath();
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Exception: " + e.toString());
-            }
-        return webRootPath;
-    }
 
     public static boolean createPath(String path) {
         File file = new File(path);

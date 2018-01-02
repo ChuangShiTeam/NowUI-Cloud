@@ -8,6 +8,7 @@ import java.util.List;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -16,6 +17,7 @@ import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.mapper.FileMapper;
 import com.nowui.cloud.base.file.service.FileService;
+import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
@@ -31,6 +33,9 @@ import com.nowui.cloud.util.Util;
  */
 @Service
 public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implements FileService {
+    
+    @Autowired
+    private Config config;
 
     @Override
     public Integer adminCount(String appId, String systemCreateUserId, String fileName, String fileType) {
@@ -64,10 +69,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
 
     @Override
     public List<File> imageUpload(String appId, String userId, MultipartFile[] multipartFiles) {
-        String webRootPath = FileUtil.getWebRootPath(); 
-        String path = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId);
-        String thumbnailPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
 
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
@@ -108,9 +112,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 FileUtil.resizeImage(file, fileSuffix, path, 360);
                 
                 Integer fileSize = (int) file.length();
-                String filePath = path.replace(FileUtil.getWebRootPath(), "");
-                String fileThumbnailPath = thumbnailPath.replace(FileUtil.getWebRootPath(), "");
-                String fileOriginalPath = originalPath.replace(FileUtil.getWebRootPath(), "");
+                String filePath = path.replace(config.getUploadFilePath(), "");
+                String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
+                String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
                 Boolean fileIsExternal = false;
                 
                 File entity = new File();
@@ -138,10 +142,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     
     @Override
     public File uploadBase64(String appId, String userId, String base64Data) {
-        String webRootPath = FileUtil.getWebRootPath(); 
-        String path = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId);
-        String thumbnailPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
         
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
@@ -178,9 +181,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         
         String fileType = FileType.IMAGE.getKey();
         Integer fileSize = (int) imageFile.length();
-        String filePath = path.replace(FileUtil.getWebRootPath(), "");
-        String fileThumbnailPath = thumbnailPath.replace(FileUtil.getWebRootPath(), "");
-        String fileOriginalPath = originalPath.replace(FileUtil.getWebRootPath(), "");
+        String filePath = path.replace(config.getUploadFilePath(), "");
+        String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
+        String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
         Boolean fileIsExternal = false;
 
         File entity = new File();
