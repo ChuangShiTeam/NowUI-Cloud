@@ -24,7 +24,13 @@ public class Constant {
     public static final int DEFAULT_LOAD_FACTOR = 1;
 
     public static final String QUEUE = "queue";
-
+    
+    public static final String THUMBNAIL = "thumbnail";
+    
+    public static final String ORIGINAL = "original";
+    
+    public static final String UPLOAD = "upload";
+    
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");
 
