@@ -73,6 +73,7 @@ public class UserRole extends BaseEntity {
     public void setUserRoleId(String userRoleId) {
         put(USER_ROLE_ID, userRoleId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -80,6 +81,7 @@ public class UserRole extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getUserId() {
         return getString(USER_ID);
     }
@@ -87,6 +89,7 @@ public class UserRole extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
     public String getRoleId() {
         return getString(ROLE_ID);
     }
@@ -94,6 +97,7 @@ public class UserRole extends BaseEntity {
     public void setRoleId(String roleId) {
         put(ROLE_ID, roleId);
     }
+    
     public String getUserType() {
         return getString(USER_TYPE);
     }

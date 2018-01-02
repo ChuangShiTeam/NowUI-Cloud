@@ -100,6 +100,7 @@ public class Menu extends BaseEntity {
     public void setMenuId(String menuId) {
         put(MENU_ID, menuId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -107,6 +108,7 @@ public class Menu extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getMenuParentId() {
         return getString(MENU_PARENT_ID);
     }
@@ -114,6 +116,7 @@ public class Menu extends BaseEntity {
     public void setMenuParentId(String menuParentId) {
         put(MENU_PARENT_ID, menuParentId);
     }
+    
     public String getMenuParentPath() {
         return getString(MENU_PARENT_PATH);
     }
@@ -121,6 +124,7 @@ public class Menu extends BaseEntity {
     public void setMenuParentPath(String menuParentPath) {
         put(MENU_PARENT_PATH, menuParentPath);
     }
+    
     public String getMenuName() {
         return getString(MENU_NAME);
     }
@@ -128,6 +132,7 @@ public class Menu extends BaseEntity {
     public void setMenuName(String menuName) {
         put(MENU_NAME, menuName);
     }
+    
     public String getMenuImage() {
         return getString(MENU_IMAGE);
     }
@@ -135,6 +140,7 @@ public class Menu extends BaseEntity {
     public void setMenuImage(String menuImage) {
         put(MENU_IMAGE, menuImage);
     }
+    
     public String getMenuUrl() {
         return getString(MENU_URL);
     }
@@ -142,11 +148,12 @@ public class Menu extends BaseEntity {
     public void setMenuUrl(String menuUrl) {
         put(MENU_URL, menuUrl);
     }
+    
     public Integer getMenuSort() {
         return getInteger(MENU_SORT);
     }
 
-    public void setMenuSort(String menuSort) {
+    public void setMenuSort(Integer menuSort) {
         put(MENU_SORT, menuSort);
     }
 
