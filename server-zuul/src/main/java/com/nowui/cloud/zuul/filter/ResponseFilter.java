@@ -60,22 +60,29 @@ public class ResponseFilter extends ZuulFilter {
         } finally {
             if (context != null) {
                 HttpServletRequest request = context.getRequest();
-                String requestBody = Util.readData(request);
-                JSONObject parameterJSONObject = JSON.parseObject(requestBody);
-                String url = request.getRequestURI();
-                String appId = parameterJSONObject.getString("appId");
-                String systemRequestUserId = parameterJSONObject.getString("systemRequestUserId");
-                String token = parameterJSONObject.getString("token");
+                
+                String contentType = request.getContentType();
+                if (contentType.contains("application/json")) {
+                    String requestBody = Util.readData(request);
+                    JSONObject parameterJSONObject = JSON.parseObject(requestBody);
+                    String url = request.getRequestURI();
+                    String appId = parameterJSONObject.getString("appId");
+                    String systemRequestUserId = parameterJSONObject.getString("systemRequestUserId");
+                    String token = parameterJSONObject.getString("token");
 
-                System.out.println("----------------------------------------------------------------------------------------------------------------");
-                System.out.println("url: " + url);
-                System.out.println("time: " + DateUtil.getDateTimeString(new Date()));
-                System.out.println("appId: " + appId);
-                System.out.println("userId: " + systemRequestUserId);
-                System.out.println("token: " + token);
-                System.out.println("request: " + parameterJSONObject);
-                System.out.println("response: " + context.getResponseBody());
-                System.out.println("----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("url: " + url);
+                    System.out.println("time: " + DateUtil.getDateTimeString(new Date()));
+                    System.out.println("appId: " + appId);
+                    System.out.println("userId: " + systemRequestUserId);
+                    System.out.println("token: " + token);
+                    System.out.println("request: " + parameterJSONObject);
+                    System.out.println("response: " + context.getResponseBody());
+                    System.out.println("----------------------------------------------------------------------------------------------------------------");
+
+                } else {
+                    
+                }
             }
         }
 

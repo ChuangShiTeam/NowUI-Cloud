@@ -1,9 +1,9 @@
 package com.nowui.cloud.aop;
 
-import com.nowui.cloud.entity.BaseEntity;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.springframework.stereotype.Component;
+import org.aspectj.lang.annotation.Around;
+
+import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * @author ZhongYongQiang

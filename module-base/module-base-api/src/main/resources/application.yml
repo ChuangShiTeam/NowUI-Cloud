@@ -49,6 +49,11 @@ spring:
     port: 6379
     database: 0
     password:
+  rabbitmq:
+    host: 192.168.2.29
+    port: 5672
+    username: guest
+    password: guest
 
 #mybatis
 mybatis-plus:
