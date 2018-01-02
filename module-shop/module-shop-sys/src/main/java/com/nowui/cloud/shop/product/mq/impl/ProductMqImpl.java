@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMqImpl implements ProductMq {
 
-//    @Autowired
-//    private RabbitTemplate rabbitTemplate;
-//
-//
-//    @Override
-//    public void send(String message) {
-//        rabbitTemplate.convertAndSend("queue", message);
-//    }
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+
+    @Override
+    public void send(String message) {
+        rabbitTemplate.convertAndSend("product", message);
+    }
 
 }

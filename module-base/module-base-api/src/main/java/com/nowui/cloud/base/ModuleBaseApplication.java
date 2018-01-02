@@ -40,7 +40,7 @@ public class ModuleBaseApplication {
     public String test() {
 //        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
-//        productMq.send("123456789");
+        productMq.send("123456789");
 
         return "Hello World!";
     }
