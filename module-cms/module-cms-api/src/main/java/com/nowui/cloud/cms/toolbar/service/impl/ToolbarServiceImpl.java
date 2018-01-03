@@ -46,6 +46,18 @@ public class ToolbarServiceImpl extends BaseServiceImpl<ToolbarMapper, Toolbar> 
         
         return toolbarList;
     }
+
+	@Override
+	public List<Toolbar> mobileList(String appId) {
+		List<Toolbar> resultList = list(
+			new BaseWrapper<Toolbar>()
+			.eq(Toolbar.APP_ID, appId)
+			.eq(Toolbar.SYSTEM_STATUS, true)
+			.orderDesc(Arrays.asList(Toolbar.TOOLBAR_SORT))
+			);
+		
+		return resultList;
+	}
     
     
 

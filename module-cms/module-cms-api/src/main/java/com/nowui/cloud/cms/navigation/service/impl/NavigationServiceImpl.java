@@ -2,6 +2,7 @@ package com.nowui.cloud.cms.navigation.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.mapper.NavigationMapper;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
@@ -49,5 +50,18 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
 
         return navigationList;
     }
+
+	@Override
+	public List<Navigation> mobileList(String appId, String navigationCategoryCode) {
+		
+		List<Navigation> resultList = list(new BaseWrapper<Navigation>()
+				.eq(Navigation.APP_ID, appId)
+				.eq(Navigation.SYSTEM_STATUS, true)
+				.eq(Navigation.NAVIGATION_CATEGORY_CODE, navigationCategoryCode)
+				.orderDesc(Arrays.asList(Navigation.NAVIGATION_SORT))
+			);
+		
+		return resultList;
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.mapper.AdvertisementMapper;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
@@ -49,5 +50,18 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
         
         return advertisementList;
     }
+
+	@Override
+	public List<Advertisement> mobileList(String appId, String advertisementCategoryCode) {
+		List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
+				.eq(Advertisement.APP_ID, appId)
+				.eq(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
+				.eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, true)
+				.eq(Advertisement.SYSTEM_STATUS, true)
+				.orderDesc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
+			);
+
+		return bannerList;
+	}
     
 }
