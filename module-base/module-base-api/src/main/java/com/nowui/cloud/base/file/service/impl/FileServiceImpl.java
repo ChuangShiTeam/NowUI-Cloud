@@ -102,9 +102,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                     throw new RuntimeException("上传图片失败");
                 }
                 
-                path = path + java.io.File.separator + fileName;
-                thumbnailPath = thumbnailPath + java.io.File.separator + fileName;
-                originalPath = originalPath + java.io.File.separator + fileName;
+                path = path + fileName;
+                thumbnailPath = thumbnailPath + fileName;
+                originalPath = originalPath + fileName;
 
                 String fileType = FileType.IMAGE.getKey();
 
@@ -158,9 +158,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
 
         byte[] imageByte = Base64.decodeBase64(imageString.getBytes());
         
-        path = Util.createPath(path, fileName);
-        thumbnailPath = Util.createPath(thumbnailPath, fileName);
-        originalPath = Util.createPath(originalPath, fileName);
+        path = path + fileName;
+        thumbnailPath = thumbnailPath + fileName;
+        originalPath = originalPath + fileName;
         
         java.io.File imageFile = new java.io.File(originalPath);
         

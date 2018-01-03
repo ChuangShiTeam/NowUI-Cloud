@@ -46,6 +46,11 @@ public class RequestFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
+        RequestContext ctx = RequestContext.getCurrentContext();  
+        HttpServletRequest request = ctx.getRequest();  
+        if (request.getRequestURI().startsWith("/upload")) {
+            return false;
+        }
         return true;
     }
 
