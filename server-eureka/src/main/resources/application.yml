@@ -3,6 +3,11 @@ server:
 eureka:
   instance:
     hostname: localhost
+  server: 
+  	#开发环境设为false，关闭自我保护机制，服务器不推荐使用
+    enable-self-preservation: false  
+    # 清理间隔（单位毫秒，默认是60*1000）
+    eviction-interval-timer-in-ms: 3000
   client:
     registerWithEureka: false
     fetchRegistry: false
