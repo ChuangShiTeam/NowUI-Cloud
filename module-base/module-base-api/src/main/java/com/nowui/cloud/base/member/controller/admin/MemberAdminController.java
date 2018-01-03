@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.member.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.member.entity.Member;
 import com.nowui.cloud.base.member.service.MemberService;
 import io.swagger.annotations.Api;
@@ -75,7 +76,7 @@ public class MemberAdminController extends BaseController {
                 Member.USER_ID
         );
 
-        Boolean result = memberService.save(body, body.getSystemRequestUserId());
+        Boolean result = memberService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

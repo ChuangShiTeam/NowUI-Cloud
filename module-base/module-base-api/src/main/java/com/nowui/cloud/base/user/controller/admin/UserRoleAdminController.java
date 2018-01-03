@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.user.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.user.entity.UserRole;
 import com.nowui.cloud.base.user.service.UserRoleService;
 import io.swagger.annotations.Api;
@@ -83,7 +84,7 @@ public class UserRoleAdminController extends BaseController {
                 UserRole.USER_TYPE
         );
 
-        Boolean result = userRoleService.save(body, body.getSystemRequestUserId());
+        Boolean result = userRoleService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

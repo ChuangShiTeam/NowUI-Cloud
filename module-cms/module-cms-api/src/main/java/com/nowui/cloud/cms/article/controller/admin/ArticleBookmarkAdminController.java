@@ -1,5 +1,6 @@
 package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleBookmark;
 import com.nowui.cloud.cms.article.service.ArticleBookmarkService;
 import io.swagger.annotations.Api;
@@ -79,7 +80,7 @@ public class ArticleBookmarkAdminController extends BaseController {
                 ArticleBookmark.USE_ID
         );
 
-        Boolean result = articleBookmarkService.save(body, body.getSystemRequestUserId());
+        Boolean result = articleBookmarkService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

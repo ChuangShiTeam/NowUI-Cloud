@@ -1,5 +1,6 @@
 package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleCommentLike;
 import com.nowui.cloud.cms.article.service.ArticleCommentLikeService;
 import io.swagger.annotations.Api;
@@ -79,7 +80,7 @@ public class ArticleCommentLikeAdminController extends BaseController {
                 ArticleCommentLike.USER_ID
         );
 
-        Boolean result = articleCommentLikeService.save(body, body.getSystemRequestUserId());
+        Boolean result = articleCommentLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

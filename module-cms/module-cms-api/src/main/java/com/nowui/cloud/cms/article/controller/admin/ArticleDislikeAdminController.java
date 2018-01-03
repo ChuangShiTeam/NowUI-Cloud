@@ -1,5 +1,6 @@
 package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleDislike;
 import com.nowui.cloud.cms.article.service.ArticleDislikeService;
 import io.swagger.annotations.Api;
@@ -79,7 +80,7 @@ public class ArticleDislikeAdminController extends BaseController {
                 ArticleDislike.USER_ID
         );
 
-        Boolean result = articleDislikeService.save(body, body.getSystemRequestUserId());
+        Boolean result = articleDislikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

@@ -2,6 +2,7 @@ package com.nowui.cloud.base.user.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.service.UserService;
 
@@ -114,7 +115,7 @@ public class UserAdminController extends BaseController {
                 User.WEIXIN_UNION_ID
         );
 
-        Boolean result = userService.save(body, body.getSystemRequestUserId());
+        Boolean result = userService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

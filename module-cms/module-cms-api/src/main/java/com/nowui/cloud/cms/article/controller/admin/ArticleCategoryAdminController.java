@@ -119,7 +119,7 @@ public class ArticleCategoryAdminController extends BaseController {
         
         body.setArticleCategoryParentPath(articleCategoryParentPath);
         
-        Boolean result = articleCategoryService.save(body, body.getSystemRequestUserId());
+        Boolean result = articleCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }
