@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.controller.BaseController;
@@ -30,6 +32,9 @@ public class AdvertisementAdminController extends BaseController {
     
     @Autowired
     private AdvertisementService advertisementService;
+    
+    @Autowired
+    private FileRpc fileRpc;
     
     @ApiOperation(value = "广告分页列表")
     @RequestMapping(value = "/advertisement/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +71,11 @@ public class AdvertisementAdminController extends BaseController {
         validateRequest(body, Advertisement.ADEVERTISEMENT_ID);
 
         Advertisement result = advertisementService.find(body.getAdvertisementId());
+        
+        File file = fileRpc.find(result.getAdvertisementImage());
+        file.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(Advertisement.ADEVERTISEMENT_IMAGE, file);
+
 
         validateResponse(
             Advertisement.ADEVERTISEMENT_ID, 

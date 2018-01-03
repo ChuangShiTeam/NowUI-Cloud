@@ -145,6 +145,7 @@ public class User extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -152,6 +153,7 @@ public class User extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getObjectId() {
         return getString(OBJECT_ID);
     }
@@ -159,6 +161,7 @@ public class User extends BaseEntity {
     public void setObjectId(String objectId) {
         put(OBJECT_ID, objectId);
     }
+    
     public String getUserType() {
         return getString(USER_TYPE);
     }
@@ -166,6 +169,7 @@ public class User extends BaseEntity {
     public void setUserType(String userType) {
         put(USER_TYPE, userType);
     }
+    
     public String getUserAccount() {
         return getString(USER_ACCOUNT);
     }
@@ -173,6 +177,7 @@ public class User extends BaseEntity {
     public void setUserAccount(String userAccount) {
         put(USER_ACCOUNT, userAccount);
     }
+    
     public String getUserPassword() {
         return getString(USER_PASSWORD);
     }
@@ -180,6 +185,7 @@ public class User extends BaseEntity {
     public void setUserPassword(String userPassword) {
         put(USER_PASSWORD, userPassword);
     }
+    
     public String getUserNickName() {
         return getString(USER_NICK_NAME);
     }
@@ -187,6 +193,7 @@ public class User extends BaseEntity {
     public void setUserNickName(String userNickName) {
         put(USER_NICK_NAME, userNickName);
     }
+    
     public String getUserName() {
         return getString(USER_NAME);
     }
@@ -194,6 +201,7 @@ public class User extends BaseEntity {
     public void setUserName(String userName) {
         put(USER_NAME, userName);
     }
+    
     public String getUserMobile() {
         return getString(USER_MOBILE);
     }
@@ -201,6 +209,7 @@ public class User extends BaseEntity {
     public void setUserMobile(String userMobile) {
         put(USER_MOBILE, userMobile);
     }
+    
     public String getUserEmail() {
         return getString(USER_EMAIL);
     }
@@ -208,6 +217,7 @@ public class User extends BaseEntity {
     public void setUserEmail(String userEmail) {
         put(USER_EMAIL, userEmail);
     }
+    
     public String getUserAvatar() {
         return getString(USER_AVATAR);
     }
@@ -215,6 +225,7 @@ public class User extends BaseEntity {
     public void setUserAvatar(String userAvatar) {
         put(USER_AVATAR, userAvatar);
     }
+    
     public String getWeixinOpenId() {
         return getString(WEIXIN_OPEN_ID);
     }
@@ -222,6 +233,7 @@ public class User extends BaseEntity {
     public void setWeixinOpenId(String weixinOpenId) {
         put(WEIXIN_OPEN_ID, weixinOpenId);
     }
+    
     public String getWeixinUnionId() {
         return getString(WEIXIN_UNION_ID);
     }

@@ -24,7 +24,7 @@ export default connect(function (state) {
             name: '新增',
             icon: 'plus-circle',
             type: 'ADD',
-            pathname: '/${firstLowerWithoutUnderlineEntityName}/add'
+            addUrl: '/${firstLowerWithoutUnderlineEntityName}/add'
         }],
         searchList: [{
             <%for(column in searchColumnList){%>

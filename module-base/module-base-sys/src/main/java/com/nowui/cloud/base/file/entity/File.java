@@ -148,6 +148,7 @@ public class File extends BaseEntity {
     public void setFileName(String fileName) {
         put(FILE_NAME, fileName);
     }
+    
     public String getFileSuffix() {
         return getString(FILE_SUFFIX);
     }
@@ -155,13 +156,15 @@ public class File extends BaseEntity {
     public void setFileSuffix(String fileSuffix) {
         put(FILE_SUFFIX, fileSuffix);
     }
+    
     public Integer getFileSize() {
         return getInteger(FILE_SIZE);
     }
 
-    public void setFileSize(String fileSize) {
+    public void setFileSize(Integer fileSize) {
         put(FILE_SIZE, fileSize);
     }
+    
     public String getFilePath() {
         return getString(FILE_PATH);
     }
@@ -169,6 +172,7 @@ public class File extends BaseEntity {
     public void setFilePath(String filePath) {
         put(FILE_PATH, filePath);
     }
+    
     public String getFileThumbnailPath() {
         return getString(FILE_THUMBNAIL_PATH);
     }
@@ -176,6 +180,7 @@ public class File extends BaseEntity {
     public void setFileThumbnailPath(String fileThumbnailPath) {
         put(FILE_THUMBNAIL_PATH, fileThumbnailPath);
     }
+    
     public String getFileOriginalPath() {
         return getString(FILE_ORIGINAL_PATH);
     }
@@ -183,6 +188,7 @@ public class File extends BaseEntity {
     public void setFileOriginalPath(String fileOriginalPath) {
         put(FILE_ORIGINAL_PATH, fileOriginalPath);
     }
+    
     public String getFileCoverImage() {
         return getString(FILE_COVER_IMAGE);
     }
@@ -190,11 +196,12 @@ public class File extends BaseEntity {
     public void setFileCoverImage(String fileCoverImage) {
         put(FILE_COVER_IMAGE, fileCoverImage);
     }
+    
     public Boolean getFileIsExternal() {
         return getBoolean(FILE_IS_EXTERNAL);
     }
 
-    public void setFileIsExternal(String fileIsExternal) {
+    public void setFileIsExternal(Boolean fileIsExternal) {
         put(FILE_IS_EXTERNAL, fileIsExternal);
     }
 

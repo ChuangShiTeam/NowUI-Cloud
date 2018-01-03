@@ -20,12 +20,24 @@ zuul:
       path: /app/**
       serviceId: module-base
       stripPrefix: false
+    file:
+      path: /file/**
+      serviceId: module-base
+      stripPrefix: false
+    upload:
+      path: /upload/**
+      serviceId: module-base
+      stripPrefix: false
     code:
       path: /code/**
       serviceId: module-base
       stripPrefix: false
     advertisement:
       path: /advertisement/**
+      serviceId: module-cms
+      stripPrefix: false
+    toolbar:
+      path: /toolbar/**
       serviceId: module-cms
       stripPrefix: false
     article:

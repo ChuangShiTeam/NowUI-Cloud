@@ -82,6 +82,7 @@ public class Message extends BaseEntity {
     public void setMessageId(String messageId) {
         put(MESSAGE_ID, messageId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -89,6 +90,7 @@ public class Message extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getObjectId() {
         return getString(OBJECT_ID);
     }
@@ -96,6 +98,7 @@ public class Message extends BaseEntity {
     public void setObjectId(String objectId) {
         put(OBJECT_ID, objectId);
     }
+    
     public String getMessageTitle() {
         return getString(MESSAGE_TITLE);
     }
@@ -103,6 +106,7 @@ public class Message extends BaseEntity {
     public void setMessageTitle(String messageTitle) {
         put(MESSAGE_TITLE, messageTitle);
     }
+    
     public String getMessageType() {
         return getString(MESSAGE_TYPE);
     }
@@ -110,6 +114,7 @@ public class Message extends BaseEntity {
     public void setMessageType(String messageType) {
         put(MESSAGE_TYPE, messageType);
     }
+    
     public String getMessageContent() {
         return getString(MESSAGE_CONTENT);
     }

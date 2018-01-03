@@ -64,6 +64,7 @@ public class RoleMenu extends BaseEntity {
     public void setRoleMenuId(String roleMenuId) {
         put(ROLE_MENU_ID, roleMenuId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -71,6 +72,7 @@ public class RoleMenu extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getRoleId() {
         return getString(ROLE_ID);
     }
@@ -78,6 +80,7 @@ public class RoleMenu extends BaseEntity {
     public void setRoleId(String roleId) {
         put(ROLE_ID, roleId);
     }
+    
     public String getMenuId() {
         return getString(MENU_ID);
     }

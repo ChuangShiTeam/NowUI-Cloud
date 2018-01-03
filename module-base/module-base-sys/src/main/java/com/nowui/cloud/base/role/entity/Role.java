@@ -82,6 +82,7 @@ public class Role extends BaseEntity {
     public void setRoleId(String roleId) {
         put(ROLE_ID, roleId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -89,6 +90,7 @@ public class Role extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getRoleName() {
         return getString(ROLE_NAME);
     }
@@ -96,6 +98,7 @@ public class Role extends BaseEntity {
     public void setRoleName(String roleName) {
         put(ROLE_NAME, roleName);
     }
+    
     public String getRoleCode() {
         return getString(ROLE_CODE);
     }
@@ -103,6 +106,7 @@ public class Role extends BaseEntity {
     public void setRoleCode(String roleCode) {
         put(ROLE_CODE, roleCode);
     }
+    
     public String getRoleDescription() {
         return getString(ROLE_DESCRIPTION);
     }
@@ -110,11 +114,12 @@ public class Role extends BaseEntity {
     public void setRoleDescription(String roleDescription) {
         put(ROLE_DESCRIPTION, roleDescription);
     }
+    
     public Integer getRoleSort() {
         return getInteger(ROLE_SORT);
     }
 
-    public void setRoleSort(String roleSort) {
+    public void setRoleSort(Integer roleSort) {
         put(ROLE_SORT, roleSort);
     }
 

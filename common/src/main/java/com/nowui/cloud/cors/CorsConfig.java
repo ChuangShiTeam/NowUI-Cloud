@@ -9,7 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 /**
  * @author ZhongYongQiang
  */
-@Configuration
+//@Configuration
 public class CorsConfig {
 
     private CorsConfiguration buildConfig() {

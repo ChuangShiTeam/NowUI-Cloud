@@ -109,6 +109,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationId(String navigationId) {
         put(NAVIGATION_ID, navigationId);
     }
+    
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -116,6 +117,7 @@ public class Navigation extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
+    
     public String getNavigationCategoryCode() {
         return getString(NAVIGATION_CATEGORY_CODE);
     }
@@ -123,6 +125,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationCategoryCode(String navigationCategoryCode) {
         put(NAVIGATION_CATEGORY_CODE, navigationCategoryCode);
     }
+    
     public String getNavigationCode() {
         return getString(NAVIGATION_CODE);
     }
@@ -130,6 +133,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationCode(String navigationCode) {
         put(NAVIGATION_CODE, navigationCode);
     }
+    
     public String getNavigationName() {
         return getString(NAVIGATION_NAME);
     }
@@ -137,6 +141,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationName(String navigationName) {
         put(NAVIGATION_NAME, navigationName);
     }
+    
     public String getNavigationImage() {
         return getString(NAVIGATION_IMAGE);
     }
@@ -144,6 +149,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationImage(String navigationImage) {
         put(NAVIGATION_IMAGE, navigationImage);
     }
+    
     public String getNavigationUrl() {
         return getString(NAVIGATION_URL);
     }
@@ -151,6 +157,7 @@ public class Navigation extends BaseEntity {
     public void setNavigationUrl(String navigationUrl) {
         put(NAVIGATION_URL, navigationUrl);
     }
+    
     public String getNavigationPosition() {
         return getString(NAVIGATION_POSITION);
     }
@@ -158,11 +165,12 @@ public class Navigation extends BaseEntity {
     public void setNavigationPosition(String navigationPosition) {
         put(NAVIGATION_POSITION, navigationPosition);
     }
+    
     public Integer getNavigationSort() {
         return getInteger(NAVIGATION_SORT);
     }
 
-    public void setNavigationSort(String navigationSort) {
+    public void setNavigationSort(Integer navigationSort) {
         put(NAVIGATION_SORT, navigationSort);
     }
 

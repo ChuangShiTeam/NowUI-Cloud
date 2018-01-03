@@ -78,5 +78,16 @@ public class Util {
 
         }
     }
+    
+    public static String createPath(String ...params) {
+        StringBuilder builder = new StringBuilder();
+        if (params != null && params.length > 0) {
+            for (int i = 0; i < params.length; i ++) {
+                builder.append(params[i]);
+                builder.append("/");
+            }  
+        }
+        return builder.toString();
+    }
 
 }
