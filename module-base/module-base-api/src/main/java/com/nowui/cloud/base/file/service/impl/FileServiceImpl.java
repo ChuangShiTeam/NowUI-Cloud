@@ -128,7 +128,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 entity.setFileThumbnailPath(fileThumbnailPath);
                 entity.setFileType(fileType);
                 entity.setFileCoverImage("");
-                Boolean result = save(entity, userId);
+                Boolean result = save(entity, Util.getRandomUUID(), userId);
 
                 if (!result) {
                     throw new RuntimeException("上传不成功");
@@ -197,7 +197,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         entity.setFileThumbnailPath(fileThumbnailPath);
         entity.setFileType(fileType);
         entity.setFileCoverImage("");
-        Boolean result = save(entity, userId);
+        Boolean result = save(entity, Util.getRandomUUID(), userId);
 
         if (!result) {
             throw new RuntimeException("上传不成功");

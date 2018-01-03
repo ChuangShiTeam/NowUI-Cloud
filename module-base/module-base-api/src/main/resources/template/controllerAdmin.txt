@@ -83,7 +83,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%}%>
         );
 
-        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(body, body.getSystemRequestUserId());
+        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

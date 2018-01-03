@@ -1,5 +1,6 @@
 package com.nowui.cloud.cms.navigation.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import io.swagger.annotations.Api;
@@ -95,7 +96,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_SORT
         );
 
-        Boolean result = navigationService.save(body, body.getSystemRequestUserId());
+        Boolean result = navigationService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

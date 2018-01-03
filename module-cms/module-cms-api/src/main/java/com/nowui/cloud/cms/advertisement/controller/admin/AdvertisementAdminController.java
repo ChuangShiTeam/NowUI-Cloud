@@ -15,6 +15,7 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -111,7 +112,7 @@ public class AdvertisementAdminController extends BaseController {
             Advertisement.ADEVERTISEMENT_TITLE
         );
 
-        Boolean result = advertisementService.save(body, body.getSystemRequestUserId());
+        Boolean result = advertisementService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

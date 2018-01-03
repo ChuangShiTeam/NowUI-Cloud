@@ -15,6 +15,7 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,8 +54,9 @@ public class ToolbarAdminController extends BaseController {
         validateResponse(
             Toolbar.TOOLBAR_ID, 
             Toolbar.TOOLBAR_NAME, 
-            Toolbar.TOOLBAR_SORT,
-            Toolbar.TOOLBAR_IMAGE
+            Toolbar.TOOLBAR_IMAGE,
+            Toolbar.TOOLBAR_SORT
+            
         );
 
         return renderJson(resultTotal, resultList);
@@ -93,7 +95,7 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_SORT
         );
 
-        Boolean result = toolbarService.save(body, body.getSystemRequestUserId());
+        Boolean result = toolbarService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

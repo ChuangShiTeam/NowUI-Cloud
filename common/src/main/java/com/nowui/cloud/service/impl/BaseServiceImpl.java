@@ -3,21 +3,22 @@ package com.nowui.cloud.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.nowui.cloud.util.Util;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
-import org.springframework.data.redis.core.RedisTemplate;
+import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.util.Util;
 
 /**
  * @author ZhongYongQiang
  */
-public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
+public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implements BaseService<T> {
 
     @Autowired
     protected M mapper;
@@ -32,11 +33,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return entity.getTableName() + "_item_" + id;
     }
 
+    @Override
     public Integer count(@Param("ew") Wrapper<T> var1) {
         Integer count = mapper.selectCount(var1);
         return count;
     }
 
+    @Override
     public List<T> list(@Param("ew") Wrapper<T> var1, Integer m, Integer n) {
         List<T> list = mapper.selectPage(new Page<T>(m, n), var1.setSqlSelect(entity.getTableId()));
 
@@ -47,6 +50,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return list;
     }
     
+    @Override
     public List<T> list(@Param("ew") Wrapper<T> var1) {
         List<T> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
 
@@ -57,6 +61,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return list;
     }
 
+    @Override
     public T find(String id) {
         if (Util.isNullOrEmpty(id)) {
             return null;
@@ -74,6 +79,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return baseEntity;
     }
 
+    @Override
     public T find(String id, Boolean systemStatus) {
         if (Util.isNullOrEmpty(id)) {
             return null;
@@ -91,7 +97,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
             } else {
                 baseEntity = list.get(0);
 
-                redis.opsForValue().set(entity.getTableName(), baseEntity);
+                redis.opsForValue().set(baseEntity.getTableName(), baseEntity);
 
                 return baseEntity;
             }
@@ -104,8 +110,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         }
     }
 
-    public Boolean save(T baseEntity, String systemCreateUserId) {
-        String id = Util.getRandomUUID();
+    @Override
+    public Boolean save(T baseEntity, String id, String systemCreateUserId) {
 
         baseEntity.put(entity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
@@ -126,12 +132,11 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return success;
     }
 
+    @Override
     public Boolean update(T baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
-
-        System.out.println(systemVersion);
 
         Boolean success = mapper.update(
                 baseEntity,
@@ -150,6 +155,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
         return success;
     }
 
+    @Override
     public Boolean delete(String id, String systemUpdateUserId, Integer systemVersion) {
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
@@ -170,5 +176,5 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
 
         return success;
     }
-
+    
 }

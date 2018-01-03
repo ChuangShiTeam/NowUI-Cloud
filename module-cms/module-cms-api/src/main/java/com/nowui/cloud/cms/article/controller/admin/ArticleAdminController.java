@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,7 +51,12 @@ public class ArticleAdminController extends BaseController {
         validateResponse(
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
-            Article.ARTICLE_TITLE
+            Article.ARTICLE_TITLE,
+            Article.ARTICLE_COVER,
+            Article.ARTICLE_AUTHOR,
+            Article.ARTICLE_PUBLISH_TIME,
+            Article.ARTICLE_IS_TOP,
+            Article.ARTICLE_IS_DRAFT
         );
 
         return renderJson(resultTotal, resultList);
@@ -111,10 +118,15 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_IS_REQUIRE_AUDIT,
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
-            Article.ARTICLE_WEIGHT
+            Article.ARTICLE_WEIGHT,
+            Article.ARTICLE_CATEGORY_LIST,
+            Article.ARTICLE_MEDIA_LIST
         );
 
-        Boolean result = articleService.save(body, body.getSystemRequestUserId());
+        JSONArray articleCategoryList = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
+        JSONArray articleMediaList = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        
+        Boolean result = articleService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

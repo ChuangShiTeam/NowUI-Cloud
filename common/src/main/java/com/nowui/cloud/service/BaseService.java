@@ -1,11 +1,42 @@
 package com.nowui.cloud.service;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * @author ZhongYongQiang
  */
-public abstract interface BaseService<T extends BaseEntity> {
+public interface BaseService<T extends BaseEntity> {
+    
+    /**
+     * 统计查询
+     * 
+     * @param var1
+     * @return
+     */
+    public Integer count(@Param("ew") Wrapper<T> var1);
+    
+    /**
+     * 分页列表查询
+     * 
+     * @param var1
+     * @param m
+     * @param n
+     * @return
+     */
+    public List<T> list(@Param("ew") Wrapper<T> var1, Integer m, Integer n);
+    
+    /**
+     * 列表查询
+     * 
+     * @param var1
+     * @return
+     */
+    public List<T> list(@Param("ew") Wrapper<T> var1);
 
     /**
      * 单个实体类查询
@@ -31,7 +62,7 @@ public abstract interface BaseService<T extends BaseEntity> {
      * @param systemCreateUserId 创建人编号
      * @return Boolean 是否成功
      */
-    Boolean save(T entity, String systemCreateUserId);
+    Boolean save(T entity, String id, String systemCreateUserId);
 
     /**
      * 实体类修改
