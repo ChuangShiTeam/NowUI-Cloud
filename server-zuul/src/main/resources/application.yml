@@ -36,6 +36,10 @@ zuul:
       path: /advertisement/**
       serviceId: module-cms
       stripPrefix: false
+    toolbar:
+      path: /toolbar/**
+      serviceId: module-cms
+      stripPrefix: false
     article:
       path: /article/**
       serviceId: module-cms

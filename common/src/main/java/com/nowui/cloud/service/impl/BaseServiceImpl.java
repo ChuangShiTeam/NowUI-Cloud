@@ -58,6 +58,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public T find(String id) {
+        if (Util.isNullOrEmpty(id)) {
+            return null;
+        }
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {
@@ -72,6 +75,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
     }
 
     public T find(String id, Boolean systemStatus) {
+        if (Util.isNullOrEmpty(id)) {
+            return null;
+        }
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {

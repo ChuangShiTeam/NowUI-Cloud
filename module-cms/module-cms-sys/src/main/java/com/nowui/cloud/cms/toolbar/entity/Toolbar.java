@@ -62,7 +62,6 @@ public class Toolbar extends BaseEntity {
      */
     @TableField
     @NotNull(message = "工具栏排序不能为空")
-    @Length(max = 11, message = "工具栏排序长度超出限制")
     private Integer toolbarSort;
     public static final String TOOLBAR_SORT = "toolbarSort";
     
