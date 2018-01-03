@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.Article;
+import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -123,8 +125,15 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_MEDIA_LIST
         );
 
-        JSONArray articleCategoryList = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
-        JSONArray articleMediaList = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
+        if (articleCategoryJsonArray == null || articleCategoryJsonArray.size() == 0) {
+            throw new RuntimeException("文章没有选择文章分类");
+        }
+        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        
+        JSONArray articleMediaJSONArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        
+        List<ArticleMedia> mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
         
         Boolean result = articleService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 

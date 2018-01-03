@@ -34,5 +34,5 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      * @return List<Article> 文章列表
      */
     List<Article> adminList(String appId, String articleName, Integer m, Integer n);
-
+    
 }

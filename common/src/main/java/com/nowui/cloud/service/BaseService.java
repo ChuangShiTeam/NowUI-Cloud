@@ -18,7 +18,7 @@ public interface BaseService<T extends BaseEntity> {
      * @param var1
      * @return
      */
-    public Integer count(@Param("ew") Wrapper<T> var1);
+    Integer count(@Param("ew") Wrapper<T> var1);
     
     /**
      * 分页列表查询
@@ -28,7 +28,7 @@ public interface BaseService<T extends BaseEntity> {
      * @param n
      * @return
      */
-    public List<T> list(@Param("ew") Wrapper<T> var1, Integer m, Integer n);
+    List<T> list(@Param("ew") Wrapper<T> var1, Integer m, Integer n);
     
     /**
      * 列表查询
@@ -36,7 +36,7 @@ public interface BaseService<T extends BaseEntity> {
      * @param var1
      * @return
      */
-    public List<T> list(@Param("ew") Wrapper<T> var1);
+    List<T> list(@Param("ew") Wrapper<T> var1);
 
     /**
      * 单个实体类查询
