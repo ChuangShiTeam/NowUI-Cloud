@@ -2,10 +2,15 @@ package com.nowui.cloud.cms.navigation.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.mapper.NavigationMapper;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.cms.toolbar.entity.Toolbar;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -21,6 +26,10 @@ import java.util.List;
 @Service
 public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Navigation> implements NavigationService {
 
+	@Autowired
+	private FileRpc fileRpc;
+	    
+	
     @Override
     public Integer adminCount(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {
         Integer count = count(
@@ -47,6 +56,13 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
                 m,
                 n
         );
+        
+      //查询工具栏图片
+        for (Navigation navigation : navigationList) {
+            File file = fileRpc.find(navigation.getNavigationImage());
+            file.keep(File.FILE_ID, File.FILE_PATH);
+            navigation.put(Navigation.NAVIGATION_IMAGE, file);
+        }
 
         return navigationList;
     }

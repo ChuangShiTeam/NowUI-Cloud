@@ -31,16 +31,13 @@ public class MenuAdminController extends BaseController {
         validateRequest(
                 body,
                 Menu.APP_ID,
-                Menu.MENU_PARENT_ID,
                 Menu.MENU_NAME,
-                Menu.MENU_IMAGE,
-                Menu.MENU_URL,
                 Menu.PAGE_INDEX,
                 Menu.PAGE_SIZE
         );
 
-        Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuParentId(), body.getMenuName(), body.getMenuImage(), body.getMenuUrl());
-        List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuParentId(), body.getMenuName(), body.getMenuImage(), body.getMenuUrl(), body.getM(), body.getN());
+        Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuName());
+        List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuName(), body.getM(), body.getN());
 
         validateResponse(
                 Menu.MENU_ID,

@@ -17,25 +17,19 @@ public interface MenuService extends BaseService<Menu> {
      * 菜单统计
      *
      * @param appId 应用编号
-     * @param menuParentId 父级ID
      * @param menuName 名称
-     * @param menuImage 图片
-     * @param menuUrl 地址
      * @return Integer 菜单统计
      */
-    Integer adminCount(String appId, String menuParentId, String menuName, String menuImage, String menuUrl);
+    Integer adminCount(String appId, String menuName);
 
     /**
      * 菜单列表
      *
      * @param appId 应用编号
-     * @param menuParentId 父级ID
      * @param menuName 名称
-     * @param menuImage 图片
-     * @param menuUrl 地址
      * @param m 从m条开始
      * @param n 取n条数据
      * @return List<Menu> 菜单列表
      */
-    List<Menu> adminList(String appId, String menuParentId, String menuName, String menuImage, String menuUrl, Integer m, Integer n);
+    List<Menu> adminList(String appId, String menuName, Integer m, Integer n);
 }

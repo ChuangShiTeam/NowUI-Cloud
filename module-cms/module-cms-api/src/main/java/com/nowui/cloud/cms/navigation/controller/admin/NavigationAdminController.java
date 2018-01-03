@@ -1,5 +1,7 @@
 package com.nowui.cloud.cms.navigation.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import io.swagger.annotations.Api;
@@ -25,6 +27,9 @@ public class NavigationAdminController extends BaseController {
     @Autowired
     private NavigationService navigationService;
 
+    @Autowired
+    private FileRpc fileRpc;
+    
     @ApiOperation(value = "导航栏列表")
     @RequestMapping(value = "/navigation/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Navigation body) {
@@ -40,7 +45,7 @@ public class NavigationAdminController extends BaseController {
 
         Integer resultTotal = navigationService.adminCount(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
         List<Navigation> resultList = navigationService.adminList(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
-
+        
         validateResponse(
                 Navigation.NAVIGATION_ID,
                 Navigation.NAVIGATION_CATEGORY_CODE,
@@ -66,6 +71,10 @@ public class NavigationAdminController extends BaseController {
 
         Navigation result = navigationService.find(body.getNavigationId());
 
+        File file = fileRpc.find(result.getNavigationImage());
+        file.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(Navigation.NAVIGATION_IMAGE, file);
+        
         validateResponse(
                 Navigation.NAVIGATION_ID,
                 Navigation.NAVIGATION_CATEGORY_CODE,
@@ -76,7 +85,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT
         );
-
+        
         return renderJson(result);
     }
 

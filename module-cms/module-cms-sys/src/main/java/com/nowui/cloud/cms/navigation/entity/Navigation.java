@@ -97,7 +97,6 @@ public class Navigation extends BaseEntity {
      */
     @TableField
     @NotNull(message = "排序不能为空")
-    @Length(max = 11, message = "排序长度超出限制")
     private Integer navigationSort;
     public static final String NAVIGATION_SORT = "navigationSort";
 

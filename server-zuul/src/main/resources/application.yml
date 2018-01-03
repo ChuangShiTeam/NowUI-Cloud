@@ -44,6 +44,22 @@ zuul:
       path: /article/**
       serviceId: module-cms
       stripPrefix: false
+    navigation:
+      path: /navigation/**
+      serviceId: module-cms
+      stripPrefix: false
+    role:
+      path: /role/**
+      serviceId: module-base
+      stripPrefix: false
+    user:
+      path: /user/**
+      serviceId: module-base
+      stripPrefix: false
+    menu:
+      path: /menu/**
+      serviceId: module-base
+      stripPrefix: false
 hystrix:
   command:
     default:
