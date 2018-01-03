@@ -35,4 +35,10 @@ public interface ToolbarService extends BaseService<Toolbar>, ToolbarRpc {
      */
     List<Toolbar> adminList(String appId, String toolbarName, Integer m, Integer n);
 
+    /**
+     * 工具栏列表
+     * @param appId
+     * @return List<Toolbar> 工具栏列表
+     */
+    List<Toolbar> mobileList(String appId);
 }
