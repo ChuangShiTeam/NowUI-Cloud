@@ -45,12 +45,12 @@ spring:
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
   redis:
-    host: localhost
+    host: 118.31.229.16
     port: 6379
     database: 0
     password:
   rabbitmq:
-    host: 192.168.2.29
+    host: 118.31.229.16
     port: 5672
     username: guest
     password: guest
