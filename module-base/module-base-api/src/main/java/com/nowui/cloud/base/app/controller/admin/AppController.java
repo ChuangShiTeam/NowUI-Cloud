@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.service.AppService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,7 +63,8 @@ public class AppController extends BaseController {
             throw new RuntimeException("应用名称重复");
         }
         
-        Boolean result = appService.save(body, body.getSystemRequestUserId());
+        body.setAppId(Util.getRandomUUID());
+        Boolean result = appService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.menu.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.menu.entity.Menu;
 import com.nowui.cloud.base.menu.service.MenuService;
 import io.swagger.annotations.Api;
@@ -31,16 +32,13 @@ public class MenuAdminController extends BaseController {
         validateRequest(
                 body,
                 Menu.APP_ID,
-                Menu.MENU_PARENT_ID,
                 Menu.MENU_NAME,
-                Menu.MENU_IMAGE,
-                Menu.MENU_URL,
                 Menu.PAGE_INDEX,
                 Menu.PAGE_SIZE
         );
 
-        Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuParentId(), body.getMenuName(), body.getMenuImage(), body.getMenuUrl());
-        List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuParentId(), body.getMenuName(), body.getMenuImage(), body.getMenuUrl(), body.getM(), body.getN());
+        Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuName());
+        List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuName(), body.getM(), body.getN());
 
         validateResponse(
                 Menu.MENU_ID,
@@ -92,7 +90,7 @@ public class MenuAdminController extends BaseController {
                 Menu.MENU_SORT
         );
 
-        Boolean result = menuService.save(body, body.getSystemRequestUserId());
+        Boolean result = menuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

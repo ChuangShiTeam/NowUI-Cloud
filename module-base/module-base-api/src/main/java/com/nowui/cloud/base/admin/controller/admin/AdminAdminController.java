@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.admin.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.service.AdminService;
 import io.swagger.annotations.Api;
@@ -75,7 +76,7 @@ public class AdminAdminController extends BaseController {
                 Admin.USER_ID
         );
 
-        Boolean result = adminService.save(body, body.getSystemRequestUserId());
+        Boolean result = adminService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

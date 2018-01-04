@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.message.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.message.entity.Message;
 import com.nowui.cloud.base.message.service.MessageService;
 import io.swagger.annotations.Api;
@@ -83,7 +84,7 @@ public class MessageAdminController extends BaseController {
                 Message.MESSAGE_CONTENT
         );
 
-        Boolean result = messageService.save(body, body.getSystemRequestUserId());
+        Boolean result = messageService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

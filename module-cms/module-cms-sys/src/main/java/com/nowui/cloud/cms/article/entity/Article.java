@@ -158,7 +158,6 @@ public class Article extends BaseEntity {
      */
     @TableField
     @NotNull(message = "文章置顶级别不能为空")
-    @Length(max = 5, message = "文章置顶级别长度超出限制")
     private Integer articleTopLevel;
     public static final String ARTICLE_TOP_LEVEL = "articleTopLevel";
     
@@ -182,7 +181,6 @@ public class Article extends BaseEntity {
      * 文章权重
      */
     @TableField
-    @Length(max = 11, message = "文章权重长度超出限制")
     @NotNull(message = "文章权重不能为空")
     private Integer articleWeight;
     public static final String ARTICLE_WEIGHT = "articleWeight";
@@ -200,9 +198,12 @@ public class Article extends BaseEntity {
      */
     @TableField
     @NotNull(message = "文章排序不能为空")
-    @Length(max = 11, message = "文章排序长度超出限制")
     private Integer articleSort;
     public static final String ARTICLE_SORT = "articleSort";
+    
+    public static final String ARTICLE_MEDIA_LIST = "articleMediaList";
+    
+    public static final String ARTICLE_CATEGORY_LIST = "articleCategoryList";
     
     public String getArticleId() {
         return getString(ARTICLE_ID);

@@ -9,7 +9,7 @@ eureka:
       defaultZone: http://localhost:8070/eureka/
 zuul:
   host:
-      connect-timeout-millis: 10000
+      connect-timeout-millis: 30000
       socket-timeout-millis: 60000
   routes:
     shop:
@@ -20,6 +20,14 @@ zuul:
       path: /app/**
       serviceId: module-base
       stripPrefix: false
+    file:
+      path: /file/**
+      serviceId: module-base
+      stripPrefix: false
+    upload:
+      path: /upload/**
+      serviceId: module-base
+      stripPrefix: false
     code:
       path: /code/**
       serviceId: module-base
@@ -28,9 +36,29 @@ zuul:
       path: /advertisement/**
       serviceId: module-cms
       stripPrefix: false
+    toolbar:
+      path: /toolbar/**
+      serviceId: module-cms
+      stripPrefix: false
     article:
       path: /article/**
       serviceId: module-cms
+      stripPrefix: false
+    navigation:
+      path: /navigation/**
+      serviceId: module-cms
+      stripPrefix: false
+    role:
+      path: /role/**
+      serviceId: module-base
+      stripPrefix: false
+    user:
+      path: /user/**
+      serviceId: module-base
+      stripPrefix: false
+    menu:
+      path: /menu/**
+      serviceId: module-base
       stripPrefix: false
 hystrix:
   command:
@@ -40,5 +68,5 @@ hystrix:
           thread:
             timeoutInMilliseconds: 60000
 ribbon:
-     ConnectTimeout: 3000
+     ConnectTimeout: 30000
      ReadTimeout: 60000

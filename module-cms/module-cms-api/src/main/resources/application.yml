@@ -40,6 +40,16 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
+  redis:
+    host: 118.31.229.16
+    port: 6379
+    database: 0
+    password:
+  rabbitmq:
+    host: 118.31.229.16
+    port: 5672
+    username: guest
+    password: guest
 
 #mybatis
 mybatis-plus:
@@ -70,10 +80,3 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-
-#配置
-config:
-  #代码生成数据库名
-  tableSchema: cms
-  #代码生成输出目录
-  codeGenerateUrl: /develop/code/

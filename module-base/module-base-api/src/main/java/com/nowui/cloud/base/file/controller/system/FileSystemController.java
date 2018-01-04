@@ -1,13 +1,13 @@
 package com.nowui.cloud.base.file.controller.system;
 
-import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.service.FileService;
+
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 文件系统端控制器
@@ -19,5 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "文件", description = "文件系统端接口管理")
 @RestController
 public class FileSystemController implements FileRpc {
+    
+    @Autowired
+    private FileService fileService;
+
+    /**
+     * 根据ID查询文件信息
+     */
+    @Override
+    public File find(String fileId) {
+        System.out.println(fileId);
+        File file = fileService.find(fileId);
+        file.defaultKeep();
+        System.out.println(file.toJSONString());
+        return file;
+    }
 
 }

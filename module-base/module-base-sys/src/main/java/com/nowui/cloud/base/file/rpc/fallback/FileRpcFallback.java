@@ -14,4 +14,9 @@ import org.springframework.stereotype.Component;
 @Component(value = "FileRpcFallback")
 public class FileRpcFallback implements FileRpc {
 
+    @Override
+    public File find(String fileId) {
+        return null;
+    }
+
 }

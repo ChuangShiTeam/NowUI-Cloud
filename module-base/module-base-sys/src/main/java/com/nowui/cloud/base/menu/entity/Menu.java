@@ -88,7 +88,6 @@ public class Menu extends BaseEntity {
      */
     @TableField
     @NotNull(message = "排序不能为空")
-    @Length(max = 11, message = "排序长度超出限制")
     private Integer menuSort;
     public static final String MENU_SORT = "menuSort";
 

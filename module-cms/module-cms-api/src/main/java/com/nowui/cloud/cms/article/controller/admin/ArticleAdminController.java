@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.Article;
+import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
 
@@ -49,7 +52,12 @@ public class ArticleAdminController extends BaseController {
         validateResponse(
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
-            Article.ARTICLE_TITLE
+            Article.ARTICLE_TITLE,
+            Article.ARTICLE_COVER,
+            Article.ARTICLE_AUTHOR,
+            Article.ARTICLE_PUBLISH_TIME,
+            Article.ARTICLE_IS_TOP,
+            Article.ARTICLE_IS_DRAFT
         );
 
         return renderJson(resultTotal, resultList);
@@ -111,10 +119,22 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_IS_REQUIRE_AUDIT,
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
-            Article.ARTICLE_WEIGHT
+            Article.ARTICLE_WEIGHT,
+            Article.ARTICLE_CATEGORY_LIST,
+            Article.ARTICLE_MEDIA_LIST
         );
 
-        Boolean result = articleService.save(body, body.getSystemRequestUserId());
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
+        if (articleCategoryJsonArray == null || articleCategoryJsonArray.size() == 0) {
+            throw new RuntimeException("文章没有选择文章分类");
+        }
+        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        
+        JSONArray articleMediaJSONArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        
+        List<ArticleMedia> mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
+        
+        Boolean result = articleService.save(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -143,10 +163,22 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
             Article.ARTICLE_WEIGHT,
-            Article.SYSTEM_VERSION
+            Article.SYSTEM_VERSION,
+            Article.ARTICLE_CATEGORY_LIST,
+            Article.ARTICLE_MEDIA_LIST
         );
+        
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
+        if (articleCategoryJsonArray == null || articleCategoryJsonArray.size() == 0) {
+            throw new RuntimeException("文章没有选择文章分类");
+        }
+        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        
+        JSONArray articleMediaJSONArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        
+        List<ArticleMedia> mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
 
-        Boolean result = articleService.update(body, body.getArticleId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleService.update(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }

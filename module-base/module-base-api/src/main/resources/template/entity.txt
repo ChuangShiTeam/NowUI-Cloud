@@ -85,6 +85,7 @@ public class ${firstUpperWithoutUnderlineEntityName} extends BaseEntity {
     public Date get${column.firstUpperColumnName}() {
         return getDate(${column.upperWithUnderlineColumnName});
     }
+    
     public void set${column.firstUpperColumnName}(Date ${column.columnName}) {
         put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
@@ -92,6 +93,7 @@ public class ${firstUpperWithoutUnderlineEntityName} extends BaseEntity {
     public String get${column.firstUpperColumnName}() {
         return getString(${column.upperWithUnderlineColumnName});
     }
+    
     public void set${column.firstUpperColumnName}(String ${column.columnName}) {
         put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }

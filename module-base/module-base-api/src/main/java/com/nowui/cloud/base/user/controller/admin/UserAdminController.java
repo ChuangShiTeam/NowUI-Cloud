@@ -1,7 +1,11 @@
 package com.nowui.cloud.base.user.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.service.UserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,9 @@ public class UserAdminController extends BaseController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private FileRpc fileRpc;
 
     @ApiOperation(value = "用户列表")
     @RequestMapping(value = "/user/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +73,10 @@ public class UserAdminController extends BaseController {
         );
 
         User result = userService.find(body.getUserId());
+        
+        File file = fileRpc.find(result.getUserAvatar());
+        file.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(User.USER_AVATAR, file);
 
         validateResponse(
                 User.USER_ID,
@@ -104,7 +115,7 @@ public class UserAdminController extends BaseController {
                 User.WEIXIN_UNION_ID
         );
 
-        Boolean result = userService.save(body, body.getSystemRequestUserId());
+        Boolean result = userService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

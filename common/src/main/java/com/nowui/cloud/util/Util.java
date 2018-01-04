@@ -84,7 +84,7 @@ public class Util {
         if (params != null && params.length > 0) {
             for (int i = 0; i < params.length; i ++) {
                 builder.append(params[i]);
-                builder.append(java.io.File.separator);
+                builder.append("/");
             }  
         }
         return builder.toString();

@@ -2,9 +2,13 @@ package com.nowui.cloud.base.user.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.mapper.UserMapper;
 import com.nowui.cloud.base.user.service.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -20,6 +24,9 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
 
+	@Autowired
+	private FileRpc fileRpc;
+	
     @Override
     public Integer adminCount(String appId, String userType, String userAccount, String userName, String userMobile) {
         Integer count = count(
@@ -48,6 +55,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                 m,
                 n
         );
+        
+      //查询工具栏图片
+        for (User user : userList) {
+            File file = fileRpc.find(user.getUserAvatar());
+            file.keep(File.FILE_ID, File.FILE_PATH);
+            user.put(User.USER_AVATAR, file);
+        }
 
         return userList;
     }

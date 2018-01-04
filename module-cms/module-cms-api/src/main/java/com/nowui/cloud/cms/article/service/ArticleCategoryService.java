@@ -37,14 +37,22 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
     List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer m, Integer n);
     
     /**
-     * 文章分类树形列表
+     * 文章分类树形分页列表
      *
      * @param appId 应用编号
      * @param articleCategoryName 文章分类名称
      * @param m 从m条开始
      * @param n 取n条数据
-     * @return List<Map<String, Object>> 文章分类树形列表
+     * @return List<Map<String, Object>> 文章分类树形分页列表
      */
     List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer m, Integer n);
+    
+    /**
+     * 所有文章分类树形列表
+     *
+     * @param appId 应用编号
+     * @return List<Map<String, Object>> 所有文章分类树形列表
+     */
+    List<Map<String, Object>> adminAllTreeList(String appId);
     
 }
