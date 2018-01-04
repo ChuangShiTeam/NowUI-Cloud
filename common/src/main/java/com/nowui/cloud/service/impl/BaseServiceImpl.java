@@ -46,7 +46,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> {
 
         return list;
     }
-    
+
     public List<T> list(@Param("ew") Wrapper<T> var1) {
         List<T> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
 
