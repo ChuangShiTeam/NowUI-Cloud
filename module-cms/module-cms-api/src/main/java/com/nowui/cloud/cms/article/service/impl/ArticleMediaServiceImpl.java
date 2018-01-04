@@ -35,7 +35,7 @@ public class ArticleMediaServiceImpl extends BaseServiceImpl<ArticleMediaMapper,
     @Override
     public void deleteByArticleId(String articleId, String systemRequestUserId) {
         
-        List<ArticleMedia> articleMediaList  = listByArticleId(articleId);
+        List<ArticleMedia> articleMediaList = listByArticleId(articleId);
         
         if (articleMediaList != null && articleMediaList.size() > 0) {
             for (ArticleMedia articleMedia : articleMediaList) {

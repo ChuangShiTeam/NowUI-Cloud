@@ -74,13 +74,13 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         for (Article article : articleList) {
             ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
             if (articleArticleCategory != null) {
-                article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleArticleCategoryId()));
+                article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleCategoryId()).getArticleCategoryName());
             }
             
-            if (!Util.isNullOrEmpty(article.getArticleCover())) {
-                File file = fileRpc.find(article.getArticleCover());
+            if (!Util.isNullOrEmpty(article.getArticleMedia())) {
+                File file = fileRpc.find(article.getArticleMedia());
                 file.keep(File.FILE_ID, File.FILE_PATH);
-                article.put(Article.ARTICLE_COVER, file);
+                article.put(Article.ARTICLE_MEDIA, file);
             }
         }
         

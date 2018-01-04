@@ -69,13 +69,22 @@ public class Article extends BaseEntity {
     public static final String ARTICLE_SOURCE = "articleSource";
     
     /**
-     * 文章封面
+     * 文章媒体
      */
     @TableField
-    @NotNull(message = "文章封面不能为空")
-    @Length(max = 32, message = "文章封面长度超出限制")
-    private String articleCover;
-    public static final String ARTICLE_COVER = "articleCover";
+    @NotNull(message = "文章媒体不能为空")
+    @Length(max = 32, message = "文章媒体长度超出限制")
+    private String articleMedia;
+    public static final String ARTICLE_MEDIA = "articleMedia";
+    
+    /**
+     * 文章媒体类型
+     */
+    @TableField
+    @NotNull(message = "文章媒体类型不能为空")
+    @Length(max = 32, message = "文章媒体类型长度超出限制")
+    private String articleMediaType;
+    public static final String ARTICLE_MEDIA_TYPE = "articleMediaType";
     
     /**
      * 文章摘要
@@ -203,7 +212,7 @@ public class Article extends BaseEntity {
     
     public static final String ARTICLE_MEDIA_LIST = "articleMediaList";
     
-    public static final String ARTICLE_CATEGORY_LIST = "articleCategoryList";
+    public static final String ARTICLE_ARTICLE_CATEGORY_LIST = "articleArticleCategoryList";
     
     public String getArticleId() {
         return getString(ARTICLE_ID);
@@ -237,12 +246,20 @@ public class Article extends BaseEntity {
         put(ARTICLE_AUTHOR, articleAuthor);
     }
     
-    public String getArticleCover() {
-        return getString(ARTICLE_COVER);
+    public String getArticleMedia() {
+        return getString(ARTICLE_MEDIA);
     }
     
-    public void setArticleCover(String articleCover) {
-        put(ARTICLE_COVER, articleCover);
+    public void setArticleMedia(String articleMedia) {
+        put(ARTICLE_MEDIA, articleMedia);
+    }
+    
+    public String getArticleMediaType() {
+        return getString(ARTICLE_MEDIA_TYPE);
+    }
+    
+    public void setArticleMediaType(String articleMediaType) {
+        put(ARTICLE_MEDIA_TYPE, articleMediaType);
     }
     
     public String getArticleSummary() {
