@@ -1,14 +1,15 @@
 package com.nowui.cloud.cms.article.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.cms.article.entity.ArticleLike;
 import com.nowui.cloud.cms.article.mapper.ArticleLikeMapper;
 import com.nowui.cloud.cms.article.service.ArticleLikeService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 文章点赞业务实现
@@ -33,7 +34,7 @@ public class ArticleLikeServiceImpl extends BaseServiceImpl<ArticleLikeMapper, A
     }
 
     @Override
-    public List<ArticleLike> adminList(String appId, String articleId, String userId, Integer m, Integer n) {
+    public List<ArticleLike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize) {
         List<ArticleLike> articleLikeList = list(
                 new BaseWrapper<ArticleLike>()
                         .eq(ArticleLike.APP_ID, appId)
@@ -41,8 +42,8 @@ public class ArticleLikeServiceImpl extends BaseServiceImpl<ArticleLikeMapper, A
                         .likeAllowEmpty(ArticleLike.USER_ID, userId)
                         .eq(ArticleLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleLike.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleLikeList;

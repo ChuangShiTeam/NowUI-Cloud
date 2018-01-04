@@ -41,7 +41,7 @@ public class ArticleAuditAdminController extends BaseController {
         );
 
         Integer resultTotal = articleAuditService.adminCount(body.getAppId() , body.getArticleId(), body.getUserId(), body.getArticleAuditStatus());
-        List<ArticleAudit> resultList = articleAuditService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getArticleAuditStatus(), body.getM(), body.getN());
+        List<ArticleAudit> resultList = articleAuditService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getArticleAuditStatus(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleAudit.ARTICLE_AUDIT_ID,

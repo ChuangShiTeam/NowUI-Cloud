@@ -33,7 +33,7 @@ public class ArticleDislikeServiceImpl extends BaseServiceImpl<ArticleDislikeMap
     }
 
     @Override
-    public List<ArticleDislike> adminList(String appId, String articleId, String userId, Integer m, Integer n) {
+    public List<ArticleDislike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize) {
         List<ArticleDislike> articleDislikeList = list(
                 new BaseWrapper<ArticleDislike>()
                         .eq(ArticleDislike.APP_ID, appId)
@@ -41,8 +41,8 @@ public class ArticleDislikeServiceImpl extends BaseServiceImpl<ArticleDislikeMap
                         .likeAllowEmpty(ArticleDislike.USER_ID, userId)
                         .eq(ArticleDislike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleDislike.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleDislikeList;

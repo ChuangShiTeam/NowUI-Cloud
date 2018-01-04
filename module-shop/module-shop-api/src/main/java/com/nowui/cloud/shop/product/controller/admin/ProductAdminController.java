@@ -35,7 +35,7 @@ public class ProductAdminController extends BaseController {
         );
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
+        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Product.PRODUCT_ID,

@@ -32,9 +32,9 @@ public interface ArticleAuditService extends BaseService<ArticleAudit> {
      * @param articleId 文章编号
      * @param userId 审核人编号
      * @param articleAuditStatus 审核状态
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleAudit> 文章审核列表
      */
-    List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer m, Integer n);
+    List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize);
 }

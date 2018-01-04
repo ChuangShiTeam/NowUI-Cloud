@@ -35,7 +35,7 @@ public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper,
     }
 
     @Override
-    public List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer m, Integer n) {
+    public List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize) {
         List<ArticleAudit> articleAuditList = list(
                 new BaseWrapper<ArticleAudit>()
                         .eq(ArticleAudit.APP_ID, appId)
@@ -44,8 +44,8 @@ public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper,
                         .eq(ArticleAudit.ARTICLE_AUDIT_STATUS, articleAuditStatus)
                         .eq(ArticleAudit.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleAudit.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleAuditList;

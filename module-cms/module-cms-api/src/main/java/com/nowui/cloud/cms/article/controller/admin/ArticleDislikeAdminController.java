@@ -39,7 +39,7 @@ public class ArticleDislikeAdminController extends BaseController {
         );
 
         Integer resultTotal = articleDislikeService.adminCount(body.getAppId() , body.getArticleId(), body.getUserId());
-        List<ArticleDislike> resultList = articleDislikeService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getM(), body.getN());
+        List<ArticleDislike> resultList = articleDislikeService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleDislike.ARTICLE_DISLIKE_ID,

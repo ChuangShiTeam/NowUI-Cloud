@@ -57,7 +57,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     }
 
     @Override
-    public List<Article> adminList(String appId, String articleTitle, Integer m, Integer n) {
+    public List<Article> adminList(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
         
         List<Article> articleList = list(
                 new BaseWrapper<Article>()
@@ -67,8 +67,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
                         .orderDesc(Arrays.asList(Article.ARTICLE_IS_TOP))
                         .orderAsc(Arrays.asList(Article.ARTICLE_TOP_LEVEL, Article.ARTICLE_SORT))
                         .orderDesc(Arrays.asList(Article.SYSTEM_CREATE_TIME)),
-                m, 
-                n
+                pageIndex, 
+                pageSize
         );
         
         for (Article article : articleList) {

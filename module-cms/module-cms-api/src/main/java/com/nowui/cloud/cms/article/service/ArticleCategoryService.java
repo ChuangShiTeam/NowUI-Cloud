@@ -30,11 +30,11 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
      *
      * @param appId 应用编号
      * @param articleCategoryName 文章分类名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Map<String, Object>> 文章分类列表
      */
-    List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer m, Integer n);
+    List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize);
     
     /**
      * 文章分类树形分页列表

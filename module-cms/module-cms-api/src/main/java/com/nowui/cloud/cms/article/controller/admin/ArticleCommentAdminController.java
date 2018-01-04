@@ -42,7 +42,7 @@ public class ArticleCommentAdminController extends BaseController {
         );
 
         Integer resultTotal = articleCommentService.adminCount(body.getAppId() , body.getArticleId(), body.getUserId(), body.getArticleReolyCommentId(), body.getArticleReplyUserId(), body.getArticleCommentContent());
-        List<ArticleComment> resultList = articleCommentService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getArticleReolyCommentId(), body.getArticleReplyUserId(), body.getArticleCommentContent(), body.getM(), body.getN());
+        List<ArticleComment> resultList = articleCommentService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getArticleReolyCommentId(), body.getArticleReplyUserId(), body.getArticleCommentContent(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleComment.ARTICLE_COMMENT_ID,

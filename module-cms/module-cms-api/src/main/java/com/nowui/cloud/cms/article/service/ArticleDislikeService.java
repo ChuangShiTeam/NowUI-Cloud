@@ -29,9 +29,9 @@ public interface ArticleDislikeService extends BaseService<ArticleDislike> {
      * @param appId 应用编号
      * @param articleId 文章编号
      * @param userId 用户编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleDislike> 文章鄙视列表
      */
-    List<ArticleDislike> adminList(String appId, String articleId, String userId, Integer m, Integer n);
+    List<ArticleDislike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
 }

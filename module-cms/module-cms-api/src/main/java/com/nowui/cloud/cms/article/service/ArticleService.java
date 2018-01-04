@@ -31,11 +31,11 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      *
      * @param appId 应用编号
      * @param articleName 文章名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Article> 文章列表
      */
-    List<Article> adminList(String appId, String articleName, Integer m, Integer n);
+    List<Article> adminList(String appId, String articleName, Integer pageIndex, Integer pageSize);
     
     /**
      * 文章保存

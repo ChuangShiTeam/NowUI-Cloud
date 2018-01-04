@@ -39,7 +39,7 @@ public class ArticleLikeAdminController extends BaseController {
         );
 
         Integer resultTotal = articleLikeService.adminCount(body.getAppId() , body.getArticleId(), body.getUserId());
-        List<ArticleLike> resultList = articleLikeService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getM(), body.getN());
+        List<ArticleLike> resultList = articleLikeService.adminList(body.getAppId(), body.getArticleId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleLike.ARTICLE_LIKE_ID,

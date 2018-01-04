@@ -63,7 +63,7 @@ public class ArticleAdminController extends BaseController {
         );
 
         Integer resultTotal = articleService.adminCount(body.getAppId(), body.getArticleTitle());
-        List<Article> resultList = articleService.adminList(body.getAppId(), body.getArticleTitle(), body.getM(), body.getN());
+        List<Article> resultList = articleService.adminList(body.getAppId(), body.getArticleTitle(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
             Article.ARTICLE_ID, 

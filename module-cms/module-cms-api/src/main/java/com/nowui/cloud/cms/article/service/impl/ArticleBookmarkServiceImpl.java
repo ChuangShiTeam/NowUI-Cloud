@@ -33,7 +33,7 @@ public class ArticleBookmarkServiceImpl extends BaseServiceImpl<ArticleBookmarkM
     }
 
     @Override
-    public List<ArticleBookmark> adminList(String appId, String articleId, String useId, Integer m, Integer n) {
+    public List<ArticleBookmark> adminList(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize) {
         List<ArticleBookmark> articleBookmarkList = list(
                 new BaseWrapper<ArticleBookmark>()
                         .eq(ArticleBookmark.APP_ID, appId)
@@ -41,8 +41,8 @@ public class ArticleBookmarkServiceImpl extends BaseServiceImpl<ArticleBookmarkM
                         .likeAllowEmpty(ArticleBookmark.USE_ID, useId)
                         .eq(ArticleBookmark.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleBookmark.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleBookmarkList;

@@ -39,7 +39,7 @@ public class ArticleBookmarkAdminController extends BaseController {
         );
 
         Integer resultTotal = articleBookmarkService.adminCount(body.getAppId() , body.getArticleId(), body.getUseId());
-        List<ArticleBookmark> resultList = articleBookmarkService.adminList(body.getAppId(), body.getArticleId(), body.getUseId(), body.getM(), body.getN());
+        List<ArticleBookmark> resultList = articleBookmarkService.adminList(body.getAppId(), body.getArticleId(), body.getUseId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleBookmark.ARTICLE_BOOK_MARK_ID,

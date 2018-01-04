@@ -64,16 +64,16 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     }
     
     @Override
-    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer m, Integer n) {
+    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize) {
         List<ArticleCategory> topList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)
                         .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
                         .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
                         .eq(ArticleCategory.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-                ,m
-                ,n
+                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT)),
+                pageIndex,
+                pageSize
         );
         List<ArticleCategory> childrenList = list(
                 new BaseWrapper<ArticleCategory>()
