@@ -11,9 +11,11 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMapper;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
@@ -36,21 +38,27 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     private ArticleCategoryService articleCategoryService;
     
     @Autowired
+    private ArticleMediaService articleMediaService;
+    
+    @Autowired
     private FileRpc fileRpc;
 
     @Override
     public Integer adminCount(String appId, String articleTitle) {
+        
         Integer count = count(
                 new BaseWrapper<Article>()
                         .eq(Article.APP_ID, appId)
                         .likeAllowEmpty(Article.ARTICLE_TITLE, articleTitle)
                         .eq(Article.SYSTEM_STATUS, true)
         );
+        
         return count;
     }
 
     @Override
     public List<Article> adminList(String appId, String articleTitle, Integer m, Integer n) {
+        
         List<Article> articleList = list(
                 new BaseWrapper<Article>()
                         .eq(Article.APP_ID, appId)
@@ -64,7 +72,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         );
         
         for (Article article : articleList) {
-            ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.articleFindPrimary(article.getArticleId());
+            ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
             if (articleArticleCategory != null) {
                 article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleArticleCategoryId()));
             }
@@ -77,6 +85,81 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         }
         
         return articleList;
+    }
+
+    @Override
+    public Boolean save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList,
+            Article article, String systemRequestUserId) {
+        
+        //保存文章
+        String articleId = Util.getRandomUUID();
+        String appId = article.getAppId();
+        Boolean result = save(article, articleId, systemRequestUserId);
+        
+        if (result) {
+            //保存文章多媒体
+            for (ArticleMedia articleMedia : articleMediaList) {
+                articleMedia.setAppId(appId);
+                articleMedia.setArticleId(articleId);
+                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
+            }
+            
+            //保存文章文章分类关联
+            for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
+                articleArticleCategory.setAppId(appId);
+                articleArticleCategory.setArticleId(articleId);
+                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList,
+            Article article, String systemRequestUserId) {
+        
+        String appId = article.getAppId();
+        String articleId = article.getArticleId();
+        Boolean result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
+        
+        if (result) {
+            //删除旧的文章文章分类
+            articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
+            //删除旧的文章多媒体
+            articleMediaService.deleteByArticleId(articleId, systemRequestUserId);
+            //保存文章多媒体
+            for (ArticleMedia articleMedia : articleMediaList) {
+                articleMedia.setAppId(appId);
+                articleMedia.setArticleId(articleId);
+                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
+            }
+            
+            //保存文章文章分类关联
+            for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
+                articleArticleCategory.setAppId(appId);
+                articleArticleCategory.setArticleId(articleId);
+                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 重写delete方法
+     */
+    @Override
+    public Boolean delete(String articleId, String systemRequestUserId, Integer systemVersion) {
+        
+        Boolean result = delete(articleId, systemRequestUserId, systemVersion);
+        
+        if (result) {
+            //删除旧的文章文章分类
+            articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
+            //删除旧的文章多媒体
+            articleMediaService.deleteByArticleId(articleId, systemRequestUserId);
+        }
+        
+        return result;
     }
 
 }

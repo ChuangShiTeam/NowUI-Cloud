@@ -17,7 +17,6 @@ import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -135,7 +134,7 @@ public class ArticleAdminController extends BaseController {
         
         List<ArticleMedia> mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
         
-        Boolean result = articleService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleService.save(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -164,10 +163,22 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
             Article.ARTICLE_WEIGHT,
-            Article.SYSTEM_VERSION
+            Article.SYSTEM_VERSION,
+            Article.ARTICLE_CATEGORY_LIST,
+            Article.ARTICLE_MEDIA_LIST
         );
+        
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_CATEGORY_LIST);
+        if (articleCategoryJsonArray == null || articleCategoryJsonArray.size() == 0) {
+            throw new RuntimeException("文章没有选择文章分类");
+        }
+        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        
+        JSONArray articleMediaJSONArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
+        
+        List<ArticleMedia> mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
 
-        Boolean result = articleService.update(body, body.getArticleId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleService.update(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
