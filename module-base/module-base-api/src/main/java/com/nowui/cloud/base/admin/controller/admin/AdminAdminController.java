@@ -38,7 +38,7 @@ public class AdminAdminController extends BaseController {
         );
 
         Integer resultTotal = adminService.adminCount(body.getAppId() , body.getUserId());
-        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserId(), body.getM(), body.getN());
+        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Admin.ADMIN_ID,

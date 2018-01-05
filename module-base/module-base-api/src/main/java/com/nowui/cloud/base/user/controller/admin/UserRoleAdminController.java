@@ -40,7 +40,7 @@ public class UserRoleAdminController extends BaseController {
         );
 
         Integer resultTotal = userRoleService.adminCount(body.getAppId() , body.getUserId(), body.getRoleId(), body.getUserType());
-        List<UserRole> resultList = userRoleService.adminList(body.getAppId(), body.getUserId(), body.getRoleId(), body.getUserType(), body.getM(), body.getN());
+        List<UserRole> resultList = userRoleService.adminList(body.getAppId(), body.getUserId(), body.getRoleId(), body.getUserType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserRole.USER_ROLE_ID,

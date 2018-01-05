@@ -39,7 +39,7 @@ public class MemberFollowAdminController extends BaseController {
         );
 
         Integer resultTotal = memberFollowService.adminCount(body.getAppId() , body.getMemberId(), body.getUserId());
-        List<MemberFollow> resultList = memberFollowService.adminList(body.getAppId(), body.getMemberId(), body.getUserId(), body.getM(), body.getN());
+        List<MemberFollow> resultList = memberFollowService.adminList(body.getAppId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 MemberFollow.MEMBER_FOLLOW_ID,

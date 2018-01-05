@@ -39,7 +39,7 @@ public class MessageAdminController extends BaseController {
         );
 
         Integer resultTotal = messageService.adminCount(body.getAppId() , body.getMessageTitle(), body.getMessageType());
-        List<Message> resultList = messageService.adminList(body.getAppId(), body.getMessageTitle(), body.getMessageType(), body.getM(), body.getN());
+        List<Message> resultList = messageService.adminList(body.getAppId(), body.getMessageTitle(), body.getMessageType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Message.MESSAGE_ID,

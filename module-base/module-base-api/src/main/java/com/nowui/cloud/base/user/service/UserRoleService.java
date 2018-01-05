@@ -31,9 +31,9 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param userId 用户编号
      * @param roleId 角色编号
      * @param userType 用户类型
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<UserRole> 用户角色列表
      */
-    List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer m, Integer n);
+    List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize);
 }

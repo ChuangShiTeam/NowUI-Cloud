@@ -47,7 +47,7 @@ public class UserAdminController extends BaseController {
         );
 
         Integer resultTotal = userService.adminCount(body.getAppId() , body.getUserType(), body.getUserAccount(), body.getUserName(), body.getUserMobile());
-        List<User> resultList = userService.adminList(body.getAppId(), body.getUserType(), body.getUserAccount(), body.getUserName(), body.getUserMobile(), body.getM(), body.getN());
+        List<User> resultList = userService.adminList(body.getAppId(), body.getUserType(), body.getUserAccount(), body.getUserName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 User.USER_ID,

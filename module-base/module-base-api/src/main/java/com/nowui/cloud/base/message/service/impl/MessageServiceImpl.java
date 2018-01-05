@@ -33,7 +33,7 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
     }
 
     @Override
-    public List<Message> adminList(String appId, String messageTitle, String messageType, Integer m, Integer n) {
+    public List<Message> adminList(String appId, String messageTitle, String messageType, Integer pageIndex, Integer pageSize) {
         List<Message> messageList = list(
                 new BaseWrapper<Message>()
                         .eq(Message.APP_ID, appId)
@@ -41,8 +41,8 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
                         .likeAllowEmpty(Message.MESSAGE_TYPE, messageType)
                         .eq(Message.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Message.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return messageList;

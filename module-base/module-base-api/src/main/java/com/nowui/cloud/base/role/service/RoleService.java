@@ -29,9 +29,9 @@ public interface RoleService extends BaseService<Role> {
      * @param appId 应用编号
      * @param roleName 名称
      * @param roleCode 编码
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Role> 角色列表
      */
-    List<Role> adminList(String appId, String roleName, String roleCode, Integer m, Integer n);
+    List<Role> adminList(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize);
 }

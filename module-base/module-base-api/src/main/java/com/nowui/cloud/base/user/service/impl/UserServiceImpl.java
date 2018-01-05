@@ -42,7 +42,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer m, Integer n) {
+    public List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer pageIndex, Integer pageSize) {
         List<User> userList = list(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
@@ -52,8 +52,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                         .likeAllowEmpty(User.USER_MOBILE, userMobile)
                         .eq(User.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(User.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
         
       //查询工具栏图片

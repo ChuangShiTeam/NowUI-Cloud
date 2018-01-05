@@ -29,9 +29,9 @@ public interface MessageService extends BaseService<Message> {
      * @param appId 应用编号
      * @param messageTitle 标题
      * @param messageType 类型
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Message> 消息列表
      */
-    List<Message> adminList(String appId, String messageTitle, String messageType, Integer m, Integer n);
+    List<Message> adminList(String appId, String messageTitle, String messageType, Integer pageIndex, Integer pageSize);
 }

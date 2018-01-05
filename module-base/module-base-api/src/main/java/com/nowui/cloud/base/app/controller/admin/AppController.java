@@ -34,7 +34,7 @@ public class AppController extends BaseController {
         validateRequest(body, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
 
         Integer resultTotal = appService.adminCount(body.getAppName());
-        List<App> resultList = appService.adminList(body.getAppName(), body.getM(), body.getN());
+        List<App> resultList = appService.adminList(body.getAppName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(App.APP_ID, App.APP_NAME);
 
