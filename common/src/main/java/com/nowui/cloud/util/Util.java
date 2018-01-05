@@ -1,11 +1,14 @@
 package com.nowui.cloud.util;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.nowui.cloud.constant.Constant;
 
 /**
  * @author ZhongYongQiang
@@ -88,6 +91,20 @@ public class Util {
             }  
         }
         return builder.toString();
+    }
+    
+    /**
+     * 密码加密
+     * 
+     * @param user_password
+     * @return
+     */
+    public static String generatePassword(String user_password) {
+        if (isNullOrEmpty(user_password)) {
+            return "";
+        }
+
+        return EncryptUtil.sha512(Constant.PRIVATE_KEY + user_password);
     }
 
 }
