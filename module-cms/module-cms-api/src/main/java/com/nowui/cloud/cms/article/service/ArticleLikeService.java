@@ -29,9 +29,9 @@ public interface ArticleLikeService extends BaseService<ArticleLike> {
      * @param appId 应用编号
      * @param articleId 文章编号
      * @param userId 点赞数
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleLike> 文章点赞列表
      */
-    List<ArticleLike> adminList(String appId, String articleId, String userId, Integer m, Integer n);
+    List<ArticleLike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
 }

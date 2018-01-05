@@ -36,7 +36,7 @@ public class ArticleCommentServiceImpl extends BaseServiceImpl<ArticleCommentMap
     }
 
     @Override
-    public List<ArticleComment> adminList(String appId, String articleId, String userId, String articleReolyCommentId, String articleReplyUserId, String articleCommentContent, Integer m, Integer n) {
+    public List<ArticleComment> adminList(String appId, String articleId, String userId, String articleReolyCommentId, String articleReplyUserId, String articleCommentContent, Integer pageIndex, Integer pageSize) {
         List<ArticleComment> articleCommentList = list(
                 new BaseWrapper<ArticleComment>()
                         .eq(ArticleComment.APP_ID, appId)
@@ -47,8 +47,8 @@ public class ArticleCommentServiceImpl extends BaseServiceImpl<ArticleCommentMap
                         .likeAllowEmpty(ArticleComment.ARTICLE_COMMENT_CONTENT, articleCommentContent)
                         .eq(ArticleComment.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleComment.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleCommentList;

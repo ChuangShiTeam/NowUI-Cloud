@@ -29,9 +29,9 @@ public interface ArticleBookmarkService extends BaseService<ArticleBookmark> {
      * @param appId 应用编号
      * @param articleId 文章编号
      * @param useId 用户编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleBookmark> 文章收藏列表
      */
-    List<ArticleBookmark> adminList(String appId, String articleId, String useId, Integer m, Integer n);
+    List<ArticleBookmark> adminList(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize);
 }

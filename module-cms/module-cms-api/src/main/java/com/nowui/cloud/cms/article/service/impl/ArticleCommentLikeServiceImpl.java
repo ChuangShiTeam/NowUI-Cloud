@@ -33,7 +33,7 @@ public class ArticleCommentLikeServiceImpl extends BaseServiceImpl<ArticleCommen
     }
 
     @Override
-    public List<ArticleCommentLike> adminList(String appId, String articleCommentId, String userId, Integer m, Integer n) {
+    public List<ArticleCommentLike> adminList(String appId, String articleCommentId, String userId, Integer pageIndex, Integer pageSize) {
         List<ArticleCommentLike> articleCommentLikeList = list(
                 new BaseWrapper<ArticleCommentLike>()
                         .eq(ArticleCommentLike.APP_ID, appId)
@@ -41,8 +41,8 @@ public class ArticleCommentLikeServiceImpl extends BaseServiceImpl<ArticleCommen
                         .likeAllowEmpty(ArticleCommentLike.USER_ID, userId)
                         .eq(ArticleCommentLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ArticleCommentLike.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return articleCommentLikeList;

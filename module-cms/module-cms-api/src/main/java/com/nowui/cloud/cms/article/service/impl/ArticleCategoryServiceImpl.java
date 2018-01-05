@@ -64,16 +64,16 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     }
     
     @Override
-    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer m, Integer n) {
+    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize) {
         List<ArticleCategory> topList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)
                         .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
                         .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
                         .eq(ArticleCategory.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-                ,m
-                ,n
+                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT)),
+                pageIndex,
+                pageSize
         );
         List<ArticleCategory> childrenList = list(
                 new BaseWrapper<ArticleCategory>()
@@ -127,6 +127,37 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
             }
         }
         
+        return list;
+    }
+
+    @Override
+    public List<Map<String, Object>> adminAllTreeList(String appId) {
+        List<ArticleCategory> topList = list(
+                new BaseWrapper<ArticleCategory>()
+                        .eq(ArticleCategory.APP_ID, appId)
+                        .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
+                        .eq(ArticleCategory.SYSTEM_STATUS, true)
+                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
+        );
+        List<ArticleCategory> childrenList = list(
+                new BaseWrapper<ArticleCategory>()
+                .eq(ArticleCategory.APP_ID, appId)
+                .ne(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
+                .eq(ArticleCategory.SYSTEM_STATUS, true)
+                .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
+        );
+        List<Map<String, Object>> list = new ArrayList<>();
+        
+        for (ArticleCategory articleCategory : topList) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(ArticleCategory.ARTICLE_CATEGORY_ID, articleCategory.getArticleCategoryId());
+            map.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategory.getArticleCategoryName());
+            map.put(ArticleCategory.ARTICLE_CATEGORY_SORT, articleCategory.getArticleCategorySort());
+            
+            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategory.getArticleCategoryId(), ArticleCategory.ARTICLE_CATEGORY_SORT));
+            
+            list.add(map);
+        }
         return list;
     }
 

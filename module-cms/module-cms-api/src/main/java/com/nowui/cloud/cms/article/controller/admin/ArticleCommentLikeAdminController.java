@@ -39,7 +39,7 @@ public class ArticleCommentLikeAdminController extends BaseController {
         );
 
         Integer resultTotal = articleCommentLikeService.adminCount(body.getAppId() , body.getArticleCommentId(), body.getUserId());
-        List<ArticleCommentLike> resultList = articleCommentLikeService.adminList(body.getAppId(), body.getArticleCommentId(), body.getUserId(), body.getM(), body.getN());
+        List<ArticleCommentLike> resultList = articleCommentLikeService.adminList(body.getAppId(), body.getArticleCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleCommentLike.ARTICLE_COMMENT_LIKE_ID,

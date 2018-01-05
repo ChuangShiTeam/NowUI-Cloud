@@ -29,9 +29,9 @@ public interface ArticleCommentLikeService extends BaseService<ArticleCommentLik
      * @param appId 应用编号
      * @param articleCommentId 文章评论编号
      * @param userId 用户编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleCommentLike> 文章评论点赞列表
      */
-    List<ArticleCommentLike> adminList(String appId, String articleCommentId, String userId, Integer m, Integer n);
+    List<ArticleCommentLike> adminList(String appId, String articleCommentId, String userId, Integer pageIndex, Integer pageSize);
 }

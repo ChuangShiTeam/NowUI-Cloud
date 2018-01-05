@@ -23,9 +23,9 @@ public interface ProductService extends BaseService<Product> {
      *
      * @param appId 应用编号
      * @param productName 商品名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Product> 商品列表
      */
-    List<Product> adminList(String appId, String productName, Integer m, Integer n);
+    List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize);
 }

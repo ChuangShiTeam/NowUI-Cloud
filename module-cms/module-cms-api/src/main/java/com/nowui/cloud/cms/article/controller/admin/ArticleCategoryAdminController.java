@@ -35,7 +35,7 @@ public class ArticleCategoryAdminController extends BaseController {
     @Autowired
     private ArticleCategoryService articleCategoryService;
     
-    @ApiOperation(value = "文章分类树形列表")
+    @ApiOperation(value = "文章分类列表")
     @RequestMapping(value = "/article/category/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody ArticleCategory body) {
         validateRequest(
@@ -63,6 +63,22 @@ public class ArticleCategoryAdminController extends BaseController {
             return renderJson(resultTotal, resultList);
         }
 
+    }
+    
+    @ApiOperation(value = "文章分类树形列表")
+    @RequestMapping(value = "/article/category/admin/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> allTreeList(@RequestBody ArticleCategory body) {
+        validateRequest(
+            body, 
+            ArticleCategory.APP_ID
+        );
+
+        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(body.getAppId());
+
+        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
+
+        return renderJson(resultList);
+        
     }
 
     @ApiOperation(value = "根据编号查询文章分类信息")

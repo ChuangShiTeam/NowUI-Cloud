@@ -35,9 +35,9 @@ public interface ArticleCommentService extends BaseService<ArticleComment> {
      * @param articleReolyCommentId 回复的评论编号
      * @param articleReplyUserId 回复的用户编号
      * @param articleCommentContent 评论内容
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<ArticleComment> 文章评论列表
      */
-    List<ArticleComment> adminList(String appId, String articleId, String userId, String articleReolyCommentId, String articleReplyUserId, String articleCommentContent, Integer m, Integer n);
+    List<ArticleComment> adminList(String appId, String articleId, String userId, String articleReolyCommentId, String articleReplyUserId, String articleCommentContent, Integer pageIndex, Integer pageSize);
 }
