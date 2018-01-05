@@ -42,7 +42,7 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
                 m,
                 n
         );
-
+        
         return adminList;
     }
 

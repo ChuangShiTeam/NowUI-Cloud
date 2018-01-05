@@ -52,12 +52,6 @@ public class MenuAdminController extends BaseController {
 			
         	List<Map<String, Object>> resultList = menuService.adminTreeList(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
         	
-        	for (Map<String, Object> map : resultList) {
-				for (Entry<String, Object> entry : map.entrySet()) {
-					System.out.println("key:"+entry.getKey()+" == value: "+entry.getValue());
-				}
-			}
-        	//测试end
         	validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
         	
         	return renderJson(resultTotal, resultList);

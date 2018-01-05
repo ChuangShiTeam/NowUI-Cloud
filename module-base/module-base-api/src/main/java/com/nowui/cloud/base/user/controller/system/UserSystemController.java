@@ -6,6 +6,9 @@ import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "用户", description = "用户系统端接口管理")
 @RestController
 public class UserSystemController implements UserRpc {
+	
+	@Autowired
+	private UserService userService;
+
+	@Override
+	public Integer count(String appId, String userType, String userAccount, String userNickName, String userName,
+			String userMobile) {
+		return userService.adminCount(appId, userType, userAccount, userName, userMobile);
+	}
+
+	@Override
+	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userMobile,
+			Integer pageIndex, Integer pageSize) {
+		return null;
+	}
 
 }

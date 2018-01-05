@@ -2,13 +2,18 @@ package com.nowui.cloud.base.admin.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.admin.entity.Admin;
+import com.nowui.cloud.base.admin.entity.enums.AdminType;
 import com.nowui.cloud.base.admin.service.AdminService;
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.service.UserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,23 +31,41 @@ public class AdminAdminController extends BaseController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private UserService userService;
+    
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Admin body) {
+    public Map<String, Object> list(@RequestBody User body) {
+    	
         validateRequest(
                 body,
-                Admin.APP_ID,
-                Admin.USER_ID,
-                Admin.PAGE_INDEX,
-                Admin.PAGE_SIZE
+                User.APP_ID,
+                User.PAGE_INDEX,
+                User.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.adminCount(body.getAppId() , body.getUserId());
-        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserId(), body.getM(), body.getN());
-
+        Integer resultTotal = userService.adminCount(body.getAppId(), AdminType.ADMIN.getKey(), body.getUserAccount(), body.getUserName(), body.getUserMobile());
+        
+        List<User> userList = userService.adminList(body.getAppId(), AdminType.ADMIN.getKey(), body.getUserAccount(), body.getUserName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
+        
+        List<User> resultList = new ArrayList<User>();
+        for (User user : userList) {
+			Admin admin = adminService.find(user.getObjectId(), true);
+			if (admin != null) {
+				resultList.add(user);
+			}
+		}
+        
         validateResponse(
-                Admin.ADMIN_ID,
-                Admin.USER_ID
+        		User.USER_ID,
+                User.USER_TYPE,
+                User.USER_ACCOUNT,
+                User.USER_NICK_NAME,
+                User.USER_NAME,
+                User.USER_MOBILE,
+                User.USER_EMAIL,
+                User.USER_AVATAR
         );
 
         return renderJson(resultTotal, resultList);
@@ -69,15 +92,36 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "新增管理员")
     @RequestMapping(value = "/admin/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Admin body) {
+    public Map<String, Object> save(@RequestBody User body) {
         validateRequest(
                 body,
-                Admin.APP_ID,
-                Admin.USER_ID
+                User.APP_ID,
+                User.USER_ACCOUNT,
+                User.USER_PASSWORD,
+                User.USER_NICK_NAME,
+                User.USER_NAME,
+                User.USER_MOBILE,
+                User.USER_EMAIL,
+                User.USER_AVATAR
         );
-
-        Boolean result = adminService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-
+        
+        String adminIdAndObjId = Util.getRandomUUID();
+        String userId = Util.getRandomUUID();
+        
+        body.setUserType(AdminType.ADMIN.getKey());
+        body.setObjectId(adminIdAndObjId);
+        body.setWeixinOpenId("");
+        body.setWeixinUnionId("");
+        
+        Admin admin = new Admin();
+        admin.setUserId(userId);
+        admin.setAppId(body.getAppId());
+        
+        Boolean result = adminService.save(admin, adminIdAndObjId, body.getSystemRequestUserId());
+        if (result) {
+        	result = userService.save(body, userId, body.getSystemRequestUserId());
+		}
+        
         return renderJson(result);
     }
 

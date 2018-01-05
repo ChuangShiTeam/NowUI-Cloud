@@ -55,7 +55,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                 m,
                 n
         );
-        
+
       //查询工具栏图片
         for (User user : userList) {
             File file = fileRpc.find(user.getUserAvatar());
