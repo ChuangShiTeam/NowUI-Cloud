@@ -48,6 +48,6 @@ public interface UserRpc {
 	 * @param pageSize	每页个数
 	 * @return List<User> 用户列表
 	 */
-	List<User> list(String appId, String userType, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize);
+	List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize);
 
 }

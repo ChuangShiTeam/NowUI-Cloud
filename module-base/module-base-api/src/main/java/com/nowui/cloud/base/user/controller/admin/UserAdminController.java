@@ -32,37 +32,6 @@ public class UserAdminController extends BaseController {
     @Autowired
     private FileRpc fileRpc;
 
-    @ApiOperation(value = "用户列表")
-    @RequestMapping(value = "/user/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody User body) {
-        validateRequest(
-                body,
-                User.APP_ID,
-                User.USER_TYPE,
-                User.USER_ACCOUNT,
-                User.USER_NAME,
-                User.USER_MOBILE,
-                User.PAGE_INDEX,
-                User.PAGE_SIZE
-        );
-
-        Integer resultTotal = userService.adminCount(body.getAppId() , body.getUserType(), body.getUserAccount(), body.getUserName(), body.getUserMobile());
-        List<User> resultList = userService.adminList(body.getAppId(), body.getUserType(), body.getUserAccount(), body.getUserName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
-
-        validateResponse(
-                User.USER_ID,
-                User.USER_TYPE,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_NAME,
-                User.USER_MOBILE,
-                User.USER_EMAIL,
-                User.USER_AVATAR
-        );
-
-        return renderJson(resultTotal, resultList);
-    }
-
     @ApiOperation(value = "用户信息")
     @RequestMapping(value = "/user/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> find(@RequestBody User body) {

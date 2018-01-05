@@ -24,7 +24,7 @@ public class UserRpcFallback implements UserRpc {
 	}
 
 	@Override
-	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userMobile,
+	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile,
 			Integer pageIndex, Integer pageSize) {
 		return null;
 	}

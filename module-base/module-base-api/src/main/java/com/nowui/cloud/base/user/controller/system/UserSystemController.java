@@ -29,13 +29,15 @@ public class UserSystemController implements UserRpc {
 	@Override
 	public Integer count(String appId, String userType, String userAccount, String userNickName, String userName,
 			String userMobile) {
-		return userService.adminCount(appId, userType, userAccount, userName, userMobile);
+		return userService.count(appId, userType, userAccount, userNickName, userName, userMobile);
 	}
 
 	@Override
-	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userMobile,
+	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile,
 			Integer pageIndex, Integer pageSize) {
-		return null;
+		return userService.list(appId, userType, userAccount, userNickName, userName, userMobile, pageIndex, pageSize);
 	}
+	
+	
 
 }

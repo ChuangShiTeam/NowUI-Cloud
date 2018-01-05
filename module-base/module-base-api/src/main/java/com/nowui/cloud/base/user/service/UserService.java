@@ -19,11 +19,12 @@ public interface UserService extends BaseService<User> {
      * @param appId 应用编号
      * @param userType 类型
      * @param userAccount 账号
+     * @param userNickName 昵称
      * @param userName 姓名
      * @param userMobile 手机号码
      * @return Integer 用户统计
      */
-    Integer adminCount(String appId, String userType, String userAccount, String userName, String userMobile);
+    Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile);
 
     /**
      * 用户列表
@@ -31,11 +32,12 @@ public interface UserService extends BaseService<User> {
      * @param appId 应用编号
      * @param userType 类型
      * @param userAccount 账号
+     * @param userNickName 昵称
      * @param userName 姓名
      * @param userMobile 手机号码
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<User> 用户列表
      */
-    List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer pageIndex, Integer pageSize);
+    List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize);
 }
