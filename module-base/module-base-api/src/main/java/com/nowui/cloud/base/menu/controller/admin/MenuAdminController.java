@@ -1,16 +1,25 @@
 package com.nowui.cloud.base.menu.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.menu.entity.Menu;
 import com.nowui.cloud.base.menu.service.MenuService;
+import com.nowui.cloud.constant.Constant;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.plaf.BorderUIResource.BevelBorderUIResource;
+
+import java.util.Set;
 
 /**
  * 菜单管理端控制器
@@ -26,7 +35,7 @@ public class MenuAdminController extends BaseController {
     @Autowired
     private MenuService menuService;
 
-    @ApiOperation(value = "菜单列表")
+    @ApiOperation(value = "菜单分类树形列表")
     @RequestMapping(value = "/menu/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> list(@RequestBody Menu body) {
         validateRequest(
@@ -38,18 +47,28 @@ public class MenuAdminController extends BaseController {
         );
 
         Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuName());
-        List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuName(), body.getM(), body.getN());
+        
+        if (Util.isNullOrEmpty(body.getMenuName())) {
+			
+        	List<Map<String, Object>> resultList = menuService.adminTreeList(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+        	
+        	for (Map<String, Object> map : resultList) {
+				for (Entry<String, Object> entry : map.entrySet()) {
+					System.out.println("key:"+entry.getKey()+" == value: "+entry.getValue());
+				}
+			}
+        	//测试end
+        	validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
+        	
+        	return renderJson(resultTotal, resultList);
 
-        validateResponse(
-                Menu.MENU_ID,
-                Menu.MENU_PARENT_ID,
-                Menu.MENU_NAME,
-                Menu.MENU_IMAGE,
-                Menu.MENU_URL,
-                Menu.MENU_SORT
-        );
-
-        return renderJson(resultTotal, resultList);
+		}else {
+			List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+			
+			validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
+			
+			return renderJson(resultTotal, resultList);
+		}
     }
 
     @ApiOperation(value = "菜单信息")
@@ -83,12 +102,34 @@ public class MenuAdminController extends BaseController {
                 body,
                 Menu.APP_ID,
                 Menu.MENU_PARENT_ID,
-                Menu.MENU_PARENT_PATH,
                 Menu.MENU_NAME,
-                Menu.MENU_IMAGE,
                 Menu.MENU_URL,
                 Menu.MENU_SORT
         );
+        
+        String menuParentPath = "";
+
+        if (Util.isNullOrEmpty(body.getMenuParentId())) {
+
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(body.getMenuId());
+
+            menuParentPath = jsonArray.toJSONString();
+        } else {
+            Menu parent = menuService.find(body.getMenuParentId());
+
+            JSONArray jsonArray;
+            if (Util.isNullOrEmpty(parent.getMenuParentPath())) {
+                jsonArray = new JSONArray();
+            } else {
+                jsonArray = JSONArray.parseArray(parent.getMenuParentPath());
+            }
+            jsonArray.add(parent.getMenuId());
+
+            menuParentPath = jsonArray.toJSONString();
+        }
+        
+        body.setMenuParentPath(menuParentPath);
 
         Boolean result = menuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
@@ -105,7 +146,6 @@ public class MenuAdminController extends BaseController {
                 Menu.MENU_PARENT_ID,
                 Menu.MENU_PARENT_PATH,
                 Menu.MENU_NAME,
-                Menu.MENU_IMAGE,
                 Menu.MENU_URL,
                 Menu.MENU_SORT,
                 Menu.SYSTEM_VERSION

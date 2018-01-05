@@ -60,6 +60,10 @@ zuul:
       path: /menu/**
       serviceId: module-base
       stripPrefix: false
+    admin:
+      path: /admin/**
+      serviceId: module-base
+      stripPrefix: false
 hystrix:
   command:
     default:

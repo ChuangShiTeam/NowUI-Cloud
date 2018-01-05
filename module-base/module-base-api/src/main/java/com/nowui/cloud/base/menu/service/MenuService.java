@@ -3,6 +3,7 @@ import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.menu.entity.Menu;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单业务接口
@@ -32,4 +33,15 @@ public interface MenuService extends BaseService<Menu> {
      * @return List<Menu> 菜单列表
      */
     List<Menu> adminList(String appId, String menuName, Integer m, Integer n);
+    
+    /**
+     * 菜单属性列表
+     * @param appId 应用编号
+     * @param menuName 菜单名称
+     * @param m 从m条开始
+     * @param n 取n条数据
+     * @return List<Map<String, Object>> 菜单属性列表
+     */
+    List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer m, Integer n);
+    
 }

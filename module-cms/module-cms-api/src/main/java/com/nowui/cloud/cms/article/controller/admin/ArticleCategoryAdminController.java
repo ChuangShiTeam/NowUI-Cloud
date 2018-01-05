@@ -2,6 +2,7 @@ package com.nowui.cloud.cms.article.controller.admin;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,15 +54,15 @@ public class ArticleCategoryAdminController extends BaseController {
             validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
-            
+
         } else {
             List<ArticleCategory> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
-            
+
             validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
         }
-        
+
     }
 
     @ApiOperation(value = "根据编号查询文章分类信息")
