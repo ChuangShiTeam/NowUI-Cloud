@@ -33,7 +33,7 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMen
     }
 
     @Override
-    public List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer m, Integer n) {
+    public List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize) {
         List<RoleMenu> roleMenuList = list(
                 new BaseWrapper<RoleMenu>()
                         .eq(RoleMenu.APP_ID, appId)
@@ -41,8 +41,8 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMen
                         .likeAllowEmpty(RoleMenu.MENU_ID, menuId)
                         .eq(RoleMenu.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(RoleMenu.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return roleMenuList;

@@ -45,18 +45,9 @@ public class AdminAdminController extends BaseController {
                 User.PAGE_SIZE
         );
 
-        Integer resultTotal = userService.adminCount(body.getAppId(), AdminType.ADMIN.getKey(), body.getUserAccount(), body.getUserName(), body.getUserMobile());
-        
-        List<User> userList = userService.adminList(body.getAppId(), AdminType.ADMIN.getKey(), body.getUserAccount(), body.getUserName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
-        
-        List<User> resultList = new ArrayList<User>();
-        for (User user : userList) {
-			Admin admin = adminService.find(user.getObjectId(), true);
-			if (admin != null) {
-				resultList.add(user);
-			}
-		}
-        
+        Integer resultTotal = adminService.adminCount(body.getAppId() , body.getUserId());
+        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+
         validateResponse(
         		User.USER_ID,
                 User.USER_TYPE,

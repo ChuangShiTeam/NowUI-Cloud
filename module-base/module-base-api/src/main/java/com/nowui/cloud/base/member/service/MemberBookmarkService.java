@@ -29,9 +29,9 @@ public interface MemberBookmarkService extends BaseService<MemberBookmark> {
      * @param appId 应用编号
      * @param memberId 会员编号
      * @param memberBookmarkTitle 会员收藏标题
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<MemberBookmark> 会员收藏列表
      */
-    List<MemberBookmark> adminList(String appId, String memberId, String memberBookmarkTitle, Integer m, Integer n);
+    List<MemberBookmark> adminList(String appId, String memberId, String memberBookmarkTitle, Integer pageIndex, Integer pageSize);
 }

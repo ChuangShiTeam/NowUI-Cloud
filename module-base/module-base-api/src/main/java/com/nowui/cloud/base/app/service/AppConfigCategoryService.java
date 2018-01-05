@@ -29,9 +29,11 @@ public interface AppConfigCategoryService extends BaseService<AppConfigCategory>
      * @param appId 应用编号
      * @param configCategoryName 名称
      * @param configCategoryCode 编码
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<AppConfigCategory> 应用配置分类列表
      */
-    List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode, Integer m, Integer n);
+    List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode, Integer pageIndex, Integer pageSize);
     
     /**
      * 应用配置分类列表

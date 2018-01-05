@@ -36,7 +36,7 @@ public class AppConfigCategoryController extends BaseController {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.PAGE_INDEX, AppConfigCategory.PAGE_SIZE);
 
         Integer resultTotal = appConfigCategoryService.adminCount(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode());
-        List<AppConfigCategory> resultList = appConfigCategoryService.adminList(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getM(), body.getN());
+        List<AppConfigCategory> resultList = appConfigCategoryService.adminList(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE);
 

@@ -33,9 +33,9 @@ public interface UserService extends BaseService<User> {
      * @param userAccount 账号
      * @param userName 姓名
      * @param userMobile 手机号码
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<User> 用户列表
      */
-    List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer m, Integer n);
+    List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer pageIndex, Integer pageSize);
 }

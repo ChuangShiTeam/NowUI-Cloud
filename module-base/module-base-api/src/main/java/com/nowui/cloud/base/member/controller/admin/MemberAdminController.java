@@ -38,7 +38,7 @@ public class MemberAdminController extends BaseController {
         );
 
         Integer resultTotal = memberService.adminCount(body.getAppId() , body.getUserId());
-        List<Member> resultList = memberService.adminList(body.getAppId(), body.getUserId(), body.getM(), body.getN());
+        List<Member> resultList = memberService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Member.MEMBER_ID,

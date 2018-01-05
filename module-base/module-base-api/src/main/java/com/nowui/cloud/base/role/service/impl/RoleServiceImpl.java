@@ -33,7 +33,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     }
 
     @Override
-    public List<Role> adminList(String appId, String roleName, String roleCode, Integer m, Integer n) {
+    public List<Role> adminList(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize) {
         List<Role> roleList = list(
                 new BaseWrapper<Role>()
                         .eq(Role.APP_ID, appId)
@@ -41,8 +41,8 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
                         .likeAllowEmpty(Role.ROLE_CODE, roleCode)
                         .eq(Role.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Role.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return roleList;

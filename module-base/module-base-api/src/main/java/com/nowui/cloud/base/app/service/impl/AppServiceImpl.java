@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.mapper.AppMapper;
 import com.nowui.cloud.base.app.service.AppService;
@@ -32,14 +31,14 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
     }
 
     @Override
-    public List<App> adminList(String appName, Integer m, Integer n) {
+    public List<App> adminList(String appName, Integer pageIndex, Integer pageSize) {
         List<App> appList = list(
                 new BaseWrapper<App>()
                         .like(App.APP_NAME, appName)
                         .eq(App.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(App.SYSTEM_CREATE_TIME))
-                ,m
-                ,n
+                        .orderDesc(Arrays.asList(App.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
         );
         
         return appList;

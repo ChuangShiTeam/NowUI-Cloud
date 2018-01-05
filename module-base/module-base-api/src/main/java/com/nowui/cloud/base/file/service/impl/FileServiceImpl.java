@@ -51,7 +51,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     }
 
     @Override
-    public List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer m, Integer n) {
+    public List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
         List<File> fileList = list(
                 new BaseWrapper<File>()
                         .eq(File.APP_ID, appId)
@@ -60,8 +60,8 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                         .eqAllowEmpty(File.FILE_TYPE, fileType)
                         .eq(File.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(File.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return fileList;
@@ -209,7 +209,6 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     @Override
     public List<File> videoUpload(String appId, String userId, String fileCoverImage,
             CommonsMultipartFile[] commonsMultipartFiles) {
-        // TODO Auto-generated method stub
         return null;
     }
 

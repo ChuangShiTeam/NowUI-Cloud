@@ -27,9 +27,9 @@ public interface AdminService extends BaseService<Admin> {
      *
      * @param appId 应用编号
      * @param userId 用户编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Admin> 管理员列表
      */
-    List<Admin> adminList(String appId, String userId, Integer m, Integer n);
+    List<Admin> adminList(String appId, String userId, Integer pageIndex, Integer pageSize);
 }

@@ -39,7 +39,7 @@ public class RoleMenuAdminController extends BaseController {
         );
 
         Integer resultTotal = roleMenuService.adminCount(body.getAppId() , body.getRoleId(), body.getMenuId());
-        List<RoleMenu> resultList = roleMenuService.adminList(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getM(), body.getN());
+        List<RoleMenu> resultList = roleMenuService.adminList(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,

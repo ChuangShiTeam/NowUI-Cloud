@@ -41,7 +41,7 @@ public class RoleAdminController extends BaseController {
         );
 
         Integer resultTotal = roleService.adminCount(body.getAppId() , body.getRoleName(), body.getRoleCode());
-        List<Role> resultList = roleService.adminList(body.getAppId(), body.getRoleName(), body.getRoleCode(), body.getM(), body.getN());
+        List<Role> resultList = roleService.adminList(body.getAppId(), body.getRoleName(), body.getRoleCode(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Role.ROLE_ID,
