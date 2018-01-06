@@ -25,11 +25,11 @@ public interface AppService extends BaseService<App>, AppRpc {
      * 应用列表
      *
      * @param appName 应用名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<App> 应用列表
      */
-    List<App> adminList(String appName, Integer m, Integer n);
+    List<App> adminList(String appName, Integer pageIndex, Integer pageSize);
     
     /**
      * 验证名称唯一性

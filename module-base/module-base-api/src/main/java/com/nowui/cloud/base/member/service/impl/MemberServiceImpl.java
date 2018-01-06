@@ -32,15 +32,15 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
     }
 
     @Override
-    public List<Member> adminList(String appId, String userId, Integer m, Integer n) {
+    public List<Member> adminList(String appId, String userId, Integer pageIndex, Integer pageSize) {
         List<Member> memberList = list(
                 new BaseWrapper<Member>()
                         .eq(Member.APP_ID, appId)
                         .likeAllowEmpty(Member.USER_ID, userId)
                         .eq(Member.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Member.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return memberList;

@@ -34,11 +34,11 @@ public interface FileService extends BaseService<File> {
      * @param systemCreateUserId 创建用户编号
      * @param fileName 名称
      * @param fileType 类型
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<File> 文件列表
      */
-    List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer m, Integer n);
+    List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize);
     
     /**
      * 视频上传

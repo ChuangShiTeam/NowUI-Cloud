@@ -33,7 +33,7 @@ public class MemberBookmarkServiceImpl extends BaseServiceImpl<MemberBookmarkMap
     }
 
     @Override
-    public List<MemberBookmark> adminList(String appId, String memberId, String memberBookmarkTitle, Integer m, Integer n) {
+    public List<MemberBookmark> adminList(String appId, String memberId, String memberBookmarkTitle, Integer pageIndex, Integer pageSize) {
         List<MemberBookmark> memberBookmarkList = list(
                 new BaseWrapper<MemberBookmark>()
                         .eq(MemberBookmark.APP_ID, appId)
@@ -41,8 +41,8 @@ public class MemberBookmarkServiceImpl extends BaseServiceImpl<MemberBookmarkMap
                         .likeAllowEmpty(MemberBookmark.MEMBER_BOOKMARK_TITLE, memberBookmarkTitle)
                         .eq(MemberBookmark.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberBookmark.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return memberBookmarkList;

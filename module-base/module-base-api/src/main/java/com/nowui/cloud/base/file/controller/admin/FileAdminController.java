@@ -50,7 +50,7 @@ public class FileAdminController extends BaseController {
         );
 
         Integer resultTotal = fileService.adminCount(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType());
-        List<File> resultList = fileService.adminList(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getM(), body.getN());
+        List<File> resultList = fileService.adminList(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 File.FILE_ID,

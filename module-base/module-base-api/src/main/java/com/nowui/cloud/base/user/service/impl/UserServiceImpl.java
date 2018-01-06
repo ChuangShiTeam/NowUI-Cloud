@@ -2,6 +2,7 @@ package com.nowui.cloud.base.user.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
@@ -28,12 +29,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	private FileRpc fileRpc;
 	
     @Override
-    public Integer adminCount(String appId, String userType, String userAccount, String userName, String userMobile) {
+    public Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile) {
         Integer count = count(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
                         .likeAllowEmpty(User.USER_TYPE, userType)
                         .likeAllowEmpty(User.USER_ACCOUNT, userAccount)
+                        .likeAllowEmpty(User.USER_NICK_NAME, userNickName)
                         .likeAllowEmpty(User.USER_NAME, userName)
                         .likeAllowEmpty(User.USER_MOBILE, userMobile)
                         .eq(User.SYSTEM_STATUS, true)
@@ -42,25 +44,30 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public List<User> adminList(String appId, String userType, String userAccount, String userName, String userMobile, Integer m, Integer n) {
+    public List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize) {
         List<User> userList = list(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
                         .likeAllowEmpty(User.USER_TYPE, userType)
                         .likeAllowEmpty(User.USER_ACCOUNT, userAccount)
+                        .likeAllowEmpty(User.USER_NICK_NAME, userNickName)
                         .likeAllowEmpty(User.USER_NAME, userName)
                         .likeAllowEmpty(User.USER_MOBILE, userMobile)
                         .eq(User.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(User.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
-        
-      //查询工具栏图片
+
+        //查询用户头像
         for (User user : userList) {
-            File file = fileRpc.find(user.getUserAvatar());
-            file.keep(File.FILE_ID, File.FILE_PATH);
-            user.put(User.USER_AVATAR, file);
+        	if (!Util.isNullOrEmpty(user.getUserAvatar())) {
+        		File file = fileRpc.find(user.getUserAvatar());
+        		if (!Util.isNullOrEmpty(file)) {
+        			file.keep(File.FILE_ID, File.FILE_PATH);
+                    user.put(User.USER_AVATAR, file);
+        		}
+        	}
         }
 
         return userList;

@@ -32,17 +32,17 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
     }
 
     @Override
-    public List<Admin> adminList(String appId, String userId, Integer m, Integer n) {
+    public List<Admin> adminList(String appId, String userId, Integer pageIndex, Integer pageSize) {
         List<Admin> adminList = list(
                 new BaseWrapper<Admin>()
                         .eq(Admin.APP_ID, appId)
                         .likeAllowEmpty(Admin.USER_ID, userId)
                         .eq(Admin.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Admin.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
-
+        
         return adminList;
     }
 

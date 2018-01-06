@@ -50,35 +50,31 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
     }
 
     @Override
-    public List<Menu> adminList(String appId, String menuName, Integer m, Integer n) {
+    public List<Menu> adminList(String appId, String menuName, Integer pageIndex, Integer pageSize) {
         List<Menu> menuList = list(
                 new BaseWrapper<Menu>()
                         .eq(Menu.APP_ID, appId)
                         .likeAllowEmpty(Menu.MENU_NAME, menuName)
                         .eq(Menu.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Menu.MENU_SORT)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
         return menuList;
     }
 
 	@Override
-	public List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer m, Integer n) {
+	public List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize) {
 		List<Menu> topList = list(
                 new BaseWrapper<Menu>()
                         .eq(Menu.APP_ID, appId)
                         .eq(Menu.MENU_PARENT_ID, "")
                         .like(Menu.MENU_NAME, menuName)
                         .eq(Menu.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(Menu.MENU_SORT))
-                ,m
-                ,n
+                        .orderAsc(Arrays.asList(Menu.MENU_SORT)),
+                pageIndex,
+                pageSize
         );
-		//测试
-		for (Menu menu : topList) {
-			System.out.println("测试:menu :"+menu);
-		}
         List<Menu> childrenList = list(
                 new BaseWrapper<Menu>()
                 .eq(Menu.APP_ID, appId)
@@ -103,8 +99,8 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
 	
 	/**
      * 递归遍历生成树形结构数据
-     * @param articleCategoryList
-     * @param articleCategoryParentId
+     * @param menuList
+     * @param menuParentId
      * @param keys
      * @return
      */

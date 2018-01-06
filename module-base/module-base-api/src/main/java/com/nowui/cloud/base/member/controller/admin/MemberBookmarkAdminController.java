@@ -39,7 +39,7 @@ public class MemberBookmarkAdminController extends BaseController {
         );
 
         Integer resultTotal = memberBookmarkService.adminCount(body.getAppId() , body.getMemberId(), body.getMemberBookmarkTitle());
-        List<MemberBookmark> resultList = memberBookmarkService.adminList(body.getAppId(), body.getMemberId(), body.getMemberBookmarkTitle(), body.getM(), body.getN());
+        List<MemberBookmark> resultList = memberBookmarkService.adminList(body.getAppId(), body.getMemberId(), body.getMemberBookmarkTitle(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 MemberBookmark.MEMBER_BOOKMARK_ID,

@@ -29,9 +29,9 @@ public interface RoleMenuService extends BaseService<RoleMenu> {
      * @param appId 应用编号
      * @param roleId 角色编号
      * @param menuId 菜单编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<RoleMenu> 角色菜单列表
      */
-    List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer m, Integer n);
+    List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize);
 }

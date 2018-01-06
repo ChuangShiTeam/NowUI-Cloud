@@ -28,20 +28,20 @@ public interface MenuService extends BaseService<Menu> {
      *
      * @param appId 应用编号
      * @param menuName 名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Menu> 菜单列表
      */
-    List<Menu> adminList(String appId, String menuName, Integer m, Integer n);
+    List<Menu> adminList(String appId, String menuName, Integer pageIndex, Integer pageSize);
     
     /**
      * 菜单属性列表
      * @param appId 应用编号
      * @param menuName 菜单名称
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Map<String, Object>> 菜单属性列表
      */
-    List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer m, Integer n);
+    List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize);
     
 }
