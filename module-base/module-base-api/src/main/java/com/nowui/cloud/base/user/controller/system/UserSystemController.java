@@ -27,8 +27,7 @@ public class UserSystemController implements UserRpc {
 	private UserService userService;
 
 	@Override
-	public Integer count(String appId, String userType, String userAccount, String userNickName, String userName,
-			String userMobile) {
+	public Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile) {
 		return userService.count(appId, userType, userAccount, userNickName, userName, userMobile);
 	}
 
