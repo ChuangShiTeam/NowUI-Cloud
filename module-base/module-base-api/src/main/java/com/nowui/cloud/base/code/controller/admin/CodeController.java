@@ -108,7 +108,7 @@ public class CodeController extends BaseController {
             String mqPath = sysPackagePath + "/mq";
             String mqImplPath = mqPath + "/impl";
             String rpcPath = sysPackagePath + "/rpc";
-            String rpcFallbackPath = rpcPath + "/fallback";
+//            String rpcFallbackPath = rpcPath + "/fallback";
             String sqlPath = apiPackagePath + "/sql";
             String mapperPath = apiPackagePath + "/mapper";
             String servicePath = apiPackagePath + "/service";
@@ -136,7 +136,7 @@ public class CodeController extends BaseController {
                 FileUtil.createPath(mqImplPath);
             }
             FileUtil.createPath(rpcPath);
-            FileUtil.createPath(rpcFallbackPath);
+//            FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
             FileUtil.createPath(mapperPath);
             FileUtil.createPath(servicePath);
@@ -254,7 +254,7 @@ public class CodeController extends BaseController {
                 write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
             }
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
-            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
+//            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
             write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
             write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");
