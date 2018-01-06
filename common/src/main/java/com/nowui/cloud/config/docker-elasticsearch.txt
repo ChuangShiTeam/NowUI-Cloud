@@ -2,7 +2,9 @@ docker search  elasticsearch
 
 docker pull elasticsearch
 
-docker run -d --name=elasticsearch
+docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch
+
+docker run --name kibana --link elasticsearch:elasticsearch -p 5601:5601 -d kibana
 
 docker start elasticsearch
 

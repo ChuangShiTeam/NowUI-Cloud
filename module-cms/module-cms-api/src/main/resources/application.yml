@@ -6,6 +6,10 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+feign:
+  hystrix:
+    enabled: false
+
 spring:
   application:
     name: module-cms
