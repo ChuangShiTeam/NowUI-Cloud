@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * ${date}
  */
-@Component(value = "${firstUpperWithoutUnderlineEntityName}Rpc")
+@Component(value = "${firstLowerWithoutUnderlineEntityName}Rpc")
 @FeignClient(name = "module-${moduleName}")
 public interface ${firstUpperWithoutUnderlineEntityName}Rpc {
 

@@ -40,4 +40,23 @@ public interface UserService extends BaseService<User> {
      * @return List<User> 用户列表
      */
     List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 根据用户主体编号和用户类型查询用户信息
+     * 
+     * @param objectId 用户主体编号
+     * @param userType 用户类型
+     * @return User 用户信息
+     */
+    User findByObjectIdAndUserType(String objectId, String userType);
+
+    /**
+     * 根据用户主体编号和用户类型逻辑删除用户信息
+     * 
+     * @param objectId 用户主体编号
+     * @param userType 用户信息
+     * @param systemRequestUserId 请求用户编号
+     * @param Boolean 成功或失败
+     */
+    Boolean deleteByObjectIdAndUserType(String objectId, String userType, String systemRequestUserId);
 }

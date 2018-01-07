@@ -25,7 +25,7 @@ public class Util {
     public static String getRandomUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
-    
+
     /**
      * 验证NULL或空
      * 
@@ -36,7 +36,7 @@ public class Util {
         if (obj == null) {
             return true;
         }
-        
+
         if (obj instanceof CharSequence) {
             return ((CharSequence) obj).length() == 0;
         }
@@ -100,24 +100,24 @@ public class Util {
 
         }
     }
-    
+
     /**
      * 拼接URI路径
      * 
      * @param params
      * @return
      */
-    public static String createPath(String ...params) {
+    public static String createPath(String... params) {
         StringBuilder builder = new StringBuilder();
         if (params != null && params.length > 0) {
-            for (int i = 0; i < params.length; i ++) {
+            for (int i = 0; i < params.length; i++) {
                 builder.append(params[i]);
                 builder.append("/");
-            }  
+            }
         }
         return builder.toString();
     }
-    
+
     /**
      * 验证email
      * 
@@ -150,6 +150,7 @@ public class Util {
 
     /**
      * 验证日期
+     * 
      * @param str
      * @return
      */
@@ -203,7 +204,7 @@ public class Util {
         Matcher matcher = pattern.matcher(string);
         return matcher.matches();
     }
-    
+
     /**
      * 密码加密
      * 
@@ -218,4 +219,16 @@ public class Util {
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + user_password);
     }
 
+    public static boolean existsField(Class clazz, String fieldName) {
+        try {
+            return clazz.getDeclaredField(fieldName) != null;
+        } catch (Exception e) {
+
+        }
+        
+        if (clazz != Object.class) {
+            return existsField(clazz.getSuperclass(), fieldName);
+        }
+        return false;
+    }
 }

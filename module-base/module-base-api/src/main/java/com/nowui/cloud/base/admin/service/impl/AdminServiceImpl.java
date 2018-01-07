@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.admin.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.mapper.AdminMapper;
 import com.nowui.cloud.base.admin.service.AdminService;
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 管理员业务实现
@@ -27,29 +29,38 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
     private UserRpc userRpc;
 
     @Override
-    public Integer adminCount(String appId, String userId) {
-        Integer count = count(
-                new BaseWrapper<Admin>()
-                        .eq(Admin.APP_ID, appId)
-                        .likeAllowEmpty(Admin.USER_ID, userId)
-                        .eq(Admin.SYSTEM_STATUS, true)
-        );
-        return count;
+    public Integer adminCount(String appId, String userAccount, String userNickName, String userMobile) {
+        return userRpc.count(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile);
     }
 
     @Override
-    public List<Admin> adminList(String appId, String userId, Integer pageIndex, Integer pageSize) {
-        List<Admin> adminList = list(
-                new BaseWrapper<Admin>()
-                        .eq(Admin.APP_ID, appId)
-                        .likeAllowEmpty(Admin.USER_ID, userId)
-                        .eq(Admin.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Admin.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<Admin> adminList(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize) {
+        List<Admin> adminList = new ArrayList<>();
+        
+        List<User> userList = userRpc.list(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile, pageIndex, pageSize);
+        
+        for (User user : userList) {
+            
+            Admin admin = new Admin();
+            admin.setAdminId(user.getObjectId());
+            admin.putAll(user);
+            
+            adminList.add(admin);
+        }
         
         return adminList;
+    }
+    
+    @Override
+    public Admin find(String adminId) {
+        Admin admin = super.find(adminId);
+        
+        if (!Util.isNullOrEmpty(admin)) {
+            User user = userRpc.find(admin.getUserId());
+            admin.putAll(user);
+        }
+        
+        return admin;
     }
 
 }

@@ -7,6 +7,7 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.util.ValidateUtil;
 import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
