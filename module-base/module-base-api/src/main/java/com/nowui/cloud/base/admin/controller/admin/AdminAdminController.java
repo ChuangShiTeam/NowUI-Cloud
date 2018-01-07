@@ -1,21 +1,24 @@
 package com.nowui.cloud.base.admin.controller.admin;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.entity.enums.AdminType;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 管理员管理端控制器

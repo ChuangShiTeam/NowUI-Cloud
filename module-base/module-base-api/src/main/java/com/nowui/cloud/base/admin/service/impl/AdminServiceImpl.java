@@ -1,14 +1,17 @@
 package com.nowui.cloud.base.admin.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.mapper.AdminMapper;
 import com.nowui.cloud.base.admin.service.AdminService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.base.user.rpc.UserRpc;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 管理员业务实现
@@ -19,6 +22,9 @@ import java.util.List;
  */
 @Service
 public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implements AdminService {
+    
+    @Autowired
+    private UserRpc userRpc;
 
     @Override
     public Integer adminCount(String appId, String userId) {
