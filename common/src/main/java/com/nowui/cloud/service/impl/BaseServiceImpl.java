@@ -134,8 +134,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
             redis.opsForValue().set(getItemCacheName(id), baseEntity);
 
-            IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
-            elasticsearch.index(indexQuery);
+//            IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
+//            elasticsearch.index(indexQuery);
         }
 
         return success;
