@@ -34,7 +34,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRol
     }
 
     @Override
-    public List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer m, Integer n) {
+    public List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize) {
         List<UserRole> userRoleList = list(
                 new BaseWrapper<UserRole>()
                         .eq(UserRole.APP_ID, appId)
@@ -43,8 +43,8 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRol
                         .likeAllowEmpty(UserRole.USER_TYPE, userType)
                         .eq(UserRole.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(UserRole.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return userRoleList;

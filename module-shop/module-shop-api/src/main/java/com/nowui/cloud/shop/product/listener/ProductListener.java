@@ -1,6 +1,5 @@
 package com.nowui.cloud.shop.product.listener;
 
-import com.nowui.cloud.constant.Constant;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @author ZhongYongQiang
  */
 @Component
-@RabbitListener(queues = Constant.QUEUE)
+@RabbitListener(queues = "product")
 public class ProductListener {
 
     @RabbitHandler

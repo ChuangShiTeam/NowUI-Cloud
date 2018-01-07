@@ -29,9 +29,9 @@ public interface MemberFollowService extends BaseService<MemberFollow> {
      * @param appId 应用编号
      * @param memberId 会员编号
      * @param userId 用户编号
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<MemberFollow> 会员关注列表
      */
-    List<MemberFollow> adminList(String appId, String memberId, String userId, Integer m, Integer n);
+    List<MemberFollow> adminList(String appId, String memberId, String userId, Integer pageIndex, Integer pageSize);
 }

@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.role.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.role.entity.RoleMenu;
 import com.nowui.cloud.base.role.service.RoleMenuService;
 import io.swagger.annotations.Api;
@@ -38,7 +39,7 @@ public class RoleMenuAdminController extends BaseController {
         );
 
         Integer resultTotal = roleMenuService.adminCount(body.getAppId() , body.getRoleId(), body.getMenuId());
-        List<RoleMenu> resultList = roleMenuService.adminList(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getM(), body.getN());
+        List<RoleMenu> resultList = roleMenuService.adminList(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,
@@ -79,7 +80,7 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.MENU_ID
         );
 
-        Boolean result = roleMenuService.save(body, body.getSystemRequestUserId());
+        Boolean result = roleMenuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

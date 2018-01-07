@@ -3,12 +3,9 @@ package com.nowui.cloud.base.app.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.nowui.cloud.base.app.entity.AppConfig;
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.mapper.AppConfigMapper;
@@ -43,7 +40,7 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
 
     @Override
     public List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled,
-            Integer m, Integer n) {
+            Integer pageIndex, Integer pageSize) {
         List<AppConfig> appConfigList = list(
                 new BaseWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
@@ -52,8 +49,8 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
                         .eqAllowEmpty(AppConfig.CONFIG_IS_DISABLED, configIsDisabled)
                         .eq(AppConfig.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME)),
-                        m, 
-                        n
+                pageIndex, 
+                pageSize
         );
         for (AppConfig appConfig : appConfigList) {
             appConfig.put(AppConfigCategory.CONFIG_CATEGORY_NAME, appConfigCategoryService.find(appConfig.getConfigCategoryId()).getConfigCategoryName());

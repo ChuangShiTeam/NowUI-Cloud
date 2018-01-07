@@ -28,15 +28,15 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
     }
 
     @Override
-    public List<Product> adminList(String appId, String productName, Integer m, Integer n) {
+    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
         List<Product> productList = list(
                 new BaseWrapper<Product>()
                         .eq(Product.APP_ID, appId)
                         .like(Product.PRODUCT_NAME, productName)
                         .eq(Product.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Product.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         for(Product product: productList) {

@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.member.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.member.entity.Member;
 import com.nowui.cloud.base.member.service.MemberService;
 import io.swagger.annotations.Api;
@@ -37,7 +38,7 @@ public class MemberAdminController extends BaseController {
         );
 
         Integer resultTotal = memberService.adminCount(body.getAppId() , body.getUserId());
-        List<Member> resultList = memberService.adminList(body.getAppId(), body.getUserId(), body.getM(), body.getN());
+        List<Member> resultList = memberService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Member.MEMBER_ID,
@@ -75,7 +76,7 @@ public class MemberAdminController extends BaseController {
                 Member.USER_ID
         );
 
-        Boolean result = memberService.save(body, body.getSystemRequestUserId());
+        Boolean result = memberService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

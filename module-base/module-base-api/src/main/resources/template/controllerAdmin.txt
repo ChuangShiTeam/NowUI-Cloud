@@ -1,5 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
 import io.swagger.annotations.Api;
@@ -39,7 +40,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         );
 
         Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId() <%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId()<%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>, body.getM(), body.getN());
+        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId()<%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>, body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
@@ -83,7 +84,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%}%>
         );
 
-        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(body, body.getSystemRequestUserId());
+        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.message.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.message.entity.Message;
 import com.nowui.cloud.base.message.service.MessageService;
 import io.swagger.annotations.Api;
@@ -38,7 +39,7 @@ public class MessageAdminController extends BaseController {
         );
 
         Integer resultTotal = messageService.adminCount(body.getAppId() , body.getMessageTitle(), body.getMessageType());
-        List<Message> resultList = messageService.adminList(body.getAppId(), body.getMessageTitle(), body.getMessageType(), body.getM(), body.getN());
+        List<Message> resultList = messageService.adminList(body.getAppId(), body.getMessageTitle(), body.getMessageType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Message.MESSAGE_ID,
@@ -83,7 +84,7 @@ public class MessageAdminController extends BaseController {
                 Message.MESSAGE_CONTENT
         );
 
-        Boolean result = messageService.save(body, body.getSystemRequestUserId());
+        Boolean result = messageService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

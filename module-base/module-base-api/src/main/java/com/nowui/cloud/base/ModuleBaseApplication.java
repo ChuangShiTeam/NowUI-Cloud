@@ -1,6 +1,5 @@
 package com.nowui.cloud.base;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -10,14 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.nowui.cloud.shop.product.mq.ProductMq;
-import com.nowui.cloud.shop.product.rpc.ProductRpc;
 
 /**
  * @author ZhongYongQiang
@@ -30,28 +26,12 @@ import com.nowui.cloud.shop.product.rpc.ProductRpc;
 @RestController
 public class ModuleBaseApplication {
 
-    @Autowired
-    private ProductRpc productRpc;
-
-    @Autowired
-    private ProductMq productMq;
-
-    @RequestMapping("/test")
-    public String test() {
-//        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
-
-//        productMq.send("123456789");
-
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
 //        try {
 //            ApplicationContext app = SpringApplication.run(ModuleBaseApplication.class, args);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-
 
         SpringApplication.run(ModuleBaseApplication.class, args);
     }

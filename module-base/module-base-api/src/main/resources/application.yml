@@ -8,11 +8,15 @@ eureka:
 
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 spring:
   application:
     name: module-base
+#  mvc:
+#    static-path-pattern: /upload/**
+#  resources:
+#    static-locations: file:D:/static/upload/
   datasource:
       url: jdbc:mysql://118.31.229.16:3306/base?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
@@ -45,10 +49,15 @@ spring:
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
   redis:
-    host: localhost
+    host: 118.31.229.16
     port: 6379
     database: 0
     password:
+  rabbitmq:
+    host: 118.31.229.16
+    port: 5672
+    username: guest
+    password: guest
 
 #mybatis
 mybatis-plus:
@@ -79,10 +88,5 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-    
-#配置
 config:
-  #代码生成数据库名
-  tableSchema: app
-  #代码生成输出目录
-  codeGenerateUrl: /develop/code/
+  uploadFilePath: D:/static

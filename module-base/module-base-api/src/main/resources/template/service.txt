@@ -31,9 +31,9 @@ public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseServ
      <%for(column in searchColumnList){%>
      * @param ${column.columnName} ${column.columnComment}
      <%}%>
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
      */
-    List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer m, Integer n);
+    List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
 }

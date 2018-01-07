@@ -14,6 +14,7 @@ import com.nowui.cloud.base.app.entity.AppConfig;
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.service.AppConfigService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,7 @@ public class AppConfigController extends BaseController {
         validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_IS_DISABLED, AppConfig.PAGE_INDEX, AppConfig.PAGE_SIZE);
 
         Integer resultTotal = appConfigService.adminCount(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled());
-        List<AppConfig> resultList = appConfigService.adminList(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled(), body.getM(), body.getN());
+        List<AppConfig> resultList = appConfigService.adminList(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(AppConfig.APP_ID, AppConfig.CONFIG_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED);
 
@@ -60,7 +61,7 @@ public class AppConfigController extends BaseController {
     public Map<String, Object> save(@RequestBody AppConfig body) {
         validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION);
 
-        Boolean result = appConfigService.save(body, body.getSystemRequestUserId());
+        Boolean result = appConfigService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

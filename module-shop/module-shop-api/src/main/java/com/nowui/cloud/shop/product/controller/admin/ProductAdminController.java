@@ -2,6 +2,8 @@ package com.nowui.cloud.shop.product.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
+import com.nowui.cloud.util.Util;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class ProductAdminController extends BaseController {
         );
 
         Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getM(), body.getN());
+        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Product.PRODUCT_ID,
@@ -60,7 +62,7 @@ public class ProductAdminController extends BaseController {
     public Map<String, Object> save(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME);
 
-        Boolean result = productService.save(body, body.getSystemRequestUserId());
+        Boolean result = productService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

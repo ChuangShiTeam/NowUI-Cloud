@@ -22,14 +22,14 @@ public class Constant {
     public static final String PUBLISH = "publish";
 
     public static final int DEFAULT_LOAD_FACTOR = 1;
-
-    public static final String QUEUE = "queue";
     
     public static final String THUMBNAIL = "thumbnail";
     
     public static final String ORIGINAL = "original";
     
     public static final String UPLOAD = "upload";
+    
+    public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
     
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");

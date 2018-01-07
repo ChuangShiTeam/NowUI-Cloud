@@ -3,6 +3,7 @@ import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.menu.entity.Menu;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单业务接口
@@ -17,25 +18,30 @@ public interface MenuService extends BaseService<Menu> {
      * 菜单统计
      *
      * @param appId 应用编号
-     * @param menuParentId 父级ID
      * @param menuName 名称
-     * @param menuImage 图片
-     * @param menuUrl 地址
      * @return Integer 菜单统计
      */
-    Integer adminCount(String appId, String menuParentId, String menuName, String menuImage, String menuUrl);
+    Integer adminCount(String appId, String menuName);
 
     /**
      * 菜单列表
      *
      * @param appId 应用编号
-     * @param menuParentId 父级ID
      * @param menuName 名称
-     * @param menuImage 图片
-     * @param menuUrl 地址
-     * @param m 从m条开始
-     * @param n 取n条数据
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Menu> 菜单列表
      */
-    List<Menu> adminList(String appId, String menuParentId, String menuName, String menuImage, String menuUrl, Integer m, Integer n);
+    List<Menu> adminList(String appId, String menuName, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 菜单属性列表
+     * @param appId 应用编号
+     * @param menuName 菜单名称
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<Map<String, Object>> 菜单属性列表
+     */
+    List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize);
+    
 }

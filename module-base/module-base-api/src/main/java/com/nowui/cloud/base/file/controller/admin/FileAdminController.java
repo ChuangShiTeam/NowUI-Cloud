@@ -4,11 +4,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
@@ -40,14 +42,15 @@ public class FileAdminController extends BaseController {
         validateRequest(
                 body,
                 File.APP_ID,
+                File.SYSTEM_REQUEST_USER_ID,
                 File.FILE_NAME,
                 File.FILE_TYPE,
                 File.PAGE_INDEX,
                 File.PAGE_SIZE
         );
 
-        Integer resultTotal = fileService.adminCount(body.getAppId(), body.getFileName(), body.getFileType());
-        List<File> resultList = fileService.adminList(body.getAppId(), body.getFileName(), body.getFileType(), body.getM(), body.getN());
+        Integer resultTotal = fileService.adminCount(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType());
+        List<File> resultList = fileService.adminList(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 File.FILE_ID,
@@ -103,15 +106,15 @@ public class FileAdminController extends BaseController {
     }
     
     @ApiOperation(value = "图片上传")
-    @RequestMapping(value = "/file/admin/image/upload", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, Object> upload(
             @RequestParam(File.APP_ID) String appId,
             @RequestParam(File.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
-            @RequestParam("file") CommonsMultipartFile[] commonsMultipartFiles) {
-        if (commonsMultipartFiles.length == 0) {
+            @RequestParam("file") MultipartFile[] multipartFiles) {
+        if (multipartFiles.length == 0) {
             throw new RuntimeException("上传文件为空");
         }
-        List<File> fileList = fileService.imageUpload(appId, systemRequestUserId, commonsMultipartFiles);
+        List<File> fileList = fileService.imageUpload(appId, systemRequestUserId, multipartFiles);
         
         validateResponse(
             File.FILE_ID,

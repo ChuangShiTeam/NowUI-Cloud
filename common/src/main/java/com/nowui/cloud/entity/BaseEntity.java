@@ -8,6 +8,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import com.baomidou.mybatisplus.annotations.*;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSONObject;
@@ -310,6 +312,45 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
 
             if (!isExit) {
 //                iterator.remove();
+            }
+        }
+    }
+    
+    /**
+     * 对象默认保留属性，去除基本公共字段
+     */
+    public void defaultKeep() {
+        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            if (SYSTEM_CREATE_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_CREATE_TIME.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_UPDATE_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_UPDATE_TIME.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_VERSION.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_STATUS.equals(entry.getKey())) {
+                iterator.remove();
+            }
+        }
+    }
+    
+    /**
+     * 对象自定义保留属性
+     * @param elements
+     */
+    public void keep(String... elements) {
+        if (elements != null && elements.length > 0) {
+            Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Object> entry = iterator.next();
+                if (!ArrayUtils.contains(elements, entry.getKey())) {
+                    iterator.remove();
+                }
             }
         }
     }

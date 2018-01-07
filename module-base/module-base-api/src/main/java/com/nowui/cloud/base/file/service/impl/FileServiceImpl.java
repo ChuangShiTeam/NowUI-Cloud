@@ -8,13 +8,16 @@ import java.util.List;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.mapper.FileMapper;
 import com.nowui.cloud.base.file.service.FileService;
+import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
@@ -30,46 +33,52 @@ import com.nowui.cloud.util.Util;
  */
 @Service
 public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implements FileService {
+    
+    @Autowired
+    private Config config;
 
     @Override
-    public Integer adminCount(String appId, String fileName, String fileType) {
+    public Integer adminCount(String appId, String systemCreateUserId, String fileName, String fileType) {
         Integer count = count(
                 new BaseWrapper<File>()
                         .eq(File.APP_ID, appId)
+                        .eq(File.SYSTEM_CREATE_USER_ID, systemCreateUserId)
                         .likeAllowEmpty(File.FILE_NAME, fileName)
+                        .eqAllowEmpty(File.FILE_TYPE, fileType)
                         .eq(File.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<File> adminList(String appId, String fileName, String fileType, Integer m, Integer n) {
+    public List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
         List<File> fileList = list(
                 new BaseWrapper<File>()
                         .eq(File.APP_ID, appId)
+                        .eq(File.SYSTEM_CREATE_USER_ID, systemCreateUserId)
                         .likeAllowEmpty(File.FILE_NAME, fileName)
+                        .eqAllowEmpty(File.FILE_TYPE, fileType)
                         .eq(File.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(File.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return fileList;
     }
 
     @Override
-    public List<File> imageUpload(String appId, String userId, CommonsMultipartFile[] commonsMultipartFiles) {
-        String webRootPath = FileUtil.getWebRootPath(); 
-        String path = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId);
-        String thumbnailPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
+    public List<File> imageUpload(String appId, String userId, MultipartFile[] multipartFiles) {
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
 
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
         FileUtil.createPath(originalPath);
         
         List<File> fileList = new ArrayList<File>();
-        for (CommonsMultipartFile myfile : commonsMultipartFiles) {
+        for (MultipartFile myfile : multipartFiles) {
             if (myfile.isEmpty()) {
                 throw new RuntimeException("上传图片为空");
             } else {
@@ -77,11 +86,11 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 String fileSuffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
                 String fileName = Util.getRandomUUID() + "." + fileSuffix;
                 
-                if (!".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP".contains(fileSuffix)) {
+                if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
                     throw new RuntimeException("上传图片格式不对");
                 }
-                
-                if (((int) myfile.getSize() / 1024 + 1) > 10) {
+                //图片限定10M
+                if (((int) myfile.getSize() / 1024 + 1) > 1000) {   
                     throw new RuntimeException("上传图片超过限定大小");
                 }
                 
@@ -92,9 +101,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                     throw new RuntimeException("上传图片失败");
                 }
                 
-                path = path + java.io.File.separator + fileName;
-                thumbnailPath = thumbnailPath + java.io.File.separator + fileName;
-                originalPath = originalPath + java.io.File.separator + fileName;
+                path = path + fileName;
+                thumbnailPath = thumbnailPath + fileName;
+                originalPath = originalPath + fileName;
 
                 String fileType = FileType.IMAGE.getKey();
 
@@ -102,9 +111,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 FileUtil.resizeImage(file, fileSuffix, path, 360);
                 
                 Integer fileSize = (int) file.length();
-                String filePath = path.replace(FileUtil.getWebRootPath(), "");
-                String fileThumbnailPath = thumbnailPath.replace(FileUtil.getWebRootPath(), "");
-                String fileOriginalPath = originalPath.replace(FileUtil.getWebRootPath(), "");
+                String filePath = path.replace(config.getUploadFilePath(), "");
+                String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
+                String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
                 Boolean fileIsExternal = false;
                 
                 File entity = new File();
@@ -118,7 +127,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 entity.setFileThumbnailPath(fileThumbnailPath);
                 entity.setFileType(fileType);
                 entity.setFileCoverImage("");
-                Boolean result = save(entity, userId);
+                Boolean result = save(entity, Util.getRandomUUID(), userId);
 
                 if (!result) {
                     throw new RuntimeException("上传不成功");
@@ -132,10 +141,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     
     @Override
     public File uploadBase64(String appId, String userId, String base64Data) {
-        String webRootPath = FileUtil.getWebRootPath(); 
-        String path = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId);
-        String thumbnailPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(webRootPath, Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
         
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
@@ -149,9 +157,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
 
         byte[] imageByte = Base64.decodeBase64(imageString.getBytes());
         
-        path = Util.createPath(path, fileName);
-        thumbnailPath = Util.createPath(thumbnailPath, fileName);
-        originalPath = Util.createPath(originalPath, fileName);
+        path = path + fileName;
+        thumbnailPath = thumbnailPath + fileName;
+        originalPath = originalPath + fileName;
         
         java.io.File imageFile = new java.io.File(originalPath);
         
@@ -163,7 +171,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (!".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP".contains(fileSuffix)) {
+        if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
             throw new RuntimeException("上传图片格式不对");
         }
 
@@ -172,9 +180,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         
         String fileType = FileType.IMAGE.getKey();
         Integer fileSize = (int) imageFile.length();
-        String filePath = path.replace(FileUtil.getWebRootPath(), "");
-        String fileThumbnailPath = thumbnailPath.replace(FileUtil.getWebRootPath(), "");
-        String fileOriginalPath = originalPath.replace(FileUtil.getWebRootPath(), "");
+        String filePath = path.replace(config.getUploadFilePath(), "");
+        String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
+        String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
         Boolean fileIsExternal = false;
 
         File entity = new File();
@@ -188,7 +196,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         entity.setFileThumbnailPath(fileThumbnailPath);
         entity.setFileType(fileType);
         entity.setFileCoverImage("");
-        Boolean result = save(entity, userId);
+        Boolean result = save(entity, Util.getRandomUUID(), userId);
 
         if (!result) {
             throw new RuntimeException("上传不成功");
@@ -200,7 +208,6 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     @Override
     public List<File> videoUpload(String appId, String userId, String fileCoverImage,
             CommonsMultipartFile[] commonsMultipartFiles) {
-        // TODO Auto-generated method stub
         return null;
     }
 

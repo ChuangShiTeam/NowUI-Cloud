@@ -33,7 +33,7 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
     }
 
     @Override
-    public List<MemberFollow> adminList(String appId, String memberId, String userId, Integer m, Integer n) {
+    public List<MemberFollow> adminList(String appId, String memberId, String userId, Integer pageIndex, Integer pageSize) {
         List<MemberFollow> memberFollowList = list(
                 new BaseWrapper<MemberFollow>()
                         .eq(MemberFollow.APP_ID, appId)
@@ -41,8 +41,8 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
                         .likeAllowEmpty(MemberFollow.USER_ID, userId)
                         .eq(MemberFollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME)),
-                m,
-                n
+                pageIndex,
+                pageSize
         );
 
         return memberFollowList;

@@ -8,7 +8,7 @@ eureka:
 
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 spring:
   application:
@@ -78,10 +78,3 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-    
-#配置
-config:
-  #代码生成数据库名
-  tableSchema: third
-  #代码生成输出目录
-  codeGenerateUrl: /develop/code/

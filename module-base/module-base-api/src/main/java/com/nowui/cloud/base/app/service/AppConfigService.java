@@ -31,8 +31,10 @@ public interface AppConfigService extends BaseService<AppConfig>, AppConfigRpc {
      * @param configCategoryId 应用配置分类编号
      * @param configKey 键
      * @param configIsDisabled 是否禁用
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<AppConfig> 应用列表
      */
-    List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled, Integer m, Integer n);
+    List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled, Integer pageIndex, Integer pageSize);
 
 }

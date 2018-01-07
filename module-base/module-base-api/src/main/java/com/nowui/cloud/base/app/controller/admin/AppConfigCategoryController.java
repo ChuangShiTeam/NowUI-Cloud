@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +36,7 @@ public class AppConfigCategoryController extends BaseController {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.PAGE_INDEX, AppConfigCategory.PAGE_SIZE);
 
         Integer resultTotal = appConfigCategoryService.adminCount(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode());
-        List<AppConfigCategory> resultList = appConfigCategoryService.adminList(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getM(), body.getN());
+        List<AppConfigCategory> resultList = appConfigCategoryService.adminList(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE);
 
@@ -70,7 +71,7 @@ public class AppConfigCategoryController extends BaseController {
     public Map<String, Object> save(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.CONFIG_CATEGORY_DESCRIPTION);
 
-        Boolean result = appConfigCategoryService.save(body, body.getSystemRequestUserId());
+        Boolean result = appConfigCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

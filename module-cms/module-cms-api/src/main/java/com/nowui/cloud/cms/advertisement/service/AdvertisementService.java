@@ -37,5 +37,11 @@ public interface AdvertisementService extends BaseService<Advertisement>, Advert
      */
     List<Advertisement> adminList(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m, Integer n);
 
+    /**
+     * 广告列表
+     * @param appId 应用编号
+     * @return List<Advertisement> 广告列表
+     */
+    List<Advertisement> mobileList(String appId, String advertisementCategoryCode);
 
 }
