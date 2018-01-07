@@ -1,21 +1,25 @@
 package com.nowui.cloud.base.admin.controller.admin;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.admin.entity.Admin;
-import com.nowui.cloud.base.admin.entity.enums.AdminType;
+import com.nowui.cloud.base.admin.mq.AdminMq;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.base.user.entity.enums.UserType;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 管理员管理端控制器
@@ -32,7 +36,7 @@ public class AdminAdminController extends BaseController {
     private AdminService adminService;
 
     @Autowired
-    private UserService userService;
+    private AdminMq adminMq;
     
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,14 +45,18 @@ public class AdminAdminController extends BaseController {
         validateRequest(
                 body,
                 User.APP_ID,
+                User.USER_ACCOUNT,
+                User.USER_NICK_NAME,
+                User.USER_MOBILE,
                 User.PAGE_INDEX,
                 User.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.adminCount(body.getAppId() , body.getUserId());
-        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = adminService.adminCount(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile());
+        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
+                Admin.ADMIN_ID,
         		User.USER_ID,
                 User.USER_TYPE,
                 User.USER_ACCOUNT,
@@ -75,7 +83,14 @@ public class AdminAdminController extends BaseController {
 
         validateResponse(
                 Admin.ADMIN_ID,
-                Admin.USER_ID
+                User.USER_ID,
+                User.USER_ACCOUNT,
+                User.USER_NICK_NAME,
+                User.USER_NAME,
+                User.USER_MOBILE,
+                User.USER_EMAIL,
+                User.USER_AVATAR,
+                Admin.SYSTEM_VERSION
         );
 
         return renderJson(result);
@@ -96,11 +111,12 @@ public class AdminAdminController extends BaseController {
                 User.USER_AVATAR
         );
         
-        String adminIdAndObjId = Util.getRandomUUID();
+        String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
         
-        body.setUserType(AdminType.ADMIN.getKey());
-        body.setObjectId(adminIdAndObjId);
+        body.setUserId(userId);
+        body.setUserType(UserType.ADMIN.getKey());
+        body.setObjectId(adminId);
         body.setWeixinOpenId("");
         body.setWeixinUnionId("");
         
@@ -108,9 +124,9 @@ public class AdminAdminController extends BaseController {
         admin.setUserId(userId);
         admin.setAppId(body.getAppId());
         
-        Boolean result = adminService.save(admin, adminIdAndObjId, body.getSystemRequestUserId());
+        Boolean result = adminService.save(admin, adminId, body.getSystemRequestUserId());
         if (result) {
-        	result = userService.save(body, userId, body.getSystemRequestUserId());
+        	adminMq.sendSaveUser(body);
 		}
         
         return renderJson(result);
@@ -118,17 +134,34 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "修改管理员")
     @RequestMapping(value = "/admin/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Admin body) {
+    public Map<String, Object> update(@RequestBody User body) {
         validateRequest(
                 body,
+                User.APP_ID,
+                User.USER_ID,
+                User.USER_ACCOUNT,
+                User.USER_PASSWORD,
+                User.USER_NICK_NAME,
+                User.USER_NAME,
+                User.USER_MOBILE,
+                User.USER_EMAIL,
+                User.USER_AVATAR,
+                User.SYSTEM_VERSION
+        );
+        Admin admin = JSONObject.parseObject(body.toJSONString(), Admin.class);
+        validateRequest(
+                admin,
                 Admin.ADMIN_ID,
                 Admin.APP_ID,
-                Admin.USER_ID,
                 Admin.SYSTEM_VERSION
         );
+        
+        Boolean result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
 
-        Boolean result = adminService.update(body, body.getAdminId(), body.getSystemRequestUserId(), body.getSystemVersion());
-
+        if (result) {
+            adminMq.sendUpdateUser(body);
+        }
+        
         return renderJson(result);
     }
 
@@ -144,6 +177,9 @@ public class AdminAdminController extends BaseController {
 
         Boolean result = adminService.delete(body.getAdminId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
+        if (result) {
+            adminMq.sendDeleteUser(body.getAdminId(), body.getSystemRequestUserId());
+        }
         return renderJson(result);
     }
 

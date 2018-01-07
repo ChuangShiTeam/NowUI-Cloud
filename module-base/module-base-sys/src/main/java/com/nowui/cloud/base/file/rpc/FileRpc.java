@@ -15,7 +15,7 @@ import com.nowui.cloud.base.file.entity.File;
  *
  * 2018-01-01
  */
-@Component(value = "FileRpc")
+@Component(value = "fileRpc")
 @FeignClient(name = "module-base")
 public interface FileRpc {
     
@@ -25,7 +25,7 @@ public interface FileRpc {
      * @param fileId 文件编号
      * @return file 文件
      */
-    @RequestMapping(value = "/file/system/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/file/system/find", method = RequestMethod.GET)
     File find(@RequestParam(value = "fileId", required = true) String fileId);
 
 }

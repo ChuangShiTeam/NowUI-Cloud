@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 用户服务调用
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-02
  */
-@Component(value = "UserRpc")
+@Component(value = "userRpc")
 @FeignClient(name = "module-base")
 public interface UserRpc {
 
@@ -29,7 +32,15 @@ public interface UserRpc {
      * @param userMobile 用户手机号码
      * @return Integer 用户数量
      */
-    Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile);
+    @RequestMapping(value = "/user/system/count", method = RequestMethod.GET)
+    Integer count(
+            @RequestParam(value = "appId", required = true) String appId, 
+            @RequestParam(value = "userType", required = true) String userType, 
+            @RequestParam(value = "userAccount", required = true) String userAccount, 
+            @RequestParam(value = "userNickName", required = true) String userNickName, 
+            @RequestParam(value = "userName", required = true) String userName, 
+            @RequestParam(value = "userMobile", required = true) String userMobile
+    );
 
     /**
      * 用户查询
@@ -44,6 +55,24 @@ public interface UserRpc {
      * @param pageSize	每页个数
      * @return List<User> 用户列表
      */
-    List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize);
+    @RequestMapping(value = "/user/system/list", method = RequestMethod.GET)
+    List<User> list(
+            @RequestParam(value = "appId", required = true) String appId, 
+            @RequestParam(value = "userType", required = true) String userType, 
+            @RequestParam(value = "userAccount", required = true) String userAccount, 
+            @RequestParam(value = "userNickName", required = true) String userNickName, 
+            @RequestParam(value = "userName", required = true) String userName, 
+            @RequestParam(value = "userMobile", required = true) String userMobile, 
+            @RequestParam(value = "pageIndex", required = true) Integer pageIndex, 
+            @RequestParam(value = "pageSize", required = true) Integer pageSize
+    );
 
+    /**
+     * 根据ID查询用户信息
+     * 
+     * @param userId 用户编号
+     * @return User 用户信息
+     */
+    @RequestMapping(value = "/user/system/find", method = RequestMethod.GET)
+    User find(@RequestParam(value = "userId", required = true) String userId);
 }

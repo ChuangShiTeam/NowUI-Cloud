@@ -1,5 +1,12 @@
 package com.nowui.cloud.base.file.entity.enums;
 
+/**
+ * 文件类型枚举
+ * 
+ * @author marcus
+ *
+ * 2018年1月7日
+ */
 public enum FileType {
     IMAGE("IMAGE", "图片"),
     DOCUMENT("DOCUMENT", "文档"),

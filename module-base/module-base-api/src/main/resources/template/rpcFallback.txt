@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  *
  * ${date}
  */
-@Component(value = "${firstUpperWithoutUnderlineEntityName}RpcFallback")
+@Component(value = "${firstLowerWithoutUnderlineEntityName}RpcFallback")
 public class ${firstUpperWithoutUnderlineEntityName}RpcFallback implements ${firstUpperWithoutUnderlineEntityName}Rpc {
 
 }

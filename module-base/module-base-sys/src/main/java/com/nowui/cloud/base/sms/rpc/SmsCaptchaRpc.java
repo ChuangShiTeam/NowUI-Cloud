@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-05
  */
-@Component(value = "SmsCaptchaRpc")
+@Component(value = "smsCaptchaRpc")
 @FeignClient(name = "module-base")
 public interface SmsCaptchaRpc {
 

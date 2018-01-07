@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-02
  */
-@Component(value = "UserRoleRpc")
+@Component(value = "userRoleRpc")
 @FeignClient(name = "module-base")
 public interface UserRoleRpc {
 
