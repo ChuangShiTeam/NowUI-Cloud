@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -28,6 +31,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
     @Autowired
     protected RedisTemplate<String, Object> redis;
+
+    @Autowired
+    protected ElasticsearchTemplate elasticsearch;
 
     protected String getItemCacheName(String id) {
         return entity.getTableName() + "_item_" + id;
@@ -127,6 +133,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
             baseEntity.keepTableFieldValue();
 
             redis.opsForValue().set(getItemCacheName(id), baseEntity);
+
+            IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
+            elasticsearch.index(indexQuery);
         }
 
         return success;
