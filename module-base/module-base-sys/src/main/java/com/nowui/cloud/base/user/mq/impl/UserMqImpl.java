@@ -18,3 +18,4 @@ public class UserMqImpl implements UserMq {
 	}
 
 }
+ 
