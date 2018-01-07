@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.fallback.FileRpcFallback;
 
 /**
  * 文件服务调用
@@ -17,7 +16,7 @@ import com.nowui.cloud.base.file.rpc.fallback.FileRpcFallback;
  * 2018-01-01
  */
 @Component(value = "FileRpc")
-@FeignClient(name = "module-base", fallback = FileRpcFallback.class)
+@FeignClient(name = "module-base")
 public interface FileRpc {
     
     /**

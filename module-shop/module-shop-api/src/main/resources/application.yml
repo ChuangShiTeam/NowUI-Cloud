@@ -8,7 +8,7 @@ eureka:
 
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 spring:
   application:

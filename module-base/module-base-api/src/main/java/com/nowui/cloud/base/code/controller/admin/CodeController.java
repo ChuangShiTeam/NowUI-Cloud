@@ -11,6 +11,9 @@ import java.util.Map;
 
 import com.nowui.cloud.base.code.entity.Code;
 import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.shop.product.entity.Product;
+import com.nowui.cloud.shop.product.mq.ProductMq;
+import com.nowui.cloud.shop.product.rpc.ProductRpc;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
 import org.beetl.core.Configuration;
@@ -42,6 +45,26 @@ public class CodeController extends BaseController {
 
     @Autowired
     private CodeService codeService;
+
+    @Autowired
+    private ProductRpc productRpc;
+
+    @Autowired
+    private ProductMq productMq;
+
+    @ApiOperation(value = "测试")
+    @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String test(@RequestBody Code body) {
+//        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
+
+        Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
+
+        System.out.println(product);
+
+        productMq.send("123456789");
+
+        return "Hello World!";
+    }
 
     @ApiOperation(value = "数据库表列表")
     @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,7 +108,7 @@ public class CodeController extends BaseController {
             String mqPath = sysPackagePath + "/mq";
             String mqImplPath = mqPath + "/impl";
             String rpcPath = sysPackagePath + "/rpc";
-            String rpcFallbackPath = rpcPath + "/fallback";
+//            String rpcFallbackPath = rpcPath + "/fallback";
             String sqlPath = apiPackagePath + "/sql";
             String mapperPath = apiPackagePath + "/mapper";
             String servicePath = apiPackagePath + "/service";
@@ -113,7 +136,7 @@ public class CodeController extends BaseController {
                 FileUtil.createPath(mqImplPath);
             }
             FileUtil.createPath(rpcPath);
-            FileUtil.createPath(rpcFallbackPath);
+//            FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
             FileUtil.createPath(mapperPath);
             FileUtil.createPath(servicePath);
@@ -231,7 +254,7 @@ public class CodeController extends BaseController {
                 write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
             }
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
-            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
+//            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
             write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
             write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");

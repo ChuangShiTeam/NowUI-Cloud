@@ -2,6 +2,8 @@ package com.nowui.cloud.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.netflix.client.ClientException;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.ConstraintViolation;
+import java.net.SocketTimeoutException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -70,18 +73,28 @@ public class BaseController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {RuntimeException.class})
+    @ExceptionHandler(value = {BaseException.class, RuntimeException.class})
     public Map<String, Object> handleRuntimeException(RuntimeException e) {
         e.printStackTrace();
 
+        String prefix = "com.netflix.client.ClientException: ";
+        String message = e.getMessage();
+
         Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-        map.put(Constant.CODE, 400);
-        map.put(Constant.MESSAGE, e.toString());
+
+        if (message.startsWith(prefix)) {
+            map.put(Constant.CODE, 500);
+            map.put(Constant.MESSAGE, "网络出现错误");
+        } else {
+            map.put(Constant.CODE, 400);
+            map.put(Constant.MESSAGE, e.getMessage());
+        }
+
         return map;
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {Exception.class, SQLException.class, MyBatisSystemException.class, RedisConnectionFailureException.class, IllegalStateException.class, BindingException.class})
+    @ExceptionHandler(value = {SQLException.class, MyBatisSystemException.class, RedisConnectionFailureException.class, IllegalStateException.class, BindingException.class, ClientException.class, SocketTimeoutException.class})
     public Map<String, Object> handleException(Exception e) {
         e.printStackTrace();
 

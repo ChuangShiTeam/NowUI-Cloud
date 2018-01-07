@@ -1,7 +1,6 @@
 package com.nowui.cloud.shop.product.rpc;
 
 import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.rpc.fallback.ProductRpcFallback;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author ZhongYongQiang
  */
 @Component(value = "productRpc")
-@FeignClient(name = "module-shop", fallback = ProductRpcFallback.class)
+@FeignClient(name = "module-shop")
 public interface ProductRpc {
 
     /**

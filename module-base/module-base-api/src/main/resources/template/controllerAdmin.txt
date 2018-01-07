@@ -1,5 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
 import io.swagger.annotations.Api;

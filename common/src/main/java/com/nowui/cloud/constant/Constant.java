@@ -29,6 +29,8 @@ public class Constant {
     
     public static final String UPLOAD = "upload";
     
+    public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
+    
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");
 
