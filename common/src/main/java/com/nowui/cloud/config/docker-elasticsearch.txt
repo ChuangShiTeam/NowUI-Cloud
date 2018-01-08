@@ -2,6 +2,9 @@ docker search  elasticsearch
 
 docker pull elasticsearch
 
+#需要注意的服务器环境的vm.max_map_count大小
+#启动报错max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+#需修改/ect/sysctl.conf里的vm.max_map_count
 docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch -Etransport.host=0.0.0.0 -Ediscovery.zen.minimum_master_nodes=1
 
 docker run --name kibana --link elasticsearch:elasticsearch -p 5601:5601 -d kibana
