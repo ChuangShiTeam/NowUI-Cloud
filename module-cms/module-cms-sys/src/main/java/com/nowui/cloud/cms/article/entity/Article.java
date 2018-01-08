@@ -74,8 +74,8 @@ public class Article extends BaseEntity {
     @TableField
     @NotNull(message = "文章媒体不能为空")
     @Length(max = 32, message = "文章媒体长度超出限制")
-    private String articleMedia;
-    public static final String ARTICLE_MEDIA = "articleMedia";
+    private String articleMediaId;
+    public static final String ARTICLE_MEDIA_ID = "articleMediaId";
     
     /**
      * 文章媒体类型
@@ -203,6 +203,14 @@ public class Article extends BaseEntity {
     public static final String ARTICLE_IS_REQUIRE_AUDIT = "articleIsRequireAudit";
     
     /**
+     * 文章是否推荐
+     */
+    @TableField
+    @NotNull(message = "文章是否推荐不能为空")
+    private Boolean articleIsRecommend;
+    public static final String ARTICLE_IS_RECOMMEND = "articleIsRecommend";
+    
+    /**
      * 文章排序
      */
     @TableField
@@ -246,12 +254,12 @@ public class Article extends BaseEntity {
         put(ARTICLE_AUTHOR, articleAuthor);
     }
     
-    public String getArticleMedia() {
-        return getString(ARTICLE_MEDIA);
+    public String getArticleMediaId() {
+        return getString(ARTICLE_MEDIA_ID);
     }
     
-    public void setArticleMedia(String articleMedia) {
-        put(ARTICLE_MEDIA, articleMedia);
+    public void setArticleMediaId(String articleMediaId) {
+        put(ARTICLE_MEDIA_ID, articleMediaId);
     }
     
     public String getArticleMediaType() {
@@ -388,6 +396,14 @@ public class Article extends BaseEntity {
 
     public void setArticleIsRequireAudit(Boolean articleIsRequireAudit) {
         put(ARTICLE_IS_REQUIRE_AUDIT, articleIsRequireAudit);
+    }
+    
+    public Boolean getArticleIsarticleIsRecommend() {
+        return getBoolean(ARTICLE_IS_RECOMMEND);
+    }
+    
+    public void articleIsRecommend(Boolean articleIsRecommend) {
+        put(ARTICLE_IS_RECOMMEND, articleIsRecommend);
     }
 
 }

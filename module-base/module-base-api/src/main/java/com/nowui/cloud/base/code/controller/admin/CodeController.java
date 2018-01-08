@@ -163,7 +163,7 @@ public class CodeController extends BaseController {
             List<JSONObject> detailColumnList = new ArrayList<JSONObject>();
 
             String upperTableName = body.getTableName().toUpperCase();
-            String lowerEntityName = body.getTableName().replace("_info", "").replace("_map", "").replace("_count", "").toLowerCase();
+            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(body.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
             String upperEntityName = lowerEntityName.toUpperCase();
             String urlEntityName = lowerEntityName.replaceAll("_", "/");
             String firstLowerEntityName = lowerEntityName.substring(0, 1).toLowerCase() + lowerEntityName.substring(1);

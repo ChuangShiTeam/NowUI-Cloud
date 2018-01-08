@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.file.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 文件
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-01
  */
 @Component
+@Document(indexName = "nowui", type = "file_info")
 @TableName(value = "file_info")
 public class File extends BaseEntity {
 
     /**
      * 文件编号
      */
+    @Id
     @TableId
     @NotNull(message = "文件编号不能为空")
     @Length(max = 32, message = "文件编号长度超出限制")
@@ -32,6 +38,7 @@ public class File extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class File extends BaseEntity {
     /**
      * 类型
      */
+    @Field
     @TableField
     @NotNull(message = "类型不能为空")
     @Length(max = 25, message = "类型长度超出限制")
@@ -50,6 +58,7 @@ public class File extends BaseEntity {
     /**
      * 名称
      */
+    @Field
     @TableField
     @NotNull(message = "名称不能为空")
     @Length(max = 100, message = "名称长度超出限制")
@@ -59,6 +68,7 @@ public class File extends BaseEntity {
     /**
      * 后缀
      */
+    @Field
     @TableField
     @NotNull(message = "后缀不能为空")
     @Length(max = 10, message = "后缀长度超出限制")
@@ -68,6 +78,7 @@ public class File extends BaseEntity {
     /**
      * 大小
      */
+    @Field
     @TableField
     @NotNull(message = "大小不能为空")
     @Length(max = 11, message = "大小长度超出限制")
@@ -77,6 +88,7 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
+    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -86,6 +98,7 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
+    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -95,6 +108,7 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
+    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -104,21 +118,31 @@ public class File extends BaseEntity {
     /**
      * 文件封面图片
      */
+    @Field
     @TableField
     @NotNull(message = "文件封面图片不能为空")
     @Length(max = 32, message = "文件封面图片长度超出限制")
     private String fileCoverImage;
     public static final String FILE_COVER_IMAGE = "fileCoverImage";
-
+    
+    /**
+     * 外部链接
+     */
+    @Field
+    @TableField
+    @NotNull(message = "外部链接不能为空")
+    @Length(max = 200, message = "外部链接长度超出限制")
+    private String fileOuterLink;
+    public static final String FILE_OUTER_LINK = "fileOuterLink";
+    
     /**
      * 是否外部链接
      */
+    @Field
     @TableField
     @NotNull(message = "是否外部链接不能为空")
-    @Length(max = 1, message = "是否外部链接长度超出限制")
-    private Boolean fileIsExternal;
-    public static final String FILE_IS_EXTERNAL = "fileIsExternal";
-
+    private Boolean fileIsOuter;
+    public static final String FILE_IS_OUTER = "fileIsOuter";
 
     public String getFileId() {
         return getString(FILE_ID);
@@ -197,12 +221,20 @@ public class File extends BaseEntity {
         put(FILE_COVER_IMAGE, fileCoverImage);
     }
     
-    public Boolean getFileIsExternal() {
-        return getBoolean(FILE_IS_EXTERNAL);
+    public String getFileOuterLink() {
+        return getString(FILE_OUTER_LINK);
     }
 
-    public void setFileIsExternal(Boolean fileIsExternal) {
-        put(FILE_IS_EXTERNAL, fileIsExternal);
+    public void setFileOuterLink(String fileOuterLink) {
+        put(FILE_OUTER_LINK, fileOuterLink);
+    }
+    
+    public Boolean getFileIsOuter() {
+        return getBoolean(FILE_IS_OUTER);
+    }
+    
+    public void setFileIsOuter(Boolean fileIsOuter) {
+        put(FILE_IS_OUTER, fileIsOuter);
     }
 
 }

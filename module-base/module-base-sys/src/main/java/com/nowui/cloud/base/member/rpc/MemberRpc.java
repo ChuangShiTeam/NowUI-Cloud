@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-01-08
  */
-@Component(value = "MemberRpc")
+@Component(value = "memberRpc")
 @FeignClient(name = "module-base")
 public interface MemberRpc {
 

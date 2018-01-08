@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.user.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 用户
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-02
  */
 @Component
+@Document(indexName = "nowui", type = "user_info")
 @TableName(value = "user_info")
 public class User extends BaseEntity {
 
     /**
      * 用户编号
      */
+    @Id
     @TableId
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -32,6 +38,7 @@ public class User extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class User extends BaseEntity {
     /**
      * 用户主体编号（会员、管理员、员工等编号）
      */
+    @Field
     @TableField
     @NotNull(message = "用户主体编号（会员、管理员、员工等编号）不能为空")
     @Length(max = 32, message = "用户主体编号（会员、管理员、员工等编号）长度超出限制")
@@ -50,6 +58,7 @@ public class User extends BaseEntity {
     /**
      * 类型
      */
+    @Field
     @TableField
     @NotNull(message = "类型不能为空")
     @Length(max = 25, message = "类型长度超出限制")
@@ -59,6 +68,7 @@ public class User extends BaseEntity {
     /**
      * 账号
      */
+    @Field
     @TableField
     @NotNull(message = "账号不能为空")
     @Length(max = 30, message = "账号长度超出限制")
@@ -68,6 +78,7 @@ public class User extends BaseEntity {
     /**
      * 密码
      */
+    @Field
     @TableField
     @NotNull(message = "密码不能为空")
     @Length(max = 128, message = "密码长度超出限制")
@@ -77,6 +88,7 @@ public class User extends BaseEntity {
     /**
      * 昵称
      */
+    @Field
     @TableField
     @NotNull(message = "昵称不能为空")
     @Length(max = 100, message = "昵称长度超出限制")
@@ -86,6 +98,7 @@ public class User extends BaseEntity {
     /**
      * 姓名
      */
+    @Field
     @TableField
     @NotNull(message = "姓名不能为空")
     @Length(max = 50, message = "姓名长度超出限制")
@@ -95,6 +108,7 @@ public class User extends BaseEntity {
     /**
      * 手机号码
      */
+    @Field
     @TableField
     @NotNull(message = "手机号码不能为空")
     @Length(max = 11, message = "手机号码长度超出限制")
@@ -104,6 +118,7 @@ public class User extends BaseEntity {
     /**
      * 邮箱
      */
+    @Field
     @TableField
     @NotNull(message = "邮箱不能为空")
     @Length(max = 20, message = "邮箱长度超出限制")
@@ -113,6 +128,7 @@ public class User extends BaseEntity {
     /**
      * 头像
      */
+    @Field
     @TableField
     @NotNull(message = "头像不能为空")
     @Length(max = 32, message = "头像长度超出限制")
@@ -122,6 +138,7 @@ public class User extends BaseEntity {
     /**
      * 微信openID
      */
+    @Field
     @TableField
     @NotNull(message = "微信openID不能为空")
     @Length(max = 50, message = "微信openID长度超出限制")
@@ -131,6 +148,7 @@ public class User extends BaseEntity {
     /**
      * 微信unionID
      */
+    @Field
     @TableField
     @NotNull(message = "微信unionID不能为空")
     @Length(max = 50, message = "微信unionID长度超出限制")

@@ -15,28 +15,30 @@ import java.util.List;
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-01-08
  */
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> implements MemberService {
 
     @Override
-    public Integer adminCount(String appId, String userId) {
+    public Integer adminCount(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
         Integer count = count(
                 new BaseWrapper<Member>()
                         .eq(Member.APP_ID, appId)
-                        .likeAllowEmpty(Member.USER_ID, userId)
+                        .eqAllowEmpty(Member.MEMBER_IS_TOP, memberIsTop)
+                        .eqAllowEmpty(Member.MEMBER_IS_RECOMMED, memberIsRecommed)
                         .eq(Member.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<Member> adminList(String appId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<Member> adminList(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
         List<Member> memberList = list(
                 new BaseWrapper<Member>()
                         .eq(Member.APP_ID, appId)
-                        .likeAllowEmpty(Member.USER_ID, userId)
+                        .eqAllowEmpty(Member.MEMBER_IS_TOP, memberIsTop)
+                        .eqAllowEmpty(Member.MEMBER_IS_RECOMMED, memberIsRecommed)
                         .eq(Member.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Member.SYSTEM_CREATE_TIME)),
                 pageIndex,

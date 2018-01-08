@@ -114,12 +114,13 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 String filePath = path.replace(config.getUploadFilePath(), "");
                 String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
                 String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
-                Boolean fileIsExternal = false;
+                Boolean fileIsOuter = false;
                 
                 File entity = new File();
                 entity.setAppId(appId);
                 entity.setFileName(originalFileName);
-                entity.setFileIsExternal(fileIsExternal);
+                entity.setFileIsOuter(fileIsOuter);
+                entity.setFileOuterLink("");
                 entity.setFileOriginalPath(fileOriginalPath);
                 entity.setFilePath(filePath);
                 entity.setFileSize(fileSize);
@@ -183,12 +184,13 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         String filePath = path.replace(config.getUploadFilePath(), "");
         String fileThumbnailPath = thumbnailPath.replace(config.getUploadFilePath(), "");
         String fileOriginalPath = originalPath.replace(config.getUploadFilePath(), "");
-        Boolean fileIsExternal = false;
+        Boolean fileIsOuter = false;
 
         File entity = new File();
         entity.setAppId(appId);
         entity.setFileName(fileName);
-        entity.setFileIsExternal(fileIsExternal);
+        entity.setFileIsOuter(fileIsOuter);
+        entity.setFileOuterLink("");
         entity.setFileOriginalPath(fileOriginalPath);
         entity.setFilePath(filePath);
         entity.setFileSize(fileSize);

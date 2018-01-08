@@ -8,7 +8,7 @@ import com.nowui.cloud.base.member.entity.Member;
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-01-08
  */
 public interface MemberMapper extends BaseMapper<Member> {
 

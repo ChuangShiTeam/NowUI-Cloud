@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.member.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 会员关注
@@ -17,21 +21,24 @@ import javax.validation.constraints.NotNull;
  * 2018-01-02
  */
 @Component
+@Document(indexName = "nowui", type = "member_follow_info")
 @TableName(value = "member_follow_info")
 public class MemberFollow extends BaseEntity {
 
     /**
-     * 
+     * 会员关注编号
      */
+    @Id
     @TableId
-    @NotNull(message = "不能为空")
-    @Length(max = 32, message = "长度超出限制")
+    @NotNull(message = "会员关注编号不能为空")
+    @Length(max = 32, message = "会员关注编号长度超出限制")
     private String memberFollowId;
     public static final String MEMBER_FOLLOW_ID = "memberFollowId";
 
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class MemberFollow extends BaseEntity {
     /**
      * 会员编号
      */
+    @Field
     @TableField
     @NotNull(message = "会员编号不能为空")
     @Length(max = 32, message = "会员编号长度超出限制")
@@ -50,6 +58,7 @@ public class MemberFollow extends BaseEntity {
     /**
      * 用户编号
      */
+    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -59,6 +68,7 @@ public class MemberFollow extends BaseEntity {
     /**
      * 关注会员编号
      */
+    @Field
     @TableField
     @NotNull(message = "关注会员编号不能为空")
     @Length(max = 32, message = "关注会员编号长度超出限制")
@@ -68,6 +78,7 @@ public class MemberFollow extends BaseEntity {
     /**
      * 关注用户编号
      */
+    @Field
     @TableField
     @NotNull(message = "关注用户编号不能为空")
     @Length(max = 32, message = "关注用户编号长度超出限制")

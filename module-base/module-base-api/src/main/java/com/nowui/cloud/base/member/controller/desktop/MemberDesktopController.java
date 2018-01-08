@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-01-08
  */
 @Api(value = "会员", description = "会员桌面端接口管理")
 @RestController

@@ -4,14 +4,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
@@ -84,7 +82,8 @@ public class FileAdminController extends BaseController {
                 File.FILE_THUMBNAIL_PATH,
                 File.FILE_ORIGINAL_PATH,
                 File.FILE_COVER_IMAGE,
-                File.FILE_IS_EXTERNAL
+                File.FILE_IS_OUTER,
+                File.FILE_OUTER_LINK
         );
 
         return renderJson(result);

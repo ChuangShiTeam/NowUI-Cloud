@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.elasticsearch.action.main.MainAction;
+
 import com.nowui.cloud.constant.Constant;
 
 /**
@@ -219,6 +221,13 @@ public class Util {
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + user_password);
     }
 
+    /**
+     * 验证类里面是否存在这个属性
+     * 
+     * @param clazz
+     * @param fieldName
+     * @return
+     */
     public static boolean existsField(Class clazz, String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName) != null;
@@ -231,4 +240,13 @@ public class Util {
         }
         return false;
     }
+    
+    public static String repalceLast(String source, String target, String replacement) {
+        int lastIndex = source.lastIndexOf(target);
+        if (lastIndex > 0) {
+            source = source.substring(0, lastIndex) + replacement;
+        }
+        return source;
+    }
+    
 }

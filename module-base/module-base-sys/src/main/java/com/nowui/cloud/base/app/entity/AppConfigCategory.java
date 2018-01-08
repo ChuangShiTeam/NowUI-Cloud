@@ -3,6 +3,9 @@ package com.nowui.cloud.base.app.entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -18,12 +21,14 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2017年12月25日
  */
 @Component(value = "appConfigCategory")
+@Document(indexName = "nowui", type = "app_config_category_info")
 @TableName(value = "app_config_category_info")
 public class AppConfigCategory extends BaseEntity {
     
     /**
      * 应用配置分类编号
      */
+    @Id
     @TableId
     @NotNull(message = "应用配置分类编号不能为空")
     @Length(max = 32, message = "应用配置分类编号长度超出限制")
@@ -33,6 +38,7 @@ public class AppConfigCategory extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -42,6 +48,7 @@ public class AppConfigCategory extends BaseEntity {
     /**
      * 名称
      */
+    @Field
     @TableField
     @NotNull(message = "名称不能为空")
     @Length(max = 50, message = "名称长度超出限制")
@@ -51,6 +58,7 @@ public class AppConfigCategory extends BaseEntity {
     /** 
      * 编码
      */
+    @Field
     @TableField
     @NotNull(message = "编码不能为空")
     @Length(max = 50, message = "编码长度超出限制")
@@ -60,6 +68,7 @@ public class AppConfigCategory extends BaseEntity {
     /** 
      * 描述
      */
+    @Field
     @TableField
     @NotNull(message = "描述不能为空")
     @Length(max = 500, message = "描述长度超出限制")

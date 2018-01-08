@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-01-08
  */
 @Api(value = "会员", description = "会员管理端接口管理")
 @RestController
@@ -32,17 +32,19 @@ public class MemberAdminController extends BaseController {
         validateRequest(
                 body,
                 Member.APP_ID,
-                Member.USER_ID,
+                Member.MEMBER_IS_TOP,
+                Member.MEMBER_IS_RECOMMED,
                 Member.PAGE_INDEX,
                 Member.PAGE_SIZE
         );
 
-        Integer resultTotal = memberService.adminCount(body.getAppId() , body.getUserId());
-        List<Member> resultList = memberService.adminList(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberService.adminCount(body.getAppId() , body.getMemberIsTop(), body.getMemberIsRecommed());
+        List<Member> resultList = memberService.adminList(body.getAppId(), body.getMemberIsTop(), body.getMemberIsRecommed(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Member.MEMBER_ID,
-                Member.USER_ID
+                Member.MEMBER_IS_TOP,
+                Member.MEMBER_IS_RECOMMED
         );
 
         return renderJson(resultTotal, resultList);
@@ -61,7 +63,12 @@ public class MemberAdminController extends BaseController {
 
         validateResponse(
                 Member.MEMBER_ID,
-                Member.USER_ID
+                Member.USER_ID,
+                Member.MEMBER_IS_TOP,
+                Member.MEMBER_TOP_LEVEL,
+                Member.MEMBER_TOP_END_TIME,
+                Member.MEMBER_IS_RECOMMED,
+                Member.MEMBER_DESCRIPTION
         );
 
         return renderJson(result);
@@ -73,7 +80,12 @@ public class MemberAdminController extends BaseController {
         validateRequest(
                 body,
                 Member.APP_ID,
-                Member.USER_ID
+                Member.USER_ID,
+                Member.MEMBER_IS_TOP,
+                Member.MEMBER_TOP_LEVEL,
+                Member.MEMBER_TOP_END_TIME,
+                Member.MEMBER_IS_RECOMMED,
+                Member.MEMBER_DESCRIPTION
         );
 
         Boolean result = memberService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -89,6 +101,11 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_ID,
                 Member.APP_ID,
                 Member.USER_ID,
+                Member.MEMBER_IS_TOP,
+                Member.MEMBER_TOP_LEVEL,
+                Member.MEMBER_TOP_END_TIME,
+                Member.MEMBER_IS_RECOMMED,
+                Member.MEMBER_DESCRIPTION,
                 Member.SYSTEM_VERSION
         );
 
