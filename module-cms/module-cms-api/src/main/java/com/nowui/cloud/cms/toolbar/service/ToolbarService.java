@@ -3,7 +3,6 @@ package com.nowui.cloud.cms.toolbar.service;
 import java.util.List;
 
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
-import com.nowui.cloud.cms.toolbar.rpc.ToolbarRpc;
 import com.nowui.cloud.service.BaseService;
 
 /**
@@ -13,7 +12,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2017年12月26日
  */
-public interface ToolbarService extends BaseService<Toolbar>, ToolbarRpc {
+public interface ToolbarService extends BaseService<Toolbar>{
     
     /**
      * 工具栏统计

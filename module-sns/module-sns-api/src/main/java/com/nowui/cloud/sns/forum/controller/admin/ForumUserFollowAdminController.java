@@ -1,0 +1,120 @@
+package com.nowui.cloud.sns.forum.controller.admin;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
+import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 论坛用户关注管理端控制器
+ *
+ * @author xupengfei
+ *
+ * 2018-01-08
+ */
+@Api(value = "论坛用户关注", description = "论坛用户关注管理端接口管理")
+@RestController
+public class ForumUserFollowAdminController extends BaseController {
+
+    @Autowired
+    private ForumUserFollowService forumUserFollowService;
+
+    @ApiOperation(value = "论坛用户关注列表")
+    @RequestMapping(value = "/forum/user/follow/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> list(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID,
+                ForumUserFollow.PAGE_INDEX,
+                ForumUserFollow.PAGE_SIZE
+        );
+
+        Integer resultTotal = forumUserFollowService.adminCount(body.getAppId() , body.getUserId(), body.getForumId());
+        List<ForumUserFollow> resultList = forumUserFollowService.adminList(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+
+        validateResponse(
+                ForumUserFollow.FORUM_USER_FOLLOW_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID
+        );
+
+        return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "论坛用户关注信息")
+    @RequestMapping(value = "/forum/user/follow/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.FORUM_USER_FOLLOW_ID
+        );
+
+        ForumUserFollow result = forumUserFollowService.find(body.getForumUserFollowId());
+
+        validateResponse(
+                ForumUserFollow.FORUM_USER_FOLLOW_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID
+        );
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "新增论坛用户关注")
+    @RequestMapping(value = "/forum/user/follow/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> save(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID
+        );
+
+        Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "修改论坛用户关注")
+    @RequestMapping(value = "/forum/user/follow/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> update(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.FORUM_USER_FOLLOW_ID,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID,
+                ForumUserFollow.SYSTEM_VERSION
+        );
+
+        Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "删除论坛用户关注")
+    @RequestMapping(value = "/forum/user/follow/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> delete(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.FORUM_USER_FOLLOW_ID,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.SYSTEM_VERSION
+        );
+
+        Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+
+        return renderJson(result);
+    }
+
+}

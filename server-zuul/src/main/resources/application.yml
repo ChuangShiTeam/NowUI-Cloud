@@ -64,6 +64,10 @@ zuul:
       path: /admin/**
       serviceId: module-base
       stripPrefix: false
+    forum:
+      path: /forum/**
+      serviceId: module-sns
+      stripPrefix: false
 hystrix:
   command:
     default:
