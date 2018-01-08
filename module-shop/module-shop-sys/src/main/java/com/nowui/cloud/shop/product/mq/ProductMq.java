@@ -9,6 +9,12 @@ public interface ProductMq {
      * 发送消息到队列
      * @param message 消息内容
      */
-    void send(String message);
+    void sendFoo2Rabbitmq(String message);
+
+    /**
+     * 发送消息到队列
+     * @param message 消息内容
+     */
+    void sendBar2Rabbitmq(String message);
 
 }
