@@ -28,13 +28,13 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 public class ModuleBaseApplication {
 
     public static void main(String[] args) {
-        try {
-            ApplicationContext app = SpringApplication.run(ModuleBaseApplication.class, args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+///        try {
+//            ApplicationContext app = SpringApplication.run(ModuleBaseApplication.class, args);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        //SpringApplication.run(ModuleBaseApplication.class, args);
+        SpringApplication.run(ModuleBaseApplication.class, args);
     }
     
     @Bean

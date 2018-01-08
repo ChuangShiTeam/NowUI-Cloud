@@ -120,7 +120,8 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
-            String listenerPath = apiPackagePath + "/listener";
+//            String listenerPath = apiPackagePath + "/listener";
+            String rabbitPath = apiPackagePath + "/rabbit";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
@@ -149,7 +150,8 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
             if (body.getIsMq()) {
-                FileUtil.createPath(listenerPath);
+                FileUtil.createPath(rabbitPath);
+//                FileUtil.createPath(listenerPath);
             }
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
@@ -266,7 +268,9 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
             if (body.getIsMq()) {
-                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
+//                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
+                write(templateMap, "config.txt", rabbitPath + "/" + firstUpperWithoutUnderlineEntityName + "Config.java");
+                write(templateMap, "listener.txt", rabbitPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
             }
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");

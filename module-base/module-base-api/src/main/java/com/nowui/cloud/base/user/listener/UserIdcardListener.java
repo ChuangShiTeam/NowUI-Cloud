@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * 2018-01-08
  */
 @Component
-@RabbitListener(queues = "userIdcard")
+//@RabbitListener(queues = "userIdcard")
 public class UserIdcardListener {
 
     @RabbitHandler

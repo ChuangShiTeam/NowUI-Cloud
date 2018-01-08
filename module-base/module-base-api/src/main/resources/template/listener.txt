@@ -1,6 +1,5 @@
-package com.nowui.cloud.${moduleName}.${packageName}.listener;
+package com.nowui.cloud.${moduleName}.${packageName}.rabbit;
 
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +11,7 @@ import org.springframework.stereotype.Component;
  * ${date}
  */
 @Component
-@RabbitListener(queues = "${firstLowerWithoutUnderlineEntityName}")
 public class ${firstUpperWithoutUnderlineEntityName}Listener {
 
-    @RabbitHandler
-    public void process(String message) {
-
-    }
 
 }
