@@ -84,6 +84,8 @@ public class RequestFilter extends ZuulFilter {
             String sign = DigestUtils.md5Hex(signStringBuilder.toString());
 
             if (!signParameter.equals(sign)) {
+//                System.out.println(signStringBuilder.toString());
+
                 Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
                 map.put("code", 400);
                 map.put("message", "签名不对");
