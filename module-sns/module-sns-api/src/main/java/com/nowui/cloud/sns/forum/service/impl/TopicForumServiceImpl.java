@@ -47,5 +47,26 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 
         return topicForumList;
     }
+    
+    
+    public Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion) {
+    	//从论坛动态表中查找所有有ForumId的主键
+    	List<TopicForum> topicForumList = list(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.APP_ID, appId)
+                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
+        );
+    	//遍历删除
+    	for (TopicForum topicForum : topicForumList) {
+    		Boolean delResult = delete(topicForum.getTopicForumMapId(), systemUpdateUserId, systemVersion);
+    		if (delResult==false) {
+				return false;
+			}
+		}
+    	
+    	return true;
+    }
 
 }
