@@ -71,6 +71,43 @@ public class ForumMobileController extends BaseController {
         return renderJson(result);
     }
 	 
+	@ApiOperation(value = "论坛信息")
+    @RequestMapping(value = "/forum/mobile/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> find(@RequestBody Forum body) {
+        validateRequest(
+                body,
+                Forum.APP_ID,
+                Forum.FORUM_ID
+        );
+
+        Forum result = forumService.find(body.getForumId());
+        //根据forumModerator查询版主信息:去会员表查找--昵称,个人简介,头像封装成json
+        
+        //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后遍历查找用户头像
+        
+        
+        validateResponse(
+//                Forum.FORUM_ID,
+                Forum.FORUM_MEDIA_ID,
+//                Forum.FORUM_MEDIA_TYPE,
+//                Forum.FORUM_BACKGROUND_MEDIA_ID,
+//                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+                Forum.FORUM_NAME,
+                Forum.FORUM_DESCRIPTION,
+                Forum.FORUM_MODERATOR
+//                Forum.FORUM_TOPIC_LOCATION,
+//                Forum.FORUM_SORT,
+//                Forum.FORUM_TOP,
+//                Forum.FORUM_TOP_LEVEL,
+//                Forum.FORUM_TOP_END_TIME,
+//                Forum.FORUM_IS_ACTIVE,
+//                Forum.FORUM_IS_FOLLOW,
+//                Forum.FORUM_IS_RECOMAND
+        );
+
+        return renderJson(result);
+    }
+	 
 	
 
 
