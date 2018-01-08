@@ -58,6 +58,10 @@ spring:
     port: 5672
     username: guest
     password: guest
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 192.168.2.29:9300
 
 #mybatis
 mybatis-plus:

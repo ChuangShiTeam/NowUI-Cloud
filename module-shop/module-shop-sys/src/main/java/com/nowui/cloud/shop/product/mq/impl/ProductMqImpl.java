@@ -1,7 +1,7 @@
 package com.nowui.cloud.shop.product.mq.impl;
 
 import com.nowui.cloud.shop.product.mq.ProductMq;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component;
 public class ProductMqImpl implements ProductMq {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
+    private AmqpTemplate amqpTemplate;
 
     @Override
-    public void send(String message) {
-        rabbitTemplate.convertAndSend("product", message);
+    public void sendFoo2Rabbitmq(String message) {
+        amqpTemplate.convertAndSend("exchange", "queue.foo", message);
+    }
+
+    @Override
+    public void sendBar2Rabbitmq(String message) {
+        amqpTemplate.convertAndSend("exchange", "queue.bar", message);
     }
 
 }

@@ -61,7 +61,9 @@ public class CodeController extends BaseController {
 
         System.out.println(product);
 
-        productMq.send("123456789");
+        productMq.sendBar2Rabbitmq("123456789");
+
+        productMq.sendBar2Rabbitmq("987654321");
 
         return "Hello World!";
     }
