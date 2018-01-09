@@ -215,12 +215,12 @@ public class Util {
      * @param user_password
      * @return
      */
-    public static String generatePassword(String user_password) {
-        if (isNullOrEmpty(user_password)) {
+    public static String generatePassword(String userPassword) {
+        if (isNullOrEmpty(userPassword)) {
             return "";
         }
 
-        return EncryptUtil.sha512(Constant.PRIVATE_KEY + user_password);
+        return EncryptUtil.sha512(Constant.PRIVATE_KEY + userPassword);
     }
 
     /**

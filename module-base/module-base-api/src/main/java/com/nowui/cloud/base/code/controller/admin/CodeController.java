@@ -193,7 +193,7 @@ public class CodeController extends BaseController {
                     }
                 }
 
-                if (code.getColumnKey().equals("PRI")) {
+                if ("PRI".equals(code.getColumnKey())) {
                     tableId = columnName;
                 }
 

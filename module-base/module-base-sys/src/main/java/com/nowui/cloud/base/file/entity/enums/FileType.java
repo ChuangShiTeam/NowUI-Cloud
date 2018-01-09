@@ -8,9 +8,21 @@ package com.nowui.cloud.base.file.entity.enums;
  * 2018年1月7日
  */
 public enum FileType {
+    /**
+     * 图片
+     */
     IMAGE("IMAGE", "图片"),
+    /**
+     * 文档
+     */
     DOCUMENT("DOCUMENT", "文档"),
+    /**
+     * 视频
+     */
     VIDEO("VIDEO", "视频"),
+    /**
+     * 其他
+     */
     OTHER("OTHER", "其他");
 
     private String key;
