@@ -1,0 +1,20 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.DS_Store
+
+### Eclipse ###
+*.class
+/target/
+/.settings/
+*.project
+*.classpath
+*.mymetadata
+/.metadata/
+/.externalToolBuilders/
+/bin/
+
+### module ###
+**/target/
