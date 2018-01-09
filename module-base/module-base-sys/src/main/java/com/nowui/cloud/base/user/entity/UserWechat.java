@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.user.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 用户微信
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
+@Document(indexName = "nowui", type = "user_wechat_info")
 @TableName(value = "user_wechat_info")
 public class UserWechat extends BaseEntity {
 
     /**
      * 用户微信编号
      */
+    @Id
     @TableId
     @NotNull(message = "用户微信编号不能为空")
     @Length(max = 32, message = "用户微信编号长度超出限制")
@@ -32,6 +38,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 用户编号
      */
+    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -50,6 +58,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 微信用户唯一标识
      */
+    @Field
     @TableField
     @NotNull(message = "微信用户唯一标识不能为空")
     @Length(max = 50, message = "微信用户唯一标识长度超出限制")
@@ -59,6 +68,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 微信多应用用户共享唯一标识
      */
+    @Field
     @TableField
     @NotNull(message = "微信多应用用户共享唯一标识不能为空")
     @Length(max = 50, message = "微信多应用用户共享唯一标识长度超出限制")
@@ -68,6 +78,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 微信昵称
      */
+    @Field
     @TableField
     @NotNull(message = "微信昵称不能为空")
     @Length(max = 100, message = "微信昵称长度超出限制")
@@ -77,6 +88,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 性别
      */
+    @Field
     @TableField
     @NotNull(message = "性别不能为空")
     @Length(max = 1, message = "性别长度超出限制")
@@ -86,6 +98,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 国家
      */
+    @Field
     @TableField
     @NotNull(message = "国家不能为空")
     @Length(max = 50, message = "国家长度超出限制")
@@ -95,6 +108,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 省
      */
+    @Field
     @TableField
     @NotNull(message = "省不能为空")
     @Length(max = 50, message = "省长度超出限制")
@@ -104,6 +118,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 市
      */
+    @Field
     @TableField
     @NotNull(message = "市不能为空")
     @Length(max = 50, message = "市长度超出限制")
@@ -113,6 +128,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 微信头像
      */
+    @Field
     @TableField
     @NotNull(message = "微信头像不能为空")
     @Length(max = 32, message = "微信头像长度超出限制")
@@ -122,6 +138,7 @@ public class UserWechat extends BaseEntity {
     /**
      * 微信用户特权
      */
+    @Field
     @TableField
     @NotNull(message = "微信用户特权不能为空")
     @Length(max = 200, message = "微信用户特权长度超出限制")
