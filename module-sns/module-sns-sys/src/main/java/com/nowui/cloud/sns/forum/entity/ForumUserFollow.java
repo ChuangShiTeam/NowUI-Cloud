@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -17,12 +20,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
+@Document(indexName = "nowui", type = "forum_user_follow_map")
 @TableName(value = "forum_user_follow_map")
 public class ForumUserFollow extends BaseEntity {
 
     /**
      * 论坛用户关注关联id
      */
+	@Id
     @TableId
     @NotNull(message = "论坛用户关注关联id不能为空")
     @Length(max = 32, message = "论坛用户关注关联id长度超出限制")
@@ -32,6 +37,7 @@ public class ForumUserFollow extends BaseEntity {
     /**
      * 应用Id
      */
+    @Field
     @TableField
     @NotNull(message = "应用Id不能为空")
     @Length(max = 32, message = "应用Id长度超出限制")
@@ -41,6 +47,7 @@ public class ForumUserFollow extends BaseEntity {
     /**
      * 用户Id
      */
+    @Field
     @TableField
     @NotNull(message = "用户Id不能为空")
     @Length(max = 32, message = "用户Id长度超出限制")
@@ -50,6 +57,7 @@ public class ForumUserFollow extends BaseEntity {
     /**
      * 论坛Id
      */
+    @Field
     @TableField
     @NotNull(message = "论坛Id不能为空")
     @Length(max = 32, message = "论坛Id长度超出限制")

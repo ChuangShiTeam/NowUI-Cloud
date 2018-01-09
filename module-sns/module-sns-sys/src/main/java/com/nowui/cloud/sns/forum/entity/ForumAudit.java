@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -17,12 +20,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
+@Document(indexName = "nowui", type = "forum_audit_info")
 @TableName(value = "forum_audit_info")
 public class ForumAudit extends BaseEntity {
 
     /**
      * 论坛审核信息id
      */
+	@Id
     @TableId
     @NotNull(message = "论坛审核信息id不能为空")
     @Length(max = 32, message = "论坛审核信息id长度超出限制")
@@ -32,6 +37,7 @@ public class ForumAudit extends BaseEntity {
     /**
      * 审核状态
      */
+    @Field
     @TableField
     @NotNull(message = "审核状态不能为空")
     @Length(max = 11, message = "审核状态长度超出限制")
@@ -41,6 +47,7 @@ public class ForumAudit extends BaseEntity {
     /**
      * 应用Id
      */
+    @Field
     @TableField
     @NotNull(message = "应用Id不能为空")
     @Length(max = 32, message = "应用Id长度超出限制")
@@ -50,6 +57,7 @@ public class ForumAudit extends BaseEntity {
     /**
      * 审核内容
      */
+    @Field
     @TableField
     @NotNull(message = "审核内容不能为空")
     @Length(max = 500, message = "审核内容长度超出限制")
@@ -59,6 +67,7 @@ public class ForumAudit extends BaseEntity {
     /**
      * 论坛id
      */
+    @Field
     @TableField
     @NotNull(message = "论坛id不能为空")
     @Length(max = 32, message = "论坛id长度超出限制")
