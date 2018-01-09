@@ -3,11 +3,16 @@ package com.nowui.cloud.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author marcus
+ * @since 2017-12-20
+ */
 public class EncryptUtil {
+
     /**
      * 传入文本内容，返回 SHA-256 串
-     * 
-     * @param strText
+     *
+     * @param content
      * @return
      */
     public static String sha256(final String content) {
@@ -16,8 +21,8 @@ public class EncryptUtil {
 
     /**
      * 传入文本内容，返回 SHA-512 串
-     * 
-     * @param strText
+     *
+     * @param content
      * @return
      */
     public static String sha512(final String content) {
@@ -26,8 +31,9 @@ public class EncryptUtil {
 
     /**
      * 字符串 SHA 加密
-     * 
-     * @param strSourceText
+     *
+     * @param content
+     * @param encryptType
      * @return
      */
     private static String sha(final String content, final String encryptType) {
@@ -43,7 +49,7 @@ public class EncryptUtil {
                 // 传入要加密的字符串
                 messageDigest.update(content.getBytes());
                 // 得到 byte 類型结果
-                byte byteBuffer[] = messageDigest.digest();
+                byte[] byteBuffer = messageDigest.digest();
 
                 // 將 byte 轉換爲 string
                 StringBuffer strHexString = new StringBuffer();

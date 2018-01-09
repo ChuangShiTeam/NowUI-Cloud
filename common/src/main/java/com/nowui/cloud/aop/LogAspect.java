@@ -8,8 +8,6 @@ import com.nowui.cloud.entity.BaseEntity;
 /**
  * @author ZhongYongQiang
  */
-//@Aspect
-//@Component
 public class LogAspect {
 
     @Around("execution(* com.nowui.cloud.*.*.controller..*.*(..))")

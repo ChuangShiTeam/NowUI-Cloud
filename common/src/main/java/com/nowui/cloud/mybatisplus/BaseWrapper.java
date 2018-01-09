@@ -10,6 +10,10 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.nowui.cloud.util.Util;
 
+/**
+ * @author marcus
+ * @since 2017-12-20
+ */
 public class BaseWrapper<T> extends Wrapper<T> {
 
     @Override

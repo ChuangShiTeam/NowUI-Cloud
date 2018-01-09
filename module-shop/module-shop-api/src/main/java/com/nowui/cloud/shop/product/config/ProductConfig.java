@@ -1,4 +1,4 @@
-package com.nowui.cloud.shop.product.rabbit;
+package com.nowui.cloud.shop.product.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

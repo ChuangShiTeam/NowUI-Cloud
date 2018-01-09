@@ -36,12 +36,7 @@ public class ResponseFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        RequestContext ctx = RequestContext.getCurrentContext();  
-        HttpServletRequest request = ctx.getRequest();  
-        if (request.getRequestURI().startsWith("/upload")) {
-            return false;
-        }
-        return true;
+        return com.nowui.cloud.zuul.util.Util.shouldFilter(RequestContext.getCurrentContext());
     }
 
     @Override
@@ -67,7 +62,8 @@ public class ResponseFilter extends ZuulFilter {
                 HttpServletRequest request = context.getRequest();
                 
                 String contentType = request.getContentType();
-                if (contentType.contains("application/json")) {
+                String type = "application/json";
+                if (contentType.contains(type)) {
                     String requestBody = Util.readData(request);
                     JSONObject parameterJSONObject = JSON.parseObject(requestBody);
                     String url = request.getRequestURI();
