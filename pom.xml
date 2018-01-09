@@ -22,6 +22,7 @@
         <module>module-base</module>
         <module>module-third</module>
         <module>module-sns</module>
+        <module>module-wawi</module>
     </modules>
 
     <parent>

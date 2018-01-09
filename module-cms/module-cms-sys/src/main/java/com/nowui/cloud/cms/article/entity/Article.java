@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -20,12 +23,14 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2017年12月26日
  */
 @Component(value = "article")
+@Document(indexName = "nowui", type = "article_info")
 @TableName(value = "article_info")
 public class Article extends BaseEntity {
     
     /**
      * 文章编号
      */
+    @Id
     @TableId
     @NotNull(message = "文章编号不能为空")
     @Length(max = 32, message = "文章编号长度超出限制")
@@ -35,6 +40,7 @@ public class Article extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -44,6 +50,7 @@ public class Article extends BaseEntity {
     /**
      * 文章标题
      */
+    @Field
     @TableField
     @NotNull(message = "文章标题不能为空")
     @Length(max = 200, message = "文章标题长度超出限制")
@@ -53,6 +60,7 @@ public class Article extends BaseEntity {
     /**
      * 文章作者
      */
+    @Field
     @TableField
     @NotNull(message = "文章作者不能为空")
     @Length(max = 50, message = "文章作者长度超出限制")
@@ -62,6 +70,7 @@ public class Article extends BaseEntity {
     /**
      * 文章来源
      */
+    @Field
     @TableField
     @NotNull(message = "文章来源不能为空")
     @Length(max = 200, message = "文章来源长度超出限制")
@@ -71,6 +80,7 @@ public class Article extends BaseEntity {
     /**
      * 文章媒体
      */
+    @Field
     @TableField
     @NotNull(message = "文章媒体不能为空")
     @Length(max = 32, message = "文章媒体长度超出限制")
@@ -80,6 +90,7 @@ public class Article extends BaseEntity {
     /**
      * 文章媒体类型
      */
+    @Field
     @TableField
     @NotNull(message = "文章媒体类型不能为空")
     @Length(max = 32, message = "文章媒体类型长度超出限制")
@@ -89,6 +100,7 @@ public class Article extends BaseEntity {
     /**
      * 文章摘要
      */
+    @Field
     @TableField
     @NotNull(message = "文章摘要不能为空")
     @Length(max = 250, message = "文章摘要长度超出限制")
@@ -98,6 +110,7 @@ public class Article extends BaseEntity {
     /**
      * 文章内容
      */
+    @Field
     @TableField
     @NotNull(message = "文章内容不能为空")
     private String articleContent;
@@ -106,6 +119,7 @@ public class Article extends BaseEntity {
     /**
      * 文章标签
      */
+    @Field
     @TableField
     @NotNull(message = "文章标签不能为空")
     @Length(max = 250, message = "文章标签长度超出限制")
@@ -115,6 +129,7 @@ public class Article extends BaseEntity {
     /**
      * 文章关键字
      */
+    @Field
     @TableField
     @NotNull(message = "文章关键字不能为空")
     @Length(max = 250, message = "文章关键字长度超出限制")
@@ -124,6 +139,7 @@ public class Article extends BaseEntity {
     /**
      * 文章外部链接
      */
+    @Field
     @TableField
     @NotNull(message = "文章外部链接不能为空")
     @Length(max = 200, message = "文章外部链接长度超出限制")
@@ -141,6 +157,7 @@ public class Article extends BaseEntity {
     /**
      * 文章是否允许评论
      */
+    @Field
     @TableField
     @NotNull(message = "文章是否允许评论不能为空")
     private Boolean articleIsAllowComment;
@@ -149,6 +166,7 @@ public class Article extends BaseEntity {
     /**
      * 文章发布时间
      */
+    @Field
     @TableField
     @NotNull(message = "文章发布时间不能为空")
     private Date articlePublishTime;
@@ -157,6 +175,7 @@ public class Article extends BaseEntity {
     /**
      * 文章是否置顶
      */
+    @Field
     @TableField
     @NotNull(message = "文章是否置顶不能为空")
     private Boolean articleIsTop;
@@ -165,6 +184,7 @@ public class Article extends BaseEntity {
     /**
      * 文章置顶级别
      */
+    @Field
     @TableField
     @NotNull(message = "文章置顶级别不能为空")
     private Integer articleTopLevel;
@@ -173,6 +193,7 @@ public class Article extends BaseEntity {
     /**
      * 文章置顶截止时间
      */
+    @Field
     @TableField
     @NotNull(message = "文章置顶截止时间不能为空")
     private Date articleTopEndTime;
@@ -181,6 +202,7 @@ public class Article extends BaseEntity {
     /**
      * 文章是否草稿
      */
+    @Field
     @TableField
     @NotNull(message = "文章是否草稿不能为空")
     private Boolean articleIsDraft;
@@ -189,6 +211,7 @@ public class Article extends BaseEntity {
     /**
      * 文章权重
      */
+    @Field
     @TableField
     @NotNull(message = "文章权重不能为空")
     private Integer articleWeight;
@@ -197,6 +220,7 @@ public class Article extends BaseEntity {
     /**
      * 文章是否需要审核
      */
+    @Field
     @TableField
     @NotNull(message = "文章是否需要审核不能为空")
     private Boolean articleIsRequireAudit;
@@ -205,6 +229,7 @@ public class Article extends BaseEntity {
     /**
      * 文章是否推荐
      */
+    @Field
     @TableField
     @NotNull(message = "文章是否推荐不能为空")
     private Boolean articleIsRecommend;
@@ -213,6 +238,7 @@ public class Article extends BaseEntity {
     /**
      * 文章排序
      */
+    @Field
     @TableField
     @NotNull(message = "文章排序不能为空")
     private Integer articleSort;

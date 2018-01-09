@@ -198,7 +198,7 @@ public class ForumMobileController extends BaseController {
     }
 	
 	@ApiOperation(value = "删除论坛")
-    @RequestMapping(value = "/forum/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> delete(@RequestBody Forum body) {
         validateRequest(
                 body,

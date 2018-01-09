@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,12 +22,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
+@Document(indexName = "nowui", type = "forum_info")
 @TableName(value = "forum_info")
 public class Forum extends BaseEntity {
 
     /**
      * 论坛id
      */
+	@Id
     @TableId
     @NotNull(message = "论坛id不能为空")
     @Length(max = 32, message = "论坛id长度超出限制")
@@ -34,6 +39,7 @@ public class Forum extends BaseEntity {
     /**
      * 应用Id
      */
+    @Field
     @TableField
     @NotNull(message = "应用Id不能为空")
     @Length(max = 32, message = "应用Id长度超出限制")
@@ -43,6 +49,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体id
      */
+    @Field
     @TableField
     @NotNull(message = "论坛多媒体id不能为空")
     @Length(max = 32, message = "论坛多媒体id长度超出限制")
@@ -52,6 +59,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体类型
      */
+    @Field
     @TableField
     @NotNull(message = "论坛多媒体类型不能为空")
     @Length(max = 25, message = "论坛多媒体类型长度超出限制")
@@ -61,6 +69,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体背景id
      */
+    @Field
     @TableField
     @NotNull(message = "论坛多媒体背景id不能为空")
     @Length(max = 32, message = "论坛多媒体背景id长度超出限制")
@@ -70,6 +79,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体背景类型
      */
+    @Field
     @TableField
     @NotNull(message = "论坛多媒体背景类型不能为空")
     @Length(max = 32, message = "论坛多媒体背景类型长度超出限制")
@@ -79,6 +89,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛名称
      */
+    @Field
     @TableField
     @NotNull(message = "论坛名称不能为空")
     @Length(max = 25, message = "论坛名称长度超出限制")
@@ -88,6 +99,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛简介
      */
+    @Field
     @TableField
     @NotNull(message = "论坛简介不能为空")
     @Length(max = 255, message = "论坛简介长度超出限制")
@@ -97,6 +109,7 @@ public class Forum extends BaseEntity {
     /**
      * 版主(用户id)
      */
+    @Field
     @TableField
     @NotNull(message = "版主(用户id)不能为空")
     @Length(max = 32, message = "版主(用户id)长度超出限制")
@@ -106,6 +119,7 @@ public class Forum extends BaseEntity {
     /**
      * 位置
      */
+    @Field
     @TableField
     @NotNull(message = "位置不能为空")
     @Length(max = 200, message = "位置长度超出限制")
@@ -115,6 +129,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛排序
      */
+    @Field
     @TableField
     @NotNull(message = "论坛排序不能为空")
     @Length(max = 11, message = "论坛排序长度超出限制")
@@ -124,6 +139,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛是否置顶
      */
+    @Field
     @TableField
     @NotNull(message = "论坛是否置顶不能为空")
     @Length(max = 1, message = "论坛是否置顶长度超出限制")
@@ -133,6 +149,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛置顶级别
      */
+    @Field
     @TableField
     @NotNull(message = "论坛置顶级别不能为空")
     @Length(max = 11, message = "论坛置顶级别长度超出限制")
@@ -142,6 +159,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛置顶结束时间
      */
+    @Field
     @TableField
     @NotNull(message = "论坛置顶结束时间不能为空")
     @Length(max = 0, message = "论坛置顶结束时间长度超出限制")
@@ -151,6 +169,7 @@ public class Forum extends BaseEntity {
     /**
      * 论坛是否有效
      */
+    @Field
     @TableField
     @NotNull(message = "论坛是否有效不能为空")
     @Length(max = 1, message = "论坛是否有效长度超出限制")
@@ -160,6 +179,7 @@ public class Forum extends BaseEntity {
     /**
      * 是否关注
      */
+    @Field
     @TableField
     @NotNull(message = "是否关注不能为空")
     @Length(max = 1, message = "是否关注长度超出限制")
@@ -169,6 +189,7 @@ public class Forum extends BaseEntity {
     /**
      * 是否推荐
      */
+    @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
     @Length(max = 1, message = "是否推荐长度超出限制")

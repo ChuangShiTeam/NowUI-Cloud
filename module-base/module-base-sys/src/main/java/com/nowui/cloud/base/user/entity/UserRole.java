@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.user.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 用户角色
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-02
  */
 @Component
+@Document(indexName = "nowui", type = "user_role_map")
 @TableName(value = "user_role_map")
 public class UserRole extends BaseEntity {
 
     /**
      * 用户角色编号
      */
+    @Id
     @TableId
     @NotNull(message = "用户角色编号不能为空")
     @Length(max = 32, message = "用户角色编号长度超出限制")
@@ -32,6 +38,7 @@ public class UserRole extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class UserRole extends BaseEntity {
     /**
      * 用户编号
      */
+    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -50,6 +58,7 @@ public class UserRole extends BaseEntity {
     /**
      * 角色编号
      */
+    @Field
     @TableField
     @NotNull(message = "角色编号不能为空")
     @Length(max = 32, message = "角色编号长度超出限制")
@@ -59,6 +68,7 @@ public class UserRole extends BaseEntity {
     /**
      * 用户类型
      */
+    @Field
     @TableField
     @NotNull(message = "用户类型不能为空")
     @Length(max = 25, message = "用户类型长度超出限制")
