@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -17,12 +20,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
+@Document(indexName = "nowui", type = "topic_replay_like_map")
 @TableName(value = "topic_replay_like_map")
 public class TopicReplayLike extends BaseEntity {
 
     /**
      * 话题回复id
      */
+	@Id
     @TableId
     @NotNull(message = "话题回复id不能为空")
     @Length(max = 32, message = "话题回复id长度超出限制")
@@ -32,6 +37,7 @@ public class TopicReplayLike extends BaseEntity {
     /**
      * 话题评论id
      */
+    @Field
     @TableField
     @NotNull(message = "话题评论id不能为空")
     @Length(max = 32, message = "话题评论id长度超出限制")
@@ -41,6 +47,7 @@ public class TopicReplayLike extends BaseEntity {
     /**
      * 应用Id
      */
+    @Field
     @TableField
     @NotNull(message = "应用Id不能为空")
     @Length(max = 32, message = "应用Id长度超出限制")
@@ -50,6 +57,7 @@ public class TopicReplayLike extends BaseEntity {
     /**
      * 用户id
      */
+    @Field
     @TableField
     @NotNull(message = "用户id不能为空")
     @Length(max = 32, message = "用户id长度超出限制")

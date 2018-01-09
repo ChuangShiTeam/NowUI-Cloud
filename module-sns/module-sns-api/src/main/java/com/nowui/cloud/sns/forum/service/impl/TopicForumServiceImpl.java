@@ -48,7 +48,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         return topicForumList;
     }
     
-    
+    @Override
     public Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion) {
     	//从论坛动态表中查找所有有ForumId的主键
     	List<TopicForum> topicForumList = list(

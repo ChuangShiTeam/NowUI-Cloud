@@ -34,7 +34,15 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @return List<TopicForum> 话题论坛关联列表
      */
     List<TopicForum> adminList(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
-
+    
+    /**
+     * 
+     * @param appId
+     * @param forumId
+     * @param systemUpdateUserId
+     * @param systemVersion
+     * @return
+     */
     Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion);
         
 }

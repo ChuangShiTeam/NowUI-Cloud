@@ -34,4 +34,14 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
     List<ForumUserFollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 根据用户编号和论坛编号查询用户关注信息
+     * 
+     * @param appId 应用编号
+     * @param userId 用户Id
+     * @param forumId 论坛Id
+     * @return ForumUserFollow 论坛用户关注信息
+     */
+    ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId);
 }

@@ -50,7 +50,7 @@ public class ForumUserUnfollow extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "用户ID不能为空")
-    @Length(max = 11, message = "用户ID长度超出限制")
+    @Length(max = 32, message = "用户ID长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
