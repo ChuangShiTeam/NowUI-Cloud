@@ -87,4 +87,14 @@ public class ProductAdminController extends BaseController {
         return renderJson(result);
     }
 
+    @ApiOperation(value = "商品更新")
+    @RequestMapping(value = "/product/admin/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replace(@RequestBody Product body) {
+        validateRequest(body, Product.PRODUCT_ID);
+
+        productService.replace(body.getProductId());
+
+        return renderJson(true);
+    }
+
 }

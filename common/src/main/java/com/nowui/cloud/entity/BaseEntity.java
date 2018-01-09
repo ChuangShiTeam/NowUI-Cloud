@@ -253,6 +253,13 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
                     }
                 }
             }
+
+            tableFieldList.add(SYSTEM_CREATE_USER_ID);
+            tableFieldList.add(SYSTEM_CREATE_TIME);
+            tableFieldList.add(SYSTEM_UPDATE_USER_ID);
+            tableFieldList.add(SYSTEM_UPDATE_TIME);
+            tableFieldList.add(SYSTEM_VERSION);
+            tableFieldList.add(SYSTEM_STATUS);
         }
         return tableFieldList;
     }
@@ -317,7 +324,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
             }
 
             if (!isExit) {
-//                iterator.remove();
+                iterator.remove();
             }
         }
     }

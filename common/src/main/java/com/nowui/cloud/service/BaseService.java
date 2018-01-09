@@ -85,4 +85,13 @@ public interface BaseService<T extends BaseEntity> {
      */
     Boolean delete(String id, String systemUpdateUserId, Integer systemVersion);
 
+
+    /**
+     * 搜索、缓存更新
+     *
+     * @param id 实体类编号
+     * @return 是否成功
+     */
+    void replace(String id);
+
 }

@@ -1,13 +1,17 @@
 package com.nowui.cloud.cms.article.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 文章多媒体
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-03
  */
 @Component
+@Document(indexName = "nowui", type = "article_media_info")
 @TableName(value = "article_media_info")
 public class ArticleMedia extends BaseEntity {
 
     /**
      * 文章多媒体编号
      */
+    @Id
     @TableId
     @NotNull(message = "文章多媒体编号不能为空")
     @Length(max = 32, message = "文章多媒体编号长度超出限制")
@@ -32,6 +38,7 @@ public class ArticleMedia extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class ArticleMedia extends BaseEntity {
     /**
      * 文章编号
      */
+    @Field
     @TableField
     @NotNull(message = "文章编号不能为空")
     @Length(max = 32, message = "文章编号长度超出限制")
@@ -50,6 +58,7 @@ public class ArticleMedia extends BaseEntity {
     /**
      * 文件编号
      */
+    @Field
     @TableField
     @NotNull(message = "文件编号不能为空")
     @Length(max = 32, message = "文件编号长度超出限制")
@@ -59,6 +68,7 @@ public class ArticleMedia extends BaseEntity {
     /**
      * 排序
      */
+    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     @Length(max = 11, message = "排序长度超出限制")

@@ -3,6 +3,7 @@ package com.nowui.cloud.base.app.entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -18,6 +19,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2017年12月25日
  */
 @Component(value = "app")
+@Document(indexName = "nowui", type = "app_info")
 @TableName(value = "app_info")
 public class App extends BaseEntity {
     

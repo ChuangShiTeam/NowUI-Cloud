@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.article.entity.Article;
@@ -69,12 +68,13 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
             Article.ARTICLE_TITLE,
-            Article.ARTICLE_MEDIA,
+            Article.ARTICLE_MEDIA_ID,
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_AUTHOR,
             Article.ARTICLE_PUBLISH_TIME,
             Article.ARTICLE_IS_TOP,
-            Article.ARTICLE_IS_DRAFT
+            Article.ARTICLE_IS_DRAFT,
+            Article.ARTICLE_IS_RECOMMEND
         );
 
         return renderJson(resultTotal, resultList);
@@ -94,10 +94,10 @@ public class ArticleAdminController extends BaseController {
         }
         result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
         //查询文章主媒体
-        if (!Util.isNullOrEmpty(result.getArticleMedia())) {
-            File file = fileRpc.find(result.getArticleMedia());
+        if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
+            File file = fileRpc.find(result.getArticleMediaId());
             file.keep(File.FILE_ID, File.FILE_PATH);
-            result.put(Article.ARTICLE_MEDIA, file);
+            result.put(Article.ARTICLE_MEDIA_ID, file);
         }
         //查询文章副媒体
         List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(body.getArticleId());
@@ -113,7 +113,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
             Article.ARTICLE_CONTENT, 
-            Article.ARTICLE_MEDIA, 
+            Article.ARTICLE_MEDIA_ID, 
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_IS_ALLOW_COMMENT,
             Article.ARTICLE_IS_DRAFT,
@@ -125,6 +125,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
             Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_IS_RECOMMEND,
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
             Article.ARTICLE_WEIGHT,
@@ -146,7 +147,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
             Article.ARTICLE_CONTENT, 
-            Article.ARTICLE_MEDIA, 
+            Article.ARTICLE_MEDIA_ID, 
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_IS_ALLOW_COMMENT,
             Article.ARTICLE_IS_DRAFT,
@@ -158,6 +159,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
             Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_IS_RECOMMEND,
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
             Article.ARTICLE_WEIGHT
@@ -190,7 +192,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
             Article.ARTICLE_CONTENT, 
-            Article.ARTICLE_MEDIA, 
+            Article.ARTICLE_MEDIA_ID, 
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_IS_ALLOW_COMMENT,
             Article.ARTICLE_IS_DRAFT,
@@ -202,6 +204,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
             Article.ARTICLE_IS_REQUIRE_AUDIT,
+            Article.ARTICLE_IS_RECOMMEND,
             Article.ARTICLE_TAGS,
             Article.ARTICLE_SOURCE,
             Article.ARTICLE_WEIGHT,

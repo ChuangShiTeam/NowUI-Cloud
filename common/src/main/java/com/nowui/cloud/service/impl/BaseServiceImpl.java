@@ -6,8 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -37,6 +36,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
     protected String getItemCacheName(String id) {
         return entity.getTableName() + "_item_" + id;
+    }
+
+    public Integer count(SearchQuery searchQuery) {
+        long count = elasticsearch.count(searchQuery);
+
+        return new Long(count).intValue();
     }
 
     @Override
@@ -72,13 +77,20 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         if (Util.isNullOrEmpty(id)) {
             return null;
         }
-        T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
+
+        GetQuery getQuery = new GetQuery();
+        getQuery.setId(id);
+        T baseEntity = (T) elasticsearch.queryForObject(getQuery, entity.getClass());
 
         if (baseEntity == null) {
-            baseEntity = mapper.selectById(id);
+            baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
-            if (baseEntity != null) {
-                redis.opsForValue().set(entity.getTableName(), baseEntity);
+            if (baseEntity == null) {
+                baseEntity = mapper.selectById(id);
+
+                if (baseEntity != null) {
+                    redis.opsForValue().set(entity.getTableName(), baseEntity);
+                }
             }
         }
 
@@ -90,6 +102,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         if (Util.isNullOrEmpty(id)) {
             return null;
         }
+
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {
@@ -130,12 +143,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         Boolean success = mapper.insert(baseEntity) != 0;
 
         if (success) {
-            baseEntity.keepTableFieldValue();
-
-            redis.opsForValue().set(getItemCacheName(id), baseEntity);
-
-//            IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
-//            elasticsearch.index(indexQuery);
+            elasticsearchSaveOrUpdate(baseEntity, id);
         }
 
         return success;
@@ -156,12 +164,19 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         ) != 0;
 
         if (success) {
-            baseEntity.keepTableFieldValue();
-
-            redis.opsForValue().set(getItemCacheName(id), baseEntity);
+            elasticsearchSaveOrUpdate(baseEntity, id);
         }
 
         return success;
+    }
+
+    private void elasticsearchSaveOrUpdate(T baseEntity, String id) {
+        baseEntity.keepTableFieldValue();
+
+        redis.opsForValue().set(getItemCacheName(id), baseEntity);
+
+        IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
+        elasticsearch.index(indexQuery);
     }
 
     @Override
@@ -181,9 +196,22 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
         if (success) {
             redis.delete(getItemCacheName(id));
+
+            elasticsearch.delete(entity.getClass(), id);
         }
 
         return success;
     }
-    
+
+    @Override
+    public void replace(String id) {
+        redis.delete(getItemCacheName(id));
+
+        elasticsearch.delete(entity.getClass(), id);
+
+        T baseEntity = mapper.selectById(id);
+
+        elasticsearchSaveOrUpdate(baseEntity, id);
+    }
+
 }

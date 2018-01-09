@@ -1,13 +1,17 @@
 package com.nowui.cloud.cms.navigation.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 导航栏
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-02
  */
 @Component
+@Document(indexName = "nowui", type = "navigation_info")
 @TableName(value = "navigation_info")
 public class Navigation extends BaseEntity {
 
     /**
      * 导航栏编号
      */
+    @Id
     @TableId
     @NotNull(message = "导航栏编号不能为空")
     @Length(max = 32, message = "导航栏编号长度超出限制")
@@ -32,6 +38,7 @@ public class Navigation extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏分类编码
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏分类编码不能为空")
     @Length(max = 50, message = "导航栏分类编码长度超出限制")
@@ -50,6 +58,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏编码
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏编码不能为空")
     @Length(max = 50, message = "导航栏编码长度超出限制")
@@ -59,6 +68,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏名称
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏名称不能为空")
     @Length(max = 50, message = "导航栏名称长度超出限制")
@@ -68,6 +78,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏图片
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏图片不能为空")
     @Length(max = 32, message = "导航栏图片长度超出限制")
@@ -77,6 +88,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏链接
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏链接不能为空")
     @Length(max = 200, message = "导航栏链接长度超出限制")
@@ -86,6 +98,7 @@ public class Navigation extends BaseEntity {
     /**
      * 导航栏位置
      */
+    @Field
     @TableField
     @NotNull(message = "导航栏位置不能为空")
     @Length(max = 200, message = "导航栏位置长度超出限制")
@@ -95,6 +108,7 @@ public class Navigation extends BaseEntity {
     /**
      * 排序
      */
+    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     private Integer navigationSort;

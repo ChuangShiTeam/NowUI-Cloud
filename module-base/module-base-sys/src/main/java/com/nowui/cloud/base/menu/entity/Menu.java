@@ -1,13 +1,17 @@
 package com.nowui.cloud.base.menu.entity;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 菜单
@@ -17,12 +21,14 @@ import javax.validation.constraints.NotNull;
  * 2018-01-01
  */
 @Component
+@Document(indexName = "nowui", type = "menu_info")
 @TableName(value = "menu_info")
 public class Menu extends BaseEntity {
 
     /**
      * 菜单编号
      */
+    @Id
     @TableId
     @NotNull(message = "菜单编号不能为空")
     @Length(max = 32, message = "菜单编号长度超出限制")
@@ -32,6 +38,7 @@ public class Menu extends BaseEntity {
     /**
      * 应用编号
      */
+    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -41,6 +48,7 @@ public class Menu extends BaseEntity {
     /**
      * 父级ID
      */
+    @Field
     @TableField
     @NotNull(message = "父级ID不能为空")
     @Length(max = 32, message = "父级ID长度超出限制")
@@ -50,6 +58,7 @@ public class Menu extends BaseEntity {
     /**
      * 路径
      */
+    @Field
     @TableField
     @NotNull(message = "路径不能为空")
     @Length(max = 2000, message = "路径长度超出限制")
@@ -59,6 +68,7 @@ public class Menu extends BaseEntity {
     /**
      * 名称
      */
+    @Field
     @TableField
     @NotNull(message = "名称不能为空")
     @Length(max = 30, message = "名称长度超出限制")
@@ -68,6 +78,7 @@ public class Menu extends BaseEntity {
     /**
      * 图片
      */
+    @Field
     @TableField
     @NotNull(message = "图片不能为空")
     @Length(max = 32, message = "图片长度超出限制")
@@ -77,6 +88,7 @@ public class Menu extends BaseEntity {
     /**
      * 地址
      */
+    @Field
     @TableField
     @NotNull(message = "地址不能为空")
     @Length(max = 200, message = "地址长度超出限制")
@@ -86,6 +98,7 @@ public class Menu extends BaseEntity {
     /**
      * 排序
      */
+    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     private Integer menuSort;
