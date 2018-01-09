@@ -21,7 +21,7 @@ import java.util.List;
 public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String wechatNickName) {
+    public Integer countForAdmin(String appId, String userId, String wechatNickName) {
         Integer count = count(
                 new BaseWrapper<UserWechat>()
                         .eq(UserWechat.APP_ID, appId)
@@ -33,7 +33,7 @@ public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, Use
     }
 
     @Override
-    public List<UserWechat> adminList(String appId, String userId, String wechatNickName, Integer pageIndex, Integer pageSize) {
+    public List<UserWechat> listForAdmin(String appId, String userId, String wechatNickName, Integer pageIndex, Integer pageSize) {
         List<UserWechat> userWechatList = list(
                 new BaseWrapper<UserWechat>()
                         .eq(UserWechat.APP_ID, appId)

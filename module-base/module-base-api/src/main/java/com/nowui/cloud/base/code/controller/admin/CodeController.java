@@ -55,7 +55,7 @@ public class CodeController extends BaseController {
     @ApiOperation(value = "测试")
     @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String test(@RequestBody Code body) {
-//        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
+///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
         Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
 
@@ -120,8 +120,8 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
-//            String listenerPath = apiPackagePath + "/listener";
-            String rabbitPath = apiPackagePath + "/rabbit";
+            String configPath = apiPackagePath + "/config";
+            String listenerPath = apiPackagePath + "/listener";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
@@ -137,9 +137,11 @@ public class CodeController extends BaseController {
             if (body.getIsMq()) {
                 FileUtil.createPath(mqPath);
                 FileUtil.createPath(mqImplPath);
+                FileUtil.createPath(configPath);
+                FileUtil.createPath(listenerPath);
             }
             FileUtil.createPath(rpcPath);
-//            FileUtil.createPath(rpcFallbackPath);
+///            FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
             FileUtil.createPath(mapperPath);
             FileUtil.createPath(servicePath);
@@ -149,10 +151,6 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerDesktopPath);
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
-            if (body.getIsMq()) {
-                FileUtil.createPath(rabbitPath);
-//                FileUtil.createPath(listenerPath);
-            }
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
@@ -269,8 +267,8 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
             if (body.getIsMq()) {
 //                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
-                write(templateMap, "config.txt", rabbitPath + "/" + firstUpperWithoutUnderlineEntityName + "Config.java");
-                write(templateMap, "listener.txt", rabbitPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
+                write(templateMap, "config.txt", configPath + "/" + firstUpperWithoutUnderlineEntityName + "Config.java");
+                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
             }
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
@@ -308,11 +306,12 @@ public class CodeController extends BaseController {
     }
 
     private String removeUnderline(String name) {
-        if (name.contains("_")) {
-            int index = name.indexOf("_");
+        String underline = "_";
+        if (name.contains(underline)) {
+            int index = name.indexOf(underline);
             name = name.substring(0, index) + name.substring(index + 1, index + 2).toUpperCase() + name.substring(index + 2);
 
-            if (name.contains("_")) {
+            if (name.contains(underline)) {
                 name = removeUnderline(name);
 
             }

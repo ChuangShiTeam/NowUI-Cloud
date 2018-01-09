@@ -24,7 +24,7 @@ public interface ForumCategoryService extends BaseService<ForumCategory> {
      * @param ForumCategoryRecommand 是否推荐
      * @return Integer 论坛分类统计
      */
-    Integer adminCount(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean ForumCategoryRecommand);
+    Integer countForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean ForumCategoryRecommand);
 
     /**
      * 论坛分类列表
@@ -39,5 +39,5 @@ public interface ForumCategoryService extends BaseService<ForumCategory> {
      * @param pageSize 每页个数
      * @return List<ForumCategory> 论坛分类列表
      */
-    List<ForumCategory> adminList(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean ForumCategoryRecommand, Integer pageIndex, Integer pageSize);
+    List<ForumCategory> listForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean ForumCategoryRecommand, Integer pageIndex, Integer pageSize);
 }

@@ -33,7 +33,7 @@ public class AdvertisementMobileController extends BaseController {
 
     @ApiOperation(value = "首页广告轮播图列表")
     @RequestMapping(value = "/advertisement/mobile/index/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Advertisement body) {
+    public Map<String, Object> listV1(@RequestBody Advertisement body) {
     	validateRequest(
                 body, 
                 Advertisement.APP_ID

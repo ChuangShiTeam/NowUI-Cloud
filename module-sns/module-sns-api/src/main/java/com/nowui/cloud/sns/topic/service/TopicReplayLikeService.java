@@ -21,7 +21,7 @@ public interface TopicReplayLikeService extends BaseService<TopicReplayLike> {
      * @param userId 用户id
      * @return Integer 话题回复统计
      */
-    Integer adminCount(String appId, String topicCommentId, String userId);
+    Integer countForAdmin(String appId, String topicCommentId, String userId);
 
     /**
      * 话题回复列表
@@ -33,5 +33,5 @@ public interface TopicReplayLikeService extends BaseService<TopicReplayLike> {
      * @param pageSize 每页个数
      * @return List<TopicReplayLike> 话题回复列表
      */
-    List<TopicReplayLike> adminList(String appId, String topicCommentId, String userId, Integer pageIndex, Integer pageSize);
+    List<TopicReplayLike> listForAdmin(String appId, String topicCommentId, String userId, Integer pageIndex, Integer pageSize);
 }

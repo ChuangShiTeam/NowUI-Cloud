@@ -10,14 +10,16 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.elasticsearch.action.main.MainAction;
-
 import com.nowui.cloud.constant.Constant;
 
 /**
  * @author ZhongYongQiang
  */
 public class Util {
+
+    private static Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+
+    private static Pattern mobilePattern = Pattern.compile("^[1][3,4,5,7,8,9][0-9]{9}$");
 
     /**
      * 生成32位的随机数， 通用唯一识别码 用于数据库主键
@@ -127,8 +129,8 @@ public class Util {
      * @return
      */
     public static boolean isEmail(String str) {
-        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
         Matcher matcher = emailPattern.matcher(str);
+
         if (matcher.find()) {
             return true;
         }
@@ -142,12 +144,12 @@ public class Util {
      * @return
      */
     public static boolean isPhone(String str) {
-        Matcher m = null;
-        boolean b = false;
-        Pattern p = Pattern.compile("^[1][3,4,5,7,8,9][0-9]{9}$");
-        m = p.matcher(str);
-        b = m.matches();
-        return b;
+        Matcher matcher = mobilePattern.matcher(str);
+
+        if (matcher.find()) {
+            return true;
+        }
+        return false;
     }
 
     /**

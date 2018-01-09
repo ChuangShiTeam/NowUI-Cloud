@@ -27,8 +27,8 @@ public class MemberAddressAdminController extends BaseController {
     private MemberAddressService memberAddressService;
 
     @ApiOperation(value = "会员地址列表")
-    @RequestMapping(value = "/member/address/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody MemberAddress body) {
+    @RequestMapping(value = "/member/address/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody MemberAddress body) {
         validateRequest(
                 body,
                 MemberAddress.APP_ID,
@@ -39,8 +39,8 @@ public class MemberAddressAdminController extends BaseController {
                 MemberAddress.PAGE_SIZE
         );
 
-        Integer resultTotal = memberAddressService.adminCount(body.getAppId() , body.getMemberAddressProvince(), body.getMemberAddressCity(), body.getMemberAddressArea());
-        List<MemberAddress> resultList = memberAddressService.adminList(body.getAppId(), body.getMemberAddressProvince(), body.getMemberAddressCity(), body.getMemberAddressArea(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberAddressService.countForAdmin(body.getAppId() , body.getMemberAddressProvince(), body.getMemberAddressCity(), body.getMemberAddressArea());
+        List<MemberAddress> resultList = memberAddressService.listForAdmin(body.getAppId(), body.getMemberAddressProvince(), body.getMemberAddressCity(), body.getMemberAddressArea(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 MemberAddress.MEMBER_ADDRESS_ID,
@@ -53,8 +53,8 @@ public class MemberAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员地址信息")
-    @RequestMapping(value = "/member/address/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody MemberAddress body) {
+    @RequestMapping(value = "/member/address/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody MemberAddress body) {
         validateRequest(
                 body,
                 MemberAddress.APP_ID,
@@ -76,8 +76,8 @@ public class MemberAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员地址")
-    @RequestMapping(value = "/member/address/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody MemberAddress body) {
+    @RequestMapping(value = "/member/address/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody MemberAddress body) {
         validateRequest(
                 body,
                 MemberAddress.APP_ID,
@@ -94,8 +94,8 @@ public class MemberAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员地址")
-    @RequestMapping(value = "/member/address/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody MemberAddress body) {
+    @RequestMapping(value = "/member/address/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody MemberAddress body) {
         validateRequest(
                 body,
                 MemberAddress.MEMBER_ADDRESS_ID,
@@ -114,8 +114,8 @@ public class MemberAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员地址")
-    @RequestMapping(value = "/member/address/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody MemberAddress body) {
+    @RequestMapping(value = "/member/address/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody MemberAddress body) {
         validateRequest(
                 body,
                 MemberAddress.MEMBER_ADDRESS_ID,

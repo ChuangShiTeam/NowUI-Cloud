@@ -22,7 +22,7 @@ public interface AdminService extends BaseService<Admin> {
      * @param userMobile 用户手机号码
      * @return Integer 管理员统计
      */
-    Integer adminCount(String appId, String userAccount, String userNickName, String userMobile);
+    Integer countForAdmin(String appId, String userAccount, String userNickName, String userMobile);
 
     /**
      * 管理员列表
@@ -35,6 +35,6 @@ public interface AdminService extends BaseService<Admin> {
      * @param pageSize 每页个数
      * @return List<Admin> 管理员列表
      */
-    List<Admin> adminList(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize);
+    List<Admin> listForAdmin(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize);
 
 }

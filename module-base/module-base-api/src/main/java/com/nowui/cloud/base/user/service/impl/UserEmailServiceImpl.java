@@ -21,7 +21,7 @@ import java.util.List;
 public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserEmail> implements UserEmailService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String userEmail) {
+    public Integer countForAdmin(String appId, String userId, String userEmail) {
         Integer count = count(
                 new BaseWrapper<UserEmail>()
                         .eq(UserEmail.APP_ID, appId)
@@ -33,7 +33,7 @@ public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserE
     }
 
     @Override
-    public List<UserEmail> adminList(String appId, String userId, String userEmail, Integer pageIndex, Integer pageSize) {
+    public List<UserEmail> listForAdmin(String appId, String userId, String userEmail, Integer pageIndex, Integer pageSize) {
         List<UserEmail> userEmailList = list(
                 new BaseWrapper<UserEmail>()
                         .eq(UserEmail.APP_ID, appId)

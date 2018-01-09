@@ -21,7 +21,7 @@ import java.util.List;
 public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowMapper, ForumUserFollow> implements ForumUserFollowService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String forumId) {
+    public Integer countForAdmin(String appId, String userId, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
     }
 
     @Override
-    public List<ForumUserFollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumUserFollow> forumUserFollowList = list(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)

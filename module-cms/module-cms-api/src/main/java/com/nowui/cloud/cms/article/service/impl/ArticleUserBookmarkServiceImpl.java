@@ -21,7 +21,7 @@ import java.util.List;
 public class ArticleUserBookmarkServiceImpl extends BaseServiceImpl<ArticleUserBookmarkMapper, ArticleUserBookmark> implements ArticleUserBookmarkService {
 
     @Override
-    public Integer adminCount(String appId, String articleId, String useId) {
+    public Integer countForAdmin(String appId, String articleId, String useId) {
         Integer count = count(
                 new BaseWrapper<ArticleUserBookmark>()
                         .eq(ArticleUserBookmark.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ArticleUserBookmarkServiceImpl extends BaseServiceImpl<ArticleUserB
     }
 
     @Override
-    public List<ArticleUserBookmark> adminList(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize) {
+    public List<ArticleUserBookmark> listForAdmin(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize) {
         List<ArticleUserBookmark> articleUserBookmarkList = list(
                 new BaseWrapper<ArticleUserBookmark>()
                         .eq(ArticleUserBookmark.APP_ID, appId)

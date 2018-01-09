@@ -21,7 +21,7 @@ import java.util.List;
 public class ArticleUserDislikeServiceImpl extends BaseServiceImpl<ArticleUserDislikeMapper, ArticleUserDislike> implements ArticleUserDislikeService {
 
     @Override
-    public Integer adminCount(String appId, String articleId, String userId) {
+    public Integer countForAdmin(String appId, String articleId, String userId) {
         Integer count = count(
                 new BaseWrapper<ArticleUserDislike>()
                         .eq(ArticleUserDislike.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ArticleUserDislikeServiceImpl extends BaseServiceImpl<ArticleUserDi
     }
 
     @Override
-    public List<ArticleUserDislike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<ArticleUserDislike> listForAdmin(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize) {
         List<ArticleUserDislike> articleUserDislikeList = list(
                 new BaseWrapper<ArticleUserDislike>()
                         .eq(ArticleUserDislike.APP_ID, appId)

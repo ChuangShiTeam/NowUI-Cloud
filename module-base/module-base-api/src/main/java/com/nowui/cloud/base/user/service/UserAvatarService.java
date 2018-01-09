@@ -21,7 +21,7 @@ public interface UserAvatarService extends BaseService<UserAvatar> {
      * @param userAvatar 用户头像
      * @return Integer 用户头像统计
      */
-    Integer adminCount(String appId, String userId, String userAvatar);
+    Integer countForAdmin(String appId, String userId, String userAvatar);
 
     /**
      * 用户头像列表
@@ -33,5 +33,5 @@ public interface UserAvatarService extends BaseService<UserAvatar> {
      * @param pageSize 每页个数
      * @return List<UserAvatar> 用户头像列表
      */
-    List<UserAvatar> adminList(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize);
+    List<UserAvatar> listForAdmin(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize);
 }

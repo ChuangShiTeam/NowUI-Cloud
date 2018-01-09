@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberAddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, MemberAddress> implements MemberAddressService {
 
     @Override
-    public Integer adminCount(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea) {
+    public Integer countForAdmin(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea) {
         Integer count = count(
                 new BaseWrapper<MemberAddress>()
                         .eq(MemberAddress.APP_ID, appId)
@@ -34,7 +34,7 @@ public class MemberAddressServiceImpl extends BaseServiceImpl<MemberAddressMappe
     }
 
     @Override
-    public List<MemberAddress> adminList(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea, Integer pageIndex, Integer pageSize) {
+    public List<MemberAddress> listForAdmin(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea, Integer pageIndex, Integer pageSize) {
         List<MemberAddress> memberAddressList = list(
                 new BaseWrapper<MemberAddress>()
                         .eq(MemberAddress.APP_ID, appId)

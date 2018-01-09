@@ -33,7 +33,7 @@ public class NavigationMobileController extends BaseController {
 	
 	@ApiOperation(value = "导航栏列表")
 	@RequestMapping(value = "/navigation/mobile/index/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> list(@RequestBody Navigation body) {
+	public Map<String, Object> listV1(@RequestBody Navigation body) {
 		
 		validateRequest(
 				body,

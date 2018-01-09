@@ -35,8 +35,8 @@ public class FileAdminController extends BaseController {
     private FileService fileService;
 
     @ApiOperation(value = "文件列表")
-    @RequestMapping(value = "/file/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody File body) {
+    @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody File body) {
         validateRequest(
                 body,
                 File.APP_ID,
@@ -47,8 +47,8 @@ public class FileAdminController extends BaseController {
                 File.PAGE_SIZE
         );
 
-        Integer resultTotal = fileService.adminCount(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType());
-        List<File> resultList = fileService.adminList(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = fileService.countForAdmin(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType());
+        List<File> resultList = fileService.listForAdmin(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 File.FILE_ID,
@@ -62,8 +62,8 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文件信息")
-    @RequestMapping(value = "/file/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody File body) {
+    @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody File body) {
         validateRequest(
                 body,
                 File.APP_ID,
@@ -90,8 +90,8 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文件")
-    @RequestMapping(value = "/file/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody File body) {
+    @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody File body) {
         validateRequest(
                 body,
                 File.FILE_ID,

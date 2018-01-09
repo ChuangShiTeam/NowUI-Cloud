@@ -59,6 +59,7 @@ public interface BaseService<T extends BaseEntity> {
      * 实体类新增
      *
      * @param entity 实体类
+     * @param id 实体类编号
      * @param systemCreateUserId 创建人编号
      * @return Boolean 是否成功
      */

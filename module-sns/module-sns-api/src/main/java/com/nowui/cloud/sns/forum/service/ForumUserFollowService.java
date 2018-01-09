@@ -21,7 +21,7 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      * @param forumId 论坛Id
      * @return Integer 论坛用户关注统计
      */
-    Integer adminCount(String appId, String userId, String forumId);
+    Integer countForAdmin(String appId, String userId, String forumId);
 
     /**
      * 论坛用户关注列表
@@ -33,7 +33,7 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      * @param pageSize 每页个数
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
-    List<ForumUserFollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
+List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号和论坛编号查询用户关注信息

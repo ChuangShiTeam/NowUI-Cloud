@@ -27,8 +27,8 @@ public class UserIdcardAdminController extends BaseController {
     private UserIdcardService userIdcardService;
 
     @ApiOperation(value = "用户身份证列表")
-    @RequestMapping(value = "/user/idcard/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserIdcard body) {
+    @RequestMapping(value = "/user/idcard/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserIdcard body) {
         validateRequest(
                 body,
                 UserIdcard.APP_ID,
@@ -39,8 +39,8 @@ public class UserIdcardAdminController extends BaseController {
                 UserIdcard.PAGE_SIZE
         );
 
-        Integer resultTotal = userIdcardService.adminCount(body.getAppId() , body.getUserId(), body.getUserName(), body.getUserIdcardNumber());
-        List<UserIdcard> resultList = userIdcardService.adminList(body.getAppId(), body.getUserId(), body.getUserName(), body.getUserIdcardNumber(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userIdcardService.countForAdmin(body.getAppId() , body.getUserId(), body.getUserName(), body.getUserIdcardNumber());
+        List<UserIdcard> resultList = userIdcardService.listForAdmin(body.getAppId(), body.getUserId(), body.getUserName(), body.getUserIdcardNumber(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserIdcard.USER_IDCARD_ID,
@@ -53,8 +53,8 @@ public class UserIdcardAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户身份证信息")
-    @RequestMapping(value = "/user/idcard/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserIdcard body) {
+    @RequestMapping(value = "/user/idcard/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserIdcard body) {
         validateRequest(
                 body,
                 UserIdcard.APP_ID,
@@ -74,8 +74,8 @@ public class UserIdcardAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户身份证")
-    @RequestMapping(value = "/user/idcard/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserIdcard body) {
+    @RequestMapping(value = "/user/idcard/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserIdcard body) {
         validateRequest(
                 body,
                 UserIdcard.APP_ID,
@@ -90,8 +90,8 @@ public class UserIdcardAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户身份证")
-    @RequestMapping(value = "/user/idcard/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserIdcard body) {
+    @RequestMapping(value = "/user/idcard/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserIdcard body) {
         validateRequest(
                 body,
                 UserIdcard.USER_IDCARD_ID,
@@ -108,8 +108,8 @@ public class UserIdcardAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户身份证")
-    @RequestMapping(value = "/user/idcard/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserIdcard body) {
+    @RequestMapping(value = "/user/idcard/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserIdcard body) {
         validateRequest(
                 body,
                 UserIdcard.USER_IDCARD_ID,

@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implements TopicService {
 
     @Override
-    public Integer adminCount(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel) {
+    public Integer countForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel) {
         Integer count = count(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
@@ -41,7 +41,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     }
 
     @Override
-    public List<Topic> adminList(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel, Integer pageIndex, Integer pageSize) {
+    public List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel, Integer pageIndex, Integer pageSize) {
         List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)

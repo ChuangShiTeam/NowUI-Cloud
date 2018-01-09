@@ -21,7 +21,7 @@ import java.util.List;
 public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, UserMobile> implements UserMobileService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String userMobile) {
+    public Integer countForAdmin(String appId, String userId, String userMobile) {
         Integer count = count(
                 new BaseWrapper<UserMobile>()
                         .eq(UserMobile.APP_ID, appId)
@@ -33,7 +33,7 @@ public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, Use
     }
 
     @Override
-    public List<UserMobile> adminList(String appId, String userId, String userMobile, Integer pageIndex, Integer pageSize) {
+    public List<UserMobile> listForAdmin(String appId, String userId, String userMobile, Integer pageIndex, Integer pageSize) {
         List<UserMobile> userMobileList = list(
                 new BaseWrapper<UserMobile>()
                         .eq(UserMobile.APP_ID, appId)

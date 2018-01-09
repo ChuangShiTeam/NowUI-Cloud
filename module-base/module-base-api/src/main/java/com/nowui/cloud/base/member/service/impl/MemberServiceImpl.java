@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> implements MemberService {
 
     @Override
-    public Integer adminCount(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
+    public Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
         Integer count = count(
                 new BaseWrapper<Member>()
                         .eq(Member.APP_ID, appId)
@@ -33,7 +33,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
     }
 
     @Override
-    public List<Member> adminList(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
+    public List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
         List<Member> memberList = list(
                 new BaseWrapper<Member>()
                         .eq(Member.APP_ID, appId)

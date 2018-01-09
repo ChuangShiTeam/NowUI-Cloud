@@ -23,7 +23,7 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
      * @param articleCategoryName 文章分类名称
      * @return Integer 文章分类数量
      */
-    Integer adminCount(String appId, String articleCategoryName);
+    Integer countForAdmin(String appId, String articleCategoryName);
 
     /**
      * 文章分类列表
@@ -34,7 +34,7 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory>, Ar
      * @param pageSize 每页个数
      * @return List<Map<String, Object>> 文章分类列表
      */
-    List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize);
+    List<ArticleCategory> listForAdmin(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize);
     
     /**
      * 文章分类树形分页列表

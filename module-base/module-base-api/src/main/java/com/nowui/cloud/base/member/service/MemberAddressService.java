@@ -22,7 +22,7 @@ public interface MemberAddressService extends BaseService<MemberAddress> {
      * @param memberAddressArea 区
      * @return Integer 会员地址统计
      */
-    Integer adminCount(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea);
+    Integer countForAdmin(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea);
 
     /**
      * 会员地址列表
@@ -35,5 +35,5 @@ public interface MemberAddressService extends BaseService<MemberAddress> {
      * @param pageSize 每页个数
      * @return List<MemberAddress> 会员地址列表
      */
-    List<MemberAddress> adminList(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea, Integer pageIndex, Integer pageSize);
+    List<MemberAddress> listForAdmin(String appId, String memberAddressProvince, String memberAddressCity, String memberAddressArea, Integer pageIndex, Integer pageSize);
 }

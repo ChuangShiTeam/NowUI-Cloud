@@ -27,8 +27,8 @@ public class UserRoleAdminController extends BaseController {
     private UserRoleService userRoleService;
 
     @ApiOperation(value = "用户角色列表")
-    @RequestMapping(value = "/user/role/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserRole body) {
+    @RequestMapping(value = "/user/role/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserRole body) {
         validateRequest(
                 body,
                 UserRole.APP_ID,
@@ -39,8 +39,8 @@ public class UserRoleAdminController extends BaseController {
                 UserRole.PAGE_SIZE
         );
 
-        Integer resultTotal = userRoleService.adminCount(body.getAppId() , body.getUserId(), body.getRoleId(), body.getUserType());
-        List<UserRole> resultList = userRoleService.adminList(body.getAppId(), body.getUserId(), body.getRoleId(), body.getUserType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userRoleService.countForAdmin(body.getAppId() , body.getUserId(), body.getRoleId(), body.getUserType());
+        List<UserRole> resultList = userRoleService.listForAdmin(body.getAppId(), body.getUserId(), body.getRoleId(), body.getUserType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserRole.USER_ROLE_ID,
@@ -53,8 +53,8 @@ public class UserRoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户角色信息")
-    @RequestMapping(value = "/user/role/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserRole body) {
+    @RequestMapping(value = "/user/role/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserRole body) {
         validateRequest(
                 body,
                 UserRole.APP_ID,
@@ -74,8 +74,8 @@ public class UserRoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户角色")
-    @RequestMapping(value = "/user/role/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserRole body) {
+    @RequestMapping(value = "/user/role/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserRole body) {
         validateRequest(
                 body,
                 UserRole.APP_ID,
@@ -90,8 +90,8 @@ public class UserRoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户角色")
-    @RequestMapping(value = "/user/role/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserRole body) {
+    @RequestMapping(value = "/user/role/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserRole body) {
         validateRequest(
                 body,
                 UserRole.USER_ROLE_ID,
@@ -108,8 +108,8 @@ public class UserRoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户角色")
-    @RequestMapping(value = "/user/role/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserRole body) {
+    @RequestMapping(value = "/user/role/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserRole body) {
         validateRequest(
                 body,
                 UserRole.USER_ROLE_ID,

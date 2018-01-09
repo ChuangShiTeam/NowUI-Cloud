@@ -27,8 +27,8 @@ public class TopicReplayLikeAdminController extends BaseController {
     private TopicReplayLikeService topicReplayLikeService;
 
     @ApiOperation(value = "话题回复列表")
-    @RequestMapping(value = "/topic/replay/like/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicReplayLike body) {
+    @RequestMapping(value = "/topic/replay/like/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicReplayLike body) {
         validateRequest(
                 body,
                 TopicReplayLike.APP_ID,
@@ -38,8 +38,8 @@ public class TopicReplayLikeAdminController extends BaseController {
                 TopicReplayLike.PAGE_SIZE
         );
 
-        Integer resultTotal = topicReplayLikeService.adminCount(body.getAppId() , body.getTopicCommentId(), body.getUserId());
-        List<TopicReplayLike> resultList = topicReplayLikeService.adminList(body.getAppId(), body.getTopicCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicReplayLikeService.countForAdmin(body.getAppId() , body.getTopicCommentId(), body.getUserId());
+        List<TopicReplayLike> resultList = topicReplayLikeService.listForAdmin(body.getAppId(), body.getTopicCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicReplayLike.TOPIC_REPLY_ID,
@@ -51,8 +51,8 @@ public class TopicReplayLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题回复信息")
-    @RequestMapping(value = "/topic/replay/like/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicReplayLike body) {
+    @RequestMapping(value = "/topic/replay/like/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicReplayLike body) {
         validateRequest(
                 body,
                 TopicReplayLike.APP_ID,
@@ -71,8 +71,8 @@ public class TopicReplayLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题回复")
-    @RequestMapping(value = "/topic/replay/like/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicReplayLike body) {
+    @RequestMapping(value = "/topic/replay/like/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicReplayLike body) {
         validateRequest(
                 body,
                 TopicReplayLike.APP_ID,
@@ -86,8 +86,8 @@ public class TopicReplayLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题回复")
-    @RequestMapping(value = "/topic/replay/like/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicReplayLike body) {
+    @RequestMapping(value = "/topic/replay/like/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicReplayLike body) {
         validateRequest(
                 body,
                 TopicReplayLike.TOPIC_REPLY_ID,
@@ -103,8 +103,8 @@ public class TopicReplayLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题回复")
-    @RequestMapping(value = "/topic/replay/like/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicReplayLike body) {
+    @RequestMapping(value = "/topic/replay/like/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicReplayLike body) {
         validateRequest(
                 body,
                 TopicReplayLike.TOPIC_REPLY_ID,

@@ -24,8 +24,8 @@ public class ProductAdminController extends BaseController {
     private ProductService productService;
 
     @ApiOperation(value = "商品列表")
-    @RequestMapping(value = "/product/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Product body) {
         validateRequest(
                 body,
                 Product.APP_ID,
@@ -34,8 +34,8 @@ public class ProductAdminController extends BaseController {
                 Product.PAGE_SIZE
         );
 
-        Integer resultTotal = productService.adminCount(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.adminList(body.getAppId(), body.getProductName(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = productService.countForAdmin(body.getAppId(), body.getProductName());
+        List<Product> resultList = productService.listForAdmin(body.getAppId(), body.getProductName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Product.PRODUCT_ID,
@@ -46,8 +46,8 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品信息")
-    @RequestMapping(value = "/product/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_ID);
 
         Product result = productService.find(body.getProductId());
@@ -58,8 +58,8 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品新增")
-    @RequestMapping(value = "/product/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_NAME);
 
         Boolean result = productService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -68,8 +68,8 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品修改")
-    @RequestMapping(value = "/product/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Product body) {
         validateRequest(body, Product.APP_ID, Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
 
         Boolean result = productService.update(body, body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());
@@ -78,8 +78,8 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品删除")
-    @RequestMapping(value = "/product/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Product body) {
         validateRequest(body, Product.PRODUCT_ID, Product.SYSTEM_VERSION);
 
         Boolean result = productService.delete(body.getProductId(), body.getSystemRequestUserId(), body.getSystemVersion());

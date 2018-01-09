@@ -21,6 +21,9 @@ import javax.imageio.ImageIO;
 
 import org.springframework.util.FileCopyUtils;
 
+/**
+ * @author ZhongYongQiang
+ */
 public class FileUtil {
 
     public static boolean createPath(String path) {
@@ -63,7 +66,9 @@ public class FileUtil {
                 newHeight = originalHeight;
             }
 
-            if (suffix != null && (suffix.trim().toLowerCase().endsWith("png") || suffix.trim().toLowerCase().endsWith("gif"))) {
+            String pngSuffix = "png";
+            String gifSuffix = "gif";
+            if ((suffix.trim().toLowerCase().endsWith(pngSuffix) || suffix.trim().toLowerCase().endsWith(gifSuffix))) {
                 BufferedImage to = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
                 Graphics2D g2d = to.createGraphics();
                 to = g2d.getDeviceConfiguration().createCompatibleImage(newWidth, newHeight, Transparency.TRANSLUCENT);

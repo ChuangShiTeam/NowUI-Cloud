@@ -36,8 +36,8 @@ public class MenuAdminController extends BaseController {
     private MenuService menuService;
 
     @ApiOperation(value = "菜单分类树形列表")
-    @RequestMapping(value = "/menu/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Menu body) {
+    @RequestMapping(value = "/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Menu body) {
         validateRequest(
                 body,
                 Menu.APP_ID,
@@ -46,7 +46,7 @@ public class MenuAdminController extends BaseController {
                 Menu.PAGE_SIZE
         );
 
-        Integer resultTotal = menuService.adminCount(body.getAppId() , body.getMenuName());
+        Integer resultTotal = menuService.countForAdmin(body.getAppId() , body.getMenuName());
         
         if (Util.isNullOrEmpty(body.getMenuName())) {
 			
@@ -57,7 +57,7 @@ public class MenuAdminController extends BaseController {
         	return renderJson(resultTotal, resultList);
 
 		}else {
-			List<Menu> resultList = menuService.adminList(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+			List<Menu> resultList = menuService.listForAdmin(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
 			
 			validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
 			
@@ -66,8 +66,8 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "菜单信息")
-    @RequestMapping(value = "/menu/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Menu body) {
+    @RequestMapping(value = "/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Menu body) {
         validateRequest(
                 body,
                 Menu.APP_ID,
@@ -90,8 +90,8 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增菜单")
-    @RequestMapping(value = "/menu/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Menu body) {
+    @RequestMapping(value = "/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Menu body) {
         validateRequest(
                 body,
                 Menu.APP_ID,
@@ -131,8 +131,8 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改菜单")
-    @RequestMapping(value = "/menu/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Menu body) {
+    @RequestMapping(value = "/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Menu body) {
         validateRequest(
                 body,
                 Menu.MENU_ID,
@@ -151,8 +151,8 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除菜单")
-    @RequestMapping(value = "/menu/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Menu body) {
+    @RequestMapping(value = "/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Menu body) {
         validateRequest(
                 body,
                 Menu.MENU_ID,

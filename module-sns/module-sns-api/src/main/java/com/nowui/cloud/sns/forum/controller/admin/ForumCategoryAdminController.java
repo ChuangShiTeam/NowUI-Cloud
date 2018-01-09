@@ -27,8 +27,8 @@ public class ForumCategoryAdminController extends BaseController {
     private ForumCategoryService forumCategoryService;
 
     @ApiOperation(value = "论坛分类列表")
-    @RequestMapping(value = "/forum/category/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ForumCategory body) {
+    @RequestMapping(value = "/forum/category/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ForumCategory body) {
         validateRequest(
                 body,
                 ForumCategory.APP_ID,
@@ -41,8 +41,8 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = forumCategoryService.adminCount(body.getAppId() , body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand());
-        List<ForumCategory> resultList = forumCategoryService.adminList(body.getAppId(), body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumCategoryService.countForAdmin(body.getAppId() , body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand());
+        List<ForumCategory> resultList = forumCategoryService.listForAdmin(body.getAppId(), body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumCategory.FORUM_CATEGORY_ID,
@@ -57,8 +57,8 @@ public class ForumCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛分类信息")
-    @RequestMapping(value = "/forum/category/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ForumCategory body) {
+    @RequestMapping(value = "/forum/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ForumCategory body) {
         validateRequest(
                 body,
                 ForumCategory.APP_ID,
@@ -80,8 +80,8 @@ public class ForumCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增论坛分类")
-    @RequestMapping(value = "/forum/category/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ForumCategory body) {
+    @RequestMapping(value = "/forum/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ForumCategory body) {
         validateRequest(
                 body,
                 ForumCategory.APP_ID,
@@ -98,8 +98,8 @@ public class ForumCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改论坛分类")
-    @RequestMapping(value = "/forum/category/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ForumCategory body) {
+    @RequestMapping(value = "/forum/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ForumCategory body) {
         validateRequest(
                 body,
                 ForumCategory.FORUM_CATEGORY_ID,
@@ -118,8 +118,8 @@ public class ForumCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除论坛分类")
-    @RequestMapping(value = "/forum/category/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ForumCategory body) {
+    @RequestMapping(value = "/forum/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ForumCategory body) {
         validateRequest(
                 body,
                 ForumCategory.FORUM_CATEGORY_ID,

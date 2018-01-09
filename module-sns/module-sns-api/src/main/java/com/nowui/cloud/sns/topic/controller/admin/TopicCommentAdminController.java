@@ -27,8 +27,8 @@ public class TopicCommentAdminController extends BaseController {
     private TopicCommentService topicCommentService;
 
     @ApiOperation(value = "话题评论列表")
-    @RequestMapping(value = "/topic/comment/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicComment body) {
+    @RequestMapping(value = "/topic/comment/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
@@ -40,8 +40,8 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.PAGE_SIZE
         );
 
-        Integer resultTotal = topicCommentService.adminCount(body.getAppId() , body.getUserId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyContent());
-        List<TopicComment> resultList = topicCommentService.adminList(body.getAppId(), body.getUserId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyContent(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , body.getUserId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyContent());
+        List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyContent(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
@@ -55,8 +55,8 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题评论信息")
-    @RequestMapping(value = "/topic/comment/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicComment body) {
+    @RequestMapping(value = "/topic/comment/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
@@ -77,8 +77,8 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题评论")
-    @RequestMapping(value = "/topic/comment/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicComment body) {
+    @RequestMapping(value = "/topic/comment/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
@@ -94,8 +94,8 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题评论")
-    @RequestMapping(value = "/topic/comment/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicComment body) {
+    @RequestMapping(value = "/topic/comment/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
                 TopicComment.TOPIC_COMMENT_ID,
@@ -113,8 +113,8 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题评论")
-    @RequestMapping(value = "/topic/comment/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicComment body) {
+    @RequestMapping(value = "/topic/comment/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
                 TopicComment.TOPIC_COMMENT_ID,

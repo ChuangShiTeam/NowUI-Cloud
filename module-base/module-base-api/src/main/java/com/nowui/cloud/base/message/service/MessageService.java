@@ -21,7 +21,7 @@ public interface MessageService extends BaseService<Message> {
      * @param messageType 类型
      * @return Integer 消息统计
      */
-    Integer adminCount(String appId, String messageTitle, String messageType);
+    Integer countForAdmin(String appId, String messageTitle, String messageType);
 
     /**
      * 消息列表
@@ -33,5 +33,5 @@ public interface MessageService extends BaseService<Message> {
      * @param pageSize 每页个数
      * @return List<Message> 消息列表
      */
-    List<Message> adminList(String appId, String messageTitle, String messageType, Integer pageIndex, Integer pageSize);
+    List<Message> listForAdmin(String appId, String messageTitle, String messageType, Integer pageIndex, Integer pageSize);
 }

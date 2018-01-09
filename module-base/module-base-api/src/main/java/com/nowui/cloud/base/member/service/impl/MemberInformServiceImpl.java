@@ -1,0 +1,55 @@
+package com.nowui.cloud.base.member.service.impl;
+
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.base.member.entity.MemberInform;
+import com.nowui.cloud.base.member.mapper.MemberInformMapper;
+import com.nowui.cloud.base.member.service.MemberInformService;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 会员举报业务实现
+ *
+ * @author marcus
+ *
+ * 2018-01-09
+ */
+@Service
+public class MemberInformServiceImpl extends BaseServiceImpl<MemberInformMapper, MemberInform> implements MemberInformService {
+
+    @Override
+    public Integer countForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId) {
+        Integer count = count(
+                new BaseWrapper<MemberInform>()
+                        .eq(MemberInform.APP_ID, appId)
+                        .likeAllowEmpty(MemberInform.MEMBER_ID, memberId)
+                        .likeAllowEmpty(MemberInform.USER_ID, userId)
+                        .likeAllowEmpty(MemberInform.INFORM_USER_ID, informUserId)
+                        .likeAllowEmpty(MemberInform.INFORM_MEMBER_ID, informMemberId)
+                        .eq(MemberInform.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public List<MemberInform> listForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId, Integer pageIndex, Integer pageSize) {
+        List<MemberInform> memberInformList = list(
+                new BaseWrapper<MemberInform>()
+                        .eq(MemberInform.APP_ID, appId)
+                        .likeAllowEmpty(MemberInform.MEMBER_ID, memberId)
+                        .likeAllowEmpty(MemberInform.USER_ID, userId)
+                        .likeAllowEmpty(MemberInform.INFORM_USER_ID, informUserId)
+                        .likeAllowEmpty(MemberInform.INFORM_MEMBER_ID, informMemberId)
+                        .eq(MemberInform.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberInform.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return memberInformList;
+    }
+
+}

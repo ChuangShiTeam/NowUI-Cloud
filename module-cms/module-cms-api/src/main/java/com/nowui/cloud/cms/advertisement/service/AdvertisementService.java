@@ -23,7 +23,7 @@ public interface AdvertisementService extends BaseService<Advertisement>, Advert
      * @param advertisementTitle 广告标题
      * @return Integer 广告数量
      */
-    Integer adminCount(String appId, String advertisementCategoryCode, String advertisementTitle);
+    Integer countForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle);
 
     /**
      * 广告列表
@@ -35,7 +35,7 @@ public interface AdvertisementService extends BaseService<Advertisement>, Advert
      * @param n 取n条数据
      * @return List<Advertisement> 广告列表
      */
-    List<Advertisement> adminList(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m, Integer n);
+    List<Advertisement> listForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m, Integer n);
 
     /**
      * 广告列表

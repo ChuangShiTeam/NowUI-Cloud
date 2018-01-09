@@ -21,7 +21,7 @@ import java.util.List;
 public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, UserAccount> implements UserAccountService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String userAccount) {
+    public Integer countForAdmin(String appId, String userId, String userAccount) {
         Integer count = count(
                 new BaseWrapper<UserAccount>()
                         .eq(UserAccount.APP_ID, appId)
@@ -33,7 +33,7 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, U
     }
 
     @Override
-    public List<UserAccount> adminList(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize) {
+    public List<UserAccount> listForAdmin(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize) {
         List<UserAccount> userAccountList = list(
                 new BaseWrapper<UserAccount>()
                         .eq(UserAccount.APP_ID, appId)

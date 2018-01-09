@@ -1,4 +1,4 @@
-package com.nowui.cloud.shop.product.rabbit;
+package com.nowui.cloud.shop.product.listener;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;

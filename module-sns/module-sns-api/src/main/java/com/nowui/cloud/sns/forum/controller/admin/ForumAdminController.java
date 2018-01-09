@@ -27,8 +27,8 @@ public class ForumAdminController extends BaseController {
     private ForumService forumService;
 
     @ApiOperation(value = "论坛信息列表")
-    @RequestMapping(value = "/forum/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Forum body) {
+    @RequestMapping(value = "/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -51,8 +51,8 @@ public class ForumAdminController extends BaseController {
                 Forum.PAGE_SIZE
         );
 
-        Integer resultTotal = forumService.adminCount(body.getAppId() , body.getForumMediaId(), body.getForumMediaType(), body.getForumBackgroundMediaId(), body.getForumBackgroundMediaType(), body.getForumName(), body.getForumDescription(), body.getForumModerator(), body.getForumTopicLocation(), body.getForumSort(), body.getForumTop(), body.getForumTopLevel(), body.getForumTopEndTime(), body.getForumIsActive(), body.getForumIsFollow(), body.getForumIsRecomand());
-        List<Forum> resultList = forumService.adminList(body.getAppId(), body.getForumMediaId(), body.getForumMediaType(), body.getForumBackgroundMediaId(), body.getForumBackgroundMediaType(), body.getForumName(), body.getForumDescription(), body.getForumModerator(), body.getForumTopicLocation(), body.getForumSort(), body.getForumTop(), body.getForumTopLevel(), body.getForumTopEndTime(), body.getForumIsActive(), body.getForumIsFollow(), body.getForumIsRecomand(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumService.countForAdmin(body.getAppId() , body.getForumMediaId(), body.getForumMediaType(), body.getForumBackgroundMediaId(), body.getForumBackgroundMediaType(), body.getForumName(), body.getForumDescription(), body.getForumModerator(), body.getForumTopicLocation(), body.getForumSort(), body.getForumTop(), body.getForumTopLevel(), body.getForumTopEndTime(), body.getForumIsActive(), body.getForumIsFollow(), body.getForumIsRecomand());
+        List<Forum> resultList = forumService.listForAdmin(body.getAppId(), body.getForumMediaId(), body.getForumMediaType(), body.getForumBackgroundMediaId(), body.getForumBackgroundMediaType(), body.getForumName(), body.getForumDescription(), body.getForumModerator(), body.getForumTopicLocation(), body.getForumSort(), body.getForumTop(), body.getForumTopLevel(), body.getForumTopEndTime(), body.getForumIsActive(), body.getForumIsFollow(), body.getForumIsRecomand(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Forum.FORUM_ID,
@@ -77,8 +77,8 @@ public class ForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛信息信息")
-    @RequestMapping(value = "/forum/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Forum body) {
+    @RequestMapping(value = "/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -110,8 +110,8 @@ public class ForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增论坛信息")
-    @RequestMapping(value = "/forum/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Forum body) {
+    @RequestMapping(value = "/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -138,8 +138,8 @@ public class ForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改论坛信息")
-    @RequestMapping(value = "/forum/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Forum body) {
+    @RequestMapping(value = "/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.FORUM_ID,
@@ -168,8 +168,8 @@ public class ForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除论坛信息")
-    @RequestMapping(value = "/forum/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Forum body) {
+    @RequestMapping(value = "/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.FORUM_ID,

@@ -28,8 +28,8 @@ public class RoleAdminController extends BaseController {
     private RoleService roleService;
 
     @ApiOperation(value = "角色列表")
-    @RequestMapping(value = "/role/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Role body) {
+    @RequestMapping(value = "/role/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Role body) {
 
         validateRequest(
                 body,
@@ -40,8 +40,8 @@ public class RoleAdminController extends BaseController {
                 Role.PAGE_SIZE
         );
 
-        Integer resultTotal = roleService.adminCount(body.getAppId() , body.getRoleName(), body.getRoleCode());
-        List<Role> resultList = roleService.adminList(body.getAppId(), body.getRoleName(), body.getRoleCode(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = roleService.countForAdmin(body.getAppId() , body.getRoleName(), body.getRoleCode());
+        List<Role> resultList = roleService.listForAdmin(body.getAppId(), body.getRoleName(), body.getRoleCode(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Role.ROLE_ID,
@@ -54,8 +54,8 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色信息")
-    @RequestMapping(value = "/role/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Role body) {
+    @RequestMapping(value = "/role/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Role body) {
         validateRequest(
                 body,
                 Role.APP_ID,
@@ -76,8 +76,8 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增角色")
-    @RequestMapping(value = "/role/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Role body) {
+    @RequestMapping(value = "/role/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Role body) {
         validateRequest(
                 body,
                 Role.APP_ID,
@@ -93,8 +93,8 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改角色")
-    @RequestMapping(value = "/role/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Role body) {
+    @RequestMapping(value = "/role/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Role body) {
         validateRequest(
                 body,
                 Role.ROLE_ID,
@@ -112,8 +112,8 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除角色")
-    @RequestMapping(value = "/role/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Role body) {
+    @RequestMapping(value = "/role/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Role body) {
         validateRequest(
                 body,
                 Role.ROLE_ID,

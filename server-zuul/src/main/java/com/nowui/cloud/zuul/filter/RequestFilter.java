@@ -46,24 +46,21 @@ public class RequestFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        RequestContext ctx = RequestContext.getCurrentContext();  
-        HttpServletRequest request = ctx.getRequest();  
-        if (request.getRequestURI().startsWith("/upload")) {
-            return false;
-        }
-        return true;
+        return com.nowui.cloud.zuul.util.Util.shouldFilter(RequestContext.getCurrentContext());
     }
 
     @Override
     public Object run() {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
-        
+
         String contentType = request.getContentType();
-        
-        if (contentType.contains("application/json")) {
+
+        String jsonType = "application/json";
+        String formDataType = "multipart/form-data";
+        if (contentType.contains(jsonType)) {
             String requestBody = Util.readData(request);
-            
+
             System.out.println(requestBody);
 
             SortedMap<String, Object> jsonMap = JSON.parseObject(requestBody, new TypeReference<TreeMap<String, Object>>() {
@@ -84,7 +81,7 @@ public class RequestFilter extends ZuulFilter {
             String sign = DigestUtils.md5Hex(signStringBuilder.toString());
 
             if (!signParameter.equals(sign)) {
-//                System.out.println(signStringBuilder.toString());
+///                System.out.println(signStringBuilder.toString());
 
                 Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
                 map.put("code", 400);
@@ -96,16 +93,16 @@ public class RequestFilter extends ZuulFilter {
             }
 
             String systemRequestUserId = "";
-    ///
+            ///
 //            Date date = new Date();
 //            Calendar calendar = Calendar.getInstance();
 //            calendar.setTime(date);
 //            calendar.add(Calendar.YEAR, 1);
-    //
+            //
 //            JSONObject jsonObject = new JSONObject();
 //            jsonObject.put("userId", "ffb11c2d4a3043ec8eb28c8cca9d1fc8");
 //            jsonObject.put("expireTime", calendar.getTime());
-    //
+            //
 //            try {
 //                System.out.println(AesUtil.aesEncrypt(jsonObject.toJSONString(), "0123456789012345"));
 //            } catch (Exception e) {
@@ -135,26 +132,27 @@ public class RequestFilter extends ZuulFilter {
                 }
             });
 
-        } else if (contentType.contains("multipart/form-data")){
+        } else if (contentType.contains(formDataType)) {
             MultipartHttpServletRequest multipartRequest =
                     WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
             String token = multipartRequest.getParameter("token");
             String systemRequestUserId = decipherToken(token, context);
             List<String> params = new ArrayList<String>();
             params.add(systemRequestUserId);
-            Map<String, List<String>> map = new HashMap<String, List<String>>();
+            Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
             map.put("systemRequestUserId", params);
             context.setRequestQueryParams(map);
         }
-        
+
         return null;
     }
-    
-    
+
+
     /**
      * 解密token
-     * @param token 
-     * @param context 
+     *
+     * @param token
+     * @param context
      * @return systemUserId 请求用户编号
      */
     private String decipherToken(String token, RequestContext context) {
@@ -173,7 +171,7 @@ public class RequestFilter extends ZuulFilter {
                 context.setResponseBody(JSON.toJSONString(map));
             }
         }
-        
+
         return null;
     }
 }

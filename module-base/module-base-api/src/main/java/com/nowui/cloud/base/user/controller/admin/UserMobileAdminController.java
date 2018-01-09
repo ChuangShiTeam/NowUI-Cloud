@@ -27,8 +27,8 @@ public class UserMobileAdminController extends BaseController {
     private UserMobileService userMobileService;
 
     @ApiOperation(value = "用户手机号码列表")
-    @RequestMapping(value = "/user/mobile/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserMobile body) {
+    @RequestMapping(value = "/user/mobile/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserMobile body) {
         validateRequest(
                 body,
                 UserMobile.APP_ID,
@@ -38,8 +38,8 @@ public class UserMobileAdminController extends BaseController {
                 UserMobile.PAGE_SIZE
         );
 
-        Integer resultTotal = userMobileService.adminCount(body.getAppId() , body.getUserId(), body.getUserMobile());
-        List<UserMobile> resultList = userMobileService.adminList(body.getAppId(), body.getUserId(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userMobileService.countForAdmin(body.getAppId() , body.getUserId(), body.getUserMobile());
+        List<UserMobile> resultList = userMobileService.listForAdmin(body.getAppId(), body.getUserId(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserMobile.USER_MOBILE_ID,
@@ -51,8 +51,8 @@ public class UserMobileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户手机号码信息")
-    @RequestMapping(value = "/user/mobile/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserMobile body) {
+    @RequestMapping(value = "/user/mobile/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserMobile body) {
         validateRequest(
                 body,
                 UserMobile.APP_ID,
@@ -71,8 +71,8 @@ public class UserMobileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户手机号码")
-    @RequestMapping(value = "/user/mobile/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserMobile body) {
+    @RequestMapping(value = "/user/mobile/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserMobile body) {
         validateRequest(
                 body,
                 UserMobile.APP_ID,
@@ -86,8 +86,8 @@ public class UserMobileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户手机号码")
-    @RequestMapping(value = "/user/mobile/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserMobile body) {
+    @RequestMapping(value = "/user/mobile/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserMobile body) {
         validateRequest(
                 body,
                 UserMobile.USER_MOBILE_ID,
@@ -103,8 +103,8 @@ public class UserMobileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户手机号码")
-    @RequestMapping(value = "/user/mobile/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserMobile body) {
+    @RequestMapping(value = "/user/mobile/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserMobile body) {
         validateRequest(
                 body,
                 UserMobile.USER_MOBILE_ID,

@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicUserUnlikeServiceImpl extends BaseServiceImpl<TopicUserUnlikeMapper, TopicUserUnlike> implements TopicUserUnlikeService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String topicId) {
+    public Integer countForAdmin(String appId, String userId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicUserUnlike>()
                         .eq(TopicUserUnlike.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicUserUnlikeServiceImpl extends BaseServiceImpl<TopicUserUnlikeM
     }
 
     @Override
-    public List<TopicUserUnlike> adminList(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserUnlike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicUserUnlike> topicUserUnlikeList = list(
                 new BaseWrapper<TopicUserUnlike>()
                         .eq(TopicUserUnlike.APP_ID, appId)

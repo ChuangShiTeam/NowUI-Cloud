@@ -21,7 +21,7 @@ import java.util.List;
 public class UserMessageServiceImpl extends BaseServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String messageId, Boolean userMessageIsRead) {
+    public Integer countForAdmin(String appId, String userId, String messageId, Boolean userMessageIsRead) {
         Integer count = count(
                 new BaseWrapper<UserMessage>()
                         .eq(UserMessage.APP_ID, appId)
@@ -34,7 +34,7 @@ public class UserMessageServiceImpl extends BaseServiceImpl<UserMessageMapper, U
     }
 
     @Override
-    public List<UserMessage> adminList(String appId, String userId, String messageId, Boolean userMessageIsRead, Integer pageIndex, Integer pageSize) {
+    public List<UserMessage> listForAdmin(String appId, String userId, String messageId, Boolean userMessageIsRead, Integer pageIndex, Integer pageSize) {
         List<UserMessage> userMessageList = list(
                 new BaseWrapper<UserMessage>()
                         .eq(UserMessage.APP_ID, appId)

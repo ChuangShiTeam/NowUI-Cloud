@@ -22,7 +22,7 @@ public interface UserMessageService extends BaseService<UserMessage> {
      * @param userMessageIsRead 是否已读
      * @return Integer 用户消息统计
      */
-    Integer adminCount(String appId, String userId, String messageId, Boolean userMessageIsRead);
+    Integer countForAdmin(String appId, String userId, String messageId, Boolean userMessageIsRead);
 
     /**
      * 用户消息列表
@@ -35,5 +35,5 @@ public interface UserMessageService extends BaseService<UserMessage> {
      * @param pageSize 每页个数
      * @return List<UserMessage> 用户消息列表
      */
-    List<UserMessage> adminList(String appId, String userId, String messageId, Boolean userMessageIsRead, Integer pageIndex, Integer pageSize);
+    List<UserMessage> listForAdmin(String appId, String userId, String messageId, Boolean userMessageIsRead, Integer pageIndex, Integer pageSize);
 }

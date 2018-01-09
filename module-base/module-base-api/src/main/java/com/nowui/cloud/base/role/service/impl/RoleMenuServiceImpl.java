@@ -21,7 +21,7 @@ import java.util.List;
 public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMenu> implements RoleMenuService {
 
     @Override
-    public Integer adminCount(String appId, String roleId, String menuId) {
+    public Integer countForAdmin(String appId, String roleId, String menuId) {
         Integer count = count(
                 new BaseWrapper<RoleMenu>()
                         .eq(RoleMenu.APP_ID, appId)
@@ -33,7 +33,7 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMen
     }
 
     @Override
-    public List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize) {
+    public List<RoleMenu> listForAdmin(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize) {
         List<RoleMenu> roleMenuList = list(
                 new BaseWrapper<RoleMenu>()
                         .eq(RoleMenu.APP_ID, appId)

@@ -38,8 +38,8 @@ public class ToolbarAdminController extends BaseController {
     private FileRpc fileRpc;
     
     @ApiOperation(value = "工具栏分页列表")
-    @RequestMapping(value = "/toolbar/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Toolbar body) {
+    @RequestMapping(value = "/toolbar/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Toolbar body) {
         validateRequest(
             body, 
             Toolbar.APP_ID, 
@@ -48,8 +48,8 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.PAGE_SIZE
         );
 
-        Integer resultTotal = toolbarService.adminCount(body.getAppId(), body.getToolbarName());
-        List<Toolbar> resultList = toolbarService.adminList(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
+        Integer resultTotal = toolbarService.countForAdmin(body.getAppId(), body.getToolbarName());
+        List<Toolbar> resultList = toolbarService.listForAdmin(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
 
         validateResponse(
             Toolbar.TOOLBAR_ID, 
@@ -63,8 +63,8 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询工具栏信息")
-    @RequestMapping(value = "/toolbar/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Toolbar body) {
+    @RequestMapping(value = "/toolbar/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Toolbar body) {
         validateRequest(body, Toolbar.TOOLBAR_ID);
 
         Toolbar result = toolbarService.find(body.getToolbarId());
@@ -85,8 +85,8 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏新增")
-    @RequestMapping(value = "/toolbar/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Toolbar body) {
+    @RequestMapping(value = "/toolbar/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Toolbar body) {
         validateRequest(
             body, 
             Toolbar.APP_ID, 
@@ -101,8 +101,8 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏修改")
-    @RequestMapping(value = "/toolbar/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Toolbar body) {
+    @RequestMapping(value = "/toolbar/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Toolbar body) {
         validateRequest(
             body, 
             Toolbar.TOOLBAR_ID, 
@@ -118,8 +118,8 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏删除")
-    @RequestMapping(value = "/toolbar/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Toolbar body) {
+    @RequestMapping(value = "/toolbar/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Toolbar body) {
         validateRequest(
             body, 
             Toolbar.TOOLBAR_ID, 

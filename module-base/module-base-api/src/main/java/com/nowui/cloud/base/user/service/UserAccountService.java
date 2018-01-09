@@ -21,7 +21,7 @@ public interface UserAccountService extends BaseService<UserAccount> {
      * @param userAccount 用户账号
      * @return Integer 用户账号统计
      */
-    Integer adminCount(String appId, String userId, String userAccount);
+    Integer countForAdmin(String appId, String userId, String userAccount);
 
     /**
      * 用户账号列表
@@ -33,5 +33,5 @@ public interface UserAccountService extends BaseService<UserAccount> {
      * @param pageSize 每页个数
      * @return List<UserAccount> 用户账号列表
      */
-    List<UserAccount> adminList(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize);
+    List<UserAccount> listForAdmin(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize);
 }

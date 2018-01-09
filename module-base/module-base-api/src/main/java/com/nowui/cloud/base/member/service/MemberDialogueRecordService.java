@@ -22,7 +22,7 @@ public interface MemberDialogueRecordService extends BaseService<MemberDialogueR
      * @param userId 用户编号
      * @return Integer 会员对话记录统计
      */
-    Integer adminCount(String appId, String memberDialogueId, String memberId, String userId);
+    Integer countForAdmin(String appId, String memberDialogueId, String memberId, String userId);
 
     /**
      * 会员对话记录列表
@@ -35,5 +35,5 @@ public interface MemberDialogueRecordService extends BaseService<MemberDialogueR
      * @param pageSize 每页个数
      * @return List<MemberDialogueRecord> 会员对话记录列表
      */
-    List<MemberDialogueRecord> adminList(String appId, String memberDialogueId, String memberId, String userId, Integer pageIndex, Integer pageSize);
+    List<MemberDialogueRecord> listForAdmin(String appId, String memberDialogueId, String memberId, String userId, Integer pageIndex, Integer pageSize);
 }

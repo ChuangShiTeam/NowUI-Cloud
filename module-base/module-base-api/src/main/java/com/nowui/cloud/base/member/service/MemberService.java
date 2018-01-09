@@ -21,7 +21,7 @@ public interface MemberService extends BaseService<Member> {
      * @param memberIsRecommed 会员是否推荐
      * @return Integer 会员统计
      */
-    Integer adminCount(String appId, Boolean memberIsTop, Boolean memberIsRecommed);
+    Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed);
 
     /**
      * 会员列表
@@ -33,5 +33,5 @@ public interface MemberService extends BaseService<Member> {
      * @param pageSize 每页个数
      * @return List<Member> 会员列表
      */
-    List<Member> adminList(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
+    List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
 }

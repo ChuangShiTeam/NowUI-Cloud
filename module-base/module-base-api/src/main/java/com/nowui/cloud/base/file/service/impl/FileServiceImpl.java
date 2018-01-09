@@ -38,7 +38,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     private Config config;
 
     @Override
-    public Integer adminCount(String appId, String systemCreateUserId, String fileName, String fileType) {
+    public Integer countForAdmin(String appId, String systemCreateUserId, String fileName, String fileType) {
         Integer count = count(
                 new BaseWrapper<File>()
                         .eq(File.APP_ID, appId)
@@ -51,7 +51,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     }
 
     @Override
-    public List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
+    public List<File> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
         List<File> fileList = list(
                 new BaseWrapper<File>()
                         .eq(File.APP_ID, appId)

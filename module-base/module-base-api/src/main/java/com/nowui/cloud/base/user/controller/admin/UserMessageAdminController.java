@@ -27,8 +27,8 @@ public class UserMessageAdminController extends BaseController {
     private UserMessageService userMessageService;
 
     @ApiOperation(value = "用户消息列表")
-    @RequestMapping(value = "/user/message/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserMessage body) {
+    @RequestMapping(value = "/user/message/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserMessage body) {
         validateRequest(
                 body,
                 UserMessage.APP_ID,
@@ -39,8 +39,8 @@ public class UserMessageAdminController extends BaseController {
                 UserMessage.PAGE_SIZE
         );
 
-        Integer resultTotal = userMessageService.adminCount(body.getAppId() , body.getUserId(), body.getMessageId(), body.getUserMessageIsRead());
-        List<UserMessage> resultList = userMessageService.adminList(body.getAppId(), body.getUserId(), body.getMessageId(), body.getUserMessageIsRead(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userMessageService.countForAdmin(body.getAppId() , body.getUserId(), body.getMessageId(), body.getUserMessageIsRead());
+        List<UserMessage> resultList = userMessageService.listForAdmin(body.getAppId(), body.getUserId(), body.getMessageId(), body.getUserMessageIsRead(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserMessage.USER_MESSAGE_ID,
@@ -53,8 +53,8 @@ public class UserMessageAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户消息信息")
-    @RequestMapping(value = "/user/message/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserMessage body) {
+    @RequestMapping(value = "/user/message/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserMessage body) {
         validateRequest(
                 body,
                 UserMessage.APP_ID,
@@ -74,8 +74,8 @@ public class UserMessageAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户消息")
-    @RequestMapping(value = "/user/message/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserMessage body) {
+    @RequestMapping(value = "/user/message/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserMessage body) {
         validateRequest(
                 body,
                 UserMessage.APP_ID,
@@ -90,8 +90,8 @@ public class UserMessageAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户消息")
-    @RequestMapping(value = "/user/message/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserMessage body) {
+    @RequestMapping(value = "/user/message/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserMessage body) {
         validateRequest(
                 body,
                 UserMessage.USER_MESSAGE_ID,
@@ -108,8 +108,8 @@ public class UserMessageAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户消息")
-    @RequestMapping(value = "/user/message/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserMessage body) {
+    @RequestMapping(value = "/user/message/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserMessage body) {
         validateRequest(
                 body,
                 UserMessage.USER_MESSAGE_ID,
