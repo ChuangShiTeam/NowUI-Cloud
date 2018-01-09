@@ -14,9 +14,9 @@ spring:
   application:
     name: module-shop
   datasource:
-      url: jdbc:mysql://localhost:3306/nowui_shop?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: root
-      password: 123456
+      url: jdbc:mysql://118.31.229.16:3306/nowui_shop?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: chuangshi
+      password: Chuangshi123!
       driver-class-name: com.mysql.cj.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
@@ -45,19 +45,19 @@ spring:
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
   redis:
-    host: localhost
+    host: 118.31.229.16
     port: 6379
     database: 0
     password:
   rabbitmq:
-    host: localhost
+    host: 118.31.229.16
     port: 5672
     username: guest
     password: guest
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 192.168.2.29:9300
+      cluster-nodes: 118.31.229.16:9300
 
 #mybatis
 mybatis-plus:
