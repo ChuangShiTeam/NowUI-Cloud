@@ -38,8 +38,8 @@ public class ForumUserUnfollowMobileController extends BaseController {
 	private ForumUserFollowService forumUserFollowService;
 	
 	@ApiOperation(value = "新增论坛用户取关关联")
-    @RequestMapping(value = "/forum/user/unfollow/mobile/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ForumUserUnfollow body) {
+    @RequestMapping(value = "/forum/user/unfollow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
                 ForumUserUnfollow.APP_ID,
@@ -54,8 +54,10 @@ public class ForumUserUnfollowMobileController extends BaseController {
         Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         //向取消关注表插入一条数据
-        Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        if (delResult) {
+            Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+		}
 
-        return renderJson(result);
+        return renderJson(delResult);
     }
 }

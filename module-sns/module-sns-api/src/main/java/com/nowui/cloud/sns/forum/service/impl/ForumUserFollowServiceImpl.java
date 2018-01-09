@@ -65,4 +65,17 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		return forumUserFollowList.get(0);
 	}
 
+	@Override
+	public List<ForumUserFollow> findByForumId(String appId, String forumId) {
+		List<ForumUserFollow> forumUserFollowList = list( 
+				new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+        		)
+		);
+		return forumUserFollowList;
+	}
+
 }

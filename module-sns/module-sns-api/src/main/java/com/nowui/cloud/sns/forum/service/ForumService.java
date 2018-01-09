@@ -26,13 +26,13 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumDescription 论坛简介
      * @param forumModerator 版主(用户id)
      * @param forumTopicLocation 位置
-     * @param forumTop 论坛排序
-     * @param forumTopLevel 论坛是否置顶
-     * @param forumTopEndTime 论坛置顶级别
-     * @param date 论坛置顶结束时间
-     * @param boolean2 论坛是否有效
-     * @param boolean3 是否关注
-     * @param boolean4 是否推荐
+     * @param forumSort 论坛排序
+     * @param forumTop 论坛是否置顶
+     * @param forumTopLevel 论坛置顶级别
+     * @param forumTopEndTime 论坛置顶结束时间
+     * @param forumIsActive 论坛是否有效
+     * @param forumIsFollow 是否关注
+     * @param forumIsRecomand 是否推荐
      * @return Integer 论坛信息统计
      */
     Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand);
@@ -53,9 +53,9 @@ public interface ForumService extends BaseService<Forum> {
      * @param boolean1 论坛是否置顶
      * @param integer2 论坛置顶级别
      * @param date 论坛置顶结束时间
-     * @param boolean2 论坛是否有效
-     * @param boolean3 是否关注
-     * @param boolean4 是否推荐
+     * @param forumIsActive 论坛是否有效
+     * @param forumIsFollow 是否关注
+     * @param forumIsRecomand 是否推荐
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Forum> 论坛信息列表

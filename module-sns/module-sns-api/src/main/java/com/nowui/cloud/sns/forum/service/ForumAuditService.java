@@ -22,7 +22,7 @@ public interface ForumAuditService extends BaseService<ForumAudit> {
      * @param forumId 论坛id
      * @return Integer 论坛审核信息统计
      */
-    Integer countForAdmin(String appId, Integer forumAuditStatus, String forumId);
+    Integer countForAdmin(String appId, String forumAuditStatus, String forumId);
 
     /**
      * 论坛审核信息列表
@@ -35,5 +35,5 @@ public interface ForumAuditService extends BaseService<ForumAudit> {
      * @param pageSize 每页个数
      * @return List<ForumAudit> 论坛审核信息列表
      */
-    List<ForumAudit> listForAdmin(String appId, Integer forumAuditStatus, String forumId, Integer pageIndex, Integer pageSize);
+    List<ForumAudit> listForAdmin(String appId, String forumAuditStatus, String forumId, Integer pageIndex, Integer pageSize);
 }

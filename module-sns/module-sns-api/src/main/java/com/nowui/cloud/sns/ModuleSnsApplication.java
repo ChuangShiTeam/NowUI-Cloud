@@ -22,7 +22,7 @@ public class ModuleSnsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ModuleSnsApplication.class, args);
     }
-    
+
     @Bean
     public HttpMessageConverters fastJsonHttpMessageConverters() {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
