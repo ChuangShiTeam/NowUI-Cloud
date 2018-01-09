@@ -22,7 +22,7 @@ public interface NavigationService extends BaseService<Navigation> {
      * @param navigationName 导航栏名称
      * @return Integer 导航栏统计
      */
-    Integer adminCount(String appId, String navigationCategoryCode, String navigationCode, String navigationName);
+    Integer countForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName);
 
     /**
      * 导航栏列表
@@ -35,7 +35,7 @@ public interface NavigationService extends BaseService<Navigation> {
      * @param n 取n条数据
      * @return List<Navigation> 导航栏列表
      */
-    List<Navigation> adminList(String appId, String navigationCategoryCode, String navigationCode, String navigationName, Integer m, Integer n);
+    List<Navigation> listForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName, Integer m, Integer n);
     
     /**
      * 导航栏

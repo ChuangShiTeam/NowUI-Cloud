@@ -21,7 +21,7 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
      * @param forumId 论坛Id
      * @return Integer 论坛用户取关关联统计
      */
-    Integer adminCount(String appId, String userId, String forumId);
+    Integer countForAdmin(String appId, String userId, String forumId);
 
     /**
      * 论坛用户取关关联列表
@@ -33,5 +33,5 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
      * @param pageSize 每页个数
      * @return List<ForumUserUnfollow> 论坛用户取关关联列表
      */
-    List<ForumUserUnfollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
+    List<ForumUserUnfollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class ForumCategoryServiceImpl extends BaseServiceImpl<ForumCategoryMapper, ForumCategory> implements ForumCategoryService {
 
     @Override
-    public Integer adminCount(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand) {
+    public Integer countForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand) {
         Integer count = count(
                 new BaseWrapper<ForumCategory>()
                         .eq(ForumCategory.APP_ID, appId)
@@ -36,7 +36,7 @@ public class ForumCategoryServiceImpl extends BaseServiceImpl<ForumCategoryMappe
     }
 
     @Override
-    public List<ForumCategory> adminList(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand, Integer pageIndex, Integer pageSize) {
+    public List<ForumCategory> listForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand, Integer pageIndex, Integer pageSize) {
         List<ForumCategory> forumCategoryList = list(
                 new BaseWrapper<ForumCategory>()
                         .eq(ForumCategory.APP_ID, appId)

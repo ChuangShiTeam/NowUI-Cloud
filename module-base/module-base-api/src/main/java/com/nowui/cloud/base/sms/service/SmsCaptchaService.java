@@ -24,7 +24,7 @@ public interface SmsCaptchaService extends BaseService<SmsCaptcha> {
      * @param smsCaptchaIpAddress IP地址
      * @return Integer 短信验证码统计
      */
-    Integer adminCount(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress);
+    Integer countForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress);
 
     /**
      * 短信验证码列表
@@ -37,7 +37,7 @@ public interface SmsCaptchaService extends BaseService<SmsCaptcha> {
      * @param pageSize 每页个数
      * @return List<SmsCaptcha> 短信验证码列表
      */
-    List<SmsCaptcha> adminList(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize);
+    List<SmsCaptcha> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize);
     
     /**
      * 统计开始时间到当前时间同一类型的单个手机号码的验证码发送次数

@@ -39,7 +39,7 @@ public class ForumMobileController extends BaseController {
 
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public Map<String, Object> save(@RequestBody Forum body) {
+	 public Map<String, Object> saveV1(@RequestBody Forum body) {
 	     validateRequest(
             body,
             Forum.APP_ID,
@@ -77,7 +77,7 @@ public class ForumMobileController extends BaseController {
 	 
 	@ApiOperation(value = "论坛信息")
     @RequestMapping(value = "/forum/mobile/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Forum body) {
+    public Map<String, Object> findV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -199,7 +199,7 @@ public class ForumMobileController extends BaseController {
 	
 	@ApiOperation(value = "删除论坛")
     @RequestMapping(value = "/forum/mobile/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Forum body) {
+    public Map<String, Object> deleteV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.FORUM_ID,

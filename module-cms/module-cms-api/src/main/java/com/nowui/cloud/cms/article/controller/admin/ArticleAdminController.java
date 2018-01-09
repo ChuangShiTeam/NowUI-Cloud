@@ -51,8 +51,8 @@ public class ArticleAdminController extends BaseController {
     private FileRpc fileRpc;
     
     @ApiOperation(value = "文章分页列表")
-    @RequestMapping(value = "/article/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Article body) {
+    @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Article body) {
         validateRequest(
             body, 
             Article.APP_ID, 
@@ -61,8 +61,8 @@ public class ArticleAdminController extends BaseController {
             Article.PAGE_SIZE
         );
 
-        Integer resultTotal = articleService.adminCount(body.getAppId(), body.getArticleTitle());
-        List<Article> resultList = articleService.adminList(body.getAppId(), body.getArticleTitle(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleService.countForAdmin(body.getAppId(), body.getArticleTitle());
+        List<Article> resultList = articleService.listForAdmin(body.getAppId(), body.getArticleTitle(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
             Article.ARTICLE_ID, 
@@ -81,8 +81,8 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询文章信息")
-    @RequestMapping(value = "/article/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Article body) {
+    @RequestMapping(value = "/article/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Article body) {
         validateRequest(body, Article.ARTICLE_ID);
 
         Article result = articleService.find(body.getArticleId());
@@ -138,8 +138,8 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章新增")
-    @RequestMapping(value = "/article/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Article body) {
+    @RequestMapping(value = "/article/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Article body) {
         validateRequest(
             body, 
             Article.APP_ID, 
@@ -183,8 +183,8 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章修改")
-    @RequestMapping(value = "/article/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Article body) {
+    @RequestMapping(value = "/article/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Article body) {
         validateRequest(
             body, 
             Article.ARTICLE_ID, 
@@ -232,8 +232,8 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章删除")
-    @RequestMapping(value = "/article/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Article body) {
+    @RequestMapping(value = "/article/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Article body) {
         validateRequest(
             body, 
             Article.ARTICLE_ID, 

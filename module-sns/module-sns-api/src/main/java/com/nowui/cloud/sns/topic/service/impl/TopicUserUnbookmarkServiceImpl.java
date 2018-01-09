@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark> implements TopicUserUnbookmarkService {
 
     @Override
-    public Integer adminCount(String appId, String topicId, String userId) {
+    public Integer countForAdmin(String appId, String topicId, String userId) {
         Integer count = count(
                 new BaseWrapper<TopicUserUnbookmark>()
                         .eq(TopicUserUnbookmark.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnb
     }
 
     @Override
-    public List<TopicUserUnbookmark> adminList(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserUnbookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
         List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
                 new BaseWrapper<TopicUserUnbookmark>()
                         .eq(TopicUserUnbookmark.APP_ID, appId)

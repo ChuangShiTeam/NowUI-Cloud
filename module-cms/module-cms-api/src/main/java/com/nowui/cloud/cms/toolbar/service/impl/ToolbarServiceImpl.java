@@ -29,7 +29,7 @@ public class ToolbarServiceImpl extends BaseServiceImpl<ToolbarMapper, Toolbar> 
     private FileRpc fileRpc;
     
     @Override
-    public Integer adminCount(String appId, String toolbarName) {
+    public Integer countForAdmin(String appId, String toolbarName) {
         Integer count = count(
                 new BaseWrapper<Toolbar>()
                         .eq(Toolbar.APP_ID, appId)
@@ -40,7 +40,7 @@ public class ToolbarServiceImpl extends BaseServiceImpl<ToolbarMapper, Toolbar> 
     }
 
     @Override
-    public List<Toolbar> adminList(String appId, String toolbarName, Integer m, Integer n) {
+    public List<Toolbar> listForAdmin(String appId, String toolbarName, Integer m, Integer n) {
         List<Toolbar> toolbarList = list(
                 new BaseWrapper<Toolbar>()
                         .eq(Toolbar.APP_ID, appId)

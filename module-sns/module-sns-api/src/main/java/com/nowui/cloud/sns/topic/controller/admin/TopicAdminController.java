@@ -27,8 +27,8 @@ public class TopicAdminController extends BaseController {
     private TopicService topicService;
 
     @ApiOperation(value = "话题信息列表")
-    @RequestMapping(value = "/topic/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Topic body) {
+    @RequestMapping(value = "/topic/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -46,8 +46,8 @@ public class TopicAdminController extends BaseController {
                 Topic.PAGE_SIZE
         );
 
-        Integer resultTotal = topicService.adminCount(body.getAppId() , body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecomand(), body.getTopTopLevel());
-        List<Topic> resultList = topicService.adminList(body.getAppId(), body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecomand(), body.getTopTopLevel(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicService.countForAdmin(body.getAppId() , body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecomand(), body.getTopTopLevel());
+        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecomand(), body.getTopTopLevel(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Topic.TOPIC_ID,
@@ -67,8 +67,8 @@ public class TopicAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题信息信息")
-    @RequestMapping(value = "/topic/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Topic body) {
+    @RequestMapping(value = "/topic/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -95,8 +95,8 @@ public class TopicAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题信息")
-    @RequestMapping(value = "/topic/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Topic body) {
+    @RequestMapping(value = "/topic/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -118,8 +118,8 @@ public class TopicAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题信息")
-    @RequestMapping(value = "/topic/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Topic body) {
+    @RequestMapping(value = "/topic/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.TOPIC_ID,
@@ -143,8 +143,8 @@ public class TopicAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题信息")
-    @RequestMapping(value = "/topic/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Topic body) {
+    @RequestMapping(value = "/topic/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.TOPIC_ID,

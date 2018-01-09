@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
 public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryMapper, ArticleCategory> implements ArticleCategoryService {
 
     @Override
-    public Integer adminCount(String appId, String articleCategoryName) {
+    public Integer countForAdmin(String appId, String articleCategoryName) {
         Integer count = 0;
         
         if (Util.isNullOrEmpty(articleCategoryName)) {
@@ -50,7 +50,7 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     }
     
     @Override
-    public List<ArticleCategory> adminList(String appId, String articleCategoryName, Integer m, Integer n) {
+    public List<ArticleCategory> listForAdmin(String appId, String articleCategoryName, Integer m, Integer n) {
         List<ArticleCategory> articleCategoryList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)

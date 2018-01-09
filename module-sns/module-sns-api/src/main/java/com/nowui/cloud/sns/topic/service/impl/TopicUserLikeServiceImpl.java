@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMapper, TopicUserLike> implements TopicUserLikeService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String topicId) {
+    public Integer countForAdmin(String appId, String userId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicUserLike>()
                         .eq(TopicUserLike.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
     }
 
     @Override
-    public List<TopicUserLike> adminList(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserLike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicUserLike> topicUserLikeList = list(
                 new BaseWrapper<TopicUserLike>()
                         .eq(TopicUserLike.APP_ID, appId)

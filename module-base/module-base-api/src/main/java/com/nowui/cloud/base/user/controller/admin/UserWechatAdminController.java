@@ -27,8 +27,8 @@ public class UserWechatAdminController extends BaseController {
     private UserWechatService userWechatService;
 
     @ApiOperation(value = "用户微信列表")
-    @RequestMapping(value = "/user/wechat/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserWechat body) {
+    @RequestMapping(value = "/user/wechat/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserWechat body) {
         validateRequest(
                 body,
                 UserWechat.APP_ID,
@@ -38,8 +38,8 @@ public class UserWechatAdminController extends BaseController {
                 UserWechat.PAGE_SIZE
         );
 
-        Integer resultTotal = userWechatService.adminCount(body.getAppId() , body.getUserId(), body.getWechatNickName());
-        List<UserWechat> resultList = userWechatService.adminList(body.getAppId(), body.getUserId(), body.getWechatNickName(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userWechatService.countForAdmin(body.getAppId() , body.getUserId(), body.getWechatNickName());
+        List<UserWechat> resultList = userWechatService.listForAdmin(body.getAppId(), body.getUserId(), body.getWechatNickName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserWechat.USER_WECHAT_ID,
@@ -51,8 +51,8 @@ public class UserWechatAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户微信信息")
-    @RequestMapping(value = "/user/wechat/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserWechat body) {
+    @RequestMapping(value = "/user/wechat/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserWechat body) {
         validateRequest(
                 body,
                 UserWechat.APP_ID,
@@ -79,8 +79,8 @@ public class UserWechatAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户微信")
-    @RequestMapping(value = "/user/wechat/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserWechat body) {
+    @RequestMapping(value = "/user/wechat/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserWechat body) {
         validateRequest(
                 body,
                 UserWechat.APP_ID,
@@ -102,8 +102,8 @@ public class UserWechatAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户微信")
-    @RequestMapping(value = "/user/wechat/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserWechat body) {
+    @RequestMapping(value = "/user/wechat/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserWechat body) {
         validateRequest(
                 body,
                 UserWechat.USER_WECHAT_ID,
@@ -127,8 +127,8 @@ public class UserWechatAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户微信")
-    @RequestMapping(value = "/user/wechat/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserWechat body) {
+    @RequestMapping(value = "/user/wechat/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserWechat body) {
         validateRequest(
                 body,
                 UserWechat.USER_WECHAT_ID,

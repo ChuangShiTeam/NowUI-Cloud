@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, TopicForum> implements TopicForumService {
 
     @Override
-    public Integer adminCount(String appId, String forumId, String topicId) {
+    public Integer countForAdmin(String appId, String forumId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     }
 
     @Override
-    public List<TopicForum> adminList(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize) {
+    public List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicForum> topicForumList = list(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)

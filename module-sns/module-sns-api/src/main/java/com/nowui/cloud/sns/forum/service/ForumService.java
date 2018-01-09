@@ -35,7 +35,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param boolean4 是否推荐
      * @return Integer 论坛信息统计
      */
-    Integer adminCount(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand);
+    Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand);
 
     /**
      * 论坛信息列表
@@ -60,5 +60,5 @@ public interface ForumService extends BaseService<Forum> {
      * @param pageSize 每页个数
      * @return List<Forum> 论坛信息列表
      */
-    List<Forum> adminList(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTimete, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize);
+    List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTimete, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize);
 }

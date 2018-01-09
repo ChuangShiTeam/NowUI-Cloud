@@ -27,8 +27,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
     private MemberDialogueRecordService memberDialogueRecordService;
 
     @ApiOperation(value = "会员对话记录列表")
-    @RequestMapping(value = "/member/dialogue/record/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody MemberDialogueRecord body) {
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody MemberDialogueRecord body) {
         validateRequest(
                 body,
                 MemberDialogueRecord.APP_ID,
@@ -39,8 +39,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
                 MemberDialogueRecord.PAGE_SIZE
         );
 
-        Integer resultTotal = memberDialogueRecordService.adminCount(body.getAppId() , body.getMemberDialogueId(), body.getMemberId(), body.getUserId());
-        List<MemberDialogueRecord> resultList = memberDialogueRecordService.adminList(body.getAppId(), body.getMemberDialogueId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberDialogueRecordService.countForAdmin(body.getAppId() , body.getMemberDialogueId(), body.getMemberId(), body.getUserId());
+        List<MemberDialogueRecord> resultList = memberDialogueRecordService.listForAdmin(body.getAppId(), body.getMemberDialogueId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 MemberDialogueRecord.MEMBER_DIALOGUE_RECORD_ID,
@@ -53,8 +53,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员对话记录信息")
-    @RequestMapping(value = "/member/dialogue/record/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody MemberDialogueRecord body) {
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody MemberDialogueRecord body) {
         validateRequest(
                 body,
                 MemberDialogueRecord.APP_ID,
@@ -75,8 +75,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员对话记录")
-    @RequestMapping(value = "/member/dialogue/record/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody MemberDialogueRecord body) {
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody MemberDialogueRecord body) {
         validateRequest(
                 body,
                 MemberDialogueRecord.APP_ID,
@@ -92,8 +92,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员对话记录")
-    @RequestMapping(value = "/member/dialogue/record/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody MemberDialogueRecord body) {
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody MemberDialogueRecord body) {
         validateRequest(
                 body,
                 MemberDialogueRecord.MEMBER_DIALOGUE_RECORD_ID,
@@ -111,8 +111,8 @@ public class MemberDialogueRecordAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员对话记录")
-    @RequestMapping(value = "/member/dialogue/record/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody MemberDialogueRecord body) {
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody MemberDialogueRecord body) {
         validateRequest(
                 body,
                 MemberDialogueRecord.MEMBER_DIALOGUE_RECORD_ID,

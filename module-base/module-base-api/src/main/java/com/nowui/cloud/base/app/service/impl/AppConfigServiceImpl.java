@@ -26,7 +26,7 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     private AppConfigCategoryService appConfigCategoryService;
     
     @Override
-    public Integer adminCount(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {
+    public Integer countForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {
         Integer count = count(
                 new BaseWrapper<AppConfig>()
                         .eq(AppConfig.APP_ID, appId)
@@ -39,7 +39,7 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
     }
 
     @Override
-    public List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled,
+    public List<AppConfig> listForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled,
             Integer pageIndex, Integer pageSize) {
         List<AppConfig> appConfigList = list(
                 new BaseWrapper<AppConfig>()

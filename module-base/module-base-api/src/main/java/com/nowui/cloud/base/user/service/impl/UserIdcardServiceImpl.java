@@ -21,7 +21,7 @@ import java.util.List;
 public class UserIdcardServiceImpl extends BaseServiceImpl<UserIdcardMapper, UserIdcard> implements UserIdcardService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String userName, String userIdcardNumber) {
+    public Integer countForAdmin(String appId, String userId, String userName, String userIdcardNumber) {
         Integer count = count(
                 new BaseWrapper<UserIdcard>()
                         .eq(UserIdcard.APP_ID, appId)
@@ -34,7 +34,7 @@ public class UserIdcardServiceImpl extends BaseServiceImpl<UserIdcardMapper, Use
     }
 
     @Override
-    public List<UserIdcard> adminList(String appId, String userId, String userName, String userIdcardNumber, Integer pageIndex, Integer pageSize) {
+    public List<UserIdcard> listForAdmin(String appId, String userId, String userName, String userIdcardNumber, Integer pageIndex, Integer pageSize) {
         List<UserIdcard> userIdcardList = list(
                 new BaseWrapper<UserIdcard>()
                         .eq(UserIdcard.APP_ID, appId)

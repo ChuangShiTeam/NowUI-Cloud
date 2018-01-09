@@ -32,7 +32,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, SmsCaptcha> implements SmsCaptchaService {
 
     @Override
-    public Integer adminCount(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress) {
+    public Integer countForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress) {
         Integer count = count(
                 new BaseWrapper<SmsCaptcha>()
                         .eq(SmsCaptcha.APP_ID, appId)
@@ -45,7 +45,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
     }
 
     @Override
-    public List<SmsCaptcha> adminList(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize) {
+    public List<SmsCaptcha> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize) {
         List<SmsCaptcha> smsCaptchaList = list(
                 new BaseWrapper<SmsCaptcha>()
                         .eq(SmsCaptcha.APP_ID, appId)

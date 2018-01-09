@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberDialogueServiceImpl extends BaseServiceImpl<MemberDialogueMapper, MemberDialogue> implements MemberDialogueService {
 
     @Override
-    public Integer adminCount(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId) {
+    public Integer countForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId) {
         Integer count = count(
                 new BaseWrapper<MemberDialogue>()
                         .eq(MemberDialogue.APP_ID, appId)
@@ -35,7 +35,7 @@ public class MemberDialogueServiceImpl extends BaseServiceImpl<MemberDialogueMap
     }
 
     @Override
-    public List<MemberDialogue> adminList(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId, Integer pageIndex, Integer pageSize) {
+    public List<MemberDialogue> listForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId, Integer pageIndex, Integer pageSize) {
         List<MemberDialogue> memberDialogueList = list(
                 new BaseWrapper<MemberDialogue>()
                         .eq(MemberDialogue.APP_ID, appId)

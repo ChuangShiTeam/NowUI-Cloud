@@ -21,7 +21,7 @@ public interface ArticleUserBookmarkService extends BaseService<ArticleUserBookm
      * @param useId 用户编号
      * @return Integer 文章用户收藏统计
      */
-    Integer adminCount(String appId, String articleId, String useId);
+    Integer countForAdmin(String appId, String articleId, String useId);
 
     /**
      * 文章用户收藏列表
@@ -33,5 +33,5 @@ public interface ArticleUserBookmarkService extends BaseService<ArticleUserBookm
      * @param pageSize 每页个数
      * @return List<ArticleUserBookmark> 文章用户收藏列表
      */
-    List<ArticleUserBookmark> adminList(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize);
+    List<ArticleUserBookmark> listForAdmin(String appId, String articleId, String useId, Integer pageIndex, Integer pageSize);
 }

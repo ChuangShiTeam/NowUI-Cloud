@@ -21,7 +21,7 @@ import java.util.List;
 public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, UserAvatar> implements UserAvatarService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String userAvatar) {
+    public Integer countForAdmin(String appId, String userId, String userAvatar) {
         Integer count = count(
                 new BaseWrapper<UserAvatar>()
                         .eq(UserAvatar.APP_ID, appId)
@@ -33,7 +33,7 @@ public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, Use
     }
 
     @Override
-    public List<UserAvatar> adminList(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize) {
+    public List<UserAvatar> listForAdmin(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize) {
         List<UserAvatar> userAvatarList = list(
                 new BaseWrapper<UserAvatar>()
                         .eq(UserAvatar.APP_ID, appId)

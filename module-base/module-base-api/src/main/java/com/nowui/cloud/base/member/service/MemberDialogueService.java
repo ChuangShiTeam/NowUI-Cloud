@@ -23,7 +23,7 @@ public interface MemberDialogueService extends BaseService<MemberDialogue> {
      * @param respondUserId 响应用户编号
      * @return Integer 会员对话统计
      */
-    Integer adminCount(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId);
+    Integer countForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId);
 
     /**
      * 会员对话列表
@@ -37,5 +37,5 @@ public interface MemberDialogueService extends BaseService<MemberDialogue> {
      * @param pageSize 每页个数
      * @return List<MemberDialogue> 会员对话列表
      */
-    List<MemberDialogue> adminList(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId, Integer pageIndex, Integer pageSize);
+    List<MemberDialogue> listForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId, Integer pageIndex, Integer pageSize);
 }

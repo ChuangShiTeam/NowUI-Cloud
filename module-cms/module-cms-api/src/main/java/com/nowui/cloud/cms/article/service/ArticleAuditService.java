@@ -23,7 +23,7 @@ public interface ArticleAuditService extends BaseService<ArticleAudit> {
      * @param articleAuditStatus 审核状态
      * @return Integer 文章审核统计
      */
-    Integer adminCount(String appId, String articleId, String userId, String articleAuditStatus);
+    Integer countForAdmin(String appId, String articleId, String userId, String articleAuditStatus);
 
     /**
      * 文章审核列表
@@ -36,5 +36,5 @@ public interface ArticleAuditService extends BaseService<ArticleAudit> {
      * @param pageSize 每页个数
      * @return List<ArticleAudit> 文章审核列表
      */
-    List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize);
+    List<ArticleAudit> listForAdmin(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize);
 }

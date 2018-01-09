@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Override
-    public Integer adminCount(String appId, String productName) {
+    public Integer countForAdmin(String appId, String productName) {
         Integer count = count(
                 new BaseWrapper<Product>()
                         .eq(Product.APP_ID, appId)
@@ -28,7 +28,7 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
     }
 
     @Override
-    public List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize) {
+    public List<Product> listForAdmin(String appId, String productName, Integer pageIndex, Integer pageSize) {
         List<Product> productList = list(
                 new BaseWrapper<Product>()
                         .eq(Product.APP_ID, appId)

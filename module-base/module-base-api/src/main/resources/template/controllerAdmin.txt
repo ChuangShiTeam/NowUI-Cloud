@@ -39,8 +39,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.adminCount(body.getAppId() <%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.adminList(body.getAppId()<%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>, body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(body.getAppId() <%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>);
+        List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(body.getAppId()<%for(column in searchColumnList){%>, body.get${column.firstUpperColumnName}()<%}%>, body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},

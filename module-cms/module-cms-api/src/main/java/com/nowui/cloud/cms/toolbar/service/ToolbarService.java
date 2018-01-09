@@ -21,7 +21,7 @@ public interface ToolbarService extends BaseService<Toolbar>{
      * @param toolbarName 工具栏名称
      * @return Integer 工具栏数量
      */
-    Integer adminCount(String appId, String toolbarName);
+    Integer countForAdmin(String appId, String toolbarName);
 
     /**
      * 工具栏列表
@@ -32,7 +32,7 @@ public interface ToolbarService extends BaseService<Toolbar>{
      * @param n 取n条数据
      * @return List<Toolbar> 工具栏列表
      */
-    List<Toolbar> adminList(String appId, String toolbarName, Integer m, Integer n);
+    List<Toolbar> listForAdmin(String appId, String toolbarName, Integer m, Integer n);
 
     /**
      * 工具栏列表

@@ -27,8 +27,8 @@ public class UserEmailAdminController extends BaseController {
     private UserEmailService userEmailService;
 
     @ApiOperation(value = "用户邮箱列表")
-    @RequestMapping(value = "/user/email/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserEmail body) {
+    @RequestMapping(value = "/user/email/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserEmail body) {
         validateRequest(
                 body,
                 UserEmail.APP_ID,
@@ -38,8 +38,8 @@ public class UserEmailAdminController extends BaseController {
                 UserEmail.PAGE_SIZE
         );
 
-        Integer resultTotal = userEmailService.adminCount(body.getAppId() , body.getUserId(), body.getUserEmail());
-        List<UserEmail> resultList = userEmailService.adminList(body.getAppId(), body.getUserId(), body.getUserEmail(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userEmailService.countForAdmin(body.getAppId() , body.getUserId(), body.getUserEmail());
+        List<UserEmail> resultList = userEmailService.listForAdmin(body.getAppId(), body.getUserId(), body.getUserEmail(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserEmail.USER_EMAIL_ID,
@@ -51,8 +51,8 @@ public class UserEmailAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户邮箱信息")
-    @RequestMapping(value = "/user/email/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserEmail body) {
+    @RequestMapping(value = "/user/email/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserEmail body) {
         validateRequest(
                 body,
                 UserEmail.APP_ID,
@@ -71,8 +71,8 @@ public class UserEmailAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户邮箱")
-    @RequestMapping(value = "/user/email/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserEmail body) {
+    @RequestMapping(value = "/user/email/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserEmail body) {
         validateRequest(
                 body,
                 UserEmail.APP_ID,
@@ -86,8 +86,8 @@ public class UserEmailAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户邮箱")
-    @RequestMapping(value = "/user/email/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserEmail body) {
+    @RequestMapping(value = "/user/email/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserEmail body) {
         validateRequest(
                 body,
                 UserEmail.USER_EMAIL_ID,
@@ -103,8 +103,8 @@ public class UserEmailAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户邮箱")
-    @RequestMapping(value = "/user/email/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserEmail body) {
+    @RequestMapping(value = "/user/email/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserEmail body) {
         validateRequest(
                 body,
                 UserEmail.USER_EMAIL_ID,

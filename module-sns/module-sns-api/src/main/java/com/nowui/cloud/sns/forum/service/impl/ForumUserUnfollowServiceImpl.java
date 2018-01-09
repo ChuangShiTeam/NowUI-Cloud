@@ -21,7 +21,7 @@ import java.util.List;
 public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfollowMapper, ForumUserUnfollow> implements ForumUserUnfollowService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String forumId) {
+    public Integer countForAdmin(String appId, String userId, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumUserUnfollow>()
                         .eq(ForumUserUnfollow.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
     }
 
     @Override
-    public List<ForumUserUnfollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserUnfollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumUserUnfollow> forumUserUnfollowList = list(
                 new BaseWrapper<ForumUserUnfollow>()
                         .eq(ForumUserUnfollow.APP_ID, appId)

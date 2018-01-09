@@ -19,7 +19,7 @@ public interface AppService extends BaseService<App>, AppRpc {
      * @param appName 应用名称
      * @return Integer 应用数量
      */
-    Integer adminCount(String appName);
+    Integer countForAdmin(String appName);
 
     /**
      * 应用列表
@@ -29,7 +29,7 @@ public interface AppService extends BaseService<App>, AppRpc {
      * @param pageSize 每页个数
      * @return List<App> 应用列表
      */
-    List<App> adminList(String appName, Integer pageIndex, Integer pageSize);
+    List<App> listForAdmin(String appName, Integer pageIndex, Integer pageSize);
     
     /**
      * 验证名称唯一性

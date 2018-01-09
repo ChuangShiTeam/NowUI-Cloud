@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper, MemberFollow> implements MemberFollowService {
 
     @Override
-    public Integer adminCount(String appId, String memberId, String userId) {
+    public Integer countForAdmin(String appId, String memberId, String userId) {
         Integer count = count(
                 new BaseWrapper<MemberFollow>()
                         .eq(MemberFollow.APP_ID, appId)
@@ -33,7 +33,7 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
     }
 
     @Override
-    public List<MemberFollow> adminList(String appId, String memberId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<MemberFollow> listForAdmin(String appId, String memberId, String userId, Integer pageIndex, Integer pageSize) {
         List<MemberFollow> memberFollowList = list(
                 new BaseWrapper<MemberFollow>()
                         .eq(MemberFollow.APP_ID, appId)

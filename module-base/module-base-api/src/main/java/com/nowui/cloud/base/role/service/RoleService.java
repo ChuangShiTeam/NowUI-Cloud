@@ -21,7 +21,7 @@ public interface RoleService extends BaseService<Role> {
      * @param roleCode 编码
      * @return Integer 角色统计
      */
-    Integer adminCount(String appId, String roleName, String roleCode);
+    Integer countForAdmin(String appId, String roleName, String roleCode);
 
     /**
      * 角色列表
@@ -33,5 +33,5 @@ public interface RoleService extends BaseService<Role> {
      * @param pageSize 每页个数
      * @return List<Role> 角色列表
      */
-    List<Role> adminList(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize);
+    List<Role> listForAdmin(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize);
 }

@@ -29,7 +29,7 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
     private FileRpc fileRpc;
     
     @Override
-    public Integer adminCount(String appId, String advertisementCategoryCode, String advertisementTitle) {
+    public Integer countForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle) {
         Integer count = count(
                 new BaseWrapper<Advertisement>()
                         .eq(Advertisement.APP_ID, appId)
@@ -41,7 +41,7 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
     }
 
     @Override
-    public List<Advertisement> adminList(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m,
+    public List<Advertisement> listForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m,
             Integer n) {
         List<Advertisement> advertisementList = list(
                 new BaseWrapper<Advertisement>()

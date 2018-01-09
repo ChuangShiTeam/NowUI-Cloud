@@ -22,7 +22,7 @@ import java.util.List;
 public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implements ForumService {
 
     @Override
-    public Integer adminCount(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand) {
+    public Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand) {
         Integer count = count(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)
@@ -47,7 +47,7 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
     }
 
     @Override
-    public List<Forum> adminList(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize) {
+    public List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize) {
         List<Forum> forumList = list(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)

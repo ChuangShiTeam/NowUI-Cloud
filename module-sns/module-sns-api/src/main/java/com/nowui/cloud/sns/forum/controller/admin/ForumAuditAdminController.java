@@ -27,8 +27,8 @@ public class ForumAuditAdminController extends BaseController {
     private ForumAuditService forumAuditService;
 
     @ApiOperation(value = "论坛审核信息列表")
-    @RequestMapping(value = "/forum/audit/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ForumAudit body) {
+    @RequestMapping(value = "/forum/audit/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ForumAudit body) {
         validateRequest(
                 body,
                 ForumAudit.APP_ID,
@@ -39,8 +39,8 @@ public class ForumAuditAdminController extends BaseController {
                 ForumAudit.PAGE_SIZE
         );
 
-        Integer resultTotal = forumAuditService.adminCount(body.getAppId() , body.getForumAuditStatus(), body.getForumId());
-        List<ForumAudit> resultList = forumAuditService.adminList(body.getAppId(), body.getForumAuditStatus(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumAuditService.countForAdmin(body.getAppId() , body.getForumAuditStatus(), body.getForumId());
+        List<ForumAudit> resultList = forumAuditService.listForAdmin(body.getAppId(), body.getForumAuditStatus(), body.getForumId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumAudit.FORUM_AUDIT_ID,
@@ -53,8 +53,8 @@ public class ForumAuditAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛审核信息信息")
-    @RequestMapping(value = "/forum/audit/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ForumAudit body) {
+    @RequestMapping(value = "/forum/audit/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ForumAudit body) {
         validateRequest(
                 body,
                 ForumAudit.APP_ID,
@@ -74,8 +74,8 @@ public class ForumAuditAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增论坛审核信息")
-    @RequestMapping(value = "/forum/audit/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ForumAudit body) {
+    @RequestMapping(value = "/forum/audit/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ForumAudit body) {
         validateRequest(
                 body,
                 ForumAudit.APP_ID,
@@ -90,8 +90,8 @@ public class ForumAuditAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改论坛审核信息")
-    @RequestMapping(value = "/forum/audit/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ForumAudit body) {
+    @RequestMapping(value = "/forum/audit/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ForumAudit body) {
         validateRequest(
                 body,
                 ForumAudit.FORUM_AUDIT_ID,
@@ -108,8 +108,8 @@ public class ForumAuditAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除论坛审核信息")
-    @RequestMapping(value = "/forum/audit/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ForumAudit body) {
+    @RequestMapping(value = "/forum/audit/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ForumAudit body) {
         validateRequest(
                 body,
                 ForumAudit.FORUM_AUDIT_ID,

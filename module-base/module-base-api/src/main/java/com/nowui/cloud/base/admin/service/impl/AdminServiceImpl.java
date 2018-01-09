@@ -35,7 +35,7 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
 
     @Override
     public List<Admin> listForAdmin(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize) {
-        List<Admin> adminList = new ArrayList<>();
+        List<Admin> listForAdmin = new ArrayList<>();
         
         List<User> userList = userRpc.list(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile, pageIndex, pageSize);
         
@@ -45,10 +45,10 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
             admin.setAdminId(user.getObjectId());
             admin.putAll(user);
             
-            adminList.add(admin);
+            listForAdmin.add(admin);
         }
         
-        return adminList;
+        return listForAdmin;
     }
     
     @Override

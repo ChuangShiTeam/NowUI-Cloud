@@ -21,7 +21,7 @@ public interface UserMobileService extends BaseService<UserMobile> {
      * @param userMobile 手机号码
      * @return Integer 用户手机号码统计
      */
-    Integer adminCount(String appId, String userId, String userMobile);
+    Integer countForAdmin(String appId, String userId, String userMobile);
 
     /**
      * 用户手机号码列表
@@ -33,5 +33,5 @@ public interface UserMobileService extends BaseService<UserMobile> {
      * @param pageSize 每页个数
      * @return List<UserMobile> 用户手机号码列表
      */
-    List<UserMobile> adminList(String appId, String userId, String userMobile, Integer pageIndex, Integer pageSize);
+    List<UserMobile> listForAdmin(String appId, String userId, String userMobile, Integer pageIndex, Integer pageSize);
 }

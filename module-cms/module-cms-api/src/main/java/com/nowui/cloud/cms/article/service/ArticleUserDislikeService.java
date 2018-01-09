@@ -21,7 +21,7 @@ public interface ArticleUserDislikeService extends BaseService<ArticleUserDislik
      * @param userId 用户编号
      * @return Integer 文章用户鄙视统计
      */
-    Integer adminCount(String appId, String articleId, String userId);
+    Integer countForAdmin(String appId, String articleId, String userId);
 
     /**
      * 文章用户鄙视列表
@@ -33,5 +33,5 @@ public interface ArticleUserDislikeService extends BaseService<ArticleUserDislik
      * @param pageSize 每页个数
      * @return List<ArticleUserDislike> 文章用户鄙视列表
      */
-    List<ArticleUserDislike> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
+    List<ArticleUserDislike> listForAdmin(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
 }

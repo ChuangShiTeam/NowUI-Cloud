@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicReplayLikeServiceImpl extends BaseServiceImpl<TopicReplayLikeMapper, TopicReplayLike> implements TopicReplayLikeService {
 
     @Override
-    public Integer adminCount(String appId, String topicCommentId, String userId) {
+    public Integer countForAdmin(String appId, String topicCommentId, String userId) {
         Integer count = count(
                 new BaseWrapper<TopicReplayLike>()
                         .eq(TopicReplayLike.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicReplayLikeServiceImpl extends BaseServiceImpl<TopicReplayLikeM
     }
 
     @Override
-    public List<TopicReplayLike> adminList(String appId, String topicCommentId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicReplayLike> listForAdmin(String appId, String topicCommentId, String userId, Integer pageIndex, Integer pageSize) {
         List<TopicReplayLike> topicReplayLikeList = list(
                 new BaseWrapper<TopicReplayLike>()
                         .eq(TopicReplayLike.APP_ID, appId)

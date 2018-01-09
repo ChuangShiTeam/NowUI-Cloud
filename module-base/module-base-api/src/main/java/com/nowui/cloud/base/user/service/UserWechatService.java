@@ -21,7 +21,7 @@ public interface UserWechatService extends BaseService<UserWechat> {
      * @param wechatNickName 微信昵称
      * @return Integer 用户微信统计
      */
-    Integer adminCount(String appId, String userId, String wechatNickName);
+    Integer countForAdmin(String appId, String userId, String wechatNickName);
 
     /**
      * 用户微信列表
@@ -33,5 +33,5 @@ public interface UserWechatService extends BaseService<UserWechat> {
      * @param pageSize 每页个数
      * @return List<UserWechat> 用户微信列表
      */
-    List<UserWechat> adminList(String appId, String userId, String wechatNickName, Integer pageIndex, Integer pageSize);
+    List<UserWechat> listForAdmin(String appId, String userId, String wechatNickName, Integer pageIndex, Integer pageSize);
 }

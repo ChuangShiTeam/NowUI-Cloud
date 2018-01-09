@@ -22,7 +22,7 @@ public interface AppConfigService extends BaseService<AppConfig>, AppConfigRpc {
      * @param configIsDisabled 是否禁用
      * @return Integer 应用配置数量
      */
-    Integer adminCount(String appId, String configCategoryId, String configKey, Boolean configIsDisabled);
+    Integer countForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled);
 
     /**
      * 应用配置列表
@@ -35,6 +35,6 @@ public interface AppConfigService extends BaseService<AppConfig>, AppConfigRpc {
      * @param pageSize 每页个数
      * @return List<AppConfig> 应用列表
      */
-    List<AppConfig> adminList(String appId, String configCategoryId, String configKey, Boolean configIsDisabled, Integer pageIndex, Integer pageSize);
+    List<AppConfig> listForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled, Integer pageIndex, Integer pageSize);
 
 }

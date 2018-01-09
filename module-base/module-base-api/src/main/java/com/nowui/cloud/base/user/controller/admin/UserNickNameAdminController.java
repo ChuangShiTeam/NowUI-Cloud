@@ -27,8 +27,8 @@ public class UserNickNameAdminController extends BaseController {
     private UserNickNameService userNickNameService;
 
     @ApiOperation(value = "用户昵称列表")
-    @RequestMapping(value = "/user/nick/name/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserNickName body) {
+    @RequestMapping(value = "/user/nick/name/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserNickName body) {
         validateRequest(
                 body,
                 UserNickName.APP_ID,
@@ -38,8 +38,8 @@ public class UserNickNameAdminController extends BaseController {
                 UserNickName.PAGE_SIZE
         );
 
-        Integer resultTotal = userNickNameService.adminCount(body.getAppId() , body.getUserId(), body.getUserNickName());
-        List<UserNickName> resultList = userNickNameService.adminList(body.getAppId(), body.getUserId(), body.getUserNickName(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userNickNameService.countForAdmin(body.getAppId() , body.getUserId(), body.getUserNickName());
+        List<UserNickName> resultList = userNickNameService.listForAdmin(body.getAppId(), body.getUserId(), body.getUserNickName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserNickName.USER_NICK_NAME_ID,
@@ -51,8 +51,8 @@ public class UserNickNameAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户昵称信息")
-    @RequestMapping(value = "/user/nick/name/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserNickName body) {
+    @RequestMapping(value = "/user/nick/name/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserNickName body) {
         validateRequest(
                 body,
                 UserNickName.APP_ID,
@@ -71,8 +71,8 @@ public class UserNickNameAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户昵称")
-    @RequestMapping(value = "/user/nick/name/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserNickName body) {
+    @RequestMapping(value = "/user/nick/name/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserNickName body) {
         validateRequest(
                 body,
                 UserNickName.APP_ID,
@@ -86,8 +86,8 @@ public class UserNickNameAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户昵称")
-    @RequestMapping(value = "/user/nick/name/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserNickName body) {
+    @RequestMapping(value = "/user/nick/name/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserNickName body) {
         validateRequest(
                 body,
                 UserNickName.USER_NICK_NAME_ID,
@@ -103,8 +103,8 @@ public class UserNickNameAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户昵称")
-    @RequestMapping(value = "/user/nick/name/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserNickName body) {
+    @RequestMapping(value = "/user/nick/name/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserNickName body) {
         validateRequest(
                 body,
                 UserNickName.USER_NICK_NAME_ID,

@@ -32,8 +32,8 @@ public class NavigationAdminController extends BaseController {
     private FileRpc fileRpc;
     
     @ApiOperation(value = "导航栏列表")
-    @RequestMapping(value = "/navigation/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Navigation body) {
+    @RequestMapping(value = "/navigation/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
                 Navigation.APP_ID,
@@ -44,8 +44,8 @@ public class NavigationAdminController extends BaseController {
                 Navigation.PAGE_SIZE
         );
 
-        Integer resultTotal = navigationService.adminCount(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
-        List<Navigation> resultList = navigationService.adminList(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
+        Integer resultTotal = navigationService.countForAdmin(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
+        List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
         validateResponse(
                 Navigation.NAVIGATION_ID,
@@ -62,8 +62,8 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "导航栏信息")
-    @RequestMapping(value = "/navigation/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Navigation body) {
+    @RequestMapping(value = "/navigation/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
                 Navigation.APP_ID,
@@ -91,8 +91,8 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增导航栏")
-    @RequestMapping(value = "/navigation/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Navigation body) {
+    @RequestMapping(value = "/navigation/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
                 Navigation.APP_ID,
@@ -111,8 +111,8 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改导航栏")
-    @RequestMapping(value = "/navigation/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Navigation body) {
+    @RequestMapping(value = "/navigation/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
                 Navigation.NAVIGATION_ID,
@@ -133,8 +133,8 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除导航栏")
-    @RequestMapping(value = "/navigation/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Navigation body) {
+    @RequestMapping(value = "/navigation/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
                 Navigation.NAVIGATION_ID,

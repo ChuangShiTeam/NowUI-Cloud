@@ -23,7 +23,7 @@ public interface MemberInformService extends BaseService<MemberInform> {
      * @param informMemberId 被举报会员编号
      * @return Integer 会员举报统计
      */
-    Integer adminCount(String appId, String memberId, String userId, String informUserId, String informMemberId);
+    Integer countForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId);
 
     /**
      * 会员举报列表
@@ -37,5 +37,5 @@ public interface MemberInformService extends BaseService<MemberInform> {
      * @param pageSize 每页个数
      * @return List<MemberInform> 会员举报列表
      */
-    List<MemberInform> adminList(String appId, String memberId, String userId, String informUserId, String informMemberId, Integer pageIndex, Integer pageSize);
+    List<MemberInform> listForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId, Integer pageIndex, Integer pageSize);
 }

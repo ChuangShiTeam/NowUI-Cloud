@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper, ArticleAudit> implements ArticleAuditService {
 
     @Override
-    public Integer adminCount(String appId, String articleId, String userId, String articleAuditStatus) {
+    public Integer countForAdmin(String appId, String articleId, String userId, String articleAuditStatus) {
         Integer count = count(
                 new BaseWrapper<ArticleAudit>()
                         .eq(ArticleAudit.APP_ID, appId)
@@ -35,7 +35,7 @@ public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper,
     }
 
     @Override
-    public List<ArticleAudit> adminList(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize) {
+    public List<ArticleAudit> listForAdmin(String appId, String articleId, String userId, String articleAuditStatus, Integer pageIndex, Integer pageSize) {
         List<ArticleAudit> articleAuditList = list(
                 new BaseWrapper<ArticleAudit>()
                         .eq(ArticleAudit.APP_ID, appId)

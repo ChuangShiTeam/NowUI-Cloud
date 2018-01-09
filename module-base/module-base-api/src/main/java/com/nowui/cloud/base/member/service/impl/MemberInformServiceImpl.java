@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberInformServiceImpl extends BaseServiceImpl<MemberInformMapper, MemberInform> implements MemberInformService {
 
     @Override
-    public Integer adminCount(String appId, String memberId, String userId, String informUserId, String informMemberId) {
+    public Integer countForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId) {
         Integer count = count(
                 new BaseWrapper<MemberInform>()
                         .eq(MemberInform.APP_ID, appId)
@@ -35,7 +35,7 @@ public class MemberInformServiceImpl extends BaseServiceImpl<MemberInformMapper,
     }
 
     @Override
-    public List<MemberInform> adminList(String appId, String memberId, String userId, String informUserId, String informMemberId, Integer pageIndex, Integer pageSize) {
+    public List<MemberInform> listForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId, Integer pageIndex, Integer pageSize) {
         List<MemberInform> memberInformList = list(
                 new BaseWrapper<MemberInform>()
                         .eq(MemberInform.APP_ID, appId)

@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements AppService {
 
     @Override
-    public Integer adminCount(String appName) {
+    public Integer countForAdmin(String appName) {
         Integer count = count(
                 new BaseWrapper<App>()
                         .like(App.APP_NAME, appName)
@@ -31,7 +31,7 @@ public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements A
     }
 
     @Override
-    public List<App> adminList(String appName, Integer pageIndex, Integer pageSize) {
+    public List<App> listForAdmin(String appName, Integer pageIndex, Integer pageSize) {
         List<App> appList = list(
                 new BaseWrapper<App>()
                         .like(App.APP_NAME, appName)

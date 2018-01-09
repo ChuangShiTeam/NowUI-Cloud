@@ -25,7 +25,7 @@ public interface FileService extends BaseService<File> {
      * @param fileType 类型
      * @return Integer 文件统计
      */
-    Integer adminCount(String appId, String systemCreateUserId, String fileName, String fileType);
+    Integer countForAdmin(String appId, String systemCreateUserId, String fileName, String fileType);
 
     /**
      * 文件列表
@@ -38,7 +38,7 @@ public interface FileService extends BaseService<File> {
      * @param pageSize 每页个数
      * @return List<File> 文件列表
      */
-    List<File> adminList(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize);
+    List<File> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize);
     
     /**
      * 视频上传

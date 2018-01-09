@@ -21,7 +21,7 @@ import java.util.List;
 public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String roleId, String userType) {
+    public Integer countForAdmin(String appId, String userId, String roleId, String userType) {
         Integer count = count(
                 new BaseWrapper<UserRole>()
                         .eq(UserRole.APP_ID, appId)
@@ -34,7 +34,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRol
     }
 
     @Override
-    public List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize) {
+    public List<UserRole> listForAdmin(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize) {
         List<UserRole> userRoleList = list(
                 new BaseWrapper<UserRole>()
                         .eq(UserRole.APP_ID, appId)

@@ -38,8 +38,8 @@ public class AdvertisementAdminController extends BaseController {
     private FileRpc fileRpc;
     
     @ApiOperation(value = "广告分页列表")
-    @RequestMapping(value = "/advertisement/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Advertisement body) {
+    @RequestMapping(value = "/advertisement/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Advertisement body) {
         validateRequest(
             body, 
             Advertisement.APP_ID, 
@@ -49,8 +49,8 @@ public class AdvertisementAdminController extends BaseController {
             Advertisement.PAGE_SIZE
         );
 
-        Integer resultTotal = advertisementService.adminCount(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle());
-        List<Advertisement> resultList = advertisementService.adminList(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle(), body.getM(), body.getN());
+        Integer resultTotal = advertisementService.countForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle());
+        List<Advertisement> resultList = advertisementService.listForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle(), body.getM(), body.getN());
 
         validateResponse(
             Advertisement.ADEVERTISEMENT_ID, 
@@ -67,8 +67,8 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询广告信息")
-    @RequestMapping(value = "/advertisement/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Advertisement body) {
+    @RequestMapping(value = "/advertisement/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Advertisement body) {
         validateRequest(body, Advertisement.ADEVERTISEMENT_ID);
 
         Advertisement result = advertisementService.find(body.getAdvertisementId());
@@ -96,8 +96,8 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告新增")
-    @RequestMapping(value = "/advertisement/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Advertisement body) {
+    @RequestMapping(value = "/advertisement/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Advertisement body) {
         validateRequest(
             body, 
             Advertisement.APP_ID, 
@@ -118,8 +118,8 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告修改")
-    @RequestMapping(value = "/advertisement/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Advertisement body) {
+    @RequestMapping(value = "/advertisement/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Advertisement body) {
         validateRequest(
             body, 
             Advertisement.ADEVERTISEMENT_ID, 
@@ -142,8 +142,8 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告删除")
-    @RequestMapping(value = "/advertisement/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Advertisement body) {
+    @RequestMapping(value = "/advertisement/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Advertisement body) {
         validateRequest(
             body, 
             Advertisement.ADEVERTISEMENT_ID, 

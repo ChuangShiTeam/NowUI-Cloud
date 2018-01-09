@@ -27,8 +27,8 @@ public class UserAvatarAdminController extends BaseController {
     private UserAvatarService userAvatarService;
 
     @ApiOperation(value = "用户头像列表")
-    @RequestMapping(value = "/user/avatar/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody UserAvatar body) {
+    @RequestMapping(value = "/user/avatar/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody UserAvatar body) {
         validateRequest(
                 body,
                 UserAvatar.APP_ID,
@@ -38,8 +38,8 @@ public class UserAvatarAdminController extends BaseController {
                 UserAvatar.PAGE_SIZE
         );
 
-        Integer resultTotal = userAvatarService.adminCount(body.getAppId() , body.getUserId(), body.getUserAvatar());
-        List<UserAvatar> resultList = userAvatarService.adminList(body.getAppId(), body.getUserId(), body.getUserAvatar(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = userAvatarService.countForAdmin(body.getAppId() , body.getUserId(), body.getUserAvatar());
+        List<UserAvatar> resultList = userAvatarService.listForAdmin(body.getAppId(), body.getUserId(), body.getUserAvatar(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 UserAvatar.USER_AVATAR_ID,
@@ -51,8 +51,8 @@ public class UserAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户头像信息")
-    @RequestMapping(value = "/user/avatar/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody UserAvatar body) {
+    @RequestMapping(value = "/user/avatar/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody UserAvatar body) {
         validateRequest(
                 body,
                 UserAvatar.APP_ID,
@@ -71,8 +71,8 @@ public class UserAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增用户头像")
-    @RequestMapping(value = "/user/avatar/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody UserAvatar body) {
+    @RequestMapping(value = "/user/avatar/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody UserAvatar body) {
         validateRequest(
                 body,
                 UserAvatar.APP_ID,
@@ -86,8 +86,8 @@ public class UserAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户头像")
-    @RequestMapping(value = "/user/avatar/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody UserAvatar body) {
+    @RequestMapping(value = "/user/avatar/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody UserAvatar body) {
         validateRequest(
                 body,
                 UserAvatar.USER_AVATAR_ID,
@@ -103,8 +103,8 @@ public class UserAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户头像")
-    @RequestMapping(value = "/user/avatar/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody UserAvatar body) {
+    @RequestMapping(value = "/user/avatar/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody UserAvatar body) {
         validateRequest(
                 body,
                 UserAvatar.USER_AVATAR_ID,

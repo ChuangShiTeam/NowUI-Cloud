@@ -31,7 +31,7 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
 	    
 	
     @Override
-    public Integer adminCount(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {
+    public Integer countForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {
         Integer count = count(
                 new BaseWrapper<Navigation>()
                         .eq(Navigation.APP_ID, appId)
@@ -44,7 +44,7 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
     }
 
     @Override
-    public List<Navigation> adminList(String appId, String navigationCategoryCode, String navigationCode, String navigationName, Integer m, Integer n) {
+    public List<Navigation> listForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName, Integer m, Integer n) {
         List<Navigation> navigationList = list(
                 new BaseWrapper<Navigation>()
                         .eq(Navigation.APP_ID, appId)

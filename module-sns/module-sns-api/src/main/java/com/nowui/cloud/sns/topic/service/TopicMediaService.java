@@ -22,7 +22,7 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * @param topicMediaType 多媒体类型
      * @return Integer 话题多媒体统计
      */
-    Integer adminCount(String appId, String topicId, String topicMediaId, String topicMediaType);
+    Integer countForAdmin(String appId, String topicId, String topicMediaId, String topicMediaType);
 
     /**
      * 话题多媒体列表
@@ -35,5 +35,5 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * @param pageSize 每页个数
      * @return List<TopicMedia> 话题多媒体列表
      */
-    List<TopicMedia> adminList(String appId, String topicId, String topicMediaId, String topicMediaType, Integer pageIndex, Integer pageSize);
+    List<TopicMedia> listForAdmin(String appId, String topicId, String topicMediaId, String topicMediaType, Integer pageIndex, Integer pageSize);
 }

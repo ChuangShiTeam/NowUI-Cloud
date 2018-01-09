@@ -21,7 +21,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param topicId 话题Id
      * @return Integer 话题论坛关联统计
      */
-    Integer adminCount(String appId, String forumId, String topicId);
+    Integer countForAdmin(String appId, String forumId, String topicId);
 
     /**
      * 话题论坛关联列表
@@ -33,7 +33,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param pageSize 每页个数
      * @return List<TopicForum> 话题论坛关联列表
      */
-    List<TopicForum> adminList(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
 
     Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion);
         

@@ -27,8 +27,8 @@ public class MemberAdminController extends BaseController {
     private MemberService memberService;
 
     @ApiOperation(value = "会员列表")
-    @RequestMapping(value = "/member/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody Member body) {
+    @RequestMapping(value = "/member/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody Member body) {
         validateRequest(
                 body,
                 Member.APP_ID,
@@ -38,8 +38,8 @@ public class MemberAdminController extends BaseController {
                 Member.PAGE_SIZE
         );
 
-        Integer resultTotal = memberService.adminCount(body.getAppId() , body.getMemberIsTop(), body.getMemberIsRecommed());
-        List<Member> resultList = memberService.adminList(body.getAppId(), body.getMemberIsTop(), body.getMemberIsRecommed(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberService.countForAdmin(body.getAppId() , body.getMemberIsTop(), body.getMemberIsRecommed());
+        List<Member> resultList = memberService.listForAdmin(body.getAppId(), body.getMemberIsTop(), body.getMemberIsRecommed(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Member.MEMBER_ID,
@@ -51,8 +51,8 @@ public class MemberAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员信息")
-    @RequestMapping(value = "/member/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Member body) {
+    @RequestMapping(value = "/member/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Member body) {
         validateRequest(
                 body,
                 Member.APP_ID,
@@ -75,8 +75,8 @@ public class MemberAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员")
-    @RequestMapping(value = "/member/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody Member body) {
+    @RequestMapping(value = "/member/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody Member body) {
         validateRequest(
                 body,
                 Member.APP_ID,
@@ -94,8 +94,8 @@ public class MemberAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员")
-    @RequestMapping(value = "/member/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Member body) {
+    @RequestMapping(value = "/member/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody Member body) {
         validateRequest(
                 body,
                 Member.MEMBER_ID,
@@ -115,8 +115,8 @@ public class MemberAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员")
-    @RequestMapping(value = "/member/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Member body) {
+    @RequestMapping(value = "/member/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Member body) {
         validateRequest(
                 body,
                 Member.MEMBER_ID,

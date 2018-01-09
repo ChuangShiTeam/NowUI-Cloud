@@ -36,8 +36,8 @@ public class ArticleCategoryAdminController extends BaseController {
     private ArticleCategoryService articleCategoryService;
     
     @ApiOperation(value = "文章分类列表")
-    @RequestMapping(value = "/article/category/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.APP_ID, 
@@ -46,7 +46,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.adminCount(body.getAppId(), body.getArticleCategoryName());
+        Integer resultTotal = articleCategoryService.countForAdmin(body.getAppId(), body.getArticleCategoryName());
         if (Util.isNullOrEmpty(body.getArticleCategoryName())) {
             
             List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
@@ -56,7 +56,7 @@ public class ArticleCategoryAdminController extends BaseController {
             return renderJson(resultTotal, resultList);
 
         } else {
-            List<ArticleCategory> resultList = articleCategoryService.adminList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
+            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
 
             validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
@@ -82,8 +82,8 @@ public class ArticleCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询文章分类信息")
-    @RequestMapping(value = "/article/category/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ArticleCategory body) {
         validateRequest(body, ArticleCategory.ARTICLE_CATEGORY_ID);
 
         ArticleCategory result = articleCategoryService.find(body.getArticleCategoryId());
@@ -101,8 +101,8 @@ public class ArticleCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章分类新增")
-    @RequestMapping(value = "/article/category/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.APP_ID, 
@@ -142,8 +142,8 @@ public class ArticleCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章分类修改")
-    @RequestMapping(value = "/article/category/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.ARTICLE_CATEGORY_ID, 
@@ -161,8 +161,8 @@ public class ArticleCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章分类删除")
-    @RequestMapping(value = "/article/category/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.ARTICLE_CATEGORY_ID, 

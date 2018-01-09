@@ -22,7 +22,7 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param userType 用户类型
      * @return Integer 用户角色统计
      */
-    Integer adminCount(String appId, String userId, String roleId, String userType);
+    Integer countForAdmin(String appId, String userId, String roleId, String userType);
 
     /**
      * 用户角色列表
@@ -35,5 +35,5 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param pageSize 每页个数
      * @return List<UserRole> 用户角色列表
      */
-    List<UserRole> adminList(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize);
+    List<UserRole> listForAdmin(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize);
 }
