@@ -22,7 +22,7 @@ public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseServ
      <%}%>
      * @return Integer ${tableComment}统计
      */
-    Integer adminCount(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
+    Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
 
     /**
      * ${tableComment}列表
@@ -35,5 +35,5 @@ public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseServ
      * @param pageSize 每页个数
      * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
      */
-    List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
+    List<${firstUpperWithoutUnderlineEntityName}> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
 }

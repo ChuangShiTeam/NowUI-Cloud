@@ -29,12 +29,12 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
     private UserRpc userRpc;
 
     @Override
-    public Integer adminCount(String appId, String userAccount, String userNickName, String userMobile) {
+    public Integer countForAdmin(String appId, String userAccount, String userNickName, String userMobile) {
         return userRpc.count(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile);
     }
 
     @Override
-    public List<Admin> adminList(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize) {
+    public List<Admin> listForAdmin(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize) {
         List<Admin> adminList = new ArrayList<>();
         
         List<User> userList = userRpc.list(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile, pageIndex, pageSize);

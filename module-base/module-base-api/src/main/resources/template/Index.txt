@@ -9,7 +9,7 @@ export default connect(function (state) {
         title: '${tableComment}',
         primaryKey: '${tableId}',
         store: state.${firstLowerWithoutUnderlineEntityName},
-        listUrl: '/${urlEntityName}/admin/list',
+        listUrl: '/${urlEntityName}/admin/v1/list',
         breadcrumbList: [{
             name: '${tableComment}管理',
             url: ''

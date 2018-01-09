@@ -57,9 +57,7 @@ public class UserAdminController extends BaseController {
                 User.USER_NAME,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
-                User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID
+                User.USER_AVATAR
         );
 
         return renderJson(result);
@@ -79,9 +77,7 @@ public class UserAdminController extends BaseController {
                 User.USER_NAME,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
-                User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID
+                User.USER_AVATAR
         );
 
         Boolean result = userService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -105,8 +101,6 @@ public class UserAdminController extends BaseController {
                 User.USER_MOBILE,
                 User.USER_EMAIL,
                 User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID,
                 User.SYSTEM_VERSION
         );
 

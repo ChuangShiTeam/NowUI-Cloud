@@ -21,7 +21,7 @@ import java.util.List;
 public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}> implements ${firstUpperWithoutUnderlineEntityName}Service {
 
     @Override
-    public Integer adminCount(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
+    public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
         Integer count = count(
                 new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
                         .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
@@ -34,7 +34,7 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServ
     }
 
     @Override
-    public List<${firstUpperWithoutUnderlineEntityName}> adminList(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
+    public List<${firstUpperWithoutUnderlineEntityName}> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
         List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = list(
                 new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
                         .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
