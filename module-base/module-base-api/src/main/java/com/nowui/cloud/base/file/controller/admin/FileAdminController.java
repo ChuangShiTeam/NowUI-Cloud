@@ -105,15 +105,15 @@ public class FileAdminController extends BaseController {
     }
     
     @ApiOperation(value = "图片上传")
-    @RequestMapping(value = "/file/admin/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Map<String, Object> upload(
+    @RequestMapping(value = "/file/admin/v1/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Map<String, Object> uploadImageV1(
             @RequestParam(File.APP_ID) String appId,
             @RequestParam(File.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
             @RequestParam("file") MultipartFile[] multipartFiles) {
         if (multipartFiles.length == 0) {
             throw new RuntimeException("上传文件为空");
         }
-        List<File> fileList = fileService.imageUpload(appId, systemRequestUserId, multipartFiles);
+        List<File> fileList = fileService.uploadImage(appId, systemRequestUserId, multipartFiles);
         
         validateResponse(
             File.FILE_ID,

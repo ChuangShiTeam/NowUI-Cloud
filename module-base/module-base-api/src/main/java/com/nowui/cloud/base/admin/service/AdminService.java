@@ -17,24 +17,18 @@ public interface AdminService extends BaseService<Admin> {
      * 管理员统计
      *
      * @param appId 应用编号
-     * @param userAccount 用户账号
-     * @param userNickName 用户昵称
-     * @param userMobile 用户手机号码
      * @return Integer 管理员统计
      */
-    Integer countForAdmin(String appId, String userAccount, String userNickName, String userMobile);
+    Integer countForAdmin(String appId);
 
     /**
      * 管理员列表
      *
      * @param appId 应用编号
-     * @param userAccount 用户账号
-     * @param userNickName 用户昵称
-     * @param userMobile 用户手机号码
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Admin> 管理员列表
      */
-    List<Admin> listForAdmin(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize);
+    List<Admin> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
 
 }

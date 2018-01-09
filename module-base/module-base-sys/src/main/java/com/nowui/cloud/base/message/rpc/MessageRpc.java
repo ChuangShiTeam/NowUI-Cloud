@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-01
  */
-@Component(value = "MessageRpc")
+@Component(value = "messageRpc")
 @FeignClient(name = "module-base")
 public interface MessageRpc {
 

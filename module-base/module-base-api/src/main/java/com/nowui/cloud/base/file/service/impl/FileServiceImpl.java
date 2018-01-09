@@ -68,7 +68,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     }
 
     @Override
-    public List<File> imageUpload(String appId, String userId, MultipartFile[] multipartFiles) {
+    public List<File> uploadImage(String appId, String userId, MultipartFile[] multipartFiles) {
         String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
         String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
         String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
@@ -208,7 +208,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
     }
 
     @Override
-    public List<File> videoUpload(String appId, String userId, String fileCoverImage,
+    public List<File> uploadVideo(String appId, String userId, String fileCoverImage,
             CommonsMultipartFile[] commonsMultipartFiles) {
         return null;
     }

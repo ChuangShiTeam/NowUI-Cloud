@@ -32,18 +32,17 @@ public class UserSystemController implements UserRpc {
 	private FileRpc fileRpc;
 
 	@Override
-	public Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile) {
-		return userService.count(appId, userType, userAccount, userNickName, userName, userMobile);
+	public Integer countV1(String appId, String userType) {
+		return userService.count(appId, userType);
 	}
 
 	@Override
-	public List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile,
-			Integer pageIndex, Integer pageSize) {
-		return userService.list(appId, userType, userAccount, userNickName, userName, userMobile, pageIndex, pageSize);
+	public List<User> listV1(String appId, String userType, Integer pageIndex, Integer pageSize) {
+		return userService.list(appId, userType, pageIndex, pageSize);
 	}
 
     @Override
-    public User find(String userId) {
+    public User findV1(String userId) {
         User user = userService.find(userId);
         
         if (!Util.isNullOrEmpty(user)) {

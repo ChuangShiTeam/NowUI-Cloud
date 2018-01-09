@@ -42,6 +42,6 @@ public interface MenuService extends BaseService<Menu> {
      * @param pageSize 每页个数
      * @return List<Map<String, Object>> 菜单属性列表
      */
-    List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize);
+    List<Map<String, Object>> treeListForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize);
     
 }
