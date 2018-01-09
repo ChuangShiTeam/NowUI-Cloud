@@ -112,6 +112,7 @@ public class AdminAdminController extends BaseController {
                 UserAccount.USER_ACCOUNT,
                 UserAccount.USER_PASSWORD
         );
+        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class);
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
         
