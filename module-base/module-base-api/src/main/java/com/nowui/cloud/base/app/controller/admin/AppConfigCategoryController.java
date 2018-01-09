@@ -45,7 +45,7 @@ public class AppConfigCategoryController extends BaseController {
     
     @ApiOperation(value = "所有应用配置分类列表")
     @RequestMapping(value = "/app/config/category/admin/v1/all/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> allList(@RequestBody AppConfigCategory body) {
+    public Map<String, Object> allListV1(@RequestBody AppConfigCategory body) {
 
         List<AppConfigCategory> resultList = appConfigCategoryService.appList(body.getAppId());
 

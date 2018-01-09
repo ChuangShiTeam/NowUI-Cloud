@@ -25,7 +25,7 @@ public interface FileRpc {
      * @param fileId 文件编号
      * @return file 文件
      */
-    @RequestMapping(value = "/file/system/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.GET)
     File find(@RequestParam(value = "fileId", required = true) String fileId);
 
 }

@@ -45,15 +45,12 @@ public class AdminAdminController extends BaseController {
         validateRequest(
                 body,
                 User.APP_ID,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_MOBILE,
                 User.PAGE_INDEX,
                 User.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.countForAdmin(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile());
-        List<Admin> resultList = adminService.listForAdmin(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = adminService.countForAdmin(body.getAppId());
+        List<Admin> resultList = adminService.listForAdmin(body.getAppId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Admin.ADMIN_ID,

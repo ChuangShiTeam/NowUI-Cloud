@@ -50,7 +50,7 @@ public class MenuAdminController extends BaseController {
         
         if (Util.isNullOrEmpty(body.getMenuName())) {
 			
-        	List<Map<String, Object>> resultList = menuService.adminTreeList(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+        	List<Map<String, Object>> resultList = menuService.treeListForAdmin(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
         	
         	validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
         	

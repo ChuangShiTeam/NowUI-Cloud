@@ -26,20 +26,12 @@ public interface UserRpc {
      *
      * @param appId 应用编号
      * @param userType 用户类型
-     * @param userAccount 用户账号
-     * @param userNickName 用户昵称
-     * @param userName 用户姓名
-     * @param userMobile 用户手机号码
      * @return Integer 用户数量
      */
-    @RequestMapping(value = "/user/system/count", method = RequestMethod.GET)
-    Integer count(
+    @RequestMapping(value = "/user/system/v1/count", method = RequestMethod.GET)
+    Integer countV1(
             @RequestParam(value = "appId", required = true) String appId, 
-            @RequestParam(value = "userType", required = true) String userType, 
-            @RequestParam(value = "userAccount", required = true) String userAccount, 
-            @RequestParam(value = "userNickName", required = true) String userNickName, 
-            @RequestParam(value = "userName", required = true) String userName, 
-            @RequestParam(value = "userMobile", required = true) String userMobile
+            @RequestParam(value = "userType", required = true) String userType
     );
 
     /**
@@ -55,14 +47,10 @@ public interface UserRpc {
      * @param pageSize	每页个数
      * @return List<User> 用户列表
      */
-    @RequestMapping(value = "/user/system/list", method = RequestMethod.GET)
-    List<User> list(
+    @RequestMapping(value = "/user/system/v1/list", method = RequestMethod.GET)
+    List<User> listV1(
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "userType", required = true) String userType, 
-            @RequestParam(value = "userAccount", required = true) String userAccount, 
-            @RequestParam(value = "userNickName", required = true) String userNickName, 
-            @RequestParam(value = "userName", required = true) String userName, 
-            @RequestParam(value = "userMobile", required = true) String userMobile, 
             @RequestParam(value = "pageIndex", required = true) Integer pageIndex, 
             @RequestParam(value = "pageSize", required = true) Integer pageSize
     );
@@ -73,6 +61,6 @@ public interface UserRpc {
      * @param userId 用户编号
      * @return User 用户信息
      */
-    @RequestMapping(value = "/user/system/find", method = RequestMethod.GET)
-    User find(@RequestParam(value = "userId", required = true) String userId);
+    @RequestMapping(value = "/user/system/v1/find", method = RequestMethod.GET)
+    User findV1(@RequestParam(value = "userId", required = true) String userId);
 }

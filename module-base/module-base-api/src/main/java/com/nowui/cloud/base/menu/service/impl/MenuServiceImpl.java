@@ -64,7 +64,7 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
     }
 
 	@Override
-	public List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize) {
+	public List<Map<String, Object>> treeListForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize) {
 		List<Menu> topList = list(
                 new BaseWrapper<Menu>()
                         .eq(Menu.APP_ID, appId)

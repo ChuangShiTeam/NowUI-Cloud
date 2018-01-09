@@ -18,28 +18,20 @@ public interface UserService extends BaseService<User> {
      *
      * @param appId 应用编号
      * @param userType 类型
-     * @param userAccount 账号
-     * @param userNickName 昵称
-     * @param userName 姓名
-     * @param userMobile 手机号码
      * @return Integer 用户统计
      */
-    Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile);
+    Integer count(String appId, String userType);
 
     /**
      * 用户列表
      *
      * @param appId 应用编号
      * @param userType 类型
-     * @param userAccount 账号
-     * @param userNickName 昵称
-     * @param userName 姓名
-     * @param userMobile 手机号码
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<User> 用户列表
      */
-    List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize);
+    List<User> list(String appId, String userType, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户主体编号和用户类型查询用户信息
