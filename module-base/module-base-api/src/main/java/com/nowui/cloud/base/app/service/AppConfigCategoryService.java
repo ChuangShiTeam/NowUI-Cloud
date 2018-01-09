@@ -21,7 +21,7 @@ public interface AppConfigCategoryService extends BaseService<AppConfigCategory>
      * @param configCategoryCode 编码
      * @return Integer 应用配置分类数量
      */
-    Integer adminCount(String appId, String configCategoryName, String configCategoryCode);
+    Integer countForAdmin(String appId, String configCategoryName, String configCategoryCode);
 
     /**
      * 应用配置分类列表
@@ -33,7 +33,7 @@ public interface AppConfigCategoryService extends BaseService<AppConfigCategory>
      * @param pageSize 每页个数
      * @return List<AppConfigCategory> 应用配置分类列表
      */
-    List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode, Integer pageIndex, Integer pageSize);
+    List<AppConfigCategory> listForAdmin(String appId, String configCategoryName, String configCategoryCode, Integer pageIndex, Integer pageSize);
     
     /**
      * 应用配置分类列表

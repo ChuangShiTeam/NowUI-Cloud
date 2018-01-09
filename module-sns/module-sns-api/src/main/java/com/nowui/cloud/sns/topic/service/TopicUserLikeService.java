@@ -21,7 +21,7 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
      * @param topicId 话题Id
      * @return Integer 点赞话题关联统计
      */
-    Integer adminCount(String appId, String userId, String topicId);
+    Integer countForAdmin(String appId, String userId, String topicId);
 
     /**
      * 点赞话题关联列表
@@ -33,5 +33,5 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
      * @param pageSize 每页个数
      * @return List<TopicUserLike> 点赞话题关联列表
      */
-    List<TopicUserLike> adminList(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicUserLike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
 }

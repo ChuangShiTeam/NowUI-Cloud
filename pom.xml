@@ -20,6 +20,7 @@
         <module>module-shop</module>
         <module>module-cms</module>
         <module>module-base</module>
+		<module>module-member</module>
         <module>module-third</module>
         <module>module-sns</module>
         <module>module-wawi</module>

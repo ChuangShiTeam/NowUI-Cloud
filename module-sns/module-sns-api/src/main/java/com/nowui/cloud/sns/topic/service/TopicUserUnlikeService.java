@@ -21,7 +21,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * @param topicId 话题Id
      * @return Integer 话题用户取消点赞关联统计
      */
-    Integer adminCount(String appId, String userId, String topicId);
+    Integer countForAdmin(String appId, String userId, String topicId);
 
     /**
      * 话题用户取消点赞关联列表
@@ -33,5 +33,5 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * @param pageSize 每页个数
      * @return List<TopicUserUnlike> 话题用户取消点赞关联列表
      */
-    List<TopicUserUnlike> adminList(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicUserUnlike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
 }

@@ -21,7 +21,7 @@ public interface RoleMenuService extends BaseService<RoleMenu> {
      * @param menuId 菜单编号
      * @return Integer 角色菜单统计
      */
-    Integer adminCount(String appId, String roleId, String menuId);
+    Integer countForAdmin(String appId, String roleId, String menuId);
 
     /**
      * 角色菜单列表
@@ -33,5 +33,5 @@ public interface RoleMenuService extends BaseService<RoleMenu> {
      * @param pageSize 每页个数
      * @return List<RoleMenu> 角色菜单列表
      */
-    List<RoleMenu> adminList(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize);
+    List<RoleMenu> listForAdmin(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize);
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper, TopicComment> implements TopicCommentService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent) {
+    public Integer countForAdmin(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent) {
         Integer count = count(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.APP_ID, appId)
@@ -35,7 +35,7 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
     }
 
     @Override
-    public List<TopicComment> adminList(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent, Integer pageIndex, Integer pageSize) {
+    public List<TopicComment> listForAdmin(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent, Integer pageIndex, Integer pageSize) {
         List<TopicComment> topicCommentList = list(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.APP_ID, appId)

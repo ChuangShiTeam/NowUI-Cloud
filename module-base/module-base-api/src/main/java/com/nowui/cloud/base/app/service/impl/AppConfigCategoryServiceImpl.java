@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCategoryMapper, AppConfigCategory> implements AppConfigCategoryService {
 
     @Override
-    public Integer adminCount(String appId, String configCategoryName, String configCategoryCode) {
+    public Integer countForAdmin(String appId, String configCategoryName, String configCategoryCode) {
         Integer count = count(
                 new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)
@@ -32,7 +32,7 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
     }
 
     @Override
-    public List<AppConfigCategory> adminList(String appId, String configCategoryName, String configCategoryCode,
+    public List<AppConfigCategory> listForAdmin(String appId, String configCategoryName, String configCategoryCode,
             Integer m, Integer n) {
         List<AppConfigCategory> appConfigCategoryList = list(
                 new BaseWrapper<AppConfigCategory>()

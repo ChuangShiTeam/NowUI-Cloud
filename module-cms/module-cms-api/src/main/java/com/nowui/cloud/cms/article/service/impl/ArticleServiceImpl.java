@@ -44,7 +44,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     private FileRpc fileRpc;
 
     @Override
-    public Integer adminCount(String appId, String articleTitle) {
+    public Integer countForAdmin(String appId, String articleTitle) {
         
         Integer count = count(
                 new BaseWrapper<Article>()
@@ -57,7 +57,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     }
 
     @Override
-    public List<Article> adminList(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
+    public List<Article> listForAdmin(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
         
         List<Article> articleList = list(
                 new BaseWrapper<Article>()

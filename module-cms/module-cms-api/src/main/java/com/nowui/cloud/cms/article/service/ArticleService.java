@@ -24,7 +24,7 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      * @param articleName 文章名称
      * @return Integer 文章数量
      */
-    Integer adminCount(String appId, String articleName);
+    Integer countForAdmin(String appId, String articleName);
 
     /**
      * 文章列表
@@ -35,7 +35,7 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      * @param pageSize 每页个数
      * @return List<Article> 文章列表
      */
-    List<Article> adminList(String appId, String articleName, Integer pageIndex, Integer pageSize);
+    List<Article> listForAdmin(String appId, String articleName, Integer pageIndex, Integer pageSize);
     
     /**
      * 文章保存

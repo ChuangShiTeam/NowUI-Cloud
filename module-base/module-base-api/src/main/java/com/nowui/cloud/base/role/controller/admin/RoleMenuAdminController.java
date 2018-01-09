@@ -27,8 +27,8 @@ public class RoleMenuAdminController extends BaseController {
     private RoleMenuService roleMenuService;
 
     @ApiOperation(value = "角色菜单列表")
-    @RequestMapping(value = "/role/menu/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody RoleMenu body) {
+    @RequestMapping(value = "/role/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody RoleMenu body) {
         validateRequest(
                 body,
                 RoleMenu.APP_ID,
@@ -38,8 +38,8 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.PAGE_SIZE
         );
 
-        Integer resultTotal = roleMenuService.adminCount(body.getAppId() , body.getRoleId(), body.getMenuId());
-        List<RoleMenu> resultList = roleMenuService.adminList(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = roleMenuService.countForAdmin(body.getAppId() , body.getRoleId(), body.getMenuId());
+        List<RoleMenu> resultList = roleMenuService.listForAdmin(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,
@@ -51,8 +51,8 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色菜单信息")
-    @RequestMapping(value = "/role/menu/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody RoleMenu body) {
+    @RequestMapping(value = "/role/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody RoleMenu body) {
         validateRequest(
                 body,
                 RoleMenu.APP_ID,
@@ -71,8 +71,8 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增角色菜单")
-    @RequestMapping(value = "/role/menu/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody RoleMenu body) {
+    @RequestMapping(value = "/role/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody RoleMenu body) {
         validateRequest(
                 body,
                 RoleMenu.APP_ID,
@@ -86,8 +86,8 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改角色菜单")
-    @RequestMapping(value = "/role/menu/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody RoleMenu body) {
+    @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody RoleMenu body) {
         validateRequest(
                 body,
                 RoleMenu.ROLE_MENU_ID,
@@ -103,8 +103,8 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除角色菜单")
-    @RequestMapping(value = "/role/menu/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody RoleMenu body) {
+    @RequestMapping(value = "/role/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody RoleMenu body) {
         validateRequest(
                 body,
                 RoleMenu.ROLE_MENU_ID,

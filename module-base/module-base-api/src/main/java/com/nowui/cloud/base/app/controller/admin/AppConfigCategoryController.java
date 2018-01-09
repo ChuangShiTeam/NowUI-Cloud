@@ -31,12 +31,12 @@ public class AppConfigCategoryController extends BaseController {
     private AppConfigCategoryService appConfigCategoryService;
     
     @ApiOperation(value = "应用配置分类列表")
-    @RequestMapping(value = "/app/config/category/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.PAGE_INDEX, AppConfigCategory.PAGE_SIZE);
 
-        Integer resultTotal = appConfigCategoryService.adminCount(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode());
-        List<AppConfigCategory> resultList = appConfigCategoryService.adminList(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = appConfigCategoryService.countForAdmin(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode());
+        List<AppConfigCategory> resultList = appConfigCategoryService.listForAdmin(body.getAppId(), body.getConfigCategoryName(), body.getConfigCategoryCode(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE);
 
@@ -44,8 +44,8 @@ public class AppConfigCategoryController extends BaseController {
     }
     
     @ApiOperation(value = "所有应用配置分类列表")
-    @RequestMapping(value = "/app/config/category/admin/all/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> allList(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/all/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> allListV1(@RequestBody AppConfigCategory body) {
 
         List<AppConfigCategory> resultList = appConfigCategoryService.appList(body.getAppId());
 
@@ -55,8 +55,8 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类信息")
-    @RequestMapping(value = "/app/config/category/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.CONFIG_CATEGORY_ID);
 
         AppConfigCategory result = appConfigCategoryService.find(body.getConfigCategoryId());
@@ -67,8 +67,8 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类新增")
-    @RequestMapping(value = "/app/config/category/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.CONFIG_CATEGORY_DESCRIPTION);
 
         Boolean result = appConfigCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -77,8 +77,8 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类修改")
-    @RequestMapping(value = "/app/config/category/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.APP_ID, AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfigCategory.CONFIG_CATEGORY_CODE, AppConfigCategory.CONFIG_CATEGORY_DESCRIPTION, AppConfigCategory.SYSTEM_VERSION);
 
         Boolean result = appConfigCategoryService.update(body, body.getConfigCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
@@ -87,8 +87,8 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类删除")
-    @RequestMapping(value = "/app/config/category/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody AppConfigCategory body) {
+    @RequestMapping(value = "/app/config/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody AppConfigCategory body) {
         validateRequest(body, AppConfigCategory.CONFIG_CATEGORY_ID, AppConfigCategory.SYSTEM_VERSION);
 
         Boolean result = appConfigCategoryService.delete(body.getConfigCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());

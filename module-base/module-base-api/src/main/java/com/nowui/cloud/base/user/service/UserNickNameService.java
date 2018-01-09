@@ -21,7 +21,7 @@ public interface UserNickNameService extends BaseService<UserNickName> {
      * @param userNickName 用户昵称
      * @return Integer 用户昵称统计
      */
-    Integer adminCount(String appId, String userId, String userNickName);
+    Integer countForAdmin(String appId, String userId, String userNickName);
 
     /**
      * 用户昵称列表
@@ -33,5 +33,5 @@ public interface UserNickNameService extends BaseService<UserNickName> {
      * @param pageSize 每页个数
      * @return List<UserNickName> 用户昵称列表
      */
-    List<UserNickName> adminList(String appId, String userId, String userNickName, Integer pageIndex, Integer pageSize);
+    List<UserNickName> listForAdmin(String appId, String userId, String userNickName, Integer pageIndex, Integer pageSize);
 }

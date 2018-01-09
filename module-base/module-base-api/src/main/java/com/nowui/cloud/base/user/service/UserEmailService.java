@@ -21,7 +21,7 @@ public interface UserEmailService extends BaseService<UserEmail> {
      * @param userEmail 用户邮箱
      * @return Integer 用户邮箱统计
      */
-    Integer adminCount(String appId, String userId, String userEmail);
+    Integer countForAdmin(String appId, String userId, String userEmail);
 
     /**
      * 用户邮箱列表
@@ -33,5 +33,5 @@ public interface UserEmailService extends BaseService<UserEmail> {
      * @param pageSize 每页个数
      * @return List<UserEmail> 用户邮箱列表
      */
-    List<UserEmail> adminList(String appId, String userId, String userEmail, Integer pageIndex, Integer pageSize);
+    List<UserEmail> listForAdmin(String appId, String userId, String userEmail, Integer pageIndex, Integer pageSize);
 }

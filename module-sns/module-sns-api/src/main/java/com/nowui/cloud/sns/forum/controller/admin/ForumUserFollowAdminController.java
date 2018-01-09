@@ -27,8 +27,8 @@ public class ForumUserFollowAdminController extends BaseController {
     private ForumUserFollowService forumUserFollowService;
 
     @ApiOperation(value = "论坛用户关注列表")
-    @RequestMapping(value = "/forum/user/follow/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ForumUserFollow body) {
+    @RequestMapping(value = "/forum/user/follow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ForumUserFollow body) {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -38,8 +38,8 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.PAGE_SIZE
         );
 
-        Integer resultTotal = forumUserFollowService.adminCount(body.getAppId() , body.getUserId(), body.getForumId());
-        List<ForumUserFollow> resultList = forumUserFollowService.adminList(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
+        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
@@ -51,8 +51,8 @@ public class ForumUserFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛用户关注信息")
-    @RequestMapping(value = "/forum/user/follow/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ForumUserFollow body) {
+    @RequestMapping(value = "/forum/user/follow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ForumUserFollow body) {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -71,8 +71,8 @@ public class ForumUserFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增论坛用户关注")
-    @RequestMapping(value = "/forum/user/follow/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ForumUserFollow body) {
+    @RequestMapping(value = "/forum/user/follow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ForumUserFollow body) {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -86,8 +86,8 @@ public class ForumUserFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改论坛用户关注")
-    @RequestMapping(value = "/forum/user/follow/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ForumUserFollow body) {
+    @RequestMapping(value = "/forum/user/follow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ForumUserFollow body) {
         validateRequest(
                 body,
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
@@ -103,8 +103,8 @@ public class ForumUserFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除论坛用户关注")
-    @RequestMapping(value = "/forum/user/follow/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ForumUserFollow body) {
+    @RequestMapping(value = "/forum/user/follow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ForumUserFollow body) {
         validateRequest(
                 body,
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,

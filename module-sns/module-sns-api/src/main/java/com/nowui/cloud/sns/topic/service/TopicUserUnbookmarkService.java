@@ -21,7 +21,7 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      * @param userId 用户ID
      * @return Integer 话题用户取消收藏关联统计
      */
-    Integer adminCount(String appId, String topicId, String userId);
+    Integer countForAdmin(String appId, String topicId, String userId);
 
     /**
      * 话题用户取消收藏关联列表
@@ -33,5 +33,5 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      * @param pageSize 每页个数
      * @return List<TopicUserUnbookmark> 话题用户取消收藏关联列表
      */
-    List<TopicUserUnbookmark> adminList(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize);
+    List<TopicUserUnbookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize);
 }

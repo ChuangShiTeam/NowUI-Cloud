@@ -27,8 +27,8 @@ public class SmsCaptchaAdminController extends BaseController {
     private SmsCaptchaService smsCaptchaService;
 
     @ApiOperation(value = "短信验证码列表")
-    @RequestMapping(value = "/sms/captcha/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody SmsCaptcha body) {
+    @RequestMapping(value = "/sms/captcha/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody SmsCaptcha body) {
         validateRequest(
                 body,
                 SmsCaptcha.APP_ID,
@@ -39,8 +39,8 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.PAGE_SIZE
         );
 
-        Integer resultTotal = smsCaptchaService.adminCount(body.getAppId() , body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress());
-        List<SmsCaptcha> resultList = smsCaptchaService.adminList(body.getAppId(), body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = smsCaptchaService.countForAdmin(body.getAppId() , body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress());
+        List<SmsCaptcha> resultList = smsCaptchaService.listForAdmin(body.getAppId(), body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 SmsCaptcha.SMS_CAPTCHA_ID,
@@ -54,8 +54,8 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "短信验证码信息")
-    @RequestMapping(value = "/sms/captcha/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody SmsCaptcha body) {
+    @RequestMapping(value = "/sms/captcha/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody SmsCaptcha body) {
         validateRequest(
                 body,
                 SmsCaptcha.APP_ID,
@@ -76,8 +76,8 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody SmsCaptcha body) {
+    @RequestMapping(value = "/sms/captcha/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody SmsCaptcha body) {
         validateRequest(
                 body,
                 SmsCaptcha.APP_ID,
@@ -93,8 +93,8 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody SmsCaptcha body) {
+    @RequestMapping(value = "/sms/captcha/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody SmsCaptcha body) {
         validateRequest(
                 body,
                 SmsCaptcha.SMS_CAPTCHA_ID,
@@ -112,8 +112,8 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody SmsCaptcha body) {
+    @RequestMapping(value = "/sms/captcha/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody SmsCaptcha body) {
         validateRequest(
                 body,
                 SmsCaptcha.SMS_CAPTCHA_ID,

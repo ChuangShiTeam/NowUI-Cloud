@@ -8,7 +8,13 @@ package com.nowui.cloud.base.user.entity.enums;
  * 2018年1月7日
  */
 public enum UserType {
+    /**
+     * 管理员
+     */
     ADMIN("ADMIN", "管理员"),
+    /**
+     * 会员
+     */
     MEMBER("MEMBER", "会员");
 
     private String key;

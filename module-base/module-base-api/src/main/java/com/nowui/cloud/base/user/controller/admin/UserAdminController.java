@@ -33,8 +33,8 @@ public class UserAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "用户信息")
-    @RequestMapping(value = "/user/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody User body) {
+    @RequestMapping(value = "/user/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.APP_ID,
@@ -57,17 +57,15 @@ public class UserAdminController extends BaseController {
                 User.USER_NAME,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
-                User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID
+                User.USER_AVATAR
         );
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "新增用户")
-    @RequestMapping(value = "/user/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody User body) {
+    @RequestMapping(value = "/user/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.APP_ID,
@@ -79,9 +77,7 @@ public class UserAdminController extends BaseController {
                 User.USER_NAME,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
-                User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID
+                User.USER_AVATAR
         );
 
         Boolean result = userService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -90,8 +86,8 @@ public class UserAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改用户")
-    @RequestMapping(value = "/user/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody User body) {
+    @RequestMapping(value = "/user/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.USER_ID,
@@ -105,8 +101,6 @@ public class UserAdminController extends BaseController {
                 User.USER_MOBILE,
                 User.USER_EMAIL,
                 User.USER_AVATAR,
-                User.WEIXIN_OPEN_ID,
-                User.WEIXIN_UNION_ID,
                 User.SYSTEM_VERSION
         );
 
@@ -116,8 +110,8 @@ public class UserAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除用户")
-    @RequestMapping(value = "/user/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody User body) {
+    @RequestMapping(value = "/user/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.USER_ID,

@@ -23,7 +23,7 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * @param topicReplyContent 回复内容
      * @return Integer 话题评论统计
      */
-    Integer adminCount(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent);
+    Integer countForAdmin(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent);
 
     /**
      * 话题评论列表
@@ -37,5 +37,5 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * @param pageSize 每页个数
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> adminList(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent, Integer pageIndex, Integer pageSize);
+    List<TopicComment> listForAdmin(String appId, String userId, String topicCommentContent, String topicReplayUserId, String topicReplyContent, Integer pageIndex, Integer pageSize);
 }

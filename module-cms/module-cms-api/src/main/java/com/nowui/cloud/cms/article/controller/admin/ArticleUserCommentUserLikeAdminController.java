@@ -27,8 +27,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     private ArticleUserCommentUserLikeService articleUserCommentUserLikeService;
 
     @ApiOperation(value = "文章用户评论用户点赞列表")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ArticleUserCommentUserLike body) {
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ArticleUserCommentUserLike body) {
         validateRequest(
                 body,
                 ArticleUserCommentUserLike.APP_ID,
@@ -38,8 +38,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserCommentUserLikeService.adminCount(body.getAppId() , body.getArticleUserCommentId(), body.getUserId());
-        List<ArticleUserCommentUserLike> resultList = articleUserCommentUserLikeService.adminList(body.getAppId(), body.getArticleUserCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserCommentUserLikeService.countForAdmin(body.getAppId() , body.getArticleUserCommentId(), body.getUserId());
+        List<ArticleUserCommentUserLike> resultList = articleUserCommentUserLikeService.listForAdmin(body.getAppId(), body.getArticleUserCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
@@ -51,8 +51,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户评论用户点赞信息")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ArticleUserCommentUserLike body) {
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ArticleUserCommentUserLike body) {
         validateRequest(
                 body,
                 ArticleUserCommentUserLike.APP_ID,
@@ -71,8 +71,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ArticleUserCommentUserLike body) {
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ArticleUserCommentUserLike body) {
         validateRequest(
                 body,
                 ArticleUserCommentUserLike.APP_ID,
@@ -86,8 +86,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ArticleUserCommentUserLike body) {
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ArticleUserCommentUserLike body) {
         validateRequest(
                 body,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
@@ -103,8 +103,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ArticleUserCommentUserLike body) {
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ArticleUserCommentUserLike body) {
         validateRequest(
                 body,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,

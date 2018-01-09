@@ -22,7 +22,7 @@ public interface UserIdcardService extends BaseService<UserIdcard> {
      * @param userIdcardNumber 身份证号码
      * @return Integer 用户身份证统计
      */
-    Integer adminCount(String appId, String userId, String userName, String userIdcardNumber);
+    Integer countForAdmin(String appId, String userId, String userName, String userIdcardNumber);
 
     /**
      * 用户身份证列表
@@ -35,5 +35,5 @@ public interface UserIdcardService extends BaseService<UserIdcard> {
      * @param pageSize 每页个数
      * @return List<UserIdcard> 用户身份证列表
      */
-    List<UserIdcard> adminList(String appId, String userId, String userName, String userIdcardNumber, Integer pageIndex, Integer pageSize);
+    List<UserIdcard> listForAdmin(String appId, String userId, String userName, String userIdcardNumber, Integer pageIndex, Integer pageSize);
 }

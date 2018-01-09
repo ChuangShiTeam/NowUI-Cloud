@@ -27,8 +27,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     private TopicUserUnbookmarkService topicUserUnbookmarkService;
 
     @ApiOperation(value = "话题用户取消收藏关联列表")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicUserUnbookmark body) {
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
                 TopicUserUnbookmark.APP_ID,
@@ -38,8 +38,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.PAGE_SIZE
         );
 
-        Integer resultTotal = topicUserUnbookmarkService.adminCount(body.getAppId() , body.getTopicId(), body.getUserId());
-        List<TopicUserUnbookmark> resultList = topicUserUnbookmarkService.adminList(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicUserUnbookmarkService.countForAdmin(body.getAppId() , body.getTopicId(), body.getUserId());
+        List<TopicUserUnbookmark> resultList = topicUserUnbookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicUserUnbookmark.USER_UN_BOOK_MARKED,
@@ -51,8 +51,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题用户取消收藏关联信息")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicUserUnbookmark body) {
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
                 TopicUserUnbookmark.APP_ID,
@@ -71,8 +71,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicUserUnbookmark body) {
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
                 TopicUserUnbookmark.APP_ID,
@@ -86,8 +86,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicUserUnbookmark body) {
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
                 TopicUserUnbookmark.USER_UN_BOOK_MARKED,
@@ -103,8 +103,8 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicUserUnbookmark body) {
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
                 TopicUserUnbookmark.USER_UN_BOOK_MARKED,

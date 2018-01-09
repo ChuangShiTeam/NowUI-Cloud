@@ -29,7 +29,7 @@ public interface TopicService extends BaseService<Topic> {
      * @param integer2 置顶级别
      * @return Integer 话题信息统计
      */
-    Integer adminCount(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topicTopLevel);
+    Integer countForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topicTopLevel);
 
     /**
      * 话题信息列表
@@ -49,5 +49,5 @@ public interface TopicService extends BaseService<Topic> {
      * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> adminList(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel, Integer pageIndex, Integer pageSize);
+    List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecomand, Integer topTopLevel, Integer pageIndex, Integer pageSize);
 }

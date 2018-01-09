@@ -27,8 +27,8 @@ public class TopicForumAdminController extends BaseController {
     private TopicForumService topicForumService;
 
     @ApiOperation(value = "话题论坛关联列表")
-    @RequestMapping(value = "/topic/forum/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicForum body) {
+    @RequestMapping(value = "/topic/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
                 TopicForum.APP_ID,
@@ -38,8 +38,8 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.PAGE_SIZE
         );
 
-        Integer resultTotal = topicForumService.adminCount(body.getAppId() , body.getForumId(), body.getTopicId());
-        List<TopicForum> resultList = topicForumService.adminList(body.getAppId(), body.getForumId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicForumService.countForAdmin(body.getAppId() , body.getForumId(), body.getTopicId());
+        List<TopicForum> resultList = topicForumService.listForAdmin(body.getAppId(), body.getForumId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicForum.TOPIC_FORUM_MAP_ID,
@@ -51,8 +51,8 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题论坛关联信息")
-    @RequestMapping(value = "/topic/forum/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicForum body) {
+    @RequestMapping(value = "/topic/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
                 TopicForum.APP_ID,
@@ -71,8 +71,8 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicForum body) {
+    @RequestMapping(value = "/topic/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
                 TopicForum.APP_ID,
@@ -86,8 +86,8 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicForum body) {
+    @RequestMapping(value = "/topic/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
                 TopicForum.TOPIC_FORUM_MAP_ID,
@@ -103,8 +103,8 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicForum body) {
+    @RequestMapping(value = "/topic/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
                 TopicForum.TOPIC_FORUM_MAP_ID,

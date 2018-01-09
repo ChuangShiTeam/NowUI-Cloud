@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicTipServiceImpl extends BaseServiceImpl<TopicTipMapper, TopicTip> implements TopicTipService {
 
     @Override
-    public Integer adminCount(String appId, String topicId, String userId) {
+    public Integer countForAdmin(String appId, String topicId, String userId) {
         Integer count = count(
                 new BaseWrapper<TopicTip>()
                         .eq(TopicTip.APP_ID, appId)
@@ -33,7 +33,7 @@ public class TopicTipServiceImpl extends BaseServiceImpl<TopicTipMapper, TopicTi
     }
 
     @Override
-    public List<TopicTip> adminList(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicTip> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
         List<TopicTip> topicTipList = list(
                 new BaseWrapper<TopicTip>()
                         .eq(TopicTip.APP_ID, appId)

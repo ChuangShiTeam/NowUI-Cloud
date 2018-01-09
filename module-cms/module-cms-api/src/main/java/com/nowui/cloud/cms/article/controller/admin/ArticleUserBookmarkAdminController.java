@@ -27,8 +27,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     private ArticleUserBookmarkService articleUserBookmarkService;
 
     @ApiOperation(value = "文章用户收藏列表")
-    @RequestMapping(value = "/article/user/bookmark/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody ArticleUserBookmark body) {
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody ArticleUserBookmark body) {
         validateRequest(
                 body,
                 ArticleUserBookmark.APP_ID,
@@ -38,8 +38,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
                 ArticleUserBookmark.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserBookmarkService.adminCount(body.getAppId() , body.getArticleId(), body.getUseId());
-        List<ArticleUserBookmark> resultList = articleUserBookmarkService.adminList(body.getAppId(), body.getArticleId(), body.getUseId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserBookmarkService.countForAdmin(body.getAppId() , body.getArticleId(), body.getUseId());
+        List<ArticleUserBookmark> resultList = articleUserBookmarkService.listForAdmin(body.getAppId(), body.getArticleId(), body.getUseId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
@@ -51,8 +51,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户收藏信息")
-    @RequestMapping(value = "/article/user/bookmark/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody ArticleUserBookmark body) {
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody ArticleUserBookmark body) {
         validateRequest(
                 body,
                 ArticleUserBookmark.APP_ID,
@@ -71,8 +71,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody ArticleUserBookmark body) {
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody ArticleUserBookmark body) {
         validateRequest(
                 body,
                 ArticleUserBookmark.APP_ID,
@@ -86,8 +86,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody ArticleUserBookmark body) {
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody ArticleUserBookmark body) {
         validateRequest(
                 body,
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
@@ -103,8 +103,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody ArticleUserBookmark body) {
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody ArticleUserBookmark body) {
         validateRequest(
                 body,
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,

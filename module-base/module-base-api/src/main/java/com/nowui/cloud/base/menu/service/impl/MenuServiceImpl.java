@@ -27,7 +27,7 @@ import java.util.Map;
 public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Override
-    public Integer adminCount(String appId, String menuName) {
+    public Integer countForAdmin(String appId, String menuName) {
     	Integer count = 0;
     	
     	if (Util.isNullOrEmpty(menuName)) {
@@ -50,7 +50,7 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
     }
 
     @Override
-    public List<Menu> adminList(String appId, String menuName, Integer pageIndex, Integer pageSize) {
+    public List<Menu> listForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize) {
         List<Menu> menuList = list(
                 new BaseWrapper<Menu>()
                         .eq(Menu.APP_ID, appId)
@@ -64,7 +64,7 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
     }
 
 	@Override
-	public List<Map<String, Object>> adminTreeList(String appId, String menuName, Integer pageIndex, Integer pageSize) {
+	public List<Map<String, Object>> treeListForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize) {
 		List<Menu> topList = list(
                 new BaseWrapper<Menu>()
                         .eq(Menu.APP_ID, appId)

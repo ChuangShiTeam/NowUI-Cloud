@@ -27,8 +27,8 @@ public class TopicTipAdminController extends BaseController {
     private TopicTipService topicTipService;
 
     @ApiOperation(value = "话题提醒列表")
-    @RequestMapping(value = "/topic/tip/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicTip body) {
+    @RequestMapping(value = "/topic/tip/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
                 TopicTip.APP_ID,
@@ -38,8 +38,8 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.PAGE_SIZE
         );
 
-        Integer resultTotal = topicTipService.adminCount(body.getAppId() , body.getTopicId(), body.getUserId());
-        List<TopicTip> resultList = topicTipService.adminList(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicTipService.countForAdmin(body.getAppId() , body.getTopicId(), body.getUserId());
+        List<TopicTip> resultList = topicTipService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicTip.TOPIC_TIP_ID,
@@ -51,8 +51,8 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题提醒信息")
-    @RequestMapping(value = "/topic/tip/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicTip body) {
+    @RequestMapping(value = "/topic/tip/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
                 TopicTip.APP_ID,
@@ -71,8 +71,8 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicTip body) {
+    @RequestMapping(value = "/topic/tip/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
                 TopicTip.APP_ID,
@@ -86,8 +86,8 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicTip body) {
+    @RequestMapping(value = "/topic/tip/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
                 TopicTip.TOPIC_TIP_ID,
@@ -103,8 +103,8 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicTip body) {
+    @RequestMapping(value = "/topic/tip/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
                 TopicTip.TOPIC_TIP_ID,

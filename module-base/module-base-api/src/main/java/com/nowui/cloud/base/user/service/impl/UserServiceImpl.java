@@ -1,19 +1,27 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.util.Util;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.mapper.UserMapper;
-import com.nowui.cloud.base.user.service.UserService;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.mapper.UserMapper;
+import com.nowui.cloud.base.user.service.UserAccountService;
+import com.nowui.cloud.base.user.service.UserAvatarService;
+import com.nowui.cloud.base.user.service.UserEmailService;
+import com.nowui.cloud.base.user.service.UserIdcardService;
+import com.nowui.cloud.base.user.service.UserMessageService;
+import com.nowui.cloud.base.user.service.UserNickNameService;
+import com.nowui.cloud.base.user.service.UserRoleService;
+import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.base.user.service.UserWechatService;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 用户业务实现
@@ -28,37 +36,53 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	@Autowired
 	private FileRpc fileRpc;
 	
+	@Autowired
+	private UserAccountService userAccountService;
+	
+	@Autowired
+	private UserAvatarService userAvatarService;
+	
+	@Autowired
+	private UserEmailService userEmailService;
+	
+	@Autowired
+	private UserIdcardService userIdcardService;
+	
+	@Autowired
+	private UserMessageService userMessageService;
+	
+	@Autowired
+	private UserNickNameService userNickNameService;
+	
+	@Autowired
+	private UserRoleService userRoleService;
+	
+	@Autowired
+    private UserWechatService userWechatService;
+	
     @Override
-    public Integer count(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile) {
+    public Integer count(String appId, String userType) {
         Integer count = count(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
                         .likeAllowEmpty(User.USER_TYPE, userType)
-                        .likeAllowEmpty(User.USER_ACCOUNT, userAccount)
-                        .likeAllowEmpty(User.USER_NICK_NAME, userNickName)
-                        .likeAllowEmpty(User.USER_NAME, userName)
-                        .likeAllowEmpty(User.USER_MOBILE, userMobile)
                         .eq(User.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<User> list(String appId, String userType, String userAccount, String userNickName, String userName, String userMobile, Integer pageIndex, Integer pageSize) {
+    public List<User> list(String appId, String userType, Integer pageIndex, Integer pageSize) {
         List<User> userList = list(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
                         .likeAllowEmpty(User.USER_TYPE, userType)
-                        .likeAllowEmpty(User.USER_ACCOUNT, userAccount)
-                        .likeAllowEmpty(User.USER_NICK_NAME, userNickName)
-                        .likeAllowEmpty(User.USER_NAME, userName)
-                        .likeAllowEmpty(User.USER_MOBILE, userMobile)
                         .eq(User.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(User.SYSTEM_CREATE_TIME)),
                 pageIndex,
                 pageSize
         );
-
+        
         //查询用户头像
         for (User user : userList) {
         	if (!Util.isNullOrEmpty(user.getUserAvatar())) {

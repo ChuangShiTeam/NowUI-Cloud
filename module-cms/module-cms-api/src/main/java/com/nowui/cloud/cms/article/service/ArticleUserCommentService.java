@@ -21,7 +21,7 @@ public interface ArticleUserCommentService extends BaseService<ArticleUserCommen
      * @param userId 用户编号
      * @return Integer 文章用户评论统计
      */
-    Integer adminCount(String appId, String articleId, String userId);
+    Integer countForAdmin(String appId, String articleId, String userId);
 
     /**
      * 文章用户评论列表
@@ -33,5 +33,5 @@ public interface ArticleUserCommentService extends BaseService<ArticleUserCommen
      * @param pageSize 每页个数
      * @return List<ArticleUserComment> 文章用户评论列表
      */
-    List<ArticleUserComment> adminList(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
+    List<ArticleUserComment> listForAdmin(String appId, String articleId, String userId, Integer pageIndex, Integer pageSize);
 }

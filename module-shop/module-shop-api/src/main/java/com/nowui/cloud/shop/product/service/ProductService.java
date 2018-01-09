@@ -16,7 +16,7 @@ public interface ProductService extends BaseService<Product> {
      * @param productName 商品名称
      * @return Integer 商品数量
      */
-    Integer adminCount(String appId, String productName);
+    Integer countForAdmin(String appId, String productName);
 
     /**
      * 商品列表
@@ -27,5 +27,5 @@ public interface ProductService extends BaseService<Product> {
      * @param pageSize 每页个数
      * @return List<Product> 商品列表
      */
-    List<Product> adminList(String appId, String productName, Integer pageIndex, Integer pageSize);
+    List<Product> listForAdmin(String appId, String productName, Integer pageIndex, Integer pageSize);
 }

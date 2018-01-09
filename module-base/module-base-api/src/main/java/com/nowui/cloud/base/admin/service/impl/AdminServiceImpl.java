@@ -29,15 +29,15 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
     private UserRpc userRpc;
 
     @Override
-    public Integer adminCount(String appId, String userAccount, String userNickName, String userMobile) {
-        return userRpc.count(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile);
+    public Integer countForAdmin(String appId) {
+        return userRpc.countV1(appId, UserType.ADMIN.getKey());
     }
 
     @Override
-    public List<Admin> adminList(String appId, String userAccount, String userNickName, String userMobile, Integer pageIndex, Integer pageSize) {
-        List<Admin> adminList = new ArrayList<>();
+    public List<Admin> listForAdmin(String appId, Integer pageIndex, Integer pageSize) {
+        List<Admin> listForAdmin = new ArrayList<>();
         
-        List<User> userList = userRpc.list(appId, UserType.ADMIN.getKey(), userAccount, userNickName, "", userMobile, pageIndex, pageSize);
+        List<User> userList = userRpc.listV1(appId, UserType.ADMIN.getKey(), pageIndex, pageSize);
         
         for (User user : userList) {
             
@@ -45,10 +45,10 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
             admin.setAdminId(user.getObjectId());
             admin.putAll(user);
             
-            adminList.add(admin);
+            listForAdmin.add(admin);
         }
         
-        return adminList;
+        return listForAdmin;
     }
     
     @Override
@@ -56,7 +56,7 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin> implem
         Admin admin = super.find(adminId);
         
         if (!Util.isNullOrEmpty(admin)) {
-            User user = userRpc.find(admin.getUserId());
+            User user = userRpc.findV1(admin.getUserId());
             admin.putAll(user);
         }
         

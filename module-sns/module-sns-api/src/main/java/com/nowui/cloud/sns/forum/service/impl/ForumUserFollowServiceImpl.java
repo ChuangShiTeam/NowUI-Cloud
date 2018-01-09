@@ -21,7 +21,7 @@ import java.util.List;
 public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowMapper, ForumUserFollow> implements ForumUserFollowService {
 
     @Override
-    public Integer adminCount(String appId, String userId, String forumId) {
+    public Integer countForAdmin(String appId, String userId, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
     }
 
     @Override
-    public List<ForumUserFollow> adminList(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumUserFollow> forumUserFollowList = list(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
@@ -47,5 +47,22 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 
         return forumUserFollowList;
     }
+
+	@Override
+	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {
+		List<ForumUserFollow> forumUserFollowList = list( 
+				new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
+                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+        		)
+		);
+		if (forumUserFollowList == null || forumUserFollowList.size() == 0) {
+			return null;
+		}
+		return forumUserFollowList.get(0);
+	}
 
 }

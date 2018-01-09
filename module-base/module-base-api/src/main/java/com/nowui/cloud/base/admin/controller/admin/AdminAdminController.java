@@ -39,21 +39,18 @@ public class AdminAdminController extends BaseController {
     private AdminMq adminMq;
     
     @ApiOperation(value = "管理员列表")
-    @RequestMapping(value = "/admin/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody User body) {
+    @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody User body) {
     	
         validateRequest(
                 body,
                 User.APP_ID,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_MOBILE,
                 User.PAGE_INDEX,
                 User.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.adminCount(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile());
-        List<Admin> resultList = adminService.adminList(body.getAppId(), body.getUserAccount(), body.getUserNickName(), body.getUserMobile(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = adminService.countForAdmin(body.getAppId());
+        List<Admin> resultList = adminService.listForAdmin(body.getAppId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Admin.ADMIN_ID,
@@ -71,8 +68,8 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "管理员信息")
-    @RequestMapping(value = "/admin/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody Admin body) {
+    @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody Admin body) {
         validateRequest(
                 body,
                 Admin.APP_ID,
@@ -97,8 +94,8 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增管理员")
-    @RequestMapping(value = "/admin/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody User body) {
+    @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.APP_ID,
@@ -117,8 +114,6 @@ public class AdminAdminController extends BaseController {
         body.setUserId(userId);
         body.setUserType(UserType.ADMIN.getKey());
         body.setObjectId(adminId);
-        body.setWeixinOpenId("");
-        body.setWeixinUnionId("");
         
         Admin admin = new Admin();
         admin.setUserId(userId);
@@ -133,8 +128,8 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改管理员")
-    @RequestMapping(value = "/admin/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody User body) {
+    @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody User body) {
         validateRequest(
                 body,
                 User.APP_ID,
@@ -166,8 +161,8 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除管理员")
-    @RequestMapping(value = "/admin/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody Admin body) {
+    @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody Admin body) {
         validateRequest(
                 body,
                 Admin.ADMIN_ID,

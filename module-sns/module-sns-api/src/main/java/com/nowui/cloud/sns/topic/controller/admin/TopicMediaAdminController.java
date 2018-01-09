@@ -27,8 +27,8 @@ public class TopicMediaAdminController extends BaseController {
     private TopicMediaService topicMediaService;
 
     @ApiOperation(value = "话题多媒体列表")
-    @RequestMapping(value = "/topic/media/admin/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody TopicMedia body) {
+    @RequestMapping(value = "/topic/media/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
                 TopicMedia.APP_ID,
@@ -39,8 +39,8 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.PAGE_SIZE
         );
 
-        Integer resultTotal = topicMediaService.adminCount(body.getAppId() , body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType());
-        List<TopicMedia> resultList = topicMediaService.adminList(body.getAppId(), body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicMediaService.countForAdmin(body.getAppId() , body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType());
+        List<TopicMedia> resultList = topicMediaService.listForAdmin(body.getAppId(), body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicMedia.TOPIC_MEDIA_MAP_ID,
@@ -53,8 +53,8 @@ public class TopicMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题多媒体信息")
-    @RequestMapping(value = "/topic/media/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody TopicMedia body) {
+    @RequestMapping(value = "/topic/media/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
                 TopicMedia.APP_ID,
@@ -74,8 +74,8 @@ public class TopicMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题多媒体")
-    @RequestMapping(value = "/topic/media/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody TopicMedia body) {
+    @RequestMapping(value = "/topic/media/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
                 TopicMedia.APP_ID,
@@ -90,8 +90,8 @@ public class TopicMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题多媒体")
-    @RequestMapping(value = "/topic/media/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody TopicMedia body) {
+    @RequestMapping(value = "/topic/media/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
                 TopicMedia.TOPIC_MEDIA_MAP_ID,
@@ -108,8 +108,8 @@ public class TopicMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题多媒体")
-    @RequestMapping(value = "/topic/media/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody TopicMedia body) {
+    @RequestMapping(value = "/topic/media/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
                 TopicMedia.TOPIC_MEDIA_MAP_ID,

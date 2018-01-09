@@ -21,7 +21,7 @@ import java.util.List;
 public class TopicMediaServiceImpl extends BaseServiceImpl<TopicMediaMapper, TopicMedia> implements TopicMediaService {
 
     @Override
-    public Integer adminCount(String appId, String topicId, String topicMediaId, String topicMediaType) {
+    public Integer countForAdmin(String appId, String topicId, String topicMediaId, String topicMediaType) {
         Integer count = count(
                 new BaseWrapper<TopicMedia>()
                         .eq(TopicMedia.APP_ID, appId)
@@ -34,7 +34,7 @@ public class TopicMediaServiceImpl extends BaseServiceImpl<TopicMediaMapper, Top
     }
 
     @Override
-    public List<TopicMedia> adminList(String appId, String topicId, String topicMediaId, String topicMediaType, Integer pageIndex, Integer pageSize) {
+    public List<TopicMedia> listForAdmin(String appId, String topicId, String topicMediaId, String topicMediaType, Integer pageIndex, Integer pageSize) {
         List<TopicMedia> topicMediaList = list(
                 new BaseWrapper<TopicMedia>()
                         .eq(TopicMedia.APP_ID, appId)

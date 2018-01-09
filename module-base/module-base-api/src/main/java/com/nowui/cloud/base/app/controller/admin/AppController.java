@@ -29,12 +29,12 @@ public class AppController extends BaseController {
     private AppService appService;
     
     @ApiOperation(value = "应用列表")
-    @RequestMapping(value = "/app/admin/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> list(@RequestBody App body) {
+    @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody App body) {
         validateRequest(body, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
 
-        Integer resultTotal = appService.adminCount(body.getAppName());
-        List<App> resultList = appService.adminList(body.getAppName(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = appService.countForAdmin(body.getAppName());
+        List<App> resultList = appService.listForAdmin(body.getAppName(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(App.APP_ID, App.APP_NAME);
 
@@ -42,8 +42,8 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用信息")
-    @RequestMapping(value = "/app/admin/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> find(@RequestBody App body) {
+    @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@RequestBody App body) {
         validateRequest(body, App.APP_ID);
 
         App result = appService.find(body.getAppId());
@@ -54,8 +54,8 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用新增")
-    @RequestMapping(value = "/app/admin/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> save(@RequestBody App body) {
+    @RequestMapping(value = "/app/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody App body) {
         validateRequest(body, App.APP_NAME);
         
         //验证应用名称是否重复
@@ -70,8 +70,8 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用修改")
-    @RequestMapping(value = "/app/admin/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody App body) {
+    @RequestMapping(value = "/app/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@RequestBody App body) {
         validateRequest(body, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
         if (appService.checkName(body.getAppId(), body.getAppName())) {
@@ -84,8 +84,8 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用删除")
-    @RequestMapping(value = "/app/admin/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> delete(@RequestBody App body) {
+    @RequestMapping(value = "/app/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody App body) {
         validateRequest(body, App.APP_ID, App.APP_NAME);
 
         Boolean result = appService.delete(body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
