@@ -37,6 +37,14 @@ public interface BaseService<T extends BaseEntity> {
      * @return
      */
     List<T> list(@Param("ew") Wrapper<T> var1);
+    
+    /**
+     * 单个实体类查询
+     * 
+     * @param var1
+     * @return
+     */
+    T find(@Param("ew") Wrapper<T> var1);
 
     /**
      * 单个实体类查询

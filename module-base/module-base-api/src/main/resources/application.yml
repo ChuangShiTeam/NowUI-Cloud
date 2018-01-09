@@ -61,7 +61,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 118.31.229.16:9200
+      cluster-nodes: 118.31.229.16:9300
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/com/nowui/cloud/base/**/sql/*.xml

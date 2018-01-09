@@ -1,14 +1,11 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserRole;
 import com.nowui.cloud.base.user.mapper.UserRoleMapper;
 import com.nowui.cloud.base.user.service.UserRoleService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户角色业务实现
@@ -19,35 +16,5 @@ import java.util.List;
  */
 @Service
 public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
-
-    @Override
-    public Integer countForAdmin(String appId, String userId, String roleId, String userType) {
-        Integer count = count(
-                new BaseWrapper<UserRole>()
-                        .eq(UserRole.APP_ID, appId)
-                        .likeAllowEmpty(UserRole.USER_ID, userId)
-                        .likeAllowEmpty(UserRole.ROLE_ID, roleId)
-                        .likeAllowEmpty(UserRole.USER_TYPE, userType)
-                        .eq(UserRole.SYSTEM_STATUS, true)
-        );
-        return count;
-    }
-
-    @Override
-    public List<UserRole> listForAdmin(String appId, String userId, String roleId, String userType, Integer pageIndex, Integer pageSize) {
-        List<UserRole> userRoleList = list(
-                new BaseWrapper<UserRole>()
-                        .eq(UserRole.APP_ID, appId)
-                        .likeAllowEmpty(UserRole.USER_ID, userId)
-                        .likeAllowEmpty(UserRole.ROLE_ID, roleId)
-                        .likeAllowEmpty(UserRole.USER_TYPE, userType)
-                        .eq(UserRole.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserRole.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return userRoleList;
-    }
 
 }

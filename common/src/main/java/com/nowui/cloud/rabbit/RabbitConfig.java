@@ -1,5 +1,7 @@
 package com.nowui.cloud.rabbit;
 
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,13 @@ public class RabbitConfig {
     public MappingJackson2MessageConverter jackson2Converter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         return converter;
+    }
+    
+    @Bean
+    TopicExchange exchange(RabbitAdmin rabbitAdmin) {
+        TopicExchange topicExchange = new TopicExchange("exchange");
+        rabbitAdmin.declareExchange(topicExchange);
+        return topicExchange;
     }
 
 }

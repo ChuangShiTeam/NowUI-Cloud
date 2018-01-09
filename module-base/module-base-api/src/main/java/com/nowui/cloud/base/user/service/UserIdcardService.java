@@ -13,27 +13,4 @@ import java.util.List;
  */
 public interface UserIdcardService extends BaseService<UserIdcard> {
 
-    /**
-     * 用户身份证统计
-     *
-     * @param appId 应用编号
-     * @param userId 用户编号
-     * @param userName 真实姓名
-     * @param userIdcardNumber 身份证号码
-     * @return Integer 用户身份证统计
-     */
-    Integer countForAdmin(String appId, String userId, String userName, String userIdcardNumber);
-
-    /**
-     * 用户身份证列表
-     *
-     * @param appId 应用编号
-     * @param userId 用户编号
-     * @param userName 真实姓名
-     * @param userIdcardNumber 身份证号码
-     * @param pageIndex 页码
-     * @param pageSize 每页个数
-     * @return List<UserIdcard> 用户身份证列表
-     */
-    List<UserIdcard> listForAdmin(String appId, String userId, String userName, String userIdcardNumber, Integer pageIndex, Integer pageSize);
 }

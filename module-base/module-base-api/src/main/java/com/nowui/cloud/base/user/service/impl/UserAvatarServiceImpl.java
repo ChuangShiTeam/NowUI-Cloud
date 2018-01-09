@@ -1,14 +1,11 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.mapper.UserAvatarMapper;
 import com.nowui.cloud.base.user.service.UserAvatarService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户头像业务实现
@@ -20,32 +17,5 @@ import java.util.List;
 @Service
 public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, UserAvatar> implements UserAvatarService {
 
-    @Override
-    public Integer countForAdmin(String appId, String userId, String userAvatar) {
-        Integer count = count(
-                new BaseWrapper<UserAvatar>()
-                        .eq(UserAvatar.APP_ID, appId)
-                        .likeAllowEmpty(UserAvatar.USER_ID, userId)
-                        .likeAllowEmpty(UserAvatar.USER_AVATAR, userAvatar)
-                        .eq(UserAvatar.SYSTEM_STATUS, true)
-        );
-        return count;
-    }
-
-    @Override
-    public List<UserAvatar> listForAdmin(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize) {
-        List<UserAvatar> userAvatarList = list(
-                new BaseWrapper<UserAvatar>()
-                        .eq(UserAvatar.APP_ID, appId)
-                        .likeAllowEmpty(UserAvatar.USER_ID, userId)
-                        .likeAllowEmpty(UserAvatar.USER_AVATAR, userAvatar)
-                        .eq(UserAvatar.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserAvatar.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return userAvatarList;
-    }
 
 }

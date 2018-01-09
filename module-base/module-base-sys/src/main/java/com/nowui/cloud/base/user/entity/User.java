@@ -67,17 +67,17 @@ public class User extends BaseEntity {
 
     public static final String USER_ACCOUNT = "userAccount";
 
-    public static final String USER_PASSWORD = "userPassword";
-
     public static final String USER_NICK_NAME = "userNickName";
 
-    public static final String USER_NAME = "userName";
+    public static final String USER_IDCARD = "userIdcard";
 
     public static final String USER_MOBILE = "userMobile";
 
     public static final String USER_EMAIL = "userEmail";
 
     public static final String USER_AVATAR = "userAvatar";
+    
+    public static final String USER_WECHAT = "userWechat";
 
 
     public String getUserId() {
@@ -112,60 +112,4 @@ public class User extends BaseEntity {
         put(USER_TYPE, userType);
     }
     
-    public String getUserAccount() {
-        return getString(USER_ACCOUNT);
-    }
-
-    public void setUserAccount(String userAccount) {
-        put(USER_ACCOUNT, userAccount);
-    }
-    
-    public String getUserPassword() {
-        return getString(USER_PASSWORD);
-    }
-
-    public void setUserPassword(String userPassword) {
-        put(USER_PASSWORD, userPassword);
-    }
-    
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
-    }
-
-    public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
-    }
-    
-    public String getUserName() {
-        return getString(USER_NAME);
-    }
-
-    public void setUserName(String userName) {
-        put(USER_NAME, userName);
-    }
-    
-    public String getUserMobile() {
-        return getString(USER_MOBILE);
-    }
-
-    public void setUserMobile(String userMobile) {
-        put(USER_MOBILE, userMobile);
-    }
-    
-    public String getUserEmail() {
-        return getString(USER_EMAIL);
-    }
-
-    public void setUserEmail(String userEmail) {
-        put(USER_EMAIL, userEmail);
-    }
-    
-    public String getUserAvatar() {
-        return getString(USER_AVATAR);
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
-    }
-
 }
