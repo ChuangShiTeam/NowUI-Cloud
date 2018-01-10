@@ -2,6 +2,7 @@ package com.nowui.cloud.base.code.entity;
 
 import javax.validation.constraints.NotNull;
 
+import com.alibaba.fastjson.JSONArray;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
@@ -202,8 +203,8 @@ public class Code extends BaseEntity {
         put(COLUMN_COMMENT, columnComment);
     }
 
-    public String getColumnList() {
-        return getString(COLUMN_LIST);
+    public JSONArray getColumnList() {
+        return getJSONArray(COLUMN_LIST);
     }
 
     public void setColumnList(String columnList) {
