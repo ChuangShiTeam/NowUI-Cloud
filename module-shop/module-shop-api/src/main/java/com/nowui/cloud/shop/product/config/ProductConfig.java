@@ -35,6 +35,13 @@ public class ProductConfig {
     }
 
     @Bean
+    Queue testBard(RabbitAdmin rabbitAdmin) {
+        Queue queue = new Queue("test", true);
+        rabbitAdmin.declareQueue(queue);
+        return queue;
+    }
+
+    @Bean
     TopicExchange exchange(RabbitAdmin rabbitAdmin) {
         TopicExchange topicExchange = new TopicExchange("exchange");
         rabbitAdmin.declareExchange(topicExchange);
@@ -43,7 +50,7 @@ public class ProductConfig {
 
     @Bean
     Binding bindingExchangeFoo(Queue queueFoo, TopicExchange exchange,RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(queueFoo).to(exchange).with("queue.foo");
+        Binding binding = BindingBuilder.bind(queueFoo).to(exchange).with("test");
         rabbitAdmin.declareBinding(binding);
         return binding;
     }
@@ -51,6 +58,13 @@ public class ProductConfig {
     @Bean
     Binding bindingExchangeBar(Queue queueBar, TopicExchange exchange,RabbitAdmin rabbitAdmin) {
         Binding binding = BindingBuilder.bind(queueBar).to(exchange).with("queue.bar");
+        rabbitAdmin.declareBinding(binding);
+        return binding;
+    }
+
+    @Bean
+    Binding bindingExchangeBar2(Queue testBard, TopicExchange exchange,RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(testBard).to(exchange).with("test");
         rabbitAdmin.declareBinding(binding);
         return binding;
     }

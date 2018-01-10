@@ -3,7 +3,6 @@ package com.nowui.cloud.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.netflix.client.ClientException;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BaseException;
@@ -14,7 +13,10 @@ import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import java.net.SocketTimeoutException;
 import java.sql.SQLException;
@@ -26,6 +28,17 @@ import java.util.*;
 public class BaseController {
 
     private String[] validateResponseColumnList = new String[]{};
+
+    private HttpServletRequest getRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    }
+
+    public <T> T getEntry(Class<T> clazz) {
+        if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
+            getRequest().setAttribute(Constant.REQUEST_BODY, Util.readData(getRequest()));
+        }
+        return JSONObject.parseObject(Util.readData(getRequest()), clazz);
+    }
 
     private JSONObject checkMap(Object data) {
         JSONObject result = (JSONObject) JSON.toJSON(data);
@@ -103,6 +116,14 @@ public class BaseController {
         map.put(Constant.CODE, 500);
         map.put(Constant.MESSAGE, "网络出现错误");
         return map;
+    }
+
+    public void validateRequest(Class<? extends BaseEntity> clazz, String... columns) {
+        BaseEntity entity = getEntry(clazz);
+
+        System.out.println(entity.toJSONString());
+
+        validateRequest(entity, columns);
     }
 
     public void validateRequest(BaseEntity entity, String... columns) {

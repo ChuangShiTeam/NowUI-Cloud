@@ -47,7 +47,6 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody User body) {
-    	
         validateRequest(
                 body,
                 User.APP_ID,
