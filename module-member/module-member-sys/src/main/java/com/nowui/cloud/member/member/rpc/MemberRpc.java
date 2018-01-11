@@ -29,7 +29,7 @@ public interface MemberRpc {
     @RequestMapping(value = "/user/system/v1/check/user/password", method = RequestMethod.POST)
     String wechatLogin(
             @RequestParam(value = "appId", required = true) String appId,
-            @RequestParam(value = "userWechat", required = true) UserWechat userWechat,
+            UserWechat userWechat,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
 

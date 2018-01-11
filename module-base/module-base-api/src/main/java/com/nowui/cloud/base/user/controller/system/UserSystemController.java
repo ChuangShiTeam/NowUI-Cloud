@@ -304,7 +304,7 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean registerUserMobile(String appId, String userId, String objectId, String userType,
-            UserAccount userAccount, UserPassword userPassword, String systemRequestUserId) {
+            String userAccount, String userPassword, String systemRequestUserId) {
         User user = new User();
         user.setUserId(userId);
         user.setAppId(appId);
@@ -315,17 +315,21 @@ public class UserSystemController implements UserRpc {
         
         if (result) {
             // 保存用户账号
-            userAccount.setAppId(appId);
-            userAccount.setUserId(userId);
-            userAccountService.save(userAccount, Util.getRandomUUID(), userId);
+            UserAccount userAccountBean = new UserAccount();
+            userAccountBean.setAppId(appId);
+            userAccountBean.setUserId(userId);
+            userAccountBean.setUserAccount(userAccount);
+            userAccountService.save(userAccountBean, Util.getRandomUUID(), userId);
             // 保存用户密码
-            userPassword.setAppId(appId);
-            userPassword.setUserId(userId);
-            userPasswordService.save(userPassword, Util.getRandomUUID(), userId);
+            UserPassword userPasswordbean = new UserPassword();
+            userPasswordbean.setAppId(appId);
+            userPasswordbean.setUserId(userId);
+            userPasswordbean.setUserPassword(userPassword);
+            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户手机号码
             UserMobile userMobile = new UserMobile();
             userMobile.setAppId(appId);
-            userMobile.setUserMobile(userAccount.getUserAccount());
+            userMobile.setUserMobile(userAccount);
             userMobile.setUserId(userId);
             userMobileService.save(userMobile, Util.getRandomUUID(), userId);
         }
@@ -335,7 +339,7 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean registerUserEmail(String appId, String userId, String objectId, String userType,
-            UserAccount userAccount, UserPassword userPassword, String systemRequestUserId) {
+            String userAccount, String userPassword, String systemRequestUserId) {
         User user = new User();
         user.setUserId(userId);
         user.setAppId(appId);
@@ -346,17 +350,21 @@ public class UserSystemController implements UserRpc {
         
         if (result) {
             // 保存用户账号
-            userAccount.setAppId(appId);
-            userAccount.setUserId(userId);
-            userAccountService.save(userAccount, Util.getRandomUUID(), userId);
+            UserAccount userAccountBean = new UserAccount();
+            userAccountBean.setAppId(appId);
+            userAccountBean.setUserId(userId);
+            userAccountBean.setUserAccount(userAccount);
+            userAccountService.save(userAccountBean, Util.getRandomUUID(), userId);
             // 保存用户密码
-            userPassword.setAppId(appId);
-            userPassword.setUserId(userId);
-            userPasswordService.save(userPassword, Util.getRandomUUID(), userId);
+            UserPassword userPasswordbean = new UserPassword();
+            userPasswordbean.setAppId(appId);
+            userPasswordbean.setUserId(userId);
+            userPasswordbean.setUserPassword(userPassword);
+            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户邮箱
             UserEmail userEmail = new UserEmail();
             userEmail.setAppId(appId);
-            userEmail.setUserEmail(userAccount.getUserAccount());
+            userEmail.setUserEmail(userAccount);
             userEmail.setUserId(userId);
             userEmailService.save(userEmail, Util.getRandomUUID(), userId);
         }

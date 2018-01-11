@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.service.FileService;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -25,6 +26,9 @@ public class FileSystemController implements FileRpc {
 
     @Override
     public File find(String fileId) {
+        if (Util.isNullOrEmpty(fileId)) {
+            return null;
+        }
         System.out.println(fileId);
         File file = fileService.find(fileId);
         file.defaultKeep();

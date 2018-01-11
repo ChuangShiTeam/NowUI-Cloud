@@ -22,6 +22,7 @@ import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.shop.product.rpc.ProductRpc;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -49,6 +50,9 @@ public class ArticleAdminController extends BaseController {
     
     @Autowired
     private FileRpc fileRpc;
+    @Autowired
+    private ProductRpc productRpc;
+    
     
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +72,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
             Article.ARTICLE_TITLE,
-            Article.ARTICLE_MEDIA_ID,
+            Article.ARTICLE_MEDIA,
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_AUTHOR,
             Article.ARTICLE_PUBLISH_TIME,
@@ -86,7 +90,7 @@ public class ArticleAdminController extends BaseController {
         validateRequest(body, Article.ARTICLE_ID);
 
         Article result = articleService.find(body.getArticleId());
-        
+        productRpc.find("123");
         //查询文章分类
         List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(body.getArticleId());
         for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
@@ -95,7 +99,9 @@ public class ArticleAdminController extends BaseController {
         result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
         //查询文章主媒体
         if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
-            File file = fileRpc.find(result.getArticleMediaId());
+            System.out.println(result.toJSONString());
+            System.out.println(result.getArticleMediaId());
+            File file = fileRpc.find("fbbbbbb1aa244552ab3470d14a1e3d02");
             file.keep(File.FILE_ID, File.FILE_PATH);
             result.put(Article.ARTICLE_MEDIA_ID, file);
         }

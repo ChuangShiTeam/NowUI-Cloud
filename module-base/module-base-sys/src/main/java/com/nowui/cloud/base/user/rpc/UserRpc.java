@@ -97,7 +97,7 @@ public interface UserRpc {
             @RequestParam(value = "userPassword", required = true) String userPassword
     );
     
-    @RequestMapping(value = "/user/system/v1/find/by/user/account", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/system/v1/find/by/user/wechat", method = RequestMethod.POST)
     User fingByUserWechat(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
@@ -122,7 +122,7 @@ public interface UserRpc {
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,
             @RequestParam(value = "userType", required = true) String userType,
-            @RequestParam(value = "userWechat", required = true) UserWechat userWechat,
+            UserWechat userWechat,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     
@@ -137,7 +137,7 @@ public interface UserRpc {
     @RequestMapping(value = "/user/system/v1/update/user/wechat", method = RequestMethod.POST)
     Boolean updateUserWechat(
             @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userWechat", required = true) UserWechat userWechat,
+            UserWechat userWechat,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     
@@ -152,7 +152,7 @@ public interface UserRpc {
     @RequestMapping(value = "/user/system/v1/update/user/password", method = RequestMethod.POST)
     Boolean updateUserPassword(
             @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userPassword", required = true) UserPassword userPassword,
+            UserPassword userPassword,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
     
     /**
@@ -166,7 +166,7 @@ public interface UserRpc {
     @RequestMapping(value = "/user/system/v1/update/user/avatar", method = RequestMethod.POST)
     Boolean updateUserAvatar(
             @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userAvatar", required = true) UserAvatar userAvatar,
+            UserAvatar userAvatar,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
     
     /**
@@ -180,7 +180,7 @@ public interface UserRpc {
     @RequestMapping(value = "/user/system/v1/update/user/nick/name", method = RequestMethod.POST)
     Boolean updateUserNickName(
             @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userNickName", required = true) UserNickName userNickName,
+            UserNickName userNickName,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     
@@ -202,8 +202,8 @@ public interface UserRpc {
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,
             @RequestParam(value = "userType", required = true) String userType,
-            @RequestParam(value = "userAccount", required = true) UserAccount userAccount,
-            @RequestParam(value = "userPassword", required = true) UserPassword userPassword,
+            @RequestParam(value = "userAccount", required = true) String userAccount,
+            @RequestParam(value = "userPassword", required = true) String userPassword,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     
@@ -225,8 +225,8 @@ public interface UserRpc {
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,
             @RequestParam(value = "userType", required = true) String userType,
-            @RequestParam(value = "userAccount", required = true) UserAccount userAccount,
-            @RequestParam(value = "userPassword", required = true) UserPassword userPassword,
+            @RequestParam(value = "userAccount", required = true) String userAccount,
+            @RequestParam(value = "userPassword", required = true) String userPassword,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     

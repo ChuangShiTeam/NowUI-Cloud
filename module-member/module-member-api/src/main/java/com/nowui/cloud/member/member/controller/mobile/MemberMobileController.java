@@ -96,7 +96,7 @@ public class MemberMobileController extends BaseController {
         Boolean result = memberService.save(member, memberId, userId);
         
         if (result) {
-            userRpc.registerUserMobile(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body, userPassword, body.getSystemRequestUserId());
+            userRpc.registerUserMobile(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
         }
         
         return renderJson(result);
@@ -143,7 +143,7 @@ public class MemberMobileController extends BaseController {
         Boolean result = memberService.save(member, memberId, userId);
         
         if (result) {
-            userRpc.registerUserEmail(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body, userPassword, body.getSystemRequestUserId());
+            userRpc.registerUserEmail(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
         }
         
         return renderJson(result);

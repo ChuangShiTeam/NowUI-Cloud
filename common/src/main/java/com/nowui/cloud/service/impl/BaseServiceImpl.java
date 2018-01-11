@@ -104,7 +104,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
                 baseEntity = mapper.selectById(id);
 
                 if (baseEntity != null) {
-                    redis.opsForValue().set(entity.getTableName(), baseEntity);
+                    redis.opsForValue().set(getItemCacheName(id), baseEntity);
                 }
             }
         }
@@ -131,7 +131,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
             } else {
                 baseEntity = list.get(0);
 
-                redis.opsForValue().set(baseEntity.getTableName(), baseEntity);
+                redis.opsForValue().set(getItemCacheName(id), baseEntity);
 
                 return baseEntity;
             }

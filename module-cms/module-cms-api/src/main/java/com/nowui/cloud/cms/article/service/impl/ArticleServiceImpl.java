@@ -80,7 +80,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
             if (!Util.isNullOrEmpty(article.getArticleMediaId())) {
                 File file = fileRpc.find(article.getArticleMediaId());
                 file.keep(File.FILE_ID, File.FILE_PATH);
-                article.put(Article.ARTICLE_MEDIA_ID, file);
+                article.put(Article.ARTICLE_MEDIA, file);
             }
         }
         
