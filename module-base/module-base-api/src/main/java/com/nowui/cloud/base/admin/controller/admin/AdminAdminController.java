@@ -108,8 +108,7 @@ public class AdminAdminController extends BaseController {
         UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
         validateRequest(
                 userAccount,
-                UserAccount.USER_ACCOUNT,
-                UserAccount.USER_PASSWORD
+                UserAccount.USER_ACCOUNT
         );
         //验证用户昵称
         UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();
@@ -179,8 +178,7 @@ public class AdminAdminController extends BaseController {
         UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
         validateRequest(
                 userAccount,
-                UserAccount.USER_ACCOUNT,
-                UserAccount.USER_PASSWORD
+                UserAccount.USER_ACCOUNT
         );
         //验证用户昵称
         UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();

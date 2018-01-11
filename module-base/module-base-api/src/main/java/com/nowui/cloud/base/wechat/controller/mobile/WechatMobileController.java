@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "微信", description = "微信移动端接口管理")
 @RestController
-public class WechatController extends BaseController {
+public class WechatMobileController extends BaseController {
     
     @ApiOperation(value = "微信授权登录")
     @GetMapping(value = "/wechat/auth")

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.*;
  * @author ZhongYongQiang
  */
 @RestController
-public class WechatController extends BaseController {
+public class WechatAdminController extends BaseController {
 
 }

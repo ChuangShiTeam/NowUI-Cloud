@@ -65,17 +65,6 @@ public class UserAccount extends BaseEntity {
     private String userAccount;
     public static final String USER_ACCOUNT = "userAccount";
 
-    /**
-     * 用户密码
-     */
-    @Field
-    @TableField
-    @NotNull(message = "用户密码不能为空")
-    @Length(max = 128, message = "用户密码长度超出限制")
-    private String userPassword;
-    public static final String USER_PASSWORD = "userPassword";
-
-
     public String getUserAccountId() {
         return getString(USER_ACCOUNT_ID);
     }
@@ -107,14 +96,5 @@ public class UserAccount extends BaseEntity {
     public void setUserAccount(String userAccount) {
         put(USER_ACCOUNT, userAccount);
     }
-
-    public String getUserPassword() {
-        return getString(USER_PASSWORD);
-    }
-    
-    public void setUserPassword(String userPassword) {
-        put(USER_PASSWORD, userPassword);
-    }
-
 
 }
