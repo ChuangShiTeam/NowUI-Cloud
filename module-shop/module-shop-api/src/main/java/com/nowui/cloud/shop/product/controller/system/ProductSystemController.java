@@ -22,6 +22,7 @@ public class ProductSystemController implements ProductRpc {
     @Override
     @ApiOperation(value = "商品信息")
     public Product find(String productId) {
+        System.out.println(productId);
         Product product = productService.find(productId);
         System.out.println(JSON.toJSONString(product));
         return product;
