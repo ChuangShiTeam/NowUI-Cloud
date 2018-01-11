@@ -57,13 +57,13 @@ public class CodeController extends BaseController {
     public String test(@RequestBody Code body) {
 ///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
-        Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
+//        Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
 
-        System.out.println(product);
+//        System.out.println(product);
 
-        productMq.sendBar2Rabbitmq("123456789");
+//        productMq.sendBar2Rabbitmq("123456789");
 
-        productMq.sendBar2Rabbitmq("987654321");
+        productMq.sendFoo2Rabbitmq("987654321");
 
         return "Hello World!";
     }
@@ -155,7 +155,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
 
-            List<Code> codeList = JSONArray.parseArray(body.getColumnList(), Code.class);
+            List<Code> codeList = JSONArray.parseArray(body.getColumnList().toJSONString(), Code.class);
 
             List<JSONObject> columnList = new ArrayList<JSONObject>();
             List<JSONObject> searchColumnList = new ArrayList<JSONObject>();

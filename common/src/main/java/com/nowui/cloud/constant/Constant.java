@@ -28,6 +28,8 @@ public class Constant {
     public static final String ORIGINAL = "original";
     
     public static final String UPLOAD = "upload";
+
+    public static final String REQUEST_BODY = "requestBody";
     
     public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
     

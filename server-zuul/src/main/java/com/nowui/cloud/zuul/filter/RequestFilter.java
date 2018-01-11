@@ -63,34 +63,34 @@ public class RequestFilter extends ZuulFilter {
 
             System.out.println(requestBody);
 
-            SortedMap<String, Object> jsonMap = JSON.parseObject(requestBody, new TypeReference<TreeMap<String, Object>>() {
-
-            });
-
-            StringBuilder signStringBuilder = new StringBuilder();
-            for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-                if (entry.getKey() != "sign") {
-                    signStringBuilder.append(entry.getKey());
-                    signStringBuilder.append(entry.getValue());
-                }
-            }
+//            SortedMap<String, Object> jsonMap = JSON.parseObject(requestBody, new TypeReference<TreeMap<String, Object>>() {
+//
+//            });
+//
+//            StringBuilder signStringBuilder = new StringBuilder();
+//            for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
+//                if (entry.getKey() != "sign") {
+//                    signStringBuilder.append(entry.getKey());
+//                    signStringBuilder.append(entry.getValue());
+//                }
+//            }
 
             JSONObject parameterJSONObject = JSON.parseObject(requestBody);
 
-            String signParameter = parameterJSONObject.getString("sign");
-            String sign = DigestUtils.md5Hex(signStringBuilder.toString());
-
-            if (!signParameter.equals(sign)) {
-///                System.out.println(signStringBuilder.toString());
-
-                Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-                map.put("code", 400);
-                map.put("message", "签名不对");
-
-                context.setSendZuulResponse(false);
-                context.setResponseStatusCode(200);
-                context.setResponseBody(JSON.toJSONString(map));
-            }
+//            String signParameter = parameterJSONObject.getString("sign");
+//            String sign = DigestUtils.md5Hex(signStringBuilder.toString());
+//
+//            if (!signParameter.equals(sign)) {
+/////                System.out.println(signStringBuilder.toString());
+//
+//                Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+//                map.put("code", 400);
+//                map.put("message", "签名不对");
+//
+//                context.setSendZuulResponse(false);
+//                context.setResponseStatusCode(200);
+//                context.setResponseBody(JSON.toJSONString(map));
+//            }
 
             ///
 //            Date date = new Date();

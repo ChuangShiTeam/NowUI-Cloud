@@ -1,6 +1,7 @@
 package com.nowui.cloud.zuul;
 
 import com.nowui.cloud.elasticsearch.ElasticSearchConfig;
+import com.nowui.cloud.filter.HttpServletRequestFilter;
 import com.nowui.cloud.rabbit.RabbitConfig;
 import com.nowui.cloud.redis.RedisConfig;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.FilterType;
  * @author ZhongYongQiang
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, ElasticsearchAutoConfiguration.class, RabbitAutoConfiguration.class, RedisAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.nowui.cloud"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {ElasticSearchConfig.class, RedisConfig.class, RabbitConfig.class})})
+@ComponentScan(basePackages = {"com.nowui.cloud"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {ElasticSearchConfig.class, RedisConfig.class, RabbitConfig.class, HttpServletRequestFilter.class})})
 @EnableEurekaClient
 @EnableZuulProxy
 public class ServerZuulApplication {
