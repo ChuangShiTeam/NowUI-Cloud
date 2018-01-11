@@ -1,8 +1,6 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.user.entity.UserRole;
-
-import java.util.List;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户角色业务接口

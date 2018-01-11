@@ -1,13 +1,8 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAccount;
-import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserMobile;
-import com.nowui.cloud.base.user.entity.UserNickName;
-import com.nowui.cloud.base.user.entity.UserWechat;
-
 import java.util.List;
+
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户业务接口
@@ -65,50 +60,4 @@ public interface UserService extends BaseService<User> {
      */
     User findById(String userId);
     
-    /**
-     * 账号注册
-     * 
-     * @param user 用户信息
-     * @param userId 用户编号
-     * @param userAccount 用户账号
-     * @param userNickName 用户昵称
-     * @param systemCreateUserId 请求操作用户编号
-     * @return 
-     */
-    Boolean save(User user, String userId, UserAccount userAccount, UserNickName userNickName, String systemCreateUserId);
-    
-    /**
-     * 手机号码昵称注册
-     * 
-     * @param user 用户信息
-     * @param userId 用户编号
-     * @param userMobile 手机号码
-     * @param userNickName 用户昵称
-     * @param systemCreateUserId 请求操作用户编号
-     * @return 
-     */
-    Boolean save(User user, String userId, UserMobile userMobile, UserNickName userNickName, String systemCreateUserId);
-    
-    /**
-     * 邮箱昵称注册
-     * 
-     * @param user 用户信息
-     * @param userId 用户编号
-     * @param userEmail 邮箱
-     * @param userNickName 用户昵称
-     * @param systemCreateUserId 请求操作用户编号
-     * @return 
-     */
-    Boolean save(User user, String userId, UserEmail userEmail, UserNickName userNickName, String systemCreateUserId);
-
-    /**
-     * 微信注册
-     * 
-     * @param user 用户信息
-     * @param userId 用户编号
-     * @param userWechat 用户微信
-     * @param systemCreateUserId 请求操作用户编号
-     * @return 
-     */
-    Boolean save(User user, String userId, UserWechat userWechat, String systemCreateUserId);
 }

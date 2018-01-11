@@ -11,6 +11,13 @@
 
     <artifactId>module-base-api</artifactId>
     
+    <repositories>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://121.40.44.121:8081/repository/3rd-part/</url>
+        </repository>
+    </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>com.nowui.cloud</groupId>
@@ -28,6 +35,18 @@
             <groupId>com.nowui.cloud</groupId>
             <artifactId>module-shop-sys</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.2.3</version>
         </dependency>
         
     </dependencies>

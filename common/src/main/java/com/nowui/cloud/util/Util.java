@@ -2,13 +2,17 @@ package com.nowui.cloud.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.elasticsearch.action.main.MainAction;
 
 import com.nowui.cloud.constant.Constant;
 
@@ -222,6 +226,22 @@ public class Util {
 
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + userPassword);
     }
+    
+    /**
+     * 生成随机数字
+     * 
+     * @param length 随机数字长度
+     * @return 
+     */
+    public static String getRandomNumber(int length) {
+        StringBuilder result = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            result.append(random.nextInt(10));
+        }
+        return result.toString();
+    }
 
     /**
      * 验证类里面是否存在这个属性
@@ -249,6 +269,26 @@ public class Util {
             source = source.substring(0, lastIndex) + replacement;
         }
         return source;
+    }
+    
+    /**
+     * 获取请求客户端的IP地址
+     * 
+     * @param request
+     * @return
+     */
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
     
 }

@@ -28,7 +28,7 @@ public interface UserRpc {
      * @param userType 用户类型
      * @return Integer 用户数量
      */
-    @RequestMapping(value = "/user/system/v1/count", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/system/v1/count", method = RequestMethod.POST)
     Integer countV1(
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "userType", required = true) String userType
@@ -47,7 +47,7 @@ public interface UserRpc {
      * @param pageSize	每页个数
      * @return List<User> 用户列表
      */
-    @RequestMapping(value = "/user/system/v1/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/system/v1/list", method = RequestMethod.POST)
     List<User> listV1(
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "userType", required = true) String userType, 
@@ -61,6 +61,20 @@ public interface UserRpc {
      * @param userId 用户编号
      * @return User 用户信息
      */
-    @RequestMapping(value = "/user/system/v1/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/system/v1/find", method = RequestMethod.POST)
     User findV1(@RequestParam(value = "userId", required = true) String userId);
+    
+    /**
+     * 根据用户账号查询用户信息
+     * 
+     * @param appId 应用编号
+     * @param userAccount 用户账号
+     * @return User 用户信息
+     */
+    @RequestMapping(value = "/user/system/v1/find/by/user/account", method = RequestMethod.POST)
+    User findByUserAccount(
+            @RequestParam(value = "appId", required = true) String appId,
+            @RequestParam(value = "userAccount", required = true) String userAccount
+    );
+
 }

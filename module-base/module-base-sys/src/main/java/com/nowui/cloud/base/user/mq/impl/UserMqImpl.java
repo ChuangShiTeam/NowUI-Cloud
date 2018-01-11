@@ -28,103 +28,136 @@ public class UserMqImpl implements UserMq {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public void sendSave(User body, String userId, String systemCreateUserId) {
-        body.setUserId(userId);
-        body.setSystemCreateUserId(systemCreateUserId);
-        System.out.println("发送用户信息" + body.toJSONString());
-        rabbitTemplate.convertAndSend("exchange", "topic.user.save", body.toJSONString());
+    public void sendSave(User user, String userId, String systemRequestUserId) {
+        user.setUserId(userId);
+        user.setSystemRequestUserId(systemRequestUserId);
+        try {
+            rabbitTemplate.convertAndSend("exchange", "topic.user.save", user.toJSONString());
+            System.out.println("发送保存用户信息：" + user.toJSONString());
+        } catch (Exception e) {
+            //发送失败存储消息
+        }
     }
 
     @Override
-    public void sendUpdate(User user, String userId, String systemUpdateUserId, Integer systemVersion) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdate(User user, String userId, String systemRequestUserId, Integer systemVersion) {
+        user.setUserId(userId);
+        user.setSystemRequestUserId(systemRequestUserId);
+        user.setSystemVersion(systemVersion);
+        System.out.println("发送更新用户信息：" + user.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.update", user.toJSONString());
     }
 
     @Override
-    public void sendSaveAccount(UserAccount userAccount, String userId, String systemCreateUserId) {
+    public void sendSaveAccount(UserAccount userAccount, String userId, String systemRequestUserId) {
         userAccount.setUserId(userId);
-        userAccount.setSystemCreateUserId(systemCreateUserId);
-        System.out.println("发送用户账号信息" + userAccount.toJSONString());
+        userAccount.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户账号信息：" + userAccount.toJSONString());
         rabbitTemplate.convertAndSend("exchange", "topic.user.account.save", userAccount.toJSONString());
     }
 
     @Override
-    public void sendUpdateAccount(UserAccount userAccount, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateAccount(UserAccount userAccount, String userId, String systemRequestUserId) {
+        userAccount.setUserId(userId);
+        userAccount.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户账号信息：" + userAccount.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.account.update", userAccount.toJSONString());
     }
 
     @Override
-    public void sendSaveAvatar(UserAvatar userAvatar, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveAvatar(UserAvatar userAvatar, String userId, String systemRequestUserId) {
+        userAvatar.setUserId(userId);
+        userAvatar.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户头像消息：" + userAvatar.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.avatar.save", userAvatar.toJSONString());
     }
 
     @Override
-    public void sendUpdateAvatar(UserAccount userAccount, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateAvatar(UserAvatar userAvatar, String userId, String systemRequestUserId) {
+        userAvatar.setUserId(userId);
+        userAvatar.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户头像消息：" + userAvatar.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.avatar.save", userAvatar.toJSONString());
     }
 
     @Override
-    public void sendSaveEmail(UserEmail userEmail, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveEmail(UserEmail userEmail, String userId, String systemRequestUserId) {
+        userEmail.setUserId(systemRequestUserId);
+        userEmail.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户邮箱消息：" + userEmail.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.email.save", userEmail.toJSONString());
     }
 
     @Override
-    public void sendUpdateEmail(UserEmail userEmail, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateEmail(UserEmail userEmail, String userId, String systemRequestUserId) {
+        userEmail.setUserId(systemRequestUserId);
+        userEmail.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户邮箱消息：" + userEmail.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.email.update", userEmail.toJSONString());
     }
 
     @Override
-    public void sendSaveIdcard(UserIdcard userIdcard, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveIdcard(UserIdcard userIdcard, String userId, String systemRequestUserId) {
+        userIdcard.setUserId(systemRequestUserId);
+        userIdcard.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户身份证消息：" + userIdcard.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.idcard.save", userIdcard.toJSONString());
     }
 
     @Override
-    public void sendUpdateIdcard(UserAccount userIdcard, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateIdcard(UserIdcard userIdcard, String userId, String systemRequestUserId) {
+        userIdcard.setUserId(systemRequestUserId);
+        userIdcard.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户身份证消息：" + userIdcard.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.idcard.update", userIdcard.toJSONString());
     }
 
     @Override
-    public void sendSaveMobile(UserMobile userMobile, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveMobile(UserMobile userMobile, String userId, String systemRequestUserId) {
+        userMobile.setUserId(systemRequestUserId);
+        userMobile.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户手机号码消息：" + userMobile.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.mobile.save", userMobile.toJSONString());
     }
 
     @Override
-    public void sendUpdateMobile(UserMobile userMobile, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateMobile(UserMobile userMobile, String userId, String systemRequestUserId) {
+        userMobile.setUserId(systemRequestUserId);
+        userMobile.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户手机号码消息：" + userMobile.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.mobile.update", userMobile.toJSONString());
     }
 
     @Override
-    public void sendSaveNickName(UserNickName userNickName, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveNickName(UserNickName userNickName, String userId, String systemRequestUserId) {
+        userNickName.setUserId(systemRequestUserId);
+        userNickName.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户昵称消息：" + userNickName.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.nickName.save", userNickName.toJSONString());
     }
 
     @Override
-    public void sendUpdateNickName(UserNickName userNickName, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateNickName(UserNickName userNickName, String userId, String systemRequestUserId) {
+        userNickName.setUserId(systemRequestUserId);
+        userNickName.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户昵称消息：" + userNickName.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.nickName.update", userNickName.toJSONString());
     }
 
     @Override
-    public void sendSaveWechat(UserWechat userWechat, String userId, String systemCreateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendSaveWechat(UserWechat userWechat, String userId, String systemRequestUserId) {
+        userWechat.setUserId(userId);
+        userWechat.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送保存用户微信消息：" + userWechat.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.userWechat.save", userWechat.toJSONString());
     }
 
     @Override
-    public void sendUpdateWechat(UserWechat userWechat, String userId, String systemUpdateUserId) {
-        // TODO Auto-generated method stub
-        
+    public void sendUpdateWechat(UserWechat userWechat, String userId, String systemRequestUserId) {
+        userWechat.setUserId(userId);
+        userWechat.setSystemRequestUserId(systemRequestUserId);
+        System.out.println("发送更新用户微信消息：" + userWechat.toJSONString());
+        rabbitTemplate.convertAndSend("exchange", "topic.user.userWechat.update", userWechat.toJSONString());
     }
 
 }

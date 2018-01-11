@@ -92,7 +92,6 @@ public class RequestFilter extends ZuulFilter {
                 context.setResponseBody(JSON.toJSONString(map));
             }
 
-            String systemRequestUserId = "";
             ///
 //            Date date = new Date();
 //            Calendar calendar = Calendar.getInstance();
@@ -110,9 +109,10 @@ public class RequestFilter extends ZuulFilter {
 //            }
 
             String token = parameterJSONObject.getString("token");
-            systemRequestUserId = decipherToken(token, context);
+            String systemRequestUserId = decipherToken(token, context);
 
             parameterJSONObject.put("systemRequestUserId", systemRequestUserId);
+            parameterJSONObject.put("systemRequestIpAddress", Util.getIpAddress(request));
 
             final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
             context.setRequest(new HttpServletRequestWrapper(context.getRequest()) {

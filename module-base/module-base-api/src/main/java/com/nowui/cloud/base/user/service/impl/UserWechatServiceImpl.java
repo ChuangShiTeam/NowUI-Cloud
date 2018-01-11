@@ -1,10 +1,14 @@
 package com.nowui.cloud.base.user.service.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.mapper.UserWechatMapper;
 import com.nowui.cloud.base.user.service.UserWechatService;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
@@ -16,5 +20,31 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  */
 @Service
 public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
+
+    @Override
+    public UserWechat findByUserId(String userId) {
+        UserWechat userWechat = find(
+                new BaseWrapper<UserWechat>()
+                    .eq(UserWechat.USER_ID, userId)
+                    .eq(UserWechat.SYSTEM_STATUS, true)
+                    .orderDesc(Arrays.asList(UserWechat.SYSTEM_CREATE_TIME))
+        );
+        return userWechat;
+    }
+
+    @Override
+    public void deletByUserId(String userId, String systemUpdateUserId) {
+        List<UserWechat> userWechatList = list(
+                new BaseWrapper<UserWechat>()
+                        .eq(UserWechat.USER_ID, userId)
+                        .eq(UserWechat.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(UserWechat.SYSTEM_CREATE_TIME))
+        );
+        if (userWechatList != null && userWechatList.size() > 0) {
+            for (UserWechat userWechat : userWechatList) {
+                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
+            }
+        }
+    }
 
 }

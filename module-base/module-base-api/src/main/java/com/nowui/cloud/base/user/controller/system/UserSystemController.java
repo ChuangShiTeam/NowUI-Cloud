@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.rpc.UserRpc;
+import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -24,6 +27,9 @@ public class UserSystemController implements UserRpc {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserAccountService userAccountService;
 
 	@Override
 	public Integer countV1(String appId, String userType) {
@@ -38,6 +44,17 @@ public class UserSystemController implements UserRpc {
     @Override
     public User findV1(String userId) {
         return userService.findById(userId);
+    }
+
+    @Override
+    public User findByUserAccount(String appId, String userAccount) {
+        UserAccount bean = userAccountService.findByUserAcoount(appId, userAccount);
+        
+        if (bean == null || Util.isNullOrEmpty(bean.getUserId())) {
+            return null;
+        }
+        
+        return userService.findById(bean.getUserId());
     }
 	
 	

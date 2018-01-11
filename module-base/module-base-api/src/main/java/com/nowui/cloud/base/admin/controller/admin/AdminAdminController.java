@@ -14,7 +14,6 @@ import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
-import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
@@ -106,13 +105,37 @@ public class AdminAdminController extends BaseController {
                 body,
                 User.APP_ID
         );
-        UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class);
+        //验证用户账号
+        UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
         validateRequest(
                 userAccount,
                 UserAccount.USER_ACCOUNT,
                 UserAccount.USER_PASSWORD
         );
-        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class);
+        //验证用户昵称
+        UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();
+        validateRequest(
+                userNickName,
+                UserNickName.USER_NICK_NAME
+        );
+        //验证用户姓名
+        UserIdcard userIdcard = JSONObject.parseObject(body.toJSONString(), UserIdcard.class).keepTableFieldValue();
+        validateRequest(
+                userIdcard,
+                UserIdcard.USER_NAME
+        );
+        //验证用户邮箱
+        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class).keepTableFieldValue();
+        validateRequest(
+                userEmail,
+                UserEmail.USER_EMAIL
+        );
+        //验证用户手机
+        UserMobile userMobile = JSONObject.parseObject(body.toJSONString(), UserMobile.class).keepTableFieldValue();
+        validateRequest(
+                userMobile,
+                UserMobile.USER_MOBILE
+        );
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
         
@@ -127,8 +150,10 @@ public class AdminAdminController extends BaseController {
         Boolean result = true;
         if (result) {
             userMq.sendSave(body, userId, body.getSystemRequestUserId());
-            
             userMq.sendSaveAccount(userAccount, userId, body.getSystemRequestUserId());
+            userMq.sendSaveNickName(userNickName, userId, body.getSystemRequestUserId());
+            userMq.sendSaveIdcard(userIdcard, userId, body.getSystemRequestUserId());
+            userMq.sendSaveMobile(userMobile, userId, body.getSystemRequestUserId());
 		}
         
         return renderJson(result);
@@ -141,12 +166,6 @@ public class AdminAdminController extends BaseController {
                 body,
                 User.APP_ID,
                 User.USER_ID,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_IDCARD,
-                User.USER_MOBILE,
-                User.USER_EMAIL,
-                User.USER_AVATAR,
                 User.SYSTEM_VERSION
         );
         Admin admin = JSONObject.parseObject(body.toJSONString(), Admin.class);
@@ -157,10 +176,47 @@ public class AdminAdminController extends BaseController {
                 Admin.SYSTEM_VERSION
         );
         
+        //验证用户账号
+        UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
+        validateRequest(
+                userAccount,
+                UserAccount.USER_ACCOUNT,
+                UserAccount.USER_PASSWORD
+        );
+        //验证用户昵称
+        UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();
+        validateRequest(
+                userNickName,
+                UserNickName.USER_NICK_NAME
+        );
+        //验证用户姓名
+        UserIdcard userIdcard = JSONObject.parseObject(body.toJSONString(), UserIdcard.class).keepTableFieldValue();
+        userIdcard.setUserIdcardNumber("");
+        validateRequest(
+                userIdcard,
+                UserIdcard.USER_NAME
+        );
+        //验证用户邮箱
+        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class).keepTableFieldValue();
+        validateRequest(
+                userEmail,
+                UserEmail.USER_EMAIL
+        );
+        //验证用户手机
+        UserMobile userMobile = JSONObject.parseObject(body.toJSONString(), UserMobile.class).keepTableFieldValue();
+        validateRequest(
+                userMobile,
+                UserMobile.USER_MOBILE
+        );
+        
         Boolean result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
 
         if (result) {
-            //adminMq.sendUpdateUser(body);
+            userMq.sendUpdate(body, body.getUserId(), body.getSystemRequestUserId(), body.getSystemVersion());
+            userMq.sendUpdateAccount(userAccount, body.getUserId(), body.getSystemRequestUserId());
+            userMq.sendUpdateNickName(userNickName, body.getUserId(), body.getSystemRequestUserId());
+            userMq.sendUpdateIdcard(userIdcard, body.getUserId(), body.getSystemRequestUserId());
+            userMq.sendUpdateMobile(userMobile, body.getUserId(), body.getSystemRequestUserId());
         }
         
         return renderJson(result);

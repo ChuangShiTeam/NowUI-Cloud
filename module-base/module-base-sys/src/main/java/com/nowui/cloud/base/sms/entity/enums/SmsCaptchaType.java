@@ -13,9 +13,9 @@ public enum SmsCaptchaType {
      */
     REGISTER("REGISTER", "注册"),
     /**
-     * 修改密码
+     * 忘记密码
      */
-    EDIT_PASSWORD("EDIT_PASSWORD", "修改密码"),
+    FORGET_PASSWORD("FORGET_PASSWORD", "忘记密码"),
     /**
      * 登录
      */

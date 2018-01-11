@@ -1,8 +1,6 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.user.entity.UserMessage;
-
-import java.util.List;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户消息业务接口

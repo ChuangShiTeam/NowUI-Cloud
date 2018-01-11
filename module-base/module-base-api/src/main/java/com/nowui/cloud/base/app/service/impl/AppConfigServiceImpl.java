@@ -58,4 +58,17 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
         return appConfigList;
     }
 
+    @Override
+    public List<AppConfig> abledListByConfigCategoryId(String appId, String configCategoryId) {
+        List<AppConfig> appConfigList = list(
+                new BaseWrapper<AppConfig>()
+                        .eq(AppConfig.APP_ID, appId)
+                        .eqAllowEmpty(AppConfig.CONFIG_CATEGORY_ID, configCategoryId)
+                        .eqAllowEmpty(AppConfig.CONFIG_IS_DISABLED, false)
+                        .eq(AppConfig.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfig.SYSTEM_CREATE_TIME))
+        );
+        return appConfigList;
+    }
+
 }

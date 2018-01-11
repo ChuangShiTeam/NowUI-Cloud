@@ -71,7 +71,7 @@ public interface UserMq {
      * @param userId 用户编号
      * @param systemUpdateUserId 更新用户编号
      */
-    void sendUpdateAvatar(UserAccount userAccount, String userId, String systemUpdateUserId);
+    void sendUpdateAvatar(UserAvatar userAvatar, String userId, String systemUpdateUserId);
 
     /**
      * 发送保存用户邮箱信息
@@ -107,7 +107,7 @@ public interface UserMq {
      * @param userId 用户编号
      * @param systemUpdateUserId 更新用户编号
      */
-    void sendUpdateIdcard(UserAccount userIdcard, String userId, String systemUpdateUserId);
+    void sendUpdateIdcard(UserIdcard userIdcard, String userId, String systemUpdateUserId);
 
     /**
      * 发送保存用户手机号码信息

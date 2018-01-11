@@ -31,6 +31,14 @@ public class Constant {
     
     public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
     
+    public static final String EXPIRE_TIME = "expireTime";
+    
+    public static final String TOKEN = "token";
+    
+    public static final String PLATFORM = "platform";
+    
+    public static final String VERSION = "version";
+    
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");
 

@@ -13,10 +13,28 @@ public interface UserAccountService extends BaseService<UserAccount> {
 
     /**
      * 根据用户编号查询用户账号信息
-     * 
-     * @param userId
-     * @return UserAccount
+     *  
+     * @param userId 用户编号
+     * @return UserAccount 用户账号
      */
     UserAccount findByUserId(String userId);
+    
+    /**
+     * 根据用户编号逻辑删除用户账号信息
+     * 
+     * @param userId 用户编号
+     * @param systemUpdateUserId 更新用户编号
+     * @return
+     */
+    void deletByUserId(String userId, String systemUpdateUserId);
+    
+    /**
+     * 
+     * 根据用户账号查询用户账号信息
+     * @param appId
+     * @param userAccount
+     * @return
+     */
+    UserAccount findByUserAcoount(String appId, String userAccount);
     
 }

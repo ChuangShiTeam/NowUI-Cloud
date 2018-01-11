@@ -3,7 +3,6 @@ package com.nowui.cloud.base.app.service;
 import java.util.List;
 
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
-import com.nowui.cloud.base.app.rpc.AppConfigCategoryRpc;
 import com.nowui.cloud.service.BaseService;
 
 /**
@@ -11,7 +10,7 @@ import com.nowui.cloud.service.BaseService;
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppConfigCategoryService extends BaseService<AppConfigCategory>, AppConfigCategoryRpc {
+public interface AppConfigCategoryService extends BaseService<AppConfigCategory> {
     
     /**
      * 应用配置分类统计
@@ -42,6 +41,14 @@ public interface AppConfigCategoryService extends BaseService<AppConfigCategory>
      * @return List<AppConfigCategory> 应用配置分类列表
      */
     List<AppConfigCategory> appList(String appId);
-
+    
+    /**
+     * 根据配置分类编码查询应用配置分类信息
+     * 
+     * @param appId 应用ID
+     * @param configCategoryCode 配置分类编码
+     * @return 应用配置分类
+     */
+    AppConfigCategory findByConfigCategoryCode(String appId, String configCategoryCode);
 
 }

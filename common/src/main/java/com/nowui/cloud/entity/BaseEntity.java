@@ -91,6 +91,14 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     @Length(max = 32, message = "请求人编号长度超出限制")
     private String systemRequestUserId;
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
+    
+    /**
+     * 请求人IP地址
+     */
+    @TableField(exist = false)
+    @NotNull(message = "请求人IP地址不能为空")
+    private String systemRequestIpAddress;
+    public static final String SYSTEM_REQUEST_IP_ADDRESS = "systemRequestIpAddress";
 
     /**
      * 数据表名称
@@ -209,6 +217,14 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     public void setSystemRequestUserId(String systemRequestUserId) {
         put(SYSTEM_REQUEST_USER_ID, systemRequestUserId);
     }
+    
+    public String getSystemRequestIpAddress() {
+        return getString(SYSTEM_REQUEST_IP_ADDRESS);
+    }
+    
+    public void setSystemRequestIpAddress(String systemRequestIpAddress) {
+        put(SYSTEM_REQUEST_IP_ADDRESS, systemRequestIpAddress);
+    }
 
     public String getTableName() {
         if (tableName == null) {
@@ -308,7 +324,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         return size > 0 ? size : 0;
     }
 
-    public void keepTableFieldValue() {
+    public <T extends BaseEntity> T keepTableFieldValue() {
         Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
@@ -327,6 +343,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
                 iterator.remove();
             }
         }
+        return (T) this;
     }
     
     /**

@@ -1,6 +1,7 @@
 package com.nowui.cloud.base.user.service.impl;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,34 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, U
                 new BaseWrapper<UserAccount>()
                         .eq(UserAccount.USER_ID, userId)
                         .eq(UserAccount.SYSTEM_STATUS, true)
+        );
+        return userAccount;
+    }
+
+    @Override
+    public void deletByUserId(String userId, String systemUpdateUserId) {
+        List<UserAccount> userAccountList = list(
+                new BaseWrapper<UserAccount>()
+                        .eq(UserAccount.USER_ID, userId)
+                        .eq(UserAccount.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(UserAccount.SYSTEM_CREATE_TIME))
         );
-        
-        return userAccount;
+        if (userAccountList != null && userAccountList.size() > 0) {
+            for (UserAccount userAccount : userAccountList) {
+                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
+            }
+        }
+    }
+
+    @Override
+    public UserAccount findByUserAcoount(String appId, String userAccount) {
+        UserAccount bean = find( 
+                new BaseWrapper<UserAccount>()
+                        .eq(UserAccount.APP_ID, appId)
+                        .eq(UserAccount.USER_ACCOUNT, userAccount)
+                        .eq(UserAccount.SYSTEM_STATUS, true)
+        );
+        return bean;
     }
 
 }
