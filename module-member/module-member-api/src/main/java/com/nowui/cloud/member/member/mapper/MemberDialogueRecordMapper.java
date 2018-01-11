@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
-import com.nowui.cloud.base.member.entity.MemberDialogueRecord;
+import com.nowui.cloud.member.member.entity.MemberDialogueRecord;
 
 /**
  * 会员对话记录mapping映射接口

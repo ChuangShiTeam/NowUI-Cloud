@@ -26,7 +26,7 @@ public interface UserAccountService extends BaseService<UserAccount> {
      * @param systemUpdateUserId 更新用户编号
      * @return
      */
-    void deletByUserId(String userId, String systemUpdateUserId);
+    void deleteByUserId(String userId, String systemUpdateUserId);
     
     /**
      * 

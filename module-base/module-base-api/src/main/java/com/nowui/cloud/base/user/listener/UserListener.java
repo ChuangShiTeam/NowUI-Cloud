@@ -81,7 +81,7 @@ public class UserListener {
         UserAccount userAccount = JSONObject.parseObject(message, UserAccount.class);
         System.out.println("收到更新用户账号消息：" + userAccount.toJSONString());
         //删除旧的账号信息
-        userAccountService.deletByUserId(userAccount.getUserId(), userAccount.getSystemRequestUserId());
+        userAccountService.deleteByUserId(userAccount.getUserId(), userAccount.getSystemRequestUserId());
         //保存新的账号信息
         userAccountService.save(userAccount, Util.getRandomUUID(), userAccount.getSystemRequestUserId());
     }
@@ -98,7 +98,7 @@ public class UserListener {
         UserEmail userEmail = JSONObject.parseObject(message, UserEmail.class);
         System.out.println("收到保存用户邮箱消息：" + userEmail.toJSONString());
         //删除旧的邮箱信息
-        userEmailService.deletByUserId(userEmail.getUserId(), userEmail.getSystemRequestUserId());
+        userEmailService.deleteByUserId(userEmail.getUserId(), userEmail.getSystemRequestUserId());
         //保存新的邮箱信息
         userEmailService.save(userEmail, Util.getRandomUUID(), userEmail.getSystemRequestUserId());
     }
@@ -115,7 +115,7 @@ public class UserListener {
         UserAvatar userAvatar = JSONObject.parseObject(message, UserAvatar.class);
         System.out.println("收到更新用户头像消息：" + userAvatar.toJSONString());
         //删除旧的头像信息
-        userAvatarService.deletByUserId(userAvatar.getUserId(), userAvatar.getSystemRequestUserId());
+        userAvatarService.deleteByUserId(userAvatar.getUserId(), userAvatar.getSystemRequestUserId());
         //保存新的头像信息
         userAvatarService.save(userAvatar, Util.getRandomUUID(), userAvatar.getSystemRequestUserId());
     }
@@ -132,7 +132,7 @@ public class UserListener {
         UserIdcard userIdcard = JSONObject.parseObject(message, UserIdcard.class);
         System.out.println("收到更新用户身份证消息：" + userIdcard.toJSONString());
         //删除旧的身份证信息
-        userIdcardService.deletByUserId(userIdcard.getUserId(), userIdcard.getSystemRequestUserId());
+        userIdcardService.deleteByUserId(userIdcard.getUserId(), userIdcard.getSystemRequestUserId());
         //保存新的身份证信息
         userIdcardService.save(userIdcard, Util.getRandomUUID(), userIdcard.getSystemRequestUserId());
     }
@@ -149,7 +149,7 @@ public class UserListener {
         UserMobile userMobile = JSONObject.parseObject(message, UserMobile.class);
         System.out.println("收到更新用户手机号码消息：" + userMobile.toJSONString());
         //删除旧的手机号码信息
-        userMobileService.deletByUserId(userMobile.getUserId(), userMobile.getSystemRequestUserId());
+        userMobileService.deleteByUserId(userMobile.getUserId(), userMobile.getSystemRequestUserId());
         //保存新的手机号码信息
         userMobileService.save(userMobile, Util.getRandomUUID(), userMobile.getSystemRequestUserId());
     }
@@ -166,7 +166,7 @@ public class UserListener {
         UserNickName userNickName = JSONObject.parseObject(message, UserNickName.class);
         System.out.println("收到更新用户昵称消息：" + userNickName.toJSONString());
         //删除旧的用户昵称信息
-        userNickNameService.deletByUserId(userNickName.getUserId(), userNickName.getSystemRequestUserId());
+        userNickNameService.deleteByUserId(userNickName.getUserId(), userNickName.getSystemRequestUserId());
         //保存新的用户昵称信息
         userNickNameService.save(userNickName, Util.getRandomUUID(), userNickName.getSystemRequestUserId());
     }
@@ -183,7 +183,7 @@ public class UserListener {
         UserWechat userWechat = JSONObject.parseObject(message, UserWechat.class);
         System.out.println("收到更新用户微信消息：" + userWechat.toJSONString());
         //删除旧的用户微信信息
-        userWechatService.deletByUserId(userWechat.getUserId(), userWechat.getSystemRequestUserId());
+        userWechatService.deleteByUserId(userWechat.getUserId(), userWechat.getSystemRequestUserId());
         //保存新的用户微信信息
         userWechatService.save(userWechat, Util.getRandomUUID(), userWechat.getSystemRequestUserId());
     }

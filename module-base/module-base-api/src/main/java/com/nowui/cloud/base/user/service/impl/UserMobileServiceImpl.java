@@ -33,7 +33,7 @@ public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, Use
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserMobile> userMobileList = list(
                 new BaseWrapper<UserMobile>()
                         .eq(UserMobile.USER_ID, userId)

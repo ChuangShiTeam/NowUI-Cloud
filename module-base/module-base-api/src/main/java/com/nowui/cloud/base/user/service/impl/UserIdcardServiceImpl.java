@@ -33,7 +33,7 @@ public class UserIdcardServiceImpl extends BaseServiceImpl<UserIdcardMapper, Use
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserIdcard> userIdcardList = list(
                 new BaseWrapper<UserIdcard>()
                         .eq(UserIdcard.USER_ID, userId)

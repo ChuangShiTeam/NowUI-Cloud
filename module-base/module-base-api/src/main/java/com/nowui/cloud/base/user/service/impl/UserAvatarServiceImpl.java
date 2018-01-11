@@ -44,7 +44,7 @@ public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, Use
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserAvatar> userAvatarList = list(
                 new BaseWrapper<UserAvatar>()
                         .eq(UserAvatar.USER_ID, userId)

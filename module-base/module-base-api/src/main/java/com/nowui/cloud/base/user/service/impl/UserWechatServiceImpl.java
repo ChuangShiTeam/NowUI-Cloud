@@ -33,7 +33,7 @@ public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, Use
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserWechat> userWechatList = list(
                 new BaseWrapper<UserWechat>()
                         .eq(UserWechat.USER_ID, userId)
@@ -45,6 +45,19 @@ public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, Use
                 delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
             }
         }
+    }
+
+    @Override
+    public UserWechat findByOpenIdAndUnionId(String appId, String wechatOpenId, String wechatUnionId) {
+        UserWechat userWechat = find(
+            new BaseWrapper<UserWechat>()
+                .eq(UserWechat.APP_ID, appId)
+                .eq(UserWechat.WECHAT_OPEN_ID, wechatOpenId)
+                .eq(UserWechat.WECHAT_UNION_ID, wechatUnionId)
+                .eq(UserWechat.APP_ID, appId)
+                .eq(UserWechat.SYSTEM_STATUS, true)
+        );
+        return userWechat;
     }
 
 }

@@ -33,7 +33,7 @@ public class UserNickNameServiceImpl extends BaseServiceImpl<UserNickNameMapper,
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserNickName> userNickNameList = list(
                 new BaseWrapper<UserNickName>()
                         .eq(UserNickName.USER_ID, userId)

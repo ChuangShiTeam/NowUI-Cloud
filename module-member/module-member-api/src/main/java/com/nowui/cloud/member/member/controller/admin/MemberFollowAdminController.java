@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.member.entity.MemberFollow;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
 

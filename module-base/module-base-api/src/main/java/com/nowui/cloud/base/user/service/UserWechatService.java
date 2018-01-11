@@ -26,6 +26,16 @@ public interface UserWechatService extends BaseService<UserWechat> {
      * @param systemUpdateUserId 更新用户编号
      * @return
      */
-    void deletByUserId(String userId, String systemUpdateUserId);
-
+    void deleteByUserId(String userId, String systemUpdateUserId);
+    
+    /**
+     * 根据微信openId和unionId
+     * 
+     * @param appId 应用编号
+     * @param wechatOpenId 微信openId
+     * @param wechatUnionId 微信unionId
+     * @return UserWechat 用户微信信息
+     */
+    UserWechat findByOpenIdAndUnionId(String appId, String wechatOpenId, String wechatUnionId);
+    
 }

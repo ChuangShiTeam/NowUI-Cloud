@@ -32,7 +32,7 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, U
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserAccount> userAccountList = list(
                 new BaseWrapper<UserAccount>()
                         .eq(UserAccount.USER_ID, userId)

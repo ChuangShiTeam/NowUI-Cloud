@@ -25,7 +25,20 @@ public interface FileRpc {
      * @param fileId 文件编号
      * @return file 文件
      */
-    @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.POST)
     File find(@RequestParam(value = "fileId", required = true) String fileId);
+    
+    /**
+     * 下载微信头像到本地并保存文件
+     * 
+     * @param fileId
+     * @return
+     */
+    @RequestMapping(value = "/file/system/v1/download/wechat/head/img/to/native", method = RequestMethod.POST)
+    String downloadWechatHeadImgToNative(
+            @RequestParam(value = "appId", required = true) String appId,
+            @RequestParam(value = "userId", required = true) String userId,
+            @RequestParam(value = "wechatHeadImgUrl", required = true) String wechatHeadImgUrl
+    );
 
 }

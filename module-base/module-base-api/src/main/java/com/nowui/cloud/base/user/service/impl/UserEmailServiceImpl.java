@@ -33,7 +33,7 @@ public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserE
     }
 
     @Override
-    public void deletByUserId(String userId, String systemUpdateUserId) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserEmail> userEmailList = list(
                 new BaseWrapper<UserEmail>()
                         .eq(UserEmail.USER_ID, userId)

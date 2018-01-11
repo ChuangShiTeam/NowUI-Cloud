@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.base.member.entity.MemberDialogueRecord;
+import com.nowui.cloud.member.member.entity.MemberDialogueRecord;
 import com.nowui.cloud.member.member.mapper.MemberDialogueRecordMapper;
 import com.nowui.cloud.member.member.service.MemberDialogueRecordService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;

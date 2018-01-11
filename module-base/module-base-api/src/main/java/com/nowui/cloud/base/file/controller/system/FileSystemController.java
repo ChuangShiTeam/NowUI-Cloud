@@ -23,9 +23,6 @@ public class FileSystemController implements FileRpc {
     @Autowired
     private FileService fileService;
 
-    /**
-     * 根据ID查询文件信息
-     */
     @Override
     public File find(String fileId) {
         System.out.println(fileId);
@@ -33,6 +30,15 @@ public class FileSystemController implements FileRpc {
         file.defaultKeep();
         System.out.println(file.toJSONString());
         return file;
+    }
+
+    @Override
+    public String downloadWechatHeadImgToNative(String appId, String userId, String wechatHeadImgUrl) {
+        File file = fileService.downloadWechatHeadImgToNative(appId, userId, wechatHeadImgUrl);
+        if (file == null) {
+            return null;
+        }
+        return file.getFileId();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.service;
 import java.util.List;
 
-import com.nowui.cloud.base.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.service.BaseService;
 
 /**

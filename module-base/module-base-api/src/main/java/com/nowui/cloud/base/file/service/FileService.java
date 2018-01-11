@@ -62,11 +62,21 @@ public interface FileService extends BaseService<File> {
     List<File> uploadImage(String appId, String userId, MultipartFile[] multipartFiles);
     
     /**
-     * base64图片删除
-     * @param appId
-     * @param userId
+     * base64图片上传
+     * @param appId 应用编号
+     * @param userId 用户编号
      * @param base64Data base64编码数据
-     * @return
+     * @return File 文件信息
      */
     File uploadBase64(String appId, String userId, String base64Data);
+    
+    /**
+     * 下载微信头像到本地并保存
+     * 
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @param wechatHeadImgUrl 微信头像地址
+     * @return File 文件信息
+     */
+    File downloadWechatHeadImgToNative(String appId, String userId, String wechatHeadImgUrl);
 }

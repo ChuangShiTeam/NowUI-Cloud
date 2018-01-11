@@ -29,7 +29,7 @@ public class BaseController {
 
     private String[] validateResponseColumnList = new String[]{};
 
-    private HttpServletRequest getRequest() {
+    protected HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
