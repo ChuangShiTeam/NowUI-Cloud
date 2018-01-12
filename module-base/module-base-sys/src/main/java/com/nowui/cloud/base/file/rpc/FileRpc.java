@@ -1,5 +1,7 @@
 package com.nowui.cloud.base.file.rpc;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,15 @@ public interface FileRpc {
      */
     @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.POST)
     File find(@RequestParam(value = "fileId", required = true) String fileId);
+    
+    /**
+     * 多文件查找
+     *
+     * @param fileIds 文件编号列表
+     * @return file 文件列表
+     */
+    @RequestMapping(value = "/file/system/v1/finds", method = RequestMethod.POST)
+    List<File> finds(@RequestParam(value = "fileIds", required = true) String fileIds);
     
     /**
      * 下载微信头像到本地并保存文件

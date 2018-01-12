@@ -349,7 +349,7 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 对象默认保留属性，去除基本公共字段
      */
-    public void defaultKeep() {
+    public <T extends BaseEntity> T defaultKeep() {
         Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
@@ -367,13 +367,14 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
                 iterator.remove();
             }
         }
+        return (T) this;
     }
     
     /**
      * 对象自定义保留属性
      * @param elements
      */
-    public void keep(String... elements) {
+    public <T extends BaseEntity> T keep(String... elements) {
         if (elements != null && elements.length > 0) {
             Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
             while (iterator.hasNext()) {
@@ -383,6 +384,8 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
                 }
             }
         }
+        
+        return (T) this;
     }
 
 }

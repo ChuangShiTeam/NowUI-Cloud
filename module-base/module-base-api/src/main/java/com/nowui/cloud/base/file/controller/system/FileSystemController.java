@@ -1,8 +1,13 @@
 package com.nowui.cloud.base.file.controller.system;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.service.FileService;
@@ -43,6 +48,22 @@ public class FileSystemController implements FileRpc {
             return null;
         }
         return file.getFileId();
+    }
+
+    @Override
+    public List<File> finds(String fileIds) {
+        if (Util.isNullOrEmpty(fileIds)) {
+            return null;
+        }
+        List<String> fileIdList = JSONArray.parseArray(fileIds, String.class);
+        
+        if (Util.isNullOrEmpty(fileIdList)) {
+            return null;
+        }
+        
+        List<File> fileList = fileIdList.stream().map((fileId) -> find(fileId)).collect(Collectors.toList());
+        
+        return fileList;
     }
 
 }

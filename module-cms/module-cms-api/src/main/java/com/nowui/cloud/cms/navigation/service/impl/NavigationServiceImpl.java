@@ -25,10 +25,6 @@ import java.util.List;
  */
 @Service
 public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Navigation> implements NavigationService {
-
-	@Autowired
-	private FileRpc fileRpc;
-	    
 	
     @Override
     public Integer countForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {
@@ -57,13 +53,6 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
                 n
         );
         
-      //查询工具栏图片
-        for (Navigation navigation : navigationList) {
-            File file = fileRpc.find(navigation.getNavigationImage());
-            file.keep(File.FILE_ID, File.FILE_PATH);
-            navigation.put(Navigation.NAVIGATION_IMAGE, file);
-        }
-
         return navigationList;
     }
 
