@@ -92,7 +92,7 @@ public class UserWechat extends BaseEntity {
     @TableField
     @NotNull(message = "性别不能为空")
     @Length(max = 1, message = "性别长度超出限制")
-    private Boolean wechatSex;
+    private String wechatSex;
     public static final String WECHAT_SEX = "wechatSex";
 
     /**
@@ -126,12 +126,22 @@ public class UserWechat extends BaseEntity {
     public static final String WECHAT_CITY = "wechatCity";
 
     /**
-     * 微信头像
+     * 微信头像本地文件编号
      */
     @Field
     @TableField
-    @NotNull(message = "微信头像不能为空")
-    @Length(max = 32, message = "微信头像长度超出限制")
+    @NotNull(message = "微信头像本地文件编号不能为空")
+    @Length(max = 32, message = "微信头像本地文件编号长度超出限制")
+    private String wechatHeadImgFileId;
+    public static final String WECHAT_HEAD_IMG_FILE_ID = "wechatHeadImgFileId";
+    
+    /**
+     * 微信头像地址
+     */
+    @Field
+    @TableField
+    @NotNull(message = "微信头像地址不能为空")
+    @Length(max = 200, message = "微信头像长度超出限制")
     private String wechatHeadImgUrl;
     public static final String WECHAT_HEAD_IMG_URL = "wechatHeadImgUrl";
 
@@ -194,11 +204,11 @@ public class UserWechat extends BaseEntity {
         put(WECHAT_NICK_NAME, wechatNickName);
     }
 
-    public Boolean getWechatSex() {
-        return getBoolean(WECHAT_SEX);
+    public String getWechatSex() {
+        return getString(WECHAT_SEX);
     }
     
-    public void setWechatSex(Boolean wechatSex) {
+    public void setWechatSex(String wechatSex) {
         put(WECHAT_SEX, wechatSex);
     }
 
@@ -226,6 +236,14 @@ public class UserWechat extends BaseEntity {
         put(WECHAT_CITY, wechatCity);
     }
 
+    public String getWechatHeadImgFileId() {
+        return getString(WECHAT_HEAD_IMG_FILE_ID);
+    }
+    
+    public void setWechatHeadImgFileId(String wechatHeadImgFileId) {
+        put(WECHAT_HEAD_IMG_FILE_ID, wechatHeadImgFileId);
+    }
+    
     public String getWechatHeadImgUrl() {
         return getString(WECHAT_HEAD_IMG_URL);
     }

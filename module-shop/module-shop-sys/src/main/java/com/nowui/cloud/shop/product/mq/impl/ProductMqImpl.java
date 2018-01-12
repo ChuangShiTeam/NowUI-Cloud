@@ -16,12 +16,12 @@ public class ProductMqImpl implements ProductMq {
 
     @Override
     public void sendFoo2Rabbitmq(String message) {
-        rabbitTemplate.convertAndSend("exchange", "queue.foo", message);
+        rabbitTemplate.convertAndSend("exchange", "test", message);
     }
 
     @Override
     public void sendBar2Rabbitmq(String message) {
-        rabbitTemplate.convertAndSend("exchange", "queue.bar", message);
+        rabbitTemplate.convertAndSend("exchange", "queue.*", message);
     }
 
 }

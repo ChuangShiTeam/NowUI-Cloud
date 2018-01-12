@@ -2,7 +2,7 @@ package com.nowui.cloud.member.member.controller.system;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.member.rpc.MemberFollowRpc;
+import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 
 import io.swagger.annotations.Api;
 
@@ -17,4 +17,4 @@ import io.swagger.annotations.Api;
 @RestController
 public class MemberFollowSystemController implements MemberFollowRpc {
 
-}
+}   

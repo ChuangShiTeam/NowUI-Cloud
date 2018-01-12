@@ -248,6 +248,8 @@ public class Article extends BaseEntity {
     
     public static final String ARTICLE_ARTICLE_CATEGORY_LIST = "articleArticleCategoryList";
     
+    public static final String ARTICLE_MEDIA = "articleMedia";
+    
     public String getArticleId() {
         return getString(ARTICLE_ID);
     }

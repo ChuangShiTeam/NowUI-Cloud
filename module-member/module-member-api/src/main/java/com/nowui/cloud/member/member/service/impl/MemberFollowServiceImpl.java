@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.base.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.mapper.MemberFollowMapper;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;

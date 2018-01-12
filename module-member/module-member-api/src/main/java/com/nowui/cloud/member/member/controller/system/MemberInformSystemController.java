@@ -2,7 +2,7 @@ package com.nowui.cloud.member.member.controller.system;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.member.rpc.MemberInformRpc;
+import com.nowui.cloud.member.member.rpc.MemberInformRpc;
 
 import io.swagger.annotations.Api;
 

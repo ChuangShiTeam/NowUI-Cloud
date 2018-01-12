@@ -52,12 +52,21 @@ public class AdvertisementAdminController extends BaseController {
         Integer resultTotal = advertisementService.countForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle());
         List<Advertisement> resultList = advertisementService.listForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle(), body.getM(), body.getN());
 
+        //查询广告图片
+        
+        String fileIds = Util.beanToFieldString(resultList, Advertisement.ADEVERTISEMENT_IMAGE);
+        List<File> fileList = fileRpc.finds(fileIds);
+        
+        resultList = Util.beanAddField(resultList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+        
         validateResponse(
             Advertisement.ADEVERTISEMENT_ID, 
             Advertisement.ADEVERTISEMENT_CATEGORY_CODE, 
             Advertisement.ADEVERTISEMENT_TITLE,
             Advertisement.ADEVERTISEMENT_CODE, 
             Advertisement.ADEVERTISEMENT_IMAGE, 
+            File.FILE_ID, 
+            File.FILE_PATH, 
             Advertisement.ADEVERTISEMENT_IS_EFFICIENT, 
             Advertisement.ADEVERTISEMENT_LINK,
             Advertisement.ADEVERTISEMENT_POSITION

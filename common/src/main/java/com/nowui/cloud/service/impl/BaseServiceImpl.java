@@ -71,6 +71,21 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
         return list;
     }
+    
+    @Override
+    public T find(@Param("ew") Wrapper<T> var1) {
+        List<T> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
+
+        for (T baseEntity : list) {
+            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
+        }
+        
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+
+        return list.get(0);
+    }
 
     @Override
     public T find(String id) {
@@ -89,7 +104,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
                 baseEntity = mapper.selectById(id);
 
                 if (baseEntity != null) {
-                    redis.opsForValue().set(entity.getTableName(), baseEntity);
+                    redis.opsForValue().set(getItemCacheName(id), baseEntity);
                 }
             }
         }
@@ -116,7 +131,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
             } else {
                 baseEntity = list.get(0);
 
-                redis.opsForValue().set(baseEntity.getTableName(), baseEntity);
+                redis.opsForValue().set(getItemCacheName(id), baseEntity);
 
                 return baseEntity;
             }

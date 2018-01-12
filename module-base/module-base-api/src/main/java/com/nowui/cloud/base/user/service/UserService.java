@@ -1,8 +1,8 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.base.user.entity.User;
-
 import java.util.List;
+
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户业务接口
@@ -51,4 +51,13 @@ public interface UserService extends BaseService<User> {
      * @param Boolean 成功或失败
      */
     Boolean deleteByObjectIdAndUserType(String objectId, String userType, String systemRequestUserId);
+    
+    /**
+     * 根据用户编号查询用户详细信息
+     * 
+     * @param userId 用户编号
+     * @return User 用户详细信息
+     */
+    User findById(String userId);
+    
 }

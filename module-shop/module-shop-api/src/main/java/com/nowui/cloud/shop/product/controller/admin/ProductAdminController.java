@@ -25,17 +25,19 @@ public class ProductAdminController extends BaseController {
 
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Product body) {
+    public Map<String, Object> listV1() {
+        Product product = getEntry(Product.class);
+
         validateRequest(
-                body,
+                product,
                 Product.APP_ID,
                 Product.PRODUCT_NAME,
                 Product.PAGE_INDEX,
                 Product.PAGE_SIZE
         );
 
-        Integer resultTotal = productService.countForAdmin(body.getAppId(), body.getProductName());
-        List<Product> resultList = productService.listForAdmin(body.getAppId(), body.getProductName(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = productService.countForAdmin(product.getAppId(), product.getProductName());
+        List<Product> resultList = productService.listForAdmin(product.getAppId(), product.getProductName(), product.getPageIndex(), product.getPageSize());
 
         validateResponse(
                 Product.PRODUCT_ID,

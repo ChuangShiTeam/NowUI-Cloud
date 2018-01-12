@@ -1,14 +1,15 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.mapper.UserWechatMapper;
 import com.nowui.cloud.base.user.service.UserWechatService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户微信业务实现
@@ -21,31 +22,42 @@ import java.util.List;
 public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String wechatNickName) {
-        Integer count = count(
+    public UserWechat findByUserId(String userId) {
+        UserWechat userWechat = find(
                 new BaseWrapper<UserWechat>()
-                        .eq(UserWechat.APP_ID, appId)
-                        .likeAllowEmpty(UserWechat.USER_ID, userId)
-                        .likeAllowEmpty(UserWechat.WECHAT_NICK_NAME, wechatNickName)
-                        .eq(UserWechat.SYSTEM_STATUS, true)
+                    .eq(UserWechat.USER_ID, userId)
+                    .eq(UserWechat.SYSTEM_STATUS, true)
+                    .orderDesc(Arrays.asList(UserWechat.SYSTEM_CREATE_TIME))
         );
-        return count;
+        return userWechat;
     }
 
     @Override
-    public List<UserWechat> listForAdmin(String appId, String userId, String wechatNickName, Integer pageIndex, Integer pageSize) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserWechat> userWechatList = list(
                 new BaseWrapper<UserWechat>()
-                        .eq(UserWechat.APP_ID, appId)
-                        .likeAllowEmpty(UserWechat.USER_ID, userId)
-                        .likeAllowEmpty(UserWechat.WECHAT_NICK_NAME, wechatNickName)
+                        .eq(UserWechat.USER_ID, userId)
                         .eq(UserWechat.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserWechat.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                        .orderDesc(Arrays.asList(UserWechat.SYSTEM_CREATE_TIME))
         );
+        if (userWechatList != null && userWechatList.size() > 0) {
+            for (UserWechat userWechat : userWechatList) {
+                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
+            }
+        }
+    }
 
-        return userWechatList;
+    @Override
+    public UserWechat findByOpenIdAndUnionId(String appId, String wechatOpenId, String wechatUnionId) {
+        UserWechat userWechat = find(
+            new BaseWrapper<UserWechat>()
+                .eq(UserWechat.APP_ID, appId)
+                .eq(UserWechat.WECHAT_OPEN_ID, wechatOpenId)
+                .eq(UserWechat.WECHAT_UNION_ID, wechatUnionId)
+                .eq(UserWechat.APP_ID, appId)
+                .eq(UserWechat.SYSTEM_STATUS, true)
+        );
+        return userWechat;
     }
 
 }

@@ -84,7 +84,8 @@ public class SmsCaptcha extends BaseEntity {
     @Length(max = 25, message = "IP地址长度超出限制")
     private String smsCaptchaIpAddress;
     public static final String SMS_CAPTCHA_IP_ADDRESS = "smsCaptchaIpAddress";
-
+    
+    public static final String SMS_CAPTCHA_MINUTE = "smsCaptchaMinute";
 
     public String getSmsCaptchaId() {
         return getString(SMS_CAPTCHA_ID);
@@ -133,6 +134,5 @@ public class SmsCaptcha extends BaseEntity {
     public void setSmsCaptchaIpAddress(String smsCaptchaIpAddress) {
         put(SMS_CAPTCHA_IP_ADDRESS, smsCaptchaIpAddress);
     }
-
-
+    
 }

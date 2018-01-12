@@ -1,8 +1,6 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.user.entity.UserAccount;
-
-import java.util.List;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户账号业务接口
@@ -14,24 +12,29 @@ import java.util.List;
 public interface UserAccountService extends BaseService<UserAccount> {
 
     /**
-     * 用户账号统计
-     *
-     * @param appId 应用编号
+     * 根据用户编号查询用户账号信息
+     *  
      * @param userId 用户编号
-     * @param userAccount 用户账号
-     * @return Integer 用户账号统计
+     * @return UserAccount 用户账号
      */
-    Integer countForAdmin(String appId, String userId, String userAccount);
-
+    UserAccount findByUserId(String userId);
+    
     /**
-     * 用户账号列表
-     *
-     * @param appId 应用编号
+     * 根据用户编号逻辑删除用户账号信息
+     * 
      * @param userId 用户编号
-     * @param userAccount 用户账号
-     * @param pageIndex 页码
-     * @param pageSize 每页个数
-     * @return List<UserAccount> 用户账号列表
+     * @param systemUpdateUserId 更新用户编号
+     * @return
      */
-    List<UserAccount> listForAdmin(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize);
+    void deleteByUserId(String userId, String systemUpdateUserId);
+    
+    /**
+     * 
+     * 根据用户账号查询用户账号信息
+     * @param appId
+     * @param userAccount
+     * @return
+     */
+    UserAccount findByUserAcoount(String appId, String userAccount);
+    
 }

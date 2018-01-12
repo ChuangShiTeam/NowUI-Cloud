@@ -11,6 +11,7 @@ import com.nowui.cloud.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,26 @@ public class TopicUserBookmarkMobileController extends BaseController {
         Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
+    }
+	
+	@ApiOperation(value = "收藏话题的用户列表")
+    @RequestMapping(value = "/topic/user/bookmark/mobile/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@RequestBody TopicUserBookmark body) {
+        validateRequest(
+                body,
+                TopicUserBookmark.APP_ID,
+                TopicUserBookmark.TOPIC_ID
+        );
+
+        //先去收藏表查询收藏话题的用户列表
+        List<TopicUserBookmark> listByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), body.getTopicId());
+        //再查询用户昵称,头像,是否关注
+        /**
+         * 等用户接口
+         */
+
+
+
+        return renderJson(null);
     }
 }

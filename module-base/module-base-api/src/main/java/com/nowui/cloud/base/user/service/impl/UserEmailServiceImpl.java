@@ -1,14 +1,15 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.mapper.UserEmailMapper;
 import com.nowui.cloud.base.user.service.UserEmailService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户邮箱业务实现
@@ -21,31 +22,29 @@ import java.util.List;
 public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserEmail> implements UserEmailService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String userEmail) {
-        Integer count = count(
+    public UserEmail findByUserId(String userId) {
+        UserEmail userEmail = find(
                 new BaseWrapper<UserEmail>()
-                        .eq(UserEmail.APP_ID, appId)
-                        .likeAllowEmpty(UserEmail.USER_ID, userId)
-                        .likeAllowEmpty(UserEmail.USER_EMAIL, userEmail)
-                        .eq(UserEmail.SYSTEM_STATUS, true)
+                    .eq(UserEmail.USER_ID, userId)
+                    .eq(UserEmail.SYSTEM_STATUS, true)
+                    .orderDesc(Arrays.asList(UserEmail.SYSTEM_CREATE_TIME))
         );
-        return count;
+        return userEmail;
     }
 
     @Override
-    public List<UserEmail> listForAdmin(String appId, String userId, String userEmail, Integer pageIndex, Integer pageSize) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserEmail> userEmailList = list(
                 new BaseWrapper<UserEmail>()
-                        .eq(UserEmail.APP_ID, appId)
-                        .likeAllowEmpty(UserEmail.USER_ID, userId)
-                        .likeAllowEmpty(UserEmail.USER_EMAIL, userEmail)
+                        .eq(UserEmail.USER_ID, userId)
                         .eq(UserEmail.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserEmail.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                        .orderDesc(Arrays.asList(UserEmail.SYSTEM_CREATE_TIME))
         );
-
-        return userEmailList;
+        if (userEmailList != null && userEmailList.size() > 0) {
+            for (UserEmail userEmail : userEmailList) {
+                delete(userEmail.getUserEmailId(), systemUpdateUserId, userEmail.getSystemVersion());
+            }
+        }
     }
 
 }

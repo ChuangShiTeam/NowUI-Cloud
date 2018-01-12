@@ -17,7 +17,7 @@ spring:
       url: jdbc:mysql://118.31.229.16:3306/nowui_cms?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
       password: Chuangshi123!
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
       # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -54,6 +54,10 @@ spring:
     port: 5672
     username: guest
     password: guest
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 118.31.229.16:9300
 
 #mybatis
 mybatis-plus:

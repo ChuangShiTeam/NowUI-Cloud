@@ -1,14 +1,15 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.mapper.UserMobileMapper;
 import com.nowui.cloud.base.user.service.UserMobileService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户手机号码业务实现
@@ -21,31 +22,29 @@ import java.util.List;
 public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, UserMobile> implements UserMobileService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String userMobile) {
-        Integer count = count(
+    public UserMobile findByUserId(String userId) {
+        UserMobile userMobile = find(
                 new BaseWrapper<UserMobile>()
-                        .eq(UserMobile.APP_ID, appId)
-                        .likeAllowEmpty(UserMobile.USER_ID, userId)
-                        .likeAllowEmpty(UserMobile.USER_MOBILE, userMobile)
-                        .eq(UserMobile.SYSTEM_STATUS, true)
+                    .eq(UserMobile.USER_ID, userId)
+                    .eq(UserMobile.SYSTEM_STATUS, true)
+                    .orderDesc(Arrays.asList(UserMobile.SYSTEM_CREATE_TIME))
         );
-        return count;
+        return userMobile;
     }
 
     @Override
-    public List<UserMobile> listForAdmin(String appId, String userId, String userMobile, Integer pageIndex, Integer pageSize) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserMobile> userMobileList = list(
                 new BaseWrapper<UserMobile>()
-                        .eq(UserMobile.APP_ID, appId)
-                        .likeAllowEmpty(UserMobile.USER_ID, userId)
-                        .likeAllowEmpty(UserMobile.USER_MOBILE, userMobile)
+                        .eq(UserMobile.USER_ID, userId)
                         .eq(UserMobile.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserMobile.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                        .orderDesc(Arrays.asList(UserMobile.SYSTEM_CREATE_TIME))
         );
-
-        return userMobileList;
+        if (userMobileList != null && userMobileList.size() > 0) {
+            for (UserMobile userMobile : userMobileList) {
+                delete(userMobile.getUserMobileId(), systemUpdateUserId, userMobile.getSystemVersion());
+            }
+        }
     }
 
 }

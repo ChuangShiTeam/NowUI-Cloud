@@ -1,14 +1,18 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.mapper.UserAvatarMapper;
 import com.nowui.cloud.base.user.service.UserAvatarService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户头像业务实现
@@ -20,32 +24,38 @@ import java.util.List;
 @Service
 public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, UserAvatar> implements UserAvatarService {
 
+    @Autowired
+    private FileRpc fileRpc;
+    
     @Override
-    public Integer countForAdmin(String appId, String userId, String userAvatar) {
-        Integer count = count(
+    public UserAvatar findByUserId(String userId) {
+        UserAvatar userAvatar = find(
                 new BaseWrapper<UserAvatar>()
-                        .eq(UserAvatar.APP_ID, appId)
-                        .likeAllowEmpty(UserAvatar.USER_ID, userId)
-                        .likeAllowEmpty(UserAvatar.USER_AVATAR, userAvatar)
-                        .eq(UserAvatar.SYSTEM_STATUS, true)
+                    .eq(UserAvatar.USER_ID, userId)
+                    .eq(UserAvatar.SYSTEM_STATUS, true)
+                    .orderDesc(Arrays.asList(UserAvatar.SYSTEM_CREATE_TIME))
         );
-        return count;
+        if (userAvatar != null) {
+            File file = fileRpc.find(userAvatar.getUserAvatar());
+            file.keep(File.FILE_ID, File.FILE_PATH);
+            userAvatar.put(UserAvatar.USER_AVATAR, file);
+        }
+        return userAvatar;
     }
 
     @Override
-    public List<UserAvatar> listForAdmin(String appId, String userId, String userAvatar, Integer pageIndex, Integer pageSize) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserAvatar> userAvatarList = list(
                 new BaseWrapper<UserAvatar>()
-                        .eq(UserAvatar.APP_ID, appId)
-                        .likeAllowEmpty(UserAvatar.USER_ID, userId)
-                        .likeAllowEmpty(UserAvatar.USER_AVATAR, userAvatar)
+                        .eq(UserAvatar.USER_ID, userId)
                         .eq(UserAvatar.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserAvatar.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                        .orderDesc(Arrays.asList(UserAvatar.SYSTEM_CREATE_TIME))
         );
-
-        return userAvatarList;
+        if (userAvatarList != null && userAvatarList.size() > 0) {
+            for (UserAvatar userAvatar : userAvatarList) {
+                delete(userAvatar.getUserAvatarId(), systemUpdateUserId, userAvatar.getSystemVersion());
+            }
+        }
     }
 
 }

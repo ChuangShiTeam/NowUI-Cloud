@@ -3,14 +3,20 @@ package com.nowui.cloud.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * @author ZhongYongQiang
@@ -222,6 +228,22 @@ public class Util {
 
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + userPassword);
     }
+    
+    /**
+     * 生成随机数字
+     * 
+     * @param length 随机数字长度
+     * @return 
+     */
+    public static String getRandomNumber(int length) {
+        StringBuilder result = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            result.append(random.nextInt(10));
+        }
+        return result.toString();
+    }
 
     /**
      * 验证类里面是否存在这个属性
@@ -249,6 +271,79 @@ public class Util {
             source = source.substring(0, lastIndex) + replacement;
         }
         return source;
+    }
+    
+    /**
+     * 获取请求客户端的IP地址
+     * 
+     * @param request
+     * @return
+     */
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+    
+    /**
+     * 实体对象列表映射实体对象字段列表
+     * 
+     * @param beanList 实体对象列表
+     * @param field 实体对象字段
+     * @return List<String> 实体对象字段列表
+     */
+    public static List<String> beanToField(List<? extends BaseEntity> beanList, String field) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+    }
+    
+    /**
+     * 实体对象列表映射实体对象字段列表json字符串
+     * 
+     * @param beanList 实体对象列表
+     * @param field 实体对象字段
+     * @return String 字段列表json字符串
+     */
+    public static String beanToFieldString(List<? extends BaseEntity> beanList, String field) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        List<String> list = beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+        return JSONArray.toJSONString(list);
+    }
+    
+    /**
+     * 实体对象列表关联字段映射实体字段对象
+     * @param beanList 实体对象列表
+     * @param beanCloumn 实体对象匹配字段
+     * @param fieldBeanList 实体对象映射实体字段列表
+     * @param fieldCloumns 实体对象映射实体字段列表字段集合
+     * @return List<T> 实体对象列表
+     */
+    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        if (Util.isNullOrEmpty(fieldBeanList)) {
+            return beanList;
+        }
+        for (BaseEntity bean : beanList) {
+            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
+            for (String fieldCloumn : fieldCloumns) {
+                bean.put(fieldCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().get(fieldCloumn) : null);
+            }
+        }
+        return beanList;
     }
     
 }

@@ -60,4 +60,16 @@ public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCateg
         return appConfigCategoryList;
     }
 
+    @Override
+    public AppConfigCategory findByConfigCategoryCode(String appId, String configCategoryCode) {
+        AppConfigCategory appConfigCategory = find(
+                new BaseWrapper<AppConfigCategory>()
+                        .eq(AppConfigCategory.APP_ID, appId)
+                        .eq(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
+                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
+        );
+        return appConfigCategory;
+    }
+
 }

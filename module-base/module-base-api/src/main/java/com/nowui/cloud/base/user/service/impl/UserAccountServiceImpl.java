@@ -1,14 +1,15 @@
 package com.nowui.cloud.base.user.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.mapper.UserAccountMapper;
 import com.nowui.cloud.base.user.service.UserAccountService;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户账号业务实现
@@ -21,31 +22,39 @@ import java.util.List;
 public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, UserAccount> implements UserAccountService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String userAccount) {
-        Integer count = count(
+    public UserAccount findByUserId(String userId) {
+        UserAccount userAccount = find(
                 new BaseWrapper<UserAccount>()
-                        .eq(UserAccount.APP_ID, appId)
-                        .likeAllowEmpty(UserAccount.USER_ID, userId)
-                        .likeAllowEmpty(UserAccount.USER_ACCOUNT, userAccount)
+                        .eq(UserAccount.USER_ID, userId)
                         .eq(UserAccount.SYSTEM_STATUS, true)
         );
-        return count;
+        return userAccount;
     }
 
     @Override
-    public List<UserAccount> listForAdmin(String appId, String userId, String userAccount, Integer pageIndex, Integer pageSize) {
+    public void deleteByUserId(String userId, String systemUpdateUserId) {
         List<UserAccount> userAccountList = list(
                 new BaseWrapper<UserAccount>()
-                        .eq(UserAccount.APP_ID, appId)
-                        .likeAllowEmpty(UserAccount.USER_ID, userId)
-                        .likeAllowEmpty(UserAccount.USER_ACCOUNT, userAccount)
+                        .eq(UserAccount.USER_ID, userId)
                         .eq(UserAccount.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(UserAccount.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                        .orderDesc(Arrays.asList(UserAccount.SYSTEM_CREATE_TIME))
         );
+        if (userAccountList != null && userAccountList.size() > 0) {
+            for (UserAccount userAccount : userAccountList) {
+                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
+            }
+        }
+    }
 
-        return userAccountList;
+    @Override
+    public UserAccount findByUserAcoount(String appId, String userAccount) {
+        UserAccount bean = find( 
+                new BaseWrapper<UserAccount>()
+                        .eq(UserAccount.APP_ID, appId)
+                        .eq(UserAccount.USER_ACCOUNT, userAccount)
+                        .eq(UserAccount.SYSTEM_STATUS, true)
+        );
+        return bean;
     }
 
 }

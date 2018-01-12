@@ -70,18 +70,10 @@ public class ForumMobileController extends BaseController {
             Forum.APP_ID,
             Forum.FORUM_MEDIA_ID,
 //            Forum.FORUM_MEDIA_TYPE,
-//            Forum.FORUM_BACKGROUND_MEDIA_ID,
-//            Forum.FORUM_BACKGROUND_MEDIA_TYPE,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
-//            Forum.FORUM_MODERATOR,
+            Forum.FORUM_MODERATOR,
             Forum.FORUM_TOPIC_LOCATION
-//            Forum.FORUM_SORT,
-//            Forum.FORUM_TOP,
-//            Forum.FORUM_TOP_LEVEL,
-//            Forum.FORUM_TOP_END_TIME,
-//            Forum.FORUM_IS_ACTIVE,
-//            Forum.FORUM_IS_RECOMAND
         );
 	    
 	    body.setForumMediaType(FileType.IMAGE.getKey());
@@ -220,9 +212,9 @@ public class ForumMobileController extends BaseController {
         List<Forum> listRandom = new ArrayList<>();
         while (flag) {
             //appId,forumModerator,forumMediaId都随机模糊查询一个数字
-            String randomAppId=""+(1+Math.random()*(10-1+1));  //(最小值+Math.random()*(最大值-最小值+1))
-            String randomForumMediaId=""+(1+Math.random()*(10-1+1));
-            String randomForumModerator=""+(1+Math.random()*(10-1+1));
+            String randomAppId = "" + (1+Math.random()*(10-1+1));  //(最小值+Math.random()*(最大值-最小值+1))
+            String randomForumMediaId = "" +(1+Math.random()*(10-1+1));
+            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
             listRandom = forumService.listRandom(randomAppId, randomForumMediaId, randomForumModerator, body.getPageIndex(), body.getPageSize());
 
             if (listRandom != null || listRandom.size() == body.getPageSize()) {

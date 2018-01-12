@@ -1,7 +1,10 @@
 package com.nowui.cloud.base.sms.mq.impl;
 
-import com.nowui.cloud.base.sms.mq.SmsCaptchaMq;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.nowui.cloud.base.sms.mq.SmsCaptchaMq;
 
 /**
  * 短信验证码消息队列接口
@@ -13,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SmsCaptchaMqImpl implements SmsCaptchaMq {
 
-//    @Autowired
-//    private RabbitTemplate rabbit;
+    @Autowired
+    private RabbitTemplate rabbit;
 
 }

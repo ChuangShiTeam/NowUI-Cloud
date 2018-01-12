@@ -33,7 +33,7 @@ public class TopicUserLikeMobileController extends BaseController {
 
 	@Autowired
     private TopicUserLikeService topicUserLikeService;
-	
+
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
 
@@ -60,9 +60,9 @@ public class TopicUserLikeMobileController extends BaseController {
 			 * 得到用户头像和昵称,在TopicUserLike 实体类中添加相应字段常量,然后调整返回参数
 			 */
 		}
-        
-        
-        
+
+
+
         validateResponse(
                 TopicUserLike.USER_LIKE_ID,
                 TopicUserLike.USER_ID,
@@ -71,8 +71,8 @@ public class TopicUserLikeMobileController extends BaseController {
 
         return renderJson(resultTotal, resultList);
     }
-    
-    
+
+
     @ApiOperation(value = "新增点赞话题关联")
     @RequestMapping(value = "/topic/user/like/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicUserLike body) {
@@ -82,20 +82,20 @@ public class TopicUserLikeMobileController extends BaseController {
                 //TopicUserLike.USER_ID,这个参数好像不传过来?那下面自己设置
                 TopicUserLike.TOPIC_ID
         );
-        
+
         TopicUserLike userLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
         if (userLike != null) {
         	return renderJson(true);
 		}
-        
-        
+
+
         //先去取消点赞表查询,有:修改,没有:不做操作
         TopicUserUnlike unlike = topicUserUnlikeService.findUnlike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
         if (unlike != null) {
         	Boolean delete = topicUserUnlikeService.delete(unlike.getUserUnLikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
 		}
-        
-        
+
+
         body.setUserId(body.getSystemRequestUserId());
 
         Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());

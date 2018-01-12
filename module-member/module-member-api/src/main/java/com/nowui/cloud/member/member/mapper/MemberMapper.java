@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
-import com.nowui.cloud.base.member.entity.Member;
+import com.nowui.cloud.member.member.entity.Member;
 
 /**
  * 会员mapping映射接口

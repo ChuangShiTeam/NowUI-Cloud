@@ -68,7 +68,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
             Article.ARTICLE_TITLE,
-            Article.ARTICLE_MEDIA_ID,
+            Article.ARTICLE_MEDIA,
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_AUTHOR,
             Article.ARTICLE_PUBLISH_TIME,
@@ -86,7 +86,6 @@ public class ArticleAdminController extends BaseController {
         validateRequest(body, Article.ARTICLE_ID);
 
         Article result = articleService.find(body.getArticleId());
-        
         //查询文章分类
         List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(body.getArticleId());
         for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
@@ -95,7 +94,9 @@ public class ArticleAdminController extends BaseController {
         result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
         //查询文章主媒体
         if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
-            File file = fileRpc.find(result.getArticleMediaId());
+            System.out.println(result.toJSONString());
+            System.out.println(result.getArticleMediaId());
+            File file = fileRpc.find("fbbbbbb1aa244552ab3470d14a1e3d02");
             file.keep(File.FILE_ID, File.FILE_PATH);
             result.put(Article.ARTICLE_MEDIA_ID, file);
         }
@@ -165,16 +166,16 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_WEIGHT
         );
 
-        String articleCategoryJsonString = body.getString(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
-        if (Util.isNullOrEmpty(articleCategoryJsonString)) {
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
+        if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
             throw new RuntimeException("文章没有选择文章分类");
         }
-        List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonString, ArticleArticleCategory.class);
+        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
         
-        String articleMediaJsonString = body.getString(Article.ARTICLE_MEDIA_LIST);
+        JSONArray articleMediaJsonArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
         List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
-        if (!Util.isNullOrEmpty(articleMediaJsonString)) {
-            mediaList = JSONArray.parseArray(articleMediaJsonString, ArticleMedia.class);
+        if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
+            mediaList = articleMediaJsonArray.toJavaList(ArticleMedia.class);
         }
        
         Boolean result = articleService.save(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
@@ -211,19 +212,16 @@ public class ArticleAdminController extends BaseController {
             Article.SYSTEM_VERSION
         );
         
-        String articleCategoryJsonString = body.getString(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
-        if (Util.isNullOrEmpty(articleCategoryJsonString)) {
+        JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
+        if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
             throw new RuntimeException("文章没有选择文章分类");
         }
-        JSONArray articleCategoryJsonArray = JSONArray.parseArray(articleCategoryJsonString);
-        
         List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
         
-        String articleMediaJsonString = body.getString(Article.ARTICLE_MEDIA_LIST);
+        JSONArray articleMediaJsonArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
         List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
-        if (!Util.isNullOrEmpty(articleMediaJsonString)) {
-            JSONArray articleMediaJSONArray = JSONArray.parseArray(articleMediaJsonString);
-            mediaList = articleMediaJSONArray.toJavaList(ArticleMedia.class);
+        if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
+            mediaList = articleMediaJsonArray.toJavaList(ArticleMedia.class);
         }
 
         Boolean result = articleService.update(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());

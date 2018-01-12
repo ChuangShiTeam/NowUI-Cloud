@@ -19,4 +19,9 @@ public class ProductListener {
         System.out.println("Received Bar<" + message + ">");
     }
 
+    @RabbitListener(queues = {"test"})
+    public void receiveBarQueue2(String message) {
+        System.out.println("Received Bar 2<" + message + ">");
+    }
+
 }

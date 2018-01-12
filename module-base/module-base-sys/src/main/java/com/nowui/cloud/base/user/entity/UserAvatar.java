@@ -28,7 +28,7 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户头像编号
      */
-    @Id
+    @Field
     @TableId
     @NotNull(message = "用户头像编号不能为空")
     @Length(max = 32, message = "用户头像编号长度超出限制")
@@ -48,6 +48,7 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户编号
      */
+    @Id
     @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
@@ -56,12 +57,12 @@ public class UserAvatar extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
-     * 用户头像
+     * 头像文件编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户头像不能为空")
-    @Length(max = 32, message = "用户头像长度超出限制")
+    @NotNull(message = "头像文件编号不能为空")
+    @Length(max = 32, message = "头像文件编号长度超出限制")
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
 

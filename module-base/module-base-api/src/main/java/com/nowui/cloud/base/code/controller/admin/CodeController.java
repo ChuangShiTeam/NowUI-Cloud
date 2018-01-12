@@ -61,9 +61,9 @@ public class CodeController extends BaseController {
 
         System.out.println(product);
 
-        productMq.sendBar2Rabbitmq("123456789");
+//        productMq.sendBar2Rabbitmq("123456789");
 
-        productMq.sendBar2Rabbitmq("987654321");
+        productMq.sendFoo2Rabbitmq("987654321");
 
         return "Hello World!";
     }
@@ -155,7 +155,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
 
-            List<Code> codeList = JSONArray.parseArray(body.getColumnList(), Code.class);
+            List<Code> codeList = JSONArray.parseArray(body.getColumnList().toJSONString(), Code.class);
 
             List<JSONObject> columnList = new ArrayList<JSONObject>();
             List<JSONObject> searchColumnList = new ArrayList<JSONObject>();

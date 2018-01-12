@@ -213,4 +213,44 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         return null;
     }
 
+    @Override
+    public File downloadWechatHeadImgToNative(String appId, String userId, String wechatHeadImgUrl) {
+        String fileId = Util.getRandomUUID();
+        String fileName = fileId + ".jpg";
+        String filePath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+
+        FileUtil.createPath(filePath);
+        
+        filePath = filePath + fileName;
+        
+        File file = new File();
+        try {
+            FileUtil.saveFileToDisk(wechatHeadImgUrl, filePath);
+            
+            file.setFileId(fileId);
+            file.setAppId(appId);
+            file.setFileIsOuter(true);
+            file.setFileSize(0);
+            file.setFileCoverImage("");
+            file.setFileName(fileName);
+            file.setFileOuterLink(wechatHeadImgUrl);
+            file.setFileType(FileType.IMAGE.getKey());
+            file.setFilePath(filePath);
+            file.setFileOriginalPath(filePath);
+            file.setFileThumbnailPath(filePath);
+            file.setFileSuffix(".jpg");
+            Boolean isSave = save(file, fileId, userId);
+            
+            if (!isSave) {
+                throw new RuntimeException("保存失败");
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        
+        return file;
+    }
+    
+    
+
 }

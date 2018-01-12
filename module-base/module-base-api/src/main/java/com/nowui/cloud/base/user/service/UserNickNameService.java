@@ -1,8 +1,6 @@
 package com.nowui.cloud.base.user.service;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.user.entity.UserNickName;
-
-import java.util.List;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户昵称业务接口
@@ -12,26 +10,22 @@ import java.util.List;
  * 2018-01-08
  */
 public interface UserNickNameService extends BaseService<UserNickName> {
-
+    
     /**
-     * 用户昵称统计
-     *
-     * @param appId 应用编号
+     * 根据用户编号查询用户昵称信息
+     * 
      * @param userId 用户编号
-     * @param userNickName 用户昵称
-     * @return Integer 用户昵称统计
+     * @return UserNickName 用户昵称
      */
-    Integer countForAdmin(String appId, String userId, String userNickName);
-
+    UserNickName findByUserId(String userId);
+    
     /**
-     * 用户昵称列表
-     *
-     * @param appId 应用编号
+     * 根据用户编号逻辑删除用户昵称信息
+     * 
      * @param userId 用户编号
-     * @param userNickName 用户昵称
-     * @param pageIndex 页码
-     * @param pageSize 每页个数
-     * @return List<UserNickName> 用户昵称列表
+     * @param systemUpdateUserId 更新用户编号
+     * @return
      */
-    List<UserNickName> listForAdmin(String appId, String userId, String userNickName, Integer pageIndex, Integer pageSize);
+    void deleteByUserId(String userId, String systemUpdateUserId);
+
 }
