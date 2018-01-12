@@ -48,4 +48,34 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
         return topicUserBookmarkList;
     }
 
+	@Override
+	public TopicUserBookmark findTopicUserBookmark(String appId, String topicId, String userId) {
+		List<TopicUserBookmark> topicUserBookmarkList = list(
+                new BaseWrapper<TopicUserBookmark>()
+                        .eq(TopicUserBookmark.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserBookmark.TOPIC_ID, topicId)
+                        .likeAllowEmpty(TopicUserBookmark.USER_ID, userId)
+                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserBookmark.SYSTEM_CREATE_TIME))
+        );
+		if (topicUserBookmarkList != null || topicUserBookmarkList.size() == 0) {
+			return null;
+		}
+
+        return topicUserBookmarkList.get(0);
+	}
+
+	@Override
+	public List<TopicUserBookmark> allListByTopicId(String appId, String topicId) {
+		List<TopicUserBookmark> topicUserBookmarkList = list(
+                new BaseWrapper<TopicUserBookmark>()
+                        .eq(TopicUserBookmark.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserBookmark.TOPIC_ID, topicId)
+                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserBookmark.SYSTEM_CREATE_TIME))
+        );
+
+        return topicUserBookmarkList;
+	}
+
 }

@@ -48,4 +48,19 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
         return forumUserUnfollowList;
     }
 
+	@Override
+	public ForumUserUnfollow findByUserIdAndForumId(String appId, String userId, String forumId) {
+		List<ForumUserUnfollow> forumUserUnfollowList = list(
+                new BaseWrapper<ForumUserUnfollow>()
+                        .eq(ForumUserUnfollow.APP_ID, appId)
+                        .eq(ForumUserUnfollow.USER_ID, userId)
+                        .eq(ForumUserUnfollow.FORUM_ID, forumId)
+                        .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserUnfollow.SYSTEM_CREATE_TIME))
+        );
+		if (forumUserUnfollowList == null || forumUserUnfollowList.size() == 0) {
+			return null;
+		}
+		return forumUserUnfollowList.get(0);
+	}
 }

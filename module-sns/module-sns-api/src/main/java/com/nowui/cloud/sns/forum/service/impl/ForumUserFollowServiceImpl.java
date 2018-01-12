@@ -53,8 +53,8 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		List<ForumUserFollow> forumUserFollowList = list( 
 				new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
-                        .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
-                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
         		)

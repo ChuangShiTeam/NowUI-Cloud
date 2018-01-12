@@ -61,4 +61,9 @@ public interface ForumService extends BaseService<Forum> {
      * @return List<Forum> 论坛信息列表
      */
     List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTimete, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 随机模糊查询,并作为推荐结果返回
+     */
+    List<Forum> listRandom(String randomAppId, String randomForumMediaId, String randomForumModerator,Integer pageIndex, Integer pageSize);
 }

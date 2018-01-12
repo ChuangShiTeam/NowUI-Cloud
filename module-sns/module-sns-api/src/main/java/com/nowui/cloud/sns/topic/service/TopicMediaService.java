@@ -36,4 +36,15 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * @return List<TopicMedia> 话题多媒体列表
      */
     List<TopicMedia> listForAdmin(String appId, String topicId, String topicMediaId, String topicMediaType, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 根据topicId查询所有图片
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题id
+     * @param topicMediaId 多媒体Id
+     * @param topicMediaType 多媒体类型
+     * @return List<TopicMedia> 话题多媒体列表
+     */
+	List<TopicMedia> listAllMediaByTopicId(String appId, String topicId, String topicMediaId, String topicMediaType);
 }

@@ -143,8 +143,37 @@ public class Topic extends BaseEntity {
     @Length(max = 11, message = "置顶级别长度超出限制")
     private Integer topTopLevel;
     public static final String TOP_TOP_LEVEL = "topTopLevel";
-
-
+    
+    /**
+     * 论坛Id
+     */
+    public static final String FORUM_ID = "forumId";
+    /**
+     * 话题媒体list
+     */
+    public static final String TOPIC_MEDIA_LIST = "topicMediaList";
+    
+    /**
+     * 话题所在论坛列表
+     */
+    public static final String TOPIC_FORUM_LIST = "topicForumList";
+    /**
+     * 话题被收藏数
+     */
+    public static final String TOPIC_COUNT_BOOK_MARK = "topicCountBookMark";
+    /**
+     * 话题被点赞数
+     */
+    public static final String TOPIC_COUNT_LIKE = "topicCountLike";
+    /**
+     * 话题被评论数
+     */
+    public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
+    /**
+     * 话题提醒谁看列表
+     */
+    public static final String TOPIC_TIP_USER_LIST = "topicTipUserList";
+    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }

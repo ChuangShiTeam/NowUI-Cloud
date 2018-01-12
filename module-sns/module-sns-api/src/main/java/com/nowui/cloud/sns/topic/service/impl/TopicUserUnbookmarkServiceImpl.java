@@ -48,4 +48,34 @@ public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnb
         return topicUserUnbookmarkList;
     }
 
+	@Override
+	public TopicUserUnbookmark findUnBookMark(String appId, String topicId, String userId) {
+		List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
+                new BaseWrapper<TopicUserUnbookmark>()
+                        .eq(TopicUserUnbookmark.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
+                        .likeAllowEmpty(TopicUserUnbookmark.USER_ID, userId)
+                        .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserUnbookmark.SYSTEM_CREATE_TIME))
+        );
+
+		if (topicUserUnbookmarkList != null || topicUserUnbookmarkList.size() == 0) {
+			return null;
+		}
+        return topicUserUnbookmarkList.get(0);
+	}
+
+	@Override
+	public List<TopicUserUnbookmark> allUnBookMarkListByTopic(String appId, String topicId) {
+		List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
+                new BaseWrapper<TopicUserUnbookmark>()
+                        .eq(TopicUserUnbookmark.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
+                        .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserUnbookmark.SYSTEM_CREATE_TIME))
+        );
+
+        return topicUserUnbookmarkList;
+	}
+
 }

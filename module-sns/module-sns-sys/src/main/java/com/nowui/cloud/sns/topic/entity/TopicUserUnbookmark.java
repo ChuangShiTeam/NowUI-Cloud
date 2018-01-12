@@ -31,8 +31,8 @@ public class TopicUserUnbookmark extends BaseEntity {
     @TableId
     @NotNull(message = "用户话题取消收藏id不能为空")
     @Length(max = 32, message = "用户话题取消收藏id长度超出限制")
-    private String userUnBookMarked;
-    public static final String USER_UN_BOOK_MARKED = "userUnBookMarked";
+    private String userUnBookMarkId;
+    public static final String USER_UN_BOOK_MARK_ID = "userUnBookMarkId";
 
     /**
      * 应用Id
@@ -65,12 +65,12 @@ public class TopicUserUnbookmark extends BaseEntity {
     public static final String USER_ID = "userId";
 
 
-    public String getUserUnBookMarked() {
-        return getString(USER_UN_BOOK_MARKED);
+    public String getUserUnBookMarkId() {
+        return getString(USER_UN_BOOK_MARK_ID);
     }
     
-    public void setUserUnBookMarked(String userUnBookMarked) {
-        put(USER_UN_BOOK_MARKED, userUnBookMarked);
+    public void setUserUnBookMarked(String userUnBookMarkId) {
+        put(USER_UN_BOOK_MARK_ID, userUnBookMarkId);
     }
 
     public String getAppId() {

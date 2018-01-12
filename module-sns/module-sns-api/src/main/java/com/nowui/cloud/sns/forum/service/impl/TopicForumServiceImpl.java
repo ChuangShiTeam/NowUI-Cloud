@@ -5,9 +5,12 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.TopicForum;
 import com.nowui.cloud.sns.forum.mapper.TopicForumMapper;
 import com.nowui.cloud.sns.forum.service.TopicForumService;
+import com.nowui.cloud.util.DateUtil;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,5 +71,31 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     	
     	return true;
     }
+
+	@Override
+	public Integer countForToday(String appId, String forumId, String topicId) {
+		Integer count = count(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.APP_ID, appId)
+                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
+                        .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
+                        .ge(TopicForum.SYSTEM_CREATE_TIME, DateUtil.getTodayStartDateTime() )
+                        .eq(TopicForum.SYSTEM_STATUS, true)
+        );
+        return count;
+	}
+
+	@Override
+	public List<TopicForum> allTopicForumList(String appId, String forumId, String topicId) {
+		List<TopicForum> topicForumList = list(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.APP_ID, appId)
+                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
+                        .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
+                        .eq(TopicForum.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
+        );
+        return topicForumList;
+	}
 
 }

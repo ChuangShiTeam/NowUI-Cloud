@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math.analysis.interpolation.NevilleInterpolator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,17 +48,21 @@ public class ForumUserUnfollowMobileController extends BaseController {
                 ForumUserUnfollow.FORUM_ID,
                 ForumUserFollow.SYSTEM_VERSION
         );
+        
+        ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        if (unfollow != null) {
+			return renderJson(true);
+		}
+        
         //先找到关注表id
         ForumUserFollow followBody = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getUserId(), body.getForumId());
-        
-        //根据UserFollowId删除记录
-        Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
-
-        //向取消关注表插入一条数据
-        if (delResult) {
-            Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        //如果有就删除,没有:不操作
+        if (followBody != null || followBody.size() != 0) {
+        	//根据UserFollowId删除记录
+        	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 		}
-
-        return renderJson(delResult);
+        //向取消关注表插入一条数据
+        boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        return renderJson(result);
     }
 }

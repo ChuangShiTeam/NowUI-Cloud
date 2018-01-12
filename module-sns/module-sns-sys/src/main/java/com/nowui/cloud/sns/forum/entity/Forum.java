@@ -196,6 +196,9 @@ public class Forum extends BaseEntity {
     private Boolean forumIsRecomand;
     public static final String FORUM_IS_RECOMAND = "forumIsRecomand";
 
+    public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
+    
+    public static final String FORUM_ID_LIST = "forumIdList";
 
     public String getForumId() {
         return getString(FORUM_ID);
