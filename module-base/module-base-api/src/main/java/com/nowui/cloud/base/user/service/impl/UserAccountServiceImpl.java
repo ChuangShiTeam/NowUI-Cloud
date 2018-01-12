@@ -47,7 +47,7 @@ public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, U
     }
 
     @Override
-    public UserAccount findByUserAcoount(String appId, String userAccount) {
+    public UserAccount findByUserAccount(String appId, String userAccount) {
         UserAccount bean = find( 
                 new BaseWrapper<UserAccount>()
                         .eq(UserAccount.APP_ID, appId)

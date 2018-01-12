@@ -51,6 +51,11 @@ public class ToolbarAdminController extends BaseController {
         Integer resultTotal = toolbarService.countForAdmin(body.getAppId(), body.getToolbarName());
         List<Toolbar> resultList = toolbarService.listForAdmin(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
 
+        String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
+        List<File> fileList = fileRpc.finds(fileIds);
+        
+        resultList = Util.beanAddField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+
         validateResponse(
             Toolbar.TOOLBAR_ID, 
             Toolbar.TOOLBAR_NAME, 

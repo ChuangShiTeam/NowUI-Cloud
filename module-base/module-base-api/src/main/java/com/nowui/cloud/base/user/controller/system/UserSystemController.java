@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
@@ -41,33 +42,6 @@ public class UserSystemController implements UserRpc {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private UserAccountService userAccountService;
-	
-	@Autowired
-	private UserPasswordService userPasswordService;
-	
-	@Autowired
-	private UserWechatService userWechatService;
-	
-	@Autowired
-	private UserAvatarService userAvatarService;
-	
-	@Autowired
-	private UserNickNameService userNickNameService;
-	
-	@Autowired
-	private UserPasswordService userPaswordService;
-	
-	@Autowired
-	private UserMobileService userMobileService;
-	
-	@Autowired
-	private UserEmailService userEmailService;
-	
-	@Autowired
-	private FileRpc fileRpc;
-
 	@Override
 	public Integer countV1(String appId, String userType) {
 		return userService.count(appId, userType);
@@ -88,7 +62,7 @@ public class UserSystemController implements UserRpc {
         if (Util.isNullOrEmpty(userType) || Util.isNullOrEmpty(userAccount)) {
             return null;
         }
-        UserAccount bean = userAccountService.findByUserAcoount(appId, userAccount);
+        UserAccount bean = userService.findByUserAccount(appId, userAccount);
         
         if (bean == null || Util.isNullOrEmpty(bean.getUserId())) {
             return null;
@@ -104,10 +78,12 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean checkUserPassword(String userId, String userPassword) {
+        
         if (Util.isNullOrEmpty(userId) || Util.isNullOrEmpty(userPassword)) {
             return false;
         }
-        UserPassword bean = userPasswordService.findByUserId(userId);
+        
+        UserPassword bean = userService.findUserPasswordByUserId(userId);
         
         if (bean == null) {
             return false;
@@ -121,7 +97,7 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public User fingByUserWechat(String appId, String userType, String wechatOpenId, String wechatUnionId) {
-        UserWechat userWechat = userWechatService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
+        UserWechat userWechat = userService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
         
         if (userWechat == null || Util.isNullOrEmpty(userWechat.getUserId())) {
             return null;
@@ -154,32 +130,22 @@ public class UserSystemController implements UserRpc {
             userWechat.setUserId(userId);
             userWechat.setWechatHeadImgFileId("");
             
-            if (!Util.isNullOrEmpty(userWechat.getWechatHeadImgUrl())) {
-                String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
-                if (!Util.isNullOrEmpty(fileId)) {
-                    userWechat.setWechatHeadImgFileId(fileId);
-                    
-                    // 保存用户头像
-                    UserAvatar userAvatar = new UserAvatar();
-                    userAvatar.setAppId(appId);
-                    userAvatar.setUserId(userId);
-                    userAvatar.setUserAvatar(fileId);
-                    userAvatarService.save(userAvatar, Util.getRandomUUID(), userId);
-                }
+            if (!Util.isNullOrEmpty(userWechat.getWechatHeadImgUrl()) && !Util.isNullOrEmpty(userWechat.getWechatHeadImgFileId())) {
+                // 保存用户头像
+                UserAvatar userAvatar = new UserAvatar();
+                userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
+                userService.saveUserAvatar(appId, userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
             }
             
             if (!Util.isNullOrEmpty(userWechat.getWechatNickName())) {
                 // 保存用户昵称
                 UserNickName userNickName = new UserNickName();
-                userNickName.setAppId(appId);
-                userNickName.setUserId(userId);
                 userNickName.setUserNickName(userWechat.getWechatNickName());
                 
-                userNickNameService.save(userNickName, Util.getRandomUUID(), userId);
+                userService.saveUserNickName(appId, userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
             }
             // 保存用户微信头像
-            userWechatService.save(userWechat, Util.getRandomUUID(), userId);
-            
+            userService.saveUserWechat(appId, userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
         }
         
         return result;
@@ -187,7 +153,7 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserWechat(String userId, UserWechat userWechat, String systemRequestUserId) {
-       UserWechat bean = userWechatService.findByUserId(userId);
+       UserWechat bean = userService.findUserWechatByUserId(userId);
        
        Boolean result = true;
        
@@ -195,24 +161,19 @@ public class UserSystemController implements UserRpc {
        
        // 头像更新
        if (!userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
-           String fileId = fileRpc.downloadWechatHeadImgToNative(bean.getAppId(), userId, userWechat.getWechatHeadImgUrl());
-           if (!Util.isNullOrEmpty(fileId)) {
-               bean.setWechatHeadImgFileId(fileId);
-               
-               UserAvatar userAvatar = userAvatarService.findByUserId(systemRequestUserId);
-               if (userAvatar == null) {
-                   // 保存用户头像
-                   userAvatar = new UserAvatar();
-                   userAvatar.setAppId(bean.getAppId());
-                   userAvatar.setUserId(userId);
-                   userAvatar.setUserAvatar(fileId);
-                   userAvatarService.save(userAvatar, Util.getRandomUUID(), userId);
-               } else {
-                   // 更新用户头像
-                   userAvatar.setUserAvatar(fileId); 
-                   userAvatarService.update(userAvatar, userAvatar.getUserAvatarId(), userId, userAvatar.getSystemVersion());
-               }
-               
+           bean.setWechatHeadImgFileId(userWechat.getWechatHeadImgFileId());
+           UserAvatar userAvatar = userService.findUserAvatarByUserId(userId);
+           if (userAvatar == null) {
+               // 保存用户头像
+               userAvatar = new UserAvatar();
+               userAvatar.setAppId(bean.getAppId());
+               userAvatar.setUserId(userId);
+               userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
+               userService.saveUserAvatar(bean.getAppId(), userId, userAvatar, Util.getRandomUUID(),, systemRequestUserId);
+           } else {
+               // 更新用户头像
+               userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId()); 
+               userAvatarService.update(userAvatar, userAvatar.getUserAvatarId(), userId, userAvatar.getSystemVersion());
            }
            bean.setWechatHeadImgUrl(userWechat.getWechatHeadImgUrl());
            isNeedUpdate = true;
@@ -273,10 +234,10 @@ public class UserSystemController implements UserRpc {
     @Override
     public Boolean updateUserPassword(String userId, UserPassword userPassword, String systemRequestUserId) {
         //删除旧的密码信息
-        userPaswordService.deleteByUserId(userId, systemRequestUserId);
+        userService.deleteUserPasswordByUserId(userId, systemRequestUserId);
         //保存新的密码信息
         userPassword.setUserId(userId);
-        Boolean result = userPaswordService.save(userPassword, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = userService.saveUserPassword(userPassword.getAppId(), userId, userPassword, Util.getRandomUUID(), systemRequestUserId);
         
         return result;
     }
@@ -284,10 +245,10 @@ public class UserSystemController implements UserRpc {
     @Override
     public Boolean updateUserAvatar(String userId, UserAvatar userAvatar, String systemRequestUserId) {
         //删除旧的头像信息
-        userAvatarService.deleteByUserId(userId, systemRequestUserId);
+        userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
         //保存新的头像信息
         userAvatar.setUserId(userId);
-        Boolean result = userAvatarService.save(userAvatar, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = userService.saveUserAvatar(userAvatar.getAppId(), userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
         
         return result;
     }
@@ -295,10 +256,10 @@ public class UserSystemController implements UserRpc {
     @Override
     public Boolean updateUserNickName(String userId, UserNickName userNickName, String systemRequestUserId) {
         //删除旧的用户昵称信息
-        userNickNameService.deleteByUserId(userId, userNickName.getSystemRequestUserId());
+        userService.deleteUserNickNameByUserId(userId, userNickName.getSystemRequestUserId());
         //保存新的用户昵称信息
         userNickName.setUserId(userId);
-        Boolean result = userNickNameService.save(userNickName, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = userService.saveUserNickName(userNickName.getAppId(), userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
         return result;
     }
 
@@ -316,22 +277,16 @@ public class UserSystemController implements UserRpc {
         if (result) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
-            userAccountBean.setAppId(appId);
-            userAccountBean.setUserId(userId);
             userAccountBean.setUserAccount(userAccount);
-            userAccountService.save(userAccountBean, Util.getRandomUUID(), userId);
+            userService.saveUserAccount(appId, userId, userAccountBean, Util.getRandomUUID(), userId);
             // 保存用户密码
             UserPassword userPasswordbean = new UserPassword();
-            userPasswordbean.setAppId(appId);
-            userPasswordbean.setUserId(userId);
             userPasswordbean.setUserPassword(userPassword);
-            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
+            userService.saveUserPassword(appId, userId, userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户手机号码
             UserMobile userMobile = new UserMobile();
-            userMobile.setAppId(appId);
             userMobile.setUserMobile(userAccount);
-            userMobile.setUserId(userId);
-            userMobileService.save(userMobile, Util.getRandomUUID(), userId);
+            userService.saveUserMobile(appId, userId, userMobile, Util.getRandomUUID(), userId);
         }
         
         return result;
@@ -351,22 +306,16 @@ public class UserSystemController implements UserRpc {
         if (result) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
-            userAccountBean.setAppId(appId);
-            userAccountBean.setUserId(userId);
             userAccountBean.setUserAccount(userAccount);
-            userAccountService.save(userAccountBean, Util.getRandomUUID(), userId);
+            userService.saveUserAccount(appId, userId, userAccountBean, Util.getRandomUUID(), systemRequestUserId);
             // 保存用户密码
             UserPassword userPasswordbean = new UserPassword();
-            userPasswordbean.setAppId(appId);
-            userPasswordbean.setUserId(userId);
             userPasswordbean.setUserPassword(userPassword);
-            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
+            userService.saveUserPassword(appId, userId, userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户邮箱
             UserEmail userEmail = new UserEmail();
-            userEmail.setAppId(appId);
             userEmail.setUserEmail(userAccount);
-            userEmail.setUserId(userId);
-            userEmailService.save(userEmail, Util.getRandomUUID(), userId);
+            userService.saveUserEmail(appId, userId, userEmail, Util.getRandomUUID(), userId);
         }
         
         return result;

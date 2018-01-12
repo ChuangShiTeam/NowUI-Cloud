@@ -40,9 +40,6 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     @Autowired
     private ArticleMediaService articleMediaService;
     
-    @Autowired
-    private FileRpc fileRpc;
-
     @Override
     public Integer countForAdmin(String appId, String articleTitle) {
         
@@ -75,12 +72,6 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
             ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
             if (articleArticleCategory != null) {
                 article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleCategoryId()).getArticleCategoryName());
-            }
-            
-            if (!Util.isNullOrEmpty(article.getArticleMediaId())) {
-                File file = fileRpc.find(article.getArticleMediaId());
-                file.keep(File.FILE_ID, File.FILE_PATH);
-                article.put(Article.ARTICLE_MEDIA, file);
             }
         }
         

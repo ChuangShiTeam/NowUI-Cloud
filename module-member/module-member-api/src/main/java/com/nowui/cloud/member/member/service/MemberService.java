@@ -1,7 +1,6 @@
 package com.nowui.cloud.member.member.service;
 import java.util.List;
 
-import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.service.BaseService;
 
@@ -36,13 +35,4 @@ public interface MemberService extends BaseService<Member> {
      */
     List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
 
-    /**
-     * 会员保存或更新
-     * 
-     * @param appId 应用编号
-     * @param userWechat 用户微信
-     * @param systemRequestUserId 请求用户编号
-     * @return
-     */
-    Member wechatSaveOrUpdate(String appId, UserWechat userWechat, String systemRequestUserId);
 }
