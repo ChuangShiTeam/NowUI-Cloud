@@ -65,8 +65,8 @@ public class ArticleCategoryAdminController extends BaseController {
     }
     
     @ApiOperation(value = "文章分类树形列表")
-    @RequestMapping(value = "/article/category/admin/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> allTreeList(@RequestBody ArticleCategory body) {
+    @RequestMapping(value = "/article/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> allTreeListV1(@RequestBody ArticleCategory body) {
         validateRequest(
             body, 
             ArticleCategory.APP_ID

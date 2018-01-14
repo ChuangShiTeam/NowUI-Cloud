@@ -49,7 +49,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public User findByUserAccount(String appId, String userType, String userAccount) {
+    public User findByUserAccountV1(String appId, String userType, String userAccount) {
         if (Util.isNullOrEmpty(userType) || Util.isNullOrEmpty(userAccount)) {
             return null;
         }
@@ -68,7 +68,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean checkUserPassword(String userId, String userPassword) {
+    public Boolean checkUserPasswordV1(String userId, String userPassword) {
         
         if (Util.isNullOrEmpty(userId) || Util.isNullOrEmpty(userPassword)) {
             return false;
@@ -87,7 +87,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public User fingByUserWechat(String appId, String userType, String wechatOpenId, String wechatUnionId) {
+    public User fingByUserWechatV1(String appId, String userType, String wechatOpenId, String wechatUnionId) {
         UserWechat userWechat = userService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
         
         if (userWechat == null || Util.isNullOrEmpty(userWechat.getUserId())) {
@@ -106,7 +106,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean saveUserWechat(String appId, String userId, String objectId, String userType, UserWechat userWechat, String systemRequestUserId) {
+    public Boolean saveUserWechatV1(String appId, String userId, String objectId, String userType, UserWechat userWechat, String systemRequestUserId) {
         User user = new User();
         user.setAppId(appId);
         user.setUserId(userId);
@@ -141,7 +141,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserWechat(String userId, UserWechat userWechat, String systemRequestUserId) {
+    public Boolean updateUserWechatV1(String userId, UserWechat userWechat, String systemRequestUserId) {
         
        UserWechat bean = userService.findUserWechatByUserId(userId);
        
@@ -217,7 +217,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserPassword(String userId, UserPassword userPassword, String systemRequestUserId) {
+    public Boolean updateUserPasswordV1(String userId, UserPassword userPassword, String systemRequestUserId) {
         //删除旧的密码信息
         userService.deleteUserPasswordByUserId(userId, systemRequestUserId);
         //保存新的密码信息
@@ -229,7 +229,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserAvatar(String userId, UserAvatar userAvatar, String systemRequestUserId) {
+    public Boolean updateUserAvatarV1(String userId, UserAvatar userAvatar, String systemRequestUserId) {
         //删除旧的头像信息
         userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
         //保存新的头像信息
@@ -240,7 +240,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserNickName(String userId, UserNickName userNickName, String systemRequestUserId) {
+    public Boolean updateUserNickNameV1(String userId, UserNickName userNickName, String systemRequestUserId) {
         //删除旧的用户昵称信息
         userService.deleteUserNickNameByUserId(userId, userNickName.getSystemRequestUserId());
         //保存新的用户昵称信息
@@ -250,7 +250,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean registerUserMobile(String appId, String userId, String objectId, String userType,
+    public Boolean registerUserMobileV1(String appId, String userId, String objectId, String userType,
             String userAccount, String userPassword, String systemRequestUserId) {
         User user = new User();
         user.setUserId(userId);
@@ -279,7 +279,7 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean registerUserEmail(String appId, String userId, String objectId, String userType,
+    public Boolean registerUserEmailV1(String appId, String userId, String objectId, String userType,
             String userAccount, String userPassword, String systemRequestUserId) {
         User user = new User();
         user.setUserId(userId);

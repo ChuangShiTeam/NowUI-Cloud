@@ -5,6 +5,12 @@
 *.ipr
 *.DS_Store
 
+### module ###
+.discovery/target
+.service.service/target
+.service2/target
+.gateway/target
+
 ### Eclipse ###
 *.class
 /target/
@@ -15,6 +21,3 @@
 /.metadata/
 /.externalToolBuilders/
 /bin/
-
-### module ###
-**/target/

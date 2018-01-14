@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8085
 
 eureka:
   client:
@@ -40,6 +40,20 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       # 合并多个DruidDataSource的监控数据
       #useGlobalDataSourceStat: true
+  redis:
+    host: 118.31.229.16
+    port: 6379
+    database: 0
+    password:
+  rabbitmq:
+    host: 118.31.229.16
+    port: 5672
+    username: guest
+    password: guest
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 118.31.229.16:9300
 
 #mybatis
 mybatis-plus:

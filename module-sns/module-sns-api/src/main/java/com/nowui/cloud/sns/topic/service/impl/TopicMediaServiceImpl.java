@@ -49,5 +49,20 @@ public class TopicMediaServiceImpl extends BaseServiceImpl<TopicMediaMapper, Top
 
         return topicMediaList;
     }
+    
+    @Override
+    public List<TopicMedia> listAllMediaByTopicId(String appId, String topicId, String topicMediaId, String topicMediaType) {
+        List<TopicMedia> topicMediaList = list(
+                new BaseWrapper<TopicMedia>()
+                        .eq(TopicMedia.APP_ID, appId)
+                        .likeAllowEmpty(TopicMedia.TOPIC_ID, topicId)
+                        .likeAllowEmpty(TopicMedia.TOPIC_MEDIA_ID, topicMediaId)
+                        .likeAllowEmpty(TopicMedia.TOPIC_MEDIA_TYPE, topicMediaType)
+                        .eq(TopicMedia.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicMedia.SYSTEM_CREATE_TIME))
+        );
+
+        return topicMediaList;
+    }
 
 }

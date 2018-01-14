@@ -34,4 +34,23 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * @return List<TopicUserUnlike> 话题用户取消点赞关联列表
      */
     List<TopicUserUnlike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 话题用户取消点赞记录(不分页)
+     * @param appId 应用编号
+     * @param userId 关注人
+     * @param topicId 话题Id
+     * @return TopicUserUnlike 
+     */
+    TopicUserUnlike findUnlike(String appId, String userId, String topicId);
+    
+    /**
+     * 根据topicId查询话题用户取消点赞记录
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题id
+     * @return List<TopicUserUnlike> 取消点赞记录列表
+     */
+    List<TopicUserUnlike> allUnlikeListByTopicId(String appId, String topicId);
+
 }

@@ -37,7 +37,11 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
     protected String getItemCacheName(String id) {
         return entity.getTableName() + "_item_" + id;
     }
-
+    
+    protected String getItemCacheName(String tableName, String id) {
+        return tableName + "_item_" + id;
+    }
+    
     public Integer count(SearchQuery searchQuery) {
         long count = elasticsearch.count(searchQuery);
 

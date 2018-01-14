@@ -52,7 +52,7 @@ public class ToolbarAdminController extends BaseController {
         List<Toolbar> resultList = toolbarService.listForAdmin(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
 
         String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
-        List<File> fileList = fileRpc.finds(fileIds);
+        List<File> fileList = fileRpc.findsV1(fileIds);
         
         resultList = Util.beanAddField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
 
@@ -74,7 +74,7 @@ public class ToolbarAdminController extends BaseController {
 
         Toolbar result = toolbarService.find(body.getToolbarId());
         
-        File file = fileRpc.find(result.getToolbarImage());
+        File file = fileRpc.findV1(result.getToolbarImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
         result.put(Toolbar.TOOLBAR_IMAGE, file);
 

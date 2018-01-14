@@ -48,4 +48,34 @@ public class TopicUserUnlikeServiceImpl extends BaseServiceImpl<TopicUserUnlikeM
         return topicUserUnlikeList;
     }
 
+	@Override
+	public TopicUserUnlike findUnlike(String appId, String userId, String topicId) {
+		List<TopicUserUnlike> topicUserUnlikeList = list(
+                new BaseWrapper<TopicUserUnlike>()
+                        .eq(TopicUserUnlike.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserUnlike.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
+                        .eq(TopicUserUnlike.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserUnlike.SYSTEM_CREATE_TIME))
+        );
+		if (topicUserUnlikeList == null || topicUserUnlikeList.size() ==0) {
+			return null;
+		}
+
+        return topicUserUnlikeList.get(0);
+	}
+
+	@Override
+	public List<TopicUserUnlike> allUnlikeListByTopicId(String appId, String topicId) {
+		List<TopicUserUnlike> topicUserUnlikeList = list(
+                new BaseWrapper<TopicUserUnlike>()
+                        .eq(TopicUserUnlike.APP_ID, appId)
+                        .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
+                        .eq(TopicUserUnlike.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserUnlike.SYSTEM_CREATE_TIME))
+        );
+
+        return topicUserUnlikeList;
+	}
+
 }

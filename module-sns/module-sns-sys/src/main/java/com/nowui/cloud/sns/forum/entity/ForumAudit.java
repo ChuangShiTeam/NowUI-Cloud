@@ -41,7 +41,7 @@ public class ForumAudit extends BaseEntity {
     @TableField
     @NotNull(message = "审核状态不能为空")
     @Length(max = 11, message = "审核状态长度超出限制")
-    private Integer forumAuditStatus;
+    private String forumAuditStatus;
     public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
 
     /**
@@ -83,11 +83,11 @@ public class ForumAudit extends BaseEntity {
         put(FORUM_AUDIT_ID, forumAuditId);
     }
 
-    public Integer getForumAuditStatus() {
-        return getInteger(FORUM_AUDIT_STATUS);
+    public String getForumAuditStatus() {
+        return getString(FORUM_AUDIT_STATUS);
     }
     
-    public void setForumAuditStatus(Integer forumAuditStatus) {
+    public void setForumAuditStatus(String forumAuditStatus) {
         put(FORUM_AUDIT_STATUS, forumAuditStatus);
     }
 

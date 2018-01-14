@@ -42,7 +42,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
         List<TopicUserUnbookmark> resultList = topicUserUnbookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicUserUnbookmark.USER_UN_BOOK_MARKED,
+                TopicUserUnbookmark.USER_UN_BOOK_MARK_ID,
                 TopicUserUnbookmark.TOPIC_ID,
                 TopicUserUnbookmark.USER_ID
         );
@@ -56,13 +56,13 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserUnbookmark.APP_ID,
-                TopicUserUnbookmark.USER_UN_BOOK_MARKED
+                TopicUserUnbookmark.USER_UN_BOOK_MARK_ID
         );
 
-        TopicUserUnbookmark result = topicUserUnbookmarkService.find(body.getUserUnBookMarked());
+        TopicUserUnbookmark result = topicUserUnbookmarkService.find(body.getUserUnBookMarkId());
 
         validateResponse(
-                TopicUserUnbookmark.USER_UN_BOOK_MARKED,
+                TopicUserUnbookmark.USER_UN_BOOK_MARK_ID,
                 TopicUserUnbookmark.TOPIC_ID,
                 TopicUserUnbookmark.USER_ID
         );
@@ -90,14 +90,14 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
-                TopicUserUnbookmark.USER_UN_BOOK_MARKED,
+                TopicUserUnbookmark.USER_UN_BOOK_MARK_ID,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.TOPIC_ID,
                 TopicUserUnbookmark.USER_ID,
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.update(body, body.getUserUnBookMarked(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnbookmarkService.update(body, body.getUserUnBookMarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +107,12 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
-                TopicUserUnbookmark.USER_UN_BOOK_MARKED,
+                TopicUserUnbookmark.USER_UN_BOOK_MARK_ID,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.delete(body.getUserUnBookMarked(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnbookmarkService.delete(body.getUserUnBookMarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

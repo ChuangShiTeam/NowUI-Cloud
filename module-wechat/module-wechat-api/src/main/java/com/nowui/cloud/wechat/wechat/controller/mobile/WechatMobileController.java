@@ -119,7 +119,7 @@ public class WechatMobileController extends BaseController {
             }
             userWechat.setWehchatPrivilege(wehchatPrivilege);
 
-            String token = memberRpc.wechatLogin(wechatAppId, userWechat, systemRequestUserId);
+            String token = memberRpc.wechatLoginV1(wechatAppId, userWechat, systemRequestUserId);
 
             System.out.println("openId:" + wechatOpenId);
             System.out.println("token:" + token);
