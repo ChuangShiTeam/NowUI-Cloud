@@ -253,7 +253,7 @@ public class Util {
      * @param fieldName
      * @return
      */
-    public static boolean existsField(Class clazz, String fieldName) {
+    public static boolean existsField(Class<?> clazz, String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName) != null;
         } catch (Exception e) {
