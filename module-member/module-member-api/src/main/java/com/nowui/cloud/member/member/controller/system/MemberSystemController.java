@@ -63,7 +63,6 @@ public class MemberSystemController implements MemberRpc {
             bean.setMemberIsTop(false);
             bean.setMemberTopEndTime(new Date());
             bean.setMemberTopLevel(0);
-            bean.setMemberDescription("");
 
             Boolean isSave = memberService.save(bean, memberId, systemRequestUserId);
 

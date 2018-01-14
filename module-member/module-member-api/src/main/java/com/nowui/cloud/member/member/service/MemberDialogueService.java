@@ -38,4 +38,14 @@ public interface MemberDialogueService extends BaseService<MemberDialogue> {
      * @return List<MemberDialogue> 会员对话列表
      */
     List<MemberDialogue> listForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据请求用户编号和响应用户编号查询会员对话信息
+     * 
+     * @param initiateUserId 发起用户编号
+     * @param respondUserId 响应用户编号
+     * @return MemberDialogue 会员对话信息
+     */
+    MemberDialogue findByInitiateUserIdAndRespondUserId(String initiateUserId, String respondUserId);
+    
 }

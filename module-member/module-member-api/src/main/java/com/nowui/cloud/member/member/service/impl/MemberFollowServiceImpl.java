@@ -49,4 +49,35 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
         return memberFollowList;
     }
 
+    @Override
+    public Boolean checkIsFollow(String userId, String followUserId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count > 0;
+    }
+
+    @Override
+    public Integer countFollow(String userId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public Integer countBeFollowed(String userId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.FOLLOW_USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
 }

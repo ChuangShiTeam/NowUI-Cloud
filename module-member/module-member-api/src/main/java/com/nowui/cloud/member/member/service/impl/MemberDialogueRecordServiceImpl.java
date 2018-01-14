@@ -1,6 +1,7 @@
 package com.nowui.cloud.member.member.service.impl;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -42,6 +43,31 @@ public class MemberDialogueRecordServiceImpl extends BaseServiceImpl<MemberDialo
                         .likeAllowEmpty(MemberDialogueRecord.MEMBER_DIALOGUE_ID, memberDialogueId)
                         .likeAllowEmpty(MemberDialogueRecord.MEMBER_ID, memberId)
                         .likeAllowEmpty(MemberDialogueRecord.USER_ID, userId)
+                        .eq(MemberDialogueRecord.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberDialogueRecord.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return memberDialogueRecordList;
+    }
+    
+    @Override
+    public Integer countByMemberDialogueIdForMobile(String memberDialogueId) {
+        Integer count = count(
+                new BaseWrapper<MemberDialogueRecord>()
+                        .eq(MemberDialogueRecord.MEMBER_DIALOGUE_ID, memberDialogueId)
+                        .eq(MemberDialogueRecord.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public List<MemberDialogueRecord> listByMemberDialogueIdForMobile(String memberDialogueId, Date systemCreateTime, Integer pageIndex,
+            Integer pageSize) {
+        List<MemberDialogueRecord> memberDialogueRecordList = list(
+                new BaseWrapper<MemberDialogueRecord>()
+                        .likeAllowEmpty(MemberDialogueRecord.MEMBER_DIALOGUE_ID, memberDialogueId)
                         .eq(MemberDialogueRecord.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberDialogueRecord.SYSTEM_CREATE_TIME)),
                 pageIndex,

@@ -6,7 +6,7 @@ export default {
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Index').default);
+                cb(null, require('../view/${urlEntityName}/Index').default);
             }, '${firstLowerWithoutUnderlineEntityName}.index');
         }
     }, {
@@ -14,7 +14,7 @@ export default {
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
+                cb(null, require('../view/${urlEntityName}/Detail').default);
             }, '${firstLowerWithoutUnderlineEntityName}.detail');
         }
     }, {
@@ -22,7 +22,7 @@ export default {
         onEnter: util.handleEnter,
         getComponent(location, cb) {
             require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
+                cb(null, require('../view/${urlEntityName}/Detail').default);
             }, '${firstLowerWithoutUnderlineEntityName}.detail');
         }
     }]

@@ -93,16 +93,6 @@ public class Member extends BaseEntity {
     private Boolean memberIsRecommed;
     public static final String MEMBER_IS_RECOMMED = "memberIsRecommed";
 
-    /**
-     * 会员简介
-     */
-    @Field
-    @TableField
-    @NotNull(message = "会员简介不能为空")
-    @Length(max = 2000, message = "会员简介长度超出限制")
-    private String memberDescription;
-    public static final String MEMBER_DESCRIPTION = "memberDescription";
-
     public static final String USER = "user";
     
     public String getMemberId() {
@@ -160,14 +150,5 @@ public class Member extends BaseEntity {
     public void setMemberIsRecommed(Boolean memberIsRecommed) {
         put(MEMBER_IS_RECOMMED, memberIsRecommed);
     }
-
-    public String getMemberDescription() {
-        return getString(MEMBER_DESCRIPTION);
-    }
-    
-    public void setMemberDescription(String memberDescription) {
-        put(MEMBER_DESCRIPTION, memberDescription);
-    }
-
 
 }

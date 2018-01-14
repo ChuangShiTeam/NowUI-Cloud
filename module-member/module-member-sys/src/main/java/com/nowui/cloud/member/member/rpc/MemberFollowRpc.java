@@ -2,6 +2,8 @@ package com.nowui.cloud.member.member.rpc;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -22,7 +24,8 @@ public interface MemberFollowRpc {
      * @param followUserId
      * @return
      */
-    Boolean checkIsFollow(
+    @RequestMapping(value = "/member/system/v1/check/is/follow", method = RequestMethod.POST)
+    Boolean checkIsFollowV1(
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "followUserId", required = true) String followUserId
     );
