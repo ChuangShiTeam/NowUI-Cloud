@@ -2,10 +2,13 @@ package com.nowui.cloud.member.member.controller.system;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
@@ -42,11 +45,11 @@ public class MemberSystemController implements MemberRpc {
     private FileRpc fileRpc;
 
     @Override
-    public String wechatLogin(String appId, UserWechat userWechat, String systemRequestUserId) {
+    public String wechatLoginV1(String appId, UserWechat userWechat, String systemRequestUserId) {
         
         String userId = "";
         
-        User user = userRpc.fingByUserWechat(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
+        User user = userRpc.fingByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
                 
         if (user == null) {
             String memberId = Util.getRandomUUID();
@@ -68,9 +71,9 @@ public class MemberSystemController implements MemberRpc {
                 throw new RuntimeException("保存不成功");
             }
             
-            String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
+            String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
             userWechat.setWechatHeadImgFileId(fileId);
-            isSave = userRpc.saveUserWechat(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
+            isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
             
             if (!isSave) {
                 throw new RuntimeException("保存不成功");
@@ -81,10 +84,10 @@ public class MemberSystemController implements MemberRpc {
             UserWechat bean = (UserWechat) user.get(User.USER_WECHAT);
             
             if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
-                String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
+                String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
 
                 userWechat.setWechatHeadImgFileId(fileId);
-                Boolean isUpdate = userRpc.updateUserWechat(userId, userWechat, systemRequestUserId);
+                Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
                 
                 if (!isUpdate) {
                     throw new RuntimeException("更新不成功");
@@ -108,6 +111,32 @@ public class MemberSystemController implements MemberRpc {
             e.printStackTrace();
             throw new RuntimeException("登录不成功");
         }
+    }
+
+    @Override
+    public Member findByUserIdV1(String userId) {
+        Member member = memberService.findWithCacheUserByUserId(userId);
+        
+        User user = (User) member.get(Member.USER);
+        
+        if (user == null) {
+            user = userRpc.findV1(userId);
+            
+            member.put(Member.USER, user);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Member> listByUserIdsV1(String userIds) {
+        if (Util.isNullOrEmpty(userIds)) {
+            return null;
+        }
+        List<String> userIdList = JSONArray.parseArray(userIds, String.class);
+        
+        List<Member> memberList = userIdList.stream().map(userId -> findByUserIdV1(userId)).collect(Collectors.toList());
+        
+        return memberList;
     }
 
 }

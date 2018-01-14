@@ -65,7 +65,7 @@ public class ArticleAdminController extends BaseController {
         List<Article> resultList = articleService.listForAdmin(body.getAppId(), body.getArticleTitle(), body.getPageIndex(), body.getPageSize());
 
         String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
-        List<File> fileList = fileRpc.finds(fileIds);
+        List<File> fileList = fileRpc.findsV1(fileIds);
         
         resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_ID, File.FILE_PATH);
 
@@ -102,14 +102,14 @@ public class ArticleAdminController extends BaseController {
         if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
             System.out.println(result.toJSONString());
             System.out.println(result.getArticleMediaId());
-            File file = fileRpc.find(result.getArticleMediaId());
+            File file = fileRpc.findV1(result.getArticleMediaId());
             file.keep(File.FILE_ID, File.FILE_PATH);
             result.put(Article.ARTICLE_MEDIA, file);
         }
         //查询文章副媒体
         List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(body.getArticleId());
         String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
-        List<File> fileList = fileRpc.finds(fileIds);
+        List<File> fileList = fileRpc.findsV1(fileIds);
         
         articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
         result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);

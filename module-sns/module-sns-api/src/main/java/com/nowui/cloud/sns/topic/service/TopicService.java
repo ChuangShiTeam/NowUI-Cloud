@@ -1,9 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
-import com.nowui.cloud.sns.topic.entity.Topic;
-
 import java.util.List;
+
+import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.sns.topic.entity.Topic;
 
 /**
  * 话题信息业务接口

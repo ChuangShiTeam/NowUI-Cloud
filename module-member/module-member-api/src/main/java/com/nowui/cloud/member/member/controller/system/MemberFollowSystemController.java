@@ -17,4 +17,10 @@ import io.swagger.annotations.Api;
 @RestController
 public class MemberFollowSystemController implements MemberFollowRpc {
 
+    @Override
+    public Boolean checkIsFollow(String userId, String followUserId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }   

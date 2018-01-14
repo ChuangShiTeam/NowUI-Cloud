@@ -1,6 +1,7 @@
 package com.nowui.cloud.member.member.service;
 import java.util.List;
 
+import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.service.BaseService;
 
@@ -35,4 +36,19 @@ public interface MemberService extends BaseService<Member> {
      */
     List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
 
+    /**
+     * 根据用户编号查询会员信息
+     * 
+     * @param userId 用户编号
+     * @return Member 会员信息
+     */
+    Member findByUserId(String userId);
+    
+    /**
+     * 根据用户编号查询会员信息包含缓存用户信息
+     * 
+     * @param userId
+     * @return Member 会员信息(缓存用户信息)
+     */
+    Member findWithCacheUserByUserId(String userId);
 }

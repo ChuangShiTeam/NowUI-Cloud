@@ -108,7 +108,7 @@ public class ForumUserFollowMobileController extends BaseController {
         	forum.setForumDescription(forumDescription);
         	
         	String forumMediaId = forum.getForumMediaId();
-        	File file = fileRpc.find(forumMediaId);
+        	File file = fileRpc.findV1(forumMediaId);
             file.keep(File.FILE_ID, File.FILE_PATH);
             forum.put(Forum.FORUM_MEDIA_ID, file);
 

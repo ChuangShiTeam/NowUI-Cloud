@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.mapper.MemberMapper;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 会员业务实现
@@ -47,6 +49,36 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         );
 
         return memberList;
+    }
+
+    @Override
+    public Member findByUserId(String userId) {
+        Member member = find(
+                new BaseWrapper<Member>()
+                .eq(Member.USER_ID, userId)
+                .eq(Member.SYSTEM_STATUS, true)
+        );
+        return member;
+    }
+
+    @Override
+    public Member findWithCacheUserByUserId(String userId) {
+        Member member = findByUserId(userId);
+        
+        if (member == null) {
+            return null;
+        }
+        
+        String userTableName = Util.getTableName(User.class);
+        
+        if (!Util.isNullOrEmpty(userTableName)) {
+            
+            User user = (User) redis.opsForValue().get(getItemCacheName(userTableName, userId));
+            
+            member.put(Member.USER, user);
+        }
+        
+        return member;
     }
 
 }

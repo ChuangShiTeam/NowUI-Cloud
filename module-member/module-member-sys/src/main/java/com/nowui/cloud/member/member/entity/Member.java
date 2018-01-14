@@ -103,7 +103,8 @@ public class Member extends BaseEntity {
     private String memberDescription;
     public static final String MEMBER_DESCRIPTION = "memberDescription";
 
-
+    public static final String USER = "user";
+    
     public String getMemberId() {
         return getString(MEMBER_ID);
     }

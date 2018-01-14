@@ -1,9 +1,20 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.JSONArray;
+import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.entity.enums.FileType;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.TopicForum;
 import com.nowui.cloud.sns.forum.service.TopicForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
@@ -26,16 +37,6 @@ import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 话题信息移动端控制器
@@ -75,6 +76,9 @@ public class TopicMobileController extends BaseController {
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
 	
+	@Autowired
+	private FileRpc fileRpc;
+	
 	
 	
     @ApiOperation(value = "话题信息列表")
@@ -93,7 +97,17 @@ public class TopicMobileController extends BaseController {
         
         List<Topic> resultList = topicService.allTopicListByForumId(body);
         
-
+        for (Topic topic : resultList) {
+            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+            
+            String fileIds = Util.beanToFieldString(resultList, TopicMedia.TOPIC_MEDIA_ID);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+            
+            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+            
+            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        }
+        
         /**
          * 需要再调整一下返回参数
          */
@@ -129,6 +143,16 @@ public class TopicMobileController extends BaseController {
         Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
         
+        for (Topic topic : resultList) {
+            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+            
+            String fileIds = Util.beanToFieldString(resultList, TopicMedia.TOPIC_MEDIA_ID);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+            
+            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+            
+            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        }
 
         /**
          * 需要再调整一下返回参数
