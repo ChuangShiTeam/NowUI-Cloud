@@ -201,12 +201,13 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_FORUM_LIST,  //发布到的论坛列表
                 Topic.TOPIC_TIP_USER_LIST     //提醒谁看用户列表 
         );
-        
+
+
        //先标记一下,回来再换另一种解析方法
         String mediaIds = body.getString(Topic.TOPIC_MEDIA_LIST);
         List<String> mediaIdList = JSONArray.parseArray(mediaIds, String.class);
         String topicId = Util.getRandomUUID();
-        
+
         //遍历图片id,存放到话题图片表
         for (String mediaId : mediaIdList) {
         	TopicMedia topicMedia = new TopicMedia();

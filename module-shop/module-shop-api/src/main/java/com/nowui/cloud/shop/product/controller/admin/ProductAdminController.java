@@ -90,8 +90,8 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品更新")
-    @RequestMapping(value = "/product/admin/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replace(@RequestBody Product body) {
+    @RequestMapping(value = "/product/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Product body) {
         validateRequest(body, Product.PRODUCT_ID);
 
         productService.replace(body.getProductId());
