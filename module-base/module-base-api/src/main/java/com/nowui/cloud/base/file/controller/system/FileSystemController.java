@@ -29,7 +29,7 @@ public class FileSystemController implements FileRpc {
     private FileService fileService;
 
     @Override
-    public File find(String fileId) {
+    public File findV1(String fileId) {
         if (Util.isNullOrEmpty(fileId)) {
             return null;
         }
@@ -41,7 +41,7 @@ public class FileSystemController implements FileRpc {
     }
 
     @Override
-    public String downloadWechatHeadImgToNative(String appId, String userId, String wechatHeadImgUrl) {
+    public String downloadWechatHeadImgToNativeV1(String appId, String userId, String wechatHeadImgUrl) {
         File file = fileService.downloadWechatHeadImgToNative(appId, userId, wechatHeadImgUrl);
         if (file == null) {
             return null;
@@ -50,7 +50,7 @@ public class FileSystemController implements FileRpc {
     }
 
     @Override
-    public List<File> finds(String fileIds) {
+    public List<File> findsV1(String fileIds) {
         if (Util.isNullOrEmpty(fileIds)) {
             return null;
         }
@@ -60,7 +60,7 @@ public class FileSystemController implements FileRpc {
             return null;
         }
         
-        List<File> fileList = fileIdList.stream().map((fileId) -> find(fileId)).collect(Collectors.toList());
+        List<File> fileList = fileIdList.stream().map((fileId) -> findV1(fileId)).collect(Collectors.toList());
         
         return fileList;
     }

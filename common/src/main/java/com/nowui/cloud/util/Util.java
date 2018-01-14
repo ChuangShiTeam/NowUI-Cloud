@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 
@@ -344,6 +345,14 @@ public class Util {
             }
         }
         return beanList;
+    }
+    
+    public static String getTableName(Class<? extends BaseEntity> clazz) {
+        TableName table = clazz.getAnnotation(TableName.class);
+        if (table != null) {
+            return table.value();
+        }
+        return null;
     }
     
 }

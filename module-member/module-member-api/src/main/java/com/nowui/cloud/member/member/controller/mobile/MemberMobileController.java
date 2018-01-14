@@ -19,7 +19,6 @@ import com.nowui.cloud.base.sms.rpc.SmsCaptchaRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.enums.UserType;
@@ -73,7 +72,7 @@ public class MemberMobileController extends BaseController {
             throw new RuntimeException("手机号码格式不对");
         }
         
-        User user = userRpc.findByUserAccount(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         
         if (user != null) {
             throw new RuntimeException("用户已注册");
@@ -96,7 +95,7 @@ public class MemberMobileController extends BaseController {
         Boolean result = memberService.save(member, memberId, userId);
         
         if (result) {
-            userRpc.registerUserMobile(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
+            userRpc.registerUserMobileV1(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
         }
         
         return renderJson(result);
@@ -120,7 +119,7 @@ public class MemberMobileController extends BaseController {
             throw new RuntimeException("邮箱格式不对");
         }
         
-        User user = userRpc.findByUserAccount(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         
         if (user != null) {
             throw new RuntimeException("用户已注册");
@@ -143,7 +142,7 @@ public class MemberMobileController extends BaseController {
         Boolean result = memberService.save(member, memberId, userId);
         
         if (result) {
-            userRpc.registerUserEmail(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
+            userRpc.registerUserEmailV1(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
         }
         
         return renderJson(result);
@@ -208,7 +207,7 @@ public class MemberMobileController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_CODE
         );
         //验证手机号码是否已经注册
-        User user = userRpc.findByUserAccount(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         if (user == null) {
             throw new RuntimeException("用户未注册");
         }
@@ -253,12 +252,12 @@ public class MemberMobileController extends BaseController {
                 UserPassword.USER_PASSWORD
         );
         //验证手机号码是否已经注册
-        User user = userRpc.findByUserAccount(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         if (user == null) {
             throw new RuntimeException("用户名或密码错误");
         }
         //验证密码是否正确
-        Boolean isCorrect = userRpc.checkUserPassword(user.getUserId(), userPassword.getUserPassword());
+        Boolean isCorrect = userRpc.checkUserPasswordV1(user.getUserId(), userPassword.getUserPassword());
         
         if (!isCorrect) {
             throw new RuntimeException("用户名或密码错误");
@@ -301,7 +300,7 @@ public class MemberMobileController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_CODE
         );
         //验证手机号码是否已经注册
-        User user = userRpc.findByUserAccount(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         if (user == null) {
             throw new RuntimeException("用户未注册");
         }
@@ -313,7 +312,7 @@ public class MemberMobileController extends BaseController {
             throw new RuntimeException("验证码错误");
         }
         
-        Boolean result = userRpc.updateUserPassword(user.getUserId(), userPassword, body.getSystemRequestUserId());
+        Boolean result = userRpc.updateUserPasswordV1(user.getUserId(), userPassword, body.getSystemRequestUserId());
         
         return renderJson(result);
     }
@@ -328,7 +327,7 @@ public class MemberMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME
         );
         
-        Boolean result = userRpc.updateUserNickName(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
+        Boolean result = userRpc.updateUserNickNameV1(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
         
         return renderJson(result);
     }
@@ -343,7 +342,7 @@ public class MemberMobileController extends BaseController {
                 UserAvatar.USER_AVATAR
         );
         
-        Boolean result = userRpc.updateUserAvatar(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
+        Boolean result = userRpc.updateUserAvatarV1(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
         
         return renderJson(result);
     }

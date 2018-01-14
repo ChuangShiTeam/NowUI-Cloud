@@ -76,7 +76,7 @@ public interface UserRpc {
      * @return User 用户信息
      */
     @RequestMapping(value = "/user/system/v1/find/by/user/account", method = RequestMethod.POST)
-    User findByUserAccount(
+    User findByUserAccountV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
             @RequestParam(value = "userAccount", required = true) String userAccount
@@ -90,13 +90,13 @@ public interface UserRpc {
      * @return true 正确   false 不正确 
      */
     @RequestMapping(value = "/user/system/v1/check/user/password", method = RequestMethod.POST)
-    Boolean checkUserPassword(
+    Boolean checkUserPasswordV1(
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "userPassword", required = true) String userPassword
     );
     
     @RequestMapping(value = "/user/system/v1/find/by/user/wechat", method = RequestMethod.POST)
-    User fingByUserWechat(
+    User fingByUserWechatV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
             @RequestParam(value = "wechatOpenId", required = true) String wechatOpenId,
@@ -115,7 +115,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/save/user/wechat", method = RequestMethod.POST)
-    Boolean saveUserWechat(
+    Boolean saveUserWechatV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,
@@ -133,7 +133,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/wechat", method = RequestMethod.POST)
-    Boolean updateUserWechat(
+    Boolean updateUserWechatV1(
             @RequestParam(value = "userId", required = true) String userId,
             UserWechat userWechat,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
@@ -148,7 +148,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/password", method = RequestMethod.POST)
-    Boolean updateUserPassword(
+    Boolean updateUserPasswordV1(
             @RequestParam(value = "userId", required = true) String userId,
             UserPassword userPassword,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
@@ -162,7 +162,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/avatar", method = RequestMethod.POST)
-    Boolean updateUserAvatar(
+    Boolean updateUserAvatarV1(
             @RequestParam(value = "userId", required = true) String userId,
             UserAvatar userAvatar,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
@@ -176,7 +176,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/nick/name", method = RequestMethod.POST)
-    Boolean updateUserNickName(
+    Boolean updateUserNickNameV1(
             @RequestParam(value = "userId", required = true) String userId,
             UserNickName userNickName,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
@@ -195,7 +195,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/register/user/mobile", method = RequestMethod.POST)
-    Boolean registerUserMobile(
+    Boolean registerUserMobileV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,
@@ -218,7 +218,7 @@ public interface UserRpc {
      * @return
      */
     @RequestMapping(value = "/user/system/v1/register/user/email", method = RequestMethod.POST)
-    Boolean registerUserEmail(
+    Boolean registerUserEmailV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "objectId", required = true) String objectId,

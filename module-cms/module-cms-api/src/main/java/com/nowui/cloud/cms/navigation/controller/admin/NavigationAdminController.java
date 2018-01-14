@@ -53,7 +53,7 @@ public class NavigationAdminController extends BaseController {
         List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
         String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE);
-        List<File> fileList = fileRpc.finds(fileIds);
+        List<File> fileList = fileRpc.findsV1(fileIds);
         
         resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
         
@@ -84,7 +84,7 @@ public class NavigationAdminController extends BaseController {
 
         Navigation result = navigationService.find(body.getNavigationId());
 
-        File file = fileRpc.find(result.getNavigationImage());
+        File file = fileRpc.findV1(result.getNavigationImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
         result.put(Navigation.NAVIGATION_IMAGE, file);
         

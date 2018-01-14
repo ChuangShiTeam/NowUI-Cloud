@@ -53,7 +53,7 @@ public class AdvertisementAdminController extends BaseController {
         List<Advertisement> resultList = advertisementService.listForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle(), body.getM(), body.getN());
 
         String fileIds = Util.beanToFieldString(resultList, Advertisement.ADEVERTISEMENT_IMAGE);
-        List<File> fileList = fileRpc.finds(fileIds);
+        List<File> fileList = fileRpc.findsV1(fileIds);
         
         resultList = Util.beanAddField(resultList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
         
@@ -80,7 +80,7 @@ public class AdvertisementAdminController extends BaseController {
 
         Advertisement result = advertisementService.find(body.getAdvertisementId());
         
-        File file = fileRpc.find(result.getAdvertisementImage());
+        File file = fileRpc.findV1(result.getAdvertisementImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
         result.put(Advertisement.ADEVERTISEMENT_IMAGE, file);
 
