@@ -116,7 +116,7 @@ public class ForumMobileController extends BaseController {
         //result包含了简介,名称,头像
         Forum result = forumService.find(body.getForumId());
         //处理头像
-        File file = fileRpc.find(result.getForumMediaId());
+        File file = fileRpc.findV1(result.getForumMediaId());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	result.put(Forum.FORUM_MEDIA_ID, file);
         
@@ -230,7 +230,7 @@ public class ForumMobileController extends BaseController {
 
         //处理论坛头像
         for (Forum forum : listRandom) {
-        	File file = fileRpc.find(forum.getForumMediaId());
+        	File file = fileRpc.findV1(forum.getForumMediaId());
         	file.keep(File.FILE_ID, File.FILE_PATH);
             forum.put(Forum.FORUM_MEDIA_ID, file);
 		}
@@ -361,7 +361,7 @@ public class ForumMobileController extends BaseController {
 
       //处理论坛头像
         for (Forum forum : resultList) {
-        	File file = fileRpc.find(forum.getForumMediaId());
+        	File file = fileRpc.findV1(forum.getForumMediaId());
         	file.keep(File.FILE_ID, File.FILE_PATH);
             forum.put(Forum.FORUM_MEDIA_ID, file);
 		}
@@ -388,11 +388,11 @@ public class ForumMobileController extends BaseController {
         //result包含了简介,名称,头像,背景图片
         Forum result = forumService.find(body.getForumId());
         //处理头像
-        File file = fileRpc.find(result.getForumMediaId());
+        File file = fileRpc.findV1(result.getForumMediaId());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	result.put(Forum.FORUM_MEDIA_ID, file);
     	//处理背景图片
-        File backgroundfile = fileRpc.find(result.getForumBackgroundMediaId());
+        File backgroundfile = fileRpc.findV1(result.getForumBackgroundMediaId());
         backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
     	result.put(Forum.FORUM_BACKGROUND_MEDIA_ID, backgroundfile);
         

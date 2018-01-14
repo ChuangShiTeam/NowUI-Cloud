@@ -1,7 +1,13 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -16,14 +22,6 @@ import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 话题信息业务实现
@@ -41,9 +39,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	@Autowired
 	private TopicMediaService topicMediaService;
 
-	@Autowired
-	private FileRpc fileRpc;
-	
 	@Autowired
 	private ForumService forumService;
 	
@@ -166,18 +161,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	List<TopicMedia> topicMedias = topicMediaService.listAllMediaByTopicId(body.getAppId(), topicId, null, null);
         	List<File> everyTopicImageList = new ArrayList<>();
 
-        	//处理图片
-        	for (TopicMedia topicMedia : topicMedias) {
-        		File file = fileRpc.find(topicMedia.getTopicMediaId());
-                file.keep(File.FILE_ID, File.FILE_PATH);
-                //topic.put(Topic.TOPIC_MEDIA_LIST, file);
-                everyTopicImageList.add(file);
-			}
-        	//把图片放入topic中
-        	topic.put(Topic.TOPIC_MEDIA_LIST, everyTopicImageList);
-
-
-
         	//取得topicId去话题论坛表查询,得到所有话题所在论坛
         	List<TopicForum> allTopicForumList = topicForumService.allTopicForumList(body.getAppId(), null, topicId);
         	//new一个list存放所有论坛对象,论坛对象存放,id和名称
@@ -249,17 +232,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     		//取得topicId去话题图片表查询图片,所有图片放入list中
         	List<TopicMedia> topicMedias = topicMediaService.listAllMediaByTopicId(body.getAppId(), topicId, null, null);
         	List<File> everyTopicImageList = new ArrayList<>();
-
-        	//处理图片
-        	for (TopicMedia topicMedia : topicMedias) {
-        		File file = fileRpc.find(topicMedia.getTopicMediaId());
-                file.keep(File.FILE_ID, File.FILE_PATH);
-                //topic.put(Topic.TOPIC_MEDIA_LIST, file);
-                everyTopicImageList.add(file);
-			}
-        	//把图片放入topic中
-        	topic.put(Topic.TOPIC_MEDIA_LIST, everyTopicImageList);
-
 
 
         	//取得topicId去话题论坛表查询,得到所有话题所在论坛
