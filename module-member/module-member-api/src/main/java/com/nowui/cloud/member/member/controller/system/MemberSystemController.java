@@ -69,7 +69,7 @@ public class MemberSystemController implements MemberRpc {
             }
             
             String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
-
+            userWechat.setWechatHeadImgFileId(fileId);
             isSave = userRpc.saveUserWechat(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
             
             if (!isSave) {
@@ -77,13 +77,20 @@ public class MemberSystemController implements MemberRpc {
             }
         } else {
             userId = user.getUserId();
-            String fileId = fileRpc.downloadWechatHeadImgToNative(bean.getAppId(), userId, userWechat.getWechatHeadImgUrl());
-
-            Boolean isUpdate = userRpc.updateUserWechat(userId, userWechat, systemRequestUserId);
             
-            if (!isUpdate) {
-                throw new RuntimeException("更新不成功");
+            UserWechat bean = (UserWechat) user.get(User.USER_WECHAT);
+            
+            if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
+                String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
+
+                userWechat.setWechatHeadImgFileId(fileId);
+                Boolean isUpdate = userRpc.updateUserWechat(userId, userWechat, systemRequestUserId);
+                
+                if (!isUpdate) {
+                    throw new RuntimeException("更新不成功");
+                }
             }
+            
         }
 
         try {
@@ -93,7 +100,7 @@ public class MemberSystemController implements MemberRpc {
             calendar.add(Calendar.YEAR, 1);
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(User.USER_ID, user.getUserId());
+            jsonObject.put(User.USER_ID, userId);
             jsonObject.put(Constant.EXPIRE_TIME, calendar.getTime());
 
             return AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY);

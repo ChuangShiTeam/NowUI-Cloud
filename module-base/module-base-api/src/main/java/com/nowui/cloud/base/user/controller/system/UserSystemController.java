@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
@@ -16,14 +14,7 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.rpc.UserRpc;
-import com.nowui.cloud.base.user.service.UserAccountService;
-import com.nowui.cloud.base.user.service.UserAvatarService;
-import com.nowui.cloud.base.user.service.UserEmailService;
-import com.nowui.cloud.base.user.service.UserMobileService;
-import com.nowui.cloud.base.user.service.UserNickNameService;
-import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.service.UserService;
-import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -103,7 +94,7 @@ public class UserSystemController implements UserRpc {
             return null;
         }
         
-        User user = userService.find(userWechat.getUserId());
+        User user = userService.findById(userWechat.getUserId());
         
         if (user == null) {
             return null;
@@ -125,10 +116,8 @@ public class UserSystemController implements UserRpc {
         Boolean result = userService.save(user, userId, systemRequestUserId);
         
         if (result) {
-            // 下载保存微信用户头像文件
             userWechat.setAppId(appId);
             userWechat.setUserId(userId);
-            userWechat.setWechatHeadImgFileId("");
             
             if (!Util.isNullOrEmpty(userWechat.getWechatHeadImgUrl()) && !Util.isNullOrEmpty(userWechat.getWechatHeadImgFileId())) {
                 // 保存用户头像
@@ -153,6 +142,7 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserWechat(String userId, UserWechat userWechat, String systemRequestUserId) {
+        
        UserWechat bean = userService.findUserWechatByUserId(userId);
        
        Boolean result = true;
@@ -161,70 +151,65 @@ public class UserSystemController implements UserRpc {
        
        // 头像更新
        if (!userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
-           bean.setWechatHeadImgFileId(userWechat.getWechatHeadImgFileId());
            UserAvatar userAvatar = userService.findUserAvatarByUserId(userId);
-           if (userAvatar == null) {
-               // 保存用户头像
-               userAvatar = new UserAvatar();
-               userAvatar.setAppId(bean.getAppId());
-               userAvatar.setUserId(userId);
-               userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
-               userService.saveUserAvatar(bean.getAppId(), userId, userAvatar, Util.getRandomUUID(),, systemRequestUserId);
-           } else {
-               // 更新用户头像
-               userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId()); 
-               userAvatarService.update(userAvatar, userAvatar.getUserAvatarId(), userId, userAvatar.getSystemVersion());
+           if (userAvatar != null) {
+               // 刪除旧的用户头像
+               userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
            }
-           bean.setWechatHeadImgUrl(userWechat.getWechatHeadImgUrl());
+           // 保存用户头像
+           userAvatar = new UserAvatar();
+           userAvatar.setAppId(bean.getAppId());
+           userAvatar.setUserId(userId);
+           userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
+           userService.saveUserAvatar(bean.getAppId(), userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
+
            isNeedUpdate = true;
        }
            
        // 保存或更新用户昵称
        if (!userWechat.getWechatNickName().equals(bean.getWechatNickName())) {
-           UserNickName userNickName = userNickNameService.findByUserId(userId);
+           UserNickName userNickName = userService.findUserNickNameByUserId(userId);
            
-           if (userNickName == null) {
-               // 保存用户昵称
-               userNickName = new UserNickName();
-               userNickName.setAppId(bean.getAppId());
-               userNickName.setUserId(userId);
-               userNickName.setUserNickName(userWechat.getWechatNickName());
-               
-               userNickNameService.save(userNickName, Util.getRandomUUID(), userId);
-           } else {
-               // 更新用户昵称
-               userNickName.setUserNickName(userWechat.getWechatNickName());
-               userNickNameService.update(userNickName, userNickName.getUserNickNameId(), userId, userNickName.getSystemVersion());
+           if (userNickName != null) {
+               // 删除用户昵称
+               userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
            }
+           // 保存用户昵称
+           userNickName = new UserNickName();
+           userNickName.setAppId(bean.getAppId());
+           userNickName.setUserId(userId);
+           userNickName.setUserNickName(userWechat.getWechatNickName());
+           
+           userService.saveUserNickName(bean.getAppId(), userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
+
            isNeedUpdate = true;
        }
        
        // 国家更新
        if (!userWechat.getWechatCountry().equals(bean.getWechatCountry())) {
-           bean.setWechatCountry(userWechat.getWechatCountry());
            isNeedUpdate = true;
        }
        
        // 省份更新
        if (!userWechat.getWechatProvince().equals(bean.getWechatProvince())) {
-           bean.setWechatProvince(userWechat.getWechatProvince());
            isNeedUpdate = true;
        }
        
        // 市更新
        if (!userWechat.getWechatCity().equals(bean.getWechatCity())) {
-           bean.setWechatCity(userWechat.getWechatCity());
            isNeedUpdate = true;
        }
        
        // 性别更新
        if (!userWechat.getWechatSex().equals(bean.getWechatSex())) {
-           bean.setWechatSex(userWechat.getWechatSex());
            isNeedUpdate = true;
        }
        
        if (isNeedUpdate) {
-           result = userWechatService.update(bean, bean.getUserWechatId(), userId, bean.getSystemVersion());
+           // 删除旧的用户微信信息
+           userService.deleteUserWechatByUserId(userId, systemRequestUserId);
+           // 保存用户微信信息
+           result = userService.saveUserWechat(bean.getAppId(), userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
        }
        
        return result;
@@ -237,6 +222,7 @@ public class UserSystemController implements UserRpc {
         userService.deleteUserPasswordByUserId(userId, systemRequestUserId);
         //保存新的密码信息
         userPassword.setUserId(userId);
+        
         Boolean result = userService.saveUserPassword(userPassword.getAppId(), userId, userPassword, Util.getRandomUUID(), systemRequestUserId);
         
         return result;
