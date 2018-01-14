@@ -1,18 +1,23 @@
 package com.nowui.cloud.cms.navigation.controller.admin;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.util.Util;
-import com.nowui.cloud.cms.navigation.entity.Navigation;
-import com.nowui.cloud.cms.navigation.service.NavigationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.cms.navigation.entity.Navigation;
+import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 导航栏管理端控制器
@@ -47,12 +52,19 @@ public class NavigationAdminController extends BaseController {
         Integer resultTotal = navigationService.countForAdmin(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
         List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
+        String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE);
+        List<File> fileList = fileRpc.finds(fileIds);
+        
+        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+        
         validateResponse(
                 Navigation.NAVIGATION_ID,
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
                 Navigation.NAVIGATION_IMAGE,
+                File.FILE_ID,
+                File.FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT

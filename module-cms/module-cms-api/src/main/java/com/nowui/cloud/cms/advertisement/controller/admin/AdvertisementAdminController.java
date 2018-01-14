@@ -52,8 +52,6 @@ public class AdvertisementAdminController extends BaseController {
         Integer resultTotal = advertisementService.countForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle());
         List<Advertisement> resultList = advertisementService.listForAdmin(body.getAppId(), body.getAdvertisementCategoryCode(), body.getAdvertisementTitle(), body.getM(), body.getN());
 
-        //查询广告图片
-        
         String fileIds = Util.beanToFieldString(resultList, Advertisement.ADEVERTISEMENT_IMAGE);
         List<File> fileList = fileRpc.finds(fileIds);
         

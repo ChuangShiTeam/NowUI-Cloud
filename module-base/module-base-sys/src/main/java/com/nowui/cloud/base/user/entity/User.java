@@ -66,6 +66,8 @@ public class User extends BaseEntity {
     public static final String USER_TYPE = "userType";
 
     public static final String USER_ACCOUNT = "userAccount";
+    
+    public static final String USER_PASSWORD = "userPassword";
 
     public static final String USER_NICK_NAME = "userNickName";
 

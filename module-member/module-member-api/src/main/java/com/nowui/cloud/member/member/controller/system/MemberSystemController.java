@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.entity.enums.UserType;
+import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.AesUtil;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -30,11 +34,65 @@ public class MemberSystemController implements MemberRpc {
     
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private UserRpc userRpc;
+    
+    @Autowired
+    private FileRpc fileRpc;
 
     @Override
     public String wechatLogin(String appId, UserWechat userWechat, String systemRequestUserId) {
-        Member member = memberService.wechatSaveOrUpdate(appId, userWechat, systemRequestUserId);
         
+        String userId = "";
+        
+        User user = userRpc.fingByUserWechat(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
+                
+        if (user == null) {
+            String memberId = Util.getRandomUUID();
+            userId = Util.getRandomUUID();
+            
+            Member bean = new Member();
+            bean.setAppId(appId);
+            bean.setMemberId(memberId);
+            bean.setUserId(userId);
+            bean.setMemberIsRecommed(false);
+            bean.setMemberIsTop(false);
+            bean.setMemberTopEndTime(new Date());
+            bean.setMemberTopLevel(0);
+            bean.setMemberDescription("");
+
+            Boolean isSave = memberService.save(bean, memberId, systemRequestUserId);
+
+            if (!isSave) {
+                throw new RuntimeException("保存不成功");
+            }
+            
+            String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
+            userWechat.setWechatHeadImgFileId(fileId);
+            isSave = userRpc.saveUserWechat(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
+            
+            if (!isSave) {
+                throw new RuntimeException("保存不成功");
+            }
+        } else {
+            userId = user.getUserId();
+            
+            UserWechat bean = (UserWechat) user.get(User.USER_WECHAT);
+            
+            if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
+                String fileId = fileRpc.downloadWechatHeadImgToNative(appId, userId, userWechat.getWechatHeadImgUrl());
+
+                userWechat.setWechatHeadImgFileId(fileId);
+                Boolean isUpdate = userRpc.updateUserWechat(userId, userWechat, systemRequestUserId);
+                
+                if (!isUpdate) {
+                    throw new RuntimeException("更新不成功");
+                }
+            }
+            
+        }
+
         try {
             Date date = new Date();
             Calendar calendar = Calendar.getInstance();
@@ -42,7 +100,7 @@ public class MemberSystemController implements MemberRpc {
             calendar.add(Calendar.YEAR, 1);
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(User.USER_ID, member.getUserId());
+            jsonObject.put(User.USER_ID, userId);
             jsonObject.put(Constant.EXPIRE_TIME, calendar.getTime());
 
             return AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY);

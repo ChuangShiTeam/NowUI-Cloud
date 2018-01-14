@@ -64,11 +64,17 @@ public class ArticleAdminController extends BaseController {
         Integer resultTotal = articleService.countForAdmin(body.getAppId(), body.getArticleTitle());
         List<Article> resultList = articleService.listForAdmin(body.getAppId(), body.getArticleTitle(), body.getPageIndex(), body.getPageSize());
 
+        String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
+        List<File> fileList = fileRpc.finds(fileIds);
+        
+        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_ID, File.FILE_PATH);
+
         validateResponse(
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
             Article.ARTICLE_TITLE,
-            Article.ARTICLE_MEDIA,
+            File.FILE_ID,
+            File.FILE_PATH,
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_AUTHOR,
             Article.ARTICLE_PUBLISH_TIME,
@@ -96,16 +102,16 @@ public class ArticleAdminController extends BaseController {
         if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
             System.out.println(result.toJSONString());
             System.out.println(result.getArticleMediaId());
-            File file = fileRpc.find("fbbbbbb1aa244552ab3470d14a1e3d02");
+            File file = fileRpc.find(result.getArticleMediaId());
             file.keep(File.FILE_ID, File.FILE_PATH);
-            result.put(Article.ARTICLE_MEDIA_ID, file);
+            result.put(Article.ARTICLE_MEDIA, file);
         }
         //查询文章副媒体
         List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(body.getArticleId());
-        for (ArticleMedia articleMedia : articleMeidaList) {
-            articleMedia.put(File.FILE_PATH, fileRpc.find(articleMedia.getFileId()).getFilePath());
-            articleMedia.keep(ArticleMedia.FILE_ID, File.FILE_PATH);
-        }
+        String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
+        List<File> fileList = fileRpc.finds(fileIds);
+        
+        articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
         result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
 
         validateResponse(

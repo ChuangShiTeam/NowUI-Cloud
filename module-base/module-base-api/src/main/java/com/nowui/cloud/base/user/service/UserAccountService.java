@@ -31,10 +31,11 @@ public interface UserAccountService extends BaseService<UserAccount> {
     /**
      * 
      * 根据用户账号查询用户账号信息
-     * @param appId
-     * @param userAccount
-     * @return
+     * 
+     * @param appId 应用编号
+     * @param userAccount 用户账号
+     * @return UserAccount 用户账号信息
      */
-    UserAccount findByUserAcoount(String appId, String userAccount);
+    UserAccount findByUserAccount(String appId, String userAccount);
     
 }
