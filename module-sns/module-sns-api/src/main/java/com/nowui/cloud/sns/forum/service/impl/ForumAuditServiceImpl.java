@@ -21,7 +21,7 @@ import java.util.List;
 public class ForumAuditServiceImpl extends BaseServiceImpl<ForumAuditMapper, ForumAudit> implements ForumAuditService {
 
     @Override
-    public Integer countForAdmin(String appId, Integer forumAuditStatus, String forumId) {
+    public Integer countForAdmin(String appId, String forumAuditStatus, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumAudit>()
                         .eq(ForumAudit.APP_ID, appId)
@@ -33,7 +33,7 @@ public class ForumAuditServiceImpl extends BaseServiceImpl<ForumAuditMapper, For
     }
 
     @Override
-    public List<ForumAudit> listForAdmin(String appId, Integer forumAuditStatus, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumAudit> listForAdmin(String appId, String forumAuditStatus, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumAudit> forumAuditList = list(
                 new BaseWrapper<ForumAudit>()
                         .eq(ForumAudit.APP_ID, appId)

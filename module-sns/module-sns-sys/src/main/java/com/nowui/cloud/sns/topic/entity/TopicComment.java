@@ -55,12 +55,22 @@ public class TopicComment extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
-     * 话题内容
+     * 用户id
      */
     @Field
     @TableField
-    @NotNull(message = "话题内容不能为空")
-    @Length(max = 255, message = "话题内容长度超出限制")
+    @NotNull(message = "话题id不能为空")
+    @Length(max = 32, message = "话题id长度超出限制")
+    private String topicId;
+    public static final String TOPIC_ID = "topicId";
+    
+    /**
+     * 话题评论内容
+     */
+    @Field
+    @TableField
+    @NotNull(message = "话题评论内容不能为空")
+    @Length(max = 255, message = "话题评论内容长度超出限制")
     private String topicCommentContent;
     public static final String TOPIC_COMMENT_CONTENT = "topicCommentContent";
 
@@ -75,14 +85,14 @@ public class TopicComment extends BaseEntity {
     public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
 
     /**
-     * 回复内容
+     * 被回复评论id
      */
     @Field
     @TableField
-    @NotNull(message = "回复内容不能为空")
-    @Length(max = 255, message = "回复内容长度超出限制")
-    private String topicReplyContent;
-    public static final String TOPIC_REPLY_CONTENT = "topicReplyContent";
+    @NotNull(message = "被回复评论id不能为空")
+    @Length(max = 32, message = "被回复评论id长度超出限制")
+    private String topicReplyCommentId;
+    public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
 
 
     public String getTopicCommentId() {
@@ -108,6 +118,14 @@ public class TopicComment extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
+    public String getTopicId() {
+        return getString(TOPIC_ID);
+    }
+    
+    public void setTopicId(String topicId) {
+        put(TOPIC_ID, topicId);
+    }
 
     public String getTopicCommentContent() {
         return getString(TOPIC_COMMENT_CONTENT);
@@ -125,12 +143,12 @@ public class TopicComment extends BaseEntity {
         put(TOPIC_REPLAY_USER_ID, topicReplayUserId);
     }
 
-    public String getTopicReplyContent() {
-        return getString(TOPIC_REPLY_CONTENT);
+    public String getTopicReplyCommentId() {
+        return getString(TOPIC_REPLY_COMMENT_ID);
     }
     
-    public void setTopicReplyContent(String topicReplyContent) {
-        put(TOPIC_REPLY_CONTENT, topicReplyContent);
+    public void setTopicReplyCommentId(String topicReplyCommentId) {
+        put(TOPIC_REPLY_COMMENT_ID, topicReplyCommentId);
     }
 
 

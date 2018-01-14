@@ -112,7 +112,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         String appId = article.getAppId();
         String articleId = article.getArticleId();
         Boolean result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
-        
+
         if (result) {
             //删除旧的文章文章分类
             articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
@@ -140,9 +140,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
      */
     @Override
     public Boolean delete(String articleId, String systemRequestUserId, Integer systemVersion) {
-        
+
         Boolean result = delete(articleId, systemRequestUserId, systemVersion);
-        
+
         if (result) {
             //删除旧的文章文章分类
             articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);

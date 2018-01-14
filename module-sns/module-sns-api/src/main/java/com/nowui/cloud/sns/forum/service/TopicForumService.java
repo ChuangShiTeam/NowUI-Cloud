@@ -33,16 +33,38 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param pageSize 每页个数
      * @return List<TopicForum> 话题论坛关联列表
      */
-List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
 
    /**
+    * 删除根据论坛id
     * 
-    * @param appId
-    * @param forumId
-    * @param systemUpdateUserId
-    * @param systemVersion
+    * @param appId 应用编号
+    * @param forumId 论坛Id
+    * @param systemUpdateUserId 
+    * @param systemVersion 版本号
     * @return
     */
     Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion);
-        
+    
+    /**
+     * 当日论坛话题数量
+     * 
+     * @param appId 应用编号
+     * @param forumId 论坛Id
+     * @param topicId 话题id
+     * @return Integer 当日话题数量统计
+     */
+    Integer countForToday(String appId, String forumId, String topicId);
+    
+    /**
+     * 查询所有话题论坛列表
+     * 
+     * @param appId 应用编号
+     * @param forumId 论坛id
+     * @param topicId 话题id
+     * @return List<TopicForum> 话题论坛关联列表
+     */
+    List<TopicForum> allTopicForumList(String appId, String forumId, String topicId);
+
+    
 }

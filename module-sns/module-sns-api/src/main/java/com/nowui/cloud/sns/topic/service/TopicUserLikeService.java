@@ -34,4 +34,23 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
      * @return List<TopicUserLike> 点赞话题关联列表
      */
     List<TopicUserLike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据userId和TopicId查找单条点赞记录
+     * @param appId 应用编号
+     * @param userId 点赞人
+     * @param topicId 话题Id
+     * @return TopicUserLike 单挑点赞记录
+     */
+    TopicUserLike findLike(String appId, String userId, String topicId);
+    
+    /**
+     * 根据topicId查询所有列表
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题Id
+     * @return List<TopicUserLike> 所有点赞记录列表
+     */
+    List<TopicUserLike> allLikeListByTopic(String appId,  String topicId);
+
 }

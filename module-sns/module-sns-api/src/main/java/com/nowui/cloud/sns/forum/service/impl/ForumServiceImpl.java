@@ -75,4 +75,20 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
         return forumList;
     }
 
+	@Override
+	public List<Forum> listRandom(String randomAppId, String randomForumMediaId, String randomForumModerator, Integer pageIndex, Integer pageSize) {
+		List<Forum> forumList = list(
+                new BaseWrapper<Forum>()
+                        .like(Forum.APP_ID, randomAppId)
+                        .likeAllowEmpty(Forum.FORUM_MEDIA_ID, randomForumMediaId)
+                        .likeAllowEmpty(Forum.FORUM_MODERATOR, randomForumModerator)
+                        .eq(Forum.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Forum.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return forumList;
+	}
+
 }

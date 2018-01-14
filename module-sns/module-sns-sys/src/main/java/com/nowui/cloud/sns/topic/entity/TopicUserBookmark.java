@@ -31,8 +31,8 @@ public class TopicUserBookmark extends BaseEntity {
     @TableId
     @NotNull(message = "用户收藏id不能为空")
     @Length(max = 32, message = "用户收藏id长度超出限制")
-    private String userBookMarked;
-    public static final String USER_BOOK_MARKED = "userBookMarked";
+    private String userBookMarkId;
+    public static final String USER_BOOK_MARK_ID = "userBookMarkId";
 
     /**
      * 应用Id
@@ -65,12 +65,12 @@ public class TopicUserBookmark extends BaseEntity {
     public static final String USER_ID = "userId";
 
 
-    public String getUserBookMarked() {
-        return getString(USER_BOOK_MARKED);
+    public String getUserBookMarkId() {
+        return getString(USER_BOOK_MARK_ID);
     }
     
-    public void setUserBookMarked(String userBookMarked) {
-        put(USER_BOOK_MARKED, userBookMarked);
+    public void setUserBookMarkId(String userBookMarkId) {
+        put(USER_BOOK_MARK_ID, userBookMarkId);
     }
 
     public String getAppId() {

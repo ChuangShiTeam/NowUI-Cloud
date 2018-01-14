@@ -34,4 +34,13 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
      * @return List<ForumUserUnfollow> 论坛用户取关关联列表
      */
     List<ForumUserUnfollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据userId和forumId查询ForumUserUnfollow单个记录
+     * @param appId 应用编号
+     * @param userId 用户ID
+     * @param forumId 论坛ID
+     * @return ForumUserUnfollow 论坛用户取关记录
+     */
+    ForumUserUnfollow findByUserIdAndForumId(String appId, String userId, String forumId);
 }
