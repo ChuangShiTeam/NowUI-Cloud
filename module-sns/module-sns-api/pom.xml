@@ -23,6 +23,12 @@
             <artifactId>module-base-sys</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.nowui.cloud</groupId>
+            <artifactId>module-member-sys</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
 		<dependency>
             <groupId>com.nowui.cloud</groupId>

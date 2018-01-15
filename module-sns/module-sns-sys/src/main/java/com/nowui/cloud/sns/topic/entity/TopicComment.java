@@ -83,6 +83,8 @@ public class TopicComment extends BaseEntity {
     @Length(max = 32, message = "回复人长度超出限制")
     private String topicReplayUserId;
     public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
+    
+    public static final String TOPIC_REPLAY_USER_NICK_NAME = "topicReplayUserNickName";
 
     /**
      * 被回复评论id

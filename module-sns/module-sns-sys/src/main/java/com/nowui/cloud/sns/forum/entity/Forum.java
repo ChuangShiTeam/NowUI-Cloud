@@ -204,6 +204,12 @@ public class Forum extends BaseEntity {
      * 论坛id列表
      */
     public static final String FORUM_ID_LIST = "forumIdList";
+    
+    /**
+     * 论坛用户关注列表
+     */
+    public static final String FORUM_USER_FOLLOW_LIST = "forumUserFollowList";
+    
 
     public String getForumId() {
         return getString(FORUM_ID);

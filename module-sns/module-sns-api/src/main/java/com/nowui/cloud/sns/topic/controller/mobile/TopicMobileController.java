@@ -2,6 +2,8 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +16,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.TopicForum;
 import com.nowui.cloud.sns.forum.service.TopicForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
@@ -78,6 +86,9 @@ public class TopicMobileController extends BaseController {
 	
 	@Autowired
 	private FileRpc fileRpc;
+	
+	@Autowired
+	private MemberRpc memberRpc;
 
 
 
@@ -110,20 +121,41 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
             
-          //处理话题评论图片
-            List<TopicComment> topicComments = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
+            //处理话题评论图片
+            List<TopicComment> topicCommentList = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
             /**
              * 给每个评论设置一个用户头像常量
              * 
              * 然后调用接口处理
              */
+            // 处理用户信息
+            String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
             
+            List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
             
+            topicCommentList = Util.beanAddField(
+            		topicCommentList, 
+            		TopicComment.USER_ID, 
+            		User.USER_ID, 
+            		memberList, 
+            		User.USER_ID,
+            		UserAvatar.USER_AVATAR,
+            		UserNickName.USER_NICK_NAME);
+            
+            // 处理回复用户信息
+            String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
+            
+            List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
+        
+            Stream<Member> respondMemberStream = respondMemberList.stream();
+            for (TopicComment topicComment : topicCommentList) {
+            	if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
+            		continue;
+            	}
+            	Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+            	topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+            }
         }
-        
-        
-        
-        
         
         /**
          * 需要再调整一下返回参数
@@ -138,7 +170,8 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_COMMENT_LIST
         );
 
         return renderJson(resultTotal, resultList);

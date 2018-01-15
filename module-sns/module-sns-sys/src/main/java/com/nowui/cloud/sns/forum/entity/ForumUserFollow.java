@@ -63,6 +63,8 @@ public class ForumUserFollow extends BaseEntity {
     @Length(max = 32, message = "论坛Id长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
+    
+    
 
 
     public String getForumUserFollowId() {
