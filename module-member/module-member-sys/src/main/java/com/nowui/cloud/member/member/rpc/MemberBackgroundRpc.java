@@ -4,14 +4,14 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 会员对话记录服务调用
+ * 会员背景服务调用
  *
  * @author marcus
  *
- * 2018-01-08
+ * 2018-01-14
  */
-@Component(value = "memberDialogueRecordRpc")
-@FeignClient(name = "module-base")
-public interface MemberDialogueRecordRpc {
+@Component(value = "memberBackgroudRpc")
+@FeignClient(name = "module-member")
+public interface MemberBackgroundRpc {
 
 }

@@ -49,4 +49,71 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
         return memberFollowList;
     }
 
+    @Override
+    public Boolean checkIsFollow(String userId, String followUserId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count > 0;
+    }
+
+    @Override
+    public Integer countFollow(String userId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public Integer countBeFollowed(String userId) {
+        Integer count = count(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.FOLLOW_USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public List<MemberFollow> listByUserId(String userId) {
+        List<MemberFollow> memberFollowList = list(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
+        );
+
+        return memberFollowList;
+    }
+
+    @Override
+    public List<MemberFollow> listByFollowUserId(String followUserId) {
+        List<MemberFollow> memberFollowList = list(
+                new BaseWrapper<MemberFollow>()
+                        .eq(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
+        );
+
+        return memberFollowList;
+    }
+
+    @Override
+    public MemberFollow findByUserIdAndFollowUserId(String userId, String followUserId) {
+        MemberFollow memberFollow = find(
+                new BaseWrapper<MemberFollow>()
+                        .likeAllowEmpty(MemberFollow.USER_ID, userId)
+                        .likeAllowEmpty(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        
+        return memberFollow;
+    }
+
 }

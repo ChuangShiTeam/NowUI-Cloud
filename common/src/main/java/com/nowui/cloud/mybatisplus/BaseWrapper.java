@@ -138,6 +138,13 @@ public class BaseWrapper<T> extends Wrapper<T> {
         super.gt(column, params);
         return this;
     }
+    
+    public BaseWrapper<T> gtAllowEmpty(String column, Object params) {
+        if (params != null) {
+            super.gt(column, params);
+        }
+        return this;
+    }
 
     @Override
     public BaseWrapper<T> ge(boolean condition, String column, Object params) {

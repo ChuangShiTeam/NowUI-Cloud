@@ -84,7 +84,8 @@ public class MemberFollow extends BaseEntity {
     @Length(max = 32, message = "关注用户编号长度超出限制")
     private String followUserId;
     public static final String FOLLOW_USER_ID = "followUserId";
-
+    
+    public static final String MEMBER_IS_FOLLOW = "MemberIsFollow";
 
     public String getMemberFollowId() {
         return getString(MEMBER_FOLLOW_ID);

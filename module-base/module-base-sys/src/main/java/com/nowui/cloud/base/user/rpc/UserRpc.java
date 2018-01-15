@@ -60,13 +60,22 @@ public interface UserRpc {
     );
 
     /**
-     * 根据ID查询用户信息
+     * 根据用户编号查询用户信息
      * 
      * @param userId 用户编号
      * @return User 用户信息
      */
     @RequestMapping(value = "/user/system/v1/find", method = RequestMethod.POST)
     User findV1(@RequestParam(value = "userId", required = true) String userId);
+    
+    /**
+     * 根据用户编号集合查询用户信息列表
+     * 
+     * @param userIds 用户编号集合
+     * @return List<User> 用户信息列表
+     */
+    @RequestMapping(value = "/user/system/v1/finds", method = RequestMethod.POST)
+    List<User> findsV1(@RequestParam(value = "userIds", required = true) String userIds);
     
     /**
      * 根据用户账号查询用户信息

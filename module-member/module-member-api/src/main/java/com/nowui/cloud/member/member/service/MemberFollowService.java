@@ -34,4 +34,54 @@ public interface MemberFollowService extends BaseService<MemberFollow> {
      * @return List<MemberFollow> 会员关注列表
      */
     List<MemberFollow> listForAdmin(String appId, String memberId, String userId, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 验证用户是否关注了用户
+     * 
+     * @param userId 用户编号
+     * @param followUserId 关注用户编号
+     * @return Boolean true 是   false 否
+     */
+    Boolean checkIsFollow(String userId, String followUserId);
+    
+    /**
+     * 统计会员关注数
+     * 
+     * @param userId 用户编号
+     * @return Integer 会员关注数
+     */
+    Integer countFollow(String userId);
+    
+    /**
+     * 统计会员被关注数
+     * 
+     * @param userId 用户编号
+     * @return 会员被关注数
+     */
+    Integer countBeFollowed(String userId);
+    
+    /**
+     * 会员关注列表
+     *
+     * @param userId 用户编号
+     * @return List<MemberFollow> 会员关注列表
+     */
+    List<MemberFollow> listByUserId(String userId);
+    
+    /**
+     * 会员被关注列表
+     *
+     * @param followUserId 被关注用户编号
+     * @return List<MemberFollow> 会员关注列表
+     */
+    List<MemberFollow> listByFollowUserId(String followUserId);
+    
+    /**
+     * 根据用户编号和被关注用户编号查询会员关注
+     * 
+     * @param userId
+     * @return
+     */
+    MemberFollow findByUserIdAndFollowUserId(String userId, String followUserId);
+
 }

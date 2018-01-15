@@ -84,7 +84,10 @@ public class MemberDialogue extends BaseEntity {
     @Length(max = 32, message = "响应用户编号长度超出限制")
     private String respondUserId;
     public static final String RESPOND_USER_ID = "respondUserId";
-
+    
+    public static final String MEMBER_DIALOGUE_RECORD_LIST = "memberDialogueRecordList";
+    
+    public static final String MEMBER_DIALOGUE_RECORD_COUNT = "memberDialogueRecordCount";
 
     public String getMemberDialogueId() {
         return getString(MEMBER_DIALOGUE_ID);

@@ -347,6 +347,31 @@ public class Util {
         return beanList;
     }
     
+    /**
+     * 实体对象列表关联字段映射实体字段对象
+     * @param beanList 实体对象列表
+     * @param beanCloumn 实体对象匹配字段
+     * @param fieldMapCloumn 实体字段对象映射匹配字段
+     * @param fieldBeanList 实体对象映射实体字段列表
+     * @param fieldCloumns 实体对象映射实体字段列表字段集合
+     * @return List<T> 实体对象列表
+     */
+    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        if (Util.isNullOrEmpty(fieldBeanList)) {
+            return beanList;
+        }
+        for (BaseEntity bean : beanList) {
+            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+            for (String fieldCloumn : fieldCloumns) {
+                bean.put(fieldCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().get(fieldCloumn) : null);
+            }
+        }
+        return beanList;
+    }
+    
     public static String getTableName(Class<? extends BaseEntity> clazz) {
         TableName table = clazz.getAnnotation(TableName.class);
         if (table != null) {

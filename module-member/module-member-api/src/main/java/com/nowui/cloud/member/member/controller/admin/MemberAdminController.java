@@ -72,8 +72,7 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_IS_TOP,
                 Member.MEMBER_TOP_LEVEL,
                 Member.MEMBER_TOP_END_TIME,
-                Member.MEMBER_IS_RECOMMED,
-                Member.MEMBER_DESCRIPTION
+                Member.MEMBER_IS_RECOMMED
         );
 
         return renderJson(result);
@@ -89,8 +88,7 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_IS_TOP,
                 Member.MEMBER_TOP_LEVEL,
                 Member.MEMBER_TOP_END_TIME,
-                Member.MEMBER_IS_RECOMMED,
-                Member.MEMBER_DESCRIPTION
+                Member.MEMBER_IS_RECOMMED
         );
 
         Boolean result = memberService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -110,7 +108,6 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_TOP_LEVEL,
                 Member.MEMBER_TOP_END_TIME,
                 Member.MEMBER_IS_RECOMMED,
-                Member.MEMBER_DESCRIPTION,
                 Member.SYSTEM_VERSION
         );
 

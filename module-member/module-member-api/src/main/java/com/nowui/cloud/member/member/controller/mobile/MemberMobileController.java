@@ -90,7 +90,6 @@ public class MemberMobileController extends BaseController {
         member.setMemberIsTop(false);
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
-        member.setMemberDescription("");
         
         Boolean result = memberService.save(member, memberId, userId);
         
@@ -137,7 +136,6 @@ public class MemberMobileController extends BaseController {
         member.setMemberIsTop(false);
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
-        member.setMemberDescription("");
         
         Boolean result = memberService.save(member, memberId, userId);
         
