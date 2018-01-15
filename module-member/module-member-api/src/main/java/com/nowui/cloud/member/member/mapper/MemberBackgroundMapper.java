@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
-import com.nowui.cloud.member.member.entity.MemberBackgroud;
+import com.nowui.cloud.member.member.entity.MemberBackground;
 
 /**
  * 会员背景mapping映射接口
@@ -10,6 +10,6 @@ import com.nowui.cloud.member.member.entity.MemberBackgroud;
  *
  * 2018-01-14
  */
-public interface MemberBackgroudMapper extends BaseMapper<MemberBackgroud> {
+public interface MemberBackgroundMapper extends BaseMapper<MemberBackground> {
 
 }

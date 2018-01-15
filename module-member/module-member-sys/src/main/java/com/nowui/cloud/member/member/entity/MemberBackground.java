@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @Component
 @Document(indexName = "nowui", type = "member_backgroud_info")
 @TableName(value = "member_backgroud_info")
-public class MemberBackgroud extends BaseEntity {
+public class MemberBackground extends BaseEntity {
 
     /**
      * 会员背景编号

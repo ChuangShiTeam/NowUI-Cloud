@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(value = "会员背景", description = "会员背景移动端接口管理")
 @RestController
-public class MemberBackgroudMobileController extends BaseController {
+public class MemberBackgroundMobileController extends BaseController {
 
 }

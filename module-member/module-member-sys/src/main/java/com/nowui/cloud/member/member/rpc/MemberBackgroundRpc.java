@@ -12,6 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component(value = "memberBackgroudRpc")
 @FeignClient(name = "module-member")
-public interface MemberBackgroudRpc {
+public interface MemberBackgroundRpc {
 
 }

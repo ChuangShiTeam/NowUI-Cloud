@@ -1,8 +1,8 @@
 package com.nowui.cloud.member.member.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.member.member.entity.MemberBackgroud;
-
 import java.util.List;
+
+import com.nowui.cloud.member.member.entity.MemberBackground;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 会员背景业务接口
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * 2018-01-14
  */
-public interface MemberBackgroudService extends BaseService<MemberBackgroud> {
+public interface MemberBackgroundService extends BaseService<MemberBackground> {
 
     /**
      * 会员背景统计
@@ -33,5 +33,6 @@ public interface MemberBackgroudService extends BaseService<MemberBackgroud> {
      * @param pageSize 每页个数
      * @return List<MemberBackgroud> 会员背景列表
      */
-    List<MemberBackgroud> listForAdmin(String appId, String memberId, String memberBackgroundFileId, Integer pageIndex, Integer pageSize);
+    List<MemberBackground> listForAdmin(String appId, String memberId, String memberBackgroundFileId, Integer pageIndex, Integer pageSize);
+
 }

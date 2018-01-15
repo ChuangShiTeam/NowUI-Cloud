@@ -116,12 +116,12 @@ public class MemberSystemController implements MemberRpc {
     public Member findByUserIdV1(String userId) {
         Member member = memberService.findWithCacheUserByUserId(userId);
         
-        User user = (User) member.get(Member.USER);
+        User user = (User) member.get(Member.MEMBER_USER);
         
         if (user == null) {
             user = userRpc.findV1(userId);
             
-            member.put(Member.USER, user);
+            member.put(Member.MEMBER_USER, user);
         }
         return null;
     }

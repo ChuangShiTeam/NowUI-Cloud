@@ -93,7 +93,11 @@ public class Member extends BaseEntity {
     private Boolean memberIsRecommed;
     public static final String MEMBER_IS_RECOMMED = "memberIsRecommed";
 
-    public static final String USER = "user";
+    public static final String MEMBER_USER = "memberUser";
+    
+    public static final String MEMBER_BACKGROUND = "memberBackground";
+    
+    public static final String MEMBER_SIGNATURE = "memberSignature";
     
     public String getMemberId() {
         return getString(MEMBER_ID);

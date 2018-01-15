@@ -34,4 +34,12 @@ public interface MemberSignatureService extends BaseService<MemberSignature> {
      * @return List<MemberSignature> 	会员签名列表
      */
     List<MemberSignature> listForAdmin(String appId, String memberId, String memberSignature, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 根据会员编号查询会员签名信息
+     * 
+     * @param memberId 会员编号
+     * @return MemberSignature会员签名信息
+     */
+    MemberSignature findByMemberId(String memberId);
 }
