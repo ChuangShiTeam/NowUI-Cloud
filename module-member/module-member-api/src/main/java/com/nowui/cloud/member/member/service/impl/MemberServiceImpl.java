@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.mapper.MemberMapper;
+import com.nowui.cloud.member.member.service.MemberBackgroundService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -27,6 +28,9 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
     
     @Autowired
     private MemberSignatureService memberSignatureService;
+    
+    @Autowired
+    private MemberBackgroundService memberBackgroundService;
     
     @Override
     public Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
@@ -65,6 +69,8 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         );
         
         member.put(Member.MEMBER_SIGNATURE, memberSignatureService.findByMemberId(member.getMemberId()));
+        
+        member.put(Member.MEMBER_BACKGROUND, memberBackgroundService.findByMemberId(member.getMemberId()));
         
         return member;
     }

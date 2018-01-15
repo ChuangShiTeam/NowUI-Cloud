@@ -217,6 +217,27 @@ public class MemberDialogueMobileController extends BaseController {
 
         return renderJson(memberDialogueRecordCount, memberDialogueRecordList);
     }
+    
+    @ApiOperation(value = "新增会员对话记录")
+    @RequestMapping(value = "/member/dialogue/record/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody MemberDialogueRecord body) {
+        validateRequest(
+                body,
+                MemberDialogueRecord.APP_ID,
+                MemberDialogueRecord.MEMBER_DIALOGUE_ID,
+                MemberDialogueRecord.MEMBER_DIALOGUE_CONTENT,
+                MemberDialogueRecord.SYSTEM_REQUEST_USER_ID
+        );
+
+        User user = userRpc.findV1(body.getSystemRequestUserId());
+        
+        body.setMemberId(user.getObjectId());
+        body.setUserId(user.getUserId());
+        
+        Boolean result = memberDialogueRecordService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+
+        return renderJson(result);
+    }
 
 
 }

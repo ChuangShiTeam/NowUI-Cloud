@@ -55,14 +55,14 @@ public class MemberBackground extends BaseEntity {
     public static final String MEMBER_ID = "memberId";
 
     /**
-     * 会员背景图文件编号
+     * 会员背景
      */
     @Field
     @TableField
-    @NotNull(message = "会员背景图文件编号不能为空")
-    @Length(max = 32, message = "会员背景图文件编号长度超出限制")
-    private String memberBackgroundFileId;
-    public static final String MEMBER_BACKGROUND_FILE_ID = "memberBackgroundFileId";
+    @NotNull(message = "会员背景不能为空")
+    @Length(max = 32, message = "会员背景长度超出限制")
+    private String memberBackground;
+    public static final String MEMBER_BACKGROUND = "memberBackground";
 
 
     public String getMemberBackgroundId() {
@@ -89,12 +89,12 @@ public class MemberBackground extends BaseEntity {
         put(MEMBER_ID, memberId);
     }
 
-    public String getMemberBackgroundFileId() {
-        return getString(MEMBER_BACKGROUND_FILE_ID);
+    public String getMemberBackground() {
+        return getString(MEMBER_BACKGROUND);
     }
     
-    public void setMemberBackgroundFileId(String memberBackgroundFileId) {
-        put(MEMBER_BACKGROUND_FILE_ID, memberBackgroundFileId);
+    public void setMemberBackground(String memberBackground) {
+        put(MEMBER_BACKGROUND, memberBackground);
     }
 
 

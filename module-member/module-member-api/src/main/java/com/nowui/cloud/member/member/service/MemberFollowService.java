@@ -75,5 +75,13 @@ public interface MemberFollowService extends BaseService<MemberFollow> {
      * @return List<MemberFollow> 会员关注列表
      */
     List<MemberFollow> listByFollowUserId(String followUserId);
+    
+    /**
+     * 根据用户编号和被关注用户编号查询会员关注
+     * 
+     * @param userId
+     * @return
+     */
+    MemberFollow findByUserIdAndFollowUserId(String userId, String followUserId);
 
 }

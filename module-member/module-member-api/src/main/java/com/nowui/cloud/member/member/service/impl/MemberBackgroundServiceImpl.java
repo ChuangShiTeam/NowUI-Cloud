@@ -1,6 +1,5 @@
 package com.nowui.cloud.member.member.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import com.nowui.cloud.member.member.mapper.MemberBackgroundMapper;
 import com.nowui.cloud.member.member.service.MemberBackgroundService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 会员背景业务实现
@@ -22,31 +22,33 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 public class MemberBackgroundServiceImpl extends BaseServiceImpl<MemberBackgroundMapper, MemberBackground> implements MemberBackgroundService {
 
     @Override
-    public Integer countForAdmin(String appId, String memberId, String memberBackgroundFileId) {
-        Integer count = count(
+    public MemberBackground findByMemberId(String memberId) {
+        
+        if (Util.isNullOrEmpty(memberId)) {
+            return null;
+        }
+        
+        MemberBackground memberBackground = find(
                 new BaseWrapper<MemberBackground>()
-                        .eq(MemberBackground.APP_ID, appId)
-                        .likeAllowEmpty(MemberBackground.MEMBER_ID, memberId)
-                        .likeAllowEmpty(MemberBackground.MEMBER_BACKGROUND_FILE_ID, memberBackgroundFileId)
+                        .eq(MemberBackground.MEMBER_ID, memberId)
                         .eq(MemberBackground.SYSTEM_STATUS, true)
         );
-        return count;
+
+        return memberBackground;
     }
 
     @Override
-    public List<MemberBackground> listForAdmin(String appId, String memberId, String memberBackgroundFileId, Integer pageIndex, Integer pageSize) {
-        List<MemberBackground> memberBackgroudList = list(
+    public void deleteByMemberId(String memberId, String systemRequestUserId) {
+        List<MemberBackground> memberBackgroundList = list(
                 new BaseWrapper<MemberBackground>()
-                        .eq(MemberBackground.APP_ID, appId)
-                        .likeAllowEmpty(MemberBackground.MEMBER_ID, memberId)
-                        .likeAllowEmpty(MemberBackground.MEMBER_BACKGROUND_FILE_ID, memberBackgroundFileId)
-                        .eq(MemberBackground.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(MemberBackground.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
+                .eq(MemberBackground.MEMBER_ID, memberId)
+                .eq(MemberBackground.SYSTEM_STATUS, true)
         );
-
-        return memberBackgroudList;
+        
+        if (memberBackgroundList != null && memberBackgroundList.size() > 0) {
+            memberBackgroundList.stream()
+                                .forEach(memberBackground -> delete(memberBackground.getMemberBackgroundId(), systemRequestUserId, memberBackground.getSystemVersion()));
+        }
     }
 
 }

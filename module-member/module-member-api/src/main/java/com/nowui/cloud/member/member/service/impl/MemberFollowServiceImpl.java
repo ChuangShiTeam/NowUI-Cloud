@@ -84,7 +84,7 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
     public List<MemberFollow> listByUserId(String userId) {
         List<MemberFollow> memberFollowList = list(
                 new BaseWrapper<MemberFollow>()
-                        .likeAllowEmpty(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.USER_ID, userId)
                         .eq(MemberFollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
         );
@@ -96,12 +96,24 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
     public List<MemberFollow> listByFollowUserId(String followUserId) {
         List<MemberFollow> memberFollowList = list(
                 new BaseWrapper<MemberFollow>()
-                        .likeAllowEmpty(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.FOLLOW_USER_ID, followUserId)
                         .eq(MemberFollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
         );
 
         return memberFollowList;
+    }
+
+    @Override
+    public MemberFollow findByUserIdAndFollowUserId(String userId, String followUserId) {
+        MemberFollow memberFollow = find(
+                new BaseWrapper<MemberFollow>()
+                        .likeAllowEmpty(MemberFollow.USER_ID, userId)
+                        .likeAllowEmpty(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+        );
+        
+        return memberFollow;
     }
 
 }

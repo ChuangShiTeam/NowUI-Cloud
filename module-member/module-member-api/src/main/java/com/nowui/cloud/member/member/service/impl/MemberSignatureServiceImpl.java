@@ -1,6 +1,5 @@
 package com.nowui.cloud.member.member.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,34 +22,6 @@ import com.nowui.cloud.util.Util;
 public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureMapper, MemberSignature> implements MemberSignatureService {
 
     @Override
-    public Integer countForAdmin(String appId, String memberId, String memberSignature) {
-        Integer count = count(
-                new BaseWrapper<MemberSignature>()
-                        .eq(MemberSignature.APP_ID, appId)
-                        .likeAllowEmpty(MemberSignature.MEMBER_ID, memberId)
-                        .likeAllowEmpty(MemberSignature.MEMBER_SIGNATURE, memberSignature)
-                        .eq(MemberSignature.SYSTEM_STATUS, true)
-        );
-        return count;
-    }
-
-    @Override
-    public List<MemberSignature> listForAdmin(String appId, String memberId, String memberSignature, Integer pageIndex, Integer pageSize) {
-        List<MemberSignature> memberSignatureList = list(
-                new BaseWrapper<MemberSignature>()
-                        .eq(MemberSignature.APP_ID, appId)
-                        .likeAllowEmpty(MemberSignature.MEMBER_ID, memberId)
-                        .likeAllowEmpty(MemberSignature.MEMBER_SIGNATURE, memberSignature)
-                        .eq(MemberSignature.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(MemberSignature.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return memberSignatureList;
-    }
-
-    @Override
     public MemberSignature findByMemberId(String memberId) {
         
         if (Util.isNullOrEmpty(memberId)) {
@@ -64,6 +35,20 @@ public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureM
         );
         
         return memberSignature;
+    }
+
+    @Override
+    public void deleteByMemberId(String memberId, String systemRequestUserId) {
+        List<MemberSignature> memberSignatureList = list(
+                new BaseWrapper<MemberSignature>()
+                        .eq(MemberSignature.MEMBER_ID, memberId)
+                        .eq(MemberSignature.SYSTEM_STATUS, true)
+        );
+        
+        if (memberSignatureList != null && memberSignatureList.size() > 0) {
+            memberSignatureList.stream()
+                                .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(), systemRequestUserId, memberSignature.getSystemVersion()));
+        }
     }
 
 }

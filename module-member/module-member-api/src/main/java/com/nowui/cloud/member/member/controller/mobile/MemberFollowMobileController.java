@@ -46,7 +46,7 @@ public class MemberFollowMobileController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "我的关注列表")
-    @RequestMapping(value = "/member/follow/admin/v1/my/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/follow/mobile/v1/my/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> myFollowlistV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -89,7 +89,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "关注我的列表")
-    @RequestMapping(value = "/member/follow/admin/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> followMelistV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -132,7 +132,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "他的关注列表")
-    @RequestMapping(value = "/member/follow/admin/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -183,6 +183,48 @@ public class MemberFollowMobileController extends BaseController {
 
         return renderJson(resultList);
     }
+    
+    @ApiOperation(value = "新增会员关注")
+    @RequestMapping(value = "/member/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@RequestBody MemberFollow body) {
+        validateRequest(
+                body,
+                MemberFollow.APP_ID,
+                MemberFollow.FOLLOW_USER_ID,
+                MemberFollow.SYSTEM_REQUEST_USER_ID
+        );
 
+        User user = userRpc.findV1(body.getSystemRequestUserId());
+        
+        User followUser = userRpc.findV1(body.getFollowUserId());
+        
+        body.setUserId(user.getUserId());
+        body.setMemberId(user.getObjectId());
+        body.setFollowMemberId(followUser.getObjectId());
+        
+        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "取消会员关注")
+    @RequestMapping(value = "/member/follow/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
+        validateRequest(
+                body,
+                MemberFollow.APP_ID,
+                MemberFollow.FOLLOW_USER_ID,
+                MemberFollow.SYSTEM_REQUEST_USER_ID
+        );
+        
+        MemberFollow memberFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), body.getFollowUserId());
+
+        if (memberFollow == null) {
+            throw new RuntimeException("没有关注该会员");
+        }
+        Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion());
+
+        return renderJson(result);
+    }
 
 }

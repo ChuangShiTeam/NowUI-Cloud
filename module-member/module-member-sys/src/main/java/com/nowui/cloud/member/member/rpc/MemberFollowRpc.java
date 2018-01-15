@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberFollowRpc {
     
     /**
+     * 判断是否关注会员
      * 
-     * 
-     * @param userId
-     * @param followUserId
+     * @param userId 用户编号
+     * @param followUserId 关注用户编号
      * @return
      */
     @RequestMapping(value = "/member/system/v1/check/is/follow", method = RequestMethod.POST)
@@ -29,5 +29,23 @@ public interface MemberFollowRpc {
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "followUserId", required = true) String followUserId
     );
+    
+    /**
+     * 统计会员关注数
+     * 
+     * @param userId 用户编号
+     * @return Integer 会员关注数
+     */
+    @RequestMapping(value = "/member/system/v1/count/follow", method = RequestMethod.POST)
+    Integer countFollow(String userId);
+    
+    /**
+     * 统计会员被关注数
+     * 
+     * @param userId 用户编号
+     * @return Integer 会员被关注数
+     */
+    @RequestMapping(value = "/member/system/v1/count/be/followed", method = RequestMethod.POST)
+    Integer countBeFollowed(String userId);
 
 }

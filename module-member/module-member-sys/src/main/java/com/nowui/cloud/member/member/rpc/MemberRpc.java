@@ -54,4 +54,41 @@ public interface MemberRpc {
     @RequestMapping(value = "/member/system/v1/list/by/user/ids", method = RequestMethod.POST)
     List<Member> listByUserIdsV1(@RequestParam(value = "userIds", required = true) String userIds);
     
+    /**
+     * 根据用户编号集合查询会员信息列表（昵称、头像、是否关注）
+     * 
+     * @param userIds 用户编号集合
+     * @param userId 用户编号
+     * @return List<Member> 会员信息列表
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/is/follow/list", method = RequestMethod.POST)
+    List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId);
+    
+    /**
+     * 根据用户编号集合查询会员信息列表（昵称、头像）
+     * 
+     * @param userIds 用户编号集合
+     * @return List<Member> 会员信息列表
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/list", method = RequestMethod.POST)
+    List<Member> nickNameAndAvatarListV1(String userIds);
+    
+    /**
+     * 根据用户编号查询会员信息（昵称、头像）
+     * 
+     * @param userId 用户编号
+     * @return Member 会员信息
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/find", method = RequestMethod.POST)
+    Member nickNameAndAvatarFindV1(String userId);
+    
+    /**
+     * 根据用户编号查询会员信息（昵称、头像、背景、签名）
+     * 
+     * @param userId 用户编号
+     * @return Member 会员信息
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/background/and/signature/find", method = RequestMethod.POST)
+    Member nickNameAndAvatarAndBackgroundAndSignatureFind(String userId);
+    
 }

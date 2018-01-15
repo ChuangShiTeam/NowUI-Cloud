@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
-import com.nowui.cloud.member.member.service.MemberService;
+import com.nowui.cloud.member.member.service.MemberFollowService;
 
 import io.swagger.annotations.Api;
 
@@ -20,12 +20,21 @@ import io.swagger.annotations.Api;
 public class MemberFollowSystemController implements MemberFollowRpc {
     
     @Autowired
-    private MemberService memberService;
+    private MemberFollowService memberFollowService;
 
     @Override
     public Boolean checkIsFollowV1(String userId, String followUserId) {
-        // TODO Auto-generated method stub
-        return null;
+        return memberFollowService.checkIsFollow(userId, followUserId);
+    }
+
+    @Override
+    public Integer countFollow(String userId) {
+        return memberFollowService.countFollow(userId);
+    }
+
+    @Override
+    public Integer countBeFollowed(String userId) {
+        return memberFollowService.countBeFollowed(userId);
     }
 
 }   

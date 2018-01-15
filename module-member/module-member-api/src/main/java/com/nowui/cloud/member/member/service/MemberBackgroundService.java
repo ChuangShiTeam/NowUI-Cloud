@@ -1,6 +1,4 @@
 package com.nowui.cloud.member.member.service;
-import java.util.List;
-
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.service.BaseService;
 
@@ -14,25 +12,18 @@ import com.nowui.cloud.service.BaseService;
 public interface MemberBackgroundService extends BaseService<MemberBackground> {
 
     /**
-     * 会员背景统计
-     *
-     * @param appId 应用编号
+     * 根据会员编号查询会员背景信息
+     * 
      * @param memberId 会员编号
-     * @param memberBackgroundFileId 会员背景图文件编号
-     * @return Integer 会员背景统计
+     * @return MemberBackground 会员背景    信息
      */
-    Integer countForAdmin(String appId, String memberId, String memberBackgroundFileId);
-
+    MemberBackground findByMemberId(String memberId);
+    
     /**
-     * 会员背景列表
-     *
-     * @param appId 应用编号
+     * 根据会员编号删除会员背景信息
+     * 
      * @param memberId 会员编号
-     * @param memberBackgroundFileId 会员背景图文件编号
-     * @param pageIndex 页码
-     * @param pageSize 每页个数
-     * @return List<MemberBackgroud> 会员背景列表
+     * @param systemRequestUserId 请求用户编号
      */
-    List<MemberBackground> listForAdmin(String appId, String memberId, String memberBackgroundFileId, Integer pageIndex, Integer pageSize);
-
+    void deleteByMemberId(String memberId, String systemRequestUserId);
 }
