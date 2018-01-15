@@ -78,10 +78,10 @@ public class TopicMobileController extends BaseController {
 	
 	@Autowired
 	private FileRpc fileRpc;
-	
-	
-	
-    @ApiOperation(value = "话题信息列表")
+
+
+
+    @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody Topic body) {
         validateRequest(
@@ -97,16 +97,33 @@ public class TopicMobileController extends BaseController {
         
         List<Topic> resultList = topicService.allTopicListByForumId(body);
         
+        
         for (Topic topic : resultList) {
+        	//处理话题图片
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
-            
-            String fileIds = Util.beanToFieldString(resultList, TopicMedia.TOPIC_MEDIA_ID);
+          
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
             List<File> fileList = fileRpc.findsV1(fileIds);
             
             topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
             
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+            
+            
+          //处理话题评论图片
+            List<TopicComment> topicComments = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
+            /**
+             * 给每个评论设置一个用户头像常量
+             * 
+             * 然后调用接口处理
+             */
+            
+            
         }
+        
+        
+        
+        
         
         /**
          * 需要再调整一下返回参数
@@ -129,7 +146,7 @@ public class TopicMobileController extends BaseController {
     
     
     
-    @ApiOperation(value = "个人主页动态列表")
+    @ApiOperation(value = "个人/别人主页动态列表")
     @RequestMapping(value = "/topic/mobile/v1/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeTopicV1(@RequestBody Topic body) {
         validateRequest(
@@ -142,15 +159,15 @@ public class TopicMobileController extends BaseController {
 
         Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
-        
+
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
-            
-            String fileIds = Util.beanToFieldString(resultList, TopicMedia.TOPIC_MEDIA_ID);
+
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
             List<File> fileList = fileRpc.findsV1(fileIds);
-            
+
             topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
-            
+
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
 
@@ -173,22 +190,74 @@ public class TopicMobileController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
     
-    /**
-     * 这个先不写,等用户接口
-     * @param body
-     * @return
-     */
-    @ApiOperation(value = "关注人的话题分页列表")
+    
+    
+	@ApiOperation(value = "话题详情页")
+	@RequestMapping(value = "/topic/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object> findV1(@RequestBody Topic body) {
+	    validateRequest(
+	            body,
+	            Topic.APP_ID,
+	            Topic.TOPIC_ID
+	    );
+
+	    Topic topic = topicService.findTheTopicDetails(body);
+
+	    //处理图片
+	    //得到图片列表
+	    List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+
+        String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
+        List<File> fileList = fileRpc.findsV1(fileIds);
+        
+        topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+        //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
+        topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+	    
+	    /**
+	     * 再调整一下返回参数
+	     */
+	    validateResponse(
+	            Topic.TOPIC_ID,
+	            Topic.TOPIC_FORUM_ID,
+	            Topic.TOPIC_SUMMARY,
+	            Topic.USER_ID,
+	            Topic.LATITUDE,
+	            Topic.LONGTITUDE,
+	            Topic.TOPIC_LOCATION,
+	            Topic.TOPIC_IS_LOCATION,
+	            Topic.TOPIC_IS_TOP,
+	            Topic.TOPIC_IS_RECOMAND,
+	            Topic.TOP_TOP_LEVEL
+	    );
+
+	    return renderJson(topic);
+	}
+
+
+
+
+    
+    @ApiOperation(value = "关注的人的话题分页列表")
     @RequestMapping(value = "/topic/mobile/v1/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> followListV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.USER_ID,
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
-
+        
+        //先得到用户关注的人的数量,和列表
+        
+        //然后根据用户列表去topic表 查询 得到话题列表
+        /**
+         * 等用户接口好了,再写
+         */
+        
+        
+        
+        
         /**
          * 需要再调整一下返回参数
          */
@@ -207,7 +276,7 @@ public class TopicMobileController extends BaseController {
 
         return renderJson(0, null);
     }
-    
+
     @ApiOperation(value = "新增话题信息")
     @RequestMapping(value = "/topic/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody Topic body) {
@@ -221,16 +290,17 @@ public class TopicMobileController extends BaseController {
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
-                Topic.TOPIC_MEDIA_LIST,  //图片id列表
-                Topic.TOPIC_FORUM_LIST,  //发布到的论坛列表
-                Topic.TOPIC_TIP_USER_LIST     //提醒谁看用户列表 
+                Topic.TOPIC_MEDIA_LIST,    //图片id列表
+                Topic.TOPIC_FORUM_LIST,    //发布到的论坛列表
+                Topic.TOPIC_TIP_USER_LIST    //提醒谁看用户列表 
         );
 
-
-       //先标记一下,回来再换另一种解析方法
+        String topicId = Util.getRandomUUID();
+        
+        //先标记一下,回来再换另一种解析方法
         String mediaIds = body.getString(Topic.TOPIC_MEDIA_LIST);
         List<String> mediaIdList = JSONArray.parseArray(mediaIds, String.class);
-        String topicId = Util.getRandomUUID();
+        
 
         //遍历图片id,存放到话题图片表
         for (String mediaId : mediaIdList) {
@@ -239,7 +309,7 @@ public class TopicMobileController extends BaseController {
         	topicMedia.setTopicId(topicId);
         	topicMedia.setAppId(body.getAppId());
         	topicMedia.setTopicMediaType(FileType.IMAGE.getKey());
-        	
+
         	Boolean mediaSaveResult = topicMediaService.save(new TopicMedia(), Util.getRandomUUID(), body.getSystemRequestUserId());
 		}
 
@@ -273,8 +343,6 @@ public class TopicMobileController extends BaseController {
             Boolean save = topicTipService.save(new TopicTip(), Util.getRandomUUID(), body.getSystemRequestUserId());
 		}
 
-
-
         Boolean result = topicService.save(body, topicId, body.getSystemRequestUserId());
 
         return renderJson(result);
@@ -290,7 +358,6 @@ public class TopicMobileController extends BaseController {
         );
         String topicId = body.getTopicId();
         String systemRequestUserId = body.getSystemRequestUserId();
-
 
         //删除话题信息
         Topic topic = topicService.find(topicId);
@@ -314,25 +381,25 @@ public class TopicMobileController extends BaseController {
         	topicCommentService.delete(topicComment.getTopicCommentId(), systemRequestUserId, topicComment.getSystemVersion());
 		}
 
-        //删除话题收藏 topicUserBookmarkService
+        //删除话题收藏
         List<TopicUserBookmark> allListByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), topicId);
         for (TopicUserBookmark topicUserBookmark : allListByTopicId) {
         	topicUserBookmarkService.delete(topicUserBookmark.getUserBookMarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
 		}
 
-        //删除话题点赞  topicUserLikeService
+        //删除话题点赞 
         List<TopicUserLike> allLikeListByTopic = topicUserLikeService.allLikeListByTopic(body.getAppId(), topicId);
         for (TopicUserLike topicUserLike : allLikeListByTopic) {
         	topicUserLikeService.delete(topicUserLike.getUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
 		}
 
-        //删除取消收藏  topicUserUnbookmarkService
+        //删除取消收藏 
         List<TopicUserUnbookmark> allUnBookMarkListByTopic = topicUserUnbookmarkService.allUnBookMarkListByTopic(body.getAppId(), topicId);
         for (TopicUserUnbookmark topicUserUnbookmark : allUnBookMarkListByTopic) {
         	topicUserUnbookmarkService.delete(topicUserUnbookmark.getUserUnBookMarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
 		}
 
-        //删除话题取消点赞  topicUserUnlikeService
+        //删除话题取消点赞
         List<TopicUserUnlike> unlikeList = topicUserUnlikeService.allUnlikeListByTopicId(body.getAppId(), topicId);
         for (TopicUserUnlike topicUserUnlike : unlikeList) {
         	topicUserUnlikeService.delete(topicUserUnlike.getUserUnLikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());

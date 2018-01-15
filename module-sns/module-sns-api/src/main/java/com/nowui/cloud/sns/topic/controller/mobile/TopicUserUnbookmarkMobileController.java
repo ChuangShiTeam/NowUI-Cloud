@@ -49,6 +49,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 
         TopicUserUnbookmark UnBookMark = topicUserUnbookmarkService.findUnBookMark(body.getAppId(), body.getTopicId(), body.getSystemRequestUserId());
         if (UnBookMark != null) {
+        	//取消点赞表有记录就返回true,不再执行
         	return renderJson(true);
 		}
 

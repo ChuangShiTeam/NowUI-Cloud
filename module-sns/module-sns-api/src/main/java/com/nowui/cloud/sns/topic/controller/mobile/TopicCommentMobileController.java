@@ -50,7 +50,9 @@ public class TopicCommentMobileController extends BaseController {
 
         Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , null, body.getTopicId(), null, null, null);
         List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), null, body.getTopicId(), null, null, null, body.getPageIndex(), body.getPageSize());
-
+/**
+ * TODO 评论要调用 用户接口 查询用户头像
+ */
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.USER_ID,

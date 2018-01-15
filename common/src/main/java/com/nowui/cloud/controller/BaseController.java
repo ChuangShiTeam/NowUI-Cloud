@@ -11,6 +11,7 @@ import com.nowui.cloud.util.ValidateUtil;
 import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,10 +26,12 @@ import java.util.*;
 /**
  * @author ZhongYongQiang
  */
+@Transactional
 public class BaseController {
 
     private String[] validateResponseColumnList = new String[]{};
 
+    
     protected HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }

@@ -55,11 +55,11 @@ public class Topic extends BaseEntity {
     public static final String TOPIC_FORUM_ID = "topicForumId";
 
     /**
-     * 动态
+     * 动态内容
      */
     @Field
     @TableField
-    @NotNull(message = "动态不能为空")
+    @NotNull(message = "动态内容不能为空")
     @Length(max = 1000, message = "动态长度超出限制")
     private String topicSummary;
     public static final String TOPIC_SUMMARY = "topicSummary";
@@ -173,6 +173,21 @@ public class Topic extends BaseEntity {
      * 话题提醒谁看列表
      */
     public static final String TOPIC_TIP_USER_LIST = "topicTipUserList";
+    /**
+     * 话题评论列表
+     */
+    public static final String TOPIC_COMMENT_LIST = "topicCommentList";
+    /**
+     * 话题是否被用户点赞
+     */
+    public static final String TOPIC_USER_IS_LIKE = "topicUserIsLike";
+    /**
+     * 话题是否被用户收藏
+     */
+    public static final String TOPIC_USER_IS_BOOKEMARK = "topicUserIsBookMark";
+    
+    
+    
     
     public String getTopicId() {
         return getString(TOPIC_ID);

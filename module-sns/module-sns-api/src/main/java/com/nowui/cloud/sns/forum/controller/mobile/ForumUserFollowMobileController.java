@@ -88,24 +88,24 @@ public class ForumUserFollowMobileController extends BaseController {
                 body,
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.USER_ID,
-                ForumUserFollow.FORUM_ID,
                 ForumUserFollow.PAGE_INDEX,
                 ForumUserFollow.PAGE_SIZE
         );
 
         Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
-        //得到forumId
-        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+        body.setUserId(body.getSystemRequestUserId());
+        
+        //得到forumList
+        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), null, body.getPageIndex(), body.getPageSize());
 
         ArrayList<Forum> arrayList = new ArrayList<Forum>();
 
         for (ForumUserFollow forumUserFollow : resultList) {
         //根据forumId去论坛信息表取 论坛头像、论坛名称、论坛简介
+        	
+        	//forum包含名称和简介
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
-        	String forumName = forum.getForumName();
-        	String forumDescription = forum.getForumDescription();
-        	forum.setForumName(forumName);
-        	forum.setForumDescription(forumDescription);
+        	
         	
         	String forumMediaId = forum.getForumMediaId();
         	File file = fileRpc.findV1(forumMediaId);
@@ -135,6 +135,6 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_ID
         );
 
-        return renderJson(resultTotal, resultList);
+        return renderJson(resultTotal, arrayList);
     }
 }

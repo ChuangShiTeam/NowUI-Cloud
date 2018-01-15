@@ -44,7 +44,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
     * @param systemVersion 版本号
     * @return
     */
-    Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion);
+    Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId);
     
     /**
      * 当日论坛话题数量

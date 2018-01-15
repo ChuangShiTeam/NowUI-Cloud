@@ -75,4 +75,12 @@ public interface TopicService extends BaseService<Topic> {
      * @return List<Topic> 话题信息列表
      */
     List<Topic> allTopicListByUserId(Topic body);
+    
+    /**
+     * 根据topicId查询话题详情
+     * 
+     * @param body
+     * @return
+     */
+    Topic findTheTopicDetails(Topic body);
 }

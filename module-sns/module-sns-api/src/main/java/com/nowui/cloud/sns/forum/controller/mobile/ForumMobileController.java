@@ -28,6 +28,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +49,7 @@ public class ForumMobileController extends BaseController {
 	 private ForumService forumService;
 	 
 	 @Autowired
-	 private TopicForumService topicForumServicepic;
+	 private TopicForumService topicForumService;
 	 
 	 @Autowired
 	 private ForumUserFollowService forumUserFollowService;
@@ -72,7 +73,6 @@ public class ForumMobileController extends BaseController {
 //            Forum.FORUM_MEDIA_TYPE,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_MODERATOR,
             Forum.FORUM_TOPIC_LOCATION
         );
 	    
@@ -88,7 +88,9 @@ public class ForumMobileController extends BaseController {
 	    body.setForumIsRecomand(false);
 	    //保存
 	    String forumId = Util.getRandomUUID();
-        Boolean result = forumService.save(body, forumId, body.getSystemRequestUserId());
+	    String systemRequestUserId = body.getSystemRequestUserId();
+	    
+        Boolean result = forumService.save(body, forumId, systemRequestUserId);
         //提交到审核表
         ForumAudit forumAudit = new ForumAudit();
         forumAudit.setForumAuditStatus(ForumAuditType.WAITAUDIT.getKey());
@@ -96,12 +98,12 @@ public class ForumMobileController extends BaseController {
         forumAudit.setForumId(forumId);
         if (result) {
         	//保存
-        	result= forumAuditService.save(forumAudit, Util.getRandomUUID(), body.getSystemRequestUserId());
+        	result= forumAuditService.save(forumAudit, Util.getRandomUUID(), systemRequestUserId);
 		}
         
         return renderJson(result);
     }
-	 
+
 	@ApiOperation(value = "论坛信息")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Forum body) {
@@ -127,6 +129,7 @@ public class ForumMobileController extends BaseController {
          */
 
 
+        
         //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后遍历查找用户头像,只返回前6个的头像和userId.
         List<ForumUserFollow> forumUserFollows = forumUserFollowService.listForAdmin(body.getAppId(), null, body.getForumId(), body.getPageIndex(), body.getPageSize());
         
@@ -134,6 +137,10 @@ public class ForumMobileController extends BaseController {
         /**
          * 等用户接口
          */
+        
+        
+        
+        
 
         validateResponse(
 //                Forum.FORUM_ID,
@@ -211,21 +218,25 @@ public class ForumMobileController extends BaseController {
         int num = 0;
         List<Forum> listRandom = new ArrayList<>();
         while (flag) {
-            //appId,forumModerator,forumMediaId都随机模糊查询一个数字
-            String randomAppId = "" + (1+Math.random()*(10-1+1));  //(最小值+Math.random()*(最大值-最小值+1))
-            String randomForumMediaId = "" +(1+Math.random()*(10-1+1));
-            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
-            listRandom = forumService.listRandom(randomAppId, randomForumMediaId, randomForumModerator, body.getPageIndex(), body.getPageSize());
-
-            if (listRandom != null || listRandom.size() == body.getPageSize()) {
-				flag = false;
-			}
-            num++;
-            if (num == 10) {
+        	
+        	if (num == 10) {
             	//如果取了10次还没达到条件,那么就取最新创建的几条
             	listRandom = forumService.listRandom(null, null, null, body.getPageIndex(), body.getPageSize());
             	flag = false;
 			}
+        	
+        	if (flag) {
+	            //appId,forumModerator,forumMediaId都随机模糊查询一个数字
+	            String randomAppId = "" + (1+Math.random()*(10-1+1));  //(最小值+Math.random()*(最大值-最小值+1))
+	            String randomForumMediaId = "" +(1+Math.random()*(10-1+1));
+	            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
+	            listRandom = forumService.listRandom(randomAppId, randomForumMediaId, randomForumModerator, body.getPageIndex(), body.getPageSize());
+	            
+	            if (listRandom != null && listRandom.size() == body.getPageSize()) {
+					flag = false;
+				}
+	            num++;
+        	}
 		}
 
         //处理论坛头像
@@ -271,8 +282,11 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_ID,
           Forum.FORUM_NAME
        );
-
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+	    
+       Forum forum = forumService.find(body.getForumId());
+       Integer systemVersion = forum.getSystemVersion();
+       
+       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), systemVersion);
 
        return renderJson(result);
     }
@@ -301,13 +315,36 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.SYSTEM_VERSION
         );
+        
+        Forum forum = forumService.find(body.getForumId());
         //先从论坛信息表删除
-        Boolean result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
-        //再从论坛动态表中逻辑删除所有的有论坛id的字段
-    	if (result) {
-    		Boolean delResult = topicForumServicepic.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
-    		result = delResult;
+        Boolean result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+        if (result == false) {
+    		return renderJson(result);
 		}
+        
+        
+        //再从论坛话题关联表中逻辑删除所有的有论坛id的记录
+    	Boolean delResult = topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+    	if (delResult == false) {
+    		return renderJson(delResult);
+		}
+    	
+    	
+    	//从论坛关注表中删除有forumId的记录
+    	boolean delUserFollow = forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+    	if (delUserFollow == false) {
+    		return renderJson(delUserFollow);
+		}
+    	
+    	
+    	//从论坛取消关注表删除有forumId的记录
+    	boolean delUnFollowResult = forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+    	if (delUnFollowResult == false) {
+    		return renderJson(delUnFollowResult);
+		}
+    	
+    	 
         return renderJson(result);
     }
 
@@ -321,27 +358,25 @@ public class ForumMobileController extends BaseController {
         //先标记一下,回来再换另一种解析方法
         String forumIds = body.getString(Forum.FORUM_ID_LIST);
         List<String> forumIdList = JSONArray.parseArray(forumIds, String.class);
+        Boolean saveResult = true;
         
-        Boolean delResult = null;
     	for (String forumId : forumIdList) {
             //根据userId,ForumId去取消关注表查找status为true的记录
             ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), forumId);
-            delResult = null;
+            
             //有:改变状态,没有:不做操作
-            if (forumUserUnfollow != null || forumUserUnfollow.size() != 0) {
-                delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+            if (forumUserUnfollow != null) {
+                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
             }
-            if (delResult) {
-            	//向论坛关注表插入一条记录
-            	ForumUserFollow forumUserFollow = new ForumUserFollow();
-            	forumUserFollow.setAppId(body.getAppId());
-            	forumUserFollow.setForumId(forumId);
-            	delResult = forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getSystemRequestUserId());
-    		}
-            return renderJson(delResult);
+            	
+            //向论坛关注表插入一条记录
+        	ForumUserFollow forumUserFollow = new ForumUserFollow();
+        	forumUserFollow.setAppId(body.getAppId());
+        	forumUserFollow.setForumId(forumId);
+        	saveResult = forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getSystemRequestUserId());
 		}
 
-        return renderJson(delResult);
+        return renderJson(saveResult);
     }
 	
 

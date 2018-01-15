@@ -196,8 +196,13 @@ public class Forum extends BaseEntity {
     private Boolean forumIsRecomand;
     public static final String FORUM_IS_RECOMAND = "forumIsRecomand";
 
+    /**
+     * 论坛的当日目前话题数量
+     */
     public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
-    
+    /**
+     * 论坛id列表
+     */
     public static final String FORUM_ID_LIST = "forumIdList";
 
     public String getForumId() {

@@ -78,4 +78,28 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		return forumUserFollowList;
 	}
 
+	@Override
+	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
+		List<ForumUserFollow> forumUserFollowList = list( 
+				new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+        		)
+		);
+
+		//得到全部用户关注list,遍历
+		for (ForumUserFollow forumUserFollow : forumUserFollowList) {
+			delete(forumUserFollow.getForumUserFollowId(), systemUpdateUserId, forumUserFollow.getSystemVersion());
+		}
+		
+		
+		
+		
+		
+		return false;
+	}
+	
+
 }

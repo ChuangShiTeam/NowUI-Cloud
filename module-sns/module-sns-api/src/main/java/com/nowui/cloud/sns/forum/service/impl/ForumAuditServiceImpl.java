@@ -6,6 +6,7 @@ import com.nowui.cloud.sns.forum.entity.ForumAudit;
 import com.nowui.cloud.sns.forum.mapper.ForumAuditMapper;
 import com.nowui.cloud.sns.forum.service.ForumAuditService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;

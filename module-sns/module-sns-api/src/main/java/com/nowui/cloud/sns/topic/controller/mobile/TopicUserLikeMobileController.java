@@ -45,9 +45,9 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.APP_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
-                TopicUserLike.PAGE_SIZE //前端传来参数可用于只显示4个头像,和点赞列表
+                TopicUserLike.PAGE_SIZE     //前端传来参数可用于只显示4个头像,和点赞列表
         );
-
+        //统计话题点赞数
         Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , null, body.getTopicId());
         //得到话题点赞列表
         List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), null, body.getTopicId(), body.getPageIndex(), body.getPageSize());
@@ -57,7 +57,7 @@ public class TopicUserLikeMobileController extends BaseController {
 			/**
 			 * 等用户接口
 			 * 
-			 * 得到用户头像和昵称,在TopicUserLike 实体类中添加相应字段常量,然后调整返回参数
+			 * 得到用户头像,昵称,在TopicUserLike 实体类中添加相应字段常量,然后调整返回参数
 			 */
 		}
 
@@ -85,6 +85,7 @@ public class TopicUserLikeMobileController extends BaseController {
 
         TopicUserLike userLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
         if (userLike != null) {
+        	//点赞表有记录就返回,不用新增
         	return renderJson(true);
 		}
 

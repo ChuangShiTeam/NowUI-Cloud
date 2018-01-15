@@ -53,4 +53,13 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
     List<ForumUserFollow> findByForumId(String appId, String forumId);
+    
+    /**
+     * 根据forumId删除论坛关注表有forumId的记录
+     * 
+     * @param appId 应用编号
+     * @param forumId 论坛编号
+     * @return boolean 返回删除结果
+     */
+    boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId);
 }

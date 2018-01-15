@@ -63,4 +63,29 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
 		}
 		return forumUserUnfollowList.get(0);
 	}
+
+	@Override
+	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
+		List<ForumUserUnfollow> forumUserUnfollowList = list(
+                new BaseWrapper<ForumUserUnfollow>()
+                        .eq(ForumUserUnfollow.APP_ID, appId)
+                        .eq(ForumUserUnfollow.FORUM_ID, forumId)
+                        .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserUnfollow.SYSTEM_CREATE_TIME))
+        );
+		//如果没有记录就返回true
+		if (forumUserUnfollowList == null || forumUserUnfollowList.size() == 0) {
+			return true;
+		}
+		
+		//遍历
+		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
+			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowMapId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
+			if (delete == false) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

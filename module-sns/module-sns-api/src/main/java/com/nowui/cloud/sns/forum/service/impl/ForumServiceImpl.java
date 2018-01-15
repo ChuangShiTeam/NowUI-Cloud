@@ -6,6 +6,7 @@ import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.mapper.ForumMapper;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -87,7 +88,6 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                 pageIndex,
                 pageSize
         );
-
         return forumList;
 	}
 

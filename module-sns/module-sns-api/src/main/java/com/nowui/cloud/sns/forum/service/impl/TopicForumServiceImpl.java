@@ -52,7 +52,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     }
     
     @Override
-    public Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId, Integer systemVersion) {
+    public Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId) {
     	//从论坛动态表中查找所有有ForumId的主键
     	List<TopicForum> topicForumList = list(
                 new BaseWrapper<TopicForum>()
@@ -63,12 +63,12 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         );
     	//遍历删除
     	for (TopicForum topicForum : topicForumList) {
-    		Boolean delResult = delete(topicForum.getTopicForumMapId(), systemUpdateUserId, systemVersion);
-    		if (delResult==false) {
+    		Boolean delResult = delete(topicForum.getTopicForumMapId(), systemUpdateUserId, topicForum.getSystemVersion());
+    		if (delResult == false) {
 				return false;
 			}
 		}
-    	
+
     	return true;
     }
 
