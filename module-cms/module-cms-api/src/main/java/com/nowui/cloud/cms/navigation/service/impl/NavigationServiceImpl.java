@@ -1,20 +1,15 @@
 package com.nowui.cloud.cms.navigation.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.cms.advertisement.entity.Advertisement;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.mapper.NavigationMapper;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
-import com.nowui.cloud.cms.toolbar.entity.Toolbar;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 导航栏业务实现
@@ -48,7 +43,7 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
                         .likeAllowEmpty(Navigation.NAVIGATION_CODE, navigationCode)
                         .likeAllowEmpty(Navigation.NAVIGATION_NAME, navigationName)
                         .eq(Navigation.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Navigation.SYSTEM_CREATE_TIME)),
+                        .orderAsc(Arrays.asList(Navigation.NAVIGATION_SORT)),
                 m,
                 n
         );
@@ -63,7 +58,7 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
 				.eq(Navigation.APP_ID, appId)
 				.eq(Navigation.SYSTEM_STATUS, true)
 				.eq(Navigation.NAVIGATION_CATEGORY_CODE, navigationCategoryCode)
-				.orderDesc(Arrays.asList(Navigation.NAVIGATION_SORT))
+				.orderAsc(Arrays.asList(Navigation.NAVIGATION_SORT))
 			);
 		
 		return resultList;

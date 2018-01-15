@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 2018-01-08
  */
 @Component(value = "memberAddressRpc")
-@FeignClient(name = "module-base")
+@FeignClient(name = "module-member")
 public interface MemberAddressRpc {
 
 }

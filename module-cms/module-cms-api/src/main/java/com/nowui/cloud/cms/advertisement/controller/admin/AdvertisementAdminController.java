@@ -55,7 +55,7 @@ public class AdvertisementAdminController extends BaseController {
         String fileIds = Util.beanToFieldString(resultList, Advertisement.ADEVERTISEMENT_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+        resultList = Util.beanAddField(resultList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_PATH);
         
         validateResponse(
             Advertisement.ADEVERTISEMENT_ID, 
@@ -63,11 +63,11 @@ public class AdvertisementAdminController extends BaseController {
             Advertisement.ADEVERTISEMENT_TITLE,
             Advertisement.ADEVERTISEMENT_CODE, 
             Advertisement.ADEVERTISEMENT_IMAGE, 
-            File.FILE_ID, 
             File.FILE_PATH, 
             Advertisement.ADEVERTISEMENT_IS_EFFICIENT, 
             Advertisement.ADEVERTISEMENT_LINK,
-            Advertisement.ADEVERTISEMENT_POSITION
+            Advertisement.ADEVERTISEMENT_POSITION,
+            Advertisement.ADEVERTISEMENT_SORT
         );
         
         return renderJson(resultTotal, resultList);

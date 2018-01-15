@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 2018-01-09
  */
 @Component(value = "memberInformRpc")
-@FeignClient(name = "module-base")
+@FeignClient(name = "module-member")
 public interface MemberInformRpc {
 
 }

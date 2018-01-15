@@ -54,14 +54,13 @@ public class ToolbarAdminController extends BaseController {
         String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+        resultList = Util.beanAddField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
 
         validateResponse(
             Toolbar.TOOLBAR_ID, 
             Toolbar.TOOLBAR_NAME, 
-            Toolbar.TOOLBAR_IMAGE,
+            File.FILE_PATH,
             Toolbar.TOOLBAR_SORT
-            
         );
 
         return renderJson(resultTotal, resultList);
