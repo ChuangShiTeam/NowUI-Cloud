@@ -56,4 +56,14 @@ public interface MemberDialogueRecordService extends BaseService<MemberDialogueR
      * @return List<MemberDialogueRecord> 会员对话记录列表
      */
     List<MemberDialogueRecord> listByMemberDialogueIdForMobile(String memberDialogueId, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 根据会话对话编号查询会员对话记录列表
+     * 
+     * @param memberDialogueId 会员对话编号
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<MemberDialogueRecord> 会员对话记录列表
+     */
+    List<MemberDialogueRecord> listByMemberDialogueIdForMobile(String memberDialogueId, Integer pageIndex, Integer pageSize);
 }

@@ -59,4 +59,21 @@ public interface MemberFollowService extends BaseService<MemberFollow> {
      * @return 会员被关注数
      */
     Integer countBeFollowed(String userId);
+    
+    /**
+     * 会员关注列表
+     *
+     * @param userId 用户编号
+     * @return List<MemberFollow> 会员关注列表
+     */
+    List<MemberFollow> listByUserId(String userId);
+    
+    /**
+     * 会员被关注列表
+     *
+     * @param followUserId 被关注用户编号
+     * @return List<MemberFollow> 会员关注列表
+     */
+    List<MemberFollow> listByFollowUserId(String followUserId);
+
 }

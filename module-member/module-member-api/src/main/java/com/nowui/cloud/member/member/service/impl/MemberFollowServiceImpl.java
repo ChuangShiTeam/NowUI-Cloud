@@ -80,4 +80,28 @@ public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper,
         return count;
     }
 
+    @Override
+    public List<MemberFollow> listByUserId(String userId) {
+        List<MemberFollow> memberFollowList = list(
+                new BaseWrapper<MemberFollow>()
+                        .likeAllowEmpty(MemberFollow.USER_ID, userId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
+        );
+
+        return memberFollowList;
+    }
+
+    @Override
+    public List<MemberFollow> listByFollowUserId(String followUserId) {
+        List<MemberFollow> memberFollowList = list(
+                new BaseWrapper<MemberFollow>()
+                        .likeAllowEmpty(MemberFollow.FOLLOW_USER_ID, followUserId)
+                        .eq(MemberFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(MemberFollow.SYSTEM_CREATE_TIME))
+        );
+
+        return memberFollowList;
+    }
+
 }

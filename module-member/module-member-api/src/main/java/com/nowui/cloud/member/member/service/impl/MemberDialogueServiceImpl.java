@@ -57,8 +57,8 @@ public class MemberDialogueServiceImpl extends BaseServiceImpl<MemberDialogueMap
     public MemberDialogue findByInitiateUserIdAndRespondUserId(String initiateUserId, String respondUserId) {
         MemberDialogue memberDialogue = find(
                 new BaseWrapper<MemberDialogue>()
-                        .likeAllowEmpty(MemberDialogue.INITIATE_USER_ID, initiateUserId)
-                        .likeAllowEmpty(MemberDialogue.RESPOND_USER_ID, respondUserId)
+                        .eq(MemberDialogue.INITIATE_USER_ID, initiateUserId)
+                        .eq(MemberDialogue.RESPOND_USER_ID, respondUserId)
                         .eq(MemberDialogue.SYSTEM_STATUS, true)
         );
         return memberDialogue;

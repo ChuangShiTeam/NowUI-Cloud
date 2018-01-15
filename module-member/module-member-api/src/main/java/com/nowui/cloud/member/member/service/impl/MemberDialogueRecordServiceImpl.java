@@ -69,6 +69,22 @@ public class MemberDialogueRecordServiceImpl extends BaseServiceImpl<MemberDialo
                 new BaseWrapper<MemberDialogueRecord>()
                         .likeAllowEmpty(MemberDialogueRecord.MEMBER_DIALOGUE_ID, memberDialogueId)
                         .eq(MemberDialogueRecord.SYSTEM_STATUS, true)
+                        .gt(MemberDialogueRecord.SYSTEM_CREATE_TIME, systemCreateTime)
+                        .orderDesc(Arrays.asList(MemberDialogueRecord.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return memberDialogueRecordList;
+    }
+
+    @Override
+    public List<MemberDialogueRecord> listByMemberDialogueIdForMobile(String memberDialogueId, Integer pageIndex,
+            Integer pageSize) {
+        List<MemberDialogueRecord> memberDialogueRecordList = list(
+                new BaseWrapper<MemberDialogueRecord>()
+                        .likeAllowEmpty(MemberDialogueRecord.MEMBER_DIALOGUE_ID, memberDialogueId)
+                        .eq(MemberDialogueRecord.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(MemberDialogueRecord.SYSTEM_CREATE_TIME)),
                 pageIndex,
                 pageSize

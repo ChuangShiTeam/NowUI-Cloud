@@ -1,10 +1,12 @@
 package com.nowui.cloud.base.user.controller.system;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
@@ -305,6 +307,18 @@ public class UserSystemController implements UserRpc {
         }
         
         return result;
+    }
+
+    @Override
+    public List<User> findsV1(String userIds) {
+        
+        if (Util.isNullOrEmpty(userIds)) {
+            return null;
+        }
+        
+        List<String> userIdList = JSONArray.parseArray(userIds, String.class);
+        
+        return userIdList.stream().map(userId -> findV1(userId)).collect(Collectors.toList());
     }
 
 }
