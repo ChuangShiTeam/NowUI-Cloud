@@ -42,7 +42,7 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
                         .like(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
                         .like(Advertisement.ADEVERTISEMENT_TITLE, advertisementTitle)
                         .eq(Advertisement.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Advertisement.SYSTEM_CREATE_TIME))
+                        .orderAsc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
                 ,m
                 ,n
         );
@@ -57,10 +57,23 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
 				.eq(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
 				.eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, true)
 				.eq(Advertisement.SYSTEM_STATUS, true)
-				.orderDesc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
+				.orderAsc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
 			);
 
 		return bannerList;
 	}
+
+    @Override
+    public List<Advertisement> listByCategoryCode(String appId, String advertisementCategoryCode) {
+        List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
+                .eq(Advertisement.APP_ID, appId)
+                .eq(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
+                .eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, true)
+                .eq(Advertisement.SYSTEM_STATUS, true)
+                .orderAsc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
+            );
+
+        return bannerList;
+    }
     
 }

@@ -13,7 +13,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2017年12月26日
  */
-public interface AdvertisementService extends BaseService<Advertisement>, AdvertisementRpc {
+public interface AdvertisementService extends BaseService<Advertisement> {
     
     /**
      * 广告统计
@@ -40,8 +40,17 @@ public interface AdvertisementService extends BaseService<Advertisement>, Advert
     /**
      * 广告列表
      * @param appId 应用编号
+     * @param advertisementCategoryCode 广告分类编码
      * @return List<Advertisement> 广告列表
      */
     List<Advertisement> mobileList(String appId, String advertisementCategoryCode);
+    
+    /**
+     * 根据广告分类编码查询广告列表
+     * @param appId 应用编号
+     * @param advertisementCategoryCode 广告分类编码
+     * @return List<Advertisement> 广告列表
+     */
+    List<Advertisement> listByCategoryCode(String appId, String advertisementCategoryCode);
 
 }

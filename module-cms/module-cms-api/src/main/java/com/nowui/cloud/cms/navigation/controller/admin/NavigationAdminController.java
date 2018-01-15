@@ -55,15 +55,13 @@ public class NavigationAdminController extends BaseController {
         String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_ID, File.FILE_PATH);
+        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
         
         validateResponse(
                 Navigation.NAVIGATION_ID,
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-                Navigation.NAVIGATION_IMAGE,
-                File.FILE_ID,
                 File.FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
@@ -96,7 +94,8 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_IMAGE,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
-                Navigation.NAVIGATION_SORT
+                Navigation.NAVIGATION_SORT,
+                Navigation.SYSTEM_VERSION
         );
         
         return renderJson(result);

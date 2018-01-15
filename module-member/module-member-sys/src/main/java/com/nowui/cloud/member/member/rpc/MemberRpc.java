@@ -19,7 +19,7 @@ import com.nowui.cloud.member.member.entity.Member;
  * 2018-01-08
  */
 @Component(value = "memberRpc")
-@FeignClient(name = "module-base")
+@FeignClient(name = "module-member")
 public interface MemberRpc {
     
     /**

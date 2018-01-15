@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-02
  */
-@Component(value = "NavigationRpc")
+@Component(value = "navigationRpc")
 @FeignClient(name = "module-cms")
 public interface NavigationRpc {
 
