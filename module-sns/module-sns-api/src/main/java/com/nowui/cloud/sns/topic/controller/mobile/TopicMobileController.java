@@ -119,43 +119,9 @@ public class TopicMobileController extends BaseController {
             topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
             
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-            
-            
-            //处理话题评论图片
-            List<TopicComment> topicCommentList = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
-            /**
-             * 给每个评论设置一个用户头像常量
-             * 
-             * 然后调用接口处理
-             */
-            // 处理用户信息
-            String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
-            
-            List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-            
-            topicCommentList = Util.beanAddField(
-            		topicCommentList, 
-            		TopicComment.USER_ID, 
-            		User.USER_ID, 
-            		memberList, 
-            		User.USER_ID,
-            		UserAvatar.USER_AVATAR,
-            		UserNickName.USER_NICK_NAME);
-            
-            // 处理回复用户信息
-            String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
-            
-            List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
-        
-            Stream<Member> respondMemberStream = respondMemberList.stream();
-            for (TopicComment topicComment : topicCommentList) {
-            	if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
-            		continue;
-            	}
-            	Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-            	topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-            }
         }
+            
+        
         
         /**
          * 需要再调整一下返回参数
@@ -171,7 +137,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOP_TOP_LEVEL,
-                Topic.TOPIC_COMMENT_LIST
+                Topic.TOPIC_MEDIA_LIST
         );
 
         return renderJson(resultTotal, resultList);
@@ -287,6 +253,7 @@ public class TopicMobileController extends BaseController {
         /**
          * 等用户接口好了,再写
          */
+        
         
         
         

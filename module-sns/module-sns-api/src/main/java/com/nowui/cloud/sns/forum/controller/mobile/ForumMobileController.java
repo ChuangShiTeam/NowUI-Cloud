@@ -131,14 +131,12 @@ public class ForumMobileController extends BaseController {
     	forum.put(Forum.FORUM_MEDIA_ID, file);
         
         String userId = forum.getForumModerator();
-        //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人简介,头像,
+        //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
         /**
          * 等用户接口
          */
-        Member moderator = memberRpc.findByUserIdV1(userId);
+        Member moderator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
         forum.put(Forum.FORUM_MODERATOR, moderator);
-        
-
 
         
         //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后遍历查找用户头像,只返回前6个的头像和userId.
@@ -199,10 +197,6 @@ public class ForumMobileController extends BaseController {
         				, body.getPageSize()
         		);
         
-        
-        /**
-         * 等用户接口
-         */
         String userIds = Util.beanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
         List<Member> nickNameAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
         
@@ -425,45 +419,40 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.FORUM_ID
         );
-        //forum包含了简介,名称,头像,背景图片
+        //forum包含了论坛简介,论坛名称,论坛头像,论坛背景图片
         Forum forum = forumService.find(body.getForumId());
-        //处理头像
+        //处理论坛头像
         File file = fileRpc.findV1(forum.getForumMediaId());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_MEDIA_ID, file);
-    	//处理背景图片
+    	//处理论坛背景图片
         File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMediaId());
         backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_BACKGROUND_MEDIA_ID, backgroundfile);
-        
-        
+
+
         String userId = forum.getForumModerator();
         //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个性签名,头像
         /**
          * 等用户接口
          */
-        
-        
-        
-        
-        
+        Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
+        forum.put(Forum.FORUM_MODERATOR, forumModerator);
 
 
 
         validateResponse(
-//                Forum.FORUM_ID,
+                Forum.FORUM_ID,
                 Forum.FORUM_MEDIA_ID,
-//                Forum.FORUM_MEDIA_TYPE,
+                Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_BACKGROUND_MEDIA_ID,
-//                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR
-//                Forum.FORUM_TOPIC_LOCATION,
-//                Forum.FORUM_IS_ACTIVE,
         );
 
         return renderJson(forum);
     }
-    
+
 }

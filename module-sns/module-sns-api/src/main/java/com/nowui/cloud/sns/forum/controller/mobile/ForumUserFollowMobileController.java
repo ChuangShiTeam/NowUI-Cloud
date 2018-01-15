@@ -3,6 +3,8 @@ package com.nowui.cloud.sns.forum.controller.mobile;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
@@ -48,6 +50,9 @@ public class ForumUserFollowMobileController extends BaseController {
 
 	@Autowired
     private FileRpc fileRpc;
+	
+	@Autowired
+	private MemberRpc memberRpc;
 
 	@Autowired
 	private TopicForumService topicForumService;
@@ -87,18 +92,17 @@ public class ForumUserFollowMobileController extends BaseController {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.USER_ID,
                 ForumUserFollow.PAGE_INDEX,
                 ForumUserFollow.PAGE_SIZE
         );
-
-        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
         body.setUserId(body.getSystemRequestUserId());
+        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
+        
         
         //得到forumList
         List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), null, body.getPageIndex(), body.getPageSize());
 
-        ArrayList<Forum> arrayList = new ArrayList<Forum>();
+        ArrayList<Forum> forumList = new ArrayList<Forum>();
 
         for (ForumUserFollow forumUserFollow : resultList) {
         //根据forumId去论坛信息表取 论坛头像、论坛名称、论坛简介
@@ -106,35 +110,38 @@ public class ForumUserFollowMobileController extends BaseController {
         	//forum包含名称和简介
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
         	
-        	
+        	//处理论坛头像
         	String forumMediaId = forum.getForumMediaId();
         	File file = fileRpc.findV1(forumMediaId);
             file.keep(File.FILE_ID, File.FILE_PATH);
             forum.put(Forum.FORUM_MEDIA_ID, file);
 
+            
         //根据forumId去论坛话题关联表查询 当日话题最新数量
             Integer count = topicForumService.countForToday(body.getAppId(), forumUserFollow.getForumId(), null);
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
+
 
         //根据forumId得到版主id，使用 用户接口 得到版主头像
             String forumModeratorId = forum.getForumModerator();
             /**
              * 等用户接口
              */
+            Member moderator = memberRpc.nickNameAndAvatarFindV1(forumModeratorId);
+            forum.put(Forum.FORUM_MODERATOR, moderator);
 
-
-
-
-
-            arrayList.add(forum);
+            forumList.add(forum);
         }
 
         validateResponse(
-                ForumUserFollow.FORUM_USER_FOLLOW_ID,
-                ForumUserFollow.USER_ID,
-                ForumUserFollow.FORUM_ID
+                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA_TYPE,
+                Forum.FORUM_NAME,
+                Forum.FORUM_DESCRIPTION,
+                Forum.FORUM_TODAY_TOPIC_COUNT,
+                Forum.FORUM_MODERATOR
         );
 
-        return renderJson(resultTotal, arrayList);
+        return renderJson(resultTotal, forumList);
     }
 }

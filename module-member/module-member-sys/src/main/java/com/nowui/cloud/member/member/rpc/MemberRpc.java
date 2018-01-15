@@ -83,6 +83,15 @@ public interface MemberRpc {
     Member nickNameAndAvatarFindV1(String userId);
     
     /**
+     * 根据用户编号查询会员信息（昵称、头像、签名）
+     * 
+     * @param userId 用户编号
+     * @return Member 会员信息
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/signature/find", method = RequestMethod.POST)
+    Member nickNameAndAvatarAndSignatureFind(String userId);
+    
+    /**
      * 根据用户编号查询会员信息（昵称、头像、背景、签名）
      * 
      * @param userId 用户编号
