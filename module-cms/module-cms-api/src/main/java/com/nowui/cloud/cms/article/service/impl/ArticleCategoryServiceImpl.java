@@ -27,10 +27,10 @@ import com.nowui.cloud.util.Util;
 public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryMapper, ArticleCategory> implements ArticleCategoryService {
 
     @Override
-    public Integer countForAdmin(String appId, String articleCategoryName) {
+    public Integer countForAdmin(String appId, String articleCategoryName, String articleCategoryCode) {
         Integer count = 0;
         
-        if (Util.isNullOrEmpty(articleCategoryName)) {
+        if (Util.isNullOrEmpty(articleCategoryName) && Util.isNullOrEmpty(articleCategoryCode)) {
             count = count(
                     new BaseWrapper<ArticleCategory>()
                             .eq(ArticleCategory.APP_ID, appId)
@@ -41,7 +41,8 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
             count = count(
                     new BaseWrapper<ArticleCategory>()
                             .eq(ArticleCategory.APP_ID, appId)
-                            .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                            .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                            .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
                             .eq(ArticleCategory.SYSTEM_STATUS, true)
                     );
         }
@@ -50,7 +51,7 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     }
     
     @Override
-    public List<ArticleCategory> listForAdmin(String appId, String articleCategoryName, Integer m, Integer n) {
+    public List<ArticleCategory> listForAdmin(String appId, String articleCategoryName, String articleCategoryCode, Integer m, Integer n) {
         List<ArticleCategory> articleCategoryList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)
@@ -64,12 +65,11 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     }
     
     @Override
-    public List<Map<String, Object>> adminTreeList(String appId, String articleCategoryName, Integer pageIndex, Integer pageSize) {
+    public List<Map<String, Object>> adminTreeList(String appId, Integer pageIndex, Integer pageSize) {
         List<ArticleCategory> topList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)
                         .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                        .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
                         .eq(ArticleCategory.SYSTEM_STATUS, true)
                         .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT)),
                 pageIndex,
@@ -88,9 +88,10 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(ArticleCategory.ARTICLE_CATEGORY_ID, articleCategory.getArticleCategoryId());
             map.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategory.getArticleCategoryName());
+            map.put(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategory.getArticleCategoryCode());
             map.put(ArticleCategory.ARTICLE_CATEGORY_SORT, articleCategory.getArticleCategorySort());
             
-            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategory.getArticleCategoryId(), ArticleCategory.ARTICLE_CATEGORY_SORT));
+            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategory.getArticleCategoryId(), ArticleCategory.ARTICLE_CATEGORY_SORT, ArticleCategory.ARTICLE_CATEGORY_CODE));
             
             list.add(map);
         }
@@ -99,9 +100,10 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
     
     /**
      * 递归遍历生成树形结构数据
-     * @param articleCategoryList
-     * @param articleCategoryParentId
-     * @param keys
+     * 
+     * @param articleCategoryList 文章分类列表
+     * @param articleCategoryParentId 文章分类父级编号
+     * @param keys 树形中需要保存的Key
      * @return
      */
     private List<Map<String, Object>> getChildren(List<ArticleCategory> articleCategoryList, String articleCategoryParentId, String... keys) {
@@ -159,6 +161,17 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
             list.add(map);
         }
         return list;
+    }
+
+    @Override
+    public ArticleCategory findByCategoryCode(String appId, String articleCategoryCode) {
+        ArticleCategory articleCategory = find(
+                new BaseWrapper<ArticleCategory>()
+                .eq(ArticleCategory.APP_ID, appId)
+                .eq(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
+                .eq(ArticleCategory.SYSTEM_STATUS, true)
+        );
+        return articleCategory;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.nowui.cloud.wawi.wawi.controller.mobile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.rpc.AdvertisementRpc;
+import com.nowui.cloud.cms.article.entity.Article;
+import com.nowui.cloud.cms.article.rpc.ArticleRpc;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.rpc.NavigationRpc;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
@@ -43,6 +46,9 @@ public class WawiIndexMobileController extends BaseController {
     
     @Autowired
     private ToolbarRpc toolbarRpc;
+    
+    @Autowired
+    private ArticleRpc articleRpc;
     
     @ApiOperation(value = "哇伊首页初始数据")
     @RequestMapping(value = "/wawi/mobile/v1/index/init", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,16 +93,39 @@ public class WawiIndexMobileController extends BaseController {
             );
         }
         
+        // 宠物分类列表
+        List<Article> petCategoryList = articleRpc.listByCategoryCodeV1(body.getAppId(), "PET_CATEGORY");
+        
+        for (Article article : petCategoryList) {
+            article.keep(
+                    Article.ARTICLE_ID, 
+                    File.FILE_PATH,
+                    Article.ARTICLE_TITLE
+            );
+        }
+        
+        // 猜你喜欢列表 随机取5条 TODO
+        List<Article> recommendList = new ArrayList<>();
+        
+        // 热门话题 置顶加点击数
+        List<Article> hotList = new ArrayList<>();
+        
         Map<String, Object> result = new HashMap<String, Object>();
         
         result.put("indexBannerList", indexBannerList);
         result.put("indexNavigationList", indexNavigationList);
         result.put("toolbarList", toolbarList);
+        result.put("petCategoryList", petCategoryList);
+        result.put("recommendList", recommendList);
+        result.put("hotList", hotList);
         
         validateResponse(
                 "indexBannerList", 
                 "indexNavigationList",
-                "toolbarList"
+                "toolbarList",
+                "petCategoryList",
+                "recommendList",
+                "hotList"
         );
         return renderJson(result);
     }

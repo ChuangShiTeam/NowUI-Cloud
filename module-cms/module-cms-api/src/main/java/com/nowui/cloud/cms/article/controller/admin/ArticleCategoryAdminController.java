@@ -41,23 +41,24 @@ public class ArticleCategoryAdminController extends BaseController {
             body, 
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME,
+            ArticleCategory.ARTICLE_CATEGORY_CODE,
             ArticleCategory.PAGE_INDEX, 
             ArticleCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.countForAdmin(body.getAppId(), body.getArticleCategoryName());
-        if (Util.isNullOrEmpty(body.getArticleCategoryName())) {
+        Integer resultTotal = articleCategoryService.countForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getArticleCategoryCode());
+        if (Util.isNullOrEmpty(body.getArticleCategoryName()) && Util.isNullOrEmpty(body.getArticleCategoryCode())) {
             
-            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
+            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(body.getAppId(), body.getPageIndex(), body.getPageSize());
 
-            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
 
         } else {
-            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getPageIndex(), body.getPageSize());
+            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getArticleCategoryCode(), body.getPageIndex(), body.getPageSize());
 
-            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
         }
@@ -91,6 +92,7 @@ public class ArticleCategoryAdminController extends BaseController {
                 ArticleCategory.ARTICLE_CATEGORY_ID, 
                 ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
                 ArticleCategory.ARTICLE_CATEGORY_NAME, 
+                ArticleCategory.ARTICLE_CATEGORY_CODE, 
                 ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
                 ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
                 ArticleCategory.ARTICLE_CATEGORY_SORT, 
@@ -107,6 +109,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
+            ArticleCategory.ARTICLE_CATEGORY_CODE, 
             ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
             ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION
         );
@@ -146,6 +149,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
+            ArticleCategory.ARTICLE_CATEGORY_CODE, 
             ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
             ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
             ArticleCategory.SYSTEM_VERSION

@@ -45,5 +45,13 @@ public interface ArticleArticleCategoryService extends BaseService<ArticleArticl
      * @return
      */
     void deleteByArticleId(String articleId, String systemRequestUserId);
+    
+    /**
+     * 根据文章分类编号查询问文章的主分类列表
+     * 
+     * @param articleCategoryId 文章分类编号
+     * @return List<ArticleArticleCategory> 文章文章分类列表
+     */
+    List<ArticleArticleCategory> listPrimaryByArticleCategoryId(String articleCategoryId);
 
 }

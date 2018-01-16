@@ -1,13 +1,13 @@
 package com.nowui.cloud.cms.article.service.impl;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
@@ -151,6 +151,31 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         }
         
         return result;
+    }
+
+    @Override
+    public List<Article> listByPrimaryCategoryCode(String appId, String articleCategoryCode) {
+        
+        ArticleCategory articleCategory = articleCategoryService.findByCategoryCode(appId, articleCategoryCode);
+        
+        if (articleCategory == null) {
+            return null;
+        }
+        
+        List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listPrimaryByArticleCategoryId(articleCategory.getArticleCategoryId());
+        
+        if (Util.isNullOrEmpty(articleArticleCategoryList)) {
+            return null;
+        }
+        
+        // 查询文章列表并按文章排序字段排序
+        List<Article> articleList = articleArticleCategoryList
+                                    .stream()
+                                    .map(articleArticleCategory -> find(articleArticleCategory.getArticleId()))
+                                    .sorted(Comparator.comparing(Article::getArticleSort))
+                                    .collect(Collectors.toList());
+        
+        return articleList;
     }
 
 }

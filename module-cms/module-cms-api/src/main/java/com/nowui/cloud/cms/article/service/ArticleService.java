@@ -5,7 +5,6 @@ import java.util.List;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
-import com.nowui.cloud.cms.article.rpc.ArticleRpc;
 import com.nowui.cloud.service.BaseService;
 
 /**
@@ -15,7 +14,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2017年12月26日
  */
-public interface ArticleService extends BaseService<Article>, ArticleRpc {
+public interface ArticleService extends BaseService<Article> {
     
     /**
      * 文章统计
@@ -59,4 +58,12 @@ public interface ArticleService extends BaseService<Article>, ArticleRpc {
      */
     Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
     
+    /**
+     * 根据文章主分类编码查询文章列表
+     * 
+     * @param appId 应用编号
+     * @param articleCategoryCode 文章主分类编码
+     * @return List<Article> 文章列表信息
+     */
+    List<Article> listByPrimaryCategoryCode(String appId, String articleCategoryCode);
 }
