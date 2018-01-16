@@ -83,4 +83,37 @@ public interface TopicService extends BaseService<Topic> {
      * @return
      */
     Topic findTheTopicDetails(Topic body);
+
+
+    /**
+     * 根据userId的list集合使用in方法统计所有话题信息数量
+     * (根据我关注的人的用户id的list 统计话题数量)
+     * 
+     * @param appId 应用编号
+     * @param userIdList 用户id列表
+     * @return
+     */
+    Integer countByUserIdList(String appId, List<String> userIdList);
+    
+    /**
+     * 根据userId的list集合使用in方法查询所有话题信息
+     * (根据我关注的人的用户id的list 查询所有话题信息)
+     * 
+     * @param appId 应用编号
+     * @param userIdList 用户id列表
+     * @param pageIndex 从第几条开始
+     * @param pageSize 取多少条
+     * @return topic列表
+     */
+    List<Topic> listByUserIdList(String appId, List<String> userIdList, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 处理要返回的话题列表信息(用户信息,收藏数,点赞数,是否关注等)
+     * 
+     * @param body 使用前端带来的system参数
+     * @param topicList 要处理的话题列表
+     * @return List<Topic> 处理后的话题列表
+     */
+    List<Topic> handleTopic(Topic body, List<Topic> topicList);
+
 }

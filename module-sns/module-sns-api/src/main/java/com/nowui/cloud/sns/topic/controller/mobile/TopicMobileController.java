@@ -22,6 +22,8 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.TopicForum;
 import com.nowui.cloud.sns.forum.service.TopicForumService;
@@ -89,6 +91,9 @@ public class TopicMobileController extends BaseController {
 	
 	@Autowired
 	private MemberRpc memberRpc;
+	
+	@Autowired
+	private MemberFollowRpc memberFollowRpc;
 
 
 
@@ -159,6 +164,7 @@ public class TopicMobileController extends BaseController {
         Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
 
+        //处理话题图片
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
@@ -202,8 +208,11 @@ public class TopicMobileController extends BaseController {
 
 	    Topic topic = topicService.findTheTopicDetails(body);
 
+	    //处理用户信息(昵称,头像,是否关注)
+	    memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, userId);
+	    
+	    
 	    //处理图片
-	    //得到图片列表
 	    List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
         String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
@@ -246,13 +255,49 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
-        
-        //先得到用户关注的人的数量,和列表
-        
-        //然后根据用户列表去topic表 查询 得到话题列表
         /**
          * 等用户接口好了,再写
          */
+        //先得到用户关注的人的id列表
+        List<String> followUserIdList = memberFollowRpc.followUserIdList(body.getSystemRequestUserId());
+        
+        //根据我关注的人的userId列表,用in去查询统计数量
+        Integer countResult = topicService.countByUserIdList(body.getAppId(), followUserIdList);
+        
+        //根据我关注的人的userId列表,用in去查询记录
+        List<Topic> listByUserIdList = topicService.listByUserIdList(body.getAppId(), followUserIdList, body.getPageIndex(), body.getPageSize());
+        
+        //得到处理后的结果
+        List<Topic> topicList = topicService.handleTopic(body, listByUserIdList);
+        
+        //在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
+        
+        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+        
+        topicList = Util.beanAddField(
+        		topicList, 
+        		Topic.USER_ID, 
+        		User.USER_ID, 
+        		nickAndAvatarAndIsFollowList, 
+        		User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
+        	);
+        
+        
+        //在controller层调用其他接口处理话题的图片信息
+        for (Topic topic : topicList) {
+            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+
+            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+
+            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        }
         
         
         
@@ -274,9 +319,11 @@ public class TopicMobileController extends BaseController {
                 Topic.TOP_TOP_LEVEL
         );
 
-        return renderJson(0, null);
+        return renderJson(countResult, listByUserIdList);
     }
 
+    
+    
     @ApiOperation(value = "新增话题信息")
     @RequestMapping(value = "/topic/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody Topic body) {
