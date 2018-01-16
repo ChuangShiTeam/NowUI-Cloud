@@ -75,5 +75,16 @@ public class ArticleArticleCategoryServiceImpl extends BaseServiceImpl<ArticleAr
         
     }
 
+    @Override
+    public List<ArticleArticleCategory> listPrimaryByArticleCategoryId(String articleCategoryId) {
+        List<ArticleArticleCategory> articleArticleCategoryList = list(
+                new BaseWrapper<ArticleArticleCategory>()
+                .eq(ArticleArticleCategory.ARTICLE_CATEGORY_ID, articleCategoryId)
+                .eq(ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY, true)
+                .eq(ArticleArticleCategory.SYSTEM_STATUS, true)
+        );
+        return articleArticleCategoryList;
+    }
+
 
 }

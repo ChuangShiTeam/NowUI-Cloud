@@ -76,6 +76,16 @@ public class ArticleCategory extends BaseEntity {
     public static final String ARTICLE_CATEGORY_NAME = "articleCategoryName";
     
     /**
+     * 分类编码
+     */
+    @Field
+    @TableField
+    @NotNull(message = "分类编码不能为空")
+    @Length(max = 50, message = "分类编码超出限制")
+    private String articleCategoryCode;
+    public static final String ARTICLE_CATEGORY_CODE = "articleCategoryCode";
+    
+    /**
      * 关键字
      */
     @Field
@@ -143,6 +153,14 @@ public class ArticleCategory extends BaseEntity {
     
     public void setArticleCategoryName(String articleCategoryName) {
         put(ARTICLE_CATEGORY_NAME, articleCategoryName);
+    }
+    
+    public String getArticleCategoryCode() {
+        return getString(ARTICLE_CATEGORY_CODE);
+    }
+    
+    public void setArticleCategoryCode(String articleCategoryCode) {
+        put(ARTICLE_CATEGORY_CODE, articleCategoryCode);
     }
     
     public String getArticleCategoryKeywords() {

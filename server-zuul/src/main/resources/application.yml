@@ -68,6 +68,11 @@ zuul:
       path: /forum/**
       serviceId: module-sns
       stripPrefix: false
+    wawi:
+      path: /wawi/**
+      serviceId: module-wawi
+      stripPrefix: false
+
 hystrix:
   command:
     default:
