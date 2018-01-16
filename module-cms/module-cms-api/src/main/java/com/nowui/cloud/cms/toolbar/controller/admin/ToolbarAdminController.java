@@ -49,13 +49,13 @@ public class ToolbarAdminController extends BaseController {
         );
         Integer resultTotal = toolbarService.countForAdmin(body.getAppId(), body.getToolbarName());
         List<Toolbar> resultList = toolbarService.listForAdmin(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
-
+        //处理工具栏未激活图片
         String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
         resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
         
-        
+        //处理工具栏激活图片
         String activeFileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
         List<File> activeFileList = fileRpc.findsV1(activeFileIds);
         
@@ -66,6 +66,7 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_NAME, 
             Toolbar.TOOLBAR_IMAGE,
             Toolbar.TOOLBAR_ACTIVE_IMAGE,
+            Toolbar.TOOLBAR_URL,
             Toolbar.TOOLBAR_SORT
         );
 
@@ -93,6 +94,7 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_ACTIVE_IMAGE,
             Toolbar.TOOLBAR_IMAGE, 
             Toolbar.TOOLBAR_SORT, 
+            Toolbar.TOOLBAR_URL,
             Toolbar.SYSTEM_VERSION
         );
 
@@ -108,6 +110,7 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_NAME, 
             Toolbar.TOOLBAR_ACTIVE_IMAGE, 
             Toolbar.TOOLBAR_IMAGE, 
+            Toolbar.TOOLBAR_URL,
             Toolbar.TOOLBAR_SORT
         );
 
@@ -125,6 +128,7 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_NAME,
             Toolbar.TOOLBAR_ACTIVE_IMAGE, 
             Toolbar.TOOLBAR_IMAGE, 
+            Toolbar.TOOLBAR_URL,
             Toolbar.TOOLBAR_SORT,
             Toolbar.SYSTEM_VERSION
         );

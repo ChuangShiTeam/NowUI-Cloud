@@ -75,6 +75,18 @@ public class Toolbar extends BaseEntity {
     private String toolbarImage;
     public static final String TOOLBAR_IMAGE = "toolbarImage";
     
+    
+    /**
+     * 工具栏地址
+     */
+    @Field
+    @TableField
+    @NotNull(message = "工具栏地址不能为空")
+    @Length(max = 200, message = "工具栏地址长度超出限制")
+    private String toolbarUrl;
+    public static final String TOOLBAR_URL = "toolbarUrl";
+    
+    
     /**
      * 工具栏排序
      */
@@ -122,6 +134,14 @@ public class Toolbar extends BaseEntity {
     
     public void setToolbarImage(String toolbarImage) {
         put(TOOLBAR_IMAGE, toolbarImage);
+    }
+    
+    public String getToolbarUrl() {
+        return getString(TOOLBAR_URL);
+    }
+    
+    public void setToolbarUrl(String toolbarUrl) {
+        put(TOOLBAR_URL, toolbarUrl);
     }
     
     public Integer getToolbarSort() {

@@ -45,6 +45,7 @@ public class ToolbarMobileController extends BaseController {
     	validateResponse(
     		Toolbar.TOOLBAR_ACTIVE_IMAGE,
     		Toolbar.TOOLBAR_IMAGE,
+    		Toolbar.TOOLBAR_URL,
     		Toolbar.TOOLBAR_NAME
     	);
 
