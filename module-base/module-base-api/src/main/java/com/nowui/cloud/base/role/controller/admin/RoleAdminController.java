@@ -6,7 +6,6 @@ import com.nowui.cloud.base.role.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.Hibernate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -124,6 +123,16 @@ public class RoleAdminController extends BaseController {
         Boolean result = roleService.delete(body.getRoleId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "角色重建缓存")
+    @RequestMapping(value = "/role/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Role body) {
+        validateRequest(body, Role.ROLE_ID);
+
+        roleService.replace(body.getRoleId());
+
+        return renderJson(true);
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -172,6 +173,16 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean result = articleCategoryService.delete(body.getArticleCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "文章分类重建缓存")
+    @RequestMapping(value = "/article/category/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody ArticleCategory body) {
+        validateRequest(body, ArticleCategory.ARTICLE_CATEGORY_ID);
+
+        articleCategoryService.replace(body.getArticleCategoryId());
+
+        return renderJson(true);
     }
 
 }

@@ -4,6 +4,7 @@ import com.nowui.cloud.util.Util;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.menu.entity.Menu;
 import com.nowui.cloud.base.menu.service.MenuService;
+import com.nowui.cloud.base.role.entity.Role;
 import com.nowui.cloud.constant.Constant;
 
 import io.swagger.annotations.Api;
@@ -122,7 +123,7 @@ public class MenuAdminController extends BaseController {
 
             menuParentPath = jsonArray.toJSONString();
         }
-        
+
         body.setMenuParentPath(menuParentPath);
 
         Boolean result = menuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -163,6 +164,16 @@ public class MenuAdminController extends BaseController {
         Boolean result = menuService.delete(body.getMenuId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+
+    @ApiOperation(value = "菜单重建缓存")
+    @RequestMapping(value = "/menu/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Menu body) {
+        validateRequest(body, Menu.MENU_ID);
+
+        menuService.replace(body.getMenuId());
+
+        return renderJson(true);
     }
 
 }

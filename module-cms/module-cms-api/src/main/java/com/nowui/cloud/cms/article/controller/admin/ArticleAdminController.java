@@ -262,5 +262,15 @@ public class ArticleAdminController extends BaseController {
 
         return renderJson(result);
     }
+    
+    @ApiOperation(value = "文章重建缓存")
+    @RequestMapping(value = "/article/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Article body) {
+        validateRequest(body, Article.ARTICLE_ID);
+
+        articleService.replace(body.getArticleId());
+
+        return renderJson(true);
+    }
 
 }
