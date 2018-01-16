@@ -164,6 +164,11 @@ public class TopicMobileController extends BaseController {
         Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
 
+        //处理用户信息(昵称,头像)
+        
+        
+        
+        
         //处理话题图片
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
@@ -209,7 +214,7 @@ public class TopicMobileController extends BaseController {
 	    Topic topic = topicService.findTheTopicDetails(body);
 
 	    //处理用户信息(昵称,头像,是否关注)
-	    memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, userId);
+//	    memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, userId);
 	    
 	    
 	    //处理图片
