@@ -64,4 +64,17 @@ public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Nav
 		return resultList;
 	}
 
+    @Override
+    public List<Navigation> listByCategoryCode(String appId, String navigationCategoryCode) {
+        
+        List<Navigation> resultList = list(new BaseWrapper<Navigation>()
+                .eq(Navigation.APP_ID, appId)
+                .eq(Navigation.SYSTEM_STATUS, true)
+                .eq(Navigation.NAVIGATION_CATEGORY_CODE, navigationCategoryCode)
+                .orderAsc(Arrays.asList(Navigation.NAVIGATION_SORT))
+            );
+        
+        return resultList;
+    }
+
 }

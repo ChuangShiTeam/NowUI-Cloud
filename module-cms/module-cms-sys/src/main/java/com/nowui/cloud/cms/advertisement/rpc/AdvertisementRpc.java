@@ -24,8 +24,9 @@ public interface AdvertisementRpc {
     /**
      * 根据广告分类编码查询广告列表信息
      * 
-     * @param appId 应用编号编号
-     * @return Member 会员信息
+     * @param appId 应用编号
+     * @param advertisementCategoryCode 广告分类编码
+     * @return List<Advertisement> 广告信息列表
      */
     @RequestMapping(value = "/advertisment/system/v1/list/by/category/code", method = RequestMethod.POST)
     List<Advertisement> listByCategoryCodeV1(

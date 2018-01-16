@@ -67,13 +67,12 @@ public class ArticleAdminController extends BaseController {
         String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_ID, File.FILE_PATH);
+        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_PATH);
 
         validateResponse(
             Article.ARTICLE_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
             Article.ARTICLE_TITLE,
-            File.FILE_ID,
             File.FILE_PATH,
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_AUTHOR,
@@ -108,11 +107,17 @@ public class ArticleAdminController extends BaseController {
         }
         //查询文章副媒体
         List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(body.getArticleId());
-        String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
-        List<File> fileList = fileRpc.findsV1(fileIds);
         
-        articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
-        result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
+        if (Util.isNullOrEmpty(articleMeidaList)) {
+            result.put(Article.ARTICLE_MEDIA_LIST, new ArrayList<>());
+        } else {
+            String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+            
+            articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
+            result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
+        }
+        
 
         validateResponse(
             Article.ARTICLE_ID, 
@@ -120,7 +125,7 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_AUTHOR, 
             Article.ARTICLE_SUMMARY,
             Article.ARTICLE_CONTENT, 
-            Article.ARTICLE_MEDIA_ID, 
+            Article.ARTICLE_MEDIA, 
             Article.ARTICLE_MEDIA_TYPE,
             Article.ARTICLE_IS_ALLOW_COMMENT,
             Article.ARTICLE_IS_DRAFT,
@@ -163,7 +168,6 @@ public class ArticleAdminController extends BaseController {
             Article.ARTICLE_KEYWORDS,
             Article.ARTICLE_OUTER_LINK,
             Article.ARTICLE_PUBLISH_TIME,
-            Article.ARTICLE_TOP_END_TIME,
             Article.ARTICLE_SORT,
             Article.ARTICLE_IS_REQUIRE_AUDIT,
             Article.ARTICLE_IS_RECOMMEND,
@@ -174,14 +178,19 @@ public class ArticleAdminController extends BaseController {
 
         JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
         if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new RuntimeException("文章没有选择文章分类");
+            throw new RuntimeException("文章没有选择文章主分类");
         }
-        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
         
         JSONArray articleMediaJsonArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
         List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
         if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
-            mediaList = articleMediaJsonArray.toJavaList(ArticleMedia.class);
+            mediaList = JSONArray.parseArray(articleMediaJsonArray.toJSONString(), ArticleMedia.class); 
+        }
+        
+        // 文章置顶级别
+        if (Util.isNullOrEmpty(body.getArticleTopLevel())) {
+            body.setArticleTopLevel(null);
         }
        
         Boolean result = articleService.save(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());
@@ -220,14 +229,19 @@ public class ArticleAdminController extends BaseController {
         
         JSONArray articleCategoryJsonArray = body.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
         if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new RuntimeException("文章没有选择文章分类");
+            throw new RuntimeException("文章没有选择文章主分类");
         }
-        List<ArticleArticleCategory> articleArticleCategoryList = articleCategoryJsonArray.toJavaList(ArticleArticleCategory.class);
+        List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
         
         JSONArray articleMediaJsonArray = body.getJSONArray(Article.ARTICLE_MEDIA_LIST);
         List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
         if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
-            mediaList = articleMediaJsonArray.toJavaList(ArticleMedia.class);
+            mediaList = JSONArray.parseArray(articleMediaJsonArray.toJSONString(), ArticleMedia.class); 
+        }
+        
+        // 文章置顶级别
+        if (Util.isNullOrEmpty(body.getArticleTopLevel())) {
+            body.setArticleTopLevel(null);
         }
 
         Boolean result = articleService.update(articleArticleCategoryList, mediaList, body, body.getSystemRequestUserId());

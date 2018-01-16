@@ -190,6 +190,43 @@ public class MemberSystemController implements MemberRpc {
         }
         return memberList;
     }
+    
+    @Override
+    public Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId) {
+        Member member = findByUserIdV1(userId);
+        
+        if (member == null) {
+            return null;
+        }
+        
+        User user = (User) member.get(Member.MEMBER_USER);
+        // 处理用户头像
+        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
+        
+        if (userAvatar == null) {
+            member.put(UserAvatar.USER_AVATAR, null);
+        } else {
+            File file = fileRpc.findV1(userAvatar.getUserAvatar());
+            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
+        }
+        
+        // 处理用户昵称
+        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
+        if (userNickName == null) {
+            member.put(UserNickName.USER_NICK_NAME, null);
+        } else {
+            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
+        }
+        
+        // 处理用户是否关注
+        Boolean memberIsFollow = memberFollowService.checkIsFollow(userId, followUserId);
+        
+        member.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
+        
+        member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR, MemberFollow.MEMBER_IS_FOLLOW);
+        
+        return member;
+    }
 
     @Override
     public List<Member> nickNameAndAvatarListV1(String userIds) {

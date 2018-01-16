@@ -186,7 +186,6 @@ public class Article extends BaseEntity {
      */
     @Field
     @TableField
-    @NotNull(message = "文章置顶级别不能为空")
     private Integer articleTopLevel;
     public static final String ARTICLE_TOP_LEVEL = "articleTopLevel";
     
@@ -195,7 +194,6 @@ public class Article extends BaseEntity {
      */
     @Field
     @TableField
-    @NotNull(message = "文章置顶截止时间不能为空")
     private Date articleTopEndTime;
     public static final String ARTICLE_TOP_END_TIME = "articleTopEndTime";
     

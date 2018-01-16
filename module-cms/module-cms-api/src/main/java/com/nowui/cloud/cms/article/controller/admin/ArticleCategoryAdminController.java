@@ -116,18 +116,15 @@ public class ArticleCategoryAdminController extends BaseController {
         if (Util.isNullOrEmpty(body.getArticleCategoryParentId())) {
 
             JSONArray jsonArray = new JSONArray();
-            jsonArray.add(body.getArticleCategoryId());
 
             articleCategoryParentPath = jsonArray.toJSONString();
         } else {
             ArticleCategory parent = articleCategoryService.find(body.getArticleCategoryParentId());
 
-            JSONArray jsonArray;
-            if (Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
-                jsonArray = new JSONArray();
-            } else {
+            JSONArray jsonArray = new JSONArray();;
+            if (!Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
                 jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
-            }
+            } 
             jsonArray.add(parent.getArticleCategoryId());
 
             articleCategoryParentPath = jsonArray.toJSONString();

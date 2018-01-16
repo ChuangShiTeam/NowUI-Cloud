@@ -38,10 +38,19 @@ public interface NavigationService extends BaseService<Navigation> {
     List<Navigation> listForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName, Integer m, Integer n);
     
     /**
-     * 导航栏
+     * 导航栏列表
      * 
      * @param appId 应用编号
      * @return List<Navigation> 导航栏列表
      */
     List<Navigation> mobileList(String appId, String navigationCategoryCode);
+    
+    /**
+     * 根据导航栏分类编码查询导航栏列表
+     * 
+     * @param appId 应用编号
+     * @param navigationCategoryCode 导航栏分类编码
+     * @return List<Navigation> 导航栏列表
+     */
+    List<Navigation> listByCategoryCode(String appId, String navigationCategoryCode);
 }
