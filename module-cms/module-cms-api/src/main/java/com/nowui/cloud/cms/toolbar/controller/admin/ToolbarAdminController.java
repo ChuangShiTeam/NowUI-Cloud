@@ -47,19 +47,25 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.PAGE_INDEX, 
             Toolbar.PAGE_SIZE
         );
-
         Integer resultTotal = toolbarService.countForAdmin(body.getAppId(), body.getToolbarName());
         List<Toolbar> resultList = toolbarService.listForAdmin(body.getAppId(), body.getToolbarName(), body.getM(), body.getN());
 
         String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
+        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
+        
+        
+        String activeFileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
+        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
+        
+        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
 
         validateResponse(
             Toolbar.TOOLBAR_ID, 
             Toolbar.TOOLBAR_NAME, 
-            File.FILE_PATH,
+            Toolbar.TOOLBAR_IMAGE,
+            Toolbar.TOOLBAR_ACTIVE_IMAGE,
             Toolbar.TOOLBAR_SORT
         );
 
@@ -77,9 +83,14 @@ public class ToolbarAdminController extends BaseController {
         file.keep(File.FILE_ID, File.FILE_PATH);
         result.put(Toolbar.TOOLBAR_IMAGE, file);
 
+        File activeFile = fileRpc.findV1(result.getToolbarActiveImage());
+        file.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFile);
+        
         validateResponse(
             Toolbar.TOOLBAR_ID, 
-            Toolbar.TOOLBAR_NAME, 
+            Toolbar.TOOLBAR_NAME,
+            Toolbar.TOOLBAR_ACTIVE_IMAGE,
             Toolbar.TOOLBAR_IMAGE, 
             Toolbar.TOOLBAR_SORT, 
             Toolbar.SYSTEM_VERSION
@@ -95,6 +106,7 @@ public class ToolbarAdminController extends BaseController {
             body, 
             Toolbar.APP_ID, 
             Toolbar.TOOLBAR_NAME, 
+            Toolbar.TOOLBAR_ACTIVE_IMAGE, 
             Toolbar.TOOLBAR_IMAGE, 
             Toolbar.TOOLBAR_SORT
         );
@@ -110,7 +122,8 @@ public class ToolbarAdminController extends BaseController {
         validateRequest(
             body, 
             Toolbar.TOOLBAR_ID, 
-            Toolbar.TOOLBAR_NAME, 
+            Toolbar.TOOLBAR_NAME,
+            Toolbar.TOOLBAR_ACTIVE_IMAGE, 
             Toolbar.TOOLBAR_IMAGE, 
             Toolbar.TOOLBAR_SORT,
             Toolbar.SYSTEM_VERSION
@@ -133,6 +146,16 @@ public class ToolbarAdminController extends BaseController {
         Boolean result = toolbarService.delete(body.getToolbarId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "工具栏重建缓存")
+    @RequestMapping(value = "/toolbar/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Toolbar body) {
+        validateRequest(body, Toolbar.TOOLBAR_ID);
+
+        toolbarService.replace(body.getToolbarId());
+
+        return renderJson(true);
     }
 
 }

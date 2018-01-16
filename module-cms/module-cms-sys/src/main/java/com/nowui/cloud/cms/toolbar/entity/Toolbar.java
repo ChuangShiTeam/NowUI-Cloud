@@ -56,6 +56,16 @@ public class Toolbar extends BaseEntity {
     public static final String TOOLBAR_NAME = "toolbarName";
     
     /**
+     * 工具栏激活图片(选择)
+     */
+    @Field
+    @TableField
+    @NotNull(message = "工具栏激活图片不能为空")
+    @Length(max = 32, message = "工具栏激活图片长度超出限制")
+    private String toolbarActiveImage;
+    public static final String TOOLBAR_ACTIVE_IMAGE = "toolbarActiveImage";
+    
+    /**
      * 工具栏图片
      */
     @Field
@@ -96,6 +106,14 @@ public class Toolbar extends BaseEntity {
     
     public void setToolbarName(String toolbarName) {
         put(TOOLBAR_NAME, toolbarName);
+    }
+    
+    public String getToolbarActiveImage() {
+        return getString(TOOLBAR_ACTIVE_IMAGE);
+    }
+    
+    public void setToolbarActiveImage(String toolbarActiveImage) {
+        put(TOOLBAR_ACTIVE_IMAGE, toolbarActiveImage);
     }
     
     public String getToolbarImage() {

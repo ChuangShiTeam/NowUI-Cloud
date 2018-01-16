@@ -319,7 +319,7 @@ public class Util {
         if (Util.isNullOrEmpty(beanList)) {
             return null;
         }
-        List<String> list = beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
         return JSONArray.toJSONString(list);
     }
     
@@ -343,6 +343,20 @@ public class Util {
             for (String fieldCloumn : fieldCloumns) {
                 bean.put(fieldCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().get(fieldCloumn) : null);
             }
+        }
+        return beanList;
+    }
+    
+    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        if (Util.isNullOrEmpty(fieldBeanList)) {
+            return beanList;
+        }
+        for (BaseEntity bean : beanList) {
+            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
+            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns) : null);
         }
         return beanList;
     }

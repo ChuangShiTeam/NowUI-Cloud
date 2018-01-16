@@ -43,6 +43,7 @@ public class ToolbarMobileController extends BaseController {
     	List<Toolbar> resultList = toolbarService.mobileList(body.getAppId());
 
     	validateResponse(
+    		Toolbar.TOOLBAR_ACTIVE_IMAGE,
     		Toolbar.TOOLBAR_IMAGE,
     		Toolbar.TOOLBAR_NAME
     	);

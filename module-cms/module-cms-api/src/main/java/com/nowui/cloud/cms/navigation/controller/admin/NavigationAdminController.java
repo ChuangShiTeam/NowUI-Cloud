@@ -13,6 +13,7 @@ import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -156,6 +157,16 @@ public class NavigationAdminController extends BaseController {
         Boolean result = navigationService.delete(body.getNavigationId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "导航栏重建缓存")
+    @RequestMapping(value = "/navigation/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Navigation body) {
+        validateRequest(body, Navigation.NAVIGATION_ID);
+
+        navigationService.replace(body.getNavigationId());
+
+        return renderJson(true);
     }
 
 }

@@ -14,6 +14,7 @@ import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
+import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -160,6 +161,16 @@ public class AdvertisementAdminController extends BaseController {
         Boolean result = advertisementService.delete(body.getAdvertisementId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "广告重建缓存")
+    @RequestMapping(value = "/advertisement/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Advertisement body) {
+        validateRequest(body, Advertisement.ADEVERTISEMENT_ID);
+
+        advertisementService.replace(body.getAdvertisementId());
+
+        return renderJson(true);
     }
 
 

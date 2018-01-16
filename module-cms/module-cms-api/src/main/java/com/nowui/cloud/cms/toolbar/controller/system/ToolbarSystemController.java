@@ -34,19 +34,32 @@ public class ToolbarSystemController implements ToolbarRpc {
 
     @Override
     public List<Toolbar> list(String appId) {
-        
+
         List<Toolbar> toolbarList = toolbarService.mobileList(appId);
-        
+
         if (Util.isNullOrEmpty(toolbarList)) {
             return new ArrayList<>();
         }
+
+//        String fileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_IMAGE);
+//
+//        List<File> fileList = fileRpc.findsV1(fileIds);
+//
+//        toolbarList = Util.beanAddField(toolbarList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
+
         
         String fileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_IMAGE);
-        
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        toolbarList = Util.beanAddField(toolbarList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
+        toolbarList = Util.beanReplaceField(toolbarList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
         
+
+        String activeFileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
+        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
+
+        toolbarList = Util.beanReplaceField(toolbarList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
+
+
         return toolbarList;
     }
 
