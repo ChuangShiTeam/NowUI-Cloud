@@ -85,7 +85,7 @@ public class MemberFollow extends BaseEntity {
     private String followUserId;
     public static final String FOLLOW_USER_ID = "followUserId";
     
-    public static final String MEMBER_IS_FOLLOW = "MemberIsFollow";
+    public static final String MEMBER_IS_FOLLOW = "memberIsFollow";
 
     public String getMemberFollowId() {
         return getString(MEMBER_FOLLOW_ID);

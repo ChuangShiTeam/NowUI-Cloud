@@ -65,6 +65,16 @@ public interface MemberRpc {
     List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId);
     
     /**
+     * 根据用户编号查询会员信息（昵称、头像、是否关注）
+     * 
+     * @param followUserId 关注用户编号
+     * @param userId 用户编号
+     * @return Member 会员信息
+     */
+    @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/is/follow/find", method = RequestMethod.POST)
+    Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId);
+    
+    /**
      * 根据用户编号集合查询会员信息列表（昵称、头像）
      * 
      * @param userIds 用户编号集合

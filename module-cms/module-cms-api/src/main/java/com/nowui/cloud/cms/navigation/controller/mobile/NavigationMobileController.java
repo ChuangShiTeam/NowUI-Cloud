@@ -40,7 +40,7 @@ public class NavigationMobileController extends BaseController {
 				Navigation.APP_ID
 			);
 		
-		List<Navigation> resultList = navigationService.mobileList(body.getAppId(), "INDEX_NAVIGATION");
+		List<Navigation> resultList = navigationService.mobileList(body.getAppId(), "INDEX");
 
 		validateResponse(
 				Navigation.NAVIGATION_NAME,

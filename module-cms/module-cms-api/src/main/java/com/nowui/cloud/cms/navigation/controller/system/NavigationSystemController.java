@@ -1,5 +1,6 @@
 package com.nowui.cloud.cms.navigation.controller.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class NavigationSystemController implements NavigationRpc {
         
         List<Navigation> navigationList = navigationService.listByCategoryCode(appId, navigationCategoryCode);
        
-        if (navigationList == null || navigationList.size() == 0) {
-            return null;
+        if (Util.isNullOrEmpty(navigationList)) {
+            return new ArrayList<>();
         }
         
         String fileIds = Util.beanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE);

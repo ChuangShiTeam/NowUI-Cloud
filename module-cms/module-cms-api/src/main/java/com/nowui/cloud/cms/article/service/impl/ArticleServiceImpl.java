@@ -132,7 +132,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
                 articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
             }
         }
-        return null;
+        return result;
     }
 
     /**
