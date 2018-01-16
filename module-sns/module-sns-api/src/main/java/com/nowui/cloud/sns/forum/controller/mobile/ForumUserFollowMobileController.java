@@ -105,7 +105,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ArrayList<Forum> forumList = new ArrayList<Forum>();
 
         for (ForumUserFollow forumUserFollow : resultList) {
-        //根据forumId去论坛信息表取 论坛头像、论坛名称、论坛简介
+            //根据forumId去论坛信息表取 论坛头像、论坛名称、论坛简介
         	
         	//forum包含名称和简介
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
@@ -117,19 +117,17 @@ public class ForumUserFollowMobileController extends BaseController {
             forum.put(Forum.FORUM_MEDIA_ID, file);
 
             
-        //根据forumId去论坛话题关联表查询 当日话题最新数量
+            //根据forumId去论坛话题关联表查询 当日话题最新数量
             Integer count = topicForumService.countForToday(body.getAppId(), forumUserFollow.getForumId(), null);
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
 
 
-        //根据forumId得到版主id，使用 用户接口 得到版主头像
+            //根据forumId得到版主id，使用 用户接口 得到版主头像,昵称
             String forumModeratorId = forum.getForumModerator();
-            /**
-             * 等用户接口
-             */
             Member moderator = memberRpc.nickNameAndAvatarFindV1(forumModeratorId);
             forum.put(Forum.FORUM_MODERATOR, moderator);
 
+            
             forumList.add(forum);
         }
 

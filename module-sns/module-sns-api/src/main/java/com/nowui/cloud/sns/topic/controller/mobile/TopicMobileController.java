@@ -108,14 +108,31 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_SIZE
         );
 
-
         Integer resultTotal = topicForumService.countForAdmin(body.getAppId(), body.getString(Topic.FORUM_ID), null);
         
         List<Topic> resultList = topicService.allTopicListByForumId(body);
         
+        //处理用户信息
+       //在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
         
+        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+        
+        resultList = Util.beanAddField(
+        		resultList, 
+        		Topic.USER_ID, 
+        		User.USER_ID, 
+        		nickAndAvatarAndIsFollowList, 
+        		User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
+        	);
+        
+        
+        //处理话题图片
         for (Topic topic : resultList) {
-        	//处理话题图片
+        	
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
           
             String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
@@ -125,12 +142,9 @@ public class TopicMobileController extends BaseController {
             
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
-            
         
+       
         
-        /**
-         * 需要再调整一下返回参数
-         */
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_FORUM_ID,
@@ -142,7 +156,11 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOP_TOP_LEVEL,
-                Topic.TOPIC_MEDIA_LIST
+                Topic.TOPIC_MEDIA_LIST,
+                User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
         );
 
         return renderJson(resultTotal, resultList);
@@ -164,10 +182,7 @@ public class TopicMobileController extends BaseController {
         Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
 
-        //处理用户信息(昵称,头像)
-        
-        
-        
+        //处理用户信息(昵称,头像),由其他接口处理返回前端
         
         //处理话题图片
         for (Topic topic : resultList) {
@@ -181,9 +196,8 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
 
-        /**
-         * 需要再调整一下返回参数
-         */
+        
+        
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_FORUM_ID,
@@ -194,7 +208,8 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_MEDIA_LIST
         );
 
         return renderJson(resultTotal, resultList);
@@ -214,8 +229,9 @@ public class TopicMobileController extends BaseController {
 	    Topic topic = topicService.findTheTopicDetails(body);
 
 	    //处理用户信息(昵称,头像,是否关注)
-//	    memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, userId);
-	    
+	    Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), body.getSystemRequestUserId());
+	    topic.put(Topic.USER_ID, nickNameAndAvatarAndIsFollow);
+
 	    
 	    //处理图片
 	    List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
@@ -226,11 +242,9 @@ public class TopicMobileController extends BaseController {
         topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
         //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-	    
-	    /**
-	     * 再调整一下返回参数
-	     */
-	    validateResponse(
+        
+
+        validateResponse(
 	            Topic.TOPIC_ID,
 	            Topic.TOPIC_FORUM_ID,
 	            Topic.TOPIC_SUMMARY,
@@ -248,8 +262,6 @@ public class TopicMobileController extends BaseController {
 	}
 
 
-
-
     
     @ApiOperation(value = "关注的人的话题分页列表")
     @RequestMapping(value = "/topic/mobile/v1/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -260,20 +272,17 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
-        /**
-         * 等用户接口好了,再写
-         */
+       
         //先得到用户关注的人的id列表
         List<String> followUserIdList = memberFollowRpc.followUserIdList(body.getSystemRequestUserId());
         
-        //根据我关注的人的userId列表,用in去查询统计数量
+        //得到话题数量和话题列表
         Integer countResult = topicService.countByUserIdList(body.getAppId(), followUserIdList);
-        
-        //根据我关注的人的userId列表,用in去查询记录
         List<Topic> listByUserIdList = topicService.listByUserIdList(body.getAppId(), followUserIdList, body.getPageIndex(), body.getPageSize());
         
         //得到处理后的结果
         List<Topic> topicList = topicService.handleTopic(body, listByUserIdList);
+        
         
         //在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
@@ -306,11 +315,6 @@ public class TopicMobileController extends BaseController {
         
         
         
-        
-        
-        /**
-         * 需要再调整一下返回参数
-         */
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_FORUM_ID,
@@ -321,7 +325,11 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOP_TOP_LEVEL,
+                User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
         );
 
         return renderJson(countResult, listByUserIdList);
@@ -348,11 +356,11 @@ public class TopicMobileController extends BaseController {
         );
 
         String topicId = Util.getRandomUUID();
-        
+
         //先标记一下,回来再换另一种解析方法
         String mediaIds = body.getString(Topic.TOPIC_MEDIA_LIST);
         List<String> mediaIdList = JSONArray.parseArray(mediaIds, String.class);
-        
+
 
         //遍历图片id,存放到话题图片表
         for (String mediaId : mediaIdList) {
@@ -380,7 +388,6 @@ public class TopicMobileController extends BaseController {
 		}
 
 
-
         //先标记一下,回来再换另一种解析方法
         String tipUserIds = body.getString(Topic.TOPIC_TIP_USER_LIST);
         List<String> tipUserIdList = JSONArray.parseArray(tipUserIds, String.class);
@@ -390,7 +397,6 @@ public class TopicMobileController extends BaseController {
             topicTip.setAppId(body.getAppId());
             topicTip.setTopicId(topicId);
             topicTip.setUserId(tipUserId);
-
 
             Boolean save = topicTipService.save(new TopicTip(), Util.getRandomUUID(), body.getSystemRequestUserId());
 		}

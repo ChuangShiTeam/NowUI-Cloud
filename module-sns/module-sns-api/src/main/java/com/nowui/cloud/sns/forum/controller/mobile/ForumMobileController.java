@@ -125,34 +125,29 @@ public class ForumMobileController extends BaseController {
         
         //forum包含了论坛简介,论坛名称,论坛头像
         Forum forum = forumService.find(body.getForumId());
-        //处理头像
+        //处理论坛头像
         File file = fileRpc.findV1(forum.getForumMediaId());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_MEDIA_ID, file);
         
         String userId = forum.getForumModerator();
         //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
-        /**
-         * 等用户接口
-         */
         Member moderator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
         forum.put(Forum.FORUM_MODERATOR, moderator);
 
         
-        //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后遍历查找用户头像,只返回前6个的头像和userId.
+        //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollow> forumUserFollows = 
         		forumUserFollowService
         		.listForAdmin(body.getAppId()
         				, null
         				, body.getForumId()
         				, body.getPageIndex()
-        				, body.getPageSize());
+        				, body.getPageSize()
+        		);
         
         
-        //遍历forumUserFollows的userId去查找会员表的头像,
-        /**
-         * 等用户接口
-         */
+        //处理关注论坛列表的昵称,头像
         String userIds = Util.beanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
         List<Member> nickNameAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
         forum.put(Forum.FORUM_USER_FOLLOW_LIST, nickNameAndAvatarList);
@@ -187,7 +182,7 @@ public class ForumMobileController extends BaseController {
         );
 
         Integer countResult = forumUserFollowService.countForAdmin(body.getAppId(), null, body.getForumId());
-        //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后遍历查找用户头像,返回全部的的头像和userId.
+        //得到论坛关注列表
         List<ForumUserFollow> forumUserFollows = forumUserFollowService
         		.listForAdmin(
         				body.getAppId()
@@ -196,7 +191,7 @@ public class ForumMobileController extends BaseController {
         				, body.getPageIndex()
         				, body.getPageSize()
         		);
-        
+        //处理关注论坛的用户信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
         List<Member> nickNameAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
         
@@ -433,13 +428,18 @@ public class ForumMobileController extends BaseController {
 
         String userId = forum.getForumModerator();
         //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个性签名,头像
-        /**
-         * 等用户接口
-         */
         Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
         forum.put(Forum.FORUM_MODERATOR, forumModerator);
 
 
+        //根据systemRequestUserId查询是否加入了这个圈子
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        if (forumUserFollow == null) {
+        	forum.put(Forum.FORUM_IS_FOLLOW, false);
+		}
+        forum.put(Forum.FORUM_IS_FOLLOW, true);
+        
+        
 
         validateResponse(
                 Forum.FORUM_ID,
@@ -449,7 +449,8 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_BACKGROUND_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR
+                Forum.FORUM_MODERATOR,
+                Forum.FORUM_IS_FOLLOW
         );
 
         return renderJson(forum);

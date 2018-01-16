@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -143,20 +142,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 
         	//根据userId调用用户接口得到发布话题者 的 user对象(包含:昵称,头像,id),然后放入topic对象
-        	String userId = topic.getUserId();
-        	/**
-        	 * 等用户接口,还需要去topic对象中设置一个常量 TOPIC_USER,来存放user对象
-        	 */
-
-        	/**
-        	 *  然后还要根据userId去用户关注表查询,有没有关注这个userId,
-        	 *  根据自己的requestUserId  (userId字段)
-			 *	和
-			 *	发布话题人的userId  (followUserId字段)
-			 *	去member_follow表查询有没有记录
-			 *
-			 *也需要去topic对象中设置一个常量 TOPIC_IS_FOLLOW,来存放是否关注记录
-        	 */
+        	//由controller来处理
 
 
 
@@ -233,21 +219,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 
         	//根据userId调用用户接口得到发布话题者 的 user对象(包含:昵称,头像,id),然后放入topic对象
-        	String userId = topic.getUserId();
-        	/**
-        	 * 等用户接口,还需要去topic对象中设置一个常量 TOPIC_USER,来存放user对象
-        	 */
-
-        	/** 
-        	 *  然后还要根据userId去用户关注表查询,有没有关注这个userId,
-        	 *  根据自己的requestUserId  (userId字段)
-			 *	和
-			 *	发布话题人的userId  (followUserId字段)
-			 *	去member_follow表查询有没有记录
-			 *  
-			 *也需要去topic对象中设置一个常量 TOPIC_IS_FOLLOW,来存放是否关注记录
-        	 */
-
+        	//不需要在本接口处理用户信息
 
 
     		//取得topicId去话题图片表查询图片,所有图片放入list中(处理图片放在controller)
@@ -329,24 +301,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		
         String topicId = topic.getTopicId();
 
-
-    	//根据userId调用用户接口得到发布话题者 的 user对象(包含:昵称,头像,id),然后放入topic对象
-    	String userId = topic.getUserId();
-    	/**
-    	 * 等用户接口,还需要去topic对象中设置一个常量 TOPIC_USER,来存放user对象
-    	 */
-
-    	/**
-    	 *  然后还要根据userId去用户关注表查询,有没有关注这个userId,
-    	 *  根据自己的requestUserId  (userId字段)
-		 *	和
-		 *	发布话题人的userId  (followUserId字段)
-		 *	去member_follow表查询有没有记录
-		 *
-		 *也需要去topic对象中设置一个常量 TOPIC_IS_FOLLOW,来存放是否关注记录
-    	 */
-
-
+        //处理用户信息,由controller处理
+        
 
 		//取得topicId去话题图片表查询图片,所有图片放入list中(处理图片放在controller)
     	List<TopicMedia> topicMedias = topicMediaService.listAllMediaByTopicId(body.getAppId(), topicId, null, null);
@@ -448,20 +404,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 
         	//根据userId调用用户接口得到发布话题者 的 user对象(包含:昵称,头像,id),然后放入topic对象
-        	String userId = topic.getUserId();
-        	/**
-        	 * 等用户接口,还需要去topic对象中设置一个常量 TOPIC_USER,来存放user对象
-        	 */
-
-        	/** 
-        	 *  然后还要根据userId去用户关注表查询,有没有关注这个userId,
-        	 *  根据自己的requestUserId  (userId字段)
-			 *	和
-			 *	发布话题人的userId  (followUserId字段)
-			 *	去member_follow表查询有没有记录
-			 *  
-			 *也需要去topic对象中设置一个常量 TOPIC_IS_FOLLOW,来存放是否关注记录
-        	 */
+        	//由controller处理
 
 
 

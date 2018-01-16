@@ -1,6 +1,13 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
@@ -36,6 +43,9 @@ public class TopicUserLikeMobileController extends BaseController {
 
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
+	
+	@Autowired
+	private MemberRpc memberRpc;
 
     @ApiOperation(value = "点赞话题关联列表")
     @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,26 +57,37 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.PAGE_INDEX,
                 TopicUserLike.PAGE_SIZE     //前端传来参数可用于只显示4个头像,和点赞列表
         );
-        //统计话题点赞数
+        //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , null, body.getTopicId());
-        //得到话题点赞列表
         List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), null, body.getTopicId(), body.getPageIndex(), body.getPageSize());
-        //遍历得到点赞用户的id,然后查询用户的头像,昵称
-        for (TopicUserLike topicUserLike : resultList) {
-			String userId = topicUserLike.getUserId();
-			/**
-			 * 等用户接口
-			 * 
-			 * 得到用户头像,昵称,在TopicUserLike 实体类中添加相应字段常量,然后调整返回参数
-			 */
-		}
-
-
+        
+        
+        //处理列表中用户的头像,昵称,是否关注
+        String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
+        
+        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+        
+        resultList = Util.beanAddField(
+        		resultList,
+        		TopicUserLike.USER_ID,
+        		User.USER_ID,
+        		nickAndAvatarAndIsFollowList,
+        		User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
+        	);
+        
+        
 
         validateResponse(
                 TopicUserLike.USER_LIKE_ID,
                 TopicUserLike.USER_ID,
-                TopicUserLike.TOPIC_ID
+                TopicUserLike.TOPIC_ID,
+                User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
         );
 
         return renderJson(resultTotal, resultList);

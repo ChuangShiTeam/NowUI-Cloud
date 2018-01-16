@@ -67,24 +67,26 @@ public class TopicUserBookmarkMobileController extends BaseController {
         return renderJson(result);
     }
 	
-	@ApiOperation(value = "收藏话题的用户列表")
-    @RequestMapping(value = "/topic/user/bookmark/mobile/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody TopicUserBookmark body) {
-        validateRequest(
-                body,
-                TopicUserBookmark.APP_ID,
-                TopicUserBookmark.TOPIC_ID
-        );
-
-        //先去收藏表查询收藏话题的用户列表
-        List<TopicUserBookmark> listByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), body.getTopicId());
-        //再查询用户昵称,头像,是否关注
-        /**
-         * 等用户接口
-         */
-
-
-
-        return renderJson(null);
-    }
+//	@ApiOperation(value = "收藏话题的用户列表")
+//    @RequestMapping(value = "/topic/user/bookmark/mobile/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Map<String, Object> listV1(@RequestBody TopicUserBookmark body) {
+//        validateRequest(
+//                body,
+//                TopicUserBookmark.APP_ID,
+//                TopicUserBookmark.TOPIC_ID
+//        );
+//
+//        //先去收藏表查询收藏话题的用户列表
+//        List<TopicUserBookmark> listByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), body.getTopicId());
+//        //再查询用户昵称,头像,是否关注
+//        /**
+//         * 等用户接口
+//         */
+//        
+//        
+//
+//
+//
+//        return renderJson(null);
+//    }
 }
