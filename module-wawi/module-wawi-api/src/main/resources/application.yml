@@ -61,9 +61,9 @@ spring:
 
 #mybatis
 mybatis-plus:
-  #mapper-locations: classpath:/com/nowui/cloud/wawi/**/sql/*.xml
+  mapper-locations: classpath:/com/nowui/cloud/wawi/**/sql/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  #typeAliasesPackage: com.nowui.cloud.wawi.**.entity
+  typeAliasesPackage: com.nowui.cloud.wawi.**.entity
   #typeEnumsPackage: com.nowui.cloud.wawi.**.entity.enum
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";

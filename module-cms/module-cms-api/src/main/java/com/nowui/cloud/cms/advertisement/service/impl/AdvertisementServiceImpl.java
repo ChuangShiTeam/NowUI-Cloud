@@ -55,7 +55,7 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
 		List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
 				.eq(Advertisement.APP_ID, appId)
 				.eq(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-				.eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, true)
+				.eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, false)
 				.eq(Advertisement.SYSTEM_STATUS, true)
 				.orderAsc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
 			);
@@ -68,7 +68,7 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMappe
         List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
                 .eq(Advertisement.APP_ID, appId)
                 .eq(Advertisement.ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-                .eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, true)
+                .eq(Advertisement.ADEVERTISEMENT_IS_EFFICIENT, false)
                 .eq(Advertisement.SYSTEM_STATUS, true)
                 .orderAsc(Arrays.asList(Advertisement.ADEVERTISEMENT_SORT))
             );

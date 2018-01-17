@@ -84,6 +84,8 @@ public class BaseController {
             return list;
         } else if (data instanceof Boolean) {
             return data;
+        } else if (data instanceof Map) {
+            return checkMap(data);
         }
 
         return null;

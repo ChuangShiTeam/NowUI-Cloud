@@ -4,6 +4,11 @@ import java.util.Date;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.nowui.cloud.rpc.BaseRpc;
 
 /**
  * 短信验证码服务调用
@@ -14,7 +19,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value = "smsCaptchaRpc")
 @FeignClient(name = "module-base")
-public interface SmsCaptchaRpc {
+public interface SmsCaptchaRpc extends BaseRpc {
     
     /**
      * 发送阿里云短信
@@ -26,8 +31,14 @@ public interface SmsCaptchaRpc {
      * @param captchaMinute 限制发送时间
      * @param systemRequestUserId 请求用户编号
      */
-    public void aliyunSend(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress,
-            int captchaMinute, String systemRequestUserId);
+    @RequestMapping(value = "/sms/captcha/system/v1/aliyun/send", method = RequestMethod.POST)
+    public void aliyunSend(
+            @RequestParam(value = "appId", required = true) String appId, 
+            @RequestParam(value = "smsCaptchaType", required = true) String smsCaptchaType, 
+            @RequestParam(value = "smsCaptchaMobile", required = true) String smsCaptchaMobile, 
+            @RequestParam(value = "smsCaptchaIpAddress", required = true) String smsCaptchaIpAddress,
+            @RequestParam(value = "captchaMinute", required = true) int captchaMinute, 
+            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
     
     /**
      * 验证验证码正确性
@@ -38,5 +49,10 @@ public interface SmsCaptchaRpc {
      * @param startDate 发送开始时间
      * @return true 正确  false 不正确
      */
-    public Boolean checkCaptchaCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, Date startDate);
+    @RequestMapping(value = "/sms/captcha/system/v1/check/captcha/code", method = RequestMethod.POST)
+    public Boolean checkCaptchaCode(
+            @RequestParam(value = "appId", required = true) String appId, 
+            @RequestParam(value = "smsCaptchaMobile", required = true) String smsCaptchaMobile, 
+            @RequestParam(value = "smsCaptchaCode", required = true) String smsCaptchaCode, 
+            @RequestParam(value = "startDate", required = true) Date startDate);
 }

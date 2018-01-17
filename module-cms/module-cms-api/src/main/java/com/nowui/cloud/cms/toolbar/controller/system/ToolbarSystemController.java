@@ -41,13 +41,6 @@ public class ToolbarSystemController implements ToolbarRpc {
             return new ArrayList<>();
         }
 
-//        String fileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_IMAGE);
-//
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//
-//        toolbarList = Util.beanAddField(toolbarList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
-
-        
         String fileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
         

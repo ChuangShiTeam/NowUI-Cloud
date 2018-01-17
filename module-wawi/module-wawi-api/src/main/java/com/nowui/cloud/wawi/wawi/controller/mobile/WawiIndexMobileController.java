@@ -57,7 +57,7 @@ public class WawiIndexMobileController extends BaseController {
             body, 
             App.APP_ID
         );
-
+        
         // 获取首页BANNER列表
         List<Advertisement> indexBannerList = advertisementRpc.listByCategoryCodeV1(body.getAppId(), "INDEX_BANNER");
         
@@ -82,52 +82,67 @@ public class WawiIndexMobileController extends BaseController {
             );
         }
         
-        // 获取首页工具栏列表
-        List<Toolbar> toolbarList = toolbarRpc.list(body.getAppId());
-        
-        for (Toolbar toolbar : toolbarList) {
-            toolbar.keep(
-                    Toolbar.TOOLBAR_ID,
-                    File.FILE_PATH,
-                    Toolbar.TOOLBAR_NAME
-            );
-        }
-        
         // 宠物分类列表
-        List<Article> petCategoryList = articleRpc.listByCategoryCodeV1(body.getAppId(), "PET_CATEGORY");
+        List<Article> petCategoryArticleList = articleRpc.listByCategoryCodeV1(body.getAppId(), "PET_CATEGORY");
         
-        for (Article article : petCategoryList) {
+        for (Article article : petCategoryArticleList) {
             article.keep(
                     Article.ARTICLE_ID, 
                     File.FILE_PATH,
-                    Article.ARTICLE_TITLE
+                    Article.ARTICLE_TITLE,
+                    Article.ARTICLE_SUMMARY
             );
         }
         
         // 猜你喜欢列表 随机取5条 TODO
-        List<Article> recommendList = new ArrayList<>();
+        List<Article> recommendArticleList = new ArrayList<>();
         
         // 热门话题 置顶加点击数
-        List<Article> hotList = new ArrayList<>();
+        List<Article> hotArticleList = new ArrayList<>();
+        
+        // 最新话题 最新的文章列表
+        List<Article> latestArticleList = new ArrayList<>();
         
         Map<String, Object> result = new HashMap<String, Object>();
         
         result.put("indexBannerList", indexBannerList);
         result.put("indexNavigationList", indexNavigationList);
-        result.put("toolbarList", toolbarList);
-        result.put("petCategoryList", petCategoryList);
-        result.put("recommendList", recommendList);
-        result.put("hotList", hotList);
+        result.put("petCategoryArticleList", petCategoryArticleList);
+        result.put("recommendArticleList", recommendArticleList);
+        result.put("hotArticleList", hotArticleList);
+        result.put("latestArticleList", latestArticleList);
         
         validateResponse(
                 "indexBannerList", 
                 "indexNavigationList",
-                "toolbarList",
-                "petCategoryList",
-                "recommendList",
-                "hotList"
+                "petCategoryArticleList",
+                "recommendArticleList",
+                "hotArticleList",
+                "latestArticleList"
         );
         return renderJson(result);
+    }
+    
+    @ApiOperation(value = "哇伊工具栏列表")
+    @RequestMapping(value = "/wawi/mobile/v1/toolbar/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> toolbarListV1(@RequestBody App body) {
+        validateRequest(
+            body, 
+            App.APP_ID
+        );
+
+        // 获取首页工具栏列表
+        List<Toolbar> toolbarList = toolbarRpc.list(body.getAppId());
+        
+        validateResponse(
+                Toolbar.TOOLBAR_ID,
+                Toolbar.TOOLBAR_IMAGE,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE,
+                Toolbar.TOOLBAR_URL,
+                Toolbar.TOOLBAR_NAME
+        );
+        
+        return renderJson(toolbarList);
     }
     
 

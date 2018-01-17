@@ -72,6 +72,10 @@ zuul:
       path: /wawi/**
       serviceId: module-wawi
       stripPrefix: false
+    member:
+      path: /member/**
+      serviceId: module-member
+      stripPrefix: false
 
 hystrix:
   command:

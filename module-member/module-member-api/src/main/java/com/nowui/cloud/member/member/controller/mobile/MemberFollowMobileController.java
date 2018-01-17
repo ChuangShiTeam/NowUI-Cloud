@@ -132,8 +132,8 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "他的关注列表")
-    @RequestMapping(value = "/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody MemberFollow body) {
+    @RequestMapping(value = "/member/follow/mobile/v1/follow/him/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> followHimlistV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
                 MemberFollow.USER_ID,
