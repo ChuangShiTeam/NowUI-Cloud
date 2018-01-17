@@ -23,6 +23,7 @@ import com.nowui.cloud.base.sms.mapper.SmsCaptchaMapper;
 import com.nowui.cloud.base.sms.service.SmsCaptchaService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -82,13 +83,14 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
     }
     
     @Override
-    public Integer countByMobileAndCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, Date startDate) {
+    public Integer countByMobileAndCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate) {
         Integer count = count(
                 new BaseWrapper<SmsCaptcha>()
                 .eq(SmsCaptcha.APP_ID, appId)
                 .eq(SmsCaptcha.SMS_CAPTCHA_MOBILE, smsCaptchaMobile)
                 .eq(SmsCaptcha.SMS_CAPTCHA_CODE, smsCaptchaCode)
-                .between(SmsCaptcha.SYSTEM_CREATE_TIME, startDate, new Date())
+                .ge(SmsCaptcha.SYSTEM_CREATE_TIME, startDate)
+                .le(SmsCaptcha.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(new Date()))
                 .eq(SmsCaptcha.SYSTEM_STATUS, true) 
         );
         return count;
@@ -143,7 +145,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
         calendar.add(Calendar.MINUTE, -captchaMinute);
 
         Integer count = countByTypeAndMobile(appId, smsCaptchaType, smsCaptchaMobile, calendar.getTime());
-
+/*
         if (count > 0) {
             throw new RuntimeException(captchaMinute + "分钟内不能重复申请");
         }
@@ -152,7 +154,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
 
         if (count > 0) {
             throw new RuntimeException(captchaMinute + "分钟内不能重复申请");
-        }
+        }*/
         
         String smsCaptchaCode = Util.getRandomNumber(4);
 
@@ -168,7 +170,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
             throw new RuntimeException("验证码发送不成功");
         }
 
-        //设置超时时间-可自行调整
+        /*//设置超时时间-可自行调整
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
         //初始化ascClient需要的几个参数
@@ -217,7 +219,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
             System.out.println(sendSmsResponse.getMessage());
 
             throw new RuntimeException("短信发送不成功");
-        }
+        }*/
         
     }
 

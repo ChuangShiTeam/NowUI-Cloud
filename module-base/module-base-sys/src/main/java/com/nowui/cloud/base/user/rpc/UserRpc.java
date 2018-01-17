@@ -151,43 +151,49 @@ public interface UserRpc {
     /**
      * 用户密码更新
      * 
+     * @param appId 应用编号
      * @param userId 用户编号
-     * @param userPassword 用户密码信息
+     * @param userPassword 用户密码
      * @param systemRequestUserId 请求用户编号
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/password", method = RequestMethod.POST)
     Boolean updateUserPasswordV1(
+            @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
-            UserPassword userPassword,
+            @RequestParam(value = "userPassword", required = true) String userPassword,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
     
     /**
      * 用户头像更新
      * 
+     * @param appId 应用编号
      * @param userId 用户编号
-     * @param userAvatar 用户密码信息
+     * @param userAvatar 用户头像
      * @param systemRequestUserId 请求用户编号
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/avatar", method = RequestMethod.POST)
     Boolean updateUserAvatarV1(
+            @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
-            UserAvatar userAvatar,
+            @RequestParam(value = "userAvatar", required = true) String userAvatar,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
     
     /**
      * 用户昵称更新
      * 
+     * @param appId 应用编号
      * @param userId 用户编号
-     * @param userNickName 用户昵称信息
+     * @param userNickName 用户昵称
      * @param systemRequestUserId 请求用户编号
      * @return
      */
     @RequestMapping(value = "/user/system/v1/update/user/nick/name", method = RequestMethod.POST)
     Boolean updateUserNickNameV1(
+            @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
-            UserNickName userNickName,
+            @RequestParam(value = "userNickName", required = true) String userNickName,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     

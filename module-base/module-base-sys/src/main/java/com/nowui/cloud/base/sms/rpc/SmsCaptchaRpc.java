@@ -1,7 +1,5 @@
 package com.nowui.cloud.base.sms.rpc;
 
-import java.util.Date;
-
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +52,5 @@ public interface SmsCaptchaRpc extends BaseRpc {
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "smsCaptchaMobile", required = true) String smsCaptchaMobile, 
             @RequestParam(value = "smsCaptchaCode", required = true) String smsCaptchaCode, 
-            @RequestParam(value = "startDate", required = true) Date startDate);
+            @RequestParam(value = "startDate", required = true) String startDate);
 }

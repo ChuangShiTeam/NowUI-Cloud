@@ -1,7 +1,5 @@
 package com.nowui.cloud.base.sms.controller.system;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +29,7 @@ public class SmsCaptchaSystemController implements SmsCaptchaRpc {
     }
 
     @Override
-    public Boolean checkCaptchaCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, Date startDate) {
+    public Boolean checkCaptchaCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate) {
         Integer count = smsCaptchaService.countByMobileAndCode(appId, smsCaptchaMobile, smsCaptchaCode, startDate);
         return count > 0;
     }

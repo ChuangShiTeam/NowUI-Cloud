@@ -27,6 +27,7 @@ import com.nowui.cloud.base.user.service.UserService;
 import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 用户业务实现
@@ -218,6 +219,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userPassword.setAppId(appId);
         userPassword.setUserId(userId);
         
+        userPassword.setUserPassword(Util.generatePassword(userPassword.getUserPassword()));
         Boolean result = userPasswordService.save(userPassword, userPasswordId, systemRequestUserId);
         
         if (result) {
@@ -229,7 +231,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
         }
-        return null;
+        return result;
     }
 
     @Override

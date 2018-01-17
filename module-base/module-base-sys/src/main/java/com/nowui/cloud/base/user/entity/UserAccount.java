@@ -56,12 +56,12 @@ public class UserAccount extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
-     * 用户账号
+     * 账号
      */
     @Field
     @TableField
-    @NotNull(message = "用户账号不能为空")
-    @Length(max = 30, message = "用户账号长度超出限制")
+    @NotNull(message = "账号不能为空")
+    @Length(max = 30, message = "账号长度超出限制")
     private String userAccount;
     public static final String USER_ACCOUNT = "userAccount";
 

@@ -45,5 +45,11 @@ public class DateUtil {
         calendar1.set(calendar1.get(Calendar.YEAR), calendar1.get(Calendar.MONTH), calendar1.get(Calendar.DAY_OF_MONTH), 23, 59, 59);
         return calendar1.getTime();
 	}
+	
+	public static void main(String args[]) {
+	    Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.MINUTE, -10);
+        System.out.println(DateUtil.getDateTimeString(calendar1.getTime()));
+	}
 
 }

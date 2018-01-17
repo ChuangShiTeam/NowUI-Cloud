@@ -58,7 +58,7 @@ public interface SmsCaptchaService extends BaseService<SmsCaptcha> {
      * @param startDate 开始时间
      * @return
      */
-    Integer countByMobileAndCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, Date startDate);
+    Integer countByMobileAndCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate);
 
     /**
      * 统计开始时间到当前时间同一类型的同一IP地址的验证码发送次数

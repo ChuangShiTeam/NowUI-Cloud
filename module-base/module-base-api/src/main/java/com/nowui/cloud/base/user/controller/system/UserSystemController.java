@@ -219,35 +219,40 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserPasswordV1(String userId, UserPassword userPassword, String systemRequestUserId) {
+    public Boolean updateUserPasswordV1(String appId, String userId, String userPassword, String systemRequestUserId) {
         //删除旧的密码信息
         userService.deleteUserPasswordByUserId(userId, systemRequestUserId);
         //保存新的密码信息
-        userPassword.setUserId(userId);
+        UserPassword userPasswordBean = new UserPassword();
+        userPasswordBean.setUserPassword(userPassword);
         
-        Boolean result = userService.saveUserPassword(userPassword.getAppId(), userId, userPassword, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = userService.saveUserPassword(appId, userId, userPasswordBean, Util.getRandomUUID(), systemRequestUserId);
         
         return result;
     }
 
     @Override
-    public Boolean updateUserAvatarV1(String userId, UserAvatar userAvatar, String systemRequestUserId) {
+    public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String systemRequestUserId) {
         //删除旧的头像信息
         userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
         //保存新的头像信息
-        userAvatar.setUserId(userId);
-        Boolean result = userService.saveUserAvatar(userAvatar.getAppId(), userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
+        UserAvatar userAvatarBean = new UserAvatar();
+        userAvatarBean.setUserAvatar(userAvatar);
+        
+        Boolean result = userService.saveUserAvatar(appId, userId, userAvatarBean, Util.getRandomUUID(), systemRequestUserId);
         
         return result;
     }
 
     @Override
-    public Boolean updateUserNickNameV1(String userId, UserNickName userNickName, String systemRequestUserId) {
+    public Boolean updateUserNickNameV1(String appId, String userId, String userNickName, String systemRequestUserId) {
         //删除旧的用户昵称信息
-        userService.deleteUserNickNameByUserId(userId, userNickName.getSystemRequestUserId());
+        userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
         //保存新的用户昵称信息
-        userNickName.setUserId(userId);
-        Boolean result = userService.saveUserNickName(userNickName.getAppId(), userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
+        UserNickName userNickNameBean = new UserNickName();
+        userNickNameBean.setUserNickName(userNickName);
+        
+        Boolean result = userService.saveUserNickName(appId, userId, userNickNameBean, Util.getRandomUUID(), systemRequestUserId);
         return result;
     }
 

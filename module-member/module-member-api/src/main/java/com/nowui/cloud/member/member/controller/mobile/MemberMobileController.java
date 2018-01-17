@@ -29,6 +29,7 @@ import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.AesUtil;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -67,7 +68,11 @@ public class MemberMobileController extends BaseController {
                 userPassword,
                 UserPassword.USER_PASSWORD
         );
-        
+        SmsCaptcha smsCaptcha = getEntry(SmsCaptcha.class);
+        validateRequest(
+                smsCaptcha,
+                SmsCaptcha.SMS_CAPTCHA_CODE
+        );
         if (!Util.isPhone(body.getUserAccount())) {
             throw new RuntimeException("手机号码格式不对");
         }
@@ -76,6 +81,14 @@ public class MemberMobileController extends BaseController {
         
         if (user != null) {
             throw new RuntimeException("用户已注册");
+        }
+        
+        // 验证验证码是否正确, 10分钟内有效
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.MINUTE, -10);
+        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCode(body.getAppId(), body.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), DateUtil.getDateTimeString(calendar1.getTime()));
+        if (!isCorrect) {
+            throw new RuntimeException("验证码错误");
         }
         
         Member member = new Member();
@@ -155,6 +168,12 @@ public class MemberMobileController extends BaseController {
                 UserAccount.USER_ACCOUNT,
                 BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
         );
+        
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        
+        if (user == null) {
+            throw new RuntimeException("用户未注册");
+        }
 
         smsCaptchaRpc.aliyunSend(body.getAppId(), SmsCaptchaType.LOGIN.getKey(), body.getUserAccount(), body.getSystemRequestIpAddress(), 1, body.getSystemRequestUserId());
         
@@ -170,6 +189,12 @@ public class MemberMobileController extends BaseController {
                 UserAccount.USER_ACCOUNT,
                 BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
         );
+        
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        
+        if (user != null) {
+            throw new RuntimeException("手机号码已注册");
+        }
 
         smsCaptchaRpc.aliyunSend(body.getAppId(), SmsCaptchaType.REGISTER.getKey(), body.getUserAccount(), body.getSystemRequestIpAddress(), 1, body.getSystemRequestUserId());
         
@@ -186,6 +211,12 @@ public class MemberMobileController extends BaseController {
                 BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
         );
 
+        User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
+        
+        if (user == null) {
+            throw new RuntimeException("用户未注册");
+        }
+        
         smsCaptchaRpc.aliyunSend(body.getAppId(), SmsCaptchaType.FORGET_PASSWORD.getKey(), body.getUserAccount(), body.getSystemRequestIpAddress(), 1, body.getSystemRequestUserId());
         
         return renderJson(true);
@@ -212,7 +243,7 @@ public class MemberMobileController extends BaseController {
         //验证验证码是否正确, 10分钟内有效
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.MINUTE, -10);
-        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCode(body.getAppId(), body.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), calendar1.getTime());
+        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCode(body.getAppId(), body.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), DateUtil.getDateTimeString(calendar1.getTime()));
         if (!isCorrect) {
             throw new RuntimeException("验证码错误");
         }
@@ -279,18 +310,13 @@ public class MemberMobileController extends BaseController {
         return renderJson(result);
     }
     
-    @ApiOperation(value = "会员手机账户密码更新")
-    @RequestMapping(value = "/member/mobile/v1/update/mobile/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateMobilePasswordV1(@RequestBody UserAccount body) {
+    @ApiOperation(value = "会员忘记密码验证")
+    @RequestMapping(value = "/member/mobile/v1/forget/password/check", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> forgetPasswordCheckV1(@RequestBody UserAccount body) {
         validateRequest(
                 body,
                 UserAccount.APP_ID,
                 UserAccount.USER_ACCOUNT
-        );
-        UserPassword userPassword = getEntry(UserPassword.class);
-        validateRequest(
-                userPassword,
-                UserPassword.USER_PASSWORD
         );
         SmsCaptcha smsCaptcha = getEntry(SmsCaptcha.class);
         validateRequest(
@@ -305,12 +331,45 @@ public class MemberMobileController extends BaseController {
         //验证手机验证码是否正确, 10分钟内有效
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.MINUTE, -10);
-        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCode(body.getAppId(), body.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), calendar1.getTime());
+        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCode(body.getAppId(), body.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), DateUtil.getDateTimeString(calendar1.getTime()));
         if (!isCorrect) {
             throw new RuntimeException("验证码错误");
         }
         
-        Boolean result = userRpc.updateUserPasswordV1(user.getUserId(), userPassword, body.getSystemRequestUserId());
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("userId", user.getUserId());
+        
+        validateResponse("userId");
+        
+        return renderJson(result);
+    }
+    
+    @ApiOperation(value = "会员忘记密码找回")
+    @RequestMapping(value = "/member/mobile/v1/forget/password/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> forgetPasswordFindV1(@RequestBody UserPassword body) {
+        validateRequest(
+                body,
+                UserPassword.APP_ID,
+                UserPassword.USER_ID,
+                UserPassword.USER_PASSWORD
+        );
+        
+        Boolean result = userRpc.updateUserPasswordV1(body.getAppId(), body.getUserId(), body.getUserPassword(), body.getSystemRequestUserId());
+        
+        return renderJson(result);
+    }
+    
+    @ApiOperation(value = "会员密码更新")
+    @RequestMapping(value = "/member/mobile/v1/update/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updatePasswordV1(@RequestBody UserPassword body) {
+        validateRequest(
+                body,
+                UserPassword.APP_ID,
+                UserPassword.SYSTEM_REQUEST_USER_ID,
+                UserPassword.USER_PASSWORD
+        );
+        
+        Boolean result = userRpc.updateUserPasswordV1(body.getAppId(), body.getSystemRequestUserId(), body.getUserPassword(), body.getSystemRequestUserId());
         
         return renderJson(result);
     }
@@ -325,7 +384,7 @@ public class MemberMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME
         );
         
-        Boolean result = userRpc.updateUserNickNameV1(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
+        Boolean result = userRpc.updateUserNickNameV1(body.getAppId(), body.getSystemRequestUserId(), body.getUserNickName(), body.getSystemRequestUserId());
         
         return renderJson(result);
     }
@@ -340,7 +399,7 @@ public class MemberMobileController extends BaseController {
                 UserAvatar.USER_AVATAR
         );
         
-        Boolean result = userRpc.updateUserAvatarV1(body.getSystemRequestUserId(), body, body.getSystemRequestUserId());
+        Boolean result = userRpc.updateUserAvatarV1(body.getAppId(), body.getSystemRequestUserId(), body.getUserAvatar(), body.getSystemRequestUserId());
         
         return renderJson(result);
     }
