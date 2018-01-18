@@ -62,7 +62,9 @@ public interface MemberRpc {
      * @return List<Member> 会员信息列表
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/is/follow/list", method = RequestMethod.POST)
-    List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId);
+    List<Member> nickNameAndAvatarAndIsFollowListV1(
+            @RequestParam(value = "userIds", required = true) String userIds, 
+            @RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 根据用户编号查询会员信息（昵称、头像、是否关注）
@@ -72,7 +74,9 @@ public interface MemberRpc {
      * @return Member 会员信息
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/is/follow/find", method = RequestMethod.POST)
-    Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId);
+    Member nickNameAndAvatarAndIsFollowFindV1(
+            @RequestParam(value = "followUserId", required = true) String followUserId, 
+            @RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 根据用户编号集合查询会员信息列表（昵称、头像）
@@ -81,7 +85,7 @@ public interface MemberRpc {
      * @return List<Member> 会员信息列表
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/list", method = RequestMethod.POST)
-    List<Member> nickNameAndAvatarListV1(String userIds);
+    List<Member> nickNameAndAvatarListV1(@RequestParam(value = "userIds", required = true) String userIds);
     
     /**
      * 根据用户编号查询会员信息（昵称、头像）
@@ -90,7 +94,7 @@ public interface MemberRpc {
      * @return Member 会员信息
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/find", method = RequestMethod.POST)
-    Member nickNameAndAvatarFindV1(String userId);
+    Member nickNameAndAvatarFindV1(@RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 根据用户编号查询会员信息（昵称、头像、签名）
@@ -99,7 +103,7 @@ public interface MemberRpc {
      * @return Member 会员信息
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/signature/find", method = RequestMethod.POST)
-    Member nickNameAndAvatarAndSignatureFind(String userId);
+    Member nickNameAndAvatarAndSignatureFind(@RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 根据用户编号查询会员信息（昵称、头像、背景、签名）
@@ -108,6 +112,6 @@ public interface MemberRpc {
      * @return Member 会员信息
      */
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/background/and/signature/find", method = RequestMethod.POST)
-    Member nickNameAndAvatarAndBackgroundAndSignatureFind(String userId);
+    Member nickNameAndAvatarAndBackgroundAndSignatureFind(@RequestParam(value = "userId", required = true) String userId);
     
 }

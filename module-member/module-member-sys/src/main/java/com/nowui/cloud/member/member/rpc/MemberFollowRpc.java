@@ -39,7 +39,7 @@ public interface MemberFollowRpc {
      * @return Integer 会员关注数
      */
     @RequestMapping(value = "/member/follow/system/v1/count/follow", method = RequestMethod.POST)
-    Integer countFollow(String userId);
+    Integer countFollow(@RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 统计会员被关注数
@@ -48,7 +48,7 @@ public interface MemberFollowRpc {
      * @return Integer 会员被关注数
      */
     @RequestMapping(value = "/member/follow/system/v1/count/be/followed", method = RequestMethod.POST)
-    Integer countBeFollowed(String userId);
+    Integer countBeFollowed(@RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 会员关注会员编号列表
@@ -57,6 +57,6 @@ public interface MemberFollowRpc {
      * @return
      */
     @RequestMapping(value = "/member/follow/system/v1/follow/user/id/list", method = RequestMethod.POST)
-    List<String> followUserIdList(String userId);
+    List<String> followUserIdList(@RequestParam(value = "userId", required = true) String userId);
 
 }
