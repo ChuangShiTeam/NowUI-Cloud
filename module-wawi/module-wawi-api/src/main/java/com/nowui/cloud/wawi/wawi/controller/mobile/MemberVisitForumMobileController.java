@@ -54,6 +54,7 @@ public class MemberVisitForumMobileController extends BaseController {
         	// 保存会员访问圈子记录
         	Member member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
         	
+        	body.setUserId(body.getSystemRequestUserId());
         	body.setMemberId(member.getMemberId());
         	
         	memberVisitForumService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());

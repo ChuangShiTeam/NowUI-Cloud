@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-14
  */
-@Component(value = "memberBackgroudRpc")
+@Component(value = "memberBackgroundRpc")
 @FeignClient(name = "module-member")
 public interface MemberBackgroundRpc {
 

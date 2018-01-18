@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-14
  */
 @Component
-@Document(indexName = "nowui", type = "member_backgroud_info")
-@TableName(value = "member_backgroud_info")
+@Document(indexName = "nowui", type = "member_background_info")
+@TableName(value = "member_background_info")
 public class MemberBackground extends BaseEntity {
 
     /**
