@@ -385,8 +385,8 @@ public class ForumMobileController extends BaseController {
                 Forum.PAGE_SIZE  //前端传值
         );
 
-        Integer resultTotal = forumService.countForAdmin(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null);
-        List<Forum> resultList = forumService.listForAdmin(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumService.countForMobile(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null);
+        List<Forum> resultList = forumService.listForMobile(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
 
       //处理论坛头像
         for (Forum forum : resultList) {
@@ -438,7 +438,6 @@ public class ForumMobileController extends BaseController {
         	forum.put(Forum.FORUM_IS_FOLLOW, false);
 		}
         forum.put(Forum.FORUM_IS_FOLLOW, true);
-        
         
 
         validateResponse(

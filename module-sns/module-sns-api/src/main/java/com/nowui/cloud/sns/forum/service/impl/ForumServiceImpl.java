@@ -24,7 +24,7 @@ import java.util.List;
 public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implements ForumService {
 
     @Override
-    public Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand, String forumAuditContent, String forumAuditStatus) {
+    public Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand) {
         Integer count = count(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)
@@ -42,15 +42,14 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                         .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
                         .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
                         .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
-                        .eqAllowEmpty(Forum.FORUM_AUDIT_CONTENT, forumAuditContent)
-                        .eqAllowEmpty(Forum.FORUM_AUDIT_STATUS, forumAuditStatus)
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
                         .eq(Forum.SYSTEM_STATUS, true)
         );
         return count;
     }
     
     @Override
-    public List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand, String forumAuditContent, String forumAuditStatus, Integer pageIndex, Integer pageSize) {
+    public List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize) {
         List<Forum> forumList = list(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)
@@ -68,8 +67,7 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                         .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
                         .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
                         .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
-                        .eqAllowEmpty(Forum.FORUM_AUDIT_CONTENT, forumAuditContent)
-                        .eqAllowEmpty(Forum.FORUM_AUDIT_STATUS, forumAuditStatus)
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
                         .eq(Forum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Forum.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -92,6 +90,67 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                 pageIndex,
                 pageSize
         );
+        return forumList;
+	}
+
+	@Override
+	public Integer countForMobile(String appId, String forumMediaId, String forumMediaType,
+			String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription,
+			String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop,
+			Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand) {
+		Integer count = count(
+                new BaseWrapper<Forum>()
+                        .eq(Forum.APP_ID, appId)
+                        .likeAllowEmpty(Forum.FORUM_MEDIA_ID, forumMediaId)
+                        .likeAllowEmpty(Forum.FORUM_MEDIA_TYPE, forumMediaType)
+                        .likeAllowEmpty(Forum.FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId)
+                        .likeAllowEmpty(Forum.FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType)
+                        .likeAllowEmpty(Forum.FORUM_NAME, forumName)
+                        .likeAllowEmpty(Forum.FORUM_DESCRIPTION, forumDescription)
+                        .likeAllowEmpty(Forum.FORUM_MODERATOR, forumModerator)
+                        .likeAllowEmpty(Forum.FORUM_TOPIC_LOCATION, forumTopicLocation)
+                        .eqAllowEmpty(Forum.FORUM_SORT, forumSort)
+                        .eqAllowEmpty(Forum.FORUM_TOP, forumTop)
+                        .eqAllowEmpty(Forum.FORUM_TOP_LEVEL, forumTopLevel)
+                        .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
+                        .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
+                        .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
+                        .eq(Forum.SYSTEM_STATUS, true)
+        );
+        return count;
+	}
+
+	@Override
+	public List<Forum> listForMobile(String appId, String forumMediaId, String forumMediaType,
+			String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription,
+			String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop,
+			Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand,
+			Integer pageIndex, Integer pageSize) {
+		List<Forum> forumList = list(
+                new BaseWrapper<Forum>()
+                        .eq(Forum.APP_ID, appId)
+                        .likeAllowEmpty(Forum.FORUM_MEDIA_ID, forumMediaId)
+                        .likeAllowEmpty(Forum.FORUM_MEDIA_TYPE, forumMediaType)
+                        .likeAllowEmpty(Forum.FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId)
+                        .likeAllowEmpty(Forum.FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType)
+                        .likeAllowEmpty(Forum.FORUM_NAME, forumName)
+                        .likeAllowEmpty(Forum.FORUM_DESCRIPTION, forumDescription)
+                        .likeAllowEmpty(Forum.FORUM_MODERATOR, forumModerator)
+                        .likeAllowEmpty(Forum.FORUM_TOPIC_LOCATION, forumTopicLocation)
+                        .eqAllowEmpty(Forum.FORUM_SORT, forumSort)
+                        .eqAllowEmpty(Forum.FORUM_TOP, forumTop)
+                        .eqAllowEmpty(Forum.FORUM_TOP_LEVEL, forumTopLevel)
+                        .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
+                        .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
+                        .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
+                        .eq(Forum.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Forum.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
         return forumList;
 	}
 
