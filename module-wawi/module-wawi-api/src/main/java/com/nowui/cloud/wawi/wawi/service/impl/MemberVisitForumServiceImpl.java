@@ -1,14 +1,15 @@
-package com.nowui.cloud.wawi.member.service.impl;
-
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.wawi.member.entity.MemberVisitForum;
-import com.nowui.cloud.wawi.member.mapper.MemberVisitForumMapper;
-import com.nowui.cloud.wawi.member.service.MemberVisitForumService;
-import org.springframework.stereotype.Service;
+package com.nowui.cloud.wawi.wawi.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.mapper.MemberVisitForumMapper;
+import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
 
 /**
  * 会员访问圈子业务实现

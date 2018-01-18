@@ -1,8 +1,8 @@
-package com.nowui.cloud.wawi.member.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.wawi.member.entity.MemberVisitForum;
-
+package com.nowui.cloud.wawi.wawi.service;
 import java.util.List;
+
+import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
 
 /**
  * 会员访问圈子业务接口

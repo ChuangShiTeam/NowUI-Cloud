@@ -1,4 +1,4 @@
-package com.nowui.cloud.wawi.member.rpc;
+package com.nowui.cloud.wawi.wawi.rpc;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;

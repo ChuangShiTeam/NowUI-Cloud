@@ -1,8 +1,10 @@
-package com.nowui.cloud.wawi.member.controller.desktop;
+package com.nowui.cloud.wawi.wawi.controller.desktop;
+
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 会员访问圈子桌面端控制器

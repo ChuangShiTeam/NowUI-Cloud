@@ -1,16 +1,21 @@
-package com.nowui.cloud.wawi.member.controller.admin;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
-import com.nowui.cloud.wawi.member.entity.MemberVisitForum;
-import com.nowui.cloud.wawi.member.service.MemberVisitForumService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
+package com.nowui.cloud.wawi.wawi.controller.admin;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
+import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 会员访问圈子管理端控制器
@@ -27,7 +32,7 @@ public class MemberVisitForumAdminController extends BaseController {
     private MemberVisitForumService memberVisitForumService;
 
     @ApiOperation(value = "会员访问圈子列表")
-    @RequestMapping(value = "/member/visit/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody MemberVisitForum body) {
         validateRequest(
                 body,
@@ -51,7 +56,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员访问圈子信息")
-    @RequestMapping(value = "/member/visit/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody MemberVisitForum body) {
         validateRequest(
                 body,
@@ -71,7 +76,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员访问圈子")
-    @RequestMapping(value = "/member/visit/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody MemberVisitForum body) {
         validateRequest(
                 body,
@@ -86,7 +91,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员访问圈子")
-    @RequestMapping(value = "/member/visit/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberVisitForum body) {
         validateRequest(
                 body,
@@ -103,7 +108,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员访问圈子")
-    @RequestMapping(value = "/member/visit/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberVisitForum body) {
         validateRequest(
                 body,

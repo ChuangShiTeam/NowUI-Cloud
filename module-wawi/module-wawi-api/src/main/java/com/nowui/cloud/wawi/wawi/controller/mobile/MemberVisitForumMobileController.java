@@ -1,4 +1,4 @@
-package com.nowui.cloud.wawi.member.controller.mobile;
+package com.nowui.cloud.wawi.wawi.controller.mobile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +14,8 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.util.Util;
-import com.nowui.cloud.wawi.member.entity.MemberVisitForum;
-import com.nowui.cloud.wawi.member.service.MemberVisitForumService;
+import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
