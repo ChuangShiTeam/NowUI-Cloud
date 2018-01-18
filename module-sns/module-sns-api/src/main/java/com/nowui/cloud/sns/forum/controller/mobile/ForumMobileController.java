@@ -1,8 +1,17 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.netflix.discovery.converters.Auto;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.rpc.FileRpc;
@@ -10,33 +19,17 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
-import com.nowui.cloud.sns.forum.entity.ForumAudit;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
-import com.nowui.cloud.sns.forum.service.ForumAuditService;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
 import com.nowui.cloud.sns.forum.service.TopicForumService;
-import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 论坛信息移动端控制器
@@ -59,9 +52,6 @@ public class ForumMobileController extends BaseController {
 	 private ForumUserFollowService forumUserFollowService;
 	 
 	 @Autowired
-	 private ForumAuditService forumAuditService;
-	 
-	 @Autowired
 	 private FileRpc fileRpc;
 	 
 	 @Autowired
@@ -74,43 +64,46 @@ public class ForumMobileController extends BaseController {
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public Map<String, Object> saveV1(@RequestBody Forum body) {
 	     validateRequest(
-            body,
-            Forum.APP_ID,
-            Forum.FORUM_MEDIA_ID,
-//            Forum.FORUM_MEDIA_TYPE,
-            Forum.FORUM_NAME,
-            Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_TOPIC_LOCATION
-        );
+	             body,
+	             Forum.APP_ID,
+	             Forum.FORUM_MEDIA_ID,
+	             Forum.FORUM_NAME,
+	             Forum.FORUM_DESCRIPTION,
+	             Forum.SYSTEM_REQUEST_USER_ID
+         );
+	     
+	     // TODO 验证论坛名称的唯一性
 	    
-	    body.setForumMediaType(FileType.IMAGE.getKey());
-	    body.setForumBackgroundMediaId(body.getForumMediaId());
-	    body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
-	    body.setForumModerator(body.getSystemRequestUserId());
-	    body.setForumSort(0);
-	    body.setForumTop(false);
-	    body.setForumTopLevel(0);
-	    body.setForumTopEndTime(null);
-	    body.setForumIsActive(true);
-	    body.setForumIsRecomand(false);
-	    //保存
-	    String forumId = Util.getRandomUUID();
-	    String systemRequestUserId = body.getSystemRequestUserId();
-	    
-        Boolean result = forumService.save(body, forumId, systemRequestUserId);
-        //提交到审核表
-        ForumAudit forumAudit = new ForumAudit();
-        forumAudit.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
-        forumAudit.setAppId(body.getAppId());
-        forumAudit.setForumId(forumId);
-        if (result) {
-        	result= forumAuditService.save(forumAudit, Util.getRandomUUID(), systemRequestUserId);
-		}
+	     body.setForumTopicLocation("");
+	     body.setForumMediaType(FileType.IMAGE.getKey());
+	     body.setForumBackgroundMediaId(body.getForumMediaId());
+	     body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
+	     body.setForumModerator(body.getSystemRequestUserId());
+	     body.setForumSort(0);
+	     body.setForumTop(false);
+	     body.setForumTopLevel(0);
+	     body.setForumTopEndTime(null);
+	     body.setForumIsActive(true);
+	     body.setForumIsRecomand(false);
+	     body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
+	     body.setForumAuditContent("");
+	     
+	     String forumId = Util.getRandomUUID();
+	     
+	     Boolean result = forumService.save(body, forumId, body.getSystemRequestUserId());
+	     
+	     if (result) {
+	         // 圈住默认关注论坛
+	         ForumUserFollow forumUserFollow = new ForumUserFollow();
+	         forumUserFollow.setAppId(body.getAppId());
+	         forumUserFollow.setForumId(forumId);
+	         forumUserFollow.setUserId(body.getSystemRequestUserId());
+	         
+	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getSystemRequestUserId());
+	     }
         
-        return renderJson(result);
+	     return renderJson(result);
     }
-
-	 
 	 
 	@ApiOperation(value = "论坛信息")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -119,19 +112,19 @@ public class ForumMobileController extends BaseController {
                 body,
                 Forum.APP_ID,
                 Forum.FORUM_ID,
-                Forum.PAGE_INDEX,  //前端传来的圈友的分页条件
+                Forum.PAGE_INDEX,
                 Forum.PAGE_SIZE
         );
         
-        //forum包含了论坛简介,论坛名称,论坛头像
+        // forum包含了论坛简介,论坛名称,论坛头像
         Forum forum = forumService.find(body.getForumId());
-        //处理论坛头像
+        // 处理论坛头像
         File file = fileRpc.findV1(forum.getForumMediaId());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_MEDIA_ID, file);
         
         String userId = forum.getForumModerator();
-        //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
+        // 根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
         Member moderator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
         forum.put(Forum.FORUM_MODERATOR, moderator);
 
@@ -221,7 +214,7 @@ public class ForumMobileController extends BaseController {
         	
         	if (flag) {
 	            //appId,forumModerator,forumMediaId都随机模糊查询一个数字
-	            String randomAppId = "" + (1+Math.random()*(10-1+1));  //(最小值+Math.random()*(最大值-最小值+1))
+	            String randomAppId = "" + (1 + Math.random() * (10 - 1 + 1));  //(最小值+Math.random()*(最大值-最小值+1))
 	            String randomForumMediaId = "" +(1+Math.random()*(10-1+1));
 	            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
 	            listRandom = forumService.listRandom(randomAppId, randomForumMediaId, randomForumModerator, body.getPageIndex(), body.getPageSize());

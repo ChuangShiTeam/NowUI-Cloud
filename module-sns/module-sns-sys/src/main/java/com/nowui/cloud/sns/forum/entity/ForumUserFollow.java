@@ -64,9 +64,6 @@ public class ForumUserFollow extends BaseEntity {
     private String forumId;
     public static final String FORUM_ID = "forumId";
     
-    
-
-
     public String getForumUserFollowId() {
         return getString(FORUM_USER_FOLLOW_ID);
     }

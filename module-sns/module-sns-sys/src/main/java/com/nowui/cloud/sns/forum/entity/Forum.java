@@ -151,8 +151,6 @@ public class Forum extends BaseEntity {
      */
     @Field
     @TableField
-    @NotNull(message = "论坛置顶级别不能为空")
-    @Length(max = 11, message = "论坛置顶级别长度超出限制")
     private Integer forumTopLevel;
     public static final String FORUM_TOP_LEVEL = "forumTopLevel";
 
@@ -161,8 +159,6 @@ public class Forum extends BaseEntity {
      */
     @Field
     @TableField
-    @NotNull(message = "论坛置顶结束时间不能为空")
-    @Length(max = 0, message = "论坛置顶结束时间长度超出限制")
     private Date forumTopEndTime;
     public static final String FORUM_TOP_END_TIME = "forumTopEndTime";
 
@@ -208,7 +204,7 @@ public class Forum extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "审核状态不能为空")
-    @Length(max = 11, message = "审核状态长度超出限制")
+    @Length(max = 25, message = "审核状态长度超出限制")
     private String forumAuditStatus;
     public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
 
