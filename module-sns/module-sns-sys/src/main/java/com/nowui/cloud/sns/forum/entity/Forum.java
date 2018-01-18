@@ -177,13 +177,8 @@ public class Forum extends BaseEntity {
     public static final String FORUM_IS_ACTIVE = "forumIsActive";
 
     /**
-     * 是否关注
+     * 用户是否关注此论坛
      */
-    @Field
-    @TableField
-    @NotNull(message = "是否关注不能为空")
-    @Length(max = 1, message = "是否关注长度超出限制")
-    private Boolean forumIsFollow;
     public static final String FORUM_IS_FOLLOW = "forumIsFollow";
 
     /**
@@ -195,6 +190,27 @@ public class Forum extends BaseEntity {
     @Length(max = 1, message = "是否推荐长度超出限制")
     private Boolean forumIsRecomand;
     public static final String FORUM_IS_RECOMAND = "forumIsRecomand";
+    
+    
+    
+    /**
+     * 审核内容
+     */
+    @Field
+    @TableField
+    @Length(max = 500, message = "是否推荐长度超出限制")
+    private String forumAuditContent;
+    public static final String FORUM_AUDIT_CONTENT = "forumAuditContent";
+    
+    /**
+     * 审核状态
+     */
+    @Field
+    @TableField
+    @NotNull(message = "审核状态不能为空")
+    @Length(max = 11, message = "审核状态长度超出限制")
+    private String forumAuditStatus;
+    public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
 
     /**
      * 论坛的当日目前话题数量
@@ -331,12 +347,20 @@ public class Forum extends BaseEntity {
         put(FORUM_IS_ACTIVE, forumIsActive);
     }
 
-    public Boolean getForumIsFollow() {
-        return getBoolean(FORUM_IS_FOLLOW);
+    public String getForumAuditContent() {
+        return getString(FORUM_AUDIT_CONTENT);
     }
     
-    public void setForumIsFollow(Boolean forumIsFollow) {
-        put(FORUM_IS_FOLLOW, forumIsFollow);
+    public void setForumAuditContent(String forumAuditContent) {
+        put(FORUM_AUDIT_CONTENT, forumAuditContent);
+    }
+
+    public String getForumAuditStatus() {
+        return getString(FORUM_AUDIT_STATUS);
+    }
+    
+    public void setForumAuditStatus(String forumAuditStatus) {
+        put(FORUM_AUDIT_STATUS, forumAuditStatus);
     }
 
     public Boolean getForumIsRecomand() {

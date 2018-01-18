@@ -13,7 +13,7 @@ import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumAudit;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
-import com.nowui.cloud.sns.forum.entity.enums.ForumAuditType;
+import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumAuditService;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
@@ -100,7 +100,7 @@ public class ForumMobileController extends BaseController {
         Boolean result = forumService.save(body, forumId, systemRequestUserId);
         //提交到审核表
         ForumAudit forumAudit = new ForumAudit();
-        forumAudit.setForumAuditStatus(ForumAuditType.WAITAUDIT.getKey());
+        forumAudit.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
         forumAudit.setAppId(body.getAppId());
         forumAudit.setForumId(forumId);
         if (result) {
@@ -385,8 +385,8 @@ public class ForumMobileController extends BaseController {
                 Forum.PAGE_SIZE  //前端传值
         );
 
-        Integer resultTotal = forumService.countForAdmin(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, null);
-        List<Forum> resultList = forumService.listForAdmin(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumService.countForAdmin(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null);
+        List<Forum> resultList = forumService.listForAdmin(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
 
       //处理论坛头像
         for (Forum forum : resultList) {

@@ -3,6 +3,7 @@ package com.nowui.cloud.sns.forum.service.impl;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.mapper.ForumMapper;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implements ForumService {
 
     @Override
-    public Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand) {
+    public Integer countForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand, String forumAuditContent, String forumAuditStatus) {
         Integer count = count(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)
@@ -40,15 +41,16 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                         .eqAllowEmpty(Forum.FORUM_TOP_LEVEL, forumTopLevel)
                         .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
                         .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
-                        .eqAllowEmpty(Forum.FORUM_IS_FOLLOW, forumIsFollow)
                         .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
+                        .eqAllowEmpty(Forum.FORUM_AUDIT_CONTENT, forumAuditContent)
+                        .eqAllowEmpty(Forum.FORUM_AUDIT_STATUS, forumAuditStatus)
                         .eq(Forum.SYSTEM_STATUS, true)
         );
         return count;
     }
-
+    
     @Override
-    public List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsFollow, Boolean forumIsRecomand, Integer pageIndex, Integer pageSize) {
+    public List<Forum> listForAdmin(String appId, String forumMediaId, String forumMediaType, String forumBackgroundMediaId, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecomand, String forumAuditContent, String forumAuditStatus, Integer pageIndex, Integer pageSize) {
         List<Forum> forumList = list(
                 new BaseWrapper<Forum>()
                         .eq(Forum.APP_ID, appId)
@@ -65,8 +67,9 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                         .eqAllowEmpty(Forum.FORUM_TOP_LEVEL, forumTopLevel)
                         .eqAllowEmpty(Forum.FORUM_TOP_END_TIME, forumTopEndTime)
                         .eqAllowEmpty(Forum.FORUM_IS_ACTIVE, forumIsActive)
-                        .eqAllowEmpty(Forum.FORUM_IS_FOLLOW, forumIsFollow)
                         .eqAllowEmpty(Forum.FORUM_IS_RECOMAND, forumIsRecomand)
+                        .eqAllowEmpty(Forum.FORUM_AUDIT_CONTENT, forumAuditContent)
+                        .eqAllowEmpty(Forum.FORUM_AUDIT_STATUS, forumAuditStatus)
                         .eq(Forum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Forum.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -83,6 +86,7 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
                         .like(Forum.APP_ID, randomAppId)
                         .likeAllowEmpty(Forum.FORUM_MEDIA_ID, randomForumMediaId)
                         .likeAllowEmpty(Forum.FORUM_MODERATOR, randomForumModerator)
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
                         .eq(Forum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Forum.SYSTEM_CREATE_TIME)),
                 pageIndex,
