@@ -10,7 +10,7 @@ package com.nowui.cloud.sns.forum.entity.enums;
 public enum ForumAuditStatus {
 	WAIT_AUDIT("WAIT_AUDIT", "等待审核"),
 	AUDIT_PASS("AUDIT_PASS", "审核通过"),
-	AUDIT_NOT_PASS("AUDIT_NOT_PASS", "审核未通过");
+	AUDIT_NOT_PASS("AUDIT_NOT_PASS", "审核不通过");
 	
 	private String key;
     private String value;

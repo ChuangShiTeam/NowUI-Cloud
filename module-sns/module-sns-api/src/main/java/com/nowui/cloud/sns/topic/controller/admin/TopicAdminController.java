@@ -47,7 +47,7 @@ public class TopicAdminController extends BaseController {
         );
 
         Integer resultTotal = topicService.countForAdmin(body.getAppId() , body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getTopicIsLocation());
-        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecomand(), body.getTopTopLevel(), body.getPageIndex(), body.getPageSize());
+        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecommend(), body.getTopTopLevel(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Topic.TOPIC_ID,

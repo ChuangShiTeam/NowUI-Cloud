@@ -47,6 +47,17 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 
         return forumUserFollowList;
     }
+    
+    @Override
+    public Integer countByUserId(String appId, String userId) {
+        Integer count = count(
+                new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
 
 	@Override
 	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {
@@ -94,12 +105,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 			delete(forumUserFollow.getForumUserFollowId(), systemUpdateUserId, forumUserFollow.getSystemVersion());
 		}
 		
-		
-		
-		
-		
 		return false;
 	}
-	
 
 }

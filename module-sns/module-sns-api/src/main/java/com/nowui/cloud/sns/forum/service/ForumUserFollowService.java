@@ -35,6 +35,16 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      */
     List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
 
+   
+    /**
+     * 根据用户编号统计用户关注论坛数
+     *
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @return Integer 论坛用户关注统计
+     */
+    Integer countByUserId(String appId, String userId);
+    
     /**
      * 根据用户编号和论坛编号查询用户关注信息
      * 

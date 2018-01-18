@@ -27,34 +27,34 @@ import javax.validation.constraints.NotNull;
 public class Forum extends BaseEntity {
 
     /**
-     * 论坛id
+     * 论坛编号
      */
 	@Id
     @TableId
-    @NotNull(message = "论坛id不能为空")
-    @Length(max = 32, message = "论坛id长度超出限制")
+    @NotNull(message = "论坛编号不能为空")
+    @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
     /**
-     * 论坛多媒体id
+     * 论坛多媒体
      */
     @Field
     @TableField
-    @NotNull(message = "论坛多媒体id不能为空")
-    @Length(max = 32, message = "论坛多媒体id长度超出限制")
-    private String forumMediaId;
-    public static final String FORUM_MEDIA_ID = "forumMediaId";
+    @NotNull(message = "论坛多媒体不能为空")
+    @Length(max = 32, message = "论坛多媒体长度超出限制")
+    private String forumMedia;
+    public static final String FORUM_MEDIA = "forumMedia";
 
     /**
      * 论坛多媒体类型
@@ -67,22 +67,22 @@ public class Forum extends BaseEntity {
     public static final String FORUM_MEDIA_TYPE = "forumMediaType";
 
     /**
-     * 论坛多媒体背景id
+     * 论坛背景
      */
     @Field
     @TableField
-    @NotNull(message = "论坛多媒体背景id不能为空")
-    @Length(max = 32, message = "论坛多媒体背景id长度超出限制")
-    private String forumBackgroundMediaId;
-    public static final String FORUM_BACKGROUND_MEDIA_ID = "forumBackgroundMediaId";
+    @NotNull(message = "论坛背景不能为空")
+    @Length(max = 32, message = "论坛多媒体背景长度超出限制")
+    private String forumBackgroundMedia;
+    public static final String FORUM_BACKGROUND_MEDIA = "forumBackgroundMedia";
 
     /**
-     * 论坛多媒体背景类型
+     * 论坛背景类型
      */
     @Field
     @TableField
-    @NotNull(message = "论坛多媒体背景类型不能为空")
-    @Length(max = 32, message = "论坛多媒体背景类型长度超出限制")
+    @NotNull(message = "论坛背景类型不能为空")
+    @Length(max = 32, message = "论坛背景类型长度超出限制")
     private String forumBackgroundMediaType;
     public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
 
@@ -107,12 +107,12 @@ public class Forum extends BaseEntity {
     public static final String FORUM_DESCRIPTION = "forumDescription";
 
     /**
-     * 版主(用户id)
+     * 版主(用户编号)
      */
     @Field
     @TableField
-    @NotNull(message = "版主(用户id)不能为空")
-    @Length(max = 32, message = "版主(用户id)长度超出限制")
+    @NotNull(message = "版主(用户编号)不能为空")
+    @Length(max = 32, message = "版主(用户编号)长度超出限制")
     private String forumModerator;
     public static final String FORUM_MODERATOR = "forumModerator";
 
@@ -143,8 +143,8 @@ public class Forum extends BaseEntity {
     @TableField
     @NotNull(message = "论坛是否置顶不能为空")
     @Length(max = 1, message = "论坛是否置顶长度超出限制")
-    private Boolean forumTop;
-    public static final String FORUM_TOP = "forumTop";
+    private Boolean forumIsTop;
+    public static final String FORUM_IS_TOP = "forumIsTop";
 
     /**
      * 论坛置顶级别
@@ -168,14 +168,8 @@ public class Forum extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "论坛是否有效不能为空")
-    @Length(max = 1, message = "论坛是否有效长度超出限制")
     private Boolean forumIsActive;
     public static final String FORUM_IS_ACTIVE = "forumIsActive";
-
-    /**
-     * 用户是否关注此论坛
-     */
-    public static final String FORUM_IS_FOLLOW = "forumIsFollow";
 
     /**
      * 是否推荐
@@ -183,9 +177,8 @@ public class Forum extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
-    @Length(max = 1, message = "是否推荐长度超出限制")
-    private Boolean forumIsRecomand;
-    public static final String FORUM_IS_RECOMAND = "forumIsRecomand";
+    private Boolean forumIsRecommend;
+    public static final String FORUM_IS_RECOMAND = "forumIsRecommend";
     
     
     
@@ -207,11 +200,17 @@ public class Forum extends BaseEntity {
     @Length(max = 25, message = "审核状态长度超出限制")
     private String forumAuditStatus;
     public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
+    
+    /**
+     * 会员是否关注此论坛
+     */
+    public static final String MEMBER_IS_FOLLOW_FORUM = "memberIsFollowForum";
 
     /**
      * 论坛的当日目前话题数量
      */
     public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
+   
     /**
      * 论坛id列表
      */
@@ -239,12 +238,12 @@ public class Forum extends BaseEntity {
         put(APP_ID, appId);
     }
 
-    public String getForumMediaId() {
-        return getString(FORUM_MEDIA_ID);
+    public String getForumMedia() {
+        return getString(FORUM_MEDIA);
     }
     
-    public void setForumMediaId(String forumMediaId) {
-        put(FORUM_MEDIA_ID, forumMediaId);
+    public void setForumMedia(String forumMedia) {
+        put(FORUM_MEDIA, forumMedia);
     }
 
     public String getForumMediaType() {
@@ -255,12 +254,12 @@ public class Forum extends BaseEntity {
         put(FORUM_MEDIA_TYPE, forumMediaType);
     }
 
-    public String getForumBackgroundMediaId() {
-        return getString(FORUM_BACKGROUND_MEDIA_ID);
+    public String getForumBackgroundMedia() {
+        return getString(FORUM_BACKGROUND_MEDIA);
     }
     
-    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
-        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
+    public void setForumBackgroundMedia(String forumBackgroundMedia) {
+        put(FORUM_BACKGROUND_MEDIA, forumBackgroundMedia);
     }
 
     public String getForumBackgroundMediaType() {
@@ -311,12 +310,12 @@ public class Forum extends BaseEntity {
         put(FORUM_SORT, forumSort);
     }
 
-    public Boolean getForumTop() {
-        return getBoolean(FORUM_TOP);
+    public Boolean getForumIsTop() {
+        return getBoolean(FORUM_IS_TOP);
     }
     
-    public void setForumTop(Boolean forumTop) {
-        put(FORUM_TOP, forumTop);
+    public void setForumIsTop(Boolean forumIsTop) {
+        put(FORUM_IS_TOP, forumIsTop);
     }
 
     public Integer getForumTopLevel() {
@@ -359,12 +358,12 @@ public class Forum extends BaseEntity {
         put(FORUM_AUDIT_STATUS, forumAuditStatus);
     }
 
-    public Boolean getForumIsRecomand() {
+    public Boolean getForumIsRecommend() {
         return getBoolean(FORUM_IS_RECOMAND);
     }
     
-    public void setForumIsRecomand(Boolean forumIsRecomand) {
-        put(FORUM_IS_RECOMAND, forumIsRecomand);
+    public void setForumIsRecommend(Boolean forumIsRecommend) {
+        put(FORUM_IS_RECOMAND, forumIsRecommend);
     }
 
 

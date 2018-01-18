@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
@@ -52,13 +51,13 @@ public class ForumMobileController extends BaseController {
 	 private ForumUserFollowService forumUserFollowService;
 	 
 	 @Autowired
-	 private FileRpc fileRpc;
-	 
-	 @Autowired
-	 private MemberRpc memberRpc;
-	 
-	 @Autowired
 	 private ForumUserUnfollowService forumUserUnfollowService;
+	 
+	 @Autowired
+     private FileRpc fileRpc;
+     
+     @Autowired
+     private MemberRpc memberRpc;
 
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,7 +65,8 @@ public class ForumMobileController extends BaseController {
 	     validateRequest(
 	             body,
 	             Forum.APP_ID,
-	             Forum.FORUM_MEDIA_ID,
+	             Forum.FORUM_MEDIA,
+	             Forum.FORUM_MEDIA_TYPE,
 	             Forum.FORUM_NAME,
 	             Forum.FORUM_DESCRIPTION,
 	             Forum.SYSTEM_REQUEST_USER_ID
@@ -74,18 +74,15 @@ public class ForumMobileController extends BaseController {
 	     
 	     // TODO 验证论坛名称的唯一性
 	    
-	     body.setForumTopicLocation("");
-	     body.setForumMediaType(FileType.IMAGE.getKey());
-	     body.setForumBackgroundMediaId(body.getForumMediaId());
-	     body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
+	     body.setForumBackgroundMedia(body.getForumMedia());
+	     body.setForumBackgroundMediaType(body.getForumBackgroundMediaType());
 	     body.setForumModerator(body.getSystemRequestUserId());
 	     body.setForumSort(0);
-	     body.setForumTop(false);
-	     body.setForumTopLevel(0);
-	     body.setForumTopEndTime(null);
+	     body.setForumIsTop(false);
 	     body.setForumIsActive(true);
-	     body.setForumIsRecomand(false);
-	     body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
+	     body.setForumIsRecommend(false);
+	     body.setForumAuditStatus(ForumAuditStatus.AUDIT_PASS.getKey());
+	     body.setForumTopicLocation("");
 	     body.setForumAuditContent("");
 	     
 	     String forumId = Util.getRandomUUID();
@@ -93,7 +90,7 @@ public class ForumMobileController extends BaseController {
 	     Boolean result = forumService.save(body, forumId, body.getSystemRequestUserId());
 	     
 	     if (result) {
-	         // 圈住默认关注论坛
+	         // 圈主默认关注论坛
 	         ForumUserFollow forumUserFollow = new ForumUserFollow();
 	         forumUserFollow.setAppId(body.getAppId());
 	         forumUserFollow.setForumId(forumId);
@@ -119,9 +116,9 @@ public class ForumMobileController extends BaseController {
         // forum包含了论坛简介,论坛名称,论坛头像
         Forum forum = forumService.find(body.getForumId());
         // 处理论坛头像
-        File file = fileRpc.findV1(forum.getForumMediaId());
+        File file = fileRpc.findV1(forum.getForumMedia());
     	file.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_MEDIA_ID, file);
+    	forum.put(Forum.FORUM_MEDIA, file);
         
         String userId = forum.getForumModerator();
         // 根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
@@ -149,7 +146,7 @@ public class ForumMobileController extends BaseController {
 
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA,
                 Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
@@ -213,11 +210,11 @@ public class ForumMobileController extends BaseController {
 			}
         	
         	if (flag) {
-	            //appId,forumModerator,forumMediaId都随机模糊查询一个数字
+	            //appId,forumModerator,forumMedia都随机模糊查询一个数字
 	            String randomAppId = "" + (1 + Math.random() * (10 - 1 + 1));  //(最小值+Math.random()*(最大值-最小值+1))
-	            String randomForumMediaId = "" +(1+Math.random()*(10-1+1));
+	            String randomForumMedia = "" +(1+Math.random()*(10-1+1));
 	            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
-	            listRandom = forumService.listRandom(randomAppId, randomForumMediaId, randomForumModerator, body.getPageIndex(), body.getPageSize());
+	            listRandom = forumService.listRandom(randomAppId, randomForumMedia, randomForumModerator, body.getPageIndex(), body.getPageSize());
 	            
 	            if (listRandom != null && listRandom.size() == body.getPageSize()) {
 					flag = false;
@@ -228,14 +225,14 @@ public class ForumMobileController extends BaseController {
 
         //处理论坛头像
         for (Forum forum : listRandom) {
-        	File file = fileRpc.findV1(forum.getForumMediaId());
+        	File file = fileRpc.findV1(forum.getForumMedia());
         	file.keep(File.FILE_ID, File.FILE_PATH);
-            forum.put(Forum.FORUM_MEDIA_ID, file);
+            forum.put(Forum.FORUM_MEDIA, file);
 		}
 
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION
         );
@@ -250,10 +247,10 @@ public class ForumMobileController extends BaseController {
           body,
           Forum.APP_ID,
           Forum.FORUM_ID,
-          Forum.FORUM_MEDIA_ID
+          Forum.FORUM_MEDIA
        );
 	   //不清楚是否单独写一个更改背景图片的接口
-	   body.setForumBackgroundMediaId(body.getForumMediaId());
+	   body.setForumBackgroundMedia(body.getForumMedia());
 
        Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
@@ -383,14 +380,14 @@ public class ForumMobileController extends BaseController {
 
       //处理论坛头像
         for (Forum forum : resultList) {
-        	File file = fileRpc.findV1(forum.getForumMediaId());
+        	File file = fileRpc.findV1(forum.getForumMedia());
         	file.keep(File.FILE_ID, File.FILE_PATH);
-            forum.put(Forum.FORUM_MEDIA_ID, file);
+            forum.put(Forum.FORUM_MEDIA, file);
 		}
         
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR
@@ -410,13 +407,13 @@ public class ForumMobileController extends BaseController {
         //forum包含了论坛简介,论坛名称,论坛头像,论坛背景图片
         Forum forum = forumService.find(body.getForumId());
         //处理论坛头像
-        File file = fileRpc.findV1(forum.getForumMediaId());
+        File file = fileRpc.findV1(forum.getForumMedia());
     	file.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_MEDIA_ID, file);
+    	forum.put(Forum.FORUM_MEDIA, file);
     	//处理论坛背景图片
-        File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMediaId());
+        File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMedia());
         backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_BACKGROUND_MEDIA_ID, backgroundfile);
+    	forum.put(Forum.FORUM_BACKGROUND_MEDIA, backgroundfile);
 
 
         String userId = forum.getForumModerator();
@@ -428,21 +425,21 @@ public class ForumMobileController extends BaseController {
         //根据systemRequestUserId查询是否加入了这个圈子
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
         if (forumUserFollow == null) {
-        	forum.put(Forum.FORUM_IS_FOLLOW, false);
+        	forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, false);
 		}
-        forum.put(Forum.FORUM_IS_FOLLOW, true);
+        forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, true);
         
 
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA_ID,
+                Forum.FORUM_BACKGROUND_MEDIA,
                 Forum.FORUM_BACKGROUND_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
-                Forum.FORUM_IS_FOLLOW
+                Forum.MEMBER_IS_FOLLOW_FORUM
         );
 
         return renderJson(forum);

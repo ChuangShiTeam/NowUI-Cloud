@@ -131,8 +131,8 @@ public class Topic extends BaseEntity {
     @TableField
     @NotNull(message = "是否推荐不能为空")
     @Length(max = 1, message = "是否推荐长度超出限制")
-    private Boolean topicIsRecomand;
-    public static final String TOPIC_IS_RECOMAND = "topicIsRecomand";
+    private Boolean topicIsRecommend;
+    public static final String TOPIC_IS_RECOMAND = "topicIsRecommend";
 
     /**
      * 置顶级别
@@ -269,12 +269,12 @@ public class Topic extends BaseEntity {
         put(TOPIC_IS_TOP, topicIsTop);
     }
 
-    public Boolean getTopicIsRecomand() {
+    public Boolean getTopicIsRecommend() {
         return getBoolean(TOPIC_IS_RECOMAND);
     }
     
-    public void setTopicIsRecomand(Boolean topicIsRecomand) {
-        put(TOPIC_IS_RECOMAND, topicIsRecomand);
+    public void setTopicIsRecommend(Boolean topicIsRecommend) {
+        put(TOPIC_IS_RECOMAND, topicIsRecommend);
     }
 
     public Integer getTopTopLevel() {

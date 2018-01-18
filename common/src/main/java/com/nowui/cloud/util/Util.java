@@ -361,6 +361,20 @@ public class Util {
         return beanList;
     }
     
+    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        if (Util.isNullOrEmpty(fieldBeanList)) {
+            return beanList;
+        }
+        for (BaseEntity bean : beanList) {
+            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns) : null);
+        }
+        return beanList;
+    }
+    
     /**
      * 实体对象列表关联字段映射实体字段对象
      * @param beanList 实体对象列表

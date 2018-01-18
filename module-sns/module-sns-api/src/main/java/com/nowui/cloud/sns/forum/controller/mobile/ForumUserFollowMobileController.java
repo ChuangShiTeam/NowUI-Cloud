@@ -1,5 +1,16 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
@@ -16,17 +27,6 @@ import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 论坛用户关注移动端控制器
@@ -93,14 +93,13 @@ public class ForumUserFollowMobileController extends BaseController {
                 body,
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.PAGE_INDEX,
-                ForumUserFollow.PAGE_SIZE
+                ForumUserFollow.PAGE_SIZE,
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID
         );
-        body.setUserId(body.getSystemRequestUserId());
-        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
         
+        Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
         
-        //得到forumList
-        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), null, body.getPageIndex(), body.getPageSize());
+        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getSystemRequestUserId(), null, body.getPageIndex(), body.getPageSize());
 
         ArrayList<Forum> forumList = new ArrayList<Forum>();
 
@@ -111,11 +110,10 @@ public class ForumUserFollowMobileController extends BaseController {
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
         	
         	//处理论坛头像
-        	String forumMediaId = forum.getForumMediaId();
-        	File file = fileRpc.findV1(forumMediaId);
+        	String forumMedia = forum.getForumMedia();
+        	File file = fileRpc.findV1(forumMedia);
             file.keep(File.FILE_ID, File.FILE_PATH);
-            forum.put(Forum.FORUM_MEDIA_ID, file);
-
+            forum.put(Forum.FORUM_MEDIA, file);
             
             //根据forumId去论坛话题关联表查询 当日话题最新数量
             Integer count = topicForumService.countForToday(body.getAppId(), forumUserFollow.getForumId(), null);
@@ -132,7 +130,7 @@ public class ForumUserFollowMobileController extends BaseController {
         }
 
         validateResponse(
-                Forum.FORUM_MEDIA_ID,
+                Forum.FORUM_MEDIA,
                 Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
