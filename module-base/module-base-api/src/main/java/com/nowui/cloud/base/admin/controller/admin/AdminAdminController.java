@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,16 +44,18 @@ public class AdminAdminController extends BaseController {
     
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody User body) {
+    public Map<String, Object> listV1() {
+        User userEntity = getEntry(User.class);
+
         validateRequest(
-                body,
+                userEntity,
                 User.APP_ID,
                 User.PAGE_INDEX,
                 User.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.countForAdmin(body.getAppId());
-        List<Admin> resultList = adminService.listForAdmin(body.getAppId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = adminService.countForAdmin(userEntity.getAppId());
+        List<Admin> resultList = adminService.listForAdmin(userEntity.getAppId(), userEntity.getPageIndex(), userEntity.getPageSize());
 
         validateResponse(
                 Admin.ADMIN_ID,
@@ -73,14 +74,16 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "管理员信息")
     @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Admin body) {
+    public Map<String, Object> findV1() {
+        Admin adminEntity = getEntry(Admin.class);
+
         validateRequest(
-                body,
+                adminEntity,
                 Admin.APP_ID,
                 Admin.ADMIN_ID
         );
 
-        Admin result = adminService.find(body.getAdminId());
+        Admin result = adminService.find(adminEntity.getAdminId());
 
         validateResponse(
                 Admin.ADMIN_ID,
@@ -99,59 +102,61 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "新增管理员")
     @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody User body) {
+    public Map<String, Object> saveV1() {
+        User userEntity = getEntry(User.class);
+
         validateRequest(
-                body,
+                userEntity,
                 User.APP_ID
         );
         //验证用户账号
-        UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
+        UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
         validateRequest(
-                userAccount,
+                userAccountEntity,
                 UserAccount.USER_ACCOUNT
         );
         //验证用户昵称
-        UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();
+        UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
         validateRequest(
-                userNickName,
+                userNickNameEntity,
                 UserNickName.USER_NICK_NAME
         );
         //验证用户姓名
-        UserIdcard userIdcard = JSONObject.parseObject(body.toJSONString(), UserIdcard.class).keepTableFieldValue();
+        UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
         validateRequest(
-                userIdcard,
+                userIdcardEntity,
                 UserIdcard.USER_NAME
         );
         //验证用户邮箱
-        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class).keepTableFieldValue();
+        UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
         validateRequest(
-                userEmail,
+                userEmailEntity,
                 UserEmail.USER_EMAIL
         );
         //验证用户手机
-        UserMobile userMobile = JSONObject.parseObject(body.toJSONString(), UserMobile.class).keepTableFieldValue();
+        UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
         validateRequest(
-                userMobile,
+                userMobileEntity,
                 UserMobile.USER_MOBILE
         );
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
-        
-        body.setUserId(userId);
-        body.setUserType(UserType.ADMIN.getKey());
-        body.setObjectId(adminId);
+
+        userEntity.setUserId(userId);
+        userEntity.setUserType(UserType.ADMIN.getKey());
+        userEntity.setObjectId(adminId);
         
         Admin admin = new Admin();
         admin.setUserId(userId);
-        admin.setAppId(body.getAppId());
+        admin.setAppId(userEntity.getAppId());
         
         Boolean result = true;
         if (result) {
-            userMq.sendSave(body, userId, body.getSystemRequestUserId());
-            userMq.sendSaveAccount(userAccount, userId, body.getSystemRequestUserId());
-            userMq.sendSaveNickName(userNickName, userId, body.getSystemRequestUserId());
-            userMq.sendSaveIdcard(userIdcard, userId, body.getSystemRequestUserId());
-            userMq.sendSaveMobile(userMobile, userId, body.getSystemRequestUserId());
+            userMq.sendSave(userEntity, userId, userEntity.getSystemRequestUserId());
+            userMq.sendSaveAccount(userAccountEntity, userId, userEntity.getSystemRequestUserId());
+            userMq.sendSaveNickName(userNickNameEntity, userId, userEntity.getSystemRequestUserId());
+            userMq.sendSaveIdcard(userIdcardEntity, userId, userEntity.getSystemRequestUserId());
+            userMq.sendSaveMobile(userMobileEntity, userId, userEntity.getSystemRequestUserId());
 		}
         
         return renderJson(result);
@@ -159,14 +164,16 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "修改管理员")
     @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody User body) {
+    public Map<String, Object> updateV1() {
+        User userEntity = getEntry(User.class);
+
         validateRequest(
-                body,
+                userEntity,
                 User.APP_ID,
                 User.USER_ID,
                 User.SYSTEM_VERSION
         );
-        Admin admin = JSONObject.parseObject(body.toJSONString(), Admin.class);
+        Admin admin = JSONObject.parseObject(userEntity.toJSONString(), Admin.class);
         validateRequest(
                 admin,
                 Admin.ADMIN_ID,
@@ -175,45 +182,45 @@ public class AdminAdminController extends BaseController {
         );
         
         //验证用户账号
-        UserAccount userAccount = JSONObject.parseObject(body.toJSONString(), UserAccount.class).keepTableFieldValue();
+        UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
         validateRequest(
-                userAccount,
+                userAccountEntity,
                 UserAccount.USER_ACCOUNT
         );
         //验证用户昵称
-        UserNickName userNickName = JSONObject.parseObject(body.toJSONString(), UserNickName.class).keepTableFieldValue();
+        UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
         validateRequest(
-                userNickName,
+                userNickNameEntity,
                 UserNickName.USER_NICK_NAME
         );
         //验证用户姓名
-        UserIdcard userIdcard = JSONObject.parseObject(body.toJSONString(), UserIdcard.class).keepTableFieldValue();
-        userIdcard.setUserIdcardNumber("");
+        UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
+        userIdcardEntity.setUserIdcardNumber("");
         validateRequest(
-                userIdcard,
+                userIdcardEntity,
                 UserIdcard.USER_NAME
         );
         //验证用户邮箱
-        UserEmail userEmail = JSONObject.parseObject(body.toJSONString(), UserEmail.class).keepTableFieldValue();
+        UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
         validateRequest(
-                userEmail,
+                userEmailEntity,
                 UserEmail.USER_EMAIL
         );
         //验证用户手机
-        UserMobile userMobile = JSONObject.parseObject(body.toJSONString(), UserMobile.class).keepTableFieldValue();
+        UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
         validateRequest(
-                userMobile,
+                userMobileEntity,
                 UserMobile.USER_MOBILE
         );
         
         Boolean result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
 
         if (result) {
-            userMq.sendUpdate(body, body.getUserId(), body.getSystemRequestUserId(), body.getSystemVersion());
-            userMq.sendUpdateAccount(userAccount, body.getUserId(), body.getSystemRequestUserId());
-            userMq.sendUpdateNickName(userNickName, body.getUserId(), body.getSystemRequestUserId());
-            userMq.sendUpdateIdcard(userIdcard, body.getUserId(), body.getSystemRequestUserId());
-            userMq.sendUpdateMobile(userMobile, body.getUserId(), body.getSystemRequestUserId());
+            userMq.sendUpdate(userEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId(), userEntity.getSystemVersion());
+            userMq.sendUpdateAccount(userAccountEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
+            userMq.sendUpdateNickName(userNickNameEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
+            userMq.sendUpdateIdcard(userIdcardEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
+            userMq.sendUpdateMobile(userMobileEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
         }
         
         return renderJson(result);
@@ -221,15 +228,17 @@ public class AdminAdminController extends BaseController {
 
     @ApiOperation(value = "删除管理员")
     @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Admin body) {
+    public Map<String, Object> deleteV1() {
+        Admin adminEntity = getEntry(Admin.class);
+
         validateRequest(
-                body,
+                adminEntity,
                 Admin.ADMIN_ID,
                 Admin.APP_ID,
                 Admin.SYSTEM_VERSION
         );
 
-        Boolean result = adminService.delete(body.getAdminId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = adminService.delete(adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
 
         if (result) {
             //adminMq.sendDeleteUser(body.getAdminId(), body.getSystemRequestUserId());

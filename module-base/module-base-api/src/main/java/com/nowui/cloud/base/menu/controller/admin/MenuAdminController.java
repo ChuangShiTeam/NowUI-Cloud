@@ -4,7 +4,6 @@ import com.nowui.cloud.util.Util;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.menu.entity.Menu;
 import com.nowui.cloud.base.menu.service.MenuService;
-import com.nowui.cloud.base.role.entity.Role;
 import com.nowui.cloud.constant.Constant;
 
 import io.swagger.annotations.Api;
@@ -13,14 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.plaf.BorderUIResource.BevelBorderUIResource;
-
-import java.util.Set;
 
 /**
  * 菜单管理端控制器
@@ -38,27 +31,29 @@ public class MenuAdminController extends BaseController {
 
     @ApiOperation(value = "菜单分类树形列表")
     @RequestMapping(value = "/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Menu body) {
+    public Map<String, Object> listV1() {
+        Menu menuEntity = getEntry(Menu.class);
+
         validateRequest(
-                body,
+                menuEntity,
                 Menu.APP_ID,
                 Menu.MENU_NAME,
                 Menu.PAGE_INDEX,
                 Menu.PAGE_SIZE
         );
 
-        Integer resultTotal = menuService.countForAdmin(body.getAppId() , body.getMenuName());
+        Integer resultTotal = menuService.countForAdmin(menuEntity.getAppId() , menuEntity.getMenuName());
         
-        if (Util.isNullOrEmpty(body.getMenuName())) {
+        if (Util.isNullOrEmpty(menuEntity.getMenuName())) {
 			
-        	List<Map<String, Object>> resultList = menuService.treeListForAdmin(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+        	List<Map<String, Object>> resultList = menuService.treeListForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
         	
         	validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
         	
         	return renderJson(resultTotal, resultList);
 
 		}else {
-			List<Menu> resultList = menuService.listForAdmin(body.getAppId(), body.getMenuName(), body.getPageIndex(), body.getPageSize());
+			List<Menu> resultList = menuService.listForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
 			
 			validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
 			
@@ -68,14 +63,16 @@ public class MenuAdminController extends BaseController {
 
     @ApiOperation(value = "菜单信息")
     @RequestMapping(value = "/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Menu body) {
+    public Map<String, Object> findV1() {
+        Menu menuEntity = getEntry(Menu.class);
+
         validateRequest(
-                body,
+                menuEntity,
                 Menu.APP_ID,
                 Menu.MENU_ID
         );
 
-        Menu result = menuService.find(body.getMenuId());
+        Menu result = menuService.find(menuEntity.getMenuId());
 
         validateResponse(
                 Menu.MENU_ID,
@@ -92,9 +89,11 @@ public class MenuAdminController extends BaseController {
 
     @ApiOperation(value = "新增菜单")
     @RequestMapping(value = "/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Menu body) {
+    public Map<String, Object> saveV1() {
+        Menu menuEntity = getEntry(Menu.class);
+
         validateRequest(
-                body,
+                menuEntity,
                 Menu.APP_ID,
                 Menu.MENU_PARENT_ID,
                 Menu.MENU_NAME,
@@ -104,14 +103,14 @@ public class MenuAdminController extends BaseController {
         
         String menuParentPath = "";
 
-        if (Util.isNullOrEmpty(body.getMenuParentId())) {
+        if (Util.isNullOrEmpty(menuEntity.getMenuParentId())) {
 
             JSONArray jsonArray = new JSONArray();
-            jsonArray.add(body.getMenuId());
+            jsonArray.add(menuEntity.getMenuId());
 
             menuParentPath = jsonArray.toJSONString();
         } else {
-            Menu parent = menuService.find(body.getMenuParentId());
+            Menu parent = menuService.find(menuEntity.getMenuParentId());
 
             JSONArray jsonArray;
             if (Util.isNullOrEmpty(parent.getMenuParentPath())) {
@@ -124,18 +123,20 @@ public class MenuAdminController extends BaseController {
             menuParentPath = jsonArray.toJSONString();
         }
 
-        body.setMenuParentPath(menuParentPath);
+        menuEntity.setMenuParentPath(menuParentPath);
 
-        Boolean result = menuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(), menuEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改菜单")
     @RequestMapping(value = "/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Menu body) {
+    public Map<String, Object> updateV1() {
+        Menu menuEntity = getEntry(Menu.class);
+
         validateRequest(
-                body,
+                menuEntity,
                 Menu.MENU_ID,
                 Menu.APP_ID,
                 Menu.MENU_PARENT_ID,
@@ -146,32 +147,36 @@ public class MenuAdminController extends BaseController {
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.update(body, body.getMenuId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除菜单")
     @RequestMapping(value = "/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Menu body) {
+    public Map<String, Object> deleteV1() {
+        Menu menuEntity = getEntry(Menu.class);
+
         validateRequest(
-                body,
+                menuEntity,
                 Menu.MENU_ID,
                 Menu.APP_ID,
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.delete(body.getMenuId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = menuService.delete(menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "菜单重建缓存")
     @RequestMapping(value = "/menu/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody Menu body) {
-        validateRequest(body, Menu.MENU_ID);
+    public Map<String, Object> replaceV1() {
+        Menu menuEntity = getEntry(Menu.class);
 
-        menuService.replace(body.getMenuId());
+        validateRequest(menuEntity, Menu.MENU_ID);
+
+        menuService.replace(menuEntity.getMenuId());
 
         return renderJson(true);
     }
