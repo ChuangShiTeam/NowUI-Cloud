@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 话题用户收藏关联管理端控制器
+ * 话题收藏管理端控制器
  *
  * @author xupengfei
  *
  * 2018-01-08
  */
-@Api(value = "话题用户收藏关联", description = "话题用户收藏关联管理端接口管理")
+@Api(value = "话题收藏", description = "话题收藏管理端接口管理")
 @RestController
 public class TopicUserBookmarkAdminController extends BaseController {
 
     @Autowired
     private TopicUserBookmarkService topicUserBookmarkService;
 
-    @ApiOperation(value = "话题用户收藏关联列表")
+    @ApiOperation(value = "话题收藏列表")
     @RequestMapping(value = "/topic/user/bookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
@@ -50,7 +50,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "话题用户收藏关联信息")
+    @ApiOperation(value = "话题收藏信息")
     @RequestMapping(value = "/topic/user/bookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
@@ -70,7 +70,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         return renderJson(result);
     }
 
-    @ApiOperation(value = "新增话题用户收藏关联")
+    @ApiOperation(value = "新增话题收藏")
     @RequestMapping(value = "/topic/user/bookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
@@ -85,7 +85,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         return renderJson(result);
     }
 
-    @ApiOperation(value = "修改话题用户收藏关联")
+    @ApiOperation(value = "修改话题收藏")
     @RequestMapping(value = "/topic/user/bookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
@@ -102,7 +102,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         return renderJson(result);
     }
 
-    @ApiOperation(value = "删除话题用户收藏关联")
+    @ApiOperation(value = "删除话题收藏")
     @RequestMapping(value = "/topic/user/bookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody TopicUserBookmark body) {
         validateRequest(

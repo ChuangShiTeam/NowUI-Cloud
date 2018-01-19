@@ -18,7 +18,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      *
      * @param appId 应用编号
      * @param userId 关注人
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @return Integer 话题用户取消点赞关联统计
      */
     Integer countForAdmin(String appId, String userId, String topicId);
@@ -28,7 +28,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      *
      * @param appId 应用编号
      * @param userId 关注人
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<TopicUserUnlike> 话题用户取消点赞关联列表
@@ -39,7 +39,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * 话题用户取消点赞记录(不分页)
      * @param appId 应用编号
      * @param userId 关注人
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @return TopicUserUnlike 
      */
     TopicUserUnlike findUnlike(String appId, String userId, String topicId);
@@ -48,7 +48,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * 根据topicId查询话题用户取消点赞记录
      * 
      * @param appId 应用编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @return List<TopicUserUnlike> 取消点赞记录列表
      */
     List<TopicUserUnlike> allUnlikeListByTopicId(String appId, String topicId);

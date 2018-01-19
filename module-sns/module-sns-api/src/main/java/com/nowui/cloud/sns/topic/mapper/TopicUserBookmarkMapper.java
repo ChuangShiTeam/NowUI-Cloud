@@ -4,7 +4,7 @@ import com.nowui.cloud.mapper.BaseMapper;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 
 /**
- * 话题用户收藏关联mapping映射接口
+ * 话题收藏mapping映射接口
  *
  * @author xupengfei
  *

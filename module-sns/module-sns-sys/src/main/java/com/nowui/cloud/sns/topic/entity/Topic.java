@@ -10,6 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -25,12 +27,12 @@ import javax.validation.constraints.NotNull;
 public class Topic extends BaseEntity {
 
     /**
-     * 话题id
+     * 话题编号
      */
 	@Id
     @TableId
-    @NotNull(message = "话题id不能为空")
-    @Length(max = 32, message = "话题id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
@@ -51,8 +53,18 @@ public class Topic extends BaseEntity {
     @TableField
     @NotNull(message = "论坛编号不能为空")
     @Length(max = 32, message = "论坛编号长度超出限制")
-    private String topicForumId;
-    public static final String TOPIC_FORUM_ID = "topicForumId";
+    private String forumId;
+    public static final String FORUM_ID = "forumId";
+    
+    /**
+     * 用户编号
+     */
+    @Field
+    @TableField
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
+    private String userId;
+    public static final String USER_ID = "userId";
 
     /**
      * 动态内容
@@ -63,16 +75,6 @@ public class Topic extends BaseEntity {
     @Length(max = 1000, message = "动态长度超出限制")
     private String topicSummary;
     public static final String TOPIC_SUMMARY = "topicSummary";
-
-    /**
-     * 用户编号
-     */
-    @Field
-    @TableField
-    @NotNull(message = "用户编号不能为空")
-    @Length(max = 32, message = "用户编号长度超出限制")
-    private String userId;
-    public static final String USER_ID = "userId";
 
     /**
      * 经度
@@ -110,7 +112,6 @@ public class Topic extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "是否有位置不能为空")
-    @Length(max = 1, message = "是否有位置长度超出限制")
     private Boolean topicIsLocation;
     public static final String TOPIC_IS_LOCATION = "topicIsLocation";
 
@@ -120,7 +121,6 @@ public class Topic extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "置顶不能为空")
-    @Length(max = 1, message = "置顶长度超出限制")
     private Boolean topicIsTop;
     public static final String TOPIC_IS_TOP = "topicIsTop";
 
@@ -130,7 +130,6 @@ public class Topic extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
-    @Length(max = 1, message = "是否推荐长度超出限制")
     private Boolean topicIsRecommend;
     public static final String TOPIC_IS_RECOMAND = "topicIsRecommend";
 
@@ -140,14 +139,18 @@ public class Topic extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "置顶级别不能为空")
-    @Length(max = 11, message = "置顶级别长度超出限制")
-    private Integer topTopLevel;
-    public static final String TOP_TOP_LEVEL = "topTopLevel";
+    private Integer topicTopLevel;
+    public static final String TOPIC_TOP_LEVEL = "topicTopLevel";
     
     /**
-     * 论坛编号
+     * 置顶截止时间
      */
-    public static final String FORUM_ID = "forumId";
+    @Field
+    @TableField
+    private Date topicTopEndTime;
+    public static final String TOPIC_TOP_END_TIME = "topicTopEndTime";
+
+    
     /**
      * 话题媒体list
      */
@@ -186,9 +189,6 @@ public class Topic extends BaseEntity {
      */
     public static final String TOPIC_USER_IS_BOOKEMARK = "topicUserIsBookMark";
     
-    
-    
-    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }
@@ -205,12 +205,12 @@ public class Topic extends BaseEntity {
         put(APP_ID, appId);
     }
 
-    public String getTopicForumId() {
-        return getString(TOPIC_FORUM_ID);
+    public String getForumId() {
+        return getString(FORUM_ID);
     }
     
-    public void setTopicForumId(String topicForumId) {
-        put(TOPIC_FORUM_ID, topicForumId);
+    public void setForumId(String forumId) {
+        put(FORUM_ID, forumId);
     }
 
     public String getTopicSummary() {
@@ -277,12 +277,20 @@ public class Topic extends BaseEntity {
         put(TOPIC_IS_RECOMAND, topicIsRecommend);
     }
 
-    public Integer getTopTopLevel() {
-        return getInteger(TOP_TOP_LEVEL);
+    public Integer getTopicTopLevel() {
+        return getInteger(TOPIC_TOP_LEVEL);
     }
     
-    public void setTopTopLevel(Integer topTopLevel) {
-        put(TOP_TOP_LEVEL, topTopLevel);
+    public void setTopicTopLevel(Integer topicTopLevel) {
+        put(TOPIC_TOP_LEVEL, topicTopLevel);
+    }
+    
+    public Date getTopicTopEndTime() {
+        return getDate(TOPIC_TOP_END_TIME);
+    }
+    
+    public void setTopicTopEndTime(Date topicTopEndTime) {
+        put(TOPIC_TOP_END_TIME, topicTopEndTime);
     }
 
 

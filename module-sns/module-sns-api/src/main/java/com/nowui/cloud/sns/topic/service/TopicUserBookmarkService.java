@@ -5,7 +5,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import java.util.List;
 
 /**
- * 话题用户收藏关联业务接口
+ * 话题收藏业务接口
  *
  * @author xupengfei
  *
@@ -14,32 +14,32 @@ import java.util.List;
 public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark> {
 
     /**
-     * 话题用户收藏关联统计
+     * 话题收藏统计
      *
      * @param appId 应用编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param userId 用户编号
-     * @return Integer 话题用户收藏关联统计
+     * @return Integer 话题收藏统计
      */
     Integer countForAdmin(String appId, String topicId, String userId);
 
     /**
-     * 话题用户收藏关联列表
+     * 话题收藏列表
      *
      * @param appId 应用编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param userId 用户编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<TopicUserBookmark> 话题用户收藏关联列表
+     * @return List<TopicUserBookmark> 话题收藏列表
      */
     List<TopicUserBookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize);
     
     /**
-     * 根据话题id和用户编号查询单条话题收藏记录
+     * 根据话题编号和用户编号查询单条话题收藏记录
      * 
      * @param appId 应用编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @param userId 用户编号
      * @return TopicUserBookmark 单条话题收藏记录
      */

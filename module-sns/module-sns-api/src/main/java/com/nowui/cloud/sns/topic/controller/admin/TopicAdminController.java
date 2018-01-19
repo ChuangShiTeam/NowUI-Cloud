@@ -32,7 +32,7 @@ public class TopicAdminController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -41,17 +41,17 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_IS_RECOMAND,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
 
-        Integer resultTotal = topicService.countForAdmin(body.getAppId() , body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getTopicIsLocation());
-        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecommend(), body.getTopTopLevel(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicService.countForAdmin(body.getAppId() , body.getForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getTopicIsLocation());
+        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getForumId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecommend(), body.getTopicTopLevel(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -60,7 +60,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_IS_RECOMAND,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOPIC_TOP_LEVEL
         );
 
         return renderJson(resultTotal, resultList);
@@ -79,7 +79,7 @@ public class TopicAdminController extends BaseController {
 
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -88,7 +88,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_IS_RECOMAND,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOPIC_TOP_LEVEL
         );
 
         return renderJson(result);
@@ -100,7 +100,7 @@ public class TopicAdminController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -109,7 +109,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_IS_RECOMAND,
-                Topic.TOP_TOP_LEVEL
+                Topic.TOPIC_TOP_LEVEL
         );
 
         Boolean result = topicService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -124,7 +124,7 @@ public class TopicAdminController extends BaseController {
                 body,
                 Topic.TOPIC_ID,
                 Topic.APP_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -133,7 +133,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_IS_RECOMAND,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.SYSTEM_VERSION
         );
 

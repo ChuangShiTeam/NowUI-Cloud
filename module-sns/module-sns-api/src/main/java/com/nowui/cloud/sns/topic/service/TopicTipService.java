@@ -17,7 +17,7 @@ public interface TopicTipService extends BaseService<TopicTip> {
      * 话题提醒统计
      *
      * @param appId 应用编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param userId 发送用户
      * @return Integer 话题提醒统计
      */
@@ -27,7 +27,7 @@ public interface TopicTipService extends BaseService<TopicTip> {
      * 话题提醒列表
      *
      * @param appId 应用编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param userId 发送用户
      * @param pageIndex 页码
      * @param pageSize 每页个数

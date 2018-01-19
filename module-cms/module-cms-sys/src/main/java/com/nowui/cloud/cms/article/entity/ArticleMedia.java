@@ -112,5 +112,4 @@ public class ArticleMedia extends BaseEntity {
         put(ARTICLE_MEDIA_SORT, articleMediaSort);
     }
 
-
 }

@@ -58,11 +58,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	
 	
     @Override
-    public Integer countForAdmin(String appId, String topicForumId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
+    public Integer countForAdmin(String appId, String forumId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
         Integer count = count(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
-                        .likeAllowEmpty(Topic.TOPIC_FORUM_ID, topicForumId)
+                        .likeAllowEmpty(Topic.FORUM_ID, forumId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
                         .likeAllowEmpty(Topic.USER_ID, userId)
                         .likeAllowEmpty(Topic.TOPIC_LOCATION, topicLocation)
@@ -74,11 +74,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     }
 
     @Override
-    public List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topTopLevel, Integer pageIndex, Integer pageSize) {
+    public List<Topic> listForAdmin(String appId, String forumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize) {
         List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
-                        .likeAllowEmpty(Topic.TOPIC_FORUM_ID, topicForumId)
+                        .likeAllowEmpty(Topic.FORUM_ID, forumId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
                         .likeAllowEmpty(Topic.USER_ID, userId)
                         .likeAllowEmpty(Topic.LATITUDE, latitude)
@@ -87,7 +87,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
                         .eqAllowEmpty(Topic.TOPIC_IS_LOCATION, topicIsLocation)
                         .eqAllowEmpty(Topic.TOPIC_IS_TOP, topicIsTop)
                         .eqAllowEmpty(Topic.TOPIC_IS_RECOMAND, topicIsRecommend)
-                        .eqAllowEmpty(Topic.TOP_TOP_LEVEL, topTopLevel)
+                        .eqAllowEmpty(Topic.TOPIC_TOP_LEVEL, topicTopLevel)
                         .eq(Topic.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
                 pageIndex,

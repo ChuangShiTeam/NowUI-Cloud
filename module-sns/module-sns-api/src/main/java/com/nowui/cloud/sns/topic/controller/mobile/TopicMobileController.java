@@ -144,7 +144,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -152,7 +152,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
@@ -197,7 +197,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -205,7 +205,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST
         );
 
@@ -243,7 +243,7 @@ public class TopicMobileController extends BaseController {
 
         validateResponse(
 	            Topic.TOPIC_ID,
-	            Topic.TOPIC_FORUM_ID,
+	            Topic.FORUM_ID,
 	            Topic.TOPIC_SUMMARY,
 	            Topic.USER_ID,
 	            Topic.LATITUDE,
@@ -252,7 +252,7 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_IS_LOCATION,
 	            Topic.TOPIC_IS_TOP,
 	            Topic.TOPIC_IS_RECOMAND,
-	            Topic.TOP_TOP_LEVEL
+	            Topic.TOPIC_TOP_LEVEL
 	    );
 
 	    return renderJson(topic);
@@ -314,7 +314,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -322,7 +322,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
@@ -340,7 +340,7 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,

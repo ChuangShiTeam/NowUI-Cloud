@@ -44,12 +44,12 @@ public interface TopicService extends BaseService<Topic> {
      * @param topicIsLocation 是否有位置
      * @param topicIsTop 置顶
      * @param topicIsRecommend 是否推荐
-     * @param topTopLevel 置顶级别
+     * @param topicTopLevel 置顶级别
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topTopLevel, Integer pageIndex, Integer pageSize);
+    List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据forumId查找全部话题信息
