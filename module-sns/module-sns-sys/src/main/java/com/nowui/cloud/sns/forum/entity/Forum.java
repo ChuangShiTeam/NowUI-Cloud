@@ -221,6 +221,11 @@ public class Forum extends BaseEntity {
      */
     public static final String FORUM_USER_FOLLOW_LIST = "forumUserFollowList";
     
+    /**
+     * 论坛用户关注列表
+     */
+    public static final String FORUM_USER_IS_MODERATOR = "forumUserIsModerator";
+    
 
     public String getForumId() {
         return getString(FORUM_ID);

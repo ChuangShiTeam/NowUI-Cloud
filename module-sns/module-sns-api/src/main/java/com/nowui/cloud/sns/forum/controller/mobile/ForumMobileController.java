@@ -80,7 +80,7 @@ public class ForumMobileController extends BaseController {
 	     body.setForumSort(0);
 	     body.setForumIsTop(false);
 	     body.setForumIsActive(true);
-	     body.setForumIsRecommend(true);
+	     body.setForumIsRecommend(false);
 	     body.setForumAuditStatus(ForumAuditStatus.AUDIT_PASS.getKey());
 	     body.setForumTopicLocation("");
 	     body.setForumAuditContent("");
@@ -111,7 +111,8 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.FORUM_ID,
                 Forum.PAGE_INDEX,
-                Forum.PAGE_SIZE
+                Forum.PAGE_SIZE,
+                Forum.SYSTEM_REQUEST_USER_ID
         );
         
         // forum包含了论坛简介,论坛名称,论坛头像
@@ -126,6 +127,12 @@ public class ForumMobileController extends BaseController {
         Member moderator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
         forum.put(Forum.FORUM_MODERATOR, moderator);
 
+        //判断请求用户是否是版主
+        if (body.getSystemRequestUserId().equals(userId)) {
+        	forum.put(Forum.FORUM_USER_IS_MODERATOR, true);
+		}else {
+			forum.put(Forum.FORUM_USER_IS_MODERATOR, false);
+		}
         
         //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollow> forumUserFollows = 
@@ -150,6 +157,7 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_MEDIA,
                 Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_NAME,
+                Forum.FORUM_USER_IS_MODERATOR,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
                 Forum.FORUM_USER_FOLLOW_LIST
@@ -250,10 +258,15 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_ID,
           Forum.FORUM_MEDIA
        );
+	    Forum forum = forumService.find(body.getForumId());
+	    if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+	    return renderJson(false);
+		}
+	    
 	   //不清楚是否单独写一个更改背景图片的接口
 	   body.setForumBackgroundMedia(body.getForumMedia());
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
 
        return renderJson(result);
     }
@@ -269,6 +282,10 @@ public class ForumMobileController extends BaseController {
        );
 	    
        Forum forum = forumService.find(body.getForumId());
+       if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+       	return renderJson(false);
+		}
+       
        Integer systemVersion = forum.getSystemVersion();
        
        Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), systemVersion);
@@ -285,8 +302,12 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_ID,
           Forum.FORUM_DESCRIPTION
        );
+	    Forum forum = forumService.find(body.getForumId());
+        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+        	return renderJson(false);
+		}
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
 
        return renderJson(result);
     }
@@ -297,11 +318,14 @@ public class ForumMobileController extends BaseController {
         validateRequest(
                 body,
                 Forum.FORUM_ID,
-                Forum.APP_ID,
-                Forum.SYSTEM_VERSION
+                Forum.APP_ID
         );
         
         Forum forum = forumService.find(body.getForumId());
+        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+        	return renderJson(false);
+		}
+        
         //先从论坛信息表删除
         Boolean result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
         if (result == false) {
@@ -351,7 +375,7 @@ public class ForumMobileController extends BaseController {
             
             //有:改变状态,没有:不做操作
             if (forumUserUnfollow != null) {
-                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getforumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
             }
             	
             //向论坛关注表插入一条记录

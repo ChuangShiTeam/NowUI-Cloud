@@ -76,7 +76,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
         //有:改变状态,没有:不做操作
         if (forumUserUnfollow != null) {
-        	boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+        	boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getforumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
         }
         
         body.setUserId(body.getSystemRequestUserId());
@@ -112,7 +112,9 @@ public class ForumUserFollowMobileController extends BaseController {
         	//处理论坛头像
         	String forumMedia = forum.getForumMedia();
         	File file = fileRpc.findV1(forumMedia);
-            file.keep(File.FILE_ID, File.FILE_PATH);
+        	if (!Util.isNullOrEmpty(file)) {
+        		file.keep(File.FILE_ID, File.FILE_PATH);
+        	}
             forum.put(Forum.FORUM_MEDIA, file);
             
             //根据forumId去论坛话题关联表查询 当日话题最新数量

@@ -31,8 +31,8 @@ public class ForumUserUnfollow extends BaseEntity {
     @TableId
     @NotNull(message = "论坛用户取关关联id不能为空")
     @Length(max = 32, message = "论坛用户取关关联id长度超出限制")
-    private String forumUserUnfollowMapId;
-    public static final String FORUM_USER_UNFOLLOW_MAP_ID = "forumUserUnfollowMapId";
+    private String forumUserUnfollowId;
+    public static final String FORUM_USER_UNFOLLOW_ID = "forumUserUnfollowId";
 
     /**
      * 应用Id
@@ -65,12 +65,12 @@ public class ForumUserUnfollow extends BaseEntity {
     public static final String FORUM_ID = "forumId";
 
 
-    public String getForumUserUnfollowMapId() {
-        return getString(FORUM_USER_UNFOLLOW_MAP_ID);
+    public String getforumUserUnfollowId() {
+        return getString(FORUM_USER_UNFOLLOW_ID);
     }
     
-    public void setForumUserUnfollowMapId(String forumUserUnfollowMapId) {
-        put(FORUM_USER_UNFOLLOW_MAP_ID, forumUserUnfollowMapId);
+    public void setforumUserUnfollowId(String forumUserUnfollowId) {
+        put(FORUM_USER_UNFOLLOW_ID, forumUserUnfollowId);
     }
 
     public String getAppId() {

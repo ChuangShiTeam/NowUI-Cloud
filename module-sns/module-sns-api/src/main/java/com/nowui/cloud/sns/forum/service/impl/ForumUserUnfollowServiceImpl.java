@@ -80,7 +80,7 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
 		
 		//遍历
 		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
-			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowMapId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
+			Boolean delete = delete(forumUserUnfollow.getforumUserUnfollowId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
 			if (delete == false) {
 				return false;
 			}
