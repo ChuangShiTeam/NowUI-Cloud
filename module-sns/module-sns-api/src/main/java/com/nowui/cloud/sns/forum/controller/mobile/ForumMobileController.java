@@ -75,7 +75,7 @@ public class ForumMobileController extends BaseController {
 	     // TODO 验证论坛名称的唯一性
 	    
 	     body.setForumBackgroundMedia(body.getForumMedia());
-	     body.setForumBackgroundMediaType(body.getForumBackgroundMediaType());
+	     body.setForumBackgroundMediaType(body.getForumMediaType());
 	     body.setForumModerator(body.getSystemRequestUserId());
 	     body.setForumSort(0);
 	     body.setForumIsTop(false);
@@ -86,17 +86,18 @@ public class ForumMobileController extends BaseController {
 	     body.setForumAuditContent("");
 	     
 	     String forumId = Util.getRandomUUID();
+	     String userId = body.getSystemRequestUserId();
 	     
-	     Boolean result = forumService.save(body, forumId, body.getSystemRequestUserId());
+	     Boolean result = forumService.save(body, forumId, userId);
 	     
 	     if (result) {
 	         // 圈主默认关注论坛
 	         ForumUserFollow forumUserFollow = new ForumUserFollow();
 	         forumUserFollow.setAppId(body.getAppId());
 	         forumUserFollow.setForumId(forumId);
-	         forumUserFollow.setUserId(body.getSystemRequestUserId());
+	         forumUserFollow.setUserId(userId);
 	         
-	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getSystemRequestUserId());
+	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), userId);
 	     }
         
 	     return renderJson(result);
