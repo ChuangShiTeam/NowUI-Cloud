@@ -1,17 +1,16 @@
-package com.nowui.cloud.sns.forum.service.impl;
+package com.nowui.cloud.sns.topic.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
-import com.nowui.cloud.sns.forum.mapper.TopicForumMapper;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
-import com.nowui.cloud.util.DateUtil;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.mapper.TopicForumMapper;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.util.DateUtil;
 
 /**
  * 话题论坛关联业务实现
@@ -63,7 +62,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         );
     	//遍历删除
     	for (TopicForum topicForum : topicForumList) {
-    		Boolean delResult = delete(topicForum.getTopicForumMapId(), systemUpdateUserId, topicForum.getSystemVersion());
+    		Boolean delResult = delete(topicForum.getTopicForumId(), systemUpdateUserId, topicForum.getSystemVersion());
     		if (delResult == false) {
 				return false;
 			}

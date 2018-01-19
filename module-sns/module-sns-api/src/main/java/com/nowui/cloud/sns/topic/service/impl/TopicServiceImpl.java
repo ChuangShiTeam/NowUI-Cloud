@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
 import com.nowui.cloud.sns.forum.service.ForumService;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.mapper.TopicMapper;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
@@ -156,9 +156,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);
@@ -232,9 +232,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);
@@ -316,9 +316,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     	ArrayList<Forum> forumList = new ArrayList<>();
     	//遍历allTopicForumList
     	for (TopicForum aTopicForum : allTopicForumList) {
-    		//得到论坛id
+    		//得到论坛编号
 			String forumId = aTopicForum.getForumId();
-			//根据论坛id去论坛信息表查询名称
+			//根据论坛编号去论坛信息表查询名称
 			Forum forum = forumService.find(forumId, true);
 			//把forum放入list
 			forumList.add(forum);
@@ -419,9 +419,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);

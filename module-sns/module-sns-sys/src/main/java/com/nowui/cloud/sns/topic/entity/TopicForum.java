@@ -1,4 +1,4 @@
-package com.nowui.cloud.sns.forum.entity;
+package com.nowui.cloud.sns.topic.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 话题论坛关联
+ * 话题论坛
  *
  * @author xupengfei
  *
@@ -25,52 +25,51 @@ import javax.validation.constraints.NotNull;
 public class TopicForum extends BaseEntity {
 
     /**
-     * 话题论坛关联id
+     * 话题论坛编号
      */
 	@Id
     @TableId
-    @NotNull(message = "话题论坛关联id不能为空")
-    @Length(max = 32, message = "话题论坛关联id长度超出限制")
-    private String topicForumMapId;
-    public static final String TOPIC_FORUM_MAP_ID = "topicForumMapId";
+    @NotNull(message = "话题论坛编号不能为空")
+    @Length(max = 32, message = "话题论坛编号长度超出限制")
+    private String topicForumId;
+    public static final String TOPIC_FORUM_ID = "topicForumId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
     /**
-     * 论坛Id
+     * 论坛编号
      */
     @Field
     @TableField
-    @NotNull(message = "论坛Id不能为空")
-    @Length(max = 32, message = "论坛Id长度超出限制")
+    @NotNull(message = "论坛编号不能为空")
+    @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
-
-    public String getTopicForumMapId() {
-        return getString(TOPIC_FORUM_MAP_ID);
+    public String getTopicForumId() {
+        return getString(TOPIC_FORUM_ID);
     }
     
-    public void setTopicForumMapId(String topicForumMapId) {
-        put(TOPIC_FORUM_MAP_ID, topicForumMapId);
+    public void setTopicForumId(String topicForumId) {
+        put(TOPIC_FORUM_ID, topicForumId);
     }
 
     public String getAppId() {
@@ -96,6 +95,5 @@ public class TopicForum extends BaseEntity {
     public void setTopicId(String topicId) {
         put(TOPIC_ID, topicId);
     }
-
 
 }

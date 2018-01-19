@@ -25,22 +25,22 @@ import javax.validation.constraints.NotNull;
 public class TopicMedia extends BaseEntity {
 
     /**
-     * 话题多媒体关联id
+     * 话题多媒体编号
      */
 	@Id
     @TableId
-    @NotNull(message = "话题多媒体关联id不能为空")
-    @Length(max = 32, message = "话题多媒体关联id长度超出限制")
-    private String topicMediaMapId;
-    public static final String TOPIC_MEDIA_MAP_ID = "topicMediaMapId";
+    @NotNull(message = "话题多媒体编号不能为空")
+    @Length(max = 32, message = "话题多媒体编号长度超出限制")
+    private String topicMediaId;
+    public static final String TOPIC_MEDIA_ID = "topicMediaId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -55,14 +55,14 @@ public class TopicMedia extends BaseEntity {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 多媒体Id
+     * 多媒体
      */
     @Field
     @TableField
-    @NotNull(message = "多媒体Id不能为空")
-    @Length(max = 25, message = "多媒体Id长度超出限制")
-    private String topicMediaId;
-    public static final String TOPIC_MEDIA_ID = "topicMediaId";
+    @NotNull(message = "多媒体不能为空")
+    @Length(max = 25, message = "多媒体长度超出限制")
+    private String topicMedia;
+    public static final String TOPIC_MEDIA = "topicMedia";
 
     /**
      * 多媒体类型
@@ -75,12 +75,12 @@ public class TopicMedia extends BaseEntity {
     public static final String TOPIC_MEDIA_TYPE = "topicMediaType";
 
 
-    public String getTopicMediaMapId() {
-        return getString(TOPIC_MEDIA_MAP_ID);
+    public String getTopicMediaId() {
+        return getString(TOPIC_MEDIA_ID);
     }
     
-    public void setTopicMediaMapId(String topicMediaMapId) {
-        put(TOPIC_MEDIA_MAP_ID, topicMediaMapId);
+    public void setTopicMediaId(String topicMediaId) {
+        put(TOPIC_MEDIA_ID, topicMediaId);
     }
 
     public String getAppId() {
@@ -99,12 +99,12 @@ public class TopicMedia extends BaseEntity {
         put(TOPIC_ID, topicId);
     }
 
-    public String getTopicMediaId() {
-        return getString(TOPIC_MEDIA_ID);
+    public String getTopicMedia() {
+        return getString(TOPIC_MEDIA);
     }
     
-    public void setTopicMediaId(String topicMediaId) {
-        put(TOPIC_MEDIA_ID, topicMediaId);
+    public void setTopicMedia(String topicMedia) {
+        put(TOPIC_MEDIA, topicMedia);
     }
 
     public String getTopicMediaType() {

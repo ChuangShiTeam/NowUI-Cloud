@@ -25,22 +25,22 @@ import javax.validation.constraints.NotNull;
 public class ForumCategory extends BaseEntity {
 
     /**
-     * 论坛分类id
+     * 论坛分类编号
      */
 	@Id
     @TableId
-    @NotNull(message = "论坛分类id不能为空")
-    @Length(max = 32, message = "论坛分类id长度超出限制")
+    @NotNull(message = "论坛分类编号不能为空")
+    @Length(max = 32, message = "论坛分类编号长度超出限制")
     private String forumCategoryId;
     public static final String FORUM_CATEGORY_ID = "forumCategoryId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -65,6 +65,24 @@ public class ForumCategory extends BaseEntity {
     public static final String FORUM_CATEGORY_THUMB = "forumCategoryThumb";
 
     /**
+     * 是否生效
+     */
+    @Field
+    @TableField
+    @NotNull(message = "是否生效不能为空")
+    private Boolean forumCategoryIsActive;
+    public static final String FORUM_CATEGORY_IS_ACTIVE = "forumCategoryIsActive";
+
+    /**
+     * 是否推荐
+     */
+    @Field
+    @TableField
+    @NotNull(message = "是否推荐不能为空")
+    private Boolean forumCategoryIsRecommend;
+    public static final String FORUM_CATEGORY_IS_RECOMMEND = "forumCategoryIsRecommend";
+    
+    /**
      * 论坛分类排序
      */
     @Field
@@ -73,26 +91,6 @@ public class ForumCategory extends BaseEntity {
     @Length(max = 11, message = "论坛分类排序长度超出限制")
     private Integer forumCategorySort;
     public static final String FORUM_CATEGORY_SORT = "forumCategorySort";
-
-    /**
-     * 论坛分类是否启用
-     */
-    @Field
-    @TableField
-    @NotNull(message = "论坛分类是否启用不能为空")
-    @Length(max = 4, message = "论坛分类是否启用长度超出限制")
-    private Boolean forumCategoryEnabled;
-    public static final String FORUM_CATEGORY_ENABLED = "forumCategoryEnabled";
-
-    /**
-     * 是否推荐
-     */
-    @Field
-    @TableField
-    @NotNull(message = "是否推荐不能为空")
-    @Length(max = 1, message = "是否推荐长度超出限制")
-    private Boolean forumCategoryRecommand;
-    public static final String FORUM_CATEGORY_RECOMMAND = "forumCategoryRecommand";
 
 
     public String getForumCategoryId() {
@@ -127,6 +125,22 @@ public class ForumCategory extends BaseEntity {
         put(FORUM_CATEGORY_THUMB, forumCategoryThumb);
     }
 
+    public Boolean getForumCategoryIsActive() {
+        return getBoolean(FORUM_CATEGORY_IS_ACTIVE);
+    }
+    
+    public void setForumCategoryIsActive(Boolean forumCategoryIsActive) {
+        put(FORUM_CATEGORY_IS_ACTIVE, forumCategoryIsActive);
+    }
+
+    public Boolean getForumCategoryIsRecommend() {
+        return getBoolean(FORUM_CATEGORY_IS_RECOMMEND);
+    }
+    
+    public void setForumCategoryIsRecommend(Boolean forumCategoryIsRecommend) {
+        put(FORUM_CATEGORY_IS_RECOMMEND, forumCategoryIsRecommend);
+    }
+
     public Integer getForumCategorySort() {
         return getInteger(FORUM_CATEGORY_SORT);
     }
@@ -134,22 +148,5 @@ public class ForumCategory extends BaseEntity {
     public void setForumCategorySort(Integer forumCategorySort) {
         put(FORUM_CATEGORY_SORT, forumCategorySort);
     }
-
-    public Boolean getForumCategoryEnabled() {
-        return getBoolean(FORUM_CATEGORY_ENABLED);
-    }
-    
-    public void setForumCategoryEnabled(Boolean forumCategoryEnabled) {
-        put(FORUM_CATEGORY_ENABLED, forumCategoryEnabled);
-    }
-
-    public Boolean getForumCategoryRecommand() {
-        return getBoolean(FORUM_CATEGORY_RECOMMAND);
-    }
-    
-    public void setForumCategoryRecommand(Boolean forumCategoryRecommand) {
-        put(FORUM_CATEGORY_RECOMMAND, forumCategoryRecommand);
-    }
-
 
 }

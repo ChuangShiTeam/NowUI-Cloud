@@ -35,27 +35,27 @@ public class TopicComment extends BaseEntity {
     public static final String TOPIC_COMMENT_ID = "topicCommentId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
     /**
-     * 用户id
+     * 用户编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户id不能为空")
-    @Length(max = 32, message = "用户id长度超出限制")
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
     /**
-     * 用户id
+     * 用户编号
      */
     @Field
     @TableField

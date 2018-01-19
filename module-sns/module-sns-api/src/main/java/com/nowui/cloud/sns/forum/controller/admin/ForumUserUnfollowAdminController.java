@@ -59,7 +59,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID
         );
 
-        ForumUserUnfollow result = forumUserUnfollowService.find(body.getforumUserUnfollowId());
+        ForumUserUnfollow result = forumUserUnfollowService.find(body.getForumUserUnfollowId());
 
         validateResponse(
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
@@ -97,7 +97,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.update(body, body.getforumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +112,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.delete(body.getforumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

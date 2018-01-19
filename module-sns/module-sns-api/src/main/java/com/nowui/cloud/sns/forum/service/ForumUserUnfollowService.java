@@ -5,7 +5,7 @@ import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import java.util.List;
 
 /**
- * 论坛用户取关关联业务接口
+ * 论坛用户取关业务接口
  *
  * @author xupengfei
  *
@@ -17,8 +17,8 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
      * 论坛用户取关关联统计
      *
      * @param appId 应用编号
-     * @param userId 用户ID
-     * @param forumId 论坛Id
+     * @param userId 用户编号
+     * @param forumId 论坛编号
      * @return Integer 论坛用户取关关联统计
      */
     Integer countForAdmin(String appId, String userId, String forumId);
@@ -27,8 +27,8 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
      * 论坛用户取关关联列表
      *
      * @param appId 应用编号
-     * @param userId 用户ID
-     * @param forumId 论坛Id
+     * @param userId 用户编号
+     * @param forumId 论坛编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<ForumUserUnfollow> 论坛用户取关关联列表
@@ -38,8 +38,8 @@ public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow>
     /**
      * 根据userId和forumId查询ForumUserUnfollow单个记录
      * @param appId 应用编号
-     * @param userId 用户ID
-     * @param forumId 论坛ID
+     * @param userId 用户编号
+     * @param forumId 论坛编号
      * @return ForumUserUnfollow 论坛用户取关记录
      */
     ForumUserUnfollow findByUserIdAndForumId(String appId, String userId, String forumId);

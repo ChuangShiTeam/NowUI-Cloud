@@ -35,22 +35,22 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_NAME,
                 ForumCategory.FORUM_CATEGORY_THUMB,
                 ForumCategory.FORUM_CATEGORY_SORT,
-                ForumCategory.FORUM_CATEGORY_ENABLED,
-                ForumCategory.FORUM_CATEGORY_RECOMMAND,
+                ForumCategory.FORUM_CATEGORY_IS_ACTIVE,
+                ForumCategory.FORUM_CATEGORY_IS_RECOMMEND,
                 ForumCategory.PAGE_INDEX,
                 ForumCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = forumCategoryService.countForAdmin(body.getAppId() , body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand());
-        List<ForumCategory> resultList = forumCategoryService.listForAdmin(body.getAppId(), body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryEnabled(), body.getForumCategoryRecommand(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumCategoryService.countForAdmin(body.getAppId() , body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryIsActive(), body.getForumCategoryIsRecommend());
+        List<ForumCategory> resultList = forumCategoryService.listForAdmin(body.getAppId(), body.getForumCategoryName(), body.getForumCategoryThumb(), body.getForumCategorySort(), body.getForumCategoryIsActive(), body.getForumCategoryIsRecommend(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumCategory.FORUM_CATEGORY_ID,
                 ForumCategory.FORUM_CATEGORY_NAME,
                 ForumCategory.FORUM_CATEGORY_THUMB,
                 ForumCategory.FORUM_CATEGORY_SORT,
-                ForumCategory.FORUM_CATEGORY_ENABLED,
-                ForumCategory.FORUM_CATEGORY_RECOMMAND
+                ForumCategory.FORUM_CATEGORY_IS_ACTIVE,
+                ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
         return renderJson(resultTotal, resultList);
@@ -72,8 +72,8 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_NAME,
                 ForumCategory.FORUM_CATEGORY_THUMB,
                 ForumCategory.FORUM_CATEGORY_SORT,
-                ForumCategory.FORUM_CATEGORY_ENABLED,
-                ForumCategory.FORUM_CATEGORY_RECOMMAND
+                ForumCategory.FORUM_CATEGORY_IS_ACTIVE,
+                ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
         return renderJson(result);
@@ -88,8 +88,8 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_NAME,
                 ForumCategory.FORUM_CATEGORY_THUMB,
                 ForumCategory.FORUM_CATEGORY_SORT,
-                ForumCategory.FORUM_CATEGORY_ENABLED,
-                ForumCategory.FORUM_CATEGORY_RECOMMAND
+                ForumCategory.FORUM_CATEGORY_IS_ACTIVE,
+                ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
         Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
@@ -107,8 +107,8 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_NAME,
                 ForumCategory.FORUM_CATEGORY_THUMB,
                 ForumCategory.FORUM_CATEGORY_SORT,
-                ForumCategory.FORUM_CATEGORY_ENABLED,
-                ForumCategory.FORUM_CATEGORY_RECOMMAND,
+                ForumCategory.FORUM_CATEGORY_IS_ACTIVE,
+                ForumCategory.FORUM_CATEGORY_IS_RECOMMEND,
                 ForumCategory.SYSTEM_VERSION
         );
 

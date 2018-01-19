@@ -35,12 +35,12 @@ public class TopicUserUnbookmark extends BaseEntity {
     public static final String USER_UN_BOOK_MARK_ID = "userUnBookMarkId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -55,12 +55,12 @@ public class TopicUserUnbookmark extends BaseEntity {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 用户ID
+     * 用户编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户ID不能为空")
-    @Length(max = 32, message = "用户ID长度超出限制")
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 

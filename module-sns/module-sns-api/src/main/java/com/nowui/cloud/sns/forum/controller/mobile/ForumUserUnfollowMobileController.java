@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 论坛用户取关关联移动端控制器
+ * 论坛用户取关移动端控制器
  *
  * @author xupengfei
  *
  * 2018-01-08
  */
-@Api(value = "论坛用户取关关联", description = "论坛用户取关关联移动端接口管理")
+@Api(value = "论坛用户取关", description = "论坛用户取关移动端接口管理")
 @RestController
 public class ForumUserUnfollowMobileController extends BaseController {
 
@@ -38,7 +38,7 @@ public class ForumUserUnfollowMobileController extends BaseController {
 	@Autowired
 	private ForumUserFollowService forumUserFollowService;
 	
-	@ApiOperation(value = "新增论坛用户取关关联")
+	@ApiOperation(value = "新增论坛用户取关")
     @RequestMapping(value = "/forum/user/unfollow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(

@@ -1,10 +1,10 @@
-package com.nowui.cloud.sns.forum.rpc;
+package com.nowui.cloud.sns.topic.rpc;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 话题论坛关联服务调用
+ * 话题论坛服务调用
  *
  * @author xupengfei
  *

@@ -36,8 +36,8 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumBackgroundMediaType 论坛多媒体背景类型
      * @param forumName 论坛名称
      * @param forumDescription 论坛简介
-     * @param forumModerator 版主(用户id)
-     * @param forumTopicLocation 位置
+     * @param forumModerator 版主(用户编号)
+     * @param forumLocation 位置
      * @param forumSort 论坛排序
      * @param forumTop 论坛是否置顶
      * @param forumTopLevel 论坛置顶级别
@@ -46,7 +46,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumIsRecommend 是否推荐
      * @return Integer 论坛信息统计
      */
-    Integer countForMobile(String appId, String forumMedia, String forumMediaType, String forumBackgroundMedia, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecommend);
+    Integer countForMobile(String appId, String forumMedia, String forumMediaType, String forumBackgroundMedia, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecommend);
 
     
     /**
@@ -73,8 +73,8 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumBackgroundMediaType 论坛多媒体背景类型
      * @param forumName 论坛名称
      * @param forumDescription 论坛简介
-     * @param forumModerator 版主(用户id)
-     * @param forumTopicLocation 位置
+     * @param forumModerator 版主(用户编号)
+     * @param forumLocation 位置
      * @param integer 论坛排序
      * @param boolean1 论坛是否置顶
      * @param integer2 论坛置顶级别
@@ -85,10 +85,26 @@ public interface ForumService extends BaseService<Forum> {
      * @param pageSize 每页个数
      * @return List<Forum> 论坛信息列表
      */
-    List<Forum> listForMobile(String appId, String forumMedia, String forumMediaType, String forumBackgroundMedia, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumTopicLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecommend, Integer pageIndex, Integer pageSize);
+    List<Forum> listForMobile(String appId, String forumMedia, String forumMediaType, String forumBackgroundMedia, String forumBackgroundMediaType, String forumName, String forumDescription, String forumModerator, String forumLocation, Integer forumSort, Boolean forumTop, Integer forumTopLevel, Date forumTopEndTime, Boolean forumIsActive, Boolean forumIsRecommend, Integer pageIndex, Integer pageSize);
     
     /**
-     * 随机模糊查询,并作为推荐结果返回
+     * 获取随机个数推荐的且用户没有关注的论坛列表
+     * 
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @param n 个数
+     * @return List<Forum> 论坛列表
      */
-    List<Forum> listRandom(String randomAppId, String randomForumMedia, String randomForumModerator,Integer pageIndex, Integer pageSize);
+    List<Forum> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n);
+    
+    /**
+     * 获取用户没有关注的最新论坛列表
+     * 
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @param m 开始数
+     * @param n 结束数
+     * @return List<Forum> 论坛列表
+     */
+    List<Forum> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n);
 }

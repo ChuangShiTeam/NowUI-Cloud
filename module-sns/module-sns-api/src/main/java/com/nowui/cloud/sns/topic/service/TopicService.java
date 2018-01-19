@@ -17,9 +17,9 @@ public interface TopicService extends BaseService<Topic> {
      * 话题信息统计
      *
      * @param appId 应用编号
-     * @param topicForumId 论坛Id
+     * @param topicForumId 论坛编号
      * @param topicSummary 动态
-     * @param userId 用户ID
+     * @param userId 用户编号
      * @param latitude 经度
      * @param longtitude 纬度
      * @param topicLocation 位置
@@ -35,9 +35,9 @@ public interface TopicService extends BaseService<Topic> {
      * 话题信息列表
      *
      * @param appId 应用编号
-     * @param topicForumId 论坛Id
+     * @param topicForumId 论坛编号
      * @param topicSummary 动态
-     * @param userId 用户ID
+     * @param userId 用户编号
      * @param latitude 经度
      * @param longtitude 纬度
      * @param topicLocation 位置
@@ -59,10 +59,10 @@ public interface TopicService extends BaseService<Topic> {
     List<Topic> allTopicListByForumId(Topic body);
 
     /**
-     * 根据用户id查找所有topic记录
+     * 根据用户编号查找所有topic记录
      * 
      * @param appId 应用编号
-     * @param userId 用户id
+     * @param userId 用户编号
      * @param pageIndex 分页开始页数
      * @param pageSize 分页记录数
      * @return List<Topic> 话题信息列表
@@ -87,20 +87,20 @@ public interface TopicService extends BaseService<Topic> {
 
     /**
      * 根据userId的list集合使用in方法统计所有话题信息数量
-     * (根据我关注的人的用户id的list 统计话题数量)
+     * (根据我关注的人的用户编号的list 统计话题数量)
      * 
      * @param appId 应用编号
-     * @param userIdList 用户id列表
+     * @param userIdList 用户编号列表
      * @return
      */
     Integer countByUserIdList(String appId, List<String> userIdList);
     
     /**
      * 根据userId的list集合使用in方法查询所有话题信息
-     * (根据我关注的人的用户id的list 查询所有话题信息)
+     * (根据我关注的人的用户编号的list 查询所有话题信息)
      * 
      * @param appId 应用编号
-     * @param userIdList 用户id列表
+     * @param userIdList 用户编号列表
      * @param pageIndex 从第几条开始
      * @param pageSize 取多少条
      * @return topic列表

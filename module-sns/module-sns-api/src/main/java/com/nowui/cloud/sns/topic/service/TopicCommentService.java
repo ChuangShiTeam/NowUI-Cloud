@@ -17,7 +17,7 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * 话题评论统计
      *
      * @param appId 应用编号
-     * @param userId 用户id
+     * @param userId 用户编号
      * @param topicCommentContent 话题内容
      * @param topicReplayUserId 回复人
      * @param topicReplyCommentId 被回复评论id
@@ -29,7 +29,7 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * 话题评论列表
      *
      * @param appId 应用编号
-     * @param userId 用户id
+     * @param userId 用户编号
      * @param topicCommentContent 话题内容
      * @param topicReplayUserId 回复人
      * @param topicReplyCommentId 被回复评论id

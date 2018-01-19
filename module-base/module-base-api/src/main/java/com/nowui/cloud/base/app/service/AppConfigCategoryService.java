@@ -45,7 +45,7 @@ public interface AppConfigCategoryService extends BaseService<AppConfigCategory>
     /**
      * 根据配置分类编码查询应用配置分类信息
      * 
-     * @param appId 应用ID
+     * @param appId 应用编号
      * @param configCategoryCode 配置分类编码
      * @return 应用配置分类
      */

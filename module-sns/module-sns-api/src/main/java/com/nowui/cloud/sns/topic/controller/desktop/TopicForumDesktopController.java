@@ -1,8 +1,10 @@
-package com.nowui.cloud.sns.forum.controller.desktop;
+package com.nowui.cloud.sns.topic.controller.desktop;
+
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 话题论坛关联桌面端控制器

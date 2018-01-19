@@ -45,6 +45,26 @@ public class Forum extends BaseEntity {
     @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
+    
+    /**
+     * 论坛名称
+     */
+    @Field
+    @TableField
+    @NotNull(message = "论坛名称不能为空")
+    @Length(max = 25, message = "论坛名称长度超出限制")
+    private String forumName;
+    public static final String FORUM_NAME = "forumName";
+    
+    /**
+     * 版主(用户编号)
+     */
+    @Field
+    @TableField
+    @NotNull(message = "版主(用户编号)不能为空")
+    @Length(max = 32, message = "版主(用户编号)长度超出限制")
+    private String forumModerator;
+    public static final String FORUM_MODERATOR = "forumModerator";
 
     /**
      * 论坛多媒体
@@ -87,54 +107,14 @@ public class Forum extends BaseEntity {
     public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
 
     /**
-     * 论坛名称
-     */
-    @Field
-    @TableField
-    @NotNull(message = "论坛名称不能为空")
-    @Length(max = 25, message = "论坛名称长度超出限制")
-    private String forumName;
-    public static final String FORUM_NAME = "forumName";
-
-    /**
-     * 论坛简介
-     */
-    @Field
-    @TableField
-    @NotNull(message = "论坛简介不能为空")
-    @Length(max = 255, message = "论坛简介长度超出限制")
-    private String forumDescription;
-    public static final String FORUM_DESCRIPTION = "forumDescription";
-
-    /**
-     * 版主(用户编号)
-     */
-    @Field
-    @TableField
-    @NotNull(message = "版主(用户编号)不能为空")
-    @Length(max = 32, message = "版主(用户编号)长度超出限制")
-    private String forumModerator;
-    public static final String FORUM_MODERATOR = "forumModerator";
-
-    /**
      * 位置
      */
     @Field
     @TableField
     @NotNull(message = "位置不能为空")
     @Length(max = 200, message = "位置长度超出限制")
-    private String forumTopicLocation;
-    public static final String FORUM_TOPIC_LOCATION = "forumTopicLocation";
-
-    /**
-     * 论坛排序
-     */
-    @Field
-    @TableField
-    @NotNull(message = "论坛排序不能为空")
-    @Length(max = 11, message = "论坛排序长度超出限制")
-    private Integer forumSort;
-    public static final String FORUM_SORT = "forumSort";
+    private String forumLocation;
+    public static final String FORUM_LOCATION = "forumLocation";
 
     /**
      * 论坛是否置顶
@@ -163,11 +143,11 @@ public class Forum extends BaseEntity {
     public static final String FORUM_TOP_END_TIME = "forumTopEndTime";
 
     /**
-     * 论坛是否有效
+     * 是否有效
      */
     @Field
     @TableField
-    @NotNull(message = "论坛是否有效不能为空")
+    @NotNull(message = "是否有效不能为空")
     private Boolean forumIsActive;
     public static final String FORUM_IS_ACTIVE = "forumIsActive";
 
@@ -180,7 +160,15 @@ public class Forum extends BaseEntity {
     private Boolean forumIsRecommend;
     public static final String FORUM_IS_RECOMAND = "forumIsRecommend";
     
-    
+    /**
+     * 审核状态
+     */
+    @Field
+    @TableField
+    @NotNull(message = "审核状态不能为空")
+    @Length(max = 25, message = "审核状态长度超出限制")
+    private String forumAuditStatus;
+    public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
     
     /**
      * 审核内容
@@ -192,14 +180,24 @@ public class Forum extends BaseEntity {
     public static final String FORUM_AUDIT_CONTENT = "forumAuditContent";
     
     /**
-     * 审核状态
+     * 论坛简介
      */
     @Field
     @TableField
-    @NotNull(message = "审核状态不能为空")
-    @Length(max = 25, message = "审核状态长度超出限制")
-    private String forumAuditStatus;
-    public static final String FORUM_AUDIT_STATUS = "forumAuditStatus";
+    @NotNull(message = "论坛简介不能为空")
+    @Length(max = 255, message = "论坛简介长度超出限制")
+    private String forumDescription;
+    public static final String FORUM_DESCRIPTION = "forumDescription";
+    
+    /**
+     * 论坛排序
+     */
+    @Field
+    @TableField
+    @NotNull(message = "论坛排序不能为空")
+    @Length(max = 11, message = "论坛排序长度超出限制")
+    private Integer forumSort;
+    public static final String FORUM_SORT = "forumSort";
     
     /**
      * 会员是否关注此论坛
@@ -212,7 +210,7 @@ public class Forum extends BaseEntity {
     public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
    
     /**
-     * 论坛id列表
+     * 论坛编号列表
      */
     public static final String FORUM_ID_LIST = "forumIdList";
     
@@ -299,12 +297,12 @@ public class Forum extends BaseEntity {
         put(FORUM_MODERATOR, forumModerator);
     }
 
-    public String getForumTopicLocation() {
-        return getString(FORUM_TOPIC_LOCATION);
+    public String getForumLocation() {
+        return getString(FORUM_LOCATION);
     }
     
-    public void setForumTopicLocation(String forumTopicLocation) {
-        put(FORUM_TOPIC_LOCATION, forumTopicLocation);
+    public void setForumLocation(String forumLocation) {
+        put(FORUM_LOCATION, forumLocation);
     }
 
     public Integer getForumSort() {

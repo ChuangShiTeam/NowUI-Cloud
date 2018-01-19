@@ -18,7 +18,7 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      *
      * @param appId 应用编号
      * @param topicId 话题Id
-     * @param userId 用户ID
+     * @param userId 用户编号
      * @return Integer 话题用户取消收藏关联统计
      */
     Integer countForAdmin(String appId, String topicId, String userId);
@@ -28,7 +28,7 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      *
      * @param appId 应用编号
      * @param topicId 话题Id
-     * @param userId 用户ID
+     * @param userId 用户编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<TopicUserUnbookmark> 话题用户取消收藏关联列表
@@ -40,7 +40,7 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      * 
      * @param appId 应用编号
      * @param topicId 话题id
-     * @param userId 用户Id
+     * @param userId 用户编号
      * @return TopicUserUnbookmark 用户取消收藏单条记录
      */
     TopicUserUnbookmark findUnBookMark(String appId, String topicId, String userId);

@@ -2,8 +2,6 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,15 +18,13 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
@@ -36,6 +32,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
@@ -357,15 +354,16 @@ public class TopicMobileController extends BaseController {
 
         String topicId = Util.getRandomUUID();
 
-        //先标记一下,回来再换另一种解析方法
-        String mediaIds = body.getString(Topic.TOPIC_MEDIA_LIST);
-        List<String> mediaIdList = JSONArray.parseArray(mediaIds, String.class);
-
+        JSONArray jsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
+        if (Util.isNullOrEmpty(jsonArray)) {
+            throw new RuntimeException("图片不能为空");
+        }
+        List<String> mediaIdList = jsonArray.toJavaList(String.class);
 
         //遍历图片id,存放到话题图片表
         for (String mediaId : mediaIdList) {
         	TopicMedia topicMedia = new TopicMedia();
-        	topicMedia.setTopicMediaId(mediaId);
+        	topicMedia.setTopicMedia(mediaId);
         	topicMedia.setTopicId(topicId);
         	topicMedia.setAppId(body.getAppId());
         	topicMedia.setTopicMediaType(FileType.IMAGE.getKey());
@@ -402,7 +400,7 @@ public class TopicMobileController extends BaseController {
 		}
 
         Boolean result = topicService.save(body, topicId, body.getSystemRequestUserId());
-
+        
         return renderJson(result);
     }
 
@@ -424,13 +422,13 @@ public class TopicMobileController extends BaseController {
         //删除话题论坛关联
         List<TopicForum> allTopicForumList = topicForumService.allTopicForumList(body.getAppId(), null, topicId);
         for (TopicForum topicForum : allTopicForumList) {
-        	topicForumService.delete(topicForum.getTopicForumMapId(), systemRequestUserId, topicForum.getSystemVersion());
+        	topicForumService.delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
 		}
 
         //删除话题图片
         List<TopicMedia> listAllMediaByTopicId = topicMediaService.listAllMediaByTopicId(body.getAppId(), topicId, null, null);
         for (TopicMedia topicMedia : listAllMediaByTopicId) {
-        	topicMediaService.delete(topicMedia.getTopicMediaMapId(), systemRequestUserId, topicMedia.getSystemVersion());
+        	topicMediaService.delete(topicMedia.getTopicMediaId(), systemRequestUserId, topicMedia.getSystemVersion());
 		}
 
         //删除话题评论
