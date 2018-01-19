@@ -46,7 +46,7 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
     Integer countByUserId(String appId, String userId);
     
     /**
-     * 论坛用户关注列表
+     * 论坛用户关注分页列表
      *
      * @param appId 应用编号
      * @param userId 用户Id
@@ -55,7 +55,6 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
     List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
-
     
     /**
      * 根据用户编号和论坛编号查询用户关注信息

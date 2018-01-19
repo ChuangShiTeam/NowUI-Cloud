@@ -18,13 +18,11 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
-import com.nowui.cloud.sns.forum.entity.ForumAudit;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
-import com.nowui.cloud.sns.forum.service.ForumAuditService;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -49,9 +47,6 @@ public class ForumAdminController extends BaseController {
 	 
 	 @Autowired
 	 private ForumUserFollowService forumUserFollowService;
-	 
-	 @Autowired
-	 private ForumAuditService forumAuditService;
 	 
 	 @Autowired
 	 private FileRpc fileRpc;
@@ -118,7 +113,7 @@ public class ForumAdminController extends BaseController {
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
             Forum.FORUM_MODERATOR,
-            Forum.FORUM_TOPIC_LOCATION,
+            Forum.FORUM_LOCATION,
             Forum.FORUM_SORT,
             Forum.FORUM_IS_TOP,
             Forum.FORUM_TOP_LEVEL,
@@ -151,7 +146,7 @@ public class ForumAdminController extends BaseController {
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
-                Forum.FORUM_TOPIC_LOCATION,
+                Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,
                 Forum.FORUM_TOP_LEVEL,
@@ -185,20 +180,13 @@ public class ForumAdminController extends BaseController {
       body.setForumBackgroundMedia(body.getForumMedia());
       body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
       body.setForumModerator(body.getSystemRequestUserId());
+      body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
+      body.setForumAuditContent("");
 
-      //保存
       String forumId = Util.getRandomUUID();
       String systemRequestUserId = body.getSystemRequestUserId();
 
       Boolean result = forumService.save(body, forumId, systemRequestUserId);
-      //提交到审核表
-      ForumAudit forumAudit = new ForumAudit();
-      forumAudit.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
-      forumAudit.setAppId(body.getAppId());
-      forumAudit.setForumId(forumId);
-      if (result) {
-       result= forumAuditService.save(forumAudit, Util.getRandomUUID(), systemRequestUserId);
-       }
 
       return renderJson(result);
   }
@@ -217,7 +205,7 @@ public class ForumAdminController extends BaseController {
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
-                Forum.FORUM_TOPIC_LOCATION,
+                Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,
                 Forum.FORUM_TOP_LEVEL,

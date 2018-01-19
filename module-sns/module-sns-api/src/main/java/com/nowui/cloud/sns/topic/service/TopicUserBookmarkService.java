@@ -38,7 +38,7 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
     /**
      * 根据话题id和用户id查询单条话题收藏记录
      * 
-     * @param appId 应用id
+     * @param appId 应用编号
      * @param topicId 话题id
      * @param userId 用户id
      * @return TopicUserBookmark 单条话题收藏记录

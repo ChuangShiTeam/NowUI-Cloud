@@ -35,12 +35,12 @@ public class ForumUserFollow extends BaseEntity {
     public static final String FORUM_USER_FOLLOW_ID = "forumUserFollowId";
 
     /**
-     * 应用Id
+     * 应用编号
      */
     @Field
     @TableField
-    @NotNull(message = "应用Id不能为空")
-    @Length(max = 32, message = "应用Id长度超出限制")
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -63,6 +63,8 @@ public class ForumUserFollow extends BaseEntity {
     @Length(max = 32, message = "论坛Id长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
+    
+    public static final String FORUM_ID_LSIT = "forumIdList";
     
     public String getForumUserFollowId() {
         return getString(FORUM_USER_FOLLOW_ID);

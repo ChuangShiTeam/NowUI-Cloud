@@ -1,11 +1,4 @@
-package com.nowui.cloud.sns.forum.controller.mobile;
-
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+package com.nowui.cloud.sns.topic.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 话题论坛关联移动端控制器
@@ -47,7 +47,7 @@ public class TopicForumMobileController extends BaseController {
         List<TopicForum> resultList = topicForumService.listForAdmin(body.getAppId(), body.getForumId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicForum.TOPIC_FORUM_MAP_ID,
+                TopicForum.TOPIC_FORUM_ID,
                 TopicForum.FORUM_ID,
                 TopicForum.TOPIC_ID
         );

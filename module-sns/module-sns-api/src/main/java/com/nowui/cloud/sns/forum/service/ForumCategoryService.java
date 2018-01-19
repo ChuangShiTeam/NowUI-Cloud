@@ -20,11 +20,11 @@ public interface ForumCategoryService extends BaseService<ForumCategory> {
      * @param forumCategoryName 论坛分类名称
      * @param forumCategoryThumb 论坛分类缩略图
      * @param forumCategorySort 论坛分类排序
-     * @param forumCategoryEnabled 论坛分类是否启用
-     * @param ForumCategoryRecommand 是否推荐
+     * @param forumCategoryIsActive 论坛分类是否生效
+     * @param ForumCategoryIsRecommend 是否推荐
      * @return Integer 论坛分类统计
      */
-    Integer countForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand);
+    Integer countForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryIsActive, Boolean forumCategoryIsRecommend);
 
     /**
      * 论坛分类列表
@@ -33,11 +33,11 @@ public interface ForumCategoryService extends BaseService<ForumCategory> {
      * @param forumCategoryName 论坛分类名称
      * @param forumCategoryThumb 论坛分类缩略图
      * @param integer 论坛分类排序
-     * @param boolean1 论坛分类是否启用
+     * @param boolean1 论坛分类是否生效
      * @param boolean2 是否推荐
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<ForumCategory> 论坛分类列表
      */
-    List<ForumCategory> listForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryEnabled, Boolean forumCategoryRecommand, Integer pageIndex, Integer pageSize);
+    List<ForumCategory> listForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryIsActive, Boolean forumCategoryIsRecommend, Integer pageIndex, Integer pageSize);
 }

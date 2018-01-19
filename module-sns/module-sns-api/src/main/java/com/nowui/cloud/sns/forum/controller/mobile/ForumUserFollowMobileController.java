@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
@@ -22,7 +23,7 @@ import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -84,6 +85,46 @@ public class ForumUserFollowMobileController extends BaseController {
         boolean Result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
         
         return renderJson(Result);
+    }
+	
+	@ApiOperation(value = "新增用户批量加入论坛关联")
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> batchSaveV1(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID
+        );
+        
+        JSONArray jsonArray = body.getJSONArray(ForumUserFollow.FORUM_ID_LSIT);
+        
+        if (Util.isNullOrEmpty(jsonArray)) {
+            return renderJson(true);
+        }
+        
+        List<String> forumIdList = jsonArray.toJavaList(String.class);
+        Boolean result = true;
+        String appId = body.getAppId();
+        String userId = body.getSystemRequestUserId();
+        
+        for (String forumId : forumIdList) {
+            ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
+            
+            if (Util.isNullOrEmpty(forumUserFollow)) {
+                ForumUserFollow bean = new ForumUserFollow();
+                bean.setAppId(appId);
+                bean.setForumId(forumId);
+                bean.setUserId(userId);
+                
+                result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+                
+                if (!result) {
+                    throw new RuntimeException("加入失败");
+                }
+            }
+        }
+        
+        return renderJson(result);
     }
 
     @ApiOperation(value = "用户关注的论坛列表")

@@ -2,4 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nowui.cloud.sns.forum.mapper.ForumMapper">
 
+	<select id="getRandomRecommendAndNotFollowListByUserId" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT
+			t.forumId
+		FROM
+			(
+				SELECT
+					forum.forumId,
+					ROUND(RAND()) AS randomId
+				FROM
+					forum_info AS forum
+				WHERE
+					forum.appId = #{appId,jdbcType=VARCHAR}
+				AND forum.forumIsRecommend = 1
+				AND forum.forumIsActive = 1
+				AND forum.forumAuditStatus = 'AUDIT_PASS'
+				AND forum.systemStatus = 1
+				AND NOT EXISTS (
+					SELECT
+						forumId
+					FROM
+						forum_user_follow_map AS forumUserFollow
+					WHERE
+						forumUserFollow.systemStatus = 1
+					AND	forumUserFollow.forumId = forum.forumId
+					AND forumUserFollow.userId = #{userId,jdbcType=VARCHAR}
+				)
+				GROUP BY
+					forum.forumId
+			) AS t
+		ORDER BY
+			t.randomId ASC
+		LIMIT #{n}
+    </select>
+    
+    <select id="getLatestAndNotFollowListByUserId" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT
+			forum.forumId
+		FROM
+			forum_info AS forum
+		WHERE forum.appId = #{appId,jdbcType=VARCHAR}
+		AND forum.forumIsRecommend = 0
+		AND forum.forumIsActive = 1
+		AND forum.forumAuditStatus = 'AUDIT_PASS'
+		AND forum.systemStatus = 1
+		AND NOT EXISTS (
+			SELECT
+				forumId
+			FROM
+				forum_user_follow_map AS forumUserFollow
+			WHERE
+				forumUserFollow.systemStatus = 1
+			AND	forumUserFollow.forumId = forum.forumId
+			AND forumUserFollow.userId = #{userId,jdbcType=VARCHAR}
+		)
+		GROUP BY
+			forum.forumId
+		ORDER BY
+			forum.systemCreateTime DESC
+		LIMIT #{m}, #{n}
+    </select>
+
 </mapper>

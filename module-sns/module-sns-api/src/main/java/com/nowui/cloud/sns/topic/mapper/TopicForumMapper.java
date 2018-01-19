@@ -1,7 +1,7 @@
-package com.nowui.cloud.sns.forum.mapper;
+package com.nowui.cloud.sns.topic.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 
 /**
  * 话题论坛关联mapping映射接口

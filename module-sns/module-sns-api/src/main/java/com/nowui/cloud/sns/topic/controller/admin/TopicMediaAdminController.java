@@ -33,19 +33,19 @@ public class TopicMediaAdminController extends BaseController {
                 body,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_MEDIA_TYPE,
                 TopicMedia.PAGE_INDEX,
                 TopicMedia.PAGE_SIZE
         );
 
-        Integer resultTotal = topicMediaService.countForAdmin(body.getAppId() , body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType());
-        List<TopicMedia> resultList = topicMediaService.listForAdmin(body.getAppId(), body.getTopicId(), body.getTopicMediaId(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicMediaService.countForAdmin(body.getAppId() , body.getTopicId(), body.getTopicMedia(), body.getTopicMediaType());
+        List<TopicMedia> resultList = topicMediaService.listForAdmin(body.getAppId(), body.getTopicId(), body.getTopicMedia(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicMedia.TOPIC_MEDIA_MAP_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -58,15 +58,15 @@ public class TopicMediaAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicMedia.APP_ID,
-                TopicMedia.TOPIC_MEDIA_MAP_ID
+                TopicMedia.TOPIC_MEDIA
         );
 
-        TopicMedia result = topicMediaService.find(body.getTopicMediaMapId());
+        TopicMedia result = topicMediaService.find(body.getTopicMediaId());
 
         validateResponse(
-                TopicMedia.TOPIC_MEDIA_MAP_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -80,7 +80,7 @@ public class TopicMediaAdminController extends BaseController {
                 body,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -94,15 +94,15 @@ public class TopicMediaAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
-                TopicMedia.TOPIC_MEDIA_MAP_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.TOPIC_MEDIA_TYPE,
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.update(body, body.getTopicMediaMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicMediaService.update(body, body.getTopicMediaId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,12 +112,12 @@ public class TopicMediaAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
-                TopicMedia.TOPIC_MEDIA_MAP_ID,
+                TopicMedia.TOPIC_MEDIA,
                 TopicMedia.APP_ID,
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.delete(body.getTopicMediaMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicMediaService.delete(body.getTopicMediaId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

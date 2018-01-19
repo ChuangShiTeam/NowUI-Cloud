@@ -1,16 +1,21 @@
-package com.nowui.cloud.sns.forum.controller.admin;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
-import com.nowui.cloud.sns.forum.entity.TopicForum;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
+package com.nowui.cloud.sns.topic.controller.admin;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.util.Util;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 话题论坛关联管理端控制器
@@ -42,7 +47,7 @@ public class TopicForumAdminController extends BaseController {
         List<TopicForum> resultList = topicForumService.listForAdmin(body.getAppId(), body.getForumId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicForum.TOPIC_FORUM_MAP_ID,
+                TopicForum.TOPIC_FORUM_ID,
                 TopicForum.FORUM_ID,
                 TopicForum.TOPIC_ID
         );
@@ -56,13 +61,13 @@ public class TopicForumAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicForum.APP_ID,
-                TopicForum.TOPIC_FORUM_MAP_ID
+                TopicForum.TOPIC_FORUM_ID
         );
 
-        TopicForum result = topicForumService.find(body.getTopicForumMapId());
+        TopicForum result = topicForumService.find(body.getTopicForumId());
 
         validateResponse(
-                TopicForum.TOPIC_FORUM_MAP_ID,
+                TopicForum.TOPIC_FORUM_ID,
                 TopicForum.FORUM_ID,
                 TopicForum.TOPIC_ID
         );
@@ -90,14 +95,14 @@ public class TopicForumAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
-                TopicForum.TOPIC_FORUM_MAP_ID,
+                TopicForum.TOPIC_FORUM_ID,
                 TopicForum.APP_ID,
                 TopicForum.FORUM_ID,
                 TopicForum.TOPIC_ID,
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.update(body, body.getTopicForumMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicForumService.update(body, body.getTopicForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +112,12 @@ public class TopicForumAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
-                TopicForum.TOPIC_FORUM_MAP_ID,
+                TopicForum.TOPIC_FORUM_ID,
                 TopicForum.APP_ID,
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.delete(body.getTopicForumMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicForumService.delete(body.getTopicForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

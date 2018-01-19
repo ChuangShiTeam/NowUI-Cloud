@@ -1,6 +1,5 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
-import com.nowui.cloud.sns.forum.service.TopicForumService;
+import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -80,9 +79,9 @@ public class ForumMobileController extends BaseController {
 	     body.setForumSort(0);
 	     body.setForumIsTop(false);
 	     body.setForumIsActive(true);
-	     body.setForumIsRecommend(true);
+	     body.setForumIsRecommend(false);
 	     body.setForumAuditStatus(ForumAuditStatus.AUDIT_PASS.getKey());
-	     body.setForumTopicLocation("");
+	     body.setForumLocation("");
 	     body.setForumAuditContent("");
 	     
 	     String forumId = Util.getRandomUUID();
@@ -143,8 +142,6 @@ public class ForumMobileController extends BaseController {
         List<Member> nickNameAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
         forum.put(Forum.FORUM_USER_FOLLOW_LIST, nickNameAndAvatarList);
         
-        
-
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
@@ -157,9 +154,6 @@ public class ForumMobileController extends BaseController {
 
         return renderJson(forum);
     }
-	
-	
-	
 	
 	@ApiOperation(value = "论坛中所有用户信息")
     @RequestMapping(value = "/forum/mobile/v1/findAll", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -190,46 +184,33 @@ public class ForumMobileController extends BaseController {
         return renderJson(countResult, nickNameAndAvatarAndIsFollowList);
     }
 	
-	@ApiOperation(value = "论坛推荐信息")
-    @RequestMapping(value = "/forum/mobile/v1/findRecomand", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findRecomandV1(@RequestBody Forum body) {
+	@ApiOperation(value = "论坛推荐列表")
+    @RequestMapping(value = "/forum/mobile/v1/recommend/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> recommendListV1(@RequestBody Forum body) {
         validateRequest(
                 body,
                 Forum.APP_ID,
-                Forum.PAGE_INDEX,
-                Forum.PAGE_SIZE
+                Forum.PAGE_SIZE,
+                Forum.SYSTEM_REQUEST_USER_ID
         );
-        Boolean flag = true;
-        int num = 0;
-        List<Forum> listRandom = new ArrayList<>();
-        while (flag) {
-        	
-        	if (num == 10) {
-            	//如果取了10次还没达到条件,那么就取最新创建的几条
-            	listRandom = forumService.listRandom(null, null, null, body.getPageIndex(), body.getPageSize());
-            	flag = false;
-			}
-        	
-        	if (flag) {
-	            //appId,forumModerator,forumMedia都随机模糊查询一个数字
-	            String randomAppId = "" + (1 + Math.random() * (10 - 1 + 1));  //(最小值+Math.random()*(最大值-最小值+1))
-	            String randomForumMedia = "" +(1+Math.random()*(10-1+1));
-	            String randomForumModerator = "" +(1+Math.random()*(10-1+1));
-	            listRandom = forumService.listRandom(randomAppId, randomForumMedia, randomForumModerator, body.getPageIndex(), body.getPageSize());
-	            
-	            if (listRandom != null && listRandom.size() == body.getPageSize()) {
-					flag = false;
-				}
-	            num++;
-        	}
-		}
+        
+        // 查询编辑推荐的且用户没有关注过的论坛
+        List<Forum> recommendList = forumService.getRandomRecommendAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), body.getPageSize());
 
+        if (recommendList.size() < body.getPageSize()) {
+            // 推荐的数量不满足则从最新的圈子里面增加推荐
+            int pageSize = body.getPageSize() - recommendList.size();
+            
+            // 查询用户没有关注过的最新论坛
+            List<Forum> latestList = forumService.getLatestAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), 0, pageSize);
+            recommendList.addAll(latestList);
+        }
+        
         //处理论坛头像
-        for (Forum forum : listRandom) {
-        	File file = fileRpc.findV1(forum.getForumMedia());
-        	file.keep(File.FILE_ID, File.FILE_PATH);
-            forum.put(Forum.FORUM_MEDIA, file);
-		}
+        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
+        List<File> fileList = fileRpc.findsV1(fileIds);
+        
+        recommendList = Util.beanReplaceField(recommendList, Forum.FORUM_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
 
         validateResponse(
                 Forum.FORUM_ID,
@@ -238,13 +219,13 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_DESCRIPTION
         );
         
-        return renderJson(listRandom);
+        return renderJson(recommendList);
     }
 
 	@ApiOperation(value = "更新论坛头像")
 	@RequestMapping(value = "/forum/mobile/v1/update/media", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> updateMediaV1(@RequestBody Forum body) {
-	    validateRequest(
+	   validateRequest(
           body,
           Forum.APP_ID,
           Forum.FORUM_ID,
