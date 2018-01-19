@@ -101,7 +101,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getSystemRequestUserId(), null, body.getPageIndex(), body.getPageSize());
 
-        ArrayList<Forum> forumList = new ArrayList<Forum>();
+        List<Forum> forumList = new ArrayList<Forum>();
 
         for (ForumUserFollow forumUserFollow : resultList) {
             //根据forumId去论坛信息表取 论坛头像、论坛名称、论坛简介
@@ -120,16 +120,16 @@ public class ForumUserFollowMobileController extends BaseController {
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
 
 
-            //根据forumId得到版主id，使用 用户接口 得到版主头像,昵称
+            //根据forumId得到版主id, 使用 用户接口 得到版主头像, 昵称
             String forumModeratorId = forum.getForumModerator();
             Member moderator = memberRpc.nickNameAndAvatarFindV1(forumModeratorId);
             forum.put(Forum.FORUM_MODERATOR, moderator);
 
-            
             forumList.add(forum);
         }
 
         validateResponse(
+                Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
                 Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_NAME,

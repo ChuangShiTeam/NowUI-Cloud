@@ -58,6 +58,21 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
         );
         return count;
     }
+    
+    @Override
+    public List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
+        List<ForumUserFollow> forumUserFollowList = list(
+                new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return forumUserFollowList;
+    }
 
 	@Override
 	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {
