@@ -126,7 +126,7 @@ public class ForumMobileController extends BaseController {
         forum.put(Forum.FORUM_MODERATOR, moderator);
 
         
-        //根据论坛id去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
+        //根据论坛编号去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollow> forumUserFollows = 
         		forumUserFollowService
         		.listForAdmin(body.getAppId()
@@ -290,7 +290,7 @@ public class ForumMobileController extends BaseController {
 		}
         
         
-        //再从论坛话题关联表中逻辑删除所有的有论坛id的记录
+        //再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
     	Boolean delResult = topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
     	if (delResult == false) {
     		return renderJson(delResult);
@@ -332,7 +332,7 @@ public class ForumMobileController extends BaseController {
             
             //有:改变状态,没有:不做操作
             if (forumUserUnfollow != null) {
-                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
             }
             	
             //向论坛关注表插入一条记录

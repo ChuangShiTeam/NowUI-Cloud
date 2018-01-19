@@ -20,17 +20,17 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "forum_user_follow_map")
-@TableName(value = "forum_user_follow_map")
+@Document(indexName = "nowui", type = "forum_user_follow_info")
+@TableName(value = "forum_user_follow_info")
 public class ForumUserFollow extends BaseEntity {
 
     /**
-     * 论坛用户关注关联id
+     * 论坛用户关注编号
      */
 	@Id
     @TableId
-    @NotNull(message = "论坛用户关注关联id不能为空")
-    @Length(max = 32, message = "论坛用户关注关联id长度超出限制")
+    @NotNull(message = "论坛用户关注编号不能为空")
+    @Length(max = 32, message = "论坛用户关注编号长度超出限制")
     private String forumUserFollowId;
     public static final String FORUM_USER_FOLLOW_ID = "forumUserFollowId";
 
@@ -45,25 +45,28 @@ public class ForumUserFollow extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 用户Id
+     * 用户编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户Id不能为空")
-    @Length(max = 32, message = "用户Id长度超出限制")
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
     /**
-     * 论坛Id
+     * 论坛编号
      */
     @Field
     @TableField
-    @NotNull(message = "论坛Id不能为空")
-    @Length(max = 32, message = "论坛Id长度超出限制")
+    @NotNull(message = "论坛编号不能为空")
+    @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
     
+    /**
+     * 论坛编号列表
+     */
     public static final String FORUM_ID_LSIT = "forumIdList";
     
     public String getForumUserFollowId() {

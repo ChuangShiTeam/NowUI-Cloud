@@ -156,9 +156,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);
@@ -232,9 +232,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);
@@ -316,9 +316,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     	ArrayList<Forum> forumList = new ArrayList<>();
     	//遍历allTopicForumList
     	for (TopicForum aTopicForum : allTopicForumList) {
-    		//得到论坛id
+    		//得到论坛编号
 			String forumId = aTopicForum.getForumId();
-			//根据论坛id去论坛信息表查询名称
+			//根据论坛编号去论坛信息表查询名称
 			Forum forum = forumService.find(forumId, true);
 			//把forum放入list
 			forumList.add(forum);
@@ -419,9 +419,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
         	for (TopicForum aTopicForum : allTopicForumList) {
-        		//得到论坛id
+        		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
-				//根据论坛id去论坛信息表查询名称
+				//根据论坛编号去论坛信息表查询名称
 				Forum forum = forumService.find(forumId, true);
 				//把forum放入list
 				forumList.add(forum);

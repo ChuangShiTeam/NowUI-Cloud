@@ -58,7 +58,7 @@ public class ForumUserFollowMobileController extends BaseController {
 	@Autowired
 	private TopicForumService topicForumService;
 
-	@ApiOperation(value = "新增用户加入论坛关联")
+	@ApiOperation(value = "新增用户论坛关注")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody ForumUserFollow body) {
         validateRequest(
@@ -77,7 +77,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
         //有:改变状态,没有:不做操作
         if (forumUserUnfollow != null) {
-        	boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+        	boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
         }
         
         body.setUserId(body.getSystemRequestUserId());
@@ -87,7 +87,7 @@ public class ForumUserFollowMobileController extends BaseController {
         return renderJson(Result);
     }
 	
-	@ApiOperation(value = "新增用户批量加入论坛关联")
+	@ApiOperation(value = "批量新增用户论坛关注")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> batchSaveV1(@RequestBody ForumUserFollow body) {
         validateRequest(
@@ -127,7 +127,7 @@ public class ForumUserFollowMobileController extends BaseController {
         return renderJson(result);
     }
 
-    @ApiOperation(value = "用户关注的论坛列表")
+    @ApiOperation(value = "用户关注论坛列表")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody ForumUserFollow body) {
         validateRequest(

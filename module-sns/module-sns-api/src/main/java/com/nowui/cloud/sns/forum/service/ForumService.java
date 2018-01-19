@@ -36,7 +36,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumBackgroundMediaType 论坛多媒体背景类型
      * @param forumName 论坛名称
      * @param forumDescription 论坛简介
-     * @param forumModerator 版主(用户id)
+     * @param forumModerator 版主(用户编号)
      * @param forumLocation 位置
      * @param forumSort 论坛排序
      * @param forumTop 论坛是否置顶
@@ -73,7 +73,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param forumBackgroundMediaType 论坛多媒体背景类型
      * @param forumName 论坛名称
      * @param forumDescription 论坛简介
-     * @param forumModerator 版主(用户id)
+     * @param forumModerator 版主(用户编号)
      * @param forumLocation 位置
      * @param integer 论坛排序
      * @param boolean1 论坛是否置顶

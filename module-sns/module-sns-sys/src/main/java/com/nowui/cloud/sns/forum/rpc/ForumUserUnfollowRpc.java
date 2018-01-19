@@ -4,7 +4,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 论坛用户取关关联服务调用
+ * 论坛用户取关服务调用
  *
  * @author xupengfei
  *

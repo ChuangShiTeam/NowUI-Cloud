@@ -25,12 +25,12 @@ import javax.validation.constraints.NotNull;
 public class TopicMedia extends BaseEntity {
 
     /**
-     * 话题多媒体关联id
+     * 话题多媒体编号
      */
 	@Id
     @TableId
-    @NotNull(message = "话题多媒体关联id不能为空")
-    @Length(max = 32, message = "话题多媒体关联id长度超出限制")
+    @NotNull(message = "话题多媒体编号不能为空")
+    @Length(max = 32, message = "话题多媒体编号长度超出限制")
     private String topicMediaId;
     public static final String TOPIC_MEDIA_ID = "topicMediaId";
 

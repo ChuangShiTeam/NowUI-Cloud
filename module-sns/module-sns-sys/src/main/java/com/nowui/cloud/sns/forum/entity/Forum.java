@@ -210,7 +210,7 @@ public class Forum extends BaseEntity {
     public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
    
     /**
-     * 论坛id列表
+     * 论坛编号列表
      */
     public static final String FORUM_ID_LIST = "forumIdList";
     

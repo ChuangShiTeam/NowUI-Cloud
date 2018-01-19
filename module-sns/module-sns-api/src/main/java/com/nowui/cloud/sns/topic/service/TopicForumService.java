@@ -17,7 +17,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 话题论坛关联统计
      *
      * @param appId 应用编号
-     * @param forumId 论坛Id
+     * @param forumId 论坛编号
      * @param topicId 话题Id
      * @return Integer 话题论坛关联统计
      */
@@ -27,7 +27,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 话题论坛关联列表
      *
      * @param appId 应用编号
-     * @param forumId 论坛Id
+     * @param forumId 论坛编号
      * @param topicId 话题Id
      * @param pageIndex 页码
      * @param pageSize 每页个数
@@ -36,10 +36,10 @@ public interface TopicForumService extends BaseService<TopicForum> {
     List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
 
    /**
-    * 删除根据论坛id
+    * 删除根据论坛编号
     * 
     * @param appId 应用编号
-    * @param forumId 论坛Id
+    * @param forumId 论坛编号
     * @param systemUpdateUserId 
     * @param systemVersion 版本号
     * @return
@@ -50,7 +50,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 当日论坛话题数量
      * 
      * @param appId 应用编号
-     * @param forumId 论坛Id
+     * @param forumId 论坛编号
      * @param topicId 话题id
      * @return Integer 当日话题数量统计
      */
@@ -60,7 +60,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 查询所有话题论坛列表
      * 
      * @param appId 应用编号
-     * @param forumId 论坛id
+     * @param forumId 论坛编号
      * @param topicId 话题id
      * @return List<TopicForum> 话题论坛关联列表
      */

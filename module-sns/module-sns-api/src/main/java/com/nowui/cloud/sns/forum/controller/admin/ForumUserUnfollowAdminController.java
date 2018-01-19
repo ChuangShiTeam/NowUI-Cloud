@@ -42,7 +42,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
         List<ForumUserUnfollow> resultList = forumUserUnfollowService.listForAdmin(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                ForumUserUnfollow.FORUM_USER_UNFOLLOW_MAP_ID,
+                ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
                 ForumUserUnfollow.USER_ID,
                 ForumUserUnfollow.FORUM_ID
         );
@@ -56,13 +56,13 @@ public class ForumUserUnfollowAdminController extends BaseController {
         validateRequest(
                 body,
                 ForumUserUnfollow.APP_ID,
-                ForumUserUnfollow.FORUM_USER_UNFOLLOW_MAP_ID
+                ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID
         );
 
-        ForumUserUnfollow result = forumUserUnfollowService.find(body.getForumUserUnfollowMapId());
+        ForumUserUnfollow result = forumUserUnfollowService.find(body.getForumUserUnfollowId());
 
         validateResponse(
-                ForumUserUnfollow.FORUM_USER_UNFOLLOW_MAP_ID,
+                ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
                 ForumUserUnfollow.USER_ID,
                 ForumUserUnfollow.FORUM_ID
         );
@@ -90,14 +90,14 @@ public class ForumUserUnfollowAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
-                ForumUserUnfollow.FORUM_USER_UNFOLLOW_MAP_ID,
+                ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
                 ForumUserUnfollow.APP_ID,
                 ForumUserUnfollow.USER_ID,
                 ForumUserUnfollow.FORUM_ID,
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +107,12 @@ public class ForumUserUnfollowAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
-                ForumUserUnfollow.FORUM_USER_UNFOLLOW_MAP_ID,
+                ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
                 ForumUserUnfollow.APP_ID,
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowMapId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

@@ -4,7 +4,7 @@ import com.nowui.cloud.mapper.BaseMapper;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 
 /**
- * 论坛用户取关关联mapping映射接口
+ * 论坛用户取关mapping映射接口
  *
  * @author xupengfei
  *

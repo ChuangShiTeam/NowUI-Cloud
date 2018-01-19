@@ -13,26 +13,26 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 论坛用户取关关联
+ * 论坛用户取关
  *
  * @author xupengfei
  *
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "forum_user_unfollow_map")
-@TableName(value = "forum_user_unfollow_map")
+@Document(indexName = "nowui", type = "forum_user_unfollow_info")
+@TableName(value = "forum_user_unfollow_info")
 public class ForumUserUnfollow extends BaseEntity {
 
     /**
-     * 论坛用户取关关联id
+     * 论坛用户取关编号
      */
 	@Id
     @TableId
-    @NotNull(message = "论坛用户取关关联id不能为空")
-    @Length(max = 32, message = "论坛用户取关关联id长度超出限制")
-    private String forumUserUnfollowMapId;
-    public static final String FORUM_USER_UNFOLLOW_MAP_ID = "forumUserUnfollowMapId";
+    @NotNull(message = "论坛用户取关编号不能为空")
+    @Length(max = 32, message = "论坛用户取关编号长度超出限制")
+    private String forumUserUnfollowId;
+    public static final String FORUM_USER_UNFOLLOW_ID = "forumUserUnfollowId";
 
     /**
      * 应用编号
@@ -45,32 +45,32 @@ public class ForumUserUnfollow extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 用户ID
+     * 用户编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户ID不能为空")
-    @Length(max = 32, message = "用户ID长度超出限制")
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
     /**
-     * 论坛Id
+     * 论坛编号
      */
     @Field
     @TableField
-    @NotNull(message = "论坛Id不能为空")
-    @Length(max = 32, message = "论坛Id长度超出限制")
+    @NotNull(message = "论坛编号不能为空")
+    @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
 
 
-    public String getForumUserUnfollowMapId() {
-        return getString(FORUM_USER_UNFOLLOW_MAP_ID);
+    public String getForumUserUnfollowId() {
+        return getString(FORUM_USER_UNFOLLOW_ID);
     }
     
-    public void setForumUserUnfollowMapId(String forumUserUnfollowMapId) {
-        put(FORUM_USER_UNFOLLOW_MAP_ID, forumUserUnfollowMapId);
+    public void setForumUserUnfollowId(String forumUserUnfollowId) {
+        put(FORUM_USER_UNFOLLOW_ID, forumUserUnfollowId);
     }
 
     public String getAppId() {

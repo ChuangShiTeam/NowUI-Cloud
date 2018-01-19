@@ -45,12 +45,12 @@ public class Topic extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /** 
-     * 论坛Id
+     * 论坛编号
      */
     @Field
     @TableField
-    @NotNull(message = "论坛Id不能为空")
-    @Length(max = 32, message = "论坛Id长度超出限制")
+    @NotNull(message = "论坛编号不能为空")
+    @Length(max = 32, message = "论坛编号长度超出限制")
     private String topicForumId;
     public static final String TOPIC_FORUM_ID = "topicForumId";
 
@@ -65,12 +65,12 @@ public class Topic extends BaseEntity {
     public static final String TOPIC_SUMMARY = "topicSummary";
 
     /**
-     * 用户ID
+     * 用户编号
      */
     @Field
     @TableField
-    @NotNull(message = "用户ID不能为空")
-    @Length(max = 32, message = "用户ID长度超出限制")
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
@@ -145,7 +145,7 @@ public class Topic extends BaseEntity {
     public static final String TOP_TOP_LEVEL = "topTopLevel";
     
     /**
-     * 论坛Id
+     * 论坛编号
      */
     public static final String FORUM_ID = "forumId";
     /**

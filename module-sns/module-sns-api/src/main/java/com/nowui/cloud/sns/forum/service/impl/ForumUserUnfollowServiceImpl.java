@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 论坛用户取关关联业务实现
+ * 论坛用户取关业务实现
  *
  * @author xupengfei
  *
@@ -80,7 +80,7 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
 		
 		//遍历
 		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
-			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowMapId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
+			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
 			if (delete == false) {
 				return false;
 			}

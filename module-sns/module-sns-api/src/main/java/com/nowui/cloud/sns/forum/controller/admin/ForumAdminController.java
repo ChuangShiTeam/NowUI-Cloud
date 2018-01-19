@@ -126,7 +126,7 @@ public class ForumAdminController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "查找论坛信息(根据论坛id)")
+    @ApiOperation(value = "查找论坛信息(根据论坛编号)")
     @RequestMapping(value = "/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Forum body) {
         validateRequest(
