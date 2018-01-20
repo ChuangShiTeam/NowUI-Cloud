@@ -22,7 +22,6 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +53,9 @@ public class CodeController extends BaseController {
 
     @ApiOperation(value = "测试")
     @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test(@RequestBody Code body) {
+    public String test() {
+        Code codeEntity = getEntry(Code.class);
+
 ///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
         Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
@@ -70,10 +71,12 @@ public class CodeController extends BaseController {
 
     @ApiOperation(value = "数据库表列表")
     @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> tableList(@RequestBody Code body) {
-        validateRequest(body, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+    public Map<String, Object> tableList() {
+        Code codeEntity = getEntry(Code.class);
 
-        List<Code> resultList = codeService.tableSchemaList(body.getTableSchema(), body.getTableName());
+        validateRequest(codeEntity, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+
+        List<Code> resultList = codeService.tableSchemaList(codeEntity.getTableSchema(), codeEntity.getTableName());
 
         validateResponse(Code.TABLE_SCHEMA, Code.TABLE_NAME, Code.ENGINE, Code.TABLE_COMMENT, Code.SYSTEM_CREATE_TIME);
 
@@ -82,10 +85,12 @@ public class CodeController extends BaseController {
  
     @ApiOperation(value = "数据库表字段列表")
     @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> fieldlLst(@RequestBody Code body) {
-        validateRequest(body, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+    public Map<String, Object> fieldlLst() {
+        Code codeEntity = getEntry(Code.class);
 
-        List<Code> resultList = codeService.tableNameList(body.getTableSchema(), body.getTableName());
+        validateRequest(codeEntity, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+
+        List<Code> resultList = codeService.tableNameList(codeEntity.getTableSchema(), codeEntity.getTableName());
 
         validateResponse(Code.COLUMN_NAME, Code.COLUMN_KEY, Code.CHARACTER_MAXIMUM_LENGTH, Code.COLUMN_TYPE, Code.DATA_TYPE, Code.COLUMN_COMMENT);
 
@@ -94,18 +99,20 @@ public class CodeController extends BaseController {
 
     @ApiOperation(value = "数据库表映射代码生成")
     @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> generate(@RequestBody Code body) {
-        validateRequest(body, Code.TABLE_COMMENT, Code.TABLE_NAME, Code.AUTHOR, Code.COLUMN_LIST);
+    public Map<String, Object> generate() {
+        Code codeEntity = getEntry(Code.class);
+
+        validateRequest(codeEntity, Code.TABLE_COMMENT, Code.TABLE_NAME, Code.AUTHOR, Code.COLUMN_LIST);
 
         try {
             String path = CodeController.class.getResource("/").toURI().getPath();
             path = new File(path).getParentFile().getCanonicalPath() + "/" + Constant.PUBLISH;
             String apiPath = path + "/api";
-            String apiPackagePath = apiPath + "/" + body.getPackageName();
+            String apiPackagePath = apiPath + "/" + codeEntity.getPackageName();
             String sysPath = path + "/sys";
-            String sysPackagePath = sysPath + "/"  + body.getPackageName();
+            String sysPackagePath = sysPath + "/"  + codeEntity.getPackageName();
             String webPath = path + "/web";
-            String webPackagePath = webPath + "/"  + body.getPackageName();
+            String webPackagePath = webPath + "/"  + codeEntity.getPackageName();
             String entityPath = sysPackagePath + "/entity";
             String mqPath = sysPackagePath + "/mq";
             String mqImplPath = mqPath + "/impl";
@@ -134,7 +141,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
-            if (body.getIsMq()) {
+            if (codeEntity.getIsMq()) {
                 FileUtil.createPath(mqPath);
                 FileUtil.createPath(mqImplPath);
                 FileUtil.createPath(configPath);
@@ -155,15 +162,15 @@ public class CodeController extends BaseController {
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
 
-            List<Code> codeList = JSONArray.parseArray(body.getColumnList().toJSONString(), Code.class);
+            List<Code> codeList = JSONArray.parseArray(codeEntity.getColumnList().toJSONString(), Code.class);
 
             List<JSONObject> columnList = new ArrayList<JSONObject>();
             List<JSONObject> searchColumnList = new ArrayList<JSONObject>();
             List<JSONObject> listColumnList = new ArrayList<JSONObject>();
             List<JSONObject> detailColumnList = new ArrayList<JSONObject>();
 
-            String upperTableName = body.getTableName().toUpperCase();
-            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(body.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
+            String upperTableName = codeEntity.getTableName().toUpperCase();
+            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(codeEntity.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
             String upperEntityName = lowerEntityName.toUpperCase();
             String urlEntityName = lowerEntityName.replaceAll("_", "/");
             String firstLowerEntityName = lowerEntityName.substring(0, 1).toLowerCase() + lowerEntityName.substring(1);
@@ -227,11 +234,11 @@ public class CodeController extends BaseController {
             String upperWithUnderlineTableId = insertUnderline(tableId);
 
             Map<String, Object> templateMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-            templateMap.put("tableComment", body.getTableComment());
-            templateMap.put("moduleName", body.getModuleName());
-            templateMap.put("packageName", body.getPackageName());
-            templateMap.put("tableName", body.getTableName());
-            templateMap.put("author", body.getAuthor());
+            templateMap.put("tableComment", codeEntity.getTableComment());
+            templateMap.put("moduleName", codeEntity.getModuleName());
+            templateMap.put("packageName", codeEntity.getPackageName());
+            templateMap.put("tableName", codeEntity.getTableName());
+            templateMap.put("author", codeEntity.getAuthor());
             templateMap.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             templateMap.put("upperTableName", upperTableName);
             templateMap.put("tableId", tableId);
@@ -251,7 +258,7 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
-            if (body.getIsMq()) {
+            if (codeEntity.getIsMq()) {
                 write(templateMap, "mq.txt", mqPath + "/" + firstUpperWithoutUnderlineEntityName + "Mq.java");
                 write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
             }
@@ -265,7 +272,7 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
-            if (body.getIsMq()) {
+            if (codeEntity.getIsMq()) {
 //                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
                 write(templateMap, "config.txt", configPath + "/" + firstUpperWithoutUnderlineEntityName + "Config.java");
                 write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");

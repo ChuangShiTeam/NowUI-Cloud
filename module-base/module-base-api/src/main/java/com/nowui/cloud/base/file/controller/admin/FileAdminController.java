@@ -36,9 +36,11 @@ public class FileAdminController extends BaseController {
 
     @ApiOperation(value = "文件列表")
     @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody File body) {
+    public Map<String, Object> listV1() {
+        File fileEntity = getEntry(File.class);
+
         validateRequest(
-                body,
+                fileEntity,
                 File.APP_ID,
                 File.SYSTEM_REQUEST_USER_ID,
                 File.FILE_NAME,
@@ -47,8 +49,8 @@ public class FileAdminController extends BaseController {
                 File.PAGE_SIZE
         );
 
-        Integer resultTotal = fileService.countForAdmin(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType());
-        List<File> resultList = fileService.listForAdmin(body.getAppId(), body.getSystemRequestUserId(), body.getFileName(), body.getFileType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = fileService.countForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType());
+        List<File> resultList = fileService.listForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType(), fileEntity.getPageIndex(), fileEntity.getPageSize());
 
         validateResponse(
                 File.FILE_ID,
@@ -63,14 +65,16 @@ public class FileAdminController extends BaseController {
 
     @ApiOperation(value = "文件信息")
     @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody File body) {
+    public Map<String, Object> findV1() {
+        File fileEntity = getEntry(File.class);
+
         validateRequest(
-                body,
+                fileEntity,
                 File.APP_ID,
                 File.FILE_ID
         );
 
-        File result = fileService.find(body.getFileId());
+        File result = fileService.find(fileEntity.getFileId());
 
         validateResponse(
                 File.FILE_ID,
@@ -91,15 +95,17 @@ public class FileAdminController extends BaseController {
 
     @ApiOperation(value = "删除文件")
     @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody File body) {
+    public Map<String, Object> deleteV1() {
+        File fileEntity = getEntry(File.class);
+
         validateRequest(
-                body,
+                fileEntity,
                 File.FILE_ID,
                 File.APP_ID,
                 File.SYSTEM_VERSION
         );
 
-        Boolean result = fileService.delete(body.getFileId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemRequestUserId(), fileEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -126,10 +132,12 @@ public class FileAdminController extends BaseController {
     
     @ApiOperation(value = "base64图片上传")
     @RequestMapping(value = "/file/admin/image/base64/upload", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> imageBase64Upload(@RequestBody JSONObject body) {
-        String appId = body.getString(File.APP_ID);
-        String userId = body.getString(File.SYSTEM_REQUEST_USER_ID);
-        String base64Data = body.getString(Constant.DATA);
+    public Map<String, Object> imageBase64Upload() {
+        File fileEntity = getEntry(File.class);
+
+        String appId = fileEntity.getString(File.APP_ID);
+        String userId = fileEntity.getString(File.SYSTEM_REQUEST_USER_ID);
+        String base64Data = fileEntity.getString(Constant.DATA);
         
         File file = fileService.uploadBase64(appId, userId, base64Data);
         

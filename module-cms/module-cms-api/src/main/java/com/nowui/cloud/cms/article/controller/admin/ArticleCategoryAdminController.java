@@ -37,9 +37,11 @@ public class ArticleCategoryAdminController extends BaseController {
     
     @ApiOperation(value = "文章分类列表")
     @RequestMapping(value = "/article/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ArticleCategory body) {
+    public Map<String, Object> listV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+
         validateRequest(
-            body, 
+            articleCategoryEntity, 
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME,
             ArticleCategory.ARTICLE_CATEGORY_CODE,
@@ -47,17 +49,17 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.countForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getArticleCategoryCode());
-        if (Util.isNullOrEmpty(body.getArticleCategoryName()) && Util.isNullOrEmpty(body.getArticleCategoryCode())) {
+        Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryEntity.getAppId(), articleCategoryEntity.getArticleCategoryName(), articleCategoryEntity.getArticleCategoryCode());
+        if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryCode())) {
             
-            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(body.getAppId(), body.getPageIndex(), body.getPageSize());
+            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryEntity.getAppId(), articleCategoryEntity.getPageIndex(), articleCategoryEntity.getPageSize());
 
             validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
 
         } else {
-            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(body.getAppId(), body.getArticleCategoryName(), body.getArticleCategoryCode(), body.getPageIndex(), body.getPageSize());
+            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(articleCategoryEntity.getAppId(), articleCategoryEntity.getArticleCategoryName(), articleCategoryEntity.getArticleCategoryCode(), articleCategoryEntity.getPageIndex(), articleCategoryEntity.getPageSize());
 
             validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
@@ -68,13 +70,15 @@ public class ArticleCategoryAdminController extends BaseController {
     
     @ApiOperation(value = "文章分类树形列表")
     @RequestMapping(value = "/article/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> allTreeListV1(@RequestBody ArticleCategory body) {
+    public Map<String, Object> allTreeListV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+
         validateRequest(
-            body, 
+            articleCategoryEntity, 
             ArticleCategory.APP_ID
         );
 
-        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(body.getAppId());
+        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(articleCategoryEntity.getAppId());
 
         validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
 
@@ -84,10 +88,12 @@ public class ArticleCategoryAdminController extends BaseController {
 
     @ApiOperation(value = "根据编号查询文章分类信息")
     @RequestMapping(value = "/article/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody ArticleCategory body) {
-        validateRequest(body, ArticleCategory.ARTICLE_CATEGORY_ID);
+    public Map<String, Object> findV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
 
-        ArticleCategory result = articleCategoryService.find(body.getArticleCategoryId());
+        validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
+
+        ArticleCategory result = articleCategoryService.find(articleCategoryEntity.getArticleCategoryId());
 
         validateResponse(
                 ArticleCategory.ARTICLE_CATEGORY_ID, 
@@ -104,9 +110,11 @@ public class ArticleCategoryAdminController extends BaseController {
 
     @ApiOperation(value = "文章分类新增")
     @RequestMapping(value = "/article/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ArticleCategory body) {
+    public Map<String, Object> saveV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+
         validateRequest(
-            body, 
+            articleCategoryEntity, 
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
             ArticleCategory.ARTICLE_CATEGORY_NAME, 
@@ -117,13 +125,13 @@ public class ArticleCategoryAdminController extends BaseController {
         
         String articleCategoryParentPath = "";
 
-        if (Util.isNullOrEmpty(body.getArticleCategoryParentId())) {
+        if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryParentId())) {
 
             JSONArray jsonArray = new JSONArray();
 
             articleCategoryParentPath = jsonArray.toJSONString();
         } else {
-            ArticleCategory parent = articleCategoryService.find(body.getArticleCategoryParentId());
+            ArticleCategory parent = articleCategoryService.find(articleCategoryEntity.getArticleCategoryParentId());
 
             JSONArray jsonArray = new JSONArray();;
             if (!Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
@@ -134,18 +142,20 @@ public class ArticleCategoryAdminController extends BaseController {
             articleCategoryParentPath = jsonArray.toJSONString();
         }
         
-        body.setArticleCategoryParentPath(articleCategoryParentPath);
+        articleCategoryEntity.setArticleCategoryParentPath(articleCategoryParentPath);
         
-        Boolean result = articleCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleCategoryService.save(articleCategoryEntity, Util.getRandomUUID(), articleCategoryEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "文章分类修改")
     @RequestMapping(value = "/article/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody ArticleCategory body) {
+    public Map<String, Object> updateV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+
         validateRequest(
-            body, 
+            articleCategoryEntity, 
             ArticleCategory.ARTICLE_CATEGORY_ID, 
             ArticleCategory.APP_ID, 
             ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
@@ -156,31 +166,35 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.update(body, body.getArticleCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "文章分类删除")
     @RequestMapping(value = "/article/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody ArticleCategory body) {
+    public Map<String, Object> deleteV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+
         validateRequest(
-            body, 
+            articleCategoryEntity, 
             ArticleCategory.ARTICLE_CATEGORY_ID, 
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.delete(body.getArticleCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }
     
     @ApiOperation(value = "文章分类重建缓存")
     @RequestMapping(value = "/article/category/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody ArticleCategory body) {
-        validateRequest(body, ArticleCategory.ARTICLE_CATEGORY_ID);
+    public Map<String, Object> replaceV1() {
+        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
 
-        articleCategoryService.replace(body.getArticleCategoryId());
+        validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
+
+        articleCategoryService.replace(articleCategoryEntity.getArticleCategoryId());
 
         return renderJson(true);
     }

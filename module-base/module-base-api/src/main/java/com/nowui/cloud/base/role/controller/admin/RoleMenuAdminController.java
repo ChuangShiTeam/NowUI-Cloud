@@ -28,9 +28,11 @@ public class RoleMenuAdminController extends BaseController {
 
     @ApiOperation(value = "角色菜单列表")
     @RequestMapping(value = "/role/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody RoleMenu body) {
+    public Map<String, Object> listV1() {
+        RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
-                body,
+                roleMenuEntity,
                 RoleMenu.APP_ID,
                 RoleMenu.ROLE_ID,
                 RoleMenu.MENU_ID,
@@ -38,8 +40,8 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.PAGE_SIZE
         );
 
-        Integer resultTotal = roleMenuService.countForAdmin(body.getAppId() , body.getRoleId(), body.getMenuId());
-        List<RoleMenu> resultList = roleMenuService.listForAdmin(body.getAppId(), body.getRoleId(), body.getMenuId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = roleMenuService.countForAdmin(roleMenuEntity.getAppId() , roleMenuEntity.getRoleId(), roleMenuEntity.getMenuId());
+        List<RoleMenu> resultList = roleMenuService.listForAdmin(roleMenuEntity.getAppId(), roleMenuEntity.getRoleId(), roleMenuEntity.getMenuId(), roleMenuEntity.getPageIndex(), roleMenuEntity.getPageSize());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,
@@ -52,14 +54,16 @@ public class RoleMenuAdminController extends BaseController {
 
     @ApiOperation(value = "角色菜单信息")
     @RequestMapping(value = "/role/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody RoleMenu body) {
+    public Map<String, Object> findV1() {
+        RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
-                body,
+                roleMenuEntity,
                 RoleMenu.APP_ID,
                 RoleMenu.ROLE_MENU_ID
         );
 
-        RoleMenu result = roleMenuService.find(body.getRoleMenuId());
+        RoleMenu result = roleMenuService.find(roleMenuEntity.getRoleMenuId());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,
@@ -72,24 +76,28 @@ public class RoleMenuAdminController extends BaseController {
 
     @ApiOperation(value = "新增角色菜单")
     @RequestMapping(value = "/role/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody RoleMenu body) {
+    public Map<String, Object> saveV1() {
+        RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
-                body,
+                roleMenuEntity,
                 RoleMenu.APP_ID,
                 RoleMenu.ROLE_ID,
                 RoleMenu.MENU_ID
         );
 
-        Boolean result = roleMenuService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = roleMenuService.save(roleMenuEntity, Util.getRandomUUID(), roleMenuEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改角色菜单")
     @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody RoleMenu body) {
+    public Map<String, Object> updateV1() {
+        RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
-                body,
+                roleMenuEntity,
                 RoleMenu.ROLE_MENU_ID,
                 RoleMenu.APP_ID,
                 RoleMenu.ROLE_ID,
@@ -97,22 +105,24 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.update(body, body.getRoleMenuId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = roleMenuService.update(roleMenuEntity, roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除角色菜单")
     @RequestMapping(value = "/role/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody RoleMenu body) {
+    public Map<String, Object> deleteV1() {
+        RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
-                body,
+                roleMenuEntity,
                 RoleMenu.ROLE_MENU_ID,
                 RoleMenu.APP_ID,
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.delete(body.getRoleMenuId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
 
         return renderJson(result);
     }
