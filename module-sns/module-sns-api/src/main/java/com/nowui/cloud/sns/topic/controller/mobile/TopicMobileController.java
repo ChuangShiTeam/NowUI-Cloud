@@ -344,10 +344,12 @@ public class TopicMobileController extends BaseController {
         );
 
         String topicId = Util.getRandomUUID();
+        Topic bodyTwo = body;
         
         body.setUserId(body.getSystemRequestUserId());
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
+        
         //先保存主表
         Boolean result = topicService.save(body, topicId, body.getSystemRequestUserId());
         
