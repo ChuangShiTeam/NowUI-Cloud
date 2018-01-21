@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_user_like_map")
-@TableName(value = "topic_user_like_map")
+@Document(indexName = "nowui", type = "topic_user_like_info")
+@TableName(value = "topic_user_like_info")
 public class TopicUserLike extends BaseEntity {
 
     /**
@@ -31,8 +31,8 @@ public class TopicUserLike extends BaseEntity {
     @TableId
     @NotNull(message = "用户话题点赞id不能为空")
     @Length(max = 32, message = "用户话题点赞id长度超出限制")
-    private String userLikeId;
-    public static final String USER_LIKE_ID = "userLikeId";
+    private String topicUserLikeId;
+    public static final String TOPIC_USER_LIKE_ID = "topicUserLikeId";
 
     /**
      * 应用编号
@@ -55,22 +55,22 @@ public class TopicUserLike extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
 
-    public String getUserLikeId() {
-        return getString(USER_LIKE_ID);
+    public String getTopicUserLikeId() {
+        return getString(TOPIC_USER_LIKE_ID);
     }
     
-    public void setUserLikeId(String userLikeId) {
-        put(USER_LIKE_ID, userLikeId);
+    public void setTopicUserLikeId(String topicUserLikeId) {
+        put(TOPIC_USER_LIKE_ID, topicUserLikeId);
     }
 
     public String getAppId() {

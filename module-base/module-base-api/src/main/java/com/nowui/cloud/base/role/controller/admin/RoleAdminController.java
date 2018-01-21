@@ -28,10 +28,11 @@ public class RoleAdminController extends BaseController {
 
     @ApiOperation(value = "角色列表")
     @RequestMapping(value = "/role/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Role body) {
+    public Map<String, Object> listV1() {
+        Role roleEntity = getEntry(Role.class);
 
         validateRequest(
-                body,
+                roleEntity,
                 Role.APP_ID,
                 Role.ROLE_NAME,
                 Role.ROLE_CODE,
@@ -39,8 +40,8 @@ public class RoleAdminController extends BaseController {
                 Role.PAGE_SIZE
         );
 
-        Integer resultTotal = roleService.countForAdmin(body.getAppId() , body.getRoleName(), body.getRoleCode());
-        List<Role> resultList = roleService.listForAdmin(body.getAppId(), body.getRoleName(), body.getRoleCode(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = roleService.countForAdmin(roleEntity.getAppId() , roleEntity.getRoleName(), roleEntity.getRoleCode());
+        List<Role> resultList = roleService.listForAdmin(roleEntity.getAppId(), roleEntity.getRoleName(), roleEntity.getRoleCode(), roleEntity.getPageIndex(), roleEntity.getPageSize());
 
         validateResponse(
                 Role.ROLE_ID,
@@ -54,14 +55,16 @@ public class RoleAdminController extends BaseController {
 
     @ApiOperation(value = "角色信息")
     @RequestMapping(value = "/role/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Role body) {
+    public Map<String, Object> findV1() {
+        Role roleEntity = getEntry(Role.class);
+
         validateRequest(
-                body,
+                roleEntity,
                 Role.APP_ID,
                 Role.ROLE_ID
         );
 
-        Role result = roleService.find(body.getRoleId());
+        Role result = roleService.find(roleEntity.getRoleId());
 
         validateResponse(
                 Role.ROLE_ID,
@@ -76,9 +79,11 @@ public class RoleAdminController extends BaseController {
 
     @ApiOperation(value = "新增角色")
     @RequestMapping(value = "/role/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Role body) {
+    public Map<String, Object> saveV1() {
+        Role roleEntity = getEntry(Role.class);
+
         validateRequest(
-                body,
+                roleEntity,
                 Role.APP_ID,
                 Role.ROLE_NAME,
                 Role.ROLE_CODE,
@@ -86,16 +91,18 @@ public class RoleAdminController extends BaseController {
                 Role.ROLE_SORT
         );
 
-        Boolean result = roleService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(), roleEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改角色")
     @RequestMapping(value = "/role/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Role body) {
+    public Map<String, Object> updateV1() {
+        Role roleEntity = getEntry(Role.class);
+
         validateRequest(
-                body,
+                roleEntity,
                 Role.ROLE_ID,
                 Role.APP_ID,
                 Role.ROLE_NAME,
@@ -105,32 +112,36 @@ public class RoleAdminController extends BaseController {
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.update(body, body.getRoleId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除角色")
     @RequestMapping(value = "/role/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Role body) {
+    public Map<String, Object> deleteV1() {
+        Role roleEntity = getEntry(Role.class);
+
         validateRequest(
-                body,
+                roleEntity,
                 Role.ROLE_ID,
                 Role.APP_ID,
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.delete(body.getRoleId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
 
         return renderJson(result);
     }
     
     @ApiOperation(value = "角色重建缓存")
     @RequestMapping(value = "/role/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody Role body) {
-        validateRequest(body, Role.ROLE_ID);
+    public Map<String, Object> replaceV1() {
+        Role roleEntity = getEntry(Role.class);
 
-        roleService.replace(body.getRoleId());
+        validateRequest(roleEntity, Role.ROLE_ID);
+
+        roleService.replace(roleEntity.getRoleId());
 
         return renderJson(true);
     }

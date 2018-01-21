@@ -28,9 +28,11 @@ public class SmsCaptchaAdminController extends BaseController {
 
     @ApiOperation(value = "短信验证码列表")
     @RequestMapping(value = "/sms/captcha/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody SmsCaptcha body) {
+    public Map<String, Object> listV1() {
+        SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
+
         validateRequest(
-                body,
+                smsCaptchaEntity,
                 SmsCaptcha.APP_ID,
                 SmsCaptcha.SMS_CAPTCHA_TYPE,
                 SmsCaptcha.SMS_CAPTCHA_MOBILE,
@@ -39,8 +41,8 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.PAGE_SIZE
         );
 
-        Integer resultTotal = smsCaptchaService.countForAdmin(body.getAppId() , body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress());
-        List<SmsCaptcha> resultList = smsCaptchaService.listForAdmin(body.getAppId(), body.getSmsCaptchaType(), body.getSmsCaptchaMobile(), body.getSmsCaptchaIpAddress(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = smsCaptchaService.countForAdmin(smsCaptchaEntity.getAppId() , smsCaptchaEntity.getSmsCaptchaType(), smsCaptchaEntity.getSmsCaptchaMobile(), smsCaptchaEntity.getSmsCaptchaIpAddress());
+        List<SmsCaptcha> resultList = smsCaptchaService.listForAdmin(smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSmsCaptchaType(), smsCaptchaEntity.getSmsCaptchaMobile(), smsCaptchaEntity.getSmsCaptchaIpAddress(), smsCaptchaEntity.getPageIndex(), smsCaptchaEntity.getPageSize());
 
         validateResponse(
                 SmsCaptcha.SMS_CAPTCHA_ID,
@@ -55,14 +57,16 @@ public class SmsCaptchaAdminController extends BaseController {
 
     @ApiOperation(value = "短信验证码信息")
     @RequestMapping(value = "/sms/captcha/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody SmsCaptcha body) {
+    public Map<String, Object> findV1() {
+        SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
+
         validateRequest(
-                body,
+                smsCaptchaEntity,
                 SmsCaptcha.APP_ID,
                 SmsCaptcha.SMS_CAPTCHA_ID
         );
 
-        SmsCaptcha result = smsCaptchaService.find(body.getSmsCaptchaId());
+        SmsCaptcha result = smsCaptchaService.find(smsCaptchaEntity.getSmsCaptchaId());
 
         validateResponse(
                 SmsCaptcha.SMS_CAPTCHA_ID,
@@ -77,9 +81,11 @@ public class SmsCaptchaAdminController extends BaseController {
 
     @ApiOperation(value = "新增短信验证码")
     @RequestMapping(value = "/sms/captcha/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody SmsCaptcha body) {
+    public Map<String, Object> saveV1() {
+        SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
+
         validateRequest(
-                body,
+                smsCaptchaEntity,
                 SmsCaptcha.APP_ID,
                 SmsCaptcha.SMS_CAPTCHA_TYPE,
                 SmsCaptcha.SMS_CAPTCHA_MOBILE,
@@ -87,16 +93,18 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS
         );
 
-        Boolean result = smsCaptchaService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = smsCaptchaService.save(smsCaptchaEntity, Util.getRandomUUID(), smsCaptchaEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改短信验证码")
     @RequestMapping(value = "/sms/captcha/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody SmsCaptcha body) {
+    public Map<String, Object> updateV1() {
+        SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
+
         validateRequest(
-                body,
+                smsCaptchaEntity,
                 SmsCaptcha.SMS_CAPTCHA_ID,
                 SmsCaptcha.APP_ID,
                 SmsCaptcha.SMS_CAPTCHA_TYPE,
@@ -106,22 +114,24 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.update(body, body.getSmsCaptchaId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = smsCaptchaService.update(smsCaptchaEntity, smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除短信验证码")
     @RequestMapping(value = "/sms/captcha/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody SmsCaptcha body) {
+    public Map<String, Object> deleteV1() {
+        SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
+
         validateRequest(
-                body,
+                smsCaptchaEntity,
                 SmsCaptcha.SMS_CAPTCHA_ID,
                 SmsCaptcha.APP_ID,
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.delete(body.getSmsCaptchaId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
 
         return renderJson(result);
     }

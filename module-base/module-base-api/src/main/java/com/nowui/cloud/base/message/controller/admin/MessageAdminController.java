@@ -28,9 +28,11 @@ public class MessageAdminController extends BaseController {
 
     @ApiOperation(value = "消息列表")
     @RequestMapping(value = "/message/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Message body) {
+    public Map<String, Object> listV1() {
+        Message messageEntity = getEntry(Message.class);
+
         validateRequest(
-                body,
+                messageEntity,
                 Message.APP_ID,
                 Message.MESSAGE_TITLE,
                 Message.MESSAGE_TYPE,
@@ -38,8 +40,8 @@ public class MessageAdminController extends BaseController {
                 Message.PAGE_SIZE
         );
 
-        Integer resultTotal = messageService.countForAdmin(body.getAppId() , body.getMessageTitle(), body.getMessageType());
-        List<Message> resultList = messageService.listForAdmin(body.getAppId(), body.getMessageTitle(), body.getMessageType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = messageService.countForAdmin(messageEntity.getAppId() , messageEntity.getMessageTitle(), messageEntity.getMessageType());
+        List<Message> resultList = messageService.listForAdmin(messageEntity.getAppId(), messageEntity.getMessageTitle(), messageEntity.getMessageType(), messageEntity.getPageIndex(), messageEntity.getPageSize());
 
         validateResponse(
                 Message.MESSAGE_ID,
@@ -52,14 +54,16 @@ public class MessageAdminController extends BaseController {
 
     @ApiOperation(value = "消息信息")
     @RequestMapping(value = "/message/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Message body) {
+    public Map<String, Object> findV1() {
+        Message messageEntity = getEntry(Message.class);
+
         validateRequest(
-                body,
+                messageEntity,
                 Message.APP_ID,
                 Message.MESSAGE_ID
         );
 
-        Message result = messageService.find(body.getMessageId());
+        Message result = messageService.find(messageEntity.getMessageId());
 
         validateResponse(
                 Message.MESSAGE_ID,
@@ -74,9 +78,11 @@ public class MessageAdminController extends BaseController {
 
     @ApiOperation(value = "新增消息")
     @RequestMapping(value = "/message/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Message body) {
+    public Map<String, Object> saveV1() {
+        Message messageEntity = getEntry(Message.class);
+
         validateRequest(
-                body,
+                messageEntity,
                 Message.APP_ID,
                 Message.OBJECT_ID,
                 Message.MESSAGE_TITLE,
@@ -84,16 +90,18 @@ public class MessageAdminController extends BaseController {
                 Message.MESSAGE_CONTENT
         );
 
-        Boolean result = messageService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = messageService.save(messageEntity, Util.getRandomUUID(), messageEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改消息")
     @RequestMapping(value = "/message/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Message body) {
+    public Map<String, Object> updateV1() {
+        Message messageEntity = getEntry(Message.class);
+
         validateRequest(
-                body,
+                messageEntity,
                 Message.MESSAGE_ID,
                 Message.APP_ID,
                 Message.OBJECT_ID,
@@ -103,22 +111,24 @@ public class MessageAdminController extends BaseController {
                 Message.SYSTEM_VERSION
         );
 
-        Boolean result = messageService.update(body, body.getMessageId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = messageService.update(messageEntity, messageEntity.getMessageId(), messageEntity.getSystemRequestUserId(), messageEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除消息")
     @RequestMapping(value = "/message/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Message body) {
+    public Map<String, Object> deleteV1() {
+        Message messageEntity = getEntry(Message.class);
+
         validateRequest(
-                body,
+                messageEntity,
                 Message.MESSAGE_ID,
                 Message.APP_ID,
                 Message.SYSTEM_VERSION
         );
 
-        Boolean result = messageService.delete(body.getMessageId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = messageService.delete(messageEntity.getMessageId(), messageEntity.getSystemRequestUserId(), messageEntity.getSystemVersion());
 
         return renderJson(result);
     }

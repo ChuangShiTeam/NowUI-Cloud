@@ -42,7 +42,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
         List<TopicUserUnlike> resultList = topicUserUnlikeService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicUserUnlike.USER_UN_LIKE_ID,
+                TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
                 TopicUserUnlike.USER_ID,
                 TopicUserUnlike.TOPIC_ID
         );
@@ -56,13 +56,13 @@ public class TopicUserUnlikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserUnlike.APP_ID,
-                TopicUserUnlike.USER_UN_LIKE_ID
+                TopicUserUnlike.TOPIC_USER_UNLIKE_ID
         );
 
-        TopicUserUnlike result = topicUserUnlikeService.find(body.getUserUnLikeId());
+        TopicUserUnlike result = topicUserUnlikeService.find(body.getTopicUserUnlikeId());
 
         validateResponse(
-                TopicUserUnlike.USER_UN_LIKE_ID,
+                TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
                 TopicUserUnlike.USER_ID,
                 TopicUserUnlike.TOPIC_ID
         );
@@ -90,14 +90,14 @@ public class TopicUserUnlikeAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicUserUnlike body) {
         validateRequest(
                 body,
-                TopicUserUnlike.USER_UN_LIKE_ID,
+                TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
                 TopicUserUnlike.APP_ID,
                 TopicUserUnlike.USER_ID,
                 TopicUserUnlike.TOPIC_ID,
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.update(body, body.getUserUnLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnlikeService.update(body, body.getTopicUserUnlikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +107,12 @@ public class TopicUserUnlikeAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicUserUnlike body) {
         validateRequest(
                 body,
-                TopicUserUnlike.USER_UN_LIKE_ID,
+                TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
                 TopicUserUnlike.APP_ID,
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.delete(body.getUserUnLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnlikeService.delete(body.getTopicUserUnlikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

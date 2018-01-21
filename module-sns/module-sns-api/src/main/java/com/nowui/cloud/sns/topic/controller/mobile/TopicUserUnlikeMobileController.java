@@ -56,7 +56,7 @@ public class TopicUserUnlikeMobileController extends BaseController {
         //先去点赞表查询,是否有记录
         TopicUserLike like = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
         if (like != null) {
-        	Boolean delete = topicUserLikeService.delete(like.getUserLikeId(), body.getSystemUpdateUserId(), like.getSystemVersion());
+        	Boolean delete = topicUserLikeService.delete(like.getTopicUserLikeId(), body.getSystemUpdateUserId(), like.getSystemVersion());
 		}
         
         body.setUserId(body.getSystemRequestUserId());

@@ -42,7 +42,7 @@ public class TopicUserLikeAdminController extends BaseController {
         List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicUserLike.USER_LIKE_ID,
+                TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.USER_ID,
                 TopicUserLike.TOPIC_ID
         );
@@ -56,13 +56,13 @@ public class TopicUserLikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
-                TopicUserLike.USER_LIKE_ID
+                TopicUserLike.TOPIC_USER_LIKE_ID
         );
 
-        TopicUserLike result = topicUserLikeService.find(body.getUserLikeId());
+        TopicUserLike result = topicUserLikeService.find(body.getTopicUserLikeId());
 
         validateResponse(
-                TopicUserLike.USER_LIKE_ID,
+                TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.USER_ID,
                 TopicUserLike.TOPIC_ID
         );
@@ -90,14 +90,14 @@ public class TopicUserLikeAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicUserLike body) {
         validateRequest(
                 body,
-                TopicUserLike.USER_LIKE_ID,
+                TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.APP_ID,
                 TopicUserLike.USER_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.update(body, body.getUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserLikeService.update(body, body.getTopicUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +107,12 @@ public class TopicUserLikeAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicUserLike body) {
         validateRequest(
                 body,
-                TopicUserLike.USER_LIKE_ID,
+                TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.APP_ID,
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.delete(body.getUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserLikeService.delete(body.getTopicUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

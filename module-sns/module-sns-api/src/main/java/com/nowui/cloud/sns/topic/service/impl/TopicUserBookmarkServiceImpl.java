@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 话题用户收藏关联业务实现
+ * 话题收藏业务实现
  *
  * @author xupengfei
  *

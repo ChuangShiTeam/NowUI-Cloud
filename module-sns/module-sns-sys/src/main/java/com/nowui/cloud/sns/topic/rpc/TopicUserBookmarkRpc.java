@@ -4,7 +4,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 话题用户收藏关联服务调用
+ * 话题收藏服务调用
  *
  * @author xupengfei
  *

@@ -144,7 +144,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -152,7 +152,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
@@ -197,7 +197,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -205,7 +205,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST
         );
 
@@ -243,7 +243,7 @@ public class TopicMobileController extends BaseController {
 
         validateResponse(
 	            Topic.TOPIC_ID,
-	            Topic.TOPIC_FORUM_ID,
+	            Topic.FORUM_ID,
 	            Topic.TOPIC_SUMMARY,
 	            Topic.USER_ID,
 	            Topic.LATITUDE,
@@ -252,7 +252,7 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_IS_LOCATION,
 	            Topic.TOPIC_IS_TOP,
 	            Topic.TOPIC_IS_RECOMAND,
-	            Topic.TOP_TOP_LEVEL
+	            Topic.TOPIC_TOP_LEVEL
 	    );
 
 	    return renderJson(topic);
@@ -314,7 +314,7 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.TOPIC_FORUM_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -322,7 +322,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
-                Topic.TOP_TOP_LEVEL,
+                Topic.TOPIC_TOP_LEVEL,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
@@ -340,6 +340,7 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
+                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
@@ -438,25 +439,25 @@ public class TopicMobileController extends BaseController {
         //删除话题收藏
         List<TopicUserBookmark> allListByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), topicId);
         for (TopicUserBookmark topicUserBookmark : allListByTopicId) {
-        	topicUserBookmarkService.delete(topicUserBookmark.getUserBookMarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
+        	topicUserBookmarkService.delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
 		}
 
         //删除话题点赞 
         List<TopicUserLike> allLikeListByTopic = topicUserLikeService.allLikeListByTopic(body.getAppId(), topicId);
         for (TopicUserLike topicUserLike : allLikeListByTopic) {
-        	topicUserLikeService.delete(topicUserLike.getUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
+        	topicUserLikeService.delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
 		}
 
         //删除取消收藏 
         List<TopicUserUnbookmark> allUnBookMarkListByTopic = topicUserUnbookmarkService.allUnBookMarkListByTopic(body.getAppId(), topicId);
         for (TopicUserUnbookmark topicUserUnbookmark : allUnBookMarkListByTopic) {
-        	topicUserUnbookmarkService.delete(topicUserUnbookmark.getUserUnBookMarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+        	topicUserUnbookmarkService.delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
 		}
 
         //删除话题取消点赞
         List<TopicUserUnlike> unlikeList = topicUserUnlikeService.allUnlikeListByTopicId(body.getAppId(), topicId);
         for (TopicUserUnlike topicUserUnlike : unlikeList) {
-        	topicUserUnlikeService.delete(topicUserUnlike.getUserUnLikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
+        	topicUserUnlikeService.delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
 		}
 
         return renderJson(result);

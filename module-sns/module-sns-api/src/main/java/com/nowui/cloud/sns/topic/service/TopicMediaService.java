@@ -17,7 +17,7 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * 话题多媒体统计
      *
      * @param appId 应用编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @param topicMedia 多媒体Id
      * @param topicMediaType 多媒体类型
      * @return Integer 话题多媒体统计
@@ -28,7 +28,7 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * 话题多媒体列表
      *
      * @param appId 应用编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @param topicMedia 多媒体Id
      * @param topicMediaType 多媒体类型
      * @param pageIndex 页码
@@ -41,7 +41,7 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * 根据topicId查询所有图片
      * 
      * @param appId 应用编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @param topicMedia 多媒体Id
      * @param topicMediaType 多媒体类型
      * @return List<TopicMedia> 话题多媒体列表

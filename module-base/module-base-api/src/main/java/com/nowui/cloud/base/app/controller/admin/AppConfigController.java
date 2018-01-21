@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,55 +32,112 @@ public class AppConfigController extends BaseController {
     
     @ApiOperation(value = "应用配置列表")
     @RequestMapping(value = "/app/config/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody AppConfig body) {
-        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_IS_DISABLED, AppConfig.PAGE_INDEX, AppConfig.PAGE_SIZE);
+    public Map<String, Object> listV1() {
+        AppConfig appConfigEntity = getEntry(AppConfig.class);
 
-        Integer resultTotal = appConfigService.countForAdmin(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled());
-        List<AppConfig> resultList = appConfigService.listForAdmin(body.getAppId(), body.getConfigCategoryId(), body.getConfigKey(), body.getConfigIsDisabled(), body.getPageIndex(), body.getPageSize());
+        validateRequest(
+                appConfigEntity,
+                AppConfig.APP_ID,
+                AppConfig.CONFIG_CATEGORY_ID,
+                AppConfig.CONFIG_KEY,
+                AppConfig.CONFIG_IS_DISABLED,
+                AppConfig.PAGE_INDEX,
+                AppConfig.PAGE_SIZE
+        );
 
-        validateResponse(AppConfig.APP_ID, AppConfig.CONFIG_ID, AppConfigCategory.CONFIG_CATEGORY_NAME, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED);
+        Integer resultTotal = appConfigService.countForAdmin(appConfigEntity.getAppId(), appConfigEntity.getConfigCategoryId(), appConfigEntity.getConfigKey(), appConfigEntity.getConfigIsDisabled());
+        List<AppConfig> resultList = appConfigService.listForAdmin(appConfigEntity.getAppId(), appConfigEntity.getConfigCategoryId(), appConfigEntity.getConfigKey(), appConfigEntity.getConfigIsDisabled(), appConfigEntity.getPageIndex(), appConfigEntity.getPageSize());
+
+        validateResponse(
+                AppConfig.APP_ID,
+                AppConfig.CONFIG_ID,
+                AppConfigCategory.CONFIG_CATEGORY_NAME,
+                AppConfig.CONFIG_KEY,
+                AppConfig.CONFIG_VALUE,
+                AppConfig.CONFIG_IS_DISABLED
+        );
 
         return renderJson(resultTotal, resultList);
     }
 
     @ApiOperation(value = "应用配置信息")
     @RequestMapping(value = "/app/config/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody AppConfig body) {
-        validateRequest(body, AppConfig.CONFIG_ID);
+    public Map<String, Object> findV1() {
+        AppConfig appConfigEntity = getEntry(AppConfig.class);
 
-        AppConfig result = appConfigService.find(body.getConfigId());
+        validateRequest(
+                appConfigEntity,
+                AppConfig.CONFIG_ID
+        );
 
-        validateResponse(AppConfig.CONFIG_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION, AppConfig.SYSTEM_VERSION);
+        AppConfig result = appConfigService.find(appConfigEntity.getConfigId());
+
+        validateResponse(
+                AppConfig.CONFIG_ID,
+                AppConfig.CONFIG_CATEGORY_ID,
+                AppConfig.CONFIG_KEY,
+                AppConfig.CONFIG_VALUE,
+                AppConfig.CONFIG_IS_DISABLED,
+                AppConfig.CONFIG_DESCRIPTION,
+                AppConfig.SYSTEM_VERSION
+        );
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "应用配置新增")
     @RequestMapping(value = "/app/config/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody AppConfig body) {
-        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION);
+    public Map<String, Object> saveV1() {
+        AppConfig appConfigEntity = getEntry(AppConfig.class);
 
-        Boolean result = appConfigService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        validateRequest(
+                appConfigEntity,
+                AppConfig.APP_ID,
+                AppConfig.CONFIG_CATEGORY_ID,
+                AppConfig.CONFIG_KEY,
+                AppConfig.CONFIG_VALUE,
+                AppConfig.CONFIG_IS_DISABLED,
+                AppConfig.CONFIG_DESCRIPTION
+        );
+
+        Boolean result = appConfigService.save(appConfigEntity, Util.getRandomUUID(), appConfigEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "应用配置修改")
     @RequestMapping(value = "/app/config/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody AppConfig body) {
-        validateRequest(body, AppConfig.APP_ID, AppConfig.CONFIG_CATEGORY_ID, AppConfig.CONFIG_KEY, AppConfig.CONFIG_VALUE, AppConfig.CONFIG_IS_DISABLED, AppConfig.CONFIG_DESCRIPTION, AppConfig.SYSTEM_VERSION);
+    public Map<String, Object> updateV1() {
+        AppConfig appConfigEntity = getEntry(AppConfig.class);
 
-        Boolean result = appConfigService.update(body, body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        validateRequest(
+                appConfigEntity,
+                AppConfig.APP_ID,
+                AppConfig.CONFIG_CATEGORY_ID,
+                AppConfig.CONFIG_KEY,
+                AppConfig.CONFIG_VALUE,
+                AppConfig.CONFIG_IS_DISABLED,
+                AppConfig.CONFIG_DESCRIPTION,
+                AppConfig.SYSTEM_VERSION
+        );
+
+        Boolean result = appConfigService.update(appConfigEntity, appConfigEntity.getConfigId(), appConfigEntity.getSystemRequestUserId(), appConfigEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "应用配置删除")
     @RequestMapping(value = "/app/config/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody AppConfig body) {
-        validateRequest(body, AppConfig.CONFIG_ID, AppConfig.SYSTEM_VERSION);
+    public Map<String, Object> deleteV1() {
+        AppConfig appConfigEntity = getEntry(AppConfig.class);
 
-        Boolean result = appConfigService.delete(body.getConfigId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        validateRequest(
+                appConfigEntity,
+                AppConfig.CONFIG_ID,
+                AppConfig.SYSTEM_VERSION
+        );
+
+        Boolean result = appConfigService.delete(appConfigEntity.getConfigId(), appConfigEntity.getSystemRequestUserId(), appConfigEntity.getSystemVersion());
 
         return renderJson(result);
     }

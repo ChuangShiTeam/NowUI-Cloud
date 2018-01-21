@@ -18,7 +18,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      *
      * @param appId 应用编号
      * @param forumId 论坛编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @return Integer 话题论坛关联统计
      */
     Integer countForAdmin(String appId, String forumId, String topicId);
@@ -28,7 +28,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      *
      * @param appId 应用编号
      * @param forumId 论坛编号
-     * @param topicId 话题Id
+     * @param topicId 话题编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<TopicForum> 话题论坛关联列表
@@ -51,7 +51,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 
      * @param appId 应用编号
      * @param forumId 论坛编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @return Integer 当日话题数量统计
      */
     Integer countForToday(String appId, String forumId, String topicId);
@@ -61,7 +61,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * 
      * @param appId 应用编号
      * @param forumId 论坛编号
-     * @param topicId 话题id
+     * @param topicId 话题编号
      * @return List<TopicForum> 话题论坛关联列表
      */
     List<TopicForum> allTopicForumList(String appId, String forumId, String topicId);

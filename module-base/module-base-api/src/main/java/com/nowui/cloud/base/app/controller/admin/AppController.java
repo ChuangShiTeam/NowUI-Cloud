@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,11 +29,13 @@ public class AppController extends BaseController {
     
     @ApiOperation(value = "应用列表")
     @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody App body) {
-        validateRequest(body, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
+    public Map<String, Object> listV1() {
+        App appEntity = getEntry(App.class);
 
-        Integer resultTotal = appService.countForAdmin(body.getAppName());
-        List<App> resultList = appService.listForAdmin(body.getAppName(), body.getPageIndex(), body.getPageSize());
+        validateRequest(appEntity, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
+
+        Integer resultTotal = appService.countForAdmin(appEntity.getAppName());
+        List<App> resultList = appService.listForAdmin(appEntity.getAppName(), appEntity.getPageIndex(), appEntity.getPageSize());
 
         validateResponse(App.APP_ID, App.APP_NAME);
 
@@ -43,10 +44,12 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "应用信息")
     @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody App body) {
-        validateRequest(body, App.APP_ID);
+    public Map<String, Object> findV1() {
+        App appEntity = getEntry(App.class);
 
-        App result = appService.find(body.getAppId());
+        validateRequest(appEntity, App.APP_ID);
+
+        App result = appService.find(appEntity.getAppId());
 
         validateResponse(App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
@@ -55,40 +58,46 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "应用新增")
     @RequestMapping(value = "/app/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody App body) {
-        validateRequest(body, App.APP_NAME);
+    public Map<String, Object> saveV1() {
+        App appEntity = getEntry(App.class);
+
+        validateRequest(appEntity, App.APP_NAME);
         
         //验证应用名称是否重复
-        if (appService.checkName(body.getAppName())) {
+        if (appService.checkName(appEntity.getAppName())) {
             throw new RuntimeException("应用名称重复");
         }
         
-        body.setAppId(Util.getRandomUUID());
-        Boolean result = appService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        appEntity.setAppId(Util.getRandomUUID());
+        Boolean result = appService.save(appEntity, Util.getRandomUUID(), appEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "应用修改")
     @RequestMapping(value = "/app/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody App body) {
-        validateRequest(body, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
+    public Map<String, Object> updateV1() {
+        App appEntity = getEntry(App.class);
 
-        if (appService.checkName(body.getAppId(), body.getAppName())) {
+        validateRequest(appEntity, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
+
+        if (appService.checkName(appEntity.getAppId(), appEntity.getAppName())) {
             throw new RuntimeException("应用名称重复");
         }
         
-        Boolean result = appService.update(body, body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = appService.update(appEntity, appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "应用删除")
     @RequestMapping(value = "/app/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody App body) {
-        validateRequest(body, App.APP_ID, App.APP_NAME);
+    public Map<String, Object> deleteV1() {
+        App appEntity = getEntry(App.class);
 
-        Boolean result = appService.delete(body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        validateRequest(appEntity, App.APP_ID, App.APP_NAME);
+
+        Boolean result = appService.delete(appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
         return renderJson(result);
     }

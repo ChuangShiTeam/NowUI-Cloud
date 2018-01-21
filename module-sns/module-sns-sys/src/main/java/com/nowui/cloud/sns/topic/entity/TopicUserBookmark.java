@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 话题用户收藏关联
+ * 话题收藏
  *
  * @author xupengfei
  *
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_user_bookmark_map")
-@TableName(value = "topic_user_bookmark_map")
+@Document(indexName = "nowui", type = "topic_user_bookmark_info")
+@TableName(value = "topic_user_bookmark_info")
 public class TopicUserBookmark extends BaseEntity {
 
     /**
@@ -31,8 +31,8 @@ public class TopicUserBookmark extends BaseEntity {
     @TableId
     @NotNull(message = "用户收藏id不能为空")
     @Length(max = 32, message = "用户收藏id长度超出限制")
-    private String userBookMarkId;
-    public static final String USER_BOOK_MARK_ID = "userBookMarkId";
+    private String topicUserBookmarkId;
+    public static final String TOPIC_USER_BOOKMARK_ID = "topicUserBookmarkId";
 
     /**
      * 应用编号
@@ -45,12 +45,12 @@ public class TopicUserBookmark extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
@@ -65,12 +65,12 @@ public class TopicUserBookmark extends BaseEntity {
     public static final String USER_ID = "userId";
 
 
-    public String getUserBookMarkId() {
-        return getString(USER_BOOK_MARK_ID);
+    public String getTopicUserBookmarkId() {
+        return getString(TOPIC_USER_BOOKMARK_ID);
     }
     
-    public void setUserBookMarkId(String userBookMarkId) {
-        put(USER_BOOK_MARK_ID, userBookMarkId);
+    public void setTopicUserBookmarkId(String topicUserBookmarkId) {
+        put(TOPIC_USER_BOOKMARK_ID, topicUserBookmarkId);
     }
 
     public String getAppId() {

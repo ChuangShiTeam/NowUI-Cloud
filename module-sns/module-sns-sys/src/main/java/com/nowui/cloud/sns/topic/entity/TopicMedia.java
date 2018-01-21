@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_media_map")
-@TableName(value = "topic_media_map")
+@Document(indexName = "nowui", type = "topic_media_info")
+@TableName(value = "topic_media_info")
 public class TopicMedia extends BaseEntity {
 
     /**
@@ -45,12 +45,12 @@ public class TopicMedia extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 话题id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题id不能为空")
-    @Length(max = 32, message = "话题id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
@@ -74,6 +74,15 @@ public class TopicMedia extends BaseEntity {
     private String topicMediaType;
     public static final String TOPIC_MEDIA_TYPE = "topicMediaType";
 
+    /**
+     * 排序
+     */
+    @Field
+    @TableField
+    @NotNull(message = "排序不能为空")
+    @Length(max = 11, message = "排序长度超出限制")
+    private Integer topicMediaSort;
+    public static final String TOPIC_MEDIA_SORT = "topicMediaSort";
 
     public String getTopicMediaId() {
         return getString(TOPIC_MEDIA_ID);
@@ -115,5 +124,11 @@ public class TopicMedia extends BaseEntity {
         put(TOPIC_MEDIA_TYPE, topicMediaType);
     }
 
-
+    public Integer getTopicMediaSort() {
+        return getInteger(TOPIC_MEDIA_SORT);
+    }
+    
+    public void setTopicMediaSort(Integer topicMediaSort) {
+        put(TOPIC_MEDIA_SORT, topicMediaSort);
+    }
 }

@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_user_unbookmark_map")
-@TableName(value = "topic_user_unbookmark_map")
+@Document(indexName = "nowui", type = "topic_user_unbookmark_info")
+@TableName(value = "topic_user_unbookmark_info")
 public class TopicUserUnbookmark extends BaseEntity {
 
     /**
@@ -31,8 +31,8 @@ public class TopicUserUnbookmark extends BaseEntity {
     @TableId
     @NotNull(message = "用户话题取消收藏id不能为空")
     @Length(max = 32, message = "用户话题取消收藏id长度超出限制")
-    private String userUnBookMarkId;
-    public static final String USER_UN_BOOK_MARK_ID = "userUnBookMarkId";
+    private String topicUserUnbookmarkId;
+    public static final String TOPIC_USER_UNBOOKMARK_ID = "topicUserUnbookmarkId";
 
     /**
      * 应用编号
@@ -45,12 +45,12 @@ public class TopicUserUnbookmark extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
@@ -65,12 +65,12 @@ public class TopicUserUnbookmark extends BaseEntity {
     public static final String USER_ID = "userId";
 
 
-    public String getUserUnBookMarkId() {
-        return getString(USER_UN_BOOK_MARK_ID);
+    public String getTopicUserUnbookmarkId() {
+        return getString(TOPIC_USER_UNBOOKMARK_ID);
     }
     
-    public void setUserUnBookMarked(String userUnBookMarkId) {
-        put(USER_UN_BOOK_MARK_ID, userUnBookMarkId);
+    public void setUserUnbookmarkId(String topicUserUnbookmarkId) {
+        put(TOPIC_USER_UNBOOKMARK_ID, topicUserUnbookmarkId);
     }
 
     public String getAppId() {

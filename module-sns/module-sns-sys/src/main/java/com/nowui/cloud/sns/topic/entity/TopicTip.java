@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 话题提醒
+ * 话题提示
  *
  * @author xupengfei
  *
@@ -25,12 +25,12 @@ import javax.validation.constraints.NotNull;
 public class TopicTip extends BaseEntity {
 
     /**
-     * 话题提示id
+     * 话题提示编号
      */
 	@Id
     @TableId
-    @NotNull(message = "话题提示id不能为空")
-    @Length(max = 32, message = "话题提示id长度超出限制")
+    @NotNull(message = "话题提示编号不能为空")
+    @Length(max = 32, message = "话题提示编号长度超出限制")
     private String topicTipId;
     public static final String TOPIC_TIP_ID = "topicTipId";
 
@@ -45,12 +45,12 @@ public class TopicTip extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
@@ -63,7 +63,6 @@ public class TopicTip extends BaseEntity {
     @Length(max = 32, message = "发送用户长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
-
 
     public String getTopicTipId() {
         return getString(TOPIC_TIP_ID);

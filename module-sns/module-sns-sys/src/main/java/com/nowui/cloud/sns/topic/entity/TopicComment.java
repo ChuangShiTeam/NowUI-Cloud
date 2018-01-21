@@ -59,8 +59,8 @@ public class TopicComment extends BaseEntity {
      */
     @Field
     @TableField
-    @NotNull(message = "话题id不能为空")
-    @Length(max = 32, message = "话题id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
     

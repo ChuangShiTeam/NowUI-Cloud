@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_user_unlike_map")
-@TableName(value = "topic_user_unlike_map")
+@Document(indexName = "nowui", type = "topic_user_unlike_info")
+@TableName(value = "topic_user_unlike_info")
 public class TopicUserUnlike extends BaseEntity {
 
     /**
@@ -31,8 +31,8 @@ public class TopicUserUnlike extends BaseEntity {
     @TableId
     @NotNull(message = "用户话题取消点赞id不能为空")
     @Length(max = 32, message = "用户话题取消点赞id长度超出限制")
-    private String userUnLikeId;
-    public static final String USER_UN_LIKE_ID = "userUnLikeId";
+    private String topicUserUnlikeId;
+    public static final String TOPIC_USER_UNLIKE_ID = "topicUserUnlikeId";
 
     /**
      * 应用编号
@@ -55,22 +55,22 @@ public class TopicUserUnlike extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
-     * 话题Id
+     * 话题编号
      */
     @Field
     @TableField
-    @NotNull(message = "话题Id不能为空")
-    @Length(max = 32, message = "话题Id长度超出限制")
+    @NotNull(message = "话题编号不能为空")
+    @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
 
-    public String getUserUnLikeId() {
-        return getString(USER_UN_LIKE_ID);
+    public String getTopicUserUnlikeId() {
+        return getString(TOPIC_USER_UNLIKE_ID);
     }
     
-    public void setUserUnLikeId(String userUnLikeId) {
-        put(USER_UN_LIKE_ID, userUnLikeId);
+    public void setTopicUserUnlikeId(String topicUserUnlikeId) {
+        put(TOPIC_USER_UNLIKE_ID, topicUserUnlikeId);
     }
 
     public String getAppId() {
