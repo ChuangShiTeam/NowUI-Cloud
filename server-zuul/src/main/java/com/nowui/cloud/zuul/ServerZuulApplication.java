@@ -1,9 +1,5 @@
 package com.nowui.cloud.zuul;
 
-import com.nowui.cloud.elasticsearch.ElasticSearchConfig;
-import com.nowui.cloud.filter.HttpServletRequestFilter;
-import com.nowui.cloud.rabbit.RabbitConfig;
-import com.nowui.cloud.redis.RedisConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
@@ -15,6 +11,11 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+
+import com.nowui.cloud.elasticsearch.ElasticSearchConfig;
+import com.nowui.cloud.filter.HttpServletRequestFilter;
+import com.nowui.cloud.rabbit.RabbitConfig;
+import com.nowui.cloud.redis.RedisConfig;
 
 /**
  * @author ZhongYongQiang
@@ -34,5 +35,5 @@ public class ServerZuulApplication {
 
         SpringApplication.run(ServerZuulApplication.class, args);
     }
-
+    
 }

@@ -107,4 +107,13 @@ public interface ForumService extends BaseService<Forum> {
      * @return List<Forum> 论坛列表
      */
     List<Forum> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n);
+    
+    /**
+     * 验证论坛名称唯一性
+     * @param appId 应用编号
+     * @param forumName 论坛名称
+     * @return true 重复 false 不重复
+     */
+    Boolean checkName(String appId, String forumName);
+    
 }

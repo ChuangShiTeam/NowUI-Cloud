@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.entity.enums.FileType;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
@@ -342,56 +341,63 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION
         );
-
-        String topicId = Util.getRandomUUID();
         
-        body.setUserId(body.getSystemRequestUserId());
+        JSONArray topicMediaJsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
+        if (Util.isNullOrEmpty(topicMediaJsonArray)) {
+            throw new RuntimeException("图片不能为空");
+        }
+        
+        JSONArray forumIdJSONArray = body.getJSONArray(Topic.TOPIC_FORUM_LIST);
+        JSONArray tipUserIdJSONArray = body.getJSONArray(Topic.TOPIC_TIP_USER_LIST);
+        
+        String topicId = Util.getRandomUUID();
+        String userId = body.getSystemRequestUserId();
+        String appId = body.getAppId();
+        
+        body.setUserId(userId);
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
-        //先保存主表
-        Boolean result = topicService.save(body, topicId, body.getSystemRequestUserId());
+        // 先保存主表
+        Boolean result = topicService.save(body, topicId, userId);
         
         if (result) {
-        	JSONArray topicMediaJsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
-            if (Util.isNullOrEmpty(topicMediaJsonArray)) {
-                throw new RuntimeException("图片不能为空");
-            }
+        	
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
-
-            //遍历图片id,存放到话题图片表
+            // 遍历图片id,存放到话题图片表
             for (TopicMedia topicMedia : topicMediaList) {
             	topicMedia.setTopicId(topicId);
             	topicMedia.setAppId(body.getAppId());
             	
-            	Boolean mediaSaveResult = topicMediaService.save(topicMedia, Util.getRandomUUID(), body.getSystemRequestUserId());
+            	topicMediaService.save(topicMedia, Util.getRandomUUID(), userId);
     		}
 
-            //先标记一下,回来再换另一种解析方法
-            String forumIds = body.getString(Topic.TOPIC_FORUM_LIST);
-            List<String> forumIdList = JSONArray.parseArray(forumIds, String.class);
-            //关联到论坛
-            for (String forumId : forumIdList) {
-    			TopicForum topicForum = new TopicForum();
-    			topicForum.setAppId(body.getAppId());
-    			topicForum.setForumId(forumId);
-    			topicForum.setTopicId(topicId);
-
-    			Boolean save = topicForumService.save(topicForum, Util.getRandomUUID(), body.getSystemRequestUserId());
-    		}
-
-            //先标记一下,回来再换另一种解析方法
-            String tipUserIds = body.getString(Topic.TOPIC_TIP_USER_LIST);
-            List<String> tipUserIdList = JSONArray.parseArray(tipUserIds, String.class);
-            //提醒谁看
-            for (String tipUserId : tipUserIdList) {
-            	TopicTip topicTip = new TopicTip();
-                topicTip.setAppId(body.getAppId());
-                topicTip.setTopicId(topicId);
-                topicTip.setUserId(tipUserId);
+            // 论坛关联
+            if (!Util.isNullOrEmpty(forumIdJSONArray)) {
+                List<String> forumIdList = forumIdJSONArray.toJavaList(String.class);
                 
-                Boolean save = topicTipService.save(topicTip, Util.getRandomUUID(), body.getSystemRequestUserId());
-    		}
+                for (String forumId : forumIdList) {
+                    TopicForum topicForum = new TopicForum();
+                    topicForum.setAppId(appId);
+                    topicForum.setForumId(forumId);
+                    topicForum.setTopicId(topicId);
+
+                    topicForumService.save(topicForum, Util.getRandomUUID(), userId);
+                }
+            }
             
+            // 提醒谁看
+            if (!Util.isNullOrEmpty(tipUserIdJSONArray)) {
+                List<String> tipUserIdList = tipUserIdJSONArray.toJavaList(String.class);
+
+                for (String tipUserId : tipUserIdList) {
+                    TopicTip topicTip = new TopicTip();
+                    topicTip.setAppId(appId);
+                    topicTip.setTopicId(topicId);
+                    topicTip.setUserId(tipUserId);
+                    
+                    topicTipService.save(topicTip, Util.getRandomUUID(), userId);
+                }
+            }
 		}
         return renderJson(result);
     }
