@@ -440,25 +440,25 @@ public class TopicMobileController extends BaseController {
         //删除话题收藏
         List<TopicUserBookmark> allListByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), topicId);
         for (TopicUserBookmark topicUserBookmark : allListByTopicId) {
-        	topicUserBookmarkService.delete(topicUserBookmark.getUserBookMarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
+        	topicUserBookmarkService.delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
 		}
 
         //删除话题点赞 
         List<TopicUserLike> allLikeListByTopic = topicUserLikeService.allLikeListByTopic(body.getAppId(), topicId);
         for (TopicUserLike topicUserLike : allLikeListByTopic) {
-        	topicUserLikeService.delete(topicUserLike.getUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
+        	topicUserLikeService.delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
 		}
 
         //删除取消收藏 
         List<TopicUserUnbookmark> allUnBookMarkListByTopic = topicUserUnbookmarkService.allUnBookMarkListByTopic(body.getAppId(), topicId);
         for (TopicUserUnbookmark topicUserUnbookmark : allUnBookMarkListByTopic) {
-        	topicUserUnbookmarkService.delete(topicUserUnbookmark.getUserUnBookMarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+        	topicUserUnbookmarkService.delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
 		}
 
         //删除话题取消点赞
         List<TopicUserUnlike> unlikeList = topicUserUnlikeService.allUnlikeListByTopicId(body.getAppId(), topicId);
         for (TopicUserUnlike topicUserUnlike : unlikeList) {
-        	topicUserUnlikeService.delete(topicUserUnlike.getUserUnLikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
+        	topicUserUnlikeService.delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
 		}
 
         return renderJson(result);

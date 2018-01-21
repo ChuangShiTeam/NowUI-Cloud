@@ -58,7 +58,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         TopicUserUnbookmark findUnBookMark = topicUserUnbookmarkService.findUnBookMark(body.getAppId(), body.getTopicId(), body.getSystemRequestUserId());
         
         if (findUnBookMark != null) {
-        	topicUserUnbookmarkService.delete(findUnBookMark.getUserUnBookMarkId(), body.getSystemUpdateUserId(), findUnBookMark.getSystemVersion());
+        	topicUserUnbookmarkService.delete(findUnBookMark.getTopicUserUnbookmarkId(), body.getSystemUpdateUserId(), findUnBookMark.getSystemVersion());
 		}
         body.setUserId(body.getSystemRequestUserId());
 

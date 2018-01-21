@@ -81,7 +81,7 @@ public class TopicUserLikeMobileController extends BaseController {
         
 
         validateResponse(
-                TopicUserLike.USER_LIKE_ID,
+                TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.USER_ID,
                 TopicUserLike.TOPIC_ID,
                 User.USER_ID,
@@ -114,7 +114,7 @@ public class TopicUserLikeMobileController extends BaseController {
         //先去取消点赞表查询,有:修改,没有:不做操作
         TopicUserUnlike unlike = topicUserUnlikeService.findUnlike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
         if (unlike != null) {
-        	Boolean delete = topicUserUnlikeService.delete(unlike.getUserUnLikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
+        	Boolean delete = topicUserUnlikeService.delete(unlike.getTopicUserUnlikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
 		}
 
 

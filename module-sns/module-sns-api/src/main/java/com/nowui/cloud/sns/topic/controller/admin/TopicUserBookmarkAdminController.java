@@ -42,7 +42,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         List<TopicUserBookmark> resultList = topicUserBookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicUserBookmark.USER_BOOK_MARK_ID,
+                TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.TOPIC_ID,
                 TopicUserBookmark.USER_ID
         );
@@ -56,13 +56,13 @@ public class TopicUserBookmarkAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserBookmark.APP_ID,
-                TopicUserBookmark.USER_BOOK_MARK_ID
+                TopicUserBookmark.TOPIC_USER_BOOKMARK_ID
         );
 
-        TopicUserBookmark result = topicUserBookmarkService.find(body.getUserBookMarkId());
+        TopicUserBookmark result = topicUserBookmarkService.find(body.getTopicUserBookmarkId());
 
         validateResponse(
-                TopicUserBookmark.USER_BOOK_MARK_ID,
+                TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.TOPIC_ID,
                 TopicUserBookmark.USER_ID
         );
@@ -90,14 +90,14 @@ public class TopicUserBookmarkAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
                 body,
-                TopicUserBookmark.USER_BOOK_MARK_ID,
+                TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.TOPIC_ID,
                 TopicUserBookmark.USER_ID,
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.update(body, body.getUserBookMarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserBookmarkService.update(body, body.getTopicUserBookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -107,12 +107,12 @@ public class TopicUserBookmarkAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicUserBookmark body) {
         validateRequest(
                 body,
-                TopicUserBookmark.USER_BOOK_MARK_ID,
+                TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.delete(body.getUserBookMarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserBookmarkService.delete(body.getTopicUserBookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
