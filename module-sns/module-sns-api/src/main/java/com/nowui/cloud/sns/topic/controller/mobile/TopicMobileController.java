@@ -96,16 +96,16 @@ public class TopicMobileController extends BaseController {
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Topic body) {
+    public Map<String, Object> listV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
-                Topic.APP_ID,
-                Topic.FORUM_ID,
-                Topic.PAGE_INDEX,
-                Topic.PAGE_SIZE
+                TopicForum.APP_ID,
+                TopicForum.FORUM_ID,
+                TopicForum.PAGE_INDEX,
+                TopicForum.PAGE_SIZE
         );
 
-        Integer resultTotal = topicForumService.countForAdmin(body.getAppId(), body.getString(Topic.FORUM_ID), null);
+        Integer resultTotal = topicForumService.countForAdmin(body.getAppId(), body.getForumId(), null);
         
         List<Topic> resultList = topicService.allTopicListByForumId(body);
         
@@ -144,7 +144,6 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -176,7 +175,7 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_SIZE
         );
 
-        Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, null, body.getUserId(), null, null);
+        Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, body.getUserId(), null, null);
         List<Topic> resultList = topicService.allTopicListByUserId(body);
 
         //处理用户信息(昵称,头像),由其他接口处理返回前端
@@ -197,7 +196,6 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -243,7 +241,6 @@ public class TopicMobileController extends BaseController {
 
         validateResponse(
 	            Topic.TOPIC_ID,
-	            Topic.FORUM_ID,
 	            Topic.TOPIC_SUMMARY,
 	            Topic.USER_ID,
 	            Topic.LATITUDE,
@@ -314,7 +311,6 @@ public class TopicMobileController extends BaseController {
         
         validateResponse(
                 Topic.TOPIC_ID,
-                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.USER_ID,
                 Topic.LATITUDE,
@@ -340,7 +336,6 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,

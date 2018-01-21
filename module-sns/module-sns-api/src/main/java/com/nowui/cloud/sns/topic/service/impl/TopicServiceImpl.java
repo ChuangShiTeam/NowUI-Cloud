@@ -58,11 +58,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	
 	
     @Override
-    public Integer countForAdmin(String appId, String forumId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
+    public Integer countForAdmin(String appId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
         Integer count = count(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
-                        .likeAllowEmpty(Topic.FORUM_ID, forumId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
                         .likeAllowEmpty(Topic.USER_ID, userId)
                         .likeAllowEmpty(Topic.TOPIC_LOCATION, topicLocation)
@@ -74,11 +73,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     }
 
     @Override
-    public List<Topic> listForAdmin(String appId, String forumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize) {
+    public List<Topic> listForAdmin(String appId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize) {
         List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
-                        .likeAllowEmpty(Topic.FORUM_ID, forumId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
                         .likeAllowEmpty(Topic.USER_ID, userId)
                         .likeAllowEmpty(Topic.LATITUDE, latitude)
@@ -124,9 +122,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 
 	@Override
-	public List<Topic> allTopicListByForumId(Topic body) {
+	public List<Topic> allTopicListByForumId(TopicForum body) {
 		//根据forumId去话题关联表查找所有topic
-		List<TopicForum> listForAdmin = topicForumService.listForAdmin(body.getAppId(), body.getString(Topic.FORUM_ID), null, body.getPageIndex(), body.getPageSize());
+		List<TopicForum> listForAdmin = topicForumService.listForAdmin(body.getAppId(), body.getForumId(), null, body.getPageIndex(), body.getPageSize());
 		List<Topic> topicList = new ArrayList<>();
 
         for (TopicForum topicForum : listForAdmin) {
@@ -170,7 +168,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         	//取得topicId去话题收藏表查询,得到收藏数
         	String countBookMark = "" + topicUserBookmarkService.countForAdmin(body.getAppId(), topicId, null);
-        	topic.put(Topic.TOPIC_COUNT_BOOK_MARK, countBookMark);
+        	topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
 
 
 
@@ -250,7 +248,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         	//取得topicId去话题收藏表查询,得到收藏数
         	String countBookMark = "" + topicUserBookmarkService.countForAdmin(body.getAppId(), topicId, null);
-        	topic.put(Topic.TOPIC_COUNT_BOOK_MARK, countBookMark);
+        	topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
 
 
 
@@ -334,7 +332,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
     	//取得topicId去话题收藏表查询,得到收藏数
     	String countBookMark = "" + topicUserBookmarkService.countForAdmin(body.getAppId(), topicId, null);
-    	topic.put(Topic.TOPIC_COUNT_BOOK_MARK, countBookMark);
+    	topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
 
 
 
@@ -437,7 +435,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         	//取得topicId去话题收藏表查询,得到收藏数
         	String countBookMark = "" + topicUserBookmarkService.countForAdmin(body.getAppId(), topicId, null);
-        	topic.put(Topic.TOPIC_COUNT_BOOK_MARK, countBookMark);
+        	topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
 
 
 
