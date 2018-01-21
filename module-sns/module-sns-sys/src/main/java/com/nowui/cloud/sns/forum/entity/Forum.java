@@ -208,6 +208,11 @@ public class Forum extends BaseEntity {
      * 论坛的当日目前话题数量
      */
     public static final String FORUM_TODAY_TOPIC_COUNT = "forumTodayTopicCount";
+    
+    /**
+     * 论坛的用户关注数量
+     */
+    public static final String FORUM_USER_FOLLOW_COUNT = "forumUserFollowCount";
    
     /**
      * 论坛编号列表

@@ -137,4 +137,19 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
         return forumIdList.stream().map(forumId -> find(forumId)).collect(Collectors.toList());
     }
 
+    @Override
+    public Boolean checkName(String appId, String forumName) {
+        Integer count = count(
+                new BaseWrapper<Forum>()
+                        .eq(Forum.APP_ID, appId)
+                        .eq(Forum.FORUM_NAME, forumName)
+                        .eq(Forum.SYSTEM_STATUS, true)
+                        .andNew()
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
+                        .or()
+                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.WAIT_AUDIT.getKey())
+        );
+        return count > 0;
+    }
+
 }

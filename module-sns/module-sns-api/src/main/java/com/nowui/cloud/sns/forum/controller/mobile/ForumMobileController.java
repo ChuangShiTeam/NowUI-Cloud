@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
@@ -18,7 +17,6 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
-import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
@@ -71,8 +69,11 @@ public class ForumMobileController extends BaseController {
 	             Forum.SYSTEM_REQUEST_USER_ID
          );
 	     
-	     // TODO 验证论坛名称的唯一性
-	    
+	     // 验证论坛名称的唯一性
+	     Boolean isRepeat = forumService.checkName(body.getAppId(), body.getForumName());
+	     if (isRepeat) {
+	         throw new RuntimeException("论坛名称已注册");
+	     }
 	     body.setForumBackgroundMedia(body.getForumMedia());
 	     body.setForumBackgroundMediaType(body.getForumMediaType());
 	     body.setForumModerator(body.getSystemRequestUserId());
@@ -337,39 +338,7 @@ public class ForumMobileController extends BaseController {
     	 
         return renderJson(result);
     }
-
-	@ApiOperation(value = "保存推荐给用户关注论坛")
-    @RequestMapping(value = "/forum/mobile/v1/save/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveListV1(@RequestBody Forum body) {
-        validateRequest(
-                body,
-                Forum.FORUM_ID_LIST
-        );
-        //先标记一下,回来再换另一种解析方法
-        String forumIds = body.getString(Forum.FORUM_ID_LIST);
-        List<String> forumIdList = JSONArray.parseArray(forumIds, String.class);
-        Boolean saveResult = true;
-        
-    	for (String forumId : forumIdList) {
-            //根据userId,ForumId去取消关注表查找status为true的记录
-            ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), forumId);
-            
-            //有:改变状态,没有:不做操作
-            if (forumUserUnfollow != null) {
-                boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
-            }
-            	
-            //向论坛关注表插入一条记录
-        	ForumUserFollow forumUserFollow = new ForumUserFollow();
-        	forumUserFollow.setAppId(body.getAppId());
-        	forumUserFollow.setForumId(forumId);
-        	saveResult = forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getSystemRequestUserId());
-		}
-
-        return renderJson(saveResult);
-    }
 	
-
     @ApiOperation(value = "论坛信息搜索列表")
     @RequestMapping(value = "/forum/mobile/v1/search/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> searchListV1(@RequestBody Forum body) {
@@ -410,32 +379,31 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.FORUM_ID
         );
-        //forum包含了论坛简介,论坛名称,论坛头像,论坛背景图片
+        
         Forum forum = forumService.find(body.getForumId());
-        //处理论坛头像
+        
+        // 处理论坛图片
         File file = fileRpc.findV1(forum.getForumMedia());
     	file.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_MEDIA, file);
-    	//处理论坛背景图片
+    	
+    	// 处理论坛背景图片
         File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMedia());
         backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
     	forum.put(Forum.FORUM_BACKGROUND_MEDIA, backgroundfile);
 
-
-        String userId = forum.getForumModerator();
-        //根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个性签名,头像
-        Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
+    	// 版主昵称、头像、签名
+        Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(forum.getForumModerator());
         forum.put(Forum.FORUM_MODERATOR, forumModerator);
 
-
-        //根据systemRequestUserId查询是否加入了这个圈子
+        // 根据systemRequestUserId查询是否加入了这个论坛
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
-        if (forumUserFollow == null) {
-        	forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, false);
-		}
-        forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, true);
+        forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, forumUserFollow != null);
         
-
+        // 统计加入论坛人数
+        Integer forumUserFollowCount = forumUserFollowService.countByForumId(body.getAppId(), body.getForumId());
+        forum.put(Forum.FORUM_USER_FOLLOW_COUNT, forumUserFollowCount);
+        
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
@@ -445,7 +413,8 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
-                Forum.MEMBER_IS_FOLLOW_FORUM
+                Forum.MEMBER_IS_FOLLOW_FORUM,
+                Forum.FORUM_USER_FOLLOW_COUNT
         );
 
         return renderJson(forum);

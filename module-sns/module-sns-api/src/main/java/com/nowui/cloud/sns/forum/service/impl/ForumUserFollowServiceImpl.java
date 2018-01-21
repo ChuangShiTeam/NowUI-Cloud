@@ -60,6 +60,17 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
     }
     
     @Override
+    public Integer countByForumId(String appId, String forumId) {
+        Integer count = count(
+                new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+    
+    @Override
     public List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
         List<ForumUserFollow> forumUserFollowList = list(
                 new BaseWrapper<ForumUserFollow>()

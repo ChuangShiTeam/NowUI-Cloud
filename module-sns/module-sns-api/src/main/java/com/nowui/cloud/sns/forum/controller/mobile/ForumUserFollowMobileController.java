@@ -68,23 +68,25 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_ID
         );
         
-        ForumUserFollow follow = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
-        if (follow != null) {
-			return renderJson(true);
-		}
+        String appId = body.getAppId();
+        String userId = body.getSystemRequestUserId();
+        String forumId = body.getForumId();
         
-        //根据userId,ForumId去取消关注表查找为status的记录
-        ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
-        //有:改变状态,没有:不做操作
-        if (forumUserUnfollow != null) {
-        	boolean delResult = forumUserUnfollowService.delete(forumUserUnfollow.getForumUserUnfollowId(), body.getSystemRequestUserId(), forumUserUnfollow.getSystemVersion());
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
+        
+        if (Util.isNullOrEmpty(forumUserFollow)) {
+            ForumUserFollow bean = new ForumUserFollow();
+            
+            bean.setAppId(appId);
+            bean.setForumId(forumId);
+            bean.setUserId(userId);
+            
+            Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+            
+            return renderJson(result);
         }
         
-        body.setUserId(body.getSystemRequestUserId());
-        //向论坛关注表插入一条记录
-        boolean Result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-        
-        return renderJson(Result);
+        return renderJson(false);
     }
 	
 	@ApiOperation(value = "批量新增用户论坛关注")
@@ -112,6 +114,7 @@ public class ForumUserFollowMobileController extends BaseController {
             
             if (Util.isNullOrEmpty(forumUserFollow)) {
                 ForumUserFollow bean = new ForumUserFollow();
+                
                 bean.setAppId(appId);
                 bean.setForumId(forumId);
                 bean.setUserId(userId);
