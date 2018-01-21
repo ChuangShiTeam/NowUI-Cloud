@@ -68,6 +68,10 @@ zuul:
       path: /forum/**
       serviceId: module-sns
       stripPrefix: false
+    topic:
+      path: /topic/**
+      serviceId: module-sns
+      stripPrefix: false
     wawi:
       path: /wawi/**
       serviceId: module-wawi

@@ -340,7 +340,6 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.FORUM_ID,
                 Topic.TOPIC_SUMMARY,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
