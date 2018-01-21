@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.Topic;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 
 /**
  * 话题信息业务接口
@@ -17,7 +18,6 @@ public interface TopicService extends BaseService<Topic> {
      * 话题信息统计
      *
      * @param appId 应用编号
-     * @param topicForumId 论坛编号
      * @param topicSummary 动态
      * @param userId 用户编号
      * @param latitude 经度
@@ -29,13 +29,12 @@ public interface TopicService extends BaseService<Topic> {
      * @param integer2 置顶级别
      * @return Integer 话题信息统计
      */
-    Integer countForAdmin(String appId, String topicForumId, String topicSummary, String userId, String topicLocation, Boolean topicIsLocation);
+    Integer countForAdmin(String appId, String topicSummary, String userId, String topicLocation, Boolean topicIsLocation);
 
     /**
      * 话题信息列表
      *
      * @param appId 应用编号
-     * @param topicForumId 论坛编号
      * @param topicSummary 动态
      * @param userId 用户编号
      * @param latitude 经度
@@ -49,14 +48,14 @@ public interface TopicService extends BaseService<Topic> {
      * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> listForAdmin(String appId, String topicForumId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize);
+    List<Topic> listForAdmin(String appId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据forumId查找全部话题信息
-     * @param body Topic对象
+     * @param body TopicForum对象
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> allTopicListByForumId(Topic body);
+    List<Topic> allTopicListByForumId(TopicForum body);
 
     /**
      * 根据用户编号查找所有topic记录

@@ -46,16 +46,6 @@ public class Topic extends BaseEntity {
     private String appId;
     public static final String APP_ID = "appId";
 
-    /** 
-     * 论坛编号
-     */
-    @Field
-    @TableField
-    @NotNull(message = "论坛编号不能为空")
-    @Length(max = 32, message = "论坛编号长度超出限制")
-    private String forumId;
-    public static final String FORUM_ID = "forumId";
-    
     /**
      * 用户编号
      */
@@ -163,7 +153,7 @@ public class Topic extends BaseEntity {
     /**
      * 话题被收藏数
      */
-    public static final String TOPIC_COUNT_BOOK_MARK = "topicCountBookMark";
+    public static final String TOPIC_COUNT_BOOKMARK = "topicCountBookmark";
     /**
      * 话题被点赞数
      */
@@ -187,7 +177,7 @@ public class Topic extends BaseEntity {
     /**
      * 话题是否被用户收藏
      */
-    public static final String TOPIC_USER_IS_BOOKEMARK = "topicUserIsBookMark";
+    public static final String TOPIC_USER_IS_BOOKEMARK = "topicUserIsBookmark";
     
     public String getTopicId() {
         return getString(TOPIC_ID);
@@ -203,14 +193,6 @@ public class Topic extends BaseEntity {
     
     public void setAppId(String appId) {
         put(APP_ID, appId);
-    }
-
-    public String getForumId() {
-        return getString(FORUM_ID);
-    }
-    
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
     }
 
     public String getTopicSummary() {
