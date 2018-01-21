@@ -22,7 +22,7 @@
 					SELECT
 						forumId
 					FROM
-						forum_user_follow_map AS forumUserFollow
+						forum_user_follow_info AS forumUserFollow
 					WHERE
 						forumUserFollow.systemStatus = 1
 					AND	forumUserFollow.forumId = forum.forumId
@@ -50,7 +50,7 @@
 			SELECT
 				forumId
 			FROM
-				forum_user_follow_map AS forumUserFollow
+				forum_user_follow_info AS forumUserFollow
 			WHERE
 				forumUserFollow.systemStatus = 1
 			AND	forumUserFollow.forumId = forum.forumId
