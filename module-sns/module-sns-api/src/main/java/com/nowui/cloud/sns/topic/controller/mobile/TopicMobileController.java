@@ -340,61 +340,59 @@ public class TopicMobileController extends BaseController {
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
-                Topic.TOPIC_IS_LOCATION,
-                Topic.TOPIC_MEDIA_LIST,    
-                Topic.TOPIC_FORUM_LIST,    
-                Topic.TOPIC_TIP_USER_LIST   
+                Topic.TOPIC_IS_LOCATION
         );
 
         String topicId = Util.getRandomUUID();
-
-        JSONArray jsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
-        if (Util.isNullOrEmpty(jsonArray)) {
-            throw new RuntimeException("图片不能为空");
-        }
-        List<String> mediaIdList = jsonArray.toJavaList(String.class);
-
-        //遍历图片id,存放到话题图片表
-        for (String mediaId : mediaIdList) {
-        	TopicMedia topicMedia = new TopicMedia();
-        	topicMedia.setTopicMedia(mediaId);
-        	topicMedia.setTopicId(topicId);
-        	topicMedia.setAppId(body.getAppId());
-        	topicMedia.setTopicMediaType(FileType.IMAGE.getKey());
-
-        	Boolean mediaSaveResult = topicMediaService.save(new TopicMedia(), Util.getRandomUUID(), body.getSystemRequestUserId());
-		}
-
-
-        //先标记一下,回来再换另一种解析方法
-        String forumIds = body.getString(Topic.TOPIC_FORUM_LIST);
-        List<String> forumIdList = JSONArray.parseArray(forumIds, String.class);
-        //关联到论坛
-        for (String forumId : forumIdList) {
-			TopicForum topicForum = new TopicForum();
-			topicForum.setAppId(body.getAppId());
-			topicForum.setForumId(forumId);
-			topicForum.setTopicId(topicId);
-
-			Boolean save = topicForumService.save(topicForum, Util.getRandomUUID(), body.getSystemRequestUserId());
-		}
-
-
-        //先标记一下,回来再换另一种解析方法
-        String tipUserIds = body.getString(Topic.TOPIC_TIP_USER_LIST);
-        List<String> tipUserIdList = JSONArray.parseArray(tipUserIds, String.class);
-        //提醒谁看
-        for (String tipUserId : tipUserIdList) {
-        	TopicTip topicTip = new TopicTip();
-            topicTip.setAppId(body.getAppId());
-            topicTip.setTopicId(topicId);
-            topicTip.setUserId(tipUserId);
-
-            Boolean save = topicTipService.save(new TopicTip(), Util.getRandomUUID(), body.getSystemRequestUserId());
-		}
-
+        
+        body.setUserId(body.getSystemRequestUserId());
+        body.setTopicIsTop(false);
+        body.setTopicIsRecommend(false);
+        //先保存主表
         Boolean result = topicService.save(body, topicId, body.getSystemRequestUserId());
         
+        if (result) {
+        	JSONArray topicMediaJsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
+            if (Util.isNullOrEmpty(topicMediaJsonArray)) {
+                throw new RuntimeException("图片不能为空");
+            }
+            List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
+
+            //遍历图片id,存放到话题图片表
+            for (TopicMedia topicMedia : topicMediaList) {
+            	topicMedia.setTopicId(topicId);
+            	topicMedia.setAppId(body.getAppId());
+            	
+            	Boolean mediaSaveResult = topicMediaService.save(topicMedia, Util.getRandomUUID(), body.getSystemRequestUserId());
+    		}
+
+            //先标记一下,回来再换另一种解析方法
+            String forumIds = body.getString(Topic.TOPIC_FORUM_LIST);
+            List<String> forumIdList = JSONArray.parseArray(forumIds, String.class);
+            //关联到论坛
+            for (String forumId : forumIdList) {
+    			TopicForum topicForum = new TopicForum();
+    			topicForum.setAppId(body.getAppId());
+    			topicForum.setForumId(forumId);
+    			topicForum.setTopicId(topicId);
+
+    			Boolean save = topicForumService.save(topicForum, Util.getRandomUUID(), body.getSystemRequestUserId());
+    		}
+
+            //先标记一下,回来再换另一种解析方法
+            String tipUserIds = body.getString(Topic.TOPIC_TIP_USER_LIST);
+            List<String> tipUserIdList = JSONArray.parseArray(tipUserIds, String.class);
+            //提醒谁看
+            for (String tipUserId : tipUserIdList) {
+            	TopicTip topicTip = new TopicTip();
+                topicTip.setAppId(body.getAppId());
+                topicTip.setTopicId(topicId);
+                topicTip.setUserId(tipUserId);
+                
+                Boolean save = topicTipService.save(topicTip, Util.getRandomUUID(), body.getSystemRequestUserId());
+    		}
+            
+		}
         return renderJson(result);
     }
 

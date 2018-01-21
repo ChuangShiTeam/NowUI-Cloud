@@ -67,22 +67,22 @@ public class Topic extends BaseEntity {
     public static final String TOPIC_SUMMARY = "topicSummary";
 
     /**
-     * 经度
-     */
-    @Field
-    @TableField
-    @NotNull(message = "经度不能为空")
-    @Length(max = 12, message = "经度长度超出限制")
-    private String latitude;
-    public static final String LATITUDE = "latitude";
-
-    /**
      * 纬度
      */
     @Field
     @TableField
     @NotNull(message = "纬度不能为空")
     @Length(max = 12, message = "纬度长度超出限制")
+    private String latitude;
+    public static final String LATITUDE = "latitude";
+
+    /**
+     * 经度
+     */
+    @Field
+    @TableField
+    @NotNull(message = "经度不能为空")
+    @Length(max = 12, message = "经度长度超出限制")
     private String longtitude;
     public static final String LONGTITUDE = "longtitude";
 

@@ -20,8 +20,8 @@ public interface TopicService extends BaseService<Topic> {
      * @param appId 应用编号
      * @param topicSummary 动态
      * @param userId 用户编号
-     * @param latitude 经度
-     * @param longtitude 纬度
+     * @param latitude 纬度
+     * @param longtitude 经度
      * @param topicLocation 位置
      * @param topicIsLocation 是否有位置
      * @param boolean2 置顶
@@ -37,8 +37,8 @@ public interface TopicService extends BaseService<Topic> {
      * @param appId 应用编号
      * @param topicSummary 动态
      * @param userId 用户编号
-     * @param latitude 经度
-     * @param longtitude 纬度
+     * @param latitude 纬度
+     * @param longtitude 经度
      * @param topicLocation 位置
      * @param topicIsLocation 是否有位置
      * @param topicIsTop 置顶
