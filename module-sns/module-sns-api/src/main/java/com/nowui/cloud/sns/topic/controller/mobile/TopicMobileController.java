@@ -140,7 +140,7 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
         
-       
+        
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -340,16 +340,14 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.TOPIC_FORUM_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
                 Topic.TOPIC_IS_LOCATION,
-                Topic.TOPIC_MEDIA_LIST,    //图片id列表
-                Topic.TOPIC_FORUM_LIST,    //发布到的论坛列表
-                Topic.TOPIC_TIP_USER_LIST    //提醒谁看用户列表 
+                Topic.TOPIC_MEDIA_LIST,    
+                Topic.TOPIC_FORUM_LIST,    
+                Topic.TOPIC_TIP_USER_LIST   
         );
 
         String topicId = Util.getRandomUUID();
