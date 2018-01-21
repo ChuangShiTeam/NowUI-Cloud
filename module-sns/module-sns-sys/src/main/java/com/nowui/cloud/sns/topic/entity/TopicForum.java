@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_forum_map")
-@TableName(value = "topic_forum_map")
+@Document(indexName = "nowui", type = "topic_forum_info")
+@TableName(value = "topic_forum_info")
 public class TopicForum extends BaseEntity {
 
     /**

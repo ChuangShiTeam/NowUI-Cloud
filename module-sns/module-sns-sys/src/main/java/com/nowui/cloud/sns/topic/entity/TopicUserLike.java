@@ -20,8 +20,8 @@ import javax.validation.constraints.NotNull;
  * 2018-01-08
  */
 @Component
-@Document(indexName = "nowui", type = "topic_user_like_map")
-@TableName(value = "topic_user_like_map")
+@Document(indexName = "nowui", type = "topic_user_like_info")
+@TableName(value = "topic_user_like_info")
 public class TopicUserLike extends BaseEntity {
 
     /**
