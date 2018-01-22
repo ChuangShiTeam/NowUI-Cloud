@@ -423,7 +423,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
             ArrayList<Forum> forumList = new ArrayList<>();
             for (TopicForum topicForum : topicForumList) {
                 Forum forum = forumService.find(topicForum.getForumId(), true);
-                forum.defaultKeep();
+                forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
                 forumList.add(forum);
             }
             topic.put(Topic.TOPIC_FORUM_LIST, forumList);

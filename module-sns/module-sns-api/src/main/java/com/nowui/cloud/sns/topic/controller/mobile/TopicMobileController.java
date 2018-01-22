@@ -269,18 +269,21 @@ public class TopicMobileController extends BaseController {
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW
-        	);
+    	);
         
         
-        // 在controller层调用其他接口处理话题的图片信息
+        // 图片多媒体
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
-            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
             List<File> fileList = fileRpc.findsV1(fileIds);
 
-            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ORIGINAL_PATH);
 
+            for (TopicMedia topicMedia : topicMediaList) {
+                topicMedia.keep(TopicMedia.TOPIC_MEDIA_TYPE, File.FILE_ORIGINAL_PATH);
+            }
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
         
@@ -297,7 +300,16 @@ public class TopicMobileController extends BaseController {
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		Topic.TOPIC_MEDIA_LIST,
+        		Topic.TOPIC_FORUM_LIST,
+        		Topic.TOPIC_COMMENT_LIST,
+        		Topic.TOPIC_COUNT_BOOKMARK,
+        		Topic.TOPIC_COUNT_LIKE,
+        		Topic.TOPIC_COUNT_COMMENT,
+        		Topic.TOPIC_USER_IS_BOOKEMARK,
+        		Topic.TOPIC_USER_IS_LIKE,
+        		Topic.SYSTEM_CREATE_TIME
         );
 
         return renderJson(countResult, resultList);
