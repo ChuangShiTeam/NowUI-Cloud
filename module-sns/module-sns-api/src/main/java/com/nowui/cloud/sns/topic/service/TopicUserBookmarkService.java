@@ -46,11 +46,21 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
     TopicUserBookmark findTopicUserBookmark(String appId, String topicId, String userId);
     
     /**
-     * 根据topicId查找全部话题收藏列表
-     * @param appId
-     * @param topicId
-     * @return
+     * 话题收藏统计
+     *
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @return Integer 话题收藏统计
      */
-    List<TopicUserBookmark> allListByTopicId(String appId, String topicId);
+    Integer countByTopicId(String appId, String topicId);
+    
+    /**
+     * 根据话题编号查询话题收藏列表
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @return List<TopicUserBookmark> 话题收藏列表
+     */
+    List<TopicUserBookmark> listByTopicId(String appId, String topicId);
     
 }

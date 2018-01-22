@@ -22,23 +22,13 @@ import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.Topic;
-import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
-import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
-import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
-import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
-import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
-import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
-import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -68,21 +58,6 @@ public class TopicMobileController extends BaseController {
 	private TopicTipService topicTipService;
 
 	@Autowired
-	private TopicCommentService topicCommentService;
-	
-	@Autowired
-	private TopicUserBookmarkService topicUserBookmarkService;
-	
-	@Autowired
-	private TopicUserLikeService topicUserLikeService;
-	
-	@Autowired
-	private TopicUserUnbookmarkService topicUserUnbookmarkService;
-	
-	@Autowired
-	private TopicUserUnlikeService topicUserUnlikeService;
-	
-	@Autowired
 	private FileRpc fileRpc;
 	
 	@Autowired
@@ -90,8 +65,6 @@ public class TopicMobileController extends BaseController {
 	
 	@Autowired
 	private MemberFollowRpc memberFollowRpc;
-
-
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -160,8 +133,6 @@ public class TopicMobileController extends BaseController {
 
         return renderJson(resultTotal, resultList);
     }
-    
-    
     
     @ApiOperation(value = "个人/别人主页动态列表")
     @RequestMapping(value = "/topic/mobile/v1/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -253,37 +224,32 @@ public class TopicMobileController extends BaseController {
 
 	    return renderJson(topic);
 	}
-
-
     
-    @ApiOperation(value = "关注的人的话题分页列表")
-    @RequestMapping(value = "/topic/mobile/v1/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "动态主页列表")
+    @RequestMapping(value = "/topic/mobile/v1/home/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> followListV1(@RequestBody Topic body) {
         validateRequest(
                 body,
                 Topic.APP_ID,
                 Topic.PAGE_INDEX,
-                Topic.PAGE_SIZE
+                Topic.PAGE_SIZE,
+                Topic.SYSTEM_REQUEST_USER_ID
         );
        
-        //先得到用户关注的人的id列表
+        // 用户关注的人的编号列表
         List<String> followUserIdList = memberFollowRpc.followUserIdList(body.getSystemRequestUserId());
+        // 加上本人的用户编号
+        followUserIdList.add(body.getSystemRequestUserId());
         
-        //得到话题数量和话题列表
         Integer countResult = topicService.countByUserIdList(body.getAppId(), followUserIdList);
-        List<Topic> listByUserIdList = topicService.listByUserIdList(body.getAppId(), followUserIdList, body.getPageIndex(), body.getPageSize());
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, body.getPageIndex(), body.getPageSize());
         
-        //得到处理后的结果
-        List<Topic> topicList = topicService.handleTopic(body, listByUserIdList);
-        
-        
-        //在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
-        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
-        
+        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
         List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
         
-        topicList = Util.beanAddField(
-        		topicList, 
+        resultList = Util.beanAddField(
+                resultList, 
         		Topic.USER_ID, 
         		User.USER_ID, 
         		nickAndAvatarAndIsFollowList, 
@@ -294,8 +260,8 @@ public class TopicMobileController extends BaseController {
         	);
         
         
-        //在controller层调用其他接口处理话题的图片信息
-        for (Topic topic : topicList) {
+        // 在controller层调用其他接口处理话题的图片信息
+        for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
             String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
@@ -305,8 +271,6 @@ public class TopicMobileController extends BaseController {
 
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
-        
-        
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -324,7 +288,7 @@ public class TopicMobileController extends BaseController {
         		MemberFollow.MEMBER_IS_FOLLOW
         );
 
-        return renderJson(countResult, listByUserIdList);
+        return renderJson(countResult, resultList);
     }
 
     
@@ -415,50 +379,9 @@ public class TopicMobileController extends BaseController {
 
         //删除话题信息
         Topic topic = topicService.find(topicId);
-        Boolean result = topicService.delete(topicId, systemRequestUserId, topic.getSystemVersion());
 
-        //删除话题论坛关联
-        List<TopicForum> allTopicForumList = topicForumService.allTopicForumList(body.getAppId(), null, topicId);
-        for (TopicForum topicForum : allTopicForumList) {
-        	topicForumService.delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
-		}
-
-        //删除话题图片
-        List<TopicMedia> listAllMediaByTopicId = topicMediaService.listAllMediaByTopicId(body.getAppId(), topicId, null, null);
-        for (TopicMedia topicMedia : listAllMediaByTopicId) {
-        	topicMediaService.delete(topicMedia.getTopicMediaId(), systemRequestUserId, topicMedia.getSystemVersion());
-		}
-
-        //删除话题评论
-        List<TopicComment> allCommentList = topicCommentService.allCommentList(body.getAppId(), null, topicId);
-        for (TopicComment topicComment : allCommentList) {
-        	topicCommentService.delete(topicComment.getTopicCommentId(), systemRequestUserId, topicComment.getSystemVersion());
-		}
-
-        //删除话题收藏
-        List<TopicUserBookmark> allListByTopicId = topicUserBookmarkService.allListByTopicId(body.getAppId(), topicId);
-        for (TopicUserBookmark topicUserBookmark : allListByTopicId) {
-        	topicUserBookmarkService.delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
-		}
-
-        //删除话题点赞 
-        List<TopicUserLike> allLikeListByTopic = topicUserLikeService.allLikeListByTopic(body.getAppId(), topicId);
-        for (TopicUserLike topicUserLike : allLikeListByTopic) {
-        	topicUserLikeService.delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
-		}
-
-        //删除取消收藏 
-        List<TopicUserUnbookmark> allUnBookMarkListByTopic = topicUserUnbookmarkService.allUnBookMarkListByTopic(body.getAppId(), topicId);
-        for (TopicUserUnbookmark topicUserUnbookmark : allUnBookMarkListByTopic) {
-        	topicUserUnbookmarkService.delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
-		}
-
-        //删除话题取消点赞
-        List<TopicUserUnlike> unlikeList = topicUserUnlikeService.allUnlikeListByTopicId(body.getAppId(), topicId);
-        for (TopicUserUnlike topicUserUnlike : unlikeList) {
-        	topicUserUnlikeService.delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
-		}
-
+        Boolean result = topicService.deleteByTopicId(body.getAppId(), topicId, systemRequestUserId, topic.getSystemVersion());
+        
         return renderJson(result);
     }
 

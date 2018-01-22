@@ -38,13 +38,11 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
     List<TopicMedia> listForAdmin(String appId, String topicId, String topicMedia, String topicMediaType, Integer pageIndex, Integer pageSize);
 
     /**
-     * 根据topicId查询所有图片
+     * 根据话题编号查询话题多媒体列表
      * 
      * @param appId 应用编号
      * @param topicId 话题编号
-     * @param topicMedia 多媒体Id
-     * @param topicMediaType 多媒体类型
      * @return List<TopicMedia> 话题多媒体列表
      */
-	List<TopicMedia> listAllMediaByTopicId(String appId, String topicId, String topicMedia, String topicMediaType);
+	List<TopicMedia> listByTopicId(String appId, String topicId);
 }

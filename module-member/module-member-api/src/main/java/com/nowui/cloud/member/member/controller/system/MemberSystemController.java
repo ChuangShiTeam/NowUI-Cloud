@@ -151,6 +151,10 @@ public class MemberSystemController implements MemberRpc {
 
     @Override
     public List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId) {
+        if (Util.isNullOrEmpty(userIds) || Util.isNullOrEmpty(userId)) {
+            return null;
+        }
+        
         List<Member> memberList = listByUserIdsV1(userIds);
         
         if(memberList == null || memberList.size() == 0) {

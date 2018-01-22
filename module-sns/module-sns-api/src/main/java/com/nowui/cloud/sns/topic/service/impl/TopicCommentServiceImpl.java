@@ -53,19 +53,44 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
 
         return topicCommentList;
     }
-
+    
+    @Override
+    public Integer countByTopicId(String appId, String topicId) {
+        Integer count = count(
+                new BaseWrapper<TopicComment>()
+                        .eq(TopicComment.APP_ID, appId)
+                        .eq(TopicComment.TOPIC_ID, topicId)
+                        .eq(TopicComment.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+    
 	@Override
-	public List<TopicComment> allCommentList(String appId, String userId, String topicId) {
+	public List<TopicComment> listByTopicId(String appId, String topicId) {
 		List<TopicComment> topicCommentList = list(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.APP_ID, appId)
-                        .likeAllowEmpty(TopicComment.USER_ID, userId)
-                        .likeAllowEmpty(TopicComment.TOPIC_ID, topicId)
+                        .eq(TopicComment.TOPIC_ID, topicId)
                         .eq(TopicComment.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME))
         );
 
         return topicCommentList;
 	}
+
+    @Override
+    public List<TopicComment> listByTopicId(String appId, String topicId, Integer pageSize, Integer pageIndex) {
+        List<TopicComment> topicCommentList = list(
+                new BaseWrapper<TopicComment>()
+                        .eq(TopicComment.APP_ID, appId)
+                        .eq(TopicComment.TOPIC_ID, topicId)
+                        .eq(TopicComment.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return topicCommentList;
+    }
 
 }

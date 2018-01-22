@@ -57,14 +57,13 @@ public interface TopicForumService extends BaseService<TopicForum> {
     Integer countForToday(String appId, String forumId, String topicId);
     
     /**
-     * 查询所有话题论坛列表
+     * 根据话题查询话题论坛列表
      * 
      * @param appId 应用编号
-     * @param forumId 论坛编号
      * @param topicId 话题编号
      * @return List<TopicForum> 话题论坛关联列表
      */
-    List<TopicForum> allTopicForumList(String appId, String forumId, String topicId);
+    List<TopicForum> listByTopicId(String appId, String topicId);
 
     
 }

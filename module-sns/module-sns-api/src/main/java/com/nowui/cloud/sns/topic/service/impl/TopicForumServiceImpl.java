@@ -85,11 +85,10 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 	}
 
 	@Override
-	public List<TopicForum> allTopicForumList(String appId, String forumId, String topicId) {
+	public List<TopicForum> listByTopicId(String appId, String topicId) {
 		List<TopicForum> topicForumList = list(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)
-                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
                         .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
                         .eq(TopicForum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))

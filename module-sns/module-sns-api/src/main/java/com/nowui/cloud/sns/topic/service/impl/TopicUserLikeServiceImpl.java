@@ -65,13 +65,24 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
         return topicUserLikeList.get(0);
         
 	}
+	
+	@Override
+    public Integer countByTopicId(String appId, String topicId) {
+        Integer count = count(
+                new BaseWrapper<TopicUserLike>()
+                        .eq(TopicUserLike.APP_ID, appId)
+                        .eq(TopicUserLike.TOPIC_ID, topicId)
+                        .eq(TopicUserLike.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
 
 	@Override
-	public List<TopicUserLike> allLikeListByTopic(String appId, String topicId) {
+	public List<TopicUserLike> listByTopicId(String appId, String topicId) {
 		List<TopicUserLike> topicUserLikeList = list(
                 new BaseWrapper<TopicUserLike>()
                         .eq(TopicUserLike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserLike.TOPIC_ID, topicId)
+                        .eq(TopicUserLike.TOPIC_ID, topicId)
                         .eq(TopicUserLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME))
         );

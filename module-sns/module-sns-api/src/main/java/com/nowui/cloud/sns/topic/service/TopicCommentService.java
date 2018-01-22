@@ -39,14 +39,33 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      */
     List<TopicComment> listForAdmin(String appId, String userId, String topicId, String topicCommentContent, String topicReplayUserId, String topicReplyCommentId, Integer pageIndex, Integer pageSize);
     
+    
     /**
-     * 全部话题评论列表By userId or topicId
-     * 
-     * @param appId
-     * @param userId
-     * @param topicId
-     * @return List<TopicComment> 全部列表
+     * 话题评论统计
+     *
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @return Integer 话题评论统计
      */
-    List<TopicComment> allCommentList(String appId, String userId, String topicId);
+    Integer countByTopicId(String appId, String topicId);
+
+    
+    /**
+     * 根据话题编号查询话题评论列表
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @return List<TopicComment> 话题评论列表
+     */
+    List<TopicComment> listByTopicId(String appId, String topicId);
+    
+    /**
+     * 根据话题编号查询话题评论分页列表
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @return List<TopicComment> 话题评论列表
+     */
+    List<TopicComment> listByTopicId(String appId, String topicId, Integer pageSize, Integer pageIndex);
 
 }
