@@ -159,6 +159,10 @@ public class Topic extends BaseEntity {
      */
     public static final String TOPIC_COUNT_LIKE = "topicCountLike";
     /**
+     * 给话题点赞的用户列表
+     */
+    public static final String TOPIC_USER_LIKE_LIST = "topicUserLikeList";
+    /**
      * 话题被评论数
      */
     public static final String TOPIC_COUNT_COMMENT = "topicCountComment";

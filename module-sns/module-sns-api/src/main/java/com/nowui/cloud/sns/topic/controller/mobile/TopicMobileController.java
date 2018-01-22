@@ -26,6 +26,7 @@ import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
@@ -205,10 +206,32 @@ public class TopicMobileController extends BaseController {
         String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
+       // topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
+        topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
         //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         
+        
+        //处理点赞的用户头像
+        List<TopicUserLike> userLikeList = (List<TopicUserLike>)topic.get(Topic.TOPIC_USER_LIKE_LIST);
+        
+//        if (userLikeList != null) {
+        	String userIds = Util.beanToFieldString(userLikeList, TopicUserLike.USER_ID);
+            List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+            
+            userLikeList = Util.beanAddField(
+            		userLikeList,
+            		TopicUserLike.USER_ID,
+            		User.USER_ID,
+            		nickAndAvatarAndIsFollowList,
+            		User.USER_ID,
+            		UserAvatar.USER_AVATAR,
+            		UserNickName.USER_NICK_NAME,
+            		MemberFollow.MEMBER_IS_FOLLOW
+            	);
+            topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
+
+//		}
 
         validateResponse(
 	            Topic.TOPIC_ID,
@@ -229,8 +252,8 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_COUNT_COMMENT,
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
 	            Topic.TOPIC_USER_IS_LIKE,
+	            Topic.TOPIC_USER_LIKE_LIST,
 	            BaseEntity.SYSTEM_CREATE_TIME
-	            
 	    );
 
 	    return renderJson(topic);

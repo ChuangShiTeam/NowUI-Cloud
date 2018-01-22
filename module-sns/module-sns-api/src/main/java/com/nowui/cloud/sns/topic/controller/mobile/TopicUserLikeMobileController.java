@@ -47,7 +47,7 @@ public class TopicUserLikeMobileController extends BaseController {
 	@Autowired
 	private MemberRpc memberRpc;
 
-    @ApiOperation(value = "点赞话题关联列表")
+    @ApiOperation(value = "给话题点赞的用户列表")
     @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicUserLike body) {
         validateRequest(
@@ -55,7 +55,7 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.APP_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
-                TopicUserLike.PAGE_SIZE     //前端传来参数可用于只显示4个头像,和点赞列表
+                TopicUserLike.PAGE_SIZE     //前端传来参数可用于只显示3个头像,和点赞列表
         );
         //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , null, body.getTopicId());

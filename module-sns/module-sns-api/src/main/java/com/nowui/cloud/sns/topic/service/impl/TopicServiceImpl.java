@@ -349,7 +349,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
     	//取得topicId去话题点赞表查询,得到点赞数
     	String countLike = "" + topicUserLikeService.countForAdmin(body.getAppId(), null, topicId);
     	topic.put(Topic.TOPIC_COUNT_LIKE, countLike);
-
+    	
+    	//取得点赞的用户列表,显示3个
+    	List<TopicUserLike> userLikeList = topicUserLikeService.listForAdmin(body.getAppId(), null, topicId, 1, 3);
+    	topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
 
 
     	//取得topicId去话题评论表查询,得到评论数
