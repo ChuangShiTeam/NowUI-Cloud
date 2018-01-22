@@ -103,7 +103,7 @@ public class ForumMobileController extends BaseController {
 	     return renderJson(result);
     }
 	 
-	@ApiOperation(value = "论坛信息")
+	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Forum body) {
         validateRequest(
@@ -114,7 +114,6 @@ public class ForumMobileController extends BaseController {
                 Forum.PAGE_SIZE,
                 Forum.SYSTEM_REQUEST_USER_ID
         );
-        
         // forum包含了论坛简介,论坛名称,论坛头像
         Forum forum = forumService.find(body.getForumId());
         // 处理论坛头像
@@ -371,7 +370,7 @@ public class ForumMobileController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
     
-    @ApiOperation(value = "论坛主页信息")
+    @ApiOperation(value = "论坛主页信息(论坛主页)")
     @RequestMapping(value = "/forum/mobile/v1/home", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeV1(@RequestBody Forum body) {
         validateRequest(
