@@ -127,5 +127,5 @@ public interface TopicService extends BaseService<Topic> {
      * @return
      */
     Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion);
-
+    
 }

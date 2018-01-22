@@ -47,19 +47,36 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
     /**
      * 点赞话题统计
      *
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return Integer 点赞话题统计
      */
-    Integer countByTopicId(String appId, String topicId);
+    Integer countByTopicId(String topicId);
     
     /**
      * 根据topicId查询所有列表
      * 
+     * @param topicId 话题编号
+     * @return List<TopicUserLike> 话题点赞列表
+     */
+    List<TopicUserLike> listByTopicId(String topicId);
+    
+    /**
+     * 根据话题编号逻辑删除话题点赞
+     * 
+     * @param topicId
+     * @param systemRequestUserId
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 保存话题点赞
+     * 
      * @param appId 应用编号
      * @param topicId 话题编号
-     * @return List<TopicUserLike> 所有点赞记录列表
+     * @param userId 用户编号
+     * @param systemRequestUserId 请求用户编号
+     * @return  Boolean true 成功   false 失败
      */
-    List<TopicUserLike> listByTopicId(String appId,  String topicId);
+    Boolean save(String appId, String topicId, String userId, String systemRequestUserId);
 
 }

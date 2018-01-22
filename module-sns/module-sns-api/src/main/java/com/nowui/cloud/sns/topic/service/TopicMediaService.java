@@ -23,7 +23,7 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * @return Integer 话题多媒体统计
      */
     Integer countForAdmin(String appId, String topicId, String topicMedia, String topicMediaType);
-
+    
     /**
      * 话题多媒体列表
      *
@@ -40,9 +40,26 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
     /**
      * 根据话题编号查询话题多媒体列表
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return List<TopicMedia> 话题多媒体列表
      */
-	List<TopicMedia> listByTopicId(String appId, String topicId);
+	List<TopicMedia> listByTopicId(String topicId);
+	
+	/**
+	 * 根据话题编号逻辑删除话题多媒体信息
+	 * 
+	 * @param topicId 话题编号
+	 * @param systemRequestUserId 请求用户编号
+	 */
+	void deleteByTopicId(String topicId, String systemRequestUserId);
+	
+	/**
+	 * 批量保存话题多媒体
+	 * 
+	 * @param appId 应用编号
+	 * @param topicId 话题编号
+	 * @param topicMediaList 话题多媒体列表
+	 * @param systemRequestUserId 请求用户编号
+	 */
+	void batchSave(String appId, String topicId, List<TopicMedia> topicMediaList, String systemRequestUserId);
 }

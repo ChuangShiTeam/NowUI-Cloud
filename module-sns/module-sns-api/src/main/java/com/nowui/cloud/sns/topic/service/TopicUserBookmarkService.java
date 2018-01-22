@@ -38,12 +38,11 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
     /**
      * 根据话题编号和用户编号查询单条话题收藏记录
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @param userId 用户编号
      * @return TopicUserBookmark 单条话题收藏记录
      */
-    TopicUserBookmark findTopicUserBookmark(String appId, String topicId, String userId);
+    TopicUserBookmark findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 话题收藏统计
@@ -52,15 +51,33 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
      * @param topicId 话题编号
      * @return Integer 话题收藏统计
      */
-    Integer countByTopicId(String appId, String topicId);
+    Integer countByTopicId(String topicId);
     
     /**
      * 根据话题编号查询话题收藏列表
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return List<TopicUserBookmark> 话题收藏列表
      */
-    List<TopicUserBookmark> listByTopicId(String appId, String topicId);
+    List<TopicUserBookmark> listByTopicId(String topicId);
+    
+    /**
+     * 根据话题编号逻辑删除话题收藏
+     * 
+     * @param topicId
+     * @param systemRequestUserId
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 保存话题收藏
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @param userId 用户编号
+     * @param systemRequestUserId 请求用户编号
+     * @return  Boolean true 成功   false 失败
+     */
+    Boolean save(String appId, String topicId, String userId, String systemRequestUserId);
     
 }

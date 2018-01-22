@@ -315,11 +315,7 @@ public class ForumMobileController extends BaseController {
         
         
         //再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
-    	Boolean delResult = topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
-    	if (delResult == false) {
-    		return renderJson(delResult);
-		}
-    	
+    	topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
     	
     	//从论坛关注表中删除有forumId的记录
     	boolean delUserFollow = forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
