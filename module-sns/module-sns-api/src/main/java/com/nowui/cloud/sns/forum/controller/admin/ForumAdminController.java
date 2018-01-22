@@ -29,13 +29,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * 论坛信息管理端控制器
+ * 论坛管理端控制器
  *
  * @author xupengfei
  *
  * 2018-01-08
  */
-@Api(value = "论坛信息", description = "论坛信息管理端接口管理")
+@Api(value = "论坛", description = "论坛管理端接口管理")
 @RestController
 public class ForumAdminController extends BaseController {
 
@@ -57,7 +57,7 @@ public class ForumAdminController extends BaseController {
 	 @Autowired
 	 private ForumUserUnfollowService forumUserUnfollowService;
 
-    @ApiOperation(value = "论坛信息列表")
+    @ApiOperation(value = "论坛列表")
     @RequestMapping(value = "/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody Forum body) {
        validateRequest(
@@ -89,7 +89,7 @@ public class ForumAdminController extends BaseController {
     		   body.getPageSize()
 	   );
        
-       // 论坛头像
+       // 论坛图片
        String fileIds = Util.beanToFieldString(resultList, Forum.FORUM_MEDIA);
        List<File> fileList = fileRpc.findsV1(fileIds);
        resultList = Util.beanReplaceField(resultList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
@@ -126,7 +126,7 @@ public class ForumAdminController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "查找论坛信息(根据论坛编号)")
+    @ApiOperation(value = "论坛查询")
     @RequestMapping(value = "/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Forum body) {
         validateRequest(
@@ -136,6 +136,23 @@ public class ForumAdminController extends BaseController {
         );
 
         Forum result = forumService.find(body.getForumId());
+        
+        // 论坛图片
+        File forumMediaFile = fileRpc.findV1(result.getForumMedia());
+        forumMediaFile.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(Forum.FORUM_MEDIA, forumMediaFile);
+        
+        // 论坛背景
+        File forumBackgroundFile = fileRpc.findV1(result.getForumBackgroundMedia());
+        forumBackgroundFile.keep(File.FILE_ID, File.FILE_PATH);
+        result.put(Forum.FORUM_BACKGROUND_MEDIA, forumBackgroundFile);
+        
+        // 版主昵称和头像
+        Member forumModerator = memberRpc.nickNameAndAvatarFindV1(result.getForumModerator());
+        if (!Util.isNullOrEmpty(forumModerator)) {
+            
+        }
+        result.put(Forum.FORUM_MODERATOR, forumModerator);
 
         validateResponse(
                 Forum.FORUM_ID,
