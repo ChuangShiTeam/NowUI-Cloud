@@ -17,6 +17,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
@@ -230,10 +231,10 @@ public class TopicMobileController extends BaseController {
 	    //处理图片
 	    List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
-        String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
+        String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
+        topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
         //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         
@@ -248,7 +249,17 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_IS_LOCATION,
 	            Topic.TOPIC_IS_TOP,
 	            Topic.TOPIC_IS_RECOMAND,
-	            Topic.TOPIC_TOP_LEVEL
+	            Topic.TOPIC_TOP_LEVEL,
+	            Topic.TOPIC_MEDIA_LIST,
+	            Topic.TOPIC_FORUM_LIST,
+	            Topic.TOPIC_COMMENT_LIST,
+	            Topic.TOPIC_COUNT_BOOKMARK,
+	            Topic.TOPIC_COUNT_LIKE,
+	            Topic.TOPIC_COUNT_COMMENT,
+	            Topic.TOPIC_USER_IS_BOOKEMARK,
+	            Topic.TOPIC_USER_IS_LIKE,
+	            BaseEntity.SYSTEM_CREATE_TIME
+	            
 	    );
 
 	    return renderJson(topic);
