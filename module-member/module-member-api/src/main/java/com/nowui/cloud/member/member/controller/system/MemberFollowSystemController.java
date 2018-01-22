@@ -1,5 +1,6 @@
 package com.nowui.cloud.member.member.controller.system;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class MemberFollowSystemController implements MemberFollowRpc {
         List<MemberFollow> memberFollowList = memberFollowService.listByUserId(userId);
         
         if (memberFollowList == null || memberFollowList.size() == 0) {
-            return null;
+            return new ArrayList<>();
         }
         
         return memberFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());

@@ -45,24 +45,30 @@ public class TopicUserBookmarkMobileController extends BaseController {
                 body,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.TOPIC_ID
-                //TopicUserBookmark.USER_ID
         );
         
-        TopicUserBookmark bookmark = topicUserBookmarkService.findTopicUserBookmark(body.getAppId(), body.getTopicId(), body.getSystemRequestUserId());
+        String appId = body.getAppId();
+        String topicId = body.getTopicId();
+        String userId = body.getSystemRequestUserId();
+        
+        TopicUserBookmark bookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, userId);
+        
         if (bookmark != null) {
-			return renderJson(true);
+			throw new RuntimeException("已经收藏过了");
 		}
         
-        
-        //先去取消收藏表查询有没有记录,有:删除,没有:不操作
-        TopicUserUnbookmark findUnBookMark = topicUserUnbookmarkService.findUnBookMark(body.getAppId(), body.getTopicId(), body.getSystemRequestUserId());
-        
-        if (findUnBookMark != null) {
-        	topicUserUnbookmarkService.delete(findUnBookMark.getTopicUserUnbookmarkId(), body.getSystemUpdateUserId(), findUnBookMark.getSystemVersion());
-		}
-        body.setUserId(body.getSystemRequestUserId());
+        body.setUserId(userId);
 
-        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), userId);
+        
+        if (result) {
+            // 判断用户是否取消关注过，取关过则逻辑删除用户取消关注记录
+            TopicUserUnbookmark topicUserUnbookMark = topicUserUnbookmarkService.findUnBookMark(appId, topicId, userId);
+            
+            if (topicUserUnbookMark != null) {
+                topicUserUnbookmarkService.delete(topicUserUnbookMark.getTopicUserUnbookmarkId(), userId, topicUserUnbookMark.getSystemVersion());
+            }
+        }
 
         return renderJson(result);
     }

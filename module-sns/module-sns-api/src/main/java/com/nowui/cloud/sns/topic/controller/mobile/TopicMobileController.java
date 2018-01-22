@@ -2,6 +2,7 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -355,46 +356,39 @@ public class TopicMobileController extends BaseController {
         body.setUserId(userId);
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
-        // 先保存主表
+        // 保存话题
         Boolean result = topicService.save(body, topicId, userId);
         
         if (result) {
         	
+            // 保存话题多媒体
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
-            // 遍历图片id,存放到话题图片表
-            for (TopicMedia topicMedia : topicMediaList) {
-            	topicMedia.setTopicId(topicId);
-            	topicMedia.setAppId(body.getAppId());
-            	
-            	topicMediaService.save(topicMedia, Util.getRandomUUID(), userId);
-    		}
+            topicMediaService.batchSave(appId, topicId, topicMediaList, userId);
 
-            // 论坛关联
+            // 保存话题论坛
             if (!Util.isNullOrEmpty(forumIdJSONArray)) {
                 List<String> forumIdList = forumIdJSONArray.toJavaList(String.class);
                 
-                for (String forumId : forumIdList) {
+                List<TopicForum> topicForumList = forumIdList.stream().map(forumId -> {
                     TopicForum topicForum = new TopicForum();
-                    topicForum.setAppId(appId);
                     topicForum.setForumId(forumId);
-                    topicForum.setTopicId(topicId);
-
-                    topicForumService.save(topicForum, Util.getRandomUUID(), userId);
-                }
+                    return topicForum;
+                }).collect(Collectors.toList());
+                
+                topicForumService.batchSave(appId, topicId, topicForumList, userId);
             }
             
-            // 提醒谁看
+            // 保存提醒谁看
             if (!Util.isNullOrEmpty(tipUserIdJSONArray)) {
                 List<String> tipUserIdList = tipUserIdJSONArray.toJavaList(String.class);
-
-                for (String tipUserId : tipUserIdList) {
+                
+                List<TopicTip> topicTipList = tipUserIdList.stream().map(tipUserId -> {
                     TopicTip topicTip = new TopicTip();
-                    topicTip.setAppId(appId);
-                    topicTip.setTopicId(topicId);
                     topicTip.setUserId(tipUserId);
-                    
-                    topicTipService.save(topicTip, Util.getRandomUUID(), userId);
-                }
+                    return topicTip;
+                }).collect(Collectors.toList());
+
+                topicTipService.batchSave(appId, topicId, topicTipList, userId);
             }
 		}
         return renderJson(result);

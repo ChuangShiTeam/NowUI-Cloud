@@ -54,7 +54,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 		}
 
         //先查找取消表有没有收藏记录,有:删除,没有:不操作
-        TopicUserBookmark bookmark = topicUserBookmarkService.findTopicUserBookmark(body.getAppId(), body.getTopicId(), body.getSystemRequestUserId());
+        TopicUserBookmark bookmark = topicUserBookmarkService.findByTopicIdAndUserId(body.getTopicId(), body.getSystemRequestUserId());
         if (bookmark != null) {
         	topicUserBookmarkService.delete(bookmark.getTopicUserBookmarkId(), body.getSystemUpdateUserId(), bookmark.getSystemVersion());
 		}

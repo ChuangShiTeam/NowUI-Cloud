@@ -35,6 +35,9 @@ public class FileSystemController implements FileRpc {
         }
         System.out.println(fileId);
         File file = fileService.find(fileId);
+        if (Util.isNullOrEmpty(file)) {
+            return null;
+        }
         file.defaultKeep();
         System.out.println(file.toJSONString());
         return file;
@@ -60,7 +63,7 @@ public class FileSystemController implements FileRpc {
             return null;
         }
         
-        List<File> fileList = fileIdList.stream().map((fileId) -> findV1(fileId)).collect(Collectors.toList());
+        List<File> fileList = fileIdList.stream().map(fileId -> findV1(fileId)).filter(file -> !Util.isNullOrEmpty(file)).collect(Collectors.toList());
         
         return fileList;
     }

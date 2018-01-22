@@ -43,29 +43,46 @@ public interface TopicCommentService extends BaseService<TopicComment> {
     /**
      * 话题评论统计
      *
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return Integer 话题评论统计
      */
-    Integer countByTopicId(String appId, String topicId);
+    Integer countByTopicId(String topicId);
 
     
     /**
      * 根据话题编号查询话题评论列表
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String appId, String topicId);
+    List<TopicComment> listByTopicId(String topicId);
     
     /**
      * 根据话题编号查询话题评论分页列表
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String appId, String topicId, Integer pageSize, Integer pageIndex);
+    List<TopicComment> listByTopicId(String topicId, Integer pageSize, Integer pageIndex);
+    
+    /**
+     * 根据话题编号逻辑删除话题评论信息
+     * 
+     * @param topicId 话题编号
+     * @param systemRequestUserId 请求用户编号
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 保存话题评论
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @param userId 用户编号
+     * @param topicComment 话题评论对象信息
+     * @param systemRequestUserId 请求用户编号
+     * @return Boolean true 成功   false 失败
+     */
+    Boolean save(String appId, String topicId, String userId, TopicComment topicComment, String systemRequestUserId);
 
 }

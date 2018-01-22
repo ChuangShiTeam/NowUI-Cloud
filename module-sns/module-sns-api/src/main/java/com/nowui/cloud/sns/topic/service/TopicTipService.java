@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 
 import java.util.List;
@@ -34,4 +35,30 @@ public interface TopicTipService extends BaseService<TopicTip> {
      * @return List<TopicTip> 话题提醒列表
      */
     List<TopicTip> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据话题编号查询话题提醒列表
+     * 
+     * @param topicId 话题编号
+     * @return List<TopicTip> 话题提醒列表
+     */
+    List<TopicTip> listByTopicId(String topicId);
+    
+    /**
+     * 根据话题编号逻辑删除话题提醒信息
+     * 
+     * @param topicId 话题编号
+     * @param systemRequestUserId 请求用户编号
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 批量保存话题提醒
+     * 
+     * @param appId 应用编号
+     * @param topicId 话题编号
+     * @param topicTipList 话题多提醒列表
+     * @param systemRequestUserId 请求用户编号
+     */
+    void batchSave(String appId, String topicId, List<TopicTip> topicTipList, String systemRequestUserId);
 }

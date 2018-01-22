@@ -36,15 +36,13 @@ public interface TopicForumService extends BaseService<TopicForum> {
     List<TopicForum> listForAdmin(String appId, String forumId, String topicId, Integer pageIndex, Integer pageSize);
 
    /**
-    * 删除根据论坛编号
+    * 根据论坛编号删除论坛话题关联
     * 
     * @param appId 应用编号
     * @param forumId 论坛编号
-    * @param systemUpdateUserId 
-    * @param systemVersion 版本号
-    * @return
+    * @param systemRequestUserId 请求用户编号
     */
-    Boolean deleteByForumId(String appId, String forumId , String systemUpdateUserId);
+    void deleteByForumId(String appId, String forumId, String systemRequestUserId);
     
     /**
      * 当日论坛话题数量
@@ -59,11 +57,28 @@ public interface TopicForumService extends BaseService<TopicForum> {
     /**
      * 根据话题查询话题论坛列表
      * 
+     * @param topicId 话题编号
+     * @return List<TopicForum> 话题论坛列表
+     */
+    List<TopicForum> listByTopicId(String topicId);
+    
+    /**
+     * 根据话题编号逻辑删除话题论坛信息
+     * 
+     * @param topicId 话题编号
+     * @param systemRequestUserId 请求用户编号
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 批量保存话题论坛
+     * 
      * @param appId 应用编号
      * @param topicId 话题编号
-     * @return List<TopicForum> 话题论坛关联列表
+     * @param topicForumList 话题多论坛列表
+     * @param systemRequestUserId 请求用户编号
      */
-    List<TopicForum> listByTopicId(String appId, String topicId);
+    void batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId);
 
     
 }
