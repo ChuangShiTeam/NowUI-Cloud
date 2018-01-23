@@ -76,7 +76,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 	                        .eq(TopicUserLike.SYSTEM_STATUS, true)
 	        );
 	        redis.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, count);
-	    }
+	   }
 	    
         return count;
     }

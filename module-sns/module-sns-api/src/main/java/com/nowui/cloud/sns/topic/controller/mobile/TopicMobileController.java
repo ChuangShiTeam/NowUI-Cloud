@@ -334,6 +334,7 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_COUNT_LIKE,
 	            Topic.TOPIC_COUNT_COMMENT,
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
+	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
 	            
                 User.USER_ID,

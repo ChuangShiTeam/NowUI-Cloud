@@ -15,6 +15,7 @@ import com.nowui.cloud.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -117,22 +118,27 @@ public class TopicCommentMobileController extends BaseController {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
-                TopicComment.USER_ID,
+                TopicComment.SYSTEM_REQUEST_USER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
                 TopicComment.TOPIC_REPLAY_USER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
-
+        body.setUserId(body.getSystemRequestUserId());
+        String systemRequestUserId = body.getSystemRequestUserId();
+        String topicReplayUserId = body.getTopicReplayUserId();
+        
         Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
         //提醒被回复人
-        if (body.getTopicReplayUserId() != null || "" != body.getTopicReplayUserId() ) {
+        if (!Util.isNullOrEmpty(topicReplayUserId)) {
+        	System.out.println("=="+topicReplayUserId);
 			//把被回复人添加到回复表
         	TopicTip topicTip = new TopicTip();
         	topicTip.setAppId(body.getAppId());
         	topicTip.setTopicId(body.getTopicId());
         	topicTip.setUserId(body.getTopicReplayUserId());
-        	topicTipService.save(topicTip, Util.getRandomUUID(), body.getSystemRequestUserId());
+        	System.out.println("sdfsdffsfs");
+        	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
 		}
 
         return renderJson(result);
