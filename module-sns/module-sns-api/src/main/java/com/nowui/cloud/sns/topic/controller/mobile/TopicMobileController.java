@@ -191,13 +191,17 @@ public class TopicMobileController extends BaseController {
 	    validateRequest(
 	            body,
 	            Topic.APP_ID,
-	            Topic.TOPIC_ID
+	            Topic.TOPIC_ID,
+	            Topic.SYSTEM_REQUEST_USER_ID
 	    );
 
-	    Topic topic = topicService.findTheTopicDetails(body);
+	    String topicId = body.getTopicId();
+	    String userId = body.getSystemRequestUserId();
+	    
+	    Topic topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
 
 	    //处理用户信息(昵称,头像,是否关注)
-	    Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), body.getSystemRequestUserId());
+	    Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), userId);
 	    topic.put(Topic.USER_ID, nickNameAndAvatarAndIsFollow);
 
 	    
@@ -292,10 +296,10 @@ public class TopicMobileController extends BaseController {
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW
-        	);
+    	);
         
         
-        // 在controller层调用其他接口处理话题的图片信息
+        // 图片多媒体
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
@@ -305,7 +309,6 @@ public class TopicMobileController extends BaseController {
 //            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-            
             
             
             

@@ -57,9 +57,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
 			throw new RuntimeException("已经收藏过了");
 		}
         
-        body.setUserId(userId);
-
-        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), userId);
+        Boolean result = topicUserBookmarkService.save(appId, topicId, userId, userId);
         
         if (result) {
             // 判断用户是否取消关注过，取关过则逻辑删除用户取消关注记录

@@ -203,7 +203,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	
         	
         	//是否被用户点赞
-        	TopicUserLike findLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), topicId);
+        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(body.getAppId(), topicId, body.getSystemRequestUserId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
@@ -283,7 +283,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         	
         	
         	//是否被用户点赞
-        	TopicUserLike findLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), topicId);
+        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(body.getAppId(), topicId, body.getSystemRequestUserId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
@@ -301,80 +301,48 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 
 	@Override
-	public Topic findTheTopicDetails(Topic body) {
+	public Topic findDetailByTopicIdAndUserId(String topicId, String userId) {
 		
-
 		//根据topicId查询topic
-		Topic topic = find(body.getTopicId());
+		Topic topic = find(topicId);
 		
-        String topicId = topic.getTopicId();
+		// 话题多媒体列表
+        List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
+        topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
 
-        //处理用户信息,由controller处理
+        // 论坛列表
+        List<TopicForum> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
+        ArrayList<Forum> forumList = new ArrayList<>();
+        for (TopicForum topicForum : topicForumList) {
+            Forum forum = forumService.find(topicForum.getForumId(), true);
+            forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
+            forumList.add(forum);
+        }
+        topic.put(Topic.TOPIC_FORUM_LIST, forumList);
+
+        // 话题最新3条评论
+        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
+
+        // 话题收藏数
+        Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
+        topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
+
+        // 话题点赞数
+        Integer countLike = topicUserLikeService.countByTopicId(topic.getTopicId());
+        topic.put(Topic.TOPIC_COUNT_LIKE, countLike);
+
+        // 话题评论数
+        Integer countComment = topicCommentService.countByTopicId(topic.getTopicId());
+        topic.put(Topic.TOPIC_COUNT_COMMENT, countComment);
         
-
-		//取得topicId去话题图片表查询图片,所有图片放入list中(处理图片放在controller)
-    	List<TopicMedia> topicMedias = topicMediaService.listByTopicId(topicId);
-    	topic.put(Topic.TOPIC_MEDIA_LIST, topicMedias);
-    	
-
-    	
-    	//取得topicId去话题论坛表查询,得到所有话题所在论坛
-    	List<TopicForum> allTopicForumList = topicForumService.listByTopicId(topicId);
-    	//new一个list存放所有论坛对象,论坛对象存放,id和名称
-    	ArrayList<Forum> forumList = new ArrayList<>();
-    	//遍历allTopicForumList
-    	for (TopicForum aTopicForum : allTopicForumList) {
-    		//得到论坛编号
-			String forumId = aTopicForum.getForumId();
-			//根据论坛编号去论坛信息表查询名称
-			Forum forum = forumService.find(forumId, true);
-			//把forum放入list
-			forumList.add(forum);
-		}
-    	//把话题所在圈子放入topic
-    	topic.put(Topic.TOPIC_FORUM_LIST, forumList);
-
-
-
-    	//得到每个话题最新的3个评论,
-    	List<TopicComment> commentList = topicCommentService.listForAdmin(body.getAppId(), null, topicId, null, null, null, 1, 3);
-    	topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
-
-    	//取得topicId去话题收藏表查询,得到收藏数
-    	String countBookMark = "" + topicUserBookmarkService.countForAdmin(body.getAppId(), topicId, null);
-    	topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
-
-
-
-    	//取得topicId去话题点赞表查询,得到点赞数
-    	String countLike = "" + topicUserLikeService.countForAdmin(body.getAppId(), null, topicId);
-    	topic.put(Topic.TOPIC_COUNT_LIKE, countLike);
-    	
-    	//取得点赞的用户列表,显示3个
-    	List<TopicUserLike> userLikeList = topicUserLikeService.listForAdmin(body.getAppId(), null, topicId, 1, 3);
-    	topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
-
-
-    	//取得topicId去话题评论表查询,得到评论数
-    	String countComment = "" + topicCommentService.countForAdmin(body.getAppId(), null, topicId, null, null, null);
-    	topic.put(Topic.TOPIC_COUNT_COMMENT, countComment);
-    	
-    	
-    	
-    	//是否被用户收藏,根据requestUserId和topicId去查询用户收藏关联表有没有记录,有就设置一个常量字段,并设置为true
-    	TopicUserBookmark findTopicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
-    	if (findTopicUserBookmark != null) {
-    		topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, true);
-		}
-    	
-    	
-    	
-    	//是否被用户点赞
-    	TopicUserLike findLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), topicId);
-    	if (findLike != null) {
-    		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
-		}
-    	
+        // 是否被用户收藏
+        TopicUserBookmark topicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topic.getTopicId(), userId);
+        topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(topicUserBookmark));
+        
+        // 是否被用户点赞
+        TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), topic.getTopicId(), userId);
+        topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
 
 		return topic;
 	}
@@ -416,45 +384,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         }
         
         for (Topic topic : topicList) {
-            
-            // 话题多媒体列表
-            List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
-            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-
-            // 论坛列表
-            List<TopicForum> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
-            ArrayList<Forum> forumList = new ArrayList<>();
-            for (TopicForum topicForum : topicForumList) {
-                Forum forum = forumService.find(topicForum.getForumId(), true);
-                forum.defaultKeep();
-                forumList.add(forum);
-            }
-            topic.put(Topic.TOPIC_FORUM_LIST, forumList);
-
-            // 话题最新3条评论
-            List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-            topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
-            
-
-            // 话题收藏数
-            Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
-            topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
-
-            // 话题点赞数
-            Integer countLike = topicUserLikeService.countByTopicId(topic.getTopicId());
-            topic.put(Topic.TOPIC_COUNT_LIKE, countLike);
-
-            // 话题评论数
-            Integer countComment = topicCommentService.countByTopicId(topic.getTopicId());
-            topic.put(Topic.TOPIC_COUNT_COMMENT, countComment);
-            
-            // 是否被用户收藏
-            TopicUserBookmark topicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topic.getTopicId(), userId);
-            topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(topicUserBookmark));
-            
-            // 是否被用户点赞
-            TopicUserLike topicUserLike = topicUserLikeService.findLike(appId, userId, topic.getTopicId());
-            topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
+            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
         }
 
         return topicList;
