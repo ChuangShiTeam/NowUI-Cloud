@@ -49,7 +49,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         String userId = body.getSystemRequestUserId();
 
         TopicUserUnbookmark topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
-        if (Util.isNullOrEmpty(topicUserUnbookmark)) {
+        if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
         	throw new RuntimeException("你已经取消收藏过了");
 		}
 
