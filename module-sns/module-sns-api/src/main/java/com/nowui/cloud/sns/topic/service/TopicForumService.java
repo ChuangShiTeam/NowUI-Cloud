@@ -47,12 +47,10 @@ public interface TopicForumService extends BaseService<TopicForum> {
     /**
      * 当日论坛话题数量
      * 
-     * @param appId 应用编号
      * @param forumId 论坛编号
-     * @param topicId 话题编号
      * @return Integer 当日话题数量统计
      */
-    Integer countForToday(String appId, String forumId, String topicId);
+    Integer countTodayByForumId(String forumId);
     
     /**
      * 根据话题查询话题论坛列表
