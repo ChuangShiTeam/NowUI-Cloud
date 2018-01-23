@@ -27,13 +27,15 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 
     public static final String TOPIC_FORUM_ID_LIST_BY_TOPIC_ID = "topic_forum_id_list_by_topic_id_";
     
+    public static final String TOPIC_FORUM_COUNT_BY_FORUM_ID = "topic_forum_count_by_forum_id_";
+    
     @Override
     public Integer countForAdmin(String appId, String forumId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)
-                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
-                        .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
+                        .eq(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.TOPIC_ID, topicId)
                         .eq(TopicForum.SYSTEM_STATUS, true)
         );
         return count;
@@ -44,8 +46,8 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         List<TopicForum> topicForumList = list(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)
-                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
-                        .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
+                        .eq(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.TOPIC_ID, topicId)
                         .eq(TopicForum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -56,12 +58,11 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     }
     
     @Override
-    public void deleteByForumId(String appId, String forumId , String systemUpdateUserId) {
-    	// 从论坛动态表中查找所有有ForumId的主键
+    public void deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
     	List<TopicForum> topicForumList = list(
                 new BaseWrapper<TopicForum>()
                         .eq(TopicForum.APP_ID, appId)
-                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.FORUM_ID, forumId)
                         .eq(TopicForum.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
         );
@@ -70,8 +71,9 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     	    topicForumList.stream().forEach(topicForum -> {
     	        delete(topicForum.getTopicForumId(), systemUpdateUserId, topicForum.getSystemVersion());
     	    });
+    	    
+    	    redis.delete(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
     	}
-
     }
 
 	@Override
@@ -84,6 +86,37 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         );
         return count;
 	}
+	
+	@Override
+    public Integer countByForumId(String forumId) {
+        Integer forumTopicCount = (Integer) redis.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
+        
+        if (forumTopicCount == null) {
+            forumTopicCount = count(
+                    new BaseWrapper<TopicForum>()
+                    .eq(TopicForum.FORUM_ID, forumId)
+                    .eq(TopicForum.SYSTEM_STATUS, true)
+            );
+            
+            redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId, forumTopicCount);
+        }
+        
+        return forumTopicCount;
+    }
+
+    @Override
+    public List<TopicForum> listByForumId(String forumId, Integer pageIndex, Integer pageSize) {
+        List<TopicForum> topicForumList = list(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return topicForumList;
+    }
 
 	@Override
 	public List<TopicForum> listByTopicId(String topicId) {
@@ -129,7 +162,15 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                 topicForum.setAppId(appId);
                 String topicForumId = Util.getRandomUUID();
                 
-                save(topicForum, topicForumId, systemRequestUserId);
+                Boolean flag = save(topicForum, topicForumId, systemRequestUserId);
+                
+                if (!flag) {
+                    throw new RuntimeException("保存失败");
+                }
+                // 论坛话题数缓存
+                Integer forumTopicCount = countByForumId(topicForum.getForumId());
+                
+                redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
                 
                 topicForumIdList.add(topicForumId);
             }

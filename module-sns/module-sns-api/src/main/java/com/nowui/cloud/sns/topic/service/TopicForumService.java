@@ -45,6 +45,14 @@ public interface TopicForumService extends BaseService<TopicForum> {
     void deleteByForumId(String appId, String forumId, String systemRequestUserId);
     
     /**
+     * 论坛话题数量
+     * 
+     * @param forumId 论坛编号
+     * @return Integer 话题数量统计
+     */
+    Integer countByForumId(String forumId);
+    
+    /**
      * 当日论坛话题数量
      * 
      * @param forumId 论坛编号
@@ -53,7 +61,17 @@ public interface TopicForumService extends BaseService<TopicForum> {
     Integer countTodayByForumId(String forumId);
     
     /**
-     * 根据话题查询话题论坛列表
+     * 根据论坛编号查询话题论坛列表
+     * 
+     * @param forumId 论坛编号
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<TopicForum> 话题论坛列表
+     */
+    List<TopicForum> listByForumId(String forumId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据话题编号查询话题论坛列表
      * 
      * @param topicId 话题编号
      * @return List<TopicForum> 话题论坛列表
@@ -77,6 +95,5 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param systemRequestUserId 请求用户编号
      */
     void batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId);
-
     
 }
