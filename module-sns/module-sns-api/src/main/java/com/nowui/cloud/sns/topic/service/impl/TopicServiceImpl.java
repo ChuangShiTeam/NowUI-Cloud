@@ -407,16 +407,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
             topicUserLikeService.deleteByTopicId(topicId, systemRequestUserId);
 
             //删除取消收藏 
-            List<TopicUserUnbookmark> allUnBookMarkListByTopic = topicUserUnbookmarkService.allUnBookMarkListByTopic(appId, topicId);
-            for (TopicUserUnbookmark topicUserUnbookmark : allUnBookMarkListByTopic) {
-                topicUserUnbookmarkService.delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
-            }
+            topicUserUnbookmarkService.deleteByTopicId(topicId, systemRequestUserId);
 
             //删除话题取消点赞
-            List<TopicUserUnlike> unlikeList = topicUserUnlikeService.allUnlikeListByTopicId(appId, topicId);
-            for (TopicUserUnlike topicUserUnlike : unlikeList) {
-                topicUserUnlikeService.delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
-            }
+            topicUserUnlikeService.deleteByTopicId(topicId, systemRequestUserId);
         }
         
         return result;

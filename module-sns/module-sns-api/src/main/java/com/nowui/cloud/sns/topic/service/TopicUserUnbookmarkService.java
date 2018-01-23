@@ -36,14 +36,13 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
     List<TopicUserUnbookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize);
     
     /**
-     * 根据话题编号和userId查询单条取消收藏记录
+     * 根据话题编号和用户编号查询单条取消收藏记录
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @param userId 用户编号
      * @return TopicUserUnbookmark 用户取消收藏单条记录
      */
-    TopicUserUnbookmark findUnBookMark(String appId, String topicId, String userId);
+    TopicUserUnbookmark findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 根据话题编号查询取消收藏记录
@@ -52,6 +51,24 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      * @param topicId 话题编号
      * @return List<TopicUserUnbookmark> 用户取消收藏记录列表
      */
-    List<TopicUserUnbookmark> allUnBookMarkListByTopic(String appId, String topicId);
+    List<TopicUserUnbookmark> listByTopicId(String topicId);
+    
+    /**
+     * 根据话题编号逻辑删除用户取消收藏记录
+     * 
+     * @param topicId
+     * @param systemRequestUserId
+     */
+    void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 根据话题编号和用户编号逻辑删除用户取消收藏记录
+     * 
+     * @param topicId 话题编号
+     * @param userId 用户编号
+     * @param systemRequestUserId 请求用户编号
+     * @return Boolean true 成功    false 失败
+     */
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
     
 }

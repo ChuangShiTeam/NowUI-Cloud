@@ -5,6 +5,8 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicUserUnlikeMapper;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.util.Util;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -49,33 +51,49 @@ public class TopicUserUnlikeServiceImpl extends BaseServiceImpl<TopicUserUnlikeM
     }
 
 	@Override
-	public TopicUserUnlike findUnlike(String appId, String userId, String topicId) {
-		List<TopicUserUnlike> topicUserUnlikeList = list(
+	public TopicUserUnlike findByTopciIdAndUserId(String topicId, String userId) {
+		TopicUserUnlike topicUserUnlike = find(
                 new BaseWrapper<TopicUserUnlike>()
-                        .eq(TopicUserUnlike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnlike.USER_ID, userId)
-                        .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
+                        .eq(TopicUserUnlike.USER_ID, userId)
+                        .eq(TopicUserUnlike.TOPIC_ID, topicId)
                         .eq(TopicUserUnlike.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicUserUnlike.SYSTEM_CREATE_TIME))
         );
-		if (topicUserUnlikeList == null || topicUserUnlikeList.size() ==0) {
-			return null;
-		}
 
-        return topicUserUnlikeList.get(0);
+        return topicUserUnlike;
 	}
 
 	@Override
-	public List<TopicUserUnlike> allUnlikeListByTopicId(String appId, String topicId) {
+	public List<TopicUserUnlike> listByTopicId(String topicId) {
 		List<TopicUserUnlike> topicUserUnlikeList = list(
                 new BaseWrapper<TopicUserUnlike>()
-                        .eq(TopicUserUnlike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
+                        .eq(TopicUserUnlike.TOPIC_ID, topicId)
                         .eq(TopicUserUnlike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserUnlike.SYSTEM_CREATE_TIME))
         );
 
         return topicUserUnlikeList;
 	}
+
+    @Override
+    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+        List<TopicUserUnlike> topicUserUnlikeList = listByTopicId(topicId);
+        
+        if (!Util.isNullOrEmpty(topicUserUnlikeList)) {
+            topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion()));
+        }
+    }
+
+    @Override
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+        TopicUserUnlike topicUserUnlike = findByTopciIdAndUserId(topicId, userId);
+        
+        if (Util.isNullOrEmpty(topicUserUnlike)) {
+            return true;
+        }
+        
+        Boolean result = delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
+        
+        return result;
+    }
 
 }

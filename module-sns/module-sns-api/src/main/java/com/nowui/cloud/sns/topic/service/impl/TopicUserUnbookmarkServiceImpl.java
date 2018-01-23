@@ -5,6 +5,8 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.mapper.TopicUserUnbookmarkMapper;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.util.Util;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -49,33 +51,52 @@ public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnb
     }
 
 	@Override
-	public TopicUserUnbookmark findUnBookMark(String appId, String topicId, String userId) {
-		List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
+	public TopicUserUnbookmark findByTopicIdAndUserId(String topicId, String userId) {
+		TopicUserUnbookmark topicUserUnbookmark = find(
                 new BaseWrapper<TopicUserUnbookmark>()
-                        .eq(TopicUserUnbookmark.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicUserUnbookmark.USER_ID, userId)
+                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
+                        .eq(TopicUserUnbookmark.USER_ID, userId)
                         .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicUserUnbookmark.SYSTEM_CREATE_TIME))
         );
 
-		if (topicUserUnbookmarkList != null || topicUserUnbookmarkList.size() == 0) {
-			return null;
-		}
-        return topicUserUnbookmarkList.get(0);
+        return topicUserUnbookmark;
 	}
 
 	@Override
-	public List<TopicUserUnbookmark> allUnBookMarkListByTopic(String appId, String topicId) {
+	public List<TopicUserUnbookmark> listByTopicId(String topicId) {
 		List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
                 new BaseWrapper<TopicUserUnbookmark>()
-                        .eq(TopicUserUnbookmark.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
+                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
                         .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserUnbookmark.SYSTEM_CREATE_TIME))
         );
 
         return topicUserUnbookmarkList;
 	}
+
+    @Override
+    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+        List<TopicUserUnbookmark> topicUserUnbookmarkList = listByTopicId(topicId);
+        
+        if (Util.isNullOrEmpty(topicUserUnbookmarkList)) {
+            return;
+        }
+        
+        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
+        
+    }
+
+    @Override
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+        TopicUserUnbookmark topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
+        
+        if (Util.isNullOrEmpty(topicUserUnbookmark)) {
+            return true;
+        }
+        
+        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+        
+        return result;
+    }
 
 }
