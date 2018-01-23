@@ -299,13 +299,20 @@ public class TopicMobileController extends BaseController {
         for (Topic topic : resultList) {
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
-            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
             List<File> fileList = fileRpc.findsV1(fileIds);
 
-            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
-
+//            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
+            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+            
+            
+            
+            
+            
         }
+        
+      
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -317,10 +324,20 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_IS_LOCATION,
                 Topic.TOPIC_IS_TOP,
                 Topic.TOPIC_TOP_LEVEL,
+                Topic.TOPIC_FORUM_LIST,
+                Topic.TOPIC_MEDIA_LIST,
+                Topic.TOPIC_COMMENT_LIST,
+	            Topic.TOPIC_COUNT_BOOKMARK,
+	            Topic.TOPIC_COUNT_LIKE,
+	            Topic.TOPIC_COUNT_COMMENT,
+	            Topic.TOPIC_USER_IS_BOOKEMARK,
+	            Topic.TOPIC_USER_LIKE_LIST,
+	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		BaseEntity.SYSTEM_CREATE_TIME
         );
 
         return renderJson(countResult, resultList);
