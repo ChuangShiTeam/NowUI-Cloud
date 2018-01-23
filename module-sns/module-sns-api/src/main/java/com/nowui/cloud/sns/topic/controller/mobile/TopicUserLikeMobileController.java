@@ -108,7 +108,7 @@ public class TopicUserLikeMobileController extends BaseController {
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
 
-        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(appId, topicId, userId);
+        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
         
         if (userLike != null) {
             throw new RuntimeException("已经点过赞了");

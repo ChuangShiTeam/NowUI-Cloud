@@ -200,16 +200,12 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         		topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, true);
 			}
         	
-        	
-        	
         	//是否被用户点赞
-        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(body.getAppId(), topicId, body.getSystemRequestUserId());
+        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
         	
-        	
-
         	//把封装好的topic放入list,然后返回
         	topicList.add(topic);
 		}
@@ -280,15 +276,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         		topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, true);
 			}
         	
-        	
-        	
         	//是否被用户点赞
-        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(body.getAppId(), topicId, body.getSystemRequestUserId());
+        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
-        	
-        	
 
         	//把封装好的topic放入list,然后返回
         	/**
@@ -341,7 +333,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(topicUserBookmark));
         
         // 是否被用户点赞
-        TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), topic.getTopicId(), userId);
+        TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
 
 		return topic;

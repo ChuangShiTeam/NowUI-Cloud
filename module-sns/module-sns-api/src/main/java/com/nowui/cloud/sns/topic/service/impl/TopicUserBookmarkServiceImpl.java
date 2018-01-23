@@ -120,4 +120,24 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
         return result;
     }
 
+    @Override
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+        TopicUserBookmark topicUserBookmark = findByTopicIdAndUserId(topicId, userId);
+        
+        if (Util.isNullOrEmpty(topicUserBookmark)) {
+            return true;
+        }
+        // 查询缓存收藏数
+        Integer count = countByTopicId(topicId);  
+        
+        Boolean result = delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
+        
+        if (result) {
+            // 更新话题收藏数缓存
+            redis.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count - 1));
+        }
+        
+        return result;
+    }
+
 }
