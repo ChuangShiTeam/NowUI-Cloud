@@ -63,7 +63,7 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String topicId, Integer pageSize, Integer pageIndex);
+    List<TopicComment> listByTopicId(String topicId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据话题编号逻辑删除话题评论信息

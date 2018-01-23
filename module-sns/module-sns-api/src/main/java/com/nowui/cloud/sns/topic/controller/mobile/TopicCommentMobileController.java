@@ -59,13 +59,13 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.PAGE_SIZE
         );
 
-        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , null, body.getTopicId(), null, null, null);
-        List<TopicComment> topicCommentList = topicCommentService.listForAdmin(body.getAppId(), null, body.getTopicId(), null, null, null, body.getPageIndex(), body.getPageSize());
+        String topicId = body.getTopicId();
+        Integer resultTotal = topicCommentService.countByTopicId(topicId);
+        List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topicId, body.getPageIndex(), body.getPageSize());
 		
-        
-        if (topicCommentList == null || topicCommentList.size() == 0) {
-        	return renderJson(resultTotal, topicCommentList);
-		}
+        if (Util.isNullOrEmpty(topicCommentList)) {
+            return renderJson(resultTotal, topicCommentList);
+        }
         
         //处理用户信息(昵称,头像)
         String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
@@ -86,16 +86,17 @@ public class TopicCommentMobileController extends BaseController {
         
         List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
     
-        Stream<Member> respondMemberStream = respondMemberList.stream();
-        for (TopicComment topicComment : topicCommentList) {
-        	if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
-        		continue;
-        	}
-        	Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-        	topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+        if (!Util.isNullOrEmpty(respondMemberList)) {
+            Stream<Member> respondMemberStream = respondMemberList.stream();
+            for (TopicComment topicComment : topicCommentList) {
+                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
+                    continue;
+                }
+                Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+            }
         }
         
-
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.USER_ID,
@@ -106,7 +107,8 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME
+        		UserNickName.USER_NICK_NAME,
+        		TopicComment.SYSTEM_CREATE_TIME
         );
 
         return renderJson(resultTotal, topicCommentList);
