@@ -75,13 +75,11 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     }
 
 	@Override
-	public Integer countForToday(String appId, String forumId, String topicId) {
+	public Integer countTodayByForumId(String forumId) {
 		Integer count = count(
                 new BaseWrapper<TopicForum>()
-                        .eq(TopicForum.APP_ID, appId)
-                        .likeAllowEmpty(TopicForum.FORUM_ID, forumId)
-                        .likeAllowEmpty(TopicForum.TOPIC_ID, topicId)
-                        .ge(TopicForum.SYSTEM_CREATE_TIME, DateUtil.getTodayStartDateTime() )
+                        .eq(TopicForum.FORUM_ID, forumId)
+                        .ge(TopicForum.SYSTEM_CREATE_TIME, DateUtil.getTodayStartDateTime())
                         .eq(TopicForum.SYSTEM_STATUS, true)
         );
         return count;

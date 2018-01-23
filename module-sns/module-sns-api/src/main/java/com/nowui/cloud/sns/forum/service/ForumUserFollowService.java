@@ -65,6 +65,15 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
     List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
     
     /**
+     * 论坛用户关注列表
+     * 
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @return List<ForumUserFollow> 论坛用户关注列表
+     */
+    List<ForumUserFollow> listByUserId(String appId, String userId);
+    
+    /**
      * 根据用户编号和论坛编号查询用户关注信息
      * 
      * @param appId 应用编号
