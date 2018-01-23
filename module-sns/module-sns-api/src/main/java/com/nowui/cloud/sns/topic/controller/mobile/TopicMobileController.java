@@ -190,13 +190,17 @@ public class TopicMobileController extends BaseController {
 	    validateRequest(
 	            body,
 	            Topic.APP_ID,
-	            Topic.TOPIC_ID
+	            Topic.TOPIC_ID,
+	            Topic.SYSTEM_REQUEST_USER_ID
 	    );
 
-	    Topic topic = topicService.findTheTopicDetails(body);
+	    String topicId = body.getTopicId();
+	    String userId = body.getSystemRequestUserId();
+	    
+	    Topic topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
 
 	    //处理用户信息(昵称,头像,是否关注)
-	    Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), body.getSystemRequestUserId());
+	    Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), userId);
 	    topic.put(Topic.USER_ID, nickNameAndAvatarAndIsFollow);
 
 	    
@@ -207,7 +211,6 @@ public class TopicMobileController extends BaseController {
         List<File> fileList = fileRpc.findsV1(fileIds);
         
         topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
-        //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         
 

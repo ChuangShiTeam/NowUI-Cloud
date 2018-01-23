@@ -100,27 +100,33 @@ public class TopicUserLikeMobileController extends BaseController {
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
-                //TopicUserLike.USER_ID,这个参数好像不传过来?那下面自己设置
-                TopicUserLike.TOPIC_ID
+                TopicUserLike.TOPIC_ID,
+                TopicUserLike.SYSTEM_REQUEST_USER_ID
         );
+        
+        String appId = body.getAppId();
+        String topicId = body.getTopicId();
+        String userId = body.getSystemRequestUserId();
 
-        TopicUserLike userLike = topicUserLikeService.findLike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
+        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(appId, topicId, userId);
+        
         if (userLike != null) {
-        	//点赞表有记录就返回,不用新增
-        	return renderJson(true);
+            throw new RuntimeException("已经点过赞了");
 		}
 
-
-        //先去取消点赞表查询,有:修改,没有:不做操作
-        TopicUserUnlike unlike = topicUserUnlikeService.findUnlike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
-        if (unlike != null) {
-        	Boolean delete = topicUserUnlikeService.delete(unlike.getTopicUserUnlikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
-		}
 
 
         body.setUserId(body.getSystemRequestUserId());
 
-        Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserLikeService.save(appId, topicId, userId, userId);
+                
+        if (result) {
+            // 删除取消点赞记录
+            TopicUserUnlike unlike = topicUserUnlikeService.findUnlike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
+            if (unlike != null) {
+                topicUserUnlikeService.delete(unlike.getTopicUserUnlikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
+            }
+        }
 
         return renderJson(result);
     }

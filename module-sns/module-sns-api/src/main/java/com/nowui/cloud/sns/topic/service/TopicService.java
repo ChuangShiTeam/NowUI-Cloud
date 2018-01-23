@@ -78,10 +78,11 @@ public interface TopicService extends BaseService<Topic> {
     /**
      * 根据topicId查询话题详情
      * 
-     * @param body
-     * @return
+     * @param topicId 话题编号
+     * @param userId 用户编号
+     * @return Topic 话题详情
      */
-    Topic findTheTopicDetails(Topic body);
+    Topic findDetailByTopicIdAndUserId(String topicId, String userId);
 
 
     /**
