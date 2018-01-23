@@ -1,9 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.sns.topic.entity.TopicMedia;
-import com.nowui.cloud.sns.topic.entity.TopicTip;
-
 import java.util.List;
+
+import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.sns.topic.entity.TopicTip;
 
 /**
  * 话题提醒业务接口

@@ -1,22 +1,5 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.Member;
-import com.nowui.cloud.member.member.entity.MemberFollow;
-import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.sns.topic.entity.Topic;
-import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
-import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
-import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
-import com.nowui.cloud.util.Util;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserNickName;
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.util.Util;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 点赞话题关联移动端控制器
@@ -108,24 +106,18 @@ public class TopicUserLikeMobileController extends BaseController {
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
 
-        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(appId, topicId, userId);
+        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
         
         if (userLike != null) {
             throw new RuntimeException("已经点过赞了");
 		}
 
-
-
-        body.setUserId(body.getSystemRequestUserId());
+        body.setUserId(userId);
 
         Boolean result = topicUserLikeService.save(appId, topicId, userId, userId);
                 
         if (result) {
-            // 删除取消点赞记录
-            TopicUserUnlike unlike = topicUserUnlikeService.findUnlike(body.getAppId(), body.getSystemRequestUserId(), body.getTopicId());
-            if (unlike != null) {
-                topicUserUnlikeService.delete(unlike.getTopicUserUnlikeId(), body.getSystemUpdateUserId(), unlike.getSystemVersion());
-            }
+            topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, userId);
         }
 
         return renderJson(result);

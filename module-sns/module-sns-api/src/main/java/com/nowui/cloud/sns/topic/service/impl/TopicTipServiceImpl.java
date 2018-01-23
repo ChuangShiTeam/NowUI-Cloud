@@ -1,19 +1,18 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.sns.topic.entity.TopicTip;
-import com.nowui.cloud.sns.topic.entity.TopicTip;
-import com.nowui.cloud.sns.topic.mapper.TopicTipMapper;
-import com.nowui.cloud.sns.topic.service.TopicTipService;
-import com.nowui.cloud.util.Util;
-
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.sns.topic.entity.TopicTip;
+import com.nowui.cloud.sns.topic.mapper.TopicTipMapper;
+import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.util.Util;
 
 /**
  * 话题提醒业务实现

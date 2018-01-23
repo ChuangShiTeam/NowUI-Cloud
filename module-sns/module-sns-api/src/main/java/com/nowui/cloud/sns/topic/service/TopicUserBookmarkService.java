@@ -70,6 +70,15 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
     void deleteByTopicId(String topicId, String systemRequestUserId);
     
     /**
+     * 根据话题编号和用户编号逻辑删除话题收藏
+     * 
+     * @param topicId
+     * @param userId
+     * @param systemRequestUserId
+     */
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
+    
+    /**
      * 保存话题收藏
      * 
      * @param appId 应用编号

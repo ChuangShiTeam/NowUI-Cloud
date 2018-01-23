@@ -1,17 +1,5 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
-import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
-import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
-import com.nowui.cloud.util.Util;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
+import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
+import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 话题收藏移动端控制器
@@ -60,12 +56,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         Boolean result = topicUserBookmarkService.save(appId, topicId, userId, userId);
         
         if (result) {
-            // 判断用户是否取消关注过，取关过则逻辑删除用户取消关注记录
-            TopicUserUnbookmark topicUserUnbookMark = topicUserUnbookmarkService.findUnBookMark(appId, topicId, userId);
-            
-            if (topicUserUnbookMark != null) {
-                topicUserUnbookmarkService.delete(topicUserUnbookMark.getTopicUserUnbookmarkId(), userId, topicUserUnbookMark.getSystemVersion());
-            }
+            topicUserUnbookmarkService.deleteByTopicIdAndUserId(topicId, userId, userId);
         }
 
         return renderJson(result);

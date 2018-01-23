@@ -38,12 +38,11 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
     /**
      * 根据话题编号和用户编号查找单条点赞记录
      * 
-     * @param appId 应用编号
      * @param topicId 话题编号
      * @param userId 用户编号
      * @return TopicUserLike 单调点赞记录
      */
-    TopicUserLike findByTopicIdAndUserId(String appId, String topicId, String userId);
+    TopicUserLike findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 点赞话题统计
@@ -64,10 +63,20 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
     /**
      * 根据话题编号逻辑删除话题点赞
      * 
-     * @param topicId
+     * @param topicId 话题编号
      * @param systemRequestUserId
      */
     void deleteByTopicId(String topicId, String systemRequestUserId);
+    
+    /**
+     * 根据话题编号和用户编号删除话题点赞
+     * 
+     * @param topicId 话题编号
+     * @param userId 用户编号
+     * @param systemRequestUserId 请求用户编号
+     * @return Boolean true 成功   false 失败
+     */
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
     
     /**
      * 保存话题点赞
