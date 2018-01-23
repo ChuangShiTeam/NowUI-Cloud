@@ -50,7 +50,7 @@ public class TopicUserUnlikeMobileController extends BaseController {
         
         TopicUserUnlike unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
         
-        if (Util.isNullOrEmpty(unlike)) {
+        if (!Util.isNullOrEmpty(unlike)) {
         	throw new RuntimeException("已经取消点赞过了");
 		}
         
