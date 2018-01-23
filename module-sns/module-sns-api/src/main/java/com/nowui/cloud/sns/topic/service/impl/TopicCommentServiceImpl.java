@@ -88,7 +88,7 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
 	}
 
     @Override
-    public List<TopicComment> listByTopicId(String topicId, Integer pageSize, Integer pageIndex) {
+    public List<TopicComment> listByTopicId(String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicComment> topicCommentList = list(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.TOPIC_ID, topicId)
