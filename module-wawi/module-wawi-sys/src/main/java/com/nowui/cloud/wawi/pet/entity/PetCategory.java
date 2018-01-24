@@ -90,7 +90,6 @@ public class PetCategory extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "宠物分类排序不能为空")
-    @Length(max = 11, message = "宠物分类排序长度超出限制")
     private Integer petCategorySort;
     public static final String PET_CATEGORY_SORT = "petCategorySort";
 
