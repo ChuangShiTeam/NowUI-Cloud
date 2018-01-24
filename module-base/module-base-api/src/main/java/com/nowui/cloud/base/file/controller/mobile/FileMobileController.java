@@ -52,4 +52,26 @@ public class FileMobileController extends BaseController {
         return renderJson(fileList);
     }
 
+    @ApiOperation(value = "base64上传")
+    @RequestMapping(value = "/file/mobile/v1/base64/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1() {
+        File fileEntry = getEntry(File.class);
+
+        validateRequest(
+                fileEntry,
+                File.APP_ID,
+                File.BASE_64_DATA
+        );
+
+        File file = fileService.uploadBase64(fileEntry.getAppId(), fileEntry.getSystemRequestUserId(), fileEntry.getBase64Data());
+
+        validateResponse(
+                File.FILE_ID,
+                File.FILE_NAME,
+                File.FILE_PATH
+        );
+
+        return renderJson(file);
+    }
+
 }

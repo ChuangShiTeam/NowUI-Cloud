@@ -79,18 +79,24 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         
         List<File> fileList = new ArrayList<File>();
         for (MultipartFile myfile : multipartFiles) {
+            System.out.println(myfile.getSize());
+            System.out.println(myfile.getContentType());
+            System.out.println(myfile.getSize());
+            System.out.println(myfile.getName());
             if (myfile.isEmpty()) {
                 throw new RuntimeException("上传图片为空");
             } else {
                 String originalFileName = myfile.getOriginalFilename();
                 String fileSuffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
                 String fileName = Util.getRandomUUID() + "." + fileSuffix;
+
+                System.out.println(fileSuffix);
                 
                 if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
                     throw new RuntimeException("上传图片格式不对");
                 }
                 //图片限定10M
-                if (((int) myfile.getSize() / 1024 + 1) > 1000) {   
+                if (myfile.getSize() > 10 * 1024L * 1024L) {
                     throw new RuntimeException("上传图片超过限定大小");
                 }
                 
