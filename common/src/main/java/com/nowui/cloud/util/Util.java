@@ -30,7 +30,7 @@ public class Util {
 
     /**
      * 生成32位的随机数， 通用唯一识别码 用于数据库主键
-     * 
+     *
      * @return
      */
     public static String getRandomUUID() {
@@ -39,7 +39,7 @@ public class Util {
 
     /**
      * 验证NULL或空
-     * 
+     *
      * @param obj
      * @return
      */
@@ -79,7 +79,7 @@ public class Util {
 
     /**
      * 读取HttpServletRequest请求数据
-     * 
+     *
      * @param request
      * @return
      */
@@ -114,7 +114,7 @@ public class Util {
 
     /**
      * 拼接URI路径
-     * 
+     *
      * @param params
      * @return
      */
@@ -131,7 +131,7 @@ public class Util {
 
     /**
      * 验证email
-     * 
+     *
      * @param str
      * @return
      */
@@ -146,7 +146,7 @@ public class Util {
 
     /**
      * 验证手机号码（13、14、15、17、18、19开头长度为11的手机号码）
-     * 
+     *
      * @param str
      * @return
      */
@@ -161,7 +161,7 @@ public class Util {
 
     /**
      * 验证日期
-     * 
+     *
      * @param str
      * @return
      */
@@ -172,7 +172,7 @@ public class Util {
 
     /**
      * 验证数字
-     * 
+     *
      * @param str
      * @return
      */
@@ -183,7 +183,7 @@ public class Util {
 
     /**
      * 验证整型
-     * 
+     *
      * @param str
      * @return
      */
@@ -194,7 +194,7 @@ public class Util {
 
     /**
      * 验证小数
-     * 
+     *
      * @param str
      * @return
      */
@@ -205,7 +205,7 @@ public class Util {
 
     /**
      * 正则匹配
-     * 
+     *
      * @param regex
      * @param string
      * @return
@@ -218,7 +218,7 @@ public class Util {
 
     /**
      * 密码加密
-     * 
+     *
      * @param user_password
      * @return
      */
@@ -229,12 +229,12 @@ public class Util {
 
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + userPassword);
     }
-    
+
     /**
      * 生成随机数字
-     * 
+     *
      * @param length 随机数字长度
-     * @return 
+     * @return
      */
     public static String getRandomNumber(int length) {
         StringBuilder result = new StringBuilder();
@@ -248,7 +248,7 @@ public class Util {
 
     /**
      * 验证类里面是否存在这个属性
-     * 
+     *
      * @param clazz
      * @param fieldName
      * @return
@@ -259,13 +259,13 @@ public class Util {
         } catch (Exception e) {
 
         }
-        
+
         if (clazz != Object.class) {
             return existsField(clazz.getSuperclass(), fieldName);
         }
         return false;
     }
-    
+
     public static String repalceLast(String source, String target, String replacement) {
         int lastIndex = source.lastIndexOf(target);
         if (lastIndex > 0) {
@@ -273,10 +273,10 @@ public class Util {
         }
         return source;
     }
-    
+
     /**
      * 获取请求客户端的IP地址
-     * 
+     *
      * @param request
      * @return
      */
@@ -293,10 +293,10 @@ public class Util {
         }
         return ip;
     }
-    
+
     /**
      * 实体对象列表映射实体对象字段列表
-     * 
+     *
      * @param beanList 实体对象列表
      * @param field 实体对象字段
      * @return List<String> 实体对象字段列表
@@ -307,10 +307,10 @@ public class Util {
         }
         return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
     }
-    
+
     /**
      * 实体对象列表映射实体对象字段列表json字符串
-     * 
+     *
      * @param beanList 实体对象列表
      * @param field 实体对象字段
      * @return String 字段列表json字符串
@@ -322,7 +322,7 @@ public class Util {
         List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
         return JSONArray.toJSONString(list);
     }
-    
+
     /**
      * 实体对象列表关联字段映射实体字段对象
      * @param beanList 实体对象列表
@@ -346,7 +346,7 @@ public class Util {
         }
         return beanList;
     }
-    
+
     public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
         if (Util.isNullOrEmpty(beanList)) {
             return null;
@@ -360,7 +360,7 @@ public class Util {
         }
         return beanList;
     }
-    
+
     public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
         if (Util.isNullOrEmpty(beanList)) {
             return null;
@@ -374,7 +374,7 @@ public class Util {
         }
         return beanList;
     }
-    
+
     /**
      * 实体对象列表关联字段映射实体字段对象
      * @param beanList 实体对象列表
@@ -399,7 +399,7 @@ public class Util {
         }
         return beanList;
     }
-    
+
     public static String getTableName(Class<? extends BaseEntity> clazz) {
         TableName table = clazz.getAnnotation(TableName.class);
         if (table != null) {
@@ -407,5 +407,5 @@ public class Util {
         }
         return null;
     }
-    
+
 }

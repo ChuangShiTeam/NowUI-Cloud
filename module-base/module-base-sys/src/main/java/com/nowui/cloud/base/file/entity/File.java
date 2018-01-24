@@ -144,6 +144,14 @@ public class File extends BaseEntity {
     private Boolean fileIsOuter;
     public static final String FILE_IS_OUTER = "fileIsOuter";
 
+    /**
+     * base64
+     */
+    @TableField(exist = false)
+    @NotNull(message = "base64数据不能为空")
+    private String base64Data;
+    public static final String BASE_64_DATA = "base64Data";
+
     public String getFileId() {
         return getString(FILE_ID);
     }
@@ -237,4 +245,11 @@ public class File extends BaseEntity {
         put(FILE_IS_OUTER, fileIsOuter);
     }
 
+    public String getBase64Data() {
+        return getString(BASE_64_DATA);
+    }
+
+    public void setBase64Data(String base64Data) {
+        put(BASE_64_DATA, base64Data);
+    }
 }
