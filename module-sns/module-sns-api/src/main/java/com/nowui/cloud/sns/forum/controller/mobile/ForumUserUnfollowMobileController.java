@@ -49,20 +49,21 @@ public class ForumUserUnfollowMobileController extends BaseController {
         
         body.setUserId(body.getSystemRequestUserId());
         
+        //先去关注表查询
+        ForumUserFollow followBody = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        //有: 删除
+        if (followBody != null) {
+        	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getSystemRequestUserId(), followBody.getSystemVersion());
+		}
+        //没有: 就去取消关注表查询
         ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        //有: 返回true
         if (unfollow != null) {
 			return renderJson(true);
 		}
-        
-        //先找到关注表id
-        ForumUserFollow followBody = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
-        //如果有就删除,没有:不操作
-        if (followBody != null || followBody.size() != 0) {
-        	//根据UserFollowId删除记录
-        	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getSystemRequestUserId(), followBody.getSystemVersion());
-		}
-        //向取消关注表插入一条数据
+        //没有: 新增关注记录
         boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        
         return renderJson(result);
     }
 }

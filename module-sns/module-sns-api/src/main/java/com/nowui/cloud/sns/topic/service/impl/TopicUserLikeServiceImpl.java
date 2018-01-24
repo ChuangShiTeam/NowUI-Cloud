@@ -92,13 +92,27 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 
         return topicUserLikeList;
 	}
+	
+	@Override
+	public List<TopicUserLike> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize) {
+		List<TopicUserLike> topicUserLikeList = list(
+                new BaseWrapper<TopicUserLike>()
+                        .likeAllowEmpty(TopicUserLike.TOPIC_ID, topicId)
+                        .eq(TopicUserLike.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return topicUserLikeList;
+	}
 
     @Override
     public void deleteByTopicId(String topicId, String systemRequestUserId) {
         List<TopicUserLike> topicUserLikeList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserLikeList)) {
-            topicUserLikeList.stream().map(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion()));
+            topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion()));
         }
         redis.delete(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
     }
@@ -139,5 +153,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
         
         return result;
     }
+
+	
 
 }

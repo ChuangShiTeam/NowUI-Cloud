@@ -139,7 +139,6 @@ public class TopicCommentMobileController extends BaseController {
         	topicTip.setAppId(body.getAppId());
         	topicTip.setTopicId(body.getTopicId());
         	topicTip.setUserId(body.getTopicReplayUserId());
-        	System.out.println("sdfsdffsfs");
         	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
 		}
 
