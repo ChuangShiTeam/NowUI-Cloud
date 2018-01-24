@@ -4,14 +4,14 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 宠物分类服务调用
+ * 宠物服务调用
  *
- * @author marcus
+ * @author hucy
  *
- * 2018-01-24
+ * 2018-01-21
  */
-@Component(value = "petCategoryRpc")
+@Component(value = "petRpc")
 @FeignClient(name = "module-wawi")
-public interface PetCategoryRpc {
+public interface PetRpc {
 
 }

@@ -45,18 +45,6 @@ public class FileUtil {
 
         return false;
     }
-    
-    public static String getFilePath(String appId, String userId, String fileId) {
-        return "";
-    }
-    
-    public static String getThumbnailFilePath(String appId, String userId, String fileId) {
-        return "";
-    }
-    
-    public static String getOriginalFilePath(String appId, String userId, String fileId) {
-        return "";
-    }
 
     /**
      * 调整图片大小

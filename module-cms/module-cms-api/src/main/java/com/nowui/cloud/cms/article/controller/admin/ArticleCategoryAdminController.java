@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
-import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -103,7 +101,8 @@ public class ArticleCategoryAdminController extends BaseController {
                 ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
                 ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
                 ArticleCategory.ARTICLE_CATEGORY_SORT, 
-                ArticleCategory.SYSTEM_VERSION);
+                ArticleCategory.SYSTEM_VERSION
+        );
 
         return renderJson(result);
     }

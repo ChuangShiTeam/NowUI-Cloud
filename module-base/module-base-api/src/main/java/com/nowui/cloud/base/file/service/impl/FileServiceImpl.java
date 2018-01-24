@@ -91,7 +91,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                     throw new RuntimeException("上传图片格式不对");
                 }
                 //图片限定10M
-                if (((int) myfile.getSize() / 1024 + 1) > 1000) {   
+                if (myfile.getSize() > 10 * 1024L * 1024L) {
                     throw new RuntimeException("上传图片超过限定大小");
                 }
                 
@@ -154,7 +154,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         String fileSuffix = base64Data.substring(11, base64Data.indexOf(";base64,"));
         
         String fileId = Util.getRandomUUID();
-        
+
         String fileName = fileId + "." + fileSuffix;
 
         String imageString = base64Data.substring(base64Data.indexOf(","));

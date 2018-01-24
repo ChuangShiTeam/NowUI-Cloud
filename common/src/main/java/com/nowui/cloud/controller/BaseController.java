@@ -40,6 +40,8 @@ public class BaseController {
         if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
             getRequest().setAttribute(Constant.REQUEST_BODY, Util.readData(getRequest()));
         }
+        System.out.println(Util.readData(getRequest()));
+        System.out.println("+++");
         return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }
 

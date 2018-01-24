@@ -41,7 +41,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}Entity.getAppId() <%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>);
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}Entity.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>);
         List<${firstUpperWithoutUnderlineEntityName}> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}Entity.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}Entity.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}Entity.getPageSize());
 
         validateResponse(
@@ -70,8 +70,9 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
                 <%for(column in detailColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},%>
                 <%}%>
+                ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
         return renderJson(result);

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author marcus
  *
- * 2018-01-16
+ * 2018-01-24
  */
 @Component
 @Document(indexName = "nowui", type = "pet_category_info")
@@ -43,6 +43,26 @@ public class PetCategory extends BaseEntity {
     @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
+
+    /**
+     * 宠物父分类编号
+     */
+    @Field
+    @TableField
+    @NotNull(message = "宠物父分类编号不能为空")
+    @Length(max = 32, message = "宠物父分类编号长度超出限制")
+    private String petCategoryParentId;
+    public static final String PET_CATEGORY_PARENT_ID = "petCategoryParentId";
+
+    /**
+     * 父级路径
+     */
+    @Field
+    @TableField
+    @NotNull(message = "父级路径不能为空")
+    @Length(max = 2000, message = "父级路径长度超出限制")
+    private String petCategoryParentPath;
+    public static final String PET_CATEGORY_PARENT_PATH = "petCategoryParentPath";
 
     /**
      * 宠物分类名称
@@ -90,7 +110,6 @@ public class PetCategory extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "宠物分类排序不能为空")
-    @Length(max = 11, message = "宠物分类排序长度超出限制")
     private Integer petCategorySort;
     public static final String PET_CATEGORY_SORT = "petCategorySort";
 
@@ -109,6 +128,22 @@ public class PetCategory extends BaseEntity {
     
     public void setAppId(String appId) {
         put(APP_ID, appId);
+    }
+
+    public String getPetCategoryParentId() {
+        return getString(PET_CATEGORY_PARENT_ID);
+    }
+    
+    public void setPetCategoryParentId(String petCategoryParentId) {
+        put(PET_CATEGORY_PARENT_ID, petCategoryParentId);
+    }
+
+    public String getPetCategoryParentPath() {
+        return getString(PET_CATEGORY_PARENT_PATH);
+    }
+    
+    public void setPetCategoryParentPath(String petCategoryParentPath) {
+        put(PET_CATEGORY_PARENT_PATH, petCategoryParentPath);
     }
 
     public String getPetCategoryName() {

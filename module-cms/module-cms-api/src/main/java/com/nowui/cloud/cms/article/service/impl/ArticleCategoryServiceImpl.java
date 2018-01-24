@@ -55,7 +55,8 @@ public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryM
         List<ArticleCategory> articleCategoryList = list(
                 new BaseWrapper<ArticleCategory>()
                         .eq(ArticleCategory.APP_ID, appId)
-                        .like(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                        .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
+                        .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
                         .eq(ArticleCategory.SYSTEM_STATUS, true)
                         .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
                 ,m
