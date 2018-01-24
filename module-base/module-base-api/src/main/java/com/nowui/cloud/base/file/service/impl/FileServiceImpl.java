@@ -79,18 +79,13 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         
         List<File> fileList = new ArrayList<File>();
         for (MultipartFile myfile : multipartFiles) {
-            System.out.println(myfile.getSize());
-            System.out.println(myfile.getContentType());
-            System.out.println(myfile.getSize());
-            System.out.println(myfile.getName());
             if (myfile.isEmpty()) {
                 throw new RuntimeException("上传图片为空");
             } else {
+                String fileId = Util.getRandomUUID();
                 String originalFileName = myfile.getOriginalFilename();
                 String fileSuffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-                String fileName = Util.getRandomUUID() + "." + fileSuffix;
-
-                System.out.println(fileSuffix);
+                String fileName = fileId + "." + fileSuffix;
                 
                 if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
                     throw new RuntimeException("上传图片格式不对");
@@ -134,7 +129,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 entity.setFileThumbnailPath(fileThumbnailPath);
                 entity.setFileType(fileType);
                 entity.setFileCoverImage("");
-                Boolean result = save(entity, Util.getRandomUUID(), userId);
+                Boolean result = save(entity, fileId, userId);
 
                 if (!result) {
                     throw new RuntimeException("上传不成功");
@@ -158,7 +153,9 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         
         String fileSuffix = base64Data.substring(11, base64Data.indexOf(";base64,"));
         
-        String fileName = Util.getRandomUUID() + "." + fileSuffix;
+        String fileId = Util.getRandomUUID();
+
+        String fileName = fileId + "." + fileSuffix;
 
         String imageString = base64Data.substring(base64Data.indexOf(","));
 
@@ -204,7 +201,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         entity.setFileThumbnailPath(fileThumbnailPath);
         entity.setFileType(fileType);
         entity.setFileCoverImage("");
-        Boolean result = save(entity, Util.getRandomUUID(), userId);
+        Boolean result = save(entity, fileId, userId);
 
         if (!result) {
             throw new RuntimeException("上传不成功");

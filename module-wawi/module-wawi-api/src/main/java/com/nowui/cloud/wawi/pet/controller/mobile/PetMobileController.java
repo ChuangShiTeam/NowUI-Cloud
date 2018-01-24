@@ -5,14 +5,14 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 宠物分类移动端控制器
+ * 宠物移动端控制器
  *
- * @author marcus
+ * @author hucy
  *
- * 2018-01-24
+ * 2018-01-21
  */
-@Api(value = "宠物分类", description = "宠物分类移动端接口管理")
+@Api(value = "宠物", description = "宠物移动端接口管理")
 @RestController
-public class PetCategoryMobileController extends BaseController {
+public class PetMobileController extends BaseController {
 
 }

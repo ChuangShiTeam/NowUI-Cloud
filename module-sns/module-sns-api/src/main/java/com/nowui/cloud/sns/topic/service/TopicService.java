@@ -52,10 +52,14 @@ public interface TopicService extends BaseService<Topic> {
     
     /**
      * 根据forumId查找全部话题信息
-     * @param body TopicForum对象
+     * 
+     * @param forumId 论坛编号
+     * @param userId 用户编号
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> allTopicListByForumId(TopicForum body);
+    List<Topic> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号查找所有topic记录

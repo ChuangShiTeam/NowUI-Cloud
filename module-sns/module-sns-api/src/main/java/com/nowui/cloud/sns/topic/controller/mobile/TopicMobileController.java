@@ -77,15 +77,14 @@ public class TopicMobileController extends BaseController {
                 TopicForum.APP_ID,
                 TopicForum.FORUM_ID,
                 TopicForum.PAGE_INDEX,
-                TopicForum.PAGE_SIZE
+                TopicForum.PAGE_SIZE,
+                TopicForum.SYSTEM_REQUEST_USER_ID
         );
 
-        Integer resultTotal = topicForumService.countForAdmin(body.getAppId(), body.getForumId(), null);
+        Integer resultTotal = topicForumService.countByForumId(body.getForumId());
         
-        List<Topic> resultList = topicService.allTopicListByForumId(body);
+        List<Topic> resultList = topicService.listByForumId(body.getForumId(), body.getSystemRequestUserId(), body.getPageIndex(), body.getPageSize());
         
-        //处理用户信息
-       //在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
         
         List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
@@ -102,20 +101,17 @@ public class TopicMobileController extends BaseController {
         	);
         
         
-        //处理话题图片
+        // 处理话题
         for (Topic topic : resultList) {
         	
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
           
             String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA_ID);
             List<File> fileList = fileRpc.findsV1(fileIds);
-            
             topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA_ID, fileList, File.FILE_PATH);
             
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
-        
-        
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -164,8 +160,6 @@ public class TopicMobileController extends BaseController {
 
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         }
-
-        
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -182,8 +176,6 @@ public class TopicMobileController extends BaseController {
 
         return renderJson(resultTotal, resultList);
     }
-    
-    
     
 	@ApiOperation(value = "话题详情页")
 	@RequestMapping(value = "/topic/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -306,16 +298,12 @@ public class TopicMobileController extends BaseController {
             String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
             List<File> fileList = fileRpc.findsV1(fileIds);
 
-//            topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
-            
-            
+            topic.put(Topic.USER_ID_FOR_GOTO_USER_HOME, body.getSystemRequestUserId());
             
         }
-        
-      
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -336,7 +324,7 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
-	            
+	            Topic.USER_ID_FOR_GOTO_USER_HOME,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,

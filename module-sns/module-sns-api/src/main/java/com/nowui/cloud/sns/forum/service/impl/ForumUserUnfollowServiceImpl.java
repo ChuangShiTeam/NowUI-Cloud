@@ -52,7 +52,7 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
 	public ForumUserUnfollow findByUserIdAndForumId(String appId, String userId, String forumId) {
 		List<ForumUserUnfollow> forumUserUnfollowList = list(
                 new BaseWrapper<ForumUserUnfollow>()
-                        .eq(ForumUserUnfollow.APP_ID, appId)
+                        .eqAllowEmpty(ForumUserUnfollow.APP_ID, appId)
                         .eq(ForumUserUnfollow.USER_ID, userId)
                         .eq(ForumUserUnfollow.FORUM_ID, forumId)
                         .eq(ForumUserUnfollow.SYSTEM_STATUS, true)

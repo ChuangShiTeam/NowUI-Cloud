@@ -5,7 +5,7 @@ import NDetail from '../../layout/NDetail';
 export default connect(function (state) {
     return {
         id: '${firstLowerWithoutUnderlineEntityName}',
-        baseUrl: '/${firstLowerWithoutUnderlineEntityName}',
+        baseUrl: '/${urlEntityName}/admin/v1',
         title: '${tableComment}表单',
         primaryKey: '${tableId}',
         store: state.${firstLowerWithoutUnderlineEntityName},

@@ -1,12 +1,19 @@
 package com.nowui.cloud.service.impl;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.*;
+import org.springframework.data.elasticsearch.core.query.GetQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -231,6 +238,71 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         T baseEntity = mapper.selectById(id);
 
         elasticsearchSaveOrUpdate(baseEntity, id);
+    }
+    
+    /**
+     * redis获取key下的所有列表
+     * 
+     * @param key 键值
+     * @return List<T> 列表数据
+     */
+    public <T> List<T> lrange(String key) {
+        return (List<T>) redis.opsForList().range(key, 0, -1);
+    }
+    
+    /**
+     * redis获取key下的所有列表
+     * 
+     * @param key
+     * @return List<Map> 列表数据
+     */
+    public <Map> List<Map> lrangeToMap(String key) {
+        return (List<Map>) redis.opsForList().range(key, 0, -1);
+    }
+    
+    /**
+     * redis获取key下的分页列表
+     * 
+     * @param key 键值
+     * @return List<T> 列表数据
+     */
+    public <T> List<T> lrange(String key, Integer pageIndex, Integer pageSize) {
+        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
+            return new ArrayList<T>();
+        }
+        
+        int start = pageIndex - 1;
+        int end = (pageIndex * pageSize) - 1;
+        
+        return (List<T>) redis.opsForList().range(key, start, end);
+    }
+    
+    /**
+     * redis获取key下的分页列表
+     * 
+     * @param key
+     * @return List<Map> 列表数据
+     */
+    public <Map> List<Map> lrangeToMap(String key, Integer pageIndex, Integer pageSize) {
+        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
+            return new ArrayList<Map>();
+        }
+        
+        int start = pageIndex - 1;
+        int end = (pageIndex * pageSize) - 1;
+        
+        return (List<Map>) redis.opsForList().range(key, start, end);
+    }
+    
+    /**
+     * redis获取key下列表的大小
+     * 
+     * @param key 键值
+     * @return int 列表大小
+     */
+    public int lsize(final String key) {
+        long size = redis.opsForList().size(key);
+        return (int) size;
     }
 
 }

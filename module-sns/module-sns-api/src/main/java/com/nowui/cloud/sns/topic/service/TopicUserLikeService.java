@@ -61,6 +61,14 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
     List<TopicUserLike> listByTopicId(String topicId);
     
     /**
+     * 根据topicId查询所有列表
+     * 
+     * @param topicId 话题编号
+     * @return List<TopicUserLike> 话题点赞列表
+     */
+    List<TopicUserLike> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize);
+    
+    /**
      * 根据话题编号逻辑删除话题点赞
      * 
      * @param topicId 话题编号
