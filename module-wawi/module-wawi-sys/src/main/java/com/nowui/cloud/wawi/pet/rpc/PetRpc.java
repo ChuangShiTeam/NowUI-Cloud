@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  *
  * @author hucy
  *
- * 2018-01-22
+ * 2018-01-21
  */
 @Component(value = "petRpc")
 @FeignClient(name = "module-wawi")

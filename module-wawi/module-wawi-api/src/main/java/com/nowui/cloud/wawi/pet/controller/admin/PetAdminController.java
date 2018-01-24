@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author hucy
  *
- * 2018-01-22
+ * 2018-01-21
  */
 @Api(value = "宠物", description = "宠物管理端接口管理")
 @RestController
@@ -28,28 +28,28 @@ public class PetAdminController extends BaseController {
 
     @ApiOperation(value = "宠物列表")
     @RequestMapping(value = "/pet/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Pet body) {
+    public Map<String, Object> listV1() {
+        Pet petEntity = getEntry(Pet.class);
+
         validateRequest(
-                body,
+                petEntity,
                 Pet.APP_ID,
-                Pet.PET_NAME,
                 Pet.PET_CATEGORY_ID,
+                Pet.PET_NAME,
                 Pet.PAGE_INDEX,
                 Pet.PAGE_SIZE
         );
 
-        Integer resultTotal = petService.countForAdmin(body.getAppId() , body.getPetName(), body.getPetCategoryId());
-        List<Pet> resultList = petService.listForAdmin(body.getAppId(), body.getPetName(), body.getPetCategoryId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = petService.countForAdmin(petEntity.getAppId() , petEntity.getPetCategoryId(), petEntity.getPetName());
+        List<Pet> resultList = petService.listForAdmin(petEntity.getAppId(), petEntity.getPetCategoryId(), petEntity.getPetName(), petEntity.getPageIndex(), petEntity.getPageSize());
 
         validateResponse(
                 Pet.PET_ID,
+                Pet.PET_CATEGORY_ID,
                 Pet.PET_NAME,
                 Pet.PET_SEX,
                 Pet.PET_BIRTHDAY,
-                Pet.PET_AVATAR,
-                Pet.PET_CATEGORY_ID,
-                Pet.SYSTEM_CREATE_USER_ID,
-                Pet.SYSTEM_CREATE_TIME
+                Pet.PET_AVATAR
         );
 
         return renderJson(resultTotal, resultList);
@@ -57,23 +57,26 @@ public class PetAdminController extends BaseController {
 
     @ApiOperation(value = "宠物信息")
     @RequestMapping(value = "/pet/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Pet body) {
+    public Map<String, Object> findV1() {
+        Pet petEntity = getEntry(Pet.class);
+
         validateRequest(
-                body,
+                petEntity,
                 Pet.APP_ID,
                 Pet.PET_ID
         );
 
-        Pet result = petService.find(body.getPetId());
+        Pet result = petService.find(petEntity.getPetId());
 
         validateResponse(
                 Pet.PET_ID,
+                Pet.USER_ID,
+                Pet.PET_CATEGORY_ID,
                 Pet.PET_NAME,
                 Pet.PET_SEX,
                 Pet.PET_BIRTHDAY,
                 Pet.PET_AVATAR,
-                Pet.PET_DESCRIPTION,
-                Pet.PET_CATEGORY_ID
+                Pet.PET_DESCRIPTION
         );
 
         return renderJson(result);
@@ -81,55 +84,63 @@ public class PetAdminController extends BaseController {
 
     @ApiOperation(value = "新增宠物")
     @RequestMapping(value = "/pet/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Pet body) {
+    public Map<String, Object> saveV1() {
+        Pet petEntity = getEntry(Pet.class);
+
         validateRequest(
-                body,
+                petEntity,
                 Pet.APP_ID,
+                Pet.USER_ID,
+                Pet.PET_CATEGORY_ID,
                 Pet.PET_NAME,
                 Pet.PET_SEX,
                 Pet.PET_BIRTHDAY,
                 Pet.PET_AVATAR,
-                Pet.PET_DESCRIPTION,
-                Pet.PET_CATEGORY_ID
+                Pet.PET_DESCRIPTION
         );
 
-        Boolean result = petService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "修改宠物")
     @RequestMapping(value = "/pet/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Pet body) {
+    public Map<String, Object> updateV1() {
+        Pet petEntity = getEntry(Pet.class);
+
         validateRequest(
-                body,
+                petEntity,
                 Pet.PET_ID,
                 Pet.APP_ID,
+                Pet.USER_ID,
+                Pet.PET_CATEGORY_ID,
                 Pet.PET_NAME,
                 Pet.PET_SEX,
                 Pet.PET_BIRTHDAY,
                 Pet.PET_AVATAR,
                 Pet.PET_DESCRIPTION,
-                Pet.PET_CATEGORY_ID,
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.update(body, body.getPetId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = petService.update(petEntity, petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "删除宠物")
     @RequestMapping(value = "/pet/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Pet body) {
+    public Map<String, Object> deleteV1() {
+        Pet petEntity = getEntry(Pet.class);
+
         validateRequest(
-                body,
+                petEntity,
                 Pet.PET_ID,
                 Pet.APP_ID,
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.delete(body.getPetId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
         return renderJson(result);
     }

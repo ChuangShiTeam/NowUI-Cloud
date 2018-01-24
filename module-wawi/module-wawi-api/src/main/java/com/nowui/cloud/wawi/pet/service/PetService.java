@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author hucy
  *
- * 2018-01-22
+ * 2018-01-21
  */
 public interface PetService extends BaseService<Pet> {
 
@@ -17,21 +17,21 @@ public interface PetService extends BaseService<Pet> {
      * 宠物统计
      *
      * @param appId 应用编号
-     * @param petName 宠物名称
      * @param petCategoryId 宠物分类编号
+     * @param petName 宠物名称
      * @return Integer 宠物统计
      */
-    Integer countForAdmin(String appId, String petName, String petCategoryId);
+    Integer countForAdmin(String appId, String petCategoryId, String petName);
 
     /**
      * 宠物列表
      *
      * @param appId 应用编号
-     * @param petName 宠物名称
      * @param petCategoryId 宠物分类编号
+     * @param petName 宠物名称
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Pet> 宠物列表
      */
-    List<Pet> listForAdmin(String appId, String petName, String petCategoryId, Integer pageIndex, Integer pageSize);
+    List<Pet> listForAdmin(String appId, String petCategoryId, String petName, Integer pageIndex, Integer pageSize);
 }

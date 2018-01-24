@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author hucy
  *
- * 2018-01-22
+ * 2018-01-21
  */
 @Component
 @Document(indexName = "nowui", type = "pet_info")
@@ -45,6 +45,26 @@ public class Pet extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
+     * 用户编号
+     */
+    @Field
+    @TableField
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
+    private String userId;
+    public static final String USER_ID = "userId";
+
+    /**
+     * 宠物分类编号
+     */
+    @Field
+    @TableField
+    @NotNull(message = "宠物分类编号不能为空")
+    @Length(max = 32, message = "宠物分类编号长度超出限制")
+    private String petCategoryId;
+    public static final String PET_CATEGORY_ID = "petCategoryId";
+
+    /**
      * 宠物名称
      */
     @Field
@@ -55,11 +75,12 @@ public class Pet extends BaseEntity {
     public static final String PET_NAME = "petName";
 
     /**
-     * 宠物性别 (1：弟弟，2：妹妹)
+     * 宠物性别
      */
     @Field
     @TableField
-    @NotNull(message = "宠物性别 (1：弟弟，2：妹妹)不能为空")
+    @NotNull(message = "宠物性别不能为空")
+    @Length(max = 1, message = "宠物性别长度超出限制")
     private Boolean petSex;
     public static final String PET_SEX = "petSex";
 
@@ -74,12 +95,12 @@ public class Pet extends BaseEntity {
     public static final String PET_BIRTHDAY = "petBirthday";
 
     /**
-     * 宠物头像（url）
+     * 宠物头像
      */
     @Field
     @TableField
-    @NotNull(message = "宠物头像（url）不能为空")
-    @Length(max = 255, message = "宠物头像（url）长度超出限制")
+    @NotNull(message = "宠物头像不能为空")
+    @Length(max = 32, message = "宠物头像长度超出限制")
     private String petAvatar;
     public static final String PET_AVATAR = "petAvatar";
 
@@ -89,19 +110,9 @@ public class Pet extends BaseEntity {
     @Field
     @TableField
     @NotNull(message = "宠物简介不能为空")
-    @Length(max = 2000, message = "宠物简介长度超出限制")
+    @Length(max = 500, message = "宠物简介长度超出限制")
     private String petDescription;
     public static final String PET_DESCRIPTION = "petDescription";
-
-    /**
-     * 宠物分类编号
-     */
-    @Field
-    @TableField
-    @NotNull(message = "宠物分类编号不能为空")
-    @Length(max = 32, message = "宠物分类编号长度超出限制")
-    private String petCategoryId;
-    public static final String PET_CATEGORY_ID = "petCategoryId";
 
 
     public String getPetId() {
@@ -118,6 +129,22 @@ public class Pet extends BaseEntity {
     
     public void setAppId(String appId) {
         put(APP_ID, appId);
+    }
+
+    public String getUserId() {
+        return getString(USER_ID);
+    }
+    
+    public void setUserId(String userId) {
+        put(USER_ID, userId);
+    }
+
+    public String getPetCategoryId() {
+        return getString(PET_CATEGORY_ID);
+    }
+    
+    public void setPetCategoryId(String petCategoryId) {
+        put(PET_CATEGORY_ID, petCategoryId);
     }
 
     public String getPetName() {
@@ -158,14 +185,6 @@ public class Pet extends BaseEntity {
     
     public void setPetDescription(String petDescription) {
         put(PET_DESCRIPTION, petDescription);
-    }
-
-    public String getPetCategoryId() {
-        return getString(PET_CATEGORY_ID);
-    }
-    
-    public void setPetCategoryId(String petCategoryId) {
-        put(PET_CATEGORY_ID, petCategoryId);
     }
 
 

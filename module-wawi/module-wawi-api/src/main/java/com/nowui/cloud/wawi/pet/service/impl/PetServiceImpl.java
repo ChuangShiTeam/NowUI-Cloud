@@ -15,30 +15,30 @@ import java.util.List;
  *
  * @author hucy
  *
- * 2018-01-22
+ * 2018-01-21
  */
 @Service
 public class PetServiceImpl extends BaseServiceImpl<PetMapper, Pet> implements PetService {
 
     @Override
-    public Integer countForAdmin(String appId, String petName, String petCategoryId) {
+    public Integer countForAdmin(String appId, String petCategoryId, String petName) {
         Integer count = count(
                 new BaseWrapper<Pet>()
                         .eq(Pet.APP_ID, appId)
+                        .eq(Pet.PET_CATEGORY_ID, petCategoryId)
                         .likeAllowEmpty(Pet.PET_NAME, petName)
-                        .likeAllowEmpty(Pet.PET_CATEGORY_ID, petCategoryId)
                         .eq(Pet.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<Pet> listForAdmin(String appId, String petName, String petCategoryId, Integer pageIndex, Integer pageSize) {
+    public List<Pet> listForAdmin(String appId, String petCategoryId, String petName, Integer pageIndex, Integer pageSize) {
         List<Pet> petList = list(
                 new BaseWrapper<Pet>()
                         .eq(Pet.APP_ID, appId)
+                        .eq(Pet.PET_CATEGORY_ID, petCategoryId)
                         .likeAllowEmpty(Pet.PET_NAME, petName)
-                        .likeAllowEmpty(Pet.PET_CATEGORY_ID, petCategoryId)
                         .eq(Pet.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Pet.SYSTEM_CREATE_TIME)),
                 pageIndex,
