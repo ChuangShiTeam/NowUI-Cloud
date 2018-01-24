@@ -21,8 +21,10 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
+import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
+import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
 
@@ -42,6 +44,9 @@ public class ForumUserFollowMobileController extends BaseController {
 
 	@Autowired
 	private ForumUserFollowService forumUserFollowService;
+	
+	@Autowired
+    private ForumUserUnfollowService forumUserUnfollowService;
 
 	@Autowired
 	private ForumService forumService;
@@ -69,21 +74,28 @@ public class ForumUserFollowMobileController extends BaseController {
         String userId = body.getSystemRequestUserId();
         String forumId = body.getForumId();
         
+        //先查询取消关注表有没有记录
+        ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(null, userId, forumId);
+        //有: 删除
+        if (!Util.isNullOrEmpty(unfollow)) {
+        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), userId, unfollow.getSystemVersion());
+		}
+        //没有: 去关注表看有没有记录
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
+        //有: 返回true
+        if (!Util.isNullOrEmpty(forumUserFollow)) {
+        	return renderJson(true); 
+		}
+        //没有: 新增取消关注记录
+        ForumUserFollow bean = new ForumUserFollow();
+        bean.setAppId(appId);
+        bean.setForumId(forumId);
+        bean.setUserId(userId);
         
-        if (Util.isNullOrEmpty(forumUserFollow)) {
-            ForumUserFollow bean = new ForumUserFollow();
-            
-            bean.setAppId(appId);
-            bean.setForumId(forumId);
-            bean.setUserId(userId);
-            
-            Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
-            
-            return renderJson(result);
-        }
+        Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
         
-        return renderJson(false);
+        return renderJson(result);
+        
     }
 	
 	@ApiOperation(value = "批量新增用户论坛关注")

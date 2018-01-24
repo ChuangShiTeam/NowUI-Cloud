@@ -310,12 +310,9 @@ public class TopicMobileController extends BaseController {
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
-            
-            
+            topic.put(Topic.USER_ID_FOR_GOTO_USER_HOME, body.getSystemRequestUserId());
             
         }
-        
-      
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -336,6 +333,8 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
+	            
+	            Topic.USER_ID_FOR_GOTO_USER_HOME,
 	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
