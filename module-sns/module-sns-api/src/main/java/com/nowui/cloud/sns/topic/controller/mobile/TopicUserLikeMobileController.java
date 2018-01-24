@@ -53,13 +53,13 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.APP_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
-                TopicUserLike.PAGE_SIZE     //前端传来参数可用于只显示3个头像,和点赞列表
+                TopicUserLike.PAGE_SIZE,
+                TopicUserLike.SYSTEM_REQUEST_USER_ID//前端传来参数可用于只显示3个头像,和点赞列表
         );
         //统计话题点赞数 和 得到话题点赞列表
-        Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , null, body.getTopicId());
-        List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), null, body.getTopicId(), body.getPageIndex(), body.getPageSize());
-        
-        
+        Integer resultTotal = topicUserLikeService.countByTopicId(body.getTopicId());
+        List<TopicUserLike> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
+       
         //处理列表中用户的头像,昵称,是否关注
         String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
         
@@ -75,9 +75,11 @@ public class TopicUserLikeMobileController extends BaseController {
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW
         	);
-        
-        
 
+        for (TopicUserLike topicUserLike : resultList) {
+        	topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, body.getSystemRequestUserId().equals(topicUserLike.getUserId()));
+        }
+        
         validateResponse(
                 TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.USER_ID,
@@ -85,7 +87,8 @@ public class TopicUserLikeMobileController extends BaseController {
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		TopicUserLike.TOPIC_USER_LIKE_IS_SELF
         );
 
         return renderJson(resultTotal, resultList);

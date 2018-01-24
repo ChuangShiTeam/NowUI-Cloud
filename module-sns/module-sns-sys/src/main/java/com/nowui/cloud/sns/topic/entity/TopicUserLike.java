@@ -64,6 +64,7 @@ public class TopicUserLike extends BaseEntity {
     private String topicId;
     public static final String TOPIC_ID = "topicId";
 
+    public static final String TOPIC_USER_LIKE_IS_SELF = "topicUserLikeIsSelf";
 
     public String getTopicUserLikeId() {
         return getString(TOPIC_USER_LIKE_ID);
