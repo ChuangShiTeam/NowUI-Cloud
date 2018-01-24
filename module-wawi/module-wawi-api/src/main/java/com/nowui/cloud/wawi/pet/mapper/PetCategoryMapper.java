@@ -8,7 +8,7 @@ import com.nowui.cloud.wawi.pet.entity.PetCategory;
  *
  * @author marcus
  *
- * 2018-01-16
+ * 2018-01-24
  */
 public interface PetCategoryMapper extends BaseMapper<PetCategory> {
 
