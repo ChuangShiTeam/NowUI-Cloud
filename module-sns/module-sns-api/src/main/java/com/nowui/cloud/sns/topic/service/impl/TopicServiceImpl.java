@@ -333,4 +333,35 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         return result;
     }
 
+	@Override
+	public List<Topic> listByTopicIdList(List<String> topicIdList, Integer pageIndex, Integer pageSize) {
+		List<Topic> topicList = list(
+                new BaseWrapper<Topic>()
+                        .in(Topic.TOPIC_ID, topicIdList)
+                        .eq(Topic.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+            );
+
+		return topicList;
+	}
+
+	@Override
+	public List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList, Integer pageIndex,
+			Integer pageSize) {
+		List<Topic> topicList = listByTopicIdList(topicIdList, pageIndex, pageSize);
+		
+		if (Util.isNullOrEmpty(topicList)) {
+            return null;
+        }
+        
+        for (Topic topic : topicList) {
+            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+        }
+
+        return topicList;
+		
+	}
+
 }

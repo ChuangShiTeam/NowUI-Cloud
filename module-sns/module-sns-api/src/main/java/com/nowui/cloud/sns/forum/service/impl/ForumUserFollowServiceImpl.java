@@ -96,6 +96,17 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 
         return forumUserFollowList;
     }
+    
+    @Override
+    public List<ForumUserFollow> listByUserId(String userId) {
+        List<ForumUserFollow> forumUserFollowList = list(
+                new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+        );
+
+        return forumUserFollowList;
+    }
 
 	@Override
 	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {

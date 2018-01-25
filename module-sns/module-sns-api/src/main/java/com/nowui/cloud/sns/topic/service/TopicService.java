@@ -123,6 +123,27 @@ public interface TopicService extends BaseService<Topic> {
     List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, Integer pageIndex, Integer pageSize);
     
     /**
+     * 根据topicId的list集合查询所有话题信息
+     * 
+     * @param topicIdList 话题编号列表
+     * @param pageIndex 从第几条开始
+     * @param pageSize 取多少条
+     * @return topic列表
+     */
+    List<Topic> listByTopicIdList(List<String> topicIdList, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
+     * 
+     * @param userId
+     * @param topicIdList
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList, Integer pageIndex, Integer pageSize);
+    
+    /**
      * 根据话题编号删除话题相关信息
      * 
      * @param appId 应用编号

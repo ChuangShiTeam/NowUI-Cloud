@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
@@ -21,7 +27,11 @@ import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.topic.entity.Topic;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -43,6 +53,9 @@ public class ForumMobileController extends BaseController {
 	 
 	 @Autowired
 	 private TopicForumService topicForumService;
+	 
+	 @Autowired
+	 private TopicService topicService;
 	 
 	 @Autowired
 	 private ForumUserFollowService forumUserFollowService;
@@ -103,6 +116,8 @@ public class ForumMobileController extends BaseController {
 	     return renderJson(result);
     }
 	 
+	 
+	 
 	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Forum body) {
@@ -133,6 +148,21 @@ public class ForumMobileController extends BaseController {
 			forum.put(Forum.FORUM_USER_IS_MODERATOR, false);
 		}
         
+        //判断请求用户是否加入这个圈子
+        List<ForumUserFollow> requestUserFollows = forumUserFollowService.listByUserId(body.getSystemRequestUserId());
+        //判断请求传来的 论坛id 有没有在 requestUserFollows 中
+        if (!Util.isNullOrEmpty(requestUserFollows)) {
+        	for (ForumUserFollow forumUserFollow : requestUserFollows) {
+    			if (body.getForumId().equals(forumUserFollow.getForumId())) {
+    				forum.put(Forum.FORUM_REQUEST_USER_IS_FOLLOW, true);
+    				break;
+    			}else {
+    				forum.put(Forum.FORUM_REQUEST_USER_IS_FOLLOW, false);
+				}
+    		}
+		}
+        
+        
         //根据论坛编号去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollow> forumUserFollows = 
         		forumUserFollowService
@@ -155,6 +185,7 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_USER_IS_MODERATOR,
+                Forum.FORUM_REQUEST_USER_IS_FOLLOW,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
                 Forum.FORUM_USER_FOLLOW_LIST
@@ -413,6 +444,94 @@ public class ForumMobileController extends BaseController {
         );
 
         return renderJson(forum);
+    }
+    
+    
+    @ApiOperation(value = "论坛详情的主页的动态列表")
+    @RequestMapping(value = "/forum/mobile/v1/home/topic/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> homeTopicV1(@RequestBody Forum body) {
+        validateRequest(
+                body,
+                Forum.APP_ID,
+                Forum.FORUM_ID,
+                Forum.PAGE_INDEX,
+                Forum.PAGE_SIZE
+        );
+        String forumId = body.getForumId();
+        Integer pageIndex = body.getPageIndex();
+        Integer pageSize = body.getPageSize();
+        String userId = body.getSystemRequestUserId();
+        
+        
+        // 1,统计所有topic数量  根据forumId
+        Integer countResult = topicForumService.countByForumId(forumId);
+        
+        // 2,获得topic的分页列表
+        List<TopicForum> topicForumList = topicForumService.listByForumId(forumId, pageIndex, pageSize);
+        
+        // 3,从TopicForum获取topicIdList, 
+        List<String> topicIdList = Util.beanToField(topicForumList, TopicForum.TOPIC_ID);
+        
+        // 4,根据topicIdList查找topicList
+//        List<Topic> topicList = topicService.listByTopicIdList(topicIdList, pageIndex, pageSize);
+        List<Topic> topicList = topicService.listDetailByTopicIdList(userId, topicIdList, pageIndex, pageSize);
+        
+        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
+        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+        
+        topicList = Util.beanAddField(
+        		topicList, 
+        		Topic.USER_ID, 
+        		User.USER_ID, 
+        		nickAndAvatarAndIsFollowList, 
+        		User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
+    	);
+        
+        
+        // 图片多媒体
+        for (Topic topic : topicList) {
+            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+
+            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
+            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        }
+        
+        
+        validateResponse(
+        		Topic.TOPIC_ID,
+                Topic.TOPIC_SUMMARY,
+                Topic.USER_ID,
+                Topic.LATITUDE,
+                Topic.LONGTITUDE,
+                Topic.TOPIC_LOCATION,
+                Topic.TOPIC_IS_LOCATION,
+                Topic.TOPIC_IS_TOP,
+                Topic.TOPIC_TOP_LEVEL,
+                Topic.TOPIC_FORUM_LIST,
+                Topic.TOPIC_MEDIA_LIST,
+                Topic.TOPIC_COMMENT_LIST,
+	            Topic.TOPIC_COUNT_BOOKMARK,
+	            Topic.TOPIC_COUNT_LIKE,
+	            Topic.TOPIC_COUNT_COMMENT,
+	            Topic.TOPIC_USER_IS_BOOKEMARK,
+	            Topic.TOPIC_USER_IS_LIKE,
+	            Topic.TOPIC_USER_LIKE_LIST,
+	            
+                User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		BaseEntity.SYSTEM_CREATE_TIME
+        );
+
+        return renderJson(countResult, topicList);
     }
 
 }

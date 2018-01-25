@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     	//遍历删除
     	if (!Util.isNullOrEmpty(topicForumList)) {
     	    topicForumList.stream().forEach(topicForum -> {
+    	    	redis.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicForum.TOPIC_ID);
     	        delete(topicForum.getTopicForumId(), systemUpdateUserId, topicForum.getSystemVersion());
     	    });
     	    
@@ -145,7 +147,18 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         List<TopicForum> topicForumList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicForumList)) {
-            topicForumList.stream().forEach(topicForum -> delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion()));
+        	
+        	Stream<TopicForum> topicForumStream = topicForumList.stream();
+        	topicForumStream.forEach(topicForum -> {
+                delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
+            });
+            
+        	topicForumStream.forEach(topicForum -> {
+        		// 论坛话题数缓存减一
+        		Integer forumTopicCount = countByForumId(topicForum.getForumId());
+        		
+                redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount - 1);
+        	});
         }
         
         // 清空缓存
@@ -167,13 +180,19 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                 if (!flag) {
                     throw new RuntimeException("保存失败");
                 }
-                // 论坛话题数缓存
+                                
+                topicForumIdList.add(topicForumId);
+            }
+            
+            topicForumIdList.forEach(topicForumId -> {
+            	TopicForum topicForum = find(topicForumId);
+            	
+            	// 论坛话题数缓存加一
                 Integer forumTopicCount = countByForumId(topicForum.getForumId());
                 
                 redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
-                
-                topicForumIdList.add(topicForumId);
-            }
+
+            });
         }
         // 缓存话题论坛编号列表
         redis.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
