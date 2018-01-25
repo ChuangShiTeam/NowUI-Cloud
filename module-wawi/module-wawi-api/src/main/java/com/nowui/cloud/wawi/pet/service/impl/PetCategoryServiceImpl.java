@@ -3,7 +3,6 @@ package com.nowui.cloud.wawi.pet.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.wawi.pet.entity.Pet;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.constant.Constant;
@@ -233,18 +232,6 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                         .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
         );
         return childrenList;
-    }
-
-    @Override
-    public List<PetCategory> childrenCategoryList(String appId, String petCategoryId) {
-        List<PetCategory> categories = list(
-                new BaseWrapper<PetCategory>()
-                        .eq(PetCategory.APP_ID,appId)
-                        .eq(PetCategory.PET_CATEGORY_ID,petCategoryId)
-                        .eq(PetCategory.SYSTEM_STATUS,true)
-                        .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
-        );
-        return categories;
     }
 
     @Override
