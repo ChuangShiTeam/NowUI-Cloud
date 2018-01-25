@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
+import com.netflix.discovery.converters.Auto;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.message.entity.Message;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -24,6 +26,8 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
@@ -51,6 +55,9 @@ public class TopicMobileController extends BaseController {
 
 	@Autowired
     private TopicService topicService;
+	
+	@Autowired
+	private ForumService forumService;
 	
 	@Autowired
 	private TopicForumService topicForumService;
@@ -410,15 +417,25 @@ public class TopicMobileController extends BaseController {
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
             topicMediaService.batchSave(appId, topicId, topicMediaList, userId);
 
+            
+            
             // 保存话题论坛
             if (!Util.isNullOrEmpty(forumIdJSONArray)) {
                 List<String> forumIdList = forumIdJSONArray.toJavaList(String.class);
                 
-                List<TopicForum> topicForumList = forumIdList.stream().map(forumId -> {
-                    TopicForum topicForum = new TopicForum();
+                
+                List<TopicForum> topicForumList = new ArrayList<TopicForum>();
+                
+                for (String forumId : forumIdList) {
+                	Forum forum = forumService.find(forumId);
+                	if (Util.isNullOrEmpty(forum)) {
+						continue;
+					}
+                	TopicForum topicForum = new TopicForum();
                     topicForum.setForumId(forumId);
-                    return topicForum;
-                }).collect(Collectors.toList());
+                	
+                    topicForumList.add(topicForum);
+				}
                 
                 topicForumService.batchSave(appId, topicId, topicForumList, userId);
             }

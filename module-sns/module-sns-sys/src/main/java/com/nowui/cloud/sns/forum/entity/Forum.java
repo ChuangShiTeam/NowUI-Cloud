@@ -229,6 +229,10 @@ public class Forum extends BaseEntity {
      */
     public static final String FORUM_USER_IS_MODERATOR = "forumUserIsModerator";
     
+    /**
+     */
+    public static final String FORUM_REQUEST_USER_IS_FOLLOW = "forumRequestUserIsFollow";
+    
 
     public String getForumId() {
         return getString(FORUM_ID);
