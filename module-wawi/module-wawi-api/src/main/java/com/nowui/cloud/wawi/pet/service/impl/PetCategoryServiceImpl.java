@@ -92,6 +92,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                 );
                 
                 petCategory.keep(
+                        PetCategory.PET_CATEGORY_ID,
                         PetCategory.PET_CATEGORY_NAME, 
                         PetCategory.PET_CATEGORY_IMAGE, 
                         PetCategory.PET_CATEGORY_CODE, 
@@ -99,7 +100,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                         Constant.CHILDREN
                 );
             }
-            
+            adminAllTreeList(appId);
             return topList;
         }
         
@@ -131,6 +132,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                 );
                 
                 petCategory.keep(
+                        PetCategory.PET_CATEGORY_ID,
                         PetCategory.PET_CATEGORY_NAME, 
                         PetCategory.PET_CATEGORY_IMAGE, 
                         PetCategory.PET_CATEGORY_CODE, 
@@ -139,7 +141,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                 );
             }
             
-            redis.opsForList().leftPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, list);
+            redis.opsForList().leftPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
             
             return topList;
         }
@@ -160,7 +162,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
                     );
             
-            redis.opsForList().leftPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList);
+            redis.opsForList().leftPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
         }
         return topList;
     }
@@ -215,7 +217,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
             );
             
-            redis.opsForList().leftPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList);
+            redis.opsForList().leftPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
         }
         return petCategoryList;
     }
