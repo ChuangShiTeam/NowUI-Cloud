@@ -30,16 +30,16 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "会员访问圈子", description = "会员访问圈子移动端接口管理")
 @RestController
 public class MemberVisitForumMobileController extends BaseController {
-	
+
 	@Autowired
 	private MemberVisitForumService memberVisitForumService;
-	
+
 	@Autowired
 	private MemberRpc memberRpc;
-	
+
 	@ApiOperation(value = "会员访问圈子查询")
     @RequestMapping(value = "/wawi/member/visit/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> findV1(@RequestBody MemberVisitForum body){
         validateRequest(
                 body,
                 MemberVisitForum.APP_ID,

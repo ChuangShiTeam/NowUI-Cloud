@@ -2,6 +2,7 @@ package com.nowui.cloud.wawi.pet.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.wawi.pet.entity.Pet;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
 
 /**
@@ -91,6 +92,12 @@ public interface PetCategoryService extends BaseService<PetCategory> {
      * @return List<PetCategory> 宠物分类列表
      */
     List<PetCategory> childrenList(String appId);
+
+    /*
+     * 根据类目Id,查询宠物分类的子类.
+     * *
+     */
+    List<PetCategory> childrenCategoryList(String appId,String petCategoryId);
     
     /**
      * 删除宠物分类
@@ -102,5 +109,4 @@ public interface PetCategoryService extends BaseService<PetCategory> {
      * @return Boolean 是否成功
      */
     Boolean delete(String appId, String petCategoryId, String systemReuqestUserId, Integer systemVersion);
-    
 }

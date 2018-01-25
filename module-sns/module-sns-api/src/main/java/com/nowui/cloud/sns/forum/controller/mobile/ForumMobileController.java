@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "论坛信息", description = "论坛信息移动端接口管理")
 @RestController
-public class ForumMobileController extends BaseController {
+public class ForumMobileController extends BaseController{
 	
 	 @Autowired
 	 private ForumService forumService;
@@ -166,6 +166,7 @@ public class ForumMobileController extends BaseController {
 	@ApiOperation(value = "论坛中所有用户信息")
     @RequestMapping(value = "/forum/mobile/v1/findAll", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findAllV1(@RequestBody Forum body) {
+
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -347,14 +348,12 @@ public class ForumMobileController extends BaseController {
 
         Integer resultTotal = forumService.countForMobile(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null);
         List<Forum> resultList = forumService.listForMobile(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
-
-      //处理论坛头像
+      	//处理论坛头像
         for (Forum forum : resultList) {
         	File file = fileRpc.findV1(forum.getForumMedia());
         	file.keep(File.FILE_ID, File.FILE_PATH);
             forum.put(Forum.FORUM_MEDIA, file);
 		}
-        
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
@@ -362,13 +361,13 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR
         );
-
         return renderJson(resultTotal, resultList);
     }
     
     @ApiOperation(value = "论坛主页信息(论坛主页)")
     @RequestMapping(value = "/forum/mobile/v1/home", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeV1(@RequestBody Forum body) {
+
         validateRequest(
                 body,
                 Forum.APP_ID,

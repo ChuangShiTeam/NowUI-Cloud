@@ -47,6 +47,11 @@
             <artifactId>module-wawi-sys</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>

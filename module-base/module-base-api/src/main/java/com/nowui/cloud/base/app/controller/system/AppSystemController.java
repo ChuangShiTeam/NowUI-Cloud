@@ -17,11 +17,9 @@ import io.swagger.annotations.Api;
 @Api(value = "应用", description = "应用系统端接口管理")
 @RestController
 public class AppSystemController implements AppRpc {
-
     @Override
-    public App find(String appId) {
+    public App find(String appId){
         // TODO Auto-generated method stub
         return null;
     }
-
 }
