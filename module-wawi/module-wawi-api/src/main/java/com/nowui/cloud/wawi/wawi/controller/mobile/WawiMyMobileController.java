@@ -68,8 +68,8 @@ public class WawiMyMobileController extends BaseController {
         );
 
         // TODO 查询用户是否有新的消息
-        Boolean isMessageRead = false;
-        return renderJson(isMessageRead);
+        Boolean hasNewMessage = false;
+        return renderJson(hasNewMessage);
     }
 
 }
