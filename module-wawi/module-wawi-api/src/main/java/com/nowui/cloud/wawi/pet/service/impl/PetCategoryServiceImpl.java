@@ -28,25 +28,25 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
      * 应用宠物一级分类缓存KEY
      */
     public static final String PET_CATEGORY_TOP_LIST_BY_APP_ID = "pet_category_top_list_by_app_id_";
-    
+
     /**
      * 应用宠物父分类下子分类列表缓存KEY
      */
     public static final String PET_CATEGORY_CHILDREN_BY_PARENT_ID = "pet_category_children_by_parent_id_";
-    
+
     /**
      * 应用宠物分类下树形列表缓存KEY
      */
     public static final String PET_CATEGORY_TREE_LIST_BY_APP_ID = "pet_category_tree_list_by_app_id_";
-    
+
     @Override
     public Integer countForAdmin(String appId, String petCategoryName, String petCategoryCode) {
         Integer count = count(
-                    new BaseWrapper<PetCategory>()
-                            .eq(PetCategory.APP_ID, appId)
-                            .likeAllowEmpty(PetCategory.PET_CATEGORY_NAME, petCategoryName)
-                            .likeAllowEmpty(PetCategory.PET_CATEGORY_CODE, petCategoryCode)
-                            .eq(PetCategory.SYSTEM_STATUS, true)
+                new BaseWrapper<PetCategory>()
+                        .eq(PetCategory.APP_ID, appId)
+                        .likeAllowEmpty(PetCategory.PET_CATEGORY_NAME, petCategoryName)
+                        .likeAllowEmpty(PetCategory.PET_CATEGORY_CODE, petCategoryCode)
+                        .eq(PetCategory.SYSTEM_STATUS, true)
         );
         return count;
     }
@@ -70,106 +70,108 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
     @Override
     public List<PetCategory> adminTreeList(String appId, Integer pageIndex, Integer pageSize) {
         List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, pageIndex, pageSize);
-        
-        if (list == null) {
+
+        if (Util.isNullOrEmpty(list)) {
             List<PetCategory> topList = topList(appId, pageIndex, pageSize);
-            
+
             List<PetCategory> childrenList = childrenList(appId);
-            
+
             for (PetCategory petCategory : topList) {
-                
+
                 petCategory.put(
-                        Constant.CHILDREN, 
+                        Constant.CHILDREN,
                         TreeUtil.getTreeChildrenList(
-                                petCategory.getPetCategoryId(), 
-                                PetCategory.PET_CATEGORY_PARENT_ID, 
-                                childrenList, 
-                                PetCategory.PET_CATEGORY_NAME, 
-                                PetCategory.PET_CATEGORY_IMAGE, 
-                                PetCategory.PET_CATEGORY_SORT, 
+                                petCategory.getPetCategoryId(),
+                                PetCategory.PET_CATEGORY_PARENT_ID,
+                                childrenList,
+                                PetCategory.PET_CATEGORY_NAME,
+                                PetCategory.PET_CATEGORY_IMAGE,
+                                PetCategory.PET_CATEGORY_SORT,
                                 PetCategory.PET_CATEGORY_CODE
                         )
                 );
-                
+
                 petCategory.keep(
-                        PetCategory.PET_CATEGORY_NAME, 
-                        PetCategory.PET_CATEGORY_IMAGE, 
-                        PetCategory.PET_CATEGORY_CODE, 
-                        PetCategory.PET_CATEGORY_SORT, 
+                        PetCategory.PET_CATEGORY_ID,
+                        PetCategory.PET_CATEGORY_NAME,
+                        PetCategory.PET_CATEGORY_IMAGE,
+                        PetCategory.PET_CATEGORY_CODE,
+                        PetCategory.PET_CATEGORY_SORT,
                         Constant.CHILDREN
                 );
             }
-            
+            adminAllTreeList(appId);
             return topList;
         }
-        
+
         return list;
     }
 
     @Override
     public List<PetCategory> adminAllTreeList(String appId) {
         List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
-        
-        if (list == null) {
+
+        if (Util.isNullOrEmpty(list)) {
             List<PetCategory> topList = topList(appId);
-            
+
             List<PetCategory> childrenList = childrenList(appId);
-            
+
             for (PetCategory petCategory : topList) {
-                
+
                 petCategory.put(
-                        Constant.CHILDREN, 
+                        Constant.CHILDREN,
                         TreeUtil.getTreeChildrenList(
-                                petCategory.getPetCategoryId(), 
-                                PetCategory.PET_CATEGORY_PARENT_ID, 
-                                childrenList, 
-                                PetCategory.PET_CATEGORY_NAME, 
-                                PetCategory.PET_CATEGORY_IMAGE, 
-                                PetCategory.PET_CATEGORY_SORT, 
+                                petCategory.getPetCategoryId(),
+                                PetCategory.PET_CATEGORY_PARENT_ID,
+                                childrenList,
+                                PetCategory.PET_CATEGORY_NAME,
+                                PetCategory.PET_CATEGORY_IMAGE,
+                                PetCategory.PET_CATEGORY_SORT,
                                 PetCategory.PET_CATEGORY_CODE
                         )
                 );
-                
+
                 petCategory.keep(
-                        PetCategory.PET_CATEGORY_NAME, 
-                        PetCategory.PET_CATEGORY_IMAGE, 
-                        PetCategory.PET_CATEGORY_CODE, 
-                        PetCategory.PET_CATEGORY_SORT, 
+                        PetCategory.PET_CATEGORY_ID,
+                        PetCategory.PET_CATEGORY_NAME,
+                        PetCategory.PET_CATEGORY_IMAGE,
+                        PetCategory.PET_CATEGORY_CODE,
+                        PetCategory.PET_CATEGORY_SORT,
                         Constant.CHILDREN
                 );
             }
-            
-            redis.opsForValue().set(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, list);
-            
+
+            redis.opsForList().rightPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
+
             return topList;
         }
-        
+
         return list;
     }
 
     @Override
     public List<PetCategory> topList(String appId) {
         List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
-        
-        if (topList == null) {
+
+        if (Util.isNullOrEmpty(topList)) {
             topList = list(
                     new BaseWrapper<PetCategory>()
                             .eq(PetCategory.APP_ID, appId)
                             .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
                             .eq(PetCategory.SYSTEM_STATUS, true)
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
-                    );
-            
-            redis.opsForValue().set(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList);
+            );
+
+            redis.opsForList().rightPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
         }
         return topList;
     }
-    
+
     @Override
     public List<PetCategory> topList(String appId, Integer pageIndex, Integer pageSize) {
         List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, pageIndex, pageSize);
-        
-        if (topList == null) {
+
+        if (Util.isNullOrEmpty(topList)) {
             topList = list(
                     new BaseWrapper<PetCategory>()
                             .eq(PetCategory.APP_ID, appId)
@@ -179,15 +181,17 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                     pageIndex,
                     pageSize
             );
+
+            topList(appId);
         }
-        
+
         return topList;
     }
-    
+
     @Override
     public Integer countTop(String appId) {
         Integer count = lsize(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
-        
+
         if (count == 0) {
             count = count(
                     new BaseWrapper<PetCategory>()
@@ -195,7 +199,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                             .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
                             .eq(PetCategory.SYSTEM_STATUS, true)
             );
-            // 触发缓存
+
             topList(appId);
         }
         return count;
@@ -204,71 +208,66 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
     @Override
     public List<PetCategory> listByParentId(String parentId) {
         List<PetCategory> petCategoryList = lrange(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId);
-        
-        if (petCategoryList == null) {
+
+        if (Util.isNullOrEmpty(petCategoryList)) {
             petCategoryList = list(
                     new BaseWrapper<PetCategory>()
                             .eq(PetCategory.PET_CATEGORY_PARENT_ID, parentId)
                             .eq(PetCategory.SYSTEM_STATUS, true)
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
             );
-            
-            redis.opsForValue().set(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList);
+
+            redis.opsForList().rightPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
         }
         return petCategoryList;
     }
 
     @Override
     public List<PetCategory> childrenList(String appId) {
-        
         List<PetCategory> childrenList = list(
                 new BaseWrapper<PetCategory>()
-                .eq(PetCategory.APP_ID, appId)
-                .ne(PetCategory.PET_CATEGORY_PARENT_ID, "")
-                .eq(PetCategory.SYSTEM_STATUS, true)
-                .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
+                        .eq(PetCategory.APP_ID, appId)
+                        .ne(PetCategory.PET_CATEGORY_PARENT_ID, "")
+                        .eq(PetCategory.SYSTEM_STATUS, true)
+                        .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
         );
-        
         return childrenList;
     }
-    
+
     @Override
     public Boolean save(PetCategory entity, String petCategoryId, String systemReuqestUserId) {
-        
         Boolean result = super.save(entity, petCategoryId, systemReuqestUserId);
-        
         if (result) {
             // 清空相关缓存
             redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
             redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
             redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
         }
-        
         return result;
     }
-    
+
     @Override
     public Boolean update(PetCategory entity, String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
-       Boolean result = super.update(entity, petCategoryId, systemReuqestUserId, systemVersion);
-       
-       if (result) {
-           // 清空相关缓存
-           redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
-           redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
-           redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
-       }
-       
-       return result;
+        Boolean result = super.update(entity, petCategoryId, systemReuqestUserId, systemVersion);
+
+        if (result) {
+            // 清空相关缓存
+            redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
+            redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
+            redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
+        }
+
+        return result;
     }
-    
+
     @Override
     public Boolean delete(String appId, String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
         PetCategory petCategory = find(petCategoryId);
-        
+
         Boolean result = super.delete(petCategoryId, systemReuqestUserId, systemVersion);
-        
+
         if (result) {
-            
+
             //删除子级分类
             List<PetCategory> list = listByParentId(petCategoryId);
             if (!Util.isNullOrEmpty(list)) {
@@ -285,7 +284,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                 redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());
             }
         }
-        
+
         return result;
     }
 

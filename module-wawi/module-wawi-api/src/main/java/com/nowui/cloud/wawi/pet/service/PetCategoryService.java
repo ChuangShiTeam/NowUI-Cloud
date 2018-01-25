@@ -44,7 +44,7 @@ public interface PetCategoryService extends BaseService<PetCategory> {
      * @return List<PetCategory> 宠物分类树形分页列表
      */
     List<PetCategory> adminTreeList(String appId, Integer pageIndex, Integer pageSize);
-    
+
     /**
      * 所有宠物分类树形列表
      *
@@ -52,49 +52,49 @@ public interface PetCategoryService extends BaseService<PetCategory> {
      * @return List<PetCategory> 所有宠物分类树形列表
      */
     List<PetCategory> adminAllTreeList(String appId);
-    
+
     /**
      * 查询所有宠物一级分类列表
-     * 
+     *
      * @param appId 应用编号
      * @return List<PetCategory> 宠物一级分类列表
      */
     List<PetCategory> topList(String appId);
-    
+
     /**
      * 查询宠物一级分类分页列表
-     * 
+     *
      * @param appId 应用编号
      * @return List<PetCategory> 宠物一级分类列表
      */
     List<PetCategory> topList(String appId, Integer pageIndex, Integer pageSize);
-    
+
     /**
      * 统计宠物一级分类个数
      * @param appId 应用编号
      * @return Integer 宠物一级分类个数
      */
     Integer countTop(String appId);
-    
+
     /**
      * 根据父分类编号查询宠物分类下的子分类列表
-     * 
+     *
      * @param parentId 父级编号
      * @return List<PetCategory> 宠物分类列表
      */
     List<PetCategory> listByParentId(String parentId);
-    
+
     /**
      * 查询宠物分类下的所有子分类列表
-     * 
+     *
      * @param appId 应用编号
      * @return List<PetCategory> 宠物分类列表
      */
     List<PetCategory> childrenList(String appId);
-    
+
     /**
      * 删除宠物分类
-     * 
+     *
      * @param appId 应用编号
      * @param petCategoryId 宠物分类编号
      * @param systemReuqestUserId 请求用户编号
@@ -102,5 +102,4 @@ public interface PetCategoryService extends BaseService<PetCategory> {
      * @return Boolean 是否成功
      */
     Boolean delete(String appId, String petCategoryId, String systemReuqestUserId, Integer systemVersion);
-    
 }

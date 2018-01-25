@@ -63,14 +63,24 @@ public class PetCategoryAdminController extends BaseController {
         
         String fileIds = Util.beanToFieldString(resultList, PetCategory.PET_CATEGORY_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
-        
         resultList = Util.beanReplaceField(resultList, PetCategory.PET_CATEGORY_IMAGE, fileList, File.FILE_PATH);
-                
+        
+        for (PetCategory petcategory : resultList) {
+            List<PetCategory> childrenList = (List<PetCategory>) petcategory.get(Constant.CHILDREN);
+            if (!Util.isNullOrEmpty(childrenList)) {
+                String childFileIds = Util.beanToFieldString(childrenList, PetCategory.PET_CATEGORY_IMAGE);
+                List<File> childFileList = fileRpc.findsV1(childFileIds);
+                childrenList = Util.beanReplaceField(childrenList, PetCategory.PET_CATEGORY_IMAGE, childFileList, File.FILE_PATH);
+                petcategory.put(Constant.CHILDREN, childrenList);
+            }
+        }
+        
         validateResponse(
                 PetCategory.PET_CATEGORY_ID,
                 PetCategory.PET_CATEGORY_NAME,
                 PetCategory.PET_CATEGORY_CODE,
                 PetCategory.PET_CATEGORY_IMAGE,
+                Constant.CHILDREN,
                 PetCategory.PET_CATEGORY_SORT
         );
 
@@ -178,7 +188,6 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.PET_CATEGORY_ID,
                 PetCategory.APP_ID,
                 PetCategory.PET_CATEGORY_PARENT_ID,
-                PetCategory.PET_CATEGORY_PARENT_PATH,
                 PetCategory.PET_CATEGORY_NAME,
                 PetCategory.PET_CATEGORY_CODE,
                 PetCategory.PET_CATEGORY_IMAGE,

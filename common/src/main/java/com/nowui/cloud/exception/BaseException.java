@@ -1,6 +1,8 @@
 package com.nowui.cloud.exception;
 
 /**
+ * 自定义异常
+ * 
  * @author ZhongYongQiang
  */
 public class BaseException extends RuntimeException {

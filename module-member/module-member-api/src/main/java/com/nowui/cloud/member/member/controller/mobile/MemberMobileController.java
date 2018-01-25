@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.entity.enums.SmsCaptchaType;
 import com.nowui.cloud.base.sms.rpc.SmsCaptchaRpc;
@@ -54,6 +56,9 @@ public class MemberMobileController extends BaseController {
     
     @Autowired
     private UserRpc userRpc;
+    
+    @Autowired
+    private FileRpc fileRpc;
     
     @ApiOperation(value = "会员手机号码注册")
     @RequestMapping(value = "/member/mobile/v1/mobile/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
