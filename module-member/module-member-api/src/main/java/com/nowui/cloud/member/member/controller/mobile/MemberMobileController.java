@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.entity.enums.SmsCaptchaType;
@@ -28,6 +27,8 @@ import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.exception.SystemException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.AesUtil;
@@ -177,7 +178,7 @@ public class MemberMobileController extends BaseController {
         User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         
         if (user == null) {
-            throw new RuntimeException("用户未注册");
+            throw new BusinessException("用户未注册");
         }
 
         smsCaptchaRpc.aliyunSend(body.getAppId(), SmsCaptchaType.LOGIN.getKey(), body.getUserAccount(), body.getSystemRequestIpAddress(), 1, body.getSystemRequestUserId());
@@ -198,7 +199,7 @@ public class MemberMobileController extends BaseController {
         User user = userRpc.findByUserAccountV1(body.getAppId(), UserType.MEMBER.getKey(), body.getUserAccount());
         
         if (user != null) {
-            throw new RuntimeException("手机号码已注册");
+            throw new BusinessException("手机号码已注册");
         }
 
         smsCaptchaRpc.aliyunSend(body.getAppId(), SmsCaptchaType.REGISTER.getKey(), body.getUserAccount(), body.getSystemRequestIpAddress(), 1, body.getSystemRequestUserId());
