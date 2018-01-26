@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.netflix.discovery.converters.Auto;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.base.message.entity.Message;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -325,14 +323,14 @@ public class TopicMobileController extends BaseController {
         
         resultList = Util.beanAddField(
                 resultList, 
-        		Topic.USER_ID, 
-        		User.USER_ID, 
-        		nickAndAvatarAndIsFollowList, 
-        		User.USER_ID,
-        		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
-    	);
+                Topic.USER_ID, 
+                User.USER_ID, 
+                nickAndAvatarAndIsFollowList, 
+                User.USER_ID,
+                UserAvatar.USER_AVATAR,
+                UserNickName.USER_NICK_NAME,
+                MemberFollow.MEMBER_IS_FOLLOW
+        );
         
         
         // 图片多媒体
@@ -345,6 +343,7 @@ public class TopicMobileController extends BaseController {
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
+            topic.put(Topic.TOPIC_IS_SELF, body.getSystemRequestUserId().equals(topic.USER_ID));
         }
         
         
@@ -367,12 +366,11 @@ public class TopicMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
-	            
-                User.USER_ID,
+	            Topic.TOPIC_IS_SELF,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
-        		BaseEntity.SYSTEM_CREATE_TIME
+        		Topic.SYSTEM_CREATE_TIME
         );
 
         return renderJson(countResult, resultList);

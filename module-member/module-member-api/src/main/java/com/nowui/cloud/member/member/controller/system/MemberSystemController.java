@@ -136,6 +136,36 @@ public class MemberSystemController implements MemberRpc {
         
         return member;
     }
+    
+    @Override
+    public Member findDetailByUserIdV1(String userId) {
+        Member member = findByUserIdV1(userId);
+        
+        if (member == null) {
+            return null;
+        }
+        
+        User user = (User) member.get(Member.MEMBER_USER);
+        // 处理用户头像
+        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
+        
+        if (userAvatar == null) {
+            member.put(UserAvatar.USER_AVATAR, null);
+        } else {
+            File file = fileRpc.findV1(userAvatar.getUserAvatar());
+            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
+        }
+        
+        // 处理用户昵称
+        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
+        if (userNickName == null) {
+            member.put(UserNickName.USER_NICK_NAME, null);
+        } else {
+            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
+        }
+        
+        return member;
+    }
 
     @Override
     public List<Member> listByUserIdsV1(String userIds) {
@@ -148,7 +178,7 @@ public class MemberSystemController implements MemberRpc {
         
         return memberList;
     }
-
+    
     @Override
     public List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId) {
         if (Util.isNullOrEmpty(userIds) || Util.isNullOrEmpty(userId)) {
@@ -197,29 +227,10 @@ public class MemberSystemController implements MemberRpc {
     
     @Override
     public Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId) {
-        Member member = findByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(userId);
         
         if (member == null) {
             return null;
-        }
-        
-        User user = (User) member.get(Member.MEMBER_USER);
-        // 处理用户头像
-        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-        
-        if (userAvatar == null) {
-            member.put(UserAvatar.USER_AVATAR, null);
-        } else {
-            File file = fileRpc.findV1(userAvatar.getUserAvatar());
-            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-        }
-        
-        // 处理用户昵称
-        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-        if (userNickName == null) {
-            member.put(UserNickName.USER_NICK_NAME, null);
-        } else {
-            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
         }
         
         // 处理用户是否关注
@@ -269,29 +280,10 @@ public class MemberSystemController implements MemberRpc {
     @Override
     public Member nickNameAndAvatarFindV1(String userId) {
         
-        Member member = findByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(userId);
         
         if (member == null) {
             return null;
-        }
-        
-        User user = (User) member.get(Member.MEMBER_USER);
-        // 处理用户头像
-        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-        
-        if (userAvatar == null) {
-            member.put(UserAvatar.USER_AVATAR, null);
-        } else {
-            File file = fileRpc.findV1(userAvatar.getUserAvatar());
-            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-        }
-        
-        // 处理用户昵称
-        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-        if (userNickName == null) {
-            member.put(UserNickName.USER_NICK_NAME, null);
-        } else {
-            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
         }
         
         member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
@@ -301,29 +293,10 @@ public class MemberSystemController implements MemberRpc {
 
     @Override
     public Member nickNameAndAvatarAndBackgroundAndSignatureFind(String userId) {
-        Member member = findByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(userId);
         
         if (member == null) {
             return null;
-        }
-        
-        User user = (User) member.get(Member.MEMBER_USER);
-        // 处理用户头像
-        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-        
-        if (userAvatar == null) {
-            member.put(UserAvatar.USER_AVATAR, null);
-        } else {
-            File file = fileRpc.findV1(userAvatar.getUserAvatar());
-            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-        }
-        
-        // 处理用户昵称
-        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-        if (userNickName == null) {
-            member.put(UserNickName.USER_NICK_NAME, null);
-        } else {
-            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
         }
         
         // 处理用户签名
@@ -356,29 +329,10 @@ public class MemberSystemController implements MemberRpc {
 
     @Override
     public Member nickNameAndAvatarAndSignatureFind(String userId) {
-        Member member = findByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(userId);
         
         if (member == null) {
             return null;
-        }
-        
-        User user = (User) member.get(Member.MEMBER_USER);
-        // 处理用户头像
-        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-        
-        if (userAvatar == null) {
-            member.put(UserAvatar.USER_AVATAR, null);
-        } else {
-            File file = fileRpc.findV1(userAvatar.getUserAvatar());
-            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-        }
-        
-        // 处理用户昵称
-        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-        if (userNickName == null) {
-            member.put(UserNickName.USER_NICK_NAME, null);
-        } else {
-            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
         }
         
         // 处理用户签名

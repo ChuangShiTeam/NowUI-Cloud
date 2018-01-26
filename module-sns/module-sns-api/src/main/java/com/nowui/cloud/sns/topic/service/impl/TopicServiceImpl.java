@@ -18,8 +18,6 @@ import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicMapper;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
@@ -306,10 +304,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         if (result) {
             //删除话题论坛关联
-            List<TopicForum> allTopicForumList = topicForumService.listByTopicId(topicId);
-            for (TopicForum topicForum : allTopicForumList) {
-                topicForumService.delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
-            }
+            topicForumService.deleteByTopicId(topicId, systemRequestUserId);
 
             //删除话题多媒体
             topicMediaService.deleteByTopicId(topicId, systemRequestUserId);
