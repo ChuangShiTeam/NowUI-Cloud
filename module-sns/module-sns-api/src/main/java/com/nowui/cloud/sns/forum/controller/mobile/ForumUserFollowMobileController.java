@@ -272,8 +272,7 @@ public class ForumUserFollowMobileController extends BaseController {
         validateRequest(
                 body,
                 ForumUserFollow.FORUM_ID,
-                ForumUserFollow.APP_ID,
-                ForumUserFollow.SYSTEM_VERSION
+                ForumUserFollow.APP_ID
         );
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
         Boolean result = forumUserFollowService.update(body, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());

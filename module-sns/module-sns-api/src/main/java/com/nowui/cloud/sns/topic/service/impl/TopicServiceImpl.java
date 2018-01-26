@@ -293,7 +293,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         List<Topic> topicList = listByUserIdList(appId, userIdList, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
-            return null;
+            return topicList;
         }
         
         for (Topic topic : topicList) {
@@ -353,7 +353,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		List<Topic> topicList = listByTopicIdList(topicIdList, pageIndex, pageSize);
 		
 		if (Util.isNullOrEmpty(topicList)) {
-            return null;
+            return new ArrayList<>();
         }
         
         for (Topic topic : topicList) {

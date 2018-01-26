@@ -381,7 +381,6 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_SIZE,
                 Topic.SYSTEM_REQUEST_USER_ID
         );
-       
         // 用户关注的人的编号列表
         List<String> followUserIdList = memberFollowRpc.followUserIdList(body.getSystemRequestUserId());
         // 加上本人的用户编号
@@ -390,35 +389,37 @@ public class TopicMobileController extends BaseController {
         Integer countResult = topicService.countByUserIdList(body.getAppId(), followUserIdList);
         List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, body.getPageIndex(), body.getPageSize());
         
-        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
-        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
-        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-        
-        resultList = Util.beanAddField(
-                resultList, 
-                Topic.USER_ID, 
-                User.USER_ID, 
-                nickAndAvatarAndIsFollowList, 
-                User.USER_ID,
-                UserAvatar.USER_AVATAR,
-                UserNickName.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW
-        );
-        
-        
-        // 图片多媒体
-        for (Topic topic : resultList) {
-            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
-
-            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
-            List<File> fileList = fileRpc.findsV1(fileIds);
-
-            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
-            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        if (!Util.isNullOrEmpty(resultList)) {
+         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+            String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
+            List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
             
-            topic.put(Topic.TOPIC_IS_SELF, body.getSystemRequestUserId().equals(topic.USER_ID));
+            resultList = Util.beanAddField(
+                    resultList, 
+                    Topic.USER_ID, 
+                    User.USER_ID, 
+                    nickAndAvatarAndIsFollowList, 
+                    User.USER_ID,
+                    UserAvatar.USER_AVATAR,
+                    UserNickName.USER_NICK_NAME,
+                    MemberFollow.MEMBER_IS_FOLLOW
+            );
+            
+            
+            // 图片多媒体
+            for (Topic topic : resultList) {
+                List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+
+                String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
+                List<File> fileList = fileRpc.findsV1(fileIds);
+
+                topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
+                topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+                System.out.println(topic.getUserId());
+                System.out.println(body.getSystemRequestUserId());
+                topic.put(Topic.TOPIC_IS_SELF, body.getSystemRequestUserId().equals(topic.getUserId()));
+            }
         }
-        
         
         validateResponse(
                 Topic.TOPIC_ID,
