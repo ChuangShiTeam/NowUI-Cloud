@@ -91,6 +91,7 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setAppId(appId);
         bean.setForumId(forumId);
         bean.setUserId(userId);
+        bean.setForumUserFollowIsTop(false);
         
         Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
         
@@ -135,6 +136,7 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setAppId(appId);
         bean.setForumId(forumId);
         bean.setUserId(beInvitedUserId);
+        bean.setForumUserFollowIsTop(false);
         
         //这里的createUserId使用邀请人的
         Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
@@ -172,6 +174,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 bean.setAppId(appId);
                 bean.setForumId(forumId);
                 bean.setUserId(userId);
+                bean.setForumUserFollowIsTop(false);
                 
                 result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
                 
@@ -275,7 +278,8 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.APP_ID
         );
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
-        Boolean result = forumUserFollowService.update(body, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
+        forumUserFollow.setForumUserFollowIsTop(true);
+        Boolean result = forumUserFollowService.update(forumUserFollow, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
 
         return renderJson(result);
     }
