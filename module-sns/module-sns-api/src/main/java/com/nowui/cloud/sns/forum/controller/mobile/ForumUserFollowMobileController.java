@@ -171,7 +171,7 @@ public class ForumUserFollowMobileController extends BaseController {
         }
         
         // 处理论坛多媒体
-        String fileIds = Util.beanToFieldString(resultList, Forum.FORUM_MEDIA);
+        String fileIds = Util.beanToFieldString(forumList, Forum.FORUM_MEDIA);
         List<File> fileList = fileRpc.findsV1(fileIds);
         forumList = Util.beanReplaceField(forumList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
         
