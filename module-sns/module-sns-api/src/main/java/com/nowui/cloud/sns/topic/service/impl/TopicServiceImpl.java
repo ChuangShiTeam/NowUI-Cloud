@@ -216,6 +216,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		//根据topicId查询topic
 		Topic topic = find(topicId);
 		
+		//TODO 检查topic是否为null
+//		if (Util.isNullOrEmpty(topic)) {
+//			
+//		}
+		
 		// 话题多媒体列表
         List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);

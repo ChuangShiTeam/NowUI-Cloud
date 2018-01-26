@@ -40,7 +40,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)),
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
                 pageIndex,
                 pageSize
         );
@@ -77,7 +77,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.APP_ID, appId)
                         .eq(ForumUserFollow.USER_ID, userId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)),
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
                 pageIndex,
                 pageSize
         );
@@ -116,7 +116,23 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.USER_ID, userId)
                         .eq(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)
+        		)
+		);
+		if (forumUserFollowList == null || forumUserFollowList.size() == 0) {
+			return null;
+		}
+		return forumUserFollowList.get(0);
+	}
+	
+	@Override
+	public ForumUserFollow findByUserIdAndForumId(String userId, String forumId) {
+		List<ForumUserFollow> forumUserFollowList = list( 
+				new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)
         		)
 		);
 		if (forumUserFollowList == null || forumUserFollowList.size() == 0) {
@@ -132,7 +148,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.APP_ID, appId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)
         		)
 		);
 		return forumUserFollowList;
@@ -145,7 +161,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.APP_ID, appId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)
         		)
 		);
 
@@ -156,5 +172,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		
 		return false;
 	}
+
+	
 
 }

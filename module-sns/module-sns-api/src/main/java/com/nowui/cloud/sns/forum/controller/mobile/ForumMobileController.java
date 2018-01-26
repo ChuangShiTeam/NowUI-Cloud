@@ -323,6 +323,7 @@ public class ForumMobileController extends BaseController {
 
        return renderJson(result);
     }
+	
 
 	@ApiOperation(value = "删除论坛")
     @RequestMapping(value = "/forum/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -473,7 +474,6 @@ public class ForumMobileController extends BaseController {
         List<String> topicIdList = Util.beanToField(topicForumList, TopicForum.TOPIC_ID);
         
         // 4,根据topicIdList查找topicList
-//        List<Topic> topicList = topicService.listByTopicIdList(topicIdList, pageIndex, pageSize);
         List<Topic> topicList = topicService.listDetailByTopicIdList(userId, topicIdList, pageIndex, pageSize);
         
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)

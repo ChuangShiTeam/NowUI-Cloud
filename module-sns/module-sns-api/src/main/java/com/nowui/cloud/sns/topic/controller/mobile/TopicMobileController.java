@@ -141,7 +141,7 @@ public class TopicMobileController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
     
-    @ApiOperation(value = "别人的主页动态列表")
+    @ApiOperation(value = "别人的主页的动态列表")
     @RequestMapping(value = "/topic/mobile/v1/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeTopicV1(@RequestBody Topic body) {
         validateRequest(
@@ -152,17 +152,15 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_SIZE
         );
 
-//        Integer resultTotal = topicService.countForAdmin(body.getAppId(), null, body.getUserId(), null, null);
-//        List<Topic> resultList = topicService.allTopicListByUserId(body);
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(body.getUserId());
-        Integer countResult = topicService.countByUserIdList(body.getAppId(), arrayList);
-        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), arrayList, body.getPageIndex(), body.getPageSize());
+        ArrayList<String> userIdToSearchList = new ArrayList<>();
+        userIdToSearchList.add(body.getUserId());
+        Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, body.getPageIndex(), body.getPageSize());
         
         
         //复制start
         
-     // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
         List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
         
@@ -190,6 +188,81 @@ public class TopicMobileController extends BaseController {
         }
         
         //复制end
+        
+        validateResponse(
+        		Topic.TOPIC_ID,
+                Topic.TOPIC_SUMMARY,
+                Topic.USER_ID,
+                Topic.LATITUDE,
+                Topic.LONGTITUDE,
+                Topic.TOPIC_LOCATION,
+                Topic.TOPIC_IS_LOCATION,
+                Topic.TOPIC_IS_TOP,
+                Topic.TOPIC_TOP_LEVEL,
+                Topic.TOPIC_FORUM_LIST,
+                Topic.TOPIC_MEDIA_LIST,
+                Topic.TOPIC_COMMENT_LIST,
+	            Topic.TOPIC_COUNT_BOOKMARK,
+	            Topic.TOPIC_COUNT_LIKE,
+	            Topic.TOPIC_COUNT_COMMENT,
+	            Topic.TOPIC_USER_IS_BOOKEMARK,
+	            Topic.TOPIC_USER_IS_LIKE,
+	            Topic.TOPIC_USER_LIKE_LIST,
+	            
+                User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		BaseEntity.SYSTEM_CREATE_TIME
+        );
+
+        return renderJson(countResult, resultList);
+    }
+    
+    
+    @ApiOperation(value = "自己的主页的动态列表")
+    @RequestMapping(value = "/topic/mobile/v1/self/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> selfHomeTopicV1(@RequestBody Topic body) {
+        validateRequest(
+                body,
+                Topic.APP_ID,
+                Topic.PAGE_INDEX,
+                Topic.PAGE_SIZE
+        );
+
+        ArrayList<String> userIdToSearchList = new ArrayList<>();
+        userIdToSearchList.add(body.getSystemRequestUserId());
+        Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, body.getPageIndex(), body.getPageSize());
+        
+        
+        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
+        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+        
+        resultList = Util.beanAddField(
+                resultList, 
+        		Topic.USER_ID, 
+        		User.USER_ID, 
+        		nickAndAvatarAndIsFollowList, 
+        		User.USER_ID,
+        		UserAvatar.USER_AVATAR,
+        		UserNickName.USER_NICK_NAME,
+        		MemberFollow.MEMBER_IS_FOLLOW
+    	);
+        
+        
+        // 图片多媒体
+        for (Topic topic : resultList) {
+            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+
+            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+
+            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
+            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        }
+        
         
         validateResponse(
         		Topic.TOPIC_ID,
