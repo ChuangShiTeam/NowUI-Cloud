@@ -6,6 +6,10 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+feign:
+  hystrix:
+    enabled: false
+
 spring:
   application:
     name: module-sns
@@ -91,3 +95,22 @@ config:
   tableSchema: sns
   #代码生成输出目录
   codeGenerateUrl: /develop/code/
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 # Hystrix超时时间
+          strategy: THREAD
+
+ribbon:
+  ReadTimeout: 30000 # 处理时间
+  ConnectTimeout: 30000 # 连接时间
+  MaxAutoRetries: 0 #最大自动重试次数
+  MaxAutoRetriesNextServer: 1 # 换实例重试次数
+  MaxTotalHttpConnections: 2000 # 最大http连接数，越大越好，但到到达一个临界点之后，就不会提高响应速度了
+  MaxConnectionsPerHost: 1000 # 每个host连接数
