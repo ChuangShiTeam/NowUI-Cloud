@@ -332,10 +332,7 @@ public class Util {
      * @return List<T> 实体对象列表
      */
     public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        if (Util.isNullOrEmpty(fieldBeanList)) {
+        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
             return beanList;
         }
         for (BaseEntity bean : beanList) {
@@ -348,10 +345,7 @@ public class Util {
     }
 
     public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        if (Util.isNullOrEmpty(fieldBeanList)) {
+        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
             return beanList;
         }
         for (BaseEntity bean : beanList) {
@@ -362,10 +356,7 @@ public class Util {
     }
 
     public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        if (Util.isNullOrEmpty(fieldBeanList)) {
+        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
             return beanList;
         }
         for (BaseEntity bean : beanList) {
@@ -385,10 +376,7 @@ public class Util {
      * @return List<T> 实体对象列表
      */
     public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        if (Util.isNullOrEmpty(fieldBeanList)) {
+        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
             return beanList;
         }
         for (BaseEntity bean : beanList) {
