@@ -100,7 +100,7 @@ public class ForumUserFollowMobileController extends BaseController {
     }
 	
 
-	@ApiOperation(value = "新增用户论坛关注")
+	@ApiOperation(value = "邀请用户加入论坛")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> inviteUserV1(@RequestBody ForumUserFollow body) {
         validateRequest(

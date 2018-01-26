@@ -486,7 +486,6 @@ public class TopicMobileController extends BaseController {
             // 保存话题多媒体
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
             topicMediaService.batchSave(appId, topicId, topicMediaList, userId);
-
             
             
             // 保存话题论坛
