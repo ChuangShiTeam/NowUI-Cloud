@@ -93,7 +93,7 @@ public class ForumMobileController extends BaseController {
 	     body.setForumSort(0);
 	     body.setForumIsTop(false);
 	     body.setForumIsActive(true);
-	     body.setForumIsRecommend(false);
+	     body.setForumIsRecommend(true);
 	     body.setForumAuditStatus(ForumAuditStatus.AUDIT_PASS.getKey());
 	     body.setForumLocation("");
 	     body.setForumAuditContent("");
