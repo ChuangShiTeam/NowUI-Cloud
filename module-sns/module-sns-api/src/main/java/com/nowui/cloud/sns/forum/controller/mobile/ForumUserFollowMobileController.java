@@ -98,6 +98,51 @@ public class ForumUserFollowMobileController extends BaseController {
         
     }
 	
+
+	@ApiOperation(value = "新增用户论坛关注")
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> inviteUserV1(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID
+        );
+        
+        String appId = body.getAppId();
+        String requestUserId = body.getSystemRequestUserId();
+        String forumId = body.getForumId();
+        String beInvitedUserId = body.getUserId();
+        
+        
+        //TODO 不管传来的用户标识是什么,都会使用userId进行save操作
+        
+        //先查询取消关注表有没有记录
+        ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(null, beInvitedUserId, forumId);
+        //有: 删除
+        if (!Util.isNullOrEmpty(unfollow)) {
+        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), beInvitedUserId, unfollow.getSystemVersion());
+		}
+        //没有: 去关注表看有没有记录
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, beInvitedUserId, forumId);
+        //有: 返回true
+        if (!Util.isNullOrEmpty(forumUserFollow)) {
+        	return renderJson(true); 
+		}
+        //没有: 新增取消关注记录
+        ForumUserFollow bean = new ForumUserFollow();
+        bean.setAppId(appId);
+        bean.setForumId(forumId);
+        bean.setUserId(beInvitedUserId);
+        
+        //这里的createUserId使用邀请人的
+        Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
+        
+        return renderJson(result);
+        
+    }
+	
 	@ApiOperation(value = "批量新增用户论坛关注")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> batchSaveV1(@RequestBody ForumUserFollow body) {
@@ -220,4 +265,20 @@ public class ForumUserFollowMobileController extends BaseController {
 
         return renderJson(forumList);
     }
+    
+    @ApiOperation(value = "置顶用户关注论坛")
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/top", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> topV1(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.FORUM_ID,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.SYSTEM_VERSION
+        );
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
+        Boolean result = forumUserFollowService.update(body, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
+
+        return renderJson(result);
+    }
+    
 }

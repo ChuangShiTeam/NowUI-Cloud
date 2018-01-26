@@ -193,6 +193,10 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_USER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
+        
+        if (body.getSystemRequestUserId().equals(body.getFollowUserId())) {
+            throw new RuntimeException("不能关注自己");
+        }
 
         User user = userRpc.findV1(body.getSystemRequestUserId());
         
