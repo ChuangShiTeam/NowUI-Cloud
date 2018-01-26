@@ -148,12 +148,11 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         
         if (!Util.isNullOrEmpty(topicForumList)) {
         	
-        	Stream<TopicForum> topicForumStream = topicForumList.stream();
-        	topicForumStream.forEach(topicForum -> {
+        	topicForumList.stream().forEach(topicForum -> {
                 delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
             });
             
-        	topicForumStream.forEach(topicForum -> {
+        	topicForumList.stream().forEach(topicForum -> {
         		// 论坛话题数缓存减一
         		Integer forumTopicCount = countByForumId(topicForum.getForumId());
         		
