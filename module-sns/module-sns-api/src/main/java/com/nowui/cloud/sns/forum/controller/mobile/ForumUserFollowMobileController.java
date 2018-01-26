@@ -279,6 +279,7 @@ public class ForumUserFollowMobileController extends BaseController {
         );
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
         forumUserFollow.setForumUserFollowIsTop(true);
+        forumUserFollow.setSystemCreateTime(null);
         Boolean result = forumUserFollowService.update(forumUserFollow, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
 
         return renderJson(result);
