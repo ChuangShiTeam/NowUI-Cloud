@@ -18,6 +18,7 @@ import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
@@ -85,7 +86,7 @@ public class ForumMobileController extends BaseController {
 	     // 验证论坛名称的唯一性
 	     Boolean isRepeat = forumService.checkName(body.getAppId(), body.getForumName());
 	     if (isRepeat) {
-	         throw new RuntimeException("论坛名称已注册");
+	         throw new BusinessException("论坛名称已注册");
 	     }
 	     body.setForumBackgroundMedia(body.getForumMedia());
 	     body.setForumBackgroundMediaType(body.getForumMediaType());
@@ -115,8 +116,6 @@ public class ForumMobileController extends BaseController {
         
 	     return renderJson(result);
     }
-	 
-	 
 	 
 	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -374,25 +373,36 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.FORUM_NAME,
                 Forum.PAGE_INDEX,
-                Forum.PAGE_SIZE  //前端传值
+                Forum.PAGE_SIZE
         );
 
-        Integer resultTotal = forumService.countForMobile(body.getAppId() , null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null);
-        List<Forum> resultList = forumService.listForMobile(body.getAppId(), null, null, null, null, body.getForumName(), null, null, null, null, null, null, null, null, null, body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumService.countSearchForMobile(body.getAppId(), body.getForumName());
+        List<Forum> resultList = forumService.searchForMobile(body.getAppId(), body.getForumName(), body.getPageIndex(), body.getPageSize());
 
-      //处理论坛头像
-        for (Forum forum : resultList) {
-        	File file = fileRpc.findV1(forum.getForumMedia());
-        	file.keep(File.FILE_ID, File.FILE_PATH);
-            forum.put(Forum.FORUM_MEDIA, file);
-		}
+        if (!Util.isNullOrEmpty(resultList)) {
+            String fileIds = Util.beanToFieldString(resultList, Forum.FORUM_MEDIA);
+            List<File> fileList = fileRpc.findsV1(fileIds);
+            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
+            
+            String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
+            List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
+            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
+
+            
+            for (Forum forum : resultList) {
+                // 论坛当日话题最新数量
+                Integer count = topicForumService.countTodayByForumId(forum.getForumId());
+                forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
+            }
+        }
         
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR
+                Forum.FORUM_MODERATOR,
+                Forum.FORUM_TODAY_TOPIC_COUNT
         );
 
         return renderJson(resultTotal, resultList);

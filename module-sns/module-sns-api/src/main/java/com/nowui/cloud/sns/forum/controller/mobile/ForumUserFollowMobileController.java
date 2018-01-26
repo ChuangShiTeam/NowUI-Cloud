@@ -203,11 +203,11 @@ public class ForumUserFollowMobileController extends BaseController {
         
         Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
         
-        List<ForumUserFollow> resultList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
+        List<ForumUserFollow> forumUserFollowList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
 
         List<Forum> forumList = new ArrayList<Forum>();
 
-        for (ForumUserFollow forumUserFollow : resultList) {
+        for (ForumUserFollow forumUserFollow : forumUserFollowList) {
             
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
         	
@@ -223,9 +223,9 @@ public class ForumUserFollowMobileController extends BaseController {
         List<File> fileList = fileRpc.findsV1(fileIds);
         forumList = Util.beanReplaceField(forumList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
         
-        String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
+        String userIds = Util.beanToFieldString(forumList, Forum.FORUM_MODERATOR);
         List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
+        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
                 
         validateResponse(
                 Forum.FORUM_ID,

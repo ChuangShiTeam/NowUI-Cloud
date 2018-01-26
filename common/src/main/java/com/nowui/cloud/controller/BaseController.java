@@ -1,13 +1,17 @@
 package com.nowui.cloud.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.netflix.client.ClientException;
-import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.entity.BaseEntity;
-import com.nowui.cloud.exception.BaseException;
-import com.nowui.cloud.util.Util;
-import com.nowui.cloud.util.ValidateUtil;
+import java.net.SocketTimeoutException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+
 import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -17,11 +21,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import java.net.SocketTimeoutException;
-import java.sql.SQLException;
-import java.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.netflix.client.ClientException;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.exception.SystemException;
+import com.nowui.cloud.util.Util;
+import com.nowui.cloud.util.ValidateUtil;
 
 /**
  * @author ZhongYongQiang
@@ -94,23 +102,22 @@ public class BaseController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {BaseException.class, RuntimeException.class})
+    @ExceptionHandler(value = {RuntimeException.class})
     public Map<String, Object> handleRuntimeException(RuntimeException e) {
         e.printStackTrace();
 
-        String prefix = "com.netflix.client.ClientException: ";
-        String message = e.getMessage();
-
         Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-
-        if (message.startsWith(prefix)) {
+        
+        if (e instanceof BusinessException) {
+            map.put(Constant.CODE, 400);
+            map.put(Constant.MESSAGE, e.getMessage());
+        } else if (e instanceof SystemException) {
             map.put(Constant.CODE, 500);
             map.put(Constant.MESSAGE, "网络出现错误");
         } else {
-            map.put(Constant.CODE, 400);
-            map.put(Constant.MESSAGE, e.getMessage());
+            map.put(Constant.CODE, 500);
+            map.put(Constant.MESSAGE, "网络出现错误");
         }
-
         return map;
     }
 
@@ -140,7 +147,7 @@ public class BaseController {
             Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
             while (iterator.hasNext()) {
                 ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
-                throw new BaseException(constraintViolation.getMessage());
+                throw new BusinessException(constraintViolation.getMessage());
             }
         }
     }
