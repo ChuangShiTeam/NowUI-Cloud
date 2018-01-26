@@ -92,6 +92,15 @@ public interface ForumUserFollowService extends BaseService<ForumUserFollow> {
     ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId);
     
     /**
+     * 根据用户编号和论坛编号查询用户关注信息(不用appId)
+     * 
+     * @param userId 用户编号
+     * @param forumId 论坛编号
+     * @return ForumUserFollow 论坛用户关注信息
+     */
+    ForumUserFollow findByUserIdAndForumId(String userId, String forumId);
+    
+    /**
      * 查询符合论坛编号的所有用户关注信息
      * 
      * @param appId 应用编号
