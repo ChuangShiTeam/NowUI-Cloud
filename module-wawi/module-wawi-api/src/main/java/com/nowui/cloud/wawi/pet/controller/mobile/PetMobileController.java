@@ -5,7 +5,6 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.Pet;
-import com.nowui.cloud.wawi.pet.entity.PetCategory;
 import com.nowui.cloud.wawi.pet.service.PetService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,8 +44,8 @@ public class PetMobileController extends BaseController {
                 Pet.USER_ID
         );
 
-        Integer resultTotal = petService.countForUser(petEntity.getAppId() , petEntity.getUserId());
-        List<Pet> resultList = petService.listForUser(petEntity.getAppId(), petEntity.getUserId(), petEntity.getPageIndex(), petEntity.getPageSize());
+        Integer resultTotal = petService.countByUserId(petEntity.getAppId() , petEntity.getUserId());
+        List<Pet> resultList = petService.listByUserId(petEntity.getAppId(), petEntity.getUserId(), petEntity.getPageIndex(), petEntity.getPageSize());
 
         String fileIds = Util.beanToFieldString(resultList, Pet.PET_AVATAR);
         List<File> fileList = fileRpc.findsV1(fileIds);
