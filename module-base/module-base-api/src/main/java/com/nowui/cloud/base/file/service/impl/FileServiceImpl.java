@@ -19,6 +19,7 @@ import com.nowui.cloud.base.file.mapper.FileMapper;
 import com.nowui.cloud.base.file.service.FileService;
 import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.FileUtil;
@@ -80,7 +81,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         List<File> fileList = new ArrayList<File>();
         for (MultipartFile myfile : multipartFiles) {
             if (myfile.isEmpty()) {
-                throw new RuntimeException("上传图片为空");
+                throw new BusinessException("上传图片为空");
             } else {
                 String fileId = Util.getRandomUUID();
                 String originalFileName = myfile.getOriginalFilename();
@@ -88,18 +89,18 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 String fileName = fileId + "." + fileSuffix;
                 
                 if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
-                    throw new RuntimeException("上传图片格式不对");
+                    throw new BusinessException("上传图片格式不对");
                 }
                 //图片限定10M
                 if (myfile.getSize() > 10 * 1024L * 1024L) {
-                    throw new RuntimeException("上传图片超过限定大小");
+                    throw new BusinessException("上传图片超过限定大小");
                 }
                 
                 java.io.File file = new java.io.File(originalPath, fileName);
                 try {
                     FileUtil.copyInputStreamToFile(myfile.getInputStream(), file);
                 } catch (IOException e) {
-                    throw new RuntimeException("上传图片失败");
+                    throw new BusinessException("上传图片失败");
                 }
                 
                 path = path + fileName;
@@ -132,7 +133,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
                 Boolean result = save(entity, fileId, userId);
 
                 if (!result) {
-                    throw new RuntimeException("上传不成功");
+                    throw new BusinessException("上传不成功");
                 }
 
                 fileList.add(entity);
@@ -176,7 +177,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
             e.printStackTrace();
         }
         if (!Constant.UPLOAD_IMAGE_TYPES.contains(fileSuffix)) {
-            throw new RuntimeException("上传图片格式不对");
+            throw new BusinessException("上传图片格式不对");
         }
 
         FileUtil.resizeImage(imageFile, fileSuffix, thumbnailPath, 100);
@@ -204,7 +205,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
         Boolean result = save(entity, fileId, userId);
 
         if (!result) {
-            throw new RuntimeException("上传不成功");
+            throw new BusinessException("上传不成功");
         }
         
         return entity;
@@ -245,7 +246,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implement
             Boolean isSave = save(file, fileId, userId);
             
             if (!isSave) {
-                throw new RuntimeException("保存失败");
+                throw new BusinessException("保存失败");
             }
         } catch (Exception e) {
             return null;

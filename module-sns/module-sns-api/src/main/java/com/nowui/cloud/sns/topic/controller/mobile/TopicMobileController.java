@@ -20,6 +20,7 @@ import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
@@ -465,7 +466,7 @@ public class TopicMobileController extends BaseController {
         
         JSONArray topicMediaJsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
         if (Util.isNullOrEmpty(topicMediaJsonArray)) {
-            throw new RuntimeException("图片不能为空");
+            throw new BusinessException("图片不能为空");
         }
         
         JSONArray forumIdJSONArray = body.getJSONArray(Topic.TOPIC_FORUM_LIST);

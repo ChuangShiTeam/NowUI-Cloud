@@ -21,6 +21,7 @@ import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -183,7 +184,7 @@ public class ArticleAdminController extends BaseController {
 
         JSONArray articleCategoryJsonArray = articleEntity.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
         if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new RuntimeException("文章没有选择文章主分类");
+            throw new BusinessException("文章没有选择文章主分类");
         }
         List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
 
@@ -236,7 +237,7 @@ public class ArticleAdminController extends BaseController {
 
         JSONArray articleCategoryJsonArray = articleEntity.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
         if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new RuntimeException("文章没有选择文章主分类");
+            throw new BusinessException("文章没有选择文章主分类");
         }
         List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
 

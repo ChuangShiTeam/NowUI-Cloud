@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
@@ -51,7 +52,7 @@ public class TopicUserUnlikeMobileController extends BaseController {
         TopicUserUnlike unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
         
         if (!Util.isNullOrEmpty(unlike)) {
-        	throw new RuntimeException("已经取消点赞过了");
+        	throw new BusinessException("已经取消点赞过了");
 		}
         
         body.setUserId(userId);

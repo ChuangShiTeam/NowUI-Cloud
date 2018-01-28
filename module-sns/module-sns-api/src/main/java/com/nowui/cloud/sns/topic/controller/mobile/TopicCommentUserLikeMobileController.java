@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
@@ -56,7 +57,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         TopicCommentUserLike userLike = topicCommentUserLikeService.findTheCommentUserLike(commentId, userId);
         // 有: 就不做操作,并返回提示
         if (userLike != null) {
-        	throw new RuntimeException("已经点过赞了");
+        	throw new BusinessException("已经点过赞了");
 		}
         
         // 没有: 就去评论点赞表插入一条记录,并且删除取消点赞表的记录
