@@ -66,6 +66,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
 	
+	public static final String TOPIC_COUTN_THE_USER_SEND = "topic_count_the_user_send_";
+
+	
     @Override
     public Integer countForAdmin(String appId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
         Integer count = count(
@@ -362,6 +365,33 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         return topicList;
 		
+	}
+
+	@Override
+	public Integer countTopicByUserId(String userId) {
+		
+		Integer count = count(
+                new BaseWrapper<Topic>()
+                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.SYSTEM_STATUS, true)
+        );
+		return count;
+	}
+
+	@Override
+	public Integer countTopicByUserIdWithRedis(String userId) {
+		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND);
+		if (num == null) {
+			Integer count = count(
+	                new BaseWrapper<Topic>()
+	                        .eq(Topic.USER_ID, userId)
+	                        .eq(Topic.SYSTEM_STATUS, true)
+	        );
+			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND, count);
+			return count;
+		}
+		
+		return num;
 	}
 
 }

@@ -22,7 +22,9 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -138,6 +140,50 @@ public class TopicMobileController extends BaseController {
         );
 
         return renderJson(resultTotal, resultList);
+    }
+    
+    
+    @ApiOperation(value = "别人的主页的用户信息(头像,关注数,粉丝数是否关注这个用户等)")
+    @RequestMapping(value = "/topic/mobile/v1/home/user/info", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> homeUserInfoV1(@RequestBody Topic body) {
+        validateRequest(
+                body,
+                Topic.APP_ID,
+                Topic.USER_ID
+        );
+        
+        String beSearchUserId = body.getUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        
+        // TODO 还要获取用户地址,背景,是否关注和其他都要写在一个方法里,这里还要改,
+        //获取用户头像,昵称,签名,背景
+        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(beSearchUserId);
+        //获取用户头像,昵称,是否关注
+        Member thePartIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(beSearchUserId, requestUserId);
+        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, thePartIsFollow.getBoolean(MemberFollow.MEMBER_IS_FOLLOW));
+		
+        // 粉丝数
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(beSearchUserId);
+        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
+        // 关注数
+        Integer countFollow = memberFollowRpc.countFollow(beSearchUserId);
+        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
+        // 动态数
+        Integer countTopic = topicService.countTopicByUserIdWithRedis(beSearchUserId);
+        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
+        
+        validateResponse(
+        		Member.MEMBER_SEND_TOPIC_COUNT,
+        		Member.MEMBER_FOLLOW_COUNT,
+        		Member.MEMBER_BE_FOLLOW_COUNT,
+        		MemberFollow.MEMBER_IS_FOLLOW,
+        		MemberSignature.MEMBER_SIGNATURE,
+        		MemberBackground.MEMBER_BACKGROUND,
+        		UserNickName.USER_NICK_NAME,
+        		UserAvatar.USER_AVATAR
+        );
+        return renderJson(memberInfo);
+
     }
     
     @ApiOperation(value = "别人的主页的动态列表")

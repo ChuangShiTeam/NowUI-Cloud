@@ -19,6 +19,7 @@ import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberFollow;
@@ -77,7 +78,7 @@ public class MemberSystemController implements MemberRpc {
             Boolean isSave = memberService.save(bean, memberId, systemRequestUserId);
 
             if (!isSave) {
-                throw new RuntimeException("保存不成功");
+                throw new BusinessException("保存不成功");
             }
             
             String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
@@ -85,7 +86,7 @@ public class MemberSystemController implements MemberRpc {
             isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
             
             if (!isSave) {
-                throw new RuntimeException("保存不成功");
+                throw new BusinessException("保存不成功");
             }
         } else {
             userId = user.getUserId();
@@ -99,7 +100,7 @@ public class MemberSystemController implements MemberRpc {
                 Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
                 
                 if (!isUpdate) {
-                    throw new RuntimeException("更新不成功");
+                    throw new BusinessException("更新不成功");
                 }
             }
             
@@ -118,7 +119,7 @@ public class MemberSystemController implements MemberRpc {
             return AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("登录不成功");
+            throw new BusinessException("登录不成功");
         }
     }
 

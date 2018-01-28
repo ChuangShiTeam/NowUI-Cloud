@@ -18,6 +18,7 @@ import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
@@ -195,7 +196,7 @@ public class MemberFollowMobileController extends BaseController {
         );
         
         if (body.getSystemRequestUserId().equals(body.getFollowUserId())) {
-            throw new RuntimeException("不能关注自己");
+            throw new BusinessException("不能关注自己");
         }
 
         User user = userRpc.findV1(body.getSystemRequestUserId());
@@ -224,7 +225,7 @@ public class MemberFollowMobileController extends BaseController {
         MemberFollow memberFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), body.getFollowUserId());
 
         if (memberFollow == null) {
-            throw new RuntimeException("没有关注该会员");
+            throw new BusinessException("没有关注该会员");
         }
         Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion());
 

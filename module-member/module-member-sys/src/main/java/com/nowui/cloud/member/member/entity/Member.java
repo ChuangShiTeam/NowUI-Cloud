@@ -99,6 +99,25 @@ public class Member extends BaseEntity {
     
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
+    /**
+     * 用户发布的动态数
+     */
+    public static final String MEMBER_SEND_TOPIC_COUNT = "memberSendTopicCount";
+    
+    /**
+     * 用户粉丝数
+     */
+    public static final String MEMBER_BE_FOLLOW_COUNT = "memberBeFollowCount";
+    
+    /**
+     * 用户关注数
+     */
+    public static final String MEMBER_FOLLOW_COUNT = "memberFollowCount";
+    
+    
+    
+    
+    
     public String getMemberId() {
         return getString(MEMBER_ID);
     }
