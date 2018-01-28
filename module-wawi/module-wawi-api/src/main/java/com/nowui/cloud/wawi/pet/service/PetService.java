@@ -45,7 +45,7 @@ public interface PetService extends BaseService<Pet> {
      * @param pageSize 每页个数
      * @return List<Pet> 我的宠物列表
      */
-    List<Pet> listForUser(String appId, String userId, Integer pageIndex, Integer pageSize);
+    List<Pet> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
 
     /**
      * 我的宠物个数
@@ -53,5 +53,5 @@ public interface PetService extends BaseService<Pet> {
      * @param userId 用户编号
      * @return Integer 我的宠物个数
      */
-    Integer countForUser(String appId, String userId);
+    Integer countByUserId(String appId, String userId);
 }
