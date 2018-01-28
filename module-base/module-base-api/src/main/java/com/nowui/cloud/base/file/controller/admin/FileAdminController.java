@@ -16,6 +16,7 @@ import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.service.FileService;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -117,7 +118,7 @@ public class FileAdminController extends BaseController {
             @RequestParam(File.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
             @RequestParam("file") MultipartFile[] multipartFiles) {
         if (multipartFiles.length == 0) {
-            throw new RuntimeException("上传文件为空");
+            throw new BusinessException("上传文件为空");
         }
         List<File> fileList = fileService.uploadImage(appId, systemRequestUserId, multipartFiles);
         

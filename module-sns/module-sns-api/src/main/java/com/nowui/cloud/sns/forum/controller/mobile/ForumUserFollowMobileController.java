@@ -17,6 +17,7 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -179,7 +180,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
                 
                 if (!result) {
-                    throw new RuntimeException("加入失败");
+                    throw new BusinessException("加入失败");
                 }
             }
         }

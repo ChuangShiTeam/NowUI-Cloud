@@ -30,6 +30,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.code.service.CodeService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -285,11 +286,11 @@ public class CodeController extends BaseController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
 
-            throw new RuntimeException("代码生成发生错误");
+            throw new BusinessException("代码生成发生错误");
         } catch (IOException e) {
             e.printStackTrace();
 
-            throw new RuntimeException("代码生成发生错误");
+            throw new BusinessException("代码生成发生错误");
         }
 
         return renderJson(true);
