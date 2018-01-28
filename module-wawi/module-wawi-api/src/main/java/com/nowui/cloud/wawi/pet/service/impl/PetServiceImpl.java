@@ -48,4 +48,29 @@ public class PetServiceImpl extends BaseServiceImpl<PetMapper, Pet> implements P
         return petList;
     }
 
+    @Override
+    public List<Pet> listForUser(String appId, String userId, Integer pageIndex, Integer pageSize) {
+        List<Pet> petList = list(
+                new BaseWrapper<Pet>()
+                        .eq(Pet.APP_ID, appId)
+                        .eq(Pet.USER_ID, userId)
+                        .eq(Pet.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Pet.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return petList;
+    }
+
+    @Override
+    public Integer countForUser(String appId, String userId) {
+        Integer count = count(
+                new BaseWrapper<Pet>()
+                        .eq(Pet.APP_ID, appId)
+                        .eq(Pet.USER_ID, userId)
+                        .eq(Pet.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
 }
