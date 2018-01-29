@@ -465,10 +465,10 @@ public class TopicMobileController extends BaseController {
        topic.put(Topic.TOPIC_SEND_USER_ID, theSendUserId);
        
        // 处理评论是否自己发布
-       List<TopicComment> commentList = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
-       for (TopicComment topicComment : commentList) {
-    	   topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, userId.equals(topicComment.getUserId()));
-	}
+//       List<TopicComment> commentList = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
+//       for (TopicComment topicComment : commentList) {
+//    	   topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, userId.equals(topicComment.getUserId()));
+//	}
 
 
         validateResponse(
@@ -546,7 +546,7 @@ public class TopicMobileController extends BaseController {
 
                 topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
                 topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-                // 处理评论是否自己发布
+                // 话题是否自己发布
                 topic.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topic.getUserId()));
             }
         }

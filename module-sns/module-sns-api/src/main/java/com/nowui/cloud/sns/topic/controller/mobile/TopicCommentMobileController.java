@@ -7,8 +7,10 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
+import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.util.Util;
 
@@ -44,6 +46,9 @@ public class TopicCommentMobileController extends BaseController {
 	
 	@Autowired
 	private TopicTipService topicTipService;
+	
+	@Autowired
+    private TopicCommentUserLikeService topicCommentUserLikeService;
 
 	@Autowired
 	private MemberRpc memberRpc;
@@ -68,6 +73,20 @@ public class TopicCommentMobileController extends BaseController {
         if (Util.isNullOrEmpty(topicCommentList)) {
             return renderJson(resultTotal, topicCommentList);
         }
+        
+        //处理评论是否自己发的
+        for (TopicComment topicComment : topicCommentList) {
+        	// 验证评论是否是自己的
+            topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getUserId().equals(requestUserId));
+            
+            // 处理用户是否点赞
+            TopicCommentUserLike theCommentUserLike = topicCommentUserLikeService.findTheCommentUserLike(topicComment.getTopicCommentId(), requestUserId);
+            if (theCommentUserLike != null) {
+            	topicComment.put(TopicComment.TOPIC_COMMENT_IS_LIKE, true);
+			}else {
+				topicComment.put(TopicComment.TOPIC_COMMENT_IS_LIKE, false);
+			}
+		}
         
         //处理用户信息(昵称,头像)
         String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
@@ -96,9 +115,6 @@ public class TopicCommentMobileController extends BaseController {
                 }
                 Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
                 topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-                
-                // 验证评论是否是自己的
-                topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getUserId().equals(requestUserId));
             }
         }
         
@@ -114,7 +130,8 @@ public class TopicCommentMobileController extends BaseController {
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
         		TopicComment.SYSTEM_CREATE_TIME,
-        		TopicComment.TOPIC_COMMENT_IS_SELF
+        		TopicComment.TOPIC_COMMENT_IS_SELF,
+        		TopicComment.TOPIC_COMMENT_IS_LIKE
         );
 
         return renderJson(resultTotal, topicCommentList);
