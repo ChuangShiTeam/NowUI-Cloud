@@ -82,7 +82,7 @@ public class CodeController extends BaseController {
 
         return renderJson(resultList.size(), resultList);
     }
- 
+
     @ApiOperation(value = "数据库表字段列表")
     @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> fieldlLst() {
@@ -110,9 +110,9 @@ public class CodeController extends BaseController {
             String apiPath = path + "/api";
             String apiPackagePath = apiPath + "/" + codeEntity.getPackageName();
             String sysPath = path + "/sys";
-            String sysPackagePath = sysPath + "/"  + codeEntity.getPackageName();
+            String sysPackagePath = sysPath + "/" + codeEntity.getPackageName();
             String webPath = path + "/web";
-            String webPackagePath = webPath + "/"  + codeEntity.getPackageName();
+            String webPackagePath = webPath + "/" + codeEntity.getPackageName();
             String entityPath = sysPackagePath + "/entity";
             String mqPath = sysPackagePath + "/mq";
             String mqImplPath = mqPath + "/impl";
@@ -178,7 +178,7 @@ public class CodeController extends BaseController {
             String firstLowerWithoutUnderlineEntityName = removeUnderline(firstLowerEntityName);
             String firstUpperWithoutUnderlineEntityName = removeUnderline(firstUpperEntityName);
             String tableId = "";
-            
+
             String viewPackagePath = viewPath + "/" + firstLowerWithoutUnderlineEntityName;
             FileUtil.createPath(viewPackagePath);
 
