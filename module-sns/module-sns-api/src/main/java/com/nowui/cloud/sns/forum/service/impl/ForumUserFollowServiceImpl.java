@@ -40,7 +40,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)),
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
                 pageIndex,
                 pageSize
         );
@@ -77,7 +77,8 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.APP_ID, appId)
                         .eq(ForumUserFollow.USER_ID, userId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)),
+                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
                 pageIndex,
                 pageSize
         );
@@ -92,6 +93,8 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
                         .eq(ForumUserFollow.APP_ID, appId)
                         .eq(ForumUserFollow.USER_ID, userId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
+                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME))
         );
 
         return forumUserFollowList;
@@ -110,19 +113,26 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 
 	@Override
 	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {
-		List<ForumUserFollow> forumUserFollowList = list( 
+		ForumUserFollow forumUserFollow = find( 
 				new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
                         .eq(ForumUserFollow.USER_ID, userId)
                         .eq(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
-        		)
 		);
-		if (forumUserFollowList == null || forumUserFollowList.size() == 0) {
-			return null;
-		}
-		return forumUserFollowList.get(0);
+		return forumUserFollow;
+	}
+	
+	@Override
+	public ForumUserFollow findByUserIdAndForumId(String userId, String forumId) {
+	    ForumUserFollow forumUserFollow = find( 
+				new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.USER_ID, userId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+		);
+		
+		return forumUserFollow;
 	}
 
 	@Override
@@ -130,9 +140,9 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		List<ForumUserFollow> forumUserFollowList = list( 
 				new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
-                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
+                        .orderAsc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
         		)
 		);
 		return forumUserFollowList;
@@ -143,10 +153,8 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		List<ForumUserFollow> forumUserFollowList = list( 
 				new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
-                        .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_CREATE_TIME)
-        		)
 		);
 
 		//得到全部用户关注list,遍历
@@ -156,5 +164,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 		
 		return false;
 	}
+
+	
 
 }

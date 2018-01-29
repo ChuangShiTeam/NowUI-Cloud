@@ -81,7 +81,7 @@ public class Pet extends BaseEntity {
     @TableField
     @NotNull(message = "宠物性别不能为空")
     @Length(max = 1, message = "宠物性别长度超出限制")
-    private Boolean petSex;
+    private String petSex;
     public static final String PET_SEX = "petSex";
 
     /**
@@ -155,11 +155,11 @@ public class Pet extends BaseEntity {
         put(PET_NAME, petName);
     }
 
-    public Boolean getPetSex() {
-        return getBoolean(PET_SEX);
+    public String getPetSex() {
+        return getString(PET_SEX);
     }
     
-    public void setPetSex(Boolean petSex) {
+    public void setPetSex(String petSex) {
         put(PET_SEX, petSex);
     }
 

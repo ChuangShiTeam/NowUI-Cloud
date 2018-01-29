@@ -1,6 +1,5 @@
 package com.nowui.cloud.wawi.wawi.controller.mobile;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.App;
+import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
-import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
@@ -53,7 +52,29 @@ public class WawiMyMobileController extends BaseController {
         
         Member member = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
         
-        validateResponse(UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR, MemberBackground.MEMBER_BACKGROUND);
+        validateResponse(User.USER_NICK_NAME, User.USER_AVATAR, MemberBackground.MEMBER_BACKGROUND);
+        
+        return renderJson(member);
+    }
+    
+    @ApiOperation(value = "哇伊我的个人资料")
+    @RequestMapping(value = "/wawi/mobile/v1/my/info", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> myInfoV1(@RequestBody App body) {
+        validateRequest(
+            body, 
+            App.APP_ID,
+            App.SYSTEM_REQUEST_USER_ID
+        );
+
+        String userId = body.getSystemRequestUserId();
+        
+        Member member = memberRpc.findDetailByUserIdV1(userId);
+        
+        validateResponse(
+                User.USER_NICK_NAME, 
+                User.USER_AVATAR, 
+                Member.MEMBER_SIGNATURE
+        );
         
         return renderJson(member);
     }

@@ -30,6 +30,8 @@ public interface TopicService extends BaseService<Topic> {
      * @return Integer 话题信息统计
      */
     Integer countForAdmin(String appId, String topicSummary, String userId, String topicLocation, Boolean topicIsLocation);
+    
+    
 
     /**
      * 话题信息列表
@@ -71,6 +73,20 @@ public interface TopicService extends BaseService<Topic> {
      * @return List<Topic> 话题信息列表
      */
 	List<Topic> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
+	
+	/**
+	 * 根据用户id查找动态数量(使用redis)
+	 * 
+	 * @param userId 用户编号
+	 */
+	Integer countTopicByUserIdWithRedis(String userId);
+	
+	/**
+	 * 根据用户id查找动态数量
+	 * 
+	 * @param userId 用户编号
+	 */
+	Integer countTopicByUserId(String userId);
 	
 	/**
      * 根据userId查找全部话题信息

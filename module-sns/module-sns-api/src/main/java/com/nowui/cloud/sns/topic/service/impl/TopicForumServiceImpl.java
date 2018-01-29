@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
@@ -148,12 +149,11 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         
         if (!Util.isNullOrEmpty(topicForumList)) {
         	
-        	Stream<TopicForum> topicForumStream = topicForumList.stream();
-        	topicForumStream.forEach(topicForum -> {
+        	topicForumList.stream().forEach(topicForum -> {
                 delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
             });
             
-        	topicForumStream.forEach(topicForum -> {
+        	topicForumList.stream().forEach(topicForum -> {
         		// 论坛话题数缓存减一
         		Integer forumTopicCount = countByForumId(topicForum.getForumId());
         		
@@ -178,7 +178,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                 Boolean flag = save(topicForum, topicForumId, systemRequestUserId);
                 
                 if (!flag) {
-                    throw new RuntimeException("保存失败");
+                    throw new BusinessException("保存失败");
                 }
                                 
                 topicForumIdList.add(topicForumId);

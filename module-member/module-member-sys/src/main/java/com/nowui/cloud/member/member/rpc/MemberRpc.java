@@ -46,6 +46,14 @@ public interface MemberRpc {
     Member findByUserIdV1(@RequestParam(value = "userId", required = true) String userId);
     
     /**
+     * 根据用户编号查询详情信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/member/system/v1/find/detail/by/user/id", method = RequestMethod.POST)
+    Member findDetailByUserIdV1(@RequestParam(value = "userId", required = true) String userId);
+    
+    /**
      * 根据用户编号列表查询会员列表
      * 
      * @param userIds 用户编号集合JSON数组字符串

@@ -59,6 +59,8 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.PAGE_SIZE
         );
 
+        String requestUserId = body.getSystemRequestUserId();
+        
         String topicId = body.getTopicId();
         Integer resultTotal = topicCommentService.countByTopicId(topicId);
         List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topicId, body.getPageIndex(), body.getPageSize());
@@ -94,6 +96,9 @@ public class TopicCommentMobileController extends BaseController {
                 }
                 Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
                 topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+                
+                // 验证评论是否是自己的
+                topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getUserId().equals(requestUserId));
             }
         }
         
@@ -108,7 +113,8 @@ public class TopicCommentMobileController extends BaseController {
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
-        		TopicComment.SYSTEM_CREATE_TIME
+        		TopicComment.SYSTEM_CREATE_TIME,
+        		TopicComment.TOPIC_COMMENT_IS_SELF
         );
 
         return renderJson(resultTotal, topicCommentList);

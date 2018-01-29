@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
-import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
 
 /**
@@ -105,7 +102,7 @@ public interface UserRpc {
     );
     
     @RequestMapping(value = "/user/system/v1/find/by/user/wechat", method = RequestMethod.POST)
-    User fingByUserWechatV1(
+    User findByUserWechatV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
             @RequestParam(value = "wechatOpenId", required = true) String wechatOpenId,

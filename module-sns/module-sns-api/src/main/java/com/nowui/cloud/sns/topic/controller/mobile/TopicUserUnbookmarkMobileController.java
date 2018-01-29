@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
@@ -50,7 +51,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 
         TopicUserUnbookmark topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
         if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
-        	throw new RuntimeException("你已经取消收藏过了");
+        	throw new BusinessException("你已经取消收藏过了");
 		}
 
         body.setUserId(userId);

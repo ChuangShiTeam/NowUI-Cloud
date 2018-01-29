@@ -9,7 +9,6 @@ import com.nowui.cloud.member.member.mapper.MemberBackgroundMapper;
 import com.nowui.cloud.member.member.service.MemberBackgroundService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.util.Util;
 
 /**
  * 会员背景业务实现
@@ -23,10 +22,6 @@ public class MemberBackgroundServiceImpl extends BaseServiceImpl<MemberBackgroun
 
     @Override
     public MemberBackground findByMemberId(String memberId) {
-        
-        if (Util.isNullOrEmpty(memberId)) {
-            return null;
-        }
         
         MemberBackground memberBackground = find(
                 new BaseWrapper<MemberBackground>()

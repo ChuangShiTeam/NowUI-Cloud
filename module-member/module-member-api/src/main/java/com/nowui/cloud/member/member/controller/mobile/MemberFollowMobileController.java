@@ -15,9 +15,9 @@ import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
@@ -62,19 +62,13 @@ public class MemberFollowMobileController extends BaseController {
         
         if (!Util.isNullOrEmpty(userList)) {
             
-            List<UserAvatar> userAvatarList = userList.stream().map(user -> (UserAvatar) user.get(User.USER_AVATAR)).collect(Collectors.toList());
-            
-            String fileIds = Util.beanToFieldString(userAvatarList, UserAvatar.USER_AVATAR);
+            String fileIds = Util.beanToFieldString(userList, UserAvatar.USER_AVATAR);
             
             List<File> fileList = fileRpc.findsV1(fileIds);
             
-            userAvatarList = Util.beanAddField(userAvatarList, UserAvatar.USER_AVATAR, fileList, File.FILE_PATH);
+            userList = Util.beanAddField(userList, UserAvatar.USER_AVATAR, fileList, File.FILE_PATH);
             
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, UserAvatar.USER_ID, userAvatarList, File.FILE_PATH);
-            
-            List<UserNickName> userNickNameList = userList.stream().map(user -> (UserNickName) user.get(User.USER_NICK_NAME)).collect(Collectors.toList());
-
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, UserAvatar.USER_ID, userNickNameList, UserNickName.USER_NICK_NAME);
+            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
         }
                
         validateResponse(
@@ -82,7 +76,7 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.FOLLOW_USER_ID,
                 File.FILE_PATH,
-                UserNickName.USER_NICK_NAME
+                User.USER_NICK_NAME
         );
 
         return renderJson(resultList);
@@ -105,19 +99,13 @@ public class MemberFollowMobileController extends BaseController {
         
         if (!Util.isNullOrEmpty(userList)) {
             
-            List<UserAvatar> userAvatarList = userList.stream().map(user -> (UserAvatar) user.get(User.USER_AVATAR)).collect(Collectors.toList());
-            
-            String fileIds = Util.beanToFieldString(userAvatarList, UserAvatar.USER_AVATAR);
+            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
             
             List<File> fileList = fileRpc.findsV1(fileIds);
             
-            userAvatarList = Util.beanAddField(userAvatarList, UserAvatar.USER_AVATAR, fileList, File.FILE_PATH);
+            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
             
-            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, UserAvatar.USER_ID, userAvatarList, File.FILE_PATH);
-            
-            List<UserNickName> userNickNameList = userList.stream().map(user -> (UserNickName) user.get(User.USER_NICK_NAME)).collect(Collectors.toList());
-
-            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, UserAvatar.USER_ID, userNickNameList, UserNickName.USER_NICK_NAME);
+            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
         }
                
         validateResponse(
@@ -125,7 +113,7 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 File.FILE_PATH,
-                UserNickName.USER_NICK_NAME
+                User.USER_NICK_NAME
         );
 
         return renderJson(resultList);
@@ -149,19 +137,13 @@ public class MemberFollowMobileController extends BaseController {
         
         if (!Util.isNullOrEmpty(userList)) {
             
-            List<UserAvatar> userAvatarList = userList.stream().map(user -> (UserAvatar) user.get(User.USER_AVATAR)).collect(Collectors.toList());
-            
-            String fileIds = Util.beanToFieldString(userAvatarList, UserAvatar.USER_AVATAR);
+            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
             
             List<File> fileList = fileRpc.findsV1(fileIds);
             
-            userAvatarList = Util.beanAddField(userAvatarList, UserAvatar.USER_AVATAR, fileList, File.FILE_PATH);
+            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
             
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, UserAvatar.USER_ID, userAvatarList, File.FILE_PATH);
-            
-            List<UserNickName> userNickNameList = userList.stream().map(user -> (UserNickName) user.get(User.USER_NICK_NAME)).collect(Collectors.toList());
-
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, UserAvatar.USER_ID, userNickNameList, UserNickName.USER_NICK_NAME);
+            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
         }
         
         // 判断我是否关注过
@@ -177,7 +159,7 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.FOLLOW_USER_ID,
                 File.FILE_PATH,
-                UserNickName.USER_NICK_NAME,
+                User.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW
         );
 
@@ -193,6 +175,10 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_USER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
+        
+        if (body.getSystemRequestUserId().equals(body.getFollowUserId())) {
+            throw new BusinessException("不能关注自己");
+        }
 
         User user = userRpc.findV1(body.getSystemRequestUserId());
         
@@ -220,7 +206,7 @@ public class MemberFollowMobileController extends BaseController {
         MemberFollow memberFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), body.getFollowUserId());
 
         if (memberFollow == null) {
-            throw new RuntimeException("没有关注该会员");
+            throw new BusinessException("没有关注该会员");
         }
         Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion());
 

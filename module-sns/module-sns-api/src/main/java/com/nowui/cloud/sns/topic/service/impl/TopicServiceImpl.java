@@ -18,8 +18,6 @@ import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicMapper;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
@@ -67,6 +65,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
+	
+	public static final String TOPIC_COUTN_THE_USER_SEND = "topic_count_the_user_send_";
+
 	
     @Override
     public Integer countForAdmin(String appId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
@@ -216,6 +217,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		//根据topicId查询topic
 		Topic topic = find(topicId);
 		
+		//TODO 检查topic是否为null
+//		if (Util.isNullOrEmpty(topic)) {
+//			
+//		}
+		
 		// 话题多媒体列表
         List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
@@ -290,7 +296,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         List<Topic> topicList = listByUserIdList(appId, userIdList, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
-            return null;
+            return topicList;
         }
         
         for (Topic topic : topicList) {
@@ -306,10 +312,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         if (result) {
             //删除话题论坛关联
-            List<TopicForum> allTopicForumList = topicForumService.listByTopicId(topicId);
-            for (TopicForum topicForum : allTopicForumList) {
-                topicForumService.delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
-            }
+            topicForumService.deleteByTopicId(topicId, systemRequestUserId);
 
             //删除话题多媒体
             topicMediaService.deleteByTopicId(topicId, systemRequestUserId);
@@ -353,7 +356,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		List<Topic> topicList = listByTopicIdList(topicIdList, pageIndex, pageSize);
 		
 		if (Util.isNullOrEmpty(topicList)) {
-            return null;
+            return new ArrayList<>();
         }
         
         for (Topic topic : topicList) {
@@ -362,6 +365,33 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         return topicList;
 		
+	}
+
+	@Override
+	public Integer countTopicByUserId(String userId) {
+		
+		Integer count = count(
+                new BaseWrapper<Topic>()
+                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.SYSTEM_STATUS, true)
+        );
+		return count;
+	}
+
+	@Override
+	public Integer countTopicByUserIdWithRedis(String userId) {
+		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND);
+		if (num == null) {
+			Integer count = count(
+	                new BaseWrapper<Topic>()
+	                        .eq(Topic.USER_ID, userId)
+	                        .eq(Topic.SYSTEM_STATUS, true)
+	        );
+			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND, count);
+			return count;
+		}
+		
+		return num;
 	}
 
 }

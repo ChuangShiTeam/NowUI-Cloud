@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.service.AppService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -65,7 +66,7 @@ public class AppController extends BaseController {
         
         //验证应用名称是否重复
         if (appService.checkName(appEntity.getAppName())) {
-            throw new RuntimeException("应用名称重复");
+            throw new BusinessException("应用名称重复");
         }
         
         appEntity.setAppId(Util.getRandomUUID());
@@ -82,7 +83,7 @@ public class AppController extends BaseController {
         validateRequest(appEntity, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
 
         if (appService.checkName(appEntity.getAppId(), appEntity.getAppName())) {
-            throw new RuntimeException("应用名称重复");
+            throw new BusinessException("应用名称重复");
         }
         
         Boolean result = appService.update(appEntity, appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.rpc.AdvertisementRpc;
 import com.nowui.cloud.cms.article.entity.Article;
@@ -23,6 +24,9 @@ import com.nowui.cloud.cms.navigation.rpc.NavigationRpc;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.rpc.ToolbarRpc;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
+import com.nowui.cloud.wawi.pet.entity.PetCategory;
+import com.nowui.cloud.wawi.pet.service.PetCategoryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +53,12 @@ public class WawiIndexMobileController extends BaseController {
     
     @Autowired
     private ArticleRpc articleRpc;
+    
+    @Autowired
+    private FileRpc fileRpc;
+    
+    @Autowired
+    private PetCategoryService petCategoryService;
     
     @ApiOperation(value = "哇伊首页初始数据")
     @RequestMapping(value = "/wawi/mobile/v1/index/init", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,17 +93,15 @@ public class WawiIndexMobileController extends BaseController {
         }
         
         // 宠物分类列表
-        List<Article> petCategoryArticleList = articleRpc.listByCategoryCodeV1(body.getAppId(), "PET_CATEGORY");
+        List<PetCategory> petCategoryList = petCategoryService.topList(body.getAppId());
         
-        for (Article article : petCategoryArticleList) {
-            article.keep(
-                    Article.ARTICLE_ID, 
-                    File.FILE_PATH,
-                    Article.ARTICLE_TITLE,
-                    Article.ARTICLE_SUMMARY
-            );
+        String fileIds = Util.beanToFieldString(petCategoryList, PetCategory.PET_CATEGORY_IMAGE);
+        List<File> fileList = fileRpc.findsV1(fileIds);
+        petCategoryList = Util.beanReplaceField(petCategoryList, PetCategory.PET_CATEGORY_IMAGE, fileList, File.FILE_PATH);
+        
+        for (PetCategory petCategory : petCategoryList) {
+            petCategory.keep(PetCategory.PET_CATEGORY_ID, PetCategory.PET_CATEGORY_NAME, PetCategory.PET_CATEGORY_IMAGE);
         }
-        
         // 猜你喜欢列表 随机取5条 TODO
         List<Article> recommendArticleList = new ArrayList<>();
         
@@ -107,7 +115,7 @@ public class WawiIndexMobileController extends BaseController {
         
         result.put("indexBannerList", indexBannerList);
         result.put("indexNavigationList", indexNavigationList);
-        result.put("petCategoryArticleList", petCategoryArticleList);
+        result.put("petCategoryList", petCategoryList);
         result.put("recommendArticleList", recommendArticleList);
         result.put("hotArticleList", hotArticleList);
         result.put("latestArticleList", latestArticleList);
@@ -115,7 +123,7 @@ public class WawiIndexMobileController extends BaseController {
         validateResponse(
                 "indexBannerList", 
                 "indexNavigationList",
-                "petCategoryArticleList",
+                "petCategoryList",
                 "recommendArticleList",
                 "hotArticleList",
                 "latestArticleList"

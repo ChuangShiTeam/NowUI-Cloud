@@ -13,7 +13,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.MemberBackground;
-import com.nowui.cloud.member.member.service.MemberBackgroundService;
+import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -34,10 +34,10 @@ public class MemberBackgroundMobileController extends BaseController {
     private UserRpc userRpc;
     
     @Autowired
-    private MemberBackgroundService memberBackgroundService;
+    private MemberService memberService;
     
     @ApiOperation(value = "更新会员背景")
-    @RequestMapping(value = "/member/background/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/background/mobile/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberBackground body) {
         validateRequest(
                 body,
@@ -48,11 +48,10 @@ public class MemberBackgroundMobileController extends BaseController {
 
         User user = userRpc.findV1(body.getSystemRequestUserId());
         //删除旧的会员背景
-        memberBackgroundService.deleteByMemberId(user.getObjectId(), body.getSystemRequestUserId());
+        memberService.deleteMemberBackgroundByMemberId(user.getObjectId(), body.getSystemRequestUserId());
         
-        body.setMemberId(user.getObjectId());
         //保存新的会员背景
-        Boolean result = memberBackgroundService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberService.saveMemberBackground(body.getAppId(), user.getObjectId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

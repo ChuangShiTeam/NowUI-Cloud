@@ -63,7 +63,6 @@ public class AdminAdminController extends BaseController {
                 User.USER_TYPE,
                 User.USER_ACCOUNT,
                 User.USER_NICK_NAME,
-                User.USER_IDCARD,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
                 User.USER_AVATAR
@@ -90,7 +89,6 @@ public class AdminAdminController extends BaseController {
                 User.USER_ID,
                 User.USER_ACCOUNT,
                 User.USER_NICK_NAME,
-                User.USER_IDCARD,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
                 User.USER_AVATAR,

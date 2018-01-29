@@ -17,6 +17,7 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -91,8 +92,55 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setAppId(appId);
         bean.setForumId(forumId);
         bean.setUserId(userId);
+        bean.setForumUserFollowIsTop(false);
         
         Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+        
+        return renderJson(result);
+        
+    }
+	
+
+	@ApiOperation(value = "邀请用户加入论坛")
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> inviteUserV1(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.USER_ID,
+                ForumUserFollow.FORUM_ID
+        );
+        
+        String appId = body.getAppId();
+        String requestUserId = body.getSystemRequestUserId();
+        String forumId = body.getForumId();
+        String beInvitedUserId = body.getUserId();
+        
+        
+        //TODO 不管传来的用户标识是什么,都会使用userId进行save操作
+        
+        //先查询取消关注表有没有记录
+        ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(null, beInvitedUserId, forumId);
+        //有: 删除
+        if (!Util.isNullOrEmpty(unfollow)) {
+        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), beInvitedUserId, unfollow.getSystemVersion());
+		}
+        //没有: 去关注表看有没有记录
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, beInvitedUserId, forumId);
+        //有: 返回true
+        if (!Util.isNullOrEmpty(forumUserFollow)) {
+        	return renderJson(true); 
+		}
+        //没有: 新增取消关注记录
+        ForumUserFollow bean = new ForumUserFollow();
+        bean.setAppId(appId);
+        bean.setForumId(forumId);
+        bean.setUserId(beInvitedUserId);
+        bean.setForumUserFollowIsTop(false);
+        
+        //这里的createUserId使用邀请人的
+        Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
         
         return renderJson(result);
         
@@ -127,11 +175,12 @@ public class ForumUserFollowMobileController extends BaseController {
                 bean.setAppId(appId);
                 bean.setForumId(forumId);
                 bean.setUserId(userId);
+                bean.setForumUserFollowIsTop(false);
                 
                 result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
                 
                 if (!result) {
-                    throw new RuntimeException("加入失败");
+                    throw new BusinessException("加入失败");
                 }
             }
         }
@@ -155,11 +204,11 @@ public class ForumUserFollowMobileController extends BaseController {
         
         Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
         
-        List<ForumUserFollow> resultList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
+        List<ForumUserFollow> forumUserFollowList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
 
         List<Forum> forumList = new ArrayList<Forum>();
 
-        for (ForumUserFollow forumUserFollow : resultList) {
+        for (ForumUserFollow forumUserFollow : forumUserFollowList) {
             
         	Forum forum = forumService.find(forumUserFollow.getForumId(), true);
         	
@@ -171,13 +220,13 @@ public class ForumUserFollowMobileController extends BaseController {
         }
         
         // 处理论坛多媒体
-        String fileIds = Util.beanToFieldString(resultList, Forum.FORUM_MEDIA);
+        String fileIds = Util.beanToFieldString(forumList, Forum.FORUM_MEDIA);
         List<File> fileList = fileRpc.findsV1(fileIds);
         forumList = Util.beanReplaceField(forumList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
         
-        String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
+        String userIds = Util.beanToFieldString(forumList, Forum.FORUM_MODERATOR);
         List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
+        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
                 
         validateResponse(
                 Forum.FORUM_ID,
@@ -220,4 +269,21 @@ public class ForumUserFollowMobileController extends BaseController {
 
         return renderJson(forumList);
     }
+    
+    @ApiOperation(value = "置顶用户关注论坛")
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/top", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> topV1(@RequestBody ForumUserFollow body) {
+        validateRequest(
+                body,
+                ForumUserFollow.FORUM_ID,
+                ForumUserFollow.APP_ID
+        );
+        ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
+        forumUserFollow.setForumUserFollowIsTop(true);
+        forumUserFollow.setSystemCreateTime(null);
+        Boolean result = forumUserFollowService.update(forumUserFollow, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
+
+        return renderJson(result);
+    }
+    
 }

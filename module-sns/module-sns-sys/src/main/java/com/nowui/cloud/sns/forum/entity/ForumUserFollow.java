@@ -65,6 +65,16 @@ public class ForumUserFollow extends BaseEntity {
     public static final String FORUM_ID = "forumId";
     
     /**
+     * 用户论坛是否置顶
+     */
+    @Field
+    @TableField
+    @NotNull(message = "论坛是否置顶不能为空")
+    @Length(max = 1, message = "论坛是否置顶长度超出限制")
+    private Boolean forumUserFollowIsTop;
+    public static final String FORUM_USER_FOLLOW_IS_TOP = "forumUserFollowIsTop";
+    
+    /**
      * 论坛编号列表
      */
     public static final String FORUM_ID_LSIT = "forumIdList";
@@ -101,5 +111,12 @@ public class ForumUserFollow extends BaseEntity {
         put(FORUM_ID, forumId);
     }
 
+    public Boolean getForumUserFollowIsTop() {
+        return getBoolean(FORUM_USER_FOLLOW_IS_TOP);
+    }
+    
+    public void setForumUserFollowIsTop(Boolean forumUserFollowIsTop) {
+        put(FORUM_USER_FOLLOW_IS_TOP, forumUserFollowIsTop);
+    }
 
 }

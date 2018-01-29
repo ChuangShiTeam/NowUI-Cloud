@@ -182,10 +182,16 @@ public class Topic extends BaseEntity {
      * 话题是否被用户收藏
      */
     public static final String TOPIC_USER_IS_BOOKEMARK = "topicUserIsBookmark";
+    
     /**
-     * 用于动态首页跳转到请求用户的个人主页的userId
+     * 话题是否是自己发的
      */
-    public static final String USER_ID_FOR_GOTO_USER_HOME = "userIdForGotoUserHome";
+    public static final String TOPIC_IS_SELF = "topicIsSelf";
+    
+    /**
+     * 话题发布人的userId
+     */
+    public static final String TOPIC_SEND_USER_ID = "topicSendUserId";
     
     public String getTopicId() {
         return getString(TOPIC_ID);
