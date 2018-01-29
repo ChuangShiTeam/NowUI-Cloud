@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.App;
+import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
@@ -51,7 +52,7 @@ public class WawiMyMobileController extends BaseController {
         
         Member member = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
         
-        validateResponse(UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR, MemberBackground.MEMBER_BACKGROUND);
+        validateResponse(User.USER_NICK_NAME, User.USER_AVATAR, MemberBackground.MEMBER_BACKGROUND);
         
         return renderJson(member);
     }
@@ -70,9 +71,9 @@ public class WawiMyMobileController extends BaseController {
         Member member = memberRpc.findDetailByUserIdV1(userId);
         
         validateResponse(
-                UserNickName.USER_NICK_NAME, 
-                UserAvatar.USER_AVATAR, 
-                MemberBackground.MEMBER_BACKGROUND
+                User.USER_NICK_NAME, 
+                User.USER_AVATAR, 
+                Member.MEMBER_SIGNATURE
         );
         
         return renderJson(member);

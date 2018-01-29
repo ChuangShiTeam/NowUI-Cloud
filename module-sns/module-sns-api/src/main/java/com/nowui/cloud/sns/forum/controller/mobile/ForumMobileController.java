@@ -217,7 +217,6 @@ public class ForumMobileController extends BaseController {
         //处理关注论坛的用户信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
         List<Member> nickNameAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-        
 
         return renderJson(countResult, nickNameAndAvatarAndIsFollowList);
     }

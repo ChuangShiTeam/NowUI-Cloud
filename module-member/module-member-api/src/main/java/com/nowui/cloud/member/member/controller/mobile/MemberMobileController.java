@@ -28,7 +28,6 @@ import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.exception.SystemException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.AesUtil;
@@ -403,6 +402,21 @@ public class MemberMobileController extends BaseController {
                 UserAvatar.APP_ID,
                 UserAvatar.SYSTEM_REQUEST_USER_ID,
                 UserAvatar.USER_AVATAR
+        );
+        
+        Boolean result = userRpc.updateUserAvatarV1(body.getAppId(), body.getSystemRequestUserId(), body.getUserAvatar(), body.getSystemRequestUserId());
+        
+        return renderJson(result);
+    }
+    
+    @ApiOperation(value = "会员签名更新")
+    @RequestMapping(value = "/member/mobile/v1/update/signature", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateSignatureV1(@RequestBody UserAvatar body) {
+        validateRequest(
+                body,
+                UserAvatar.APP_ID,
+                UserAvatar.SYSTEM_REQUEST_USER_ID,
+                Member.MEMBER_SIGNATURE
         );
         
         Boolean result = userRpc.updateUserAvatarV1(body.getAppId(), body.getSystemRequestUserId(), body.getUserAvatar(), body.getSystemRequestUserId());

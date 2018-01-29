@@ -83,29 +83,17 @@ public class MemberDialogueMobileController extends BaseController {
             Integer memberDialogueRecordCount = memberDialogueRecordService.countByMemberDialogueIdForMobile(memberDialogue.getMemberDialogueId());
             List<MemberDialogueRecord> memberDialogueRecordList = memberDialogueRecordService.listByMemberDialogueIdForMobile(memberDialogue.getMemberDialogueId(), body.getPageIndex(), body.getPageSize());
         
-            UserNickName initiateUserNickNameBean = (UserNickName) initiateUser.get(User.USER_NICK_NAME);
-            String initiateUserNickName = "";
-            if (!Util.isNullOrEmpty(initiateUserNickNameBean)) {
-                initiateUserNickName = initiateUserNickNameBean.getUserNickName();
-            }
-            UserAvatar initiateUserAvatarBean = (UserAvatar) initiateUser.get(User.USER_AVATAR);
-            String initiateUserAvatar = "";
-            if (!Util.isNullOrEmpty(initiateUserAvatarBean)) {
-                File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatarBean.getUserAvatar());
+            String initiateUserAvatar = initiateUser.getUserAvatar();
+            if (!Util.isNullOrEmpty(initiateUserAvatar)) {
+                File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
                 if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
                     initiateUserAvatar = initiateUserAvatarfile.getFilePath();
                 }
             }
             
-            UserNickName respondNickNameBean = (UserNickName) respondUser.get(User.USER_NICK_NAME);
-            String respondUserNickName = "";
-            if (!Util.isNullOrEmpty(respondNickNameBean)) {
-                respondUserNickName = respondNickNameBean.getUserNickName();
-            }
-            UserAvatar respondUserAvatarBean = (UserAvatar) respondUser.get(User.USER_AVATAR);
-            String respondUserAvatar = "";
-            if (!Util.isNullOrEmpty(respondUserAvatarBean)) {
-                File respondUserAvatarfile = fileRpc.findV1(respondUserAvatarBean.getUserAvatar());
+            String respondUserAvatar = respondUser.getUserAvatar();
+            if (!Util.isNullOrEmpty(respondUserAvatar)) {
+                File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
                 if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
                     respondUserAvatar = respondUserAvatarfile.getFilePath();
                 }
@@ -120,10 +108,10 @@ public class MemberDialogueMobileController extends BaseController {
                 );
                 
                 if (memberDialogueRecord.getUserId().equals(initiateUser.getUserId())) {
-                    memberDialogueRecord.put(UserNickName.USER_NICK_NAME, initiateUserNickName);
+                    memberDialogueRecord.put(UserNickName.USER_NICK_NAME, initiateUser.getUserNickName());
                     memberDialogueRecord.put(UserAvatar.USER_AVATAR, initiateUserAvatar);
                 } else if (memberDialogueRecord.getUserId().equals(respondUser.getUserId())) {
-                    memberDialogueRecord.put(UserNickName.USER_NICK_NAME, respondUserNickName);
+                    memberDialogueRecord.put(UserNickName.USER_NICK_NAME, respondUser.getUserNickName());
                     memberDialogueRecord.put(UserAvatar.USER_AVATAR, respondUserAvatar);
                 }
             }
@@ -161,29 +149,17 @@ public class MemberDialogueMobileController extends BaseController {
 
         List<MemberDialogueRecord> memberDialogueRecordList = memberDialogueRecordService.listByMemberDialogueIdForMobile(memberDialogue.getMemberDialogueId(), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
-        UserNickName initiateUserNickNameBean = (UserNickName) initiateUser.get(User.USER_NICK_NAME);
-        String initiateUserNickName = "";
-        if (!Util.isNullOrEmpty(initiateUserNickNameBean)) {
-            initiateUserNickName = initiateUserNickNameBean.getUserNickName();
-        }
-        UserAvatar initiateUserAvatarBean = (UserAvatar) initiateUser.get(User.USER_AVATAR);
-        String initiateUserAvatar = "";
-        if (!Util.isNullOrEmpty(initiateUserAvatarBean)) {
-            File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatarBean.getUserAvatar());
+        String initiateUserAvatar = initiateUser.getUserAvatar();
+        if (!Util.isNullOrEmpty(initiateUserAvatar)) {
+            File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
             if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
                 initiateUserAvatar = initiateUserAvatarfile.getFilePath();
             }
         }
         
-        UserNickName respondNickNameBean = (UserNickName) respondUser.get(User.USER_NICK_NAME);
-        String respondUserNickName = "";
-        if (!Util.isNullOrEmpty(respondNickNameBean)) {
-            respondUserNickName = respondNickNameBean.getUserNickName();
-        }
-        UserAvatar respondUserAvatarBean = (UserAvatar) respondUser.get(User.USER_AVATAR);
-        String respondUserAvatar = "";
-        if (!Util.isNullOrEmpty(respondUserAvatarBean)) {
-            File respondUserAvatarfile = fileRpc.findV1(respondUserAvatarBean.getUserAvatar());
+        String respondUserAvatar = respondUser.getUserAvatar();
+        if (!Util.isNullOrEmpty(respondUserAvatar)) {
+            File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
             if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
                 respondUserAvatar = respondUserAvatarfile.getFilePath();
             }
@@ -198,10 +174,10 @@ public class MemberDialogueMobileController extends BaseController {
             );
             
             if (memberDialogueRecord.getUserId().equals(initiateUser.getUserId())) {
-                memberDialogueRecord.put(UserNickName.USER_NICK_NAME, initiateUserNickName);
+                memberDialogueRecord.put(UserNickName.USER_NICK_NAME, initiateUser.getUserNickName());
                 memberDialogueRecord.put(UserAvatar.USER_AVATAR, initiateUserAvatar);
             } else if (memberDialogueRecord.getUserId().equals(respondUser.getUserId())) {
-                memberDialogueRecord.put(UserNickName.USER_NICK_NAME, respondUserNickName);
+                memberDialogueRecord.put(UserNickName.USER_NICK_NAME, respondUser.getUserNickName());
                 memberDialogueRecord.put(UserAvatar.USER_AVATAR, respondUserAvatar);
             }
         }

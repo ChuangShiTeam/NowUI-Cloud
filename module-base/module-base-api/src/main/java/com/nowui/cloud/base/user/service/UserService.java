@@ -69,13 +69,6 @@ public interface UserService extends BaseService<User> {
     User findById(String userId);
     
     /**
-     * 根据用户编号查询用户账号信息
-     * @param userId 用户编号
-     * @return UserAccount 用户账号信息
-     */
-    UserAccount findUserAccountByUserId(String userId);
-    
-    /**
      * 保存用户账号信息
      * 
      * @param appId 应用编号
@@ -95,14 +88,6 @@ public interface UserService extends BaseService<User> {
      */
     void deleteUserAccountByUserId(String userId, String systemRequestUserId);
     
-    /**
-     * 
-     * 根据用户编号查询用户密码信息
-     * 
-     * @param userId 用户编号
-     * @return UserPassword 用户密码信息
-     */
-    UserPassword findUserPasswordByUserId(String userId);
     
     /**
      * 保存用户密码信息
@@ -125,14 +110,6 @@ public interface UserService extends BaseService<User> {
     void deleteUserPasswordByUserId(String userId, String systemRequestUserId);
     
     /**
-     * 根据用户编号查询用户邮箱信息
-     * 
-     * @param userId 用户编号
-     * @return UserEmail 用户邮箱信息
-     */
-    UserEmail findUserEmailByUserId(String userId);
-    
-    /**
      * 保存用户邮箱信息
      * 
      * @param appId 应用编号
@@ -151,14 +128,6 @@ public interface UserService extends BaseService<User> {
      * @param systemRequestUserId 请求用户编号
      */
     void deleteUserEmailByUserId(String userId, String systemRequestUserId);
-    
-    /**
-     * 根据用户编号查询用户头像信息
-     * 
-     * @param userId 用户编号
-     * @return UserAvatar 用户头像信息
-     */
-    UserAvatar findUserAvatarByUserId(String userId);
     
     /**
      * 保存用户头像信息
@@ -181,14 +150,6 @@ public interface UserService extends BaseService<User> {
     void deleteUserAvatarByUserId(String userId, String systemRequestUserId);
     
     /**
-     * 根据用户编号查询用户手机号码信息
-     * 
-     * @param userId 用户编号
-     * @return UserMobile 用户手机号码信息
-     */
-    UserMobile findUserMobileByUserId(String userId);
-    
-    /**
      * 保存用户手机号码信息
      * 
      * @param appId 应用编号
@@ -207,14 +168,6 @@ public interface UserService extends BaseService<User> {
      * @param systemRequestUserId 请求用户编号
      */
     void deleteUserMobileByUserId(String userId, String systemRequestUserId);
-    
-    /**
-     * 根据用户编号查询用户身份证信息
-     * 
-     * @param userId 用户编号
-     * @return UserIdcard 用户手机号码信息
-     */
-    UserIdcard findUserIdcardByUserId(String userId);
     
     /**
      * 保存用户身份证信息
@@ -237,14 +190,6 @@ public interface UserService extends BaseService<User> {
     void deleteUserIdcardByUserId(String userId, String systemRequestUserId);
     
     /**
-     * 根据用户编号查询用户昵称信息
-     * 
-     * @param userId 用户编号
-     * @return UserNickName 用户昵称信息
-     */
-    UserNickName findUserNickNameByUserId(String userId);
-    
-    /**
      * 保存用户昵称信息
      * 
      * @param appId 应用编号
@@ -263,14 +208,6 @@ public interface UserService extends BaseService<User> {
      * @param systemRequestUserId 请求用户编号
      */
     void deleteUserNickNameByUserId(String userId, String systemRequestUserId);
-    
-    /**
-     * 根据用户编号查询用户微信信息
-     * 
-     * @param userId 用户编号
-     * @return UserWechat 用户微信信息
-     */
-    UserWechat findUserWechatByUserId(String userId);
     
     /**
      * 保存用户微信信息

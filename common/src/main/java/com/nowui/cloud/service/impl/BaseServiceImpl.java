@@ -187,7 +187,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         ) != 0;
 
         if (success) {
-            elasticsearchSaveOrUpdate(baseEntity, id);
+            replace(id);
         }
 
         return success;

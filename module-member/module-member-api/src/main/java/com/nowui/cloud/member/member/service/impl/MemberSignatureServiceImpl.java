@@ -9,7 +9,6 @@ import com.nowui.cloud.member.member.mapper.MemberSignatureMapper;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.util.Util;
 
 /**
  * 会员签名业务实现
@@ -23,10 +22,6 @@ public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureM
 
     @Override
     public MemberSignature findByMemberId(String memberId) {
-        
-        if (Util.isNullOrEmpty(memberId)) {
-            return null;
-        }
         
         MemberSignature memberSignature = find(
                 new BaseWrapper<MemberSignature>()

@@ -99,6 +99,14 @@ public class Member extends BaseEntity {
     
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
+    public static final String MEMBER_ADDRESS_PROVINCE = "memberAddressProvince";
+    
+    public static final String MEMBER_ADDRESS_CITY = "memberAddressCity";
+    
+    public static final String MEMBER_ADDRESS_AREA = "memberAddressArea";
+    
+    public static final String MEMBER_PREFERENCE_LANGUAGE = "memberPreferenceLanguage";
+    
     /**
      * 用户发布的动态数
      */
@@ -113,10 +121,6 @@ public class Member extends BaseEntity {
      * 用户关注数
      */
     public static final String MEMBER_FOLLOW_COUNT = "memberFollowCount";
-    
-    
-    
-    
     
     public String getMemberId() {
         return getString(MEMBER_ID);

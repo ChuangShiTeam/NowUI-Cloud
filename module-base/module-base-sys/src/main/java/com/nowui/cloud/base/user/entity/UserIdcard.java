@@ -64,6 +64,16 @@ public class UserIdcard extends BaseEntity {
     @Length(max = 50, message = "真实姓名长度超出限制")
     private String userName;
     public static final String USER_NAME = "userName";
+    
+    /**
+     * 性别    （0：未知，1：男，2：女）
+     */
+    @Field
+    @TableField
+    @NotNull(message = "性别不能为空")
+    @Length(max = 1, message = "性别长度超出限制")
+    private String userSex;
+    public static final String USER_SEX = "userSex";
 
     /**
      * 身份证号码
@@ -106,6 +116,14 @@ public class UserIdcard extends BaseEntity {
     
     public void setUserName(String userName) {
         put(USER_NAME, userName);
+    }
+    
+    public String getUserSex() {
+        return getString(USER_SEX);
+    }
+    
+    public void setUserSex(String userSex) {
+        put(USER_SEX, userSex);
     }
 
     public String getUserIdcardNumber() {

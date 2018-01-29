@@ -93,13 +93,13 @@ public class WawiIndexMobileController extends BaseController {
         }
         
         // 宠物分类列表
-        List<PetCategory> petCategortList = petCategoryService.topList(body.getAppId());
+        List<PetCategory> petCategoryList = petCategoryService.topList(body.getAppId());
         
-        String fileIds = Util.beanToFieldString(petCategortList, PetCategory.PET_CATEGORY_IMAGE);
+        String fileIds = Util.beanToFieldString(petCategoryList, PetCategory.PET_CATEGORY_IMAGE);
         List<File> fileList = fileRpc.findsV1(fileIds);
-        petCategortList = Util.beanReplaceField(petCategortList, PetCategory.PET_CATEGORY_IMAGE, fileList, File.FILE_PATH);
+        petCategoryList = Util.beanReplaceField(petCategoryList, PetCategory.PET_CATEGORY_IMAGE, fileList, File.FILE_PATH);
         
-        for (PetCategory petCategory : petCategortList) {
+        for (PetCategory petCategory : petCategoryList) {
             petCategory.keep(PetCategory.PET_CATEGORY_ID, PetCategory.PET_CATEGORY_NAME, PetCategory.PET_CATEGORY_IMAGE);
         }
         // 猜你喜欢列表 随机取5条 TODO
@@ -115,7 +115,7 @@ public class WawiIndexMobileController extends BaseController {
         
         result.put("indexBannerList", indexBannerList);
         result.put("indexNavigationList", indexNavigationList);
-        result.put("petCategortList", petCategortList);
+        result.put("petCategoryList", petCategoryList);
         result.put("recommendArticleList", recommendArticleList);
         result.put("hotArticleList", hotArticleList);
         result.put("latestArticleList", latestArticleList);
@@ -123,7 +123,7 @@ public class WawiIndexMobileController extends BaseController {
         validateResponse(
                 "indexBannerList", 
                 "indexNavigationList",
-                "petCategortList",
+                "petCategoryList",
                 "recommendArticleList",
                 "hotArticleList",
                 "latestArticleList"
