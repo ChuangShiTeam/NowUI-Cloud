@@ -95,7 +95,12 @@ public class TopicComment extends BaseEntity {
     @Length(max = 32, message = "被回复评论id长度超出限制")
     private String topicReplyCommentId;
     public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
-
+    
+    /**
+     * 评论是否自己发的
+     */
+    public static final String TOPIC_COMMENT_IS_SELF = "topicCommentIsSelf";
+    
 
     public String getTopicCommentId() {
         return getString(TOPIC_COMMENT_ID);

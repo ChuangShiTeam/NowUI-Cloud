@@ -511,6 +511,10 @@ public class ForumMobileController extends BaseController {
 
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+            
+            // 处理评论是否自己发布
+            topic.put(Topic.TOPIC_IS_SELF, userId.equals(topic.getUserId()));
+        
         }
         
         
@@ -533,6 +537,7 @@ public class ForumMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_BOOKEMARK,
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
+	            Topic.TOPIC_IS_SELF,
 	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
