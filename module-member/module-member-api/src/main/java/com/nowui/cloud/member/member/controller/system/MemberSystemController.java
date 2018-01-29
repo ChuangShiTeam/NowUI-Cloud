@@ -21,6 +21,7 @@ import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.entity.MemberSignature;
@@ -308,6 +309,47 @@ public class MemberSystemController implements MemberRpc {
         );
         
         return member;
+    }
+
+    @Override
+    public Boolean update(String userId, String userAvatar, String userNickName, String userSex, String memberSignature,
+            String memberAddressCity, String systemRequestUserId) {
+        Member member = memberService.findByUserId(userId);
+        
+        if (member == null) {
+            return false;
+        }
+        
+        if (!memberAddressCity.equals(member.getString(Member.MEMBER_ADDRESS_CITY))) {
+            // 刪除旧的会员地址信息
+            memberService.deleteMemberAddressByMemberId(member.getMemberId(), systemRequestUserId);
+            
+            MemberAddress memberAddress = new MemberAddress();
+            memberAddress.setMemberAddressProvince(member.getString(Member.MEMBER_ADDRESS_PROVINCE));
+            memberAddress.setMemberAddressArea(member.getString(Member.MEMBER_ADDRESS_AREA));
+            memberAddress.setMemberAddressCity(memberAddressCity);
+            memberAddress.setMemberAddressAddress(member.getString(Member.MEMBER_ADDRESS_ADDRESS));
+            
+            memberService.saveMemberAddress(member.getAppId(), member.getMemberId(), memberAddress, Util.getRandomUUID(), systemRequestUserId);
+
+        };
+        
+        if (!memberSignature.equals(member.getString(Member.MEMBER_SIGNATURE))) {
+            // 删除旧的会员签名
+            memberService.deleteMemberSignatureByMemberId(member.getMemberId(), systemRequestUserId);
+            
+            MemberSignature memberSignatureBean = new MemberSignature();
+            memberSignatureBean.setMemberSignature(memberSignature);
+            
+            memberService.saveMemberSignature(member.getAppId(), member.getMemberId(), memberSignatureBean, Util.getRandomUUID(), systemRequestUserId);
+
+        }
+        
+        userRpc.updateUserNickNameV1(member.getAppId(), userId, userNickName, systemRequestUserId);
+        userRpc.updateUserAvatarV1(member.getAppId(), userId, userAvatar, systemRequestUserId);
+        userRpc.updateUserSexV1(member.getAppId(), userId, userSex, systemRequestUserId);
+        
+        return true;
     }
 
 }

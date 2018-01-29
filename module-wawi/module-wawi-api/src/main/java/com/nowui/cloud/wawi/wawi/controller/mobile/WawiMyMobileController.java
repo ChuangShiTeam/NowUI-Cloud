@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.entity.MemberBackground;
+import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 
 import io.swagger.annotations.Api;
@@ -35,9 +38,6 @@ public class WawiMyMobileController extends BaseController {
     
     @Autowired
     private MemberRpc memberRpc;
-    
-    @Autowired
-    private UserRpc useRpc;
     
     @ApiOperation(value = "哇伊我的首页列表")
     @RequestMapping(value = "/wawi/mobile/v1/my/index", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,10 +73,65 @@ public class WawiMyMobileController extends BaseController {
         validateResponse(
                 User.USER_NICK_NAME, 
                 User.USER_AVATAR, 
-                Member.MEMBER_SIGNATURE
+                User.USER_SEX,
+                Member.MEMBER_SIGNATURE,
+                Member.MEMBER_ADDRESS_CITY,
+                Member.MEMBER_PREFERENCE_LANGUAGE
         );
         
         return renderJson(member);
+    }
+    
+    @ApiOperation(value = "更新我的个人资料")
+    @RequestMapping(value = "/wawi/mobile/v1/my/info/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> myInfoUpdateV1(@RequestBody Member body) {
+        validateRequest(
+            body, 
+            Member.APP_ID,
+            Member.SYSTEM_REQUEST_USER_ID
+        );
+        
+        UserAvatar userAvatar = getEntry(UserAvatar.class);
+        validateRequest(
+            userAvatar,
+            UserAvatar.USER_AVATAR
+        );
+        
+        UserNickName userNickName = getEntry(UserNickName.class);
+        validateRequest(
+                userNickName,
+                UserNickName.USER_NICK_NAME
+        );
+        
+        UserIdcard userIdcard = getEntry(UserIdcard.class);
+        validateRequest(
+                userIdcard,
+                UserIdcard.USER_SEX
+        );
+    
+        MemberSignature memberSignature = getEntry(MemberSignature.class);
+        validateRequest(
+                memberSignature,
+                MemberSignature.MEMBER_SIGNATURE
+        );
+        
+        MemberAddress memberAddress = getEntry(MemberAddress.class);
+        validateRequest(
+                memberAddress,
+                MemberAddress.MEMBER_ADDRESS_CITY
+        );
+        
+        Boolean result = memberRpc.update(
+                body.getSystemRequestUserId(), 
+                userAvatar.getUserAvatar(), 
+                userNickName.getUserNickName(), 
+                userIdcard.getUserSex(), 
+                memberSignature.getMemberSignature(), 
+                memberAddress.getMemberAddressCity(), 
+                body.getSystemRequestUserId()
+        );
+        
+        return renderJson(result);
     }
     
     @ApiOperation(value = "哇伊我的首页消息提示")

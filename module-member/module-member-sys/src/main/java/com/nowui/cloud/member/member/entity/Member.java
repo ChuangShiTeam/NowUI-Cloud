@@ -105,6 +105,8 @@ public class Member extends BaseEntity {
     
     public static final String MEMBER_ADDRESS_AREA = "memberAddressArea";
     
+    public static final String MEMBER_ADDRESS_ADDRESS = "memberAddressAddress";
+    
     public static final String MEMBER_PREFERENCE_LANGUAGE = "memberPreferenceLanguage";
     
     /**

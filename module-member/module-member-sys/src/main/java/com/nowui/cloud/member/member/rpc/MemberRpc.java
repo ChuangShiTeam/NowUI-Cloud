@@ -122,4 +122,27 @@ public interface MemberRpc {
     @RequestMapping(value = "/member/system/v1/nick/name/and/avatar/and/background/and/signature/find", method = RequestMethod.POST)
     Member nickNameAndAvatarAndBackgroundAndSignatureFind(@RequestParam(value = "userId", required = true) String userId);
     
+    /**
+     * 会员个人信息更新
+     * 
+     * @param userId 用户编号
+     * @param userAvatar 用户头像
+     * @param userNickName 用户昵称
+     * @param userSex 用户性别
+     * @param memberSignature 会员签名
+     * @param memberAddressCity 会员所在城市
+     * @param systemRequestUserId 请求用户编号
+     * @return
+     */
+    @RequestMapping(value = "/member/system/v1/update", method = RequestMethod.POST)
+    Boolean update(
+            @RequestParam(value = "userId", required = true) String userId, 
+            @RequestParam(value = "userAvatar", required = true) String userAvatar, 
+            @RequestParam(value = "userNickName", required = true) String userNickName, 
+            @RequestParam(value = "userSex", required = true) String userSex, 
+            @RequestParam(value = "memberSignature", required = true) String memberSignature, 
+            @RequestParam(value = "memberAddressCity", required = true) String memberAddressCity, 
+            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
+    );
+    
 }
