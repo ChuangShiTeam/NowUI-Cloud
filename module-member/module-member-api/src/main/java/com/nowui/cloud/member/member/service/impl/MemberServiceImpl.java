@@ -101,6 +101,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             member.put(Member.MEMBER_ADDRESS_PROVINCE, memberAddress == null ? "" : memberAddress.getMemberAddressProvince());
             member.put(Member.MEMBER_ADDRESS_CITY, memberAddress == null ? "" : memberAddress.getMemberAddressCity());
             member.put(Member.MEMBER_ADDRESS_AREA, memberAddress == null ? "" : memberAddress.getMemberAddressArea());
+            member.put(Member.MEMBER_ADDRESS_ADDRESS, memberAddress == null ? "" : memberAddress.getMemberAddressAddress());
             
             // 会员偏好语言
             MemberPerferenceLanguage memberPerferenceLanguage = memberPerferenceLanguageService.findByMemberId(member.getMemberId());
@@ -133,10 +134,10 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             // 更新会员地址缓存
             Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
             if (member != null) {
-                MemberAddress bean = memberAddressService.find(memberAddressId);
-                member.put(Member.MEMBER_ADDRESS_PROVINCE, bean == null ? "" : bean.getMemberAddressProvince());
-                member.put(Member.MEMBER_ADDRESS_CITY, bean == null ? "" : bean.getMemberAddressCity());
-                member.put(Member.MEMBER_ADDRESS_AREA, bean == null ? "" : bean.getMemberAddressArea());
+                member.put(Member.MEMBER_ADDRESS_PROVINCE,memberAddress.getMemberAddressProvince());
+                member.put(Member.MEMBER_ADDRESS_CITY, memberAddress.getMemberAddressCity());
+                member.put(Member.MEMBER_ADDRESS_AREA, memberAddress.getMemberAddressArea());
+                member.put(Member.MEMBER_ADDRESS_ADDRESS, memberAddress.getMemberAddressAddress());
                 
                 redis.opsForValue().set(getItemCacheName(memberId), member);
             }
@@ -154,6 +155,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             member.put(Member.MEMBER_ADDRESS_PROVINCE, "");
             member.put(Member.MEMBER_ADDRESS_CITY, "");
             member.put(Member.MEMBER_ADDRESS_AREA, "");
+            member.put(Member.MEMBER_ADDRESS_ADDRESS, "");
             redis.opsForValue().set(getItemCacheName(memberId), member);
         }
     }
@@ -170,8 +172,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             // 更新会员签名缓存
             Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
             if (member != null) {
-                MemberSignature bean = memberSignatureService.find(memberSignatureId);
-                member.put(Member.MEMBER_SIGNATURE, bean == null ? "" : bean.getMemberSignature());
+                member.put(Member.MEMBER_SIGNATURE, memberSignature.getMemberSignature());
                 
                 redis.opsForValue().set(getItemCacheName(memberId), member);
             }
@@ -204,8 +205,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             // 更新会员签名缓存
             Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
             if (member != null) {
-                MemberPerferenceLanguage bean = memberPerferenceLanguageService.find(memberPerferenceLanguageId);
-                member.put(Member.MEMBER_PREFERENCE_LANGUAGE, bean == null ? "" : bean.getMemberPreferenceLanguage());
+                member.put(Member.MEMBER_PREFERENCE_LANGUAGE, memberPerferenceLanguage.getMemberPreferenceLanguage());
                 
                 redis.opsForValue().set(getItemCacheName(memberId), member);
             }
@@ -237,8 +237,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
             // 更新会员背景缓存
             Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
             if (member != null) {
-                MemberBackground bean = memberBackgroundService.find(memberBackgroundId);
-                member.put(Member.MEMBER_BACKGROUND, bean == null ? "" : bean.getMemberBackground());
+                member.put(Member.MEMBER_BACKGROUND, memberBackground.getMemberBackground());
                 
                 redis.opsForValue().set(getItemCacheName(memberId), member);
             }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowui.cloud.base.usernotifyinfo.mapper.UserNotifyMapper">
+    <select id="getUserNotifyByUserId" parameterType="java.util.Map" resultType="com.nowui.cloud.base.usernotifyinfo.entity.UserNotify">
+            select t1.notifyContent,t1.notifyAction,t1.notifyTargetType,t1.notifyTarget,t1.systemCreateTime
+            from notify_info as t1
+            join user_notify_info t2
+            on t1.notifyId = t2.notifyId
+            where t2.userNotifyOwerId =#{userNotifyOwerId,jdbcType=VARCHAR} and t1.appId=#{appId,jdbcType=VARCHAR} and t1.notifyType=#{notifyType,jdbcType=VARCHAR};
+    </select>
+</mapper>

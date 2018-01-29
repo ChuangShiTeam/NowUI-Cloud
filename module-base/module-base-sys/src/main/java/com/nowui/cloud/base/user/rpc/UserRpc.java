@@ -195,6 +195,23 @@ public interface UserRpc {
     );
     
     /**
+     * 用户性别更新
+     * 
+     * @param appId 应用编号
+     * @param userId 用户编号
+     * @param userSex 用户性别
+     * @param systemRequestUserId 请求用户编号
+     * @return
+     */
+    @RequestMapping(value = "/user/system/v1/update/user/sex", method = RequestMethod.POST)
+    Boolean updateUserSexV1(
+            @RequestParam(value = "appId", required = true) String appId,
+            @RequestParam(value = "userId", required = true) String userId,
+            @RequestParam(value = "userSex", required = true) String userSex,
+            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
+    );
+    
+    /**
      * 手机账户注册
      * 
      * @param appId 应用编号

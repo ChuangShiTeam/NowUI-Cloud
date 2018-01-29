@@ -11,6 +11,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserEmail;
+import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
@@ -183,7 +184,21 @@ public class UserSystemController implements UserRpc {
             isNeedUpdate = true;
         }
         
-        // TODO 保存或更新用户性别
+        // 保存或更新用户性别
+        if (!userWechat.getWechatSex().equals(bean.getWechatSex())) {
+            
+            //删除旧的用户身份证信息
+            userService.deleteUserIdcardByUserId(userId, systemRequestUserId);
+            
+            UserIdcard userIdcard = new UserIdcard();
+            userIdcard.setUserSex(userWechat.getWechatSex());
+            userIdcard.setUserName(user.getUserName());
+            userIdcard.setUserIdcardNumber(user.getUserIdcardNumber());
+            
+            userService.saveUserIdcard(bean.getAppId(), systemRequestUserId, userIdcard, Util.getRandomUUID(), systemRequestUserId);
+            
+            isNeedUpdate = true;
+        }
         
         // 国家更新
         if (!userWechat.getWechatCountry().equals(bean.getWechatCountry())) {
@@ -197,11 +212,6 @@ public class UserSystemController implements UserRpc {
        
         // 市更新
         if (!userWechat.getWechatCity().equals(bean.getWechatCity())) {
-            isNeedUpdate = true;
-        }
-       
-        // 性别更新
-        if (!userWechat.getWechatSex().equals(bean.getWechatSex())) {
             isNeedUpdate = true;
         }
        
@@ -231,8 +241,16 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userAvatar.equals(user.getUserAvatar())) {
+            return true;
+        }
         //删除旧的头像信息
         userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
+        if (Util.isNullOrEmpty(userAvatar)) {
+            return true;
+        }
         //保存新的头像信息
         UserAvatar userAvatarBean = new UserAvatar();
         userAvatarBean.setUserAvatar(userAvatar);
@@ -244,14 +262,41 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserNickNameV1(String appId, String userId, String userNickName, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userNickName.equals(user.getUserNickName())) {
+            return true;
+        }
         //删除旧的用户昵称信息
         userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
+        if (Util.isNullOrEmpty(userNickName)) {
+            return true;
+        }
+        
         //保存新的用户昵称信息
         UserNickName userNickNameBean = new UserNickName();
         userNickNameBean.setUserNickName(userNickName);
         
         Boolean result = userService.saveUserNickName(appId, userId, userNickNameBean, Util.getRandomUUID(), systemRequestUserId);
         return result;
+    }
+    
+    @Override
+    public Boolean updateUserSexV1(String appId, String userId, String userSex, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userSex.equals(user.getUserSex())) {
+            return true;
+        }
+        //删除旧的用户身份证信息
+        userService.deleteUserIdcardByUserId(userId, systemRequestUserId);
+        
+        UserIdcard userIdcard = new UserIdcard();
+        userIdcard.setUserSex(userSex);
+        userIdcard.setUserName(user.getUserName());
+        userIdcard.setUserIdcardNumber(user.getUserIdcardNumber());
+        
+        return userService.saveUserIdcard(appId, systemRequestUserId, userIdcard, Util.getRandomUUID(), systemRequestUserId);
     }
 
     @Override

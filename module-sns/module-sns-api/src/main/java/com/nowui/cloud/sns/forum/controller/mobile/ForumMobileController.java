@@ -105,6 +105,7 @@ public class ForumMobileController extends BaseController {
 	     Boolean result = forumService.save(body, forumId, userId);
 	     
 	     if (result) {
+
 	         // 圈主默认关注论坛
 	         ForumUserFollow forumUserFollow = new ForumUserFollow();
 	         forumUserFollow.setAppId(body.getAppId());
