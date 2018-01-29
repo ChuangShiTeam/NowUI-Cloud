@@ -101,6 +101,11 @@ public class TopicComment extends BaseEntity {
      */
     public static final String TOPIC_COMMENT_IS_SELF = "topicCommentIsSelf";
     
+    /**
+     * 评论是否被用户点赞
+     */
+    public static final String TOPIC_COMMENT_IS_LIKE = "topicCommentIsLike";
+    
 
     public String getTopicCommentId() {
         return getString(TOPIC_COMMENT_ID);

@@ -237,8 +237,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         topic.put(Topic.TOPIC_FORUM_LIST, forumList);
 
         // 话题最新3条评论
-        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
+        //List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+        //topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
 
         // 话题收藏数
         Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
