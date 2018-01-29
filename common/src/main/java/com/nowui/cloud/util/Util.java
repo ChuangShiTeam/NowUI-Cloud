@@ -3,6 +3,7 @@ package com.nowui.cloud.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -350,7 +351,7 @@ public class Util {
         }
         for (BaseEntity bean : beanList) {
             Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
-            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns) : null);
+            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
         }
         return beanList;
     }
@@ -361,7 +362,7 @@ public class Util {
         }
         for (BaseEntity bean : beanList) {
             Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
-            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns) : null);
+            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
         }
         return beanList;
     }
