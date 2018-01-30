@@ -74,6 +74,11 @@ public class UserNotify extends BaseEntity {
     private String notifyId;
     public static final String NOTIFY_ID = "notifyId";
 
+    /**
+     * 消息Id集合
+     */
+    public static final String NOTIFYIDS = "notifyids";
+
 
     public String getUserNotifyId() {
         return getString(USER_NOTIFY_ID);

@@ -1,5 +1,9 @@
 package com.nowui.cloud.base.notifyinfo.controller.mobile;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.nowui.cloud.base.app.entity.AppConfig;
+import com.nowui.cloud.base.app.rpc.AppConfigRpc;
 import com.nowui.cloud.base.notifyinfo.entity.Notify;
 import com.nowui.cloud.base.notifyinfo.service.NotifyService;
 import com.nowui.cloud.base.subscriptioninfo.entity.Subscription;
@@ -8,17 +12,18 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.usernotifyinfo.entity.UserNotify;
 import com.nowui.cloud.base.usernotifyinfo.service.UserNotifyService;
 import com.nowui.cloud.controller.BaseController;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
+
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.nowui.cloud.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +47,9 @@ public class NotifyMobileController extends BaseController {
 
     @Autowired
     private SubscriptionService subscriptionService;
+
+    @Autowired
+    private AppConfigRpc appConfigRpc;
 
     @ApiOperation(value = "新增一条公告记录")
     @RequestMapping(value = "/notify/mobile/v1/create/notify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,7 +103,6 @@ public class NotifyMobileController extends BaseController {
     @ApiOperation(value = "拉取公告信息")
     @RequestMapping(value = "/notify/mobile/v1/pull/announce", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> pullAnnounceV1(@RequestBody Notify body) {
-
         validateRequest(
                 body,
                 Notify.APP_ID
@@ -105,7 +112,7 @@ public class NotifyMobileController extends BaseController {
         String userId = body.getSystemCreateUserId();
         UserNotify userNotify = userNotifyService.getNewNotify(body.getAppId());
 
-        if (userNotify == null){
+        if (userNotify == null) {
             return renderJson(false);
         }
 
@@ -158,6 +165,7 @@ public class NotifyMobileController extends BaseController {
 
         // TODO:3、查询用户的配置文件SubscriptionConfig，如果没有则使用默认的配置DefaultSubscriptionConfig
 
+
         // 4、使用过滤好的Notify作为关联新建UserNotify
         notifyList.forEach((notify) -> {
             UserNotify userNotify = new UserNotify();
@@ -172,4 +180,100 @@ public class NotifyMobileController extends BaseController {
 
         return renderJson(userNotifies);
     }
+
+    @ApiOperation(value = "订阅消息")
+    @RequestMapping(value = "/notify/mobile/v1/subscribe", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> subscribeV1(@RequestBody User body) {
+
+        validateRequest(
+                body,
+                User.APP_ID,
+                User.REASON
+        );
+        Subscription subscription = getEntry(Subscription.class);
+        validateRequest(
+                subscription,
+                Subscription.SUBSCRIPTION_TARGET,
+                Subscription.SUBSCRIPTION_TARGET_TYPE
+        );
+
+        // 1、通过reason，查询NotifyConfig，获取对应的动作组:actions.
+        List<AppConfig> appConfigs = appConfigRpc.findAppConfigsByAppCode(body.getAppId(), "NOWUI_CLOUD");
+        if (appConfigs == null){
+            throw new BusinessException("系统配置初始化错误!");
+        }
+
+        List<AppConfig> list = appConfigs.stream().filter(appConfig -> appConfig.getConfigKey() == "REASONACTION")
+                .collect(Collectors.toList());
+
+        if (list == null) {
+            throw new BusinessException("系统配置初始化错误!");
+        }
+
+        Boolean result = true;
+
+        // 2、遍历动作组，每一个动作新建一则Subscription记录
+        list.forEach((item)->{
+            // TODO: 遍历JSON数组.
+            JSONObject jsonObject = JSONObject.parseObject(item.getConfigValue());
+            jsonObject.keySet().stream().forEach(key->jsonObject.get(key));
+
+            // 存储 action 动作.
+            Subscription tSubscription = new Subscription();
+            tSubscription.setAppId(body.getAppId());
+            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
+            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTargetType());
+
+            subscriptionService.save(tSubscription,Util.getRandomUUID(),body.getSystemCreateUserId())
+        });
+
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "取消订阅")
+    @RequestMapping(value = "/notify/mobile/v1/delete/subscribe", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> cancelSubscriptionV1(@RequestBody User body) {
+        validateRequest(
+                body,
+                User.APP_ID
+        );
+        String userId = body.getSystemCreateUserId();
+        Subscription subscription = getEntry(Subscription.class);
+        validateRequest(
+                subscription,
+                Subscription.SUBSCRIPTION_TARGET,
+                Subscription.SUBSCRIPTION_TARGET_TYPE
+        );
+        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), subscription.getSystemRequestUserId(), subscription.getSystemVersion());
+        return renderJson(result);
+    }
+
+    @ApiOperation(value = "将消息设置成已读")
+    @RequestMapping(value = "/notify/mobile/v1/set/read", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> readV1(@RequestBody UserNotify body) {
+        validateRequest(
+                body,
+                UserNotify.APP_ID
+        );
+
+        JSONArray notifyIdsJsonArray = body.getJSONArray(UserNotify.NOTIFYIDS);
+
+        if (Util.isNullOrEmpty(notifyIdsJsonArray)) {
+            throw new BusinessException("NOTIFYIDS不能为空!");
+        }
+
+        List<String> notifyIds = notifyIdsJsonArray.toJavaList(String.class);
+        Boolean result = true;
+
+        notifyIds.forEach((item) -> {
+            UserNotify userNotify = new UserNotify();
+            userNotify.setAppId(body.getAppId());
+            userNotify.setUserNotifyIsRead(true);
+            userNotify.setNotifyId(item);
+            userNotifyService.update(userNotify, item, userNotify.getSystemUpdateUserId(), userNotify.getSystemVersion());
+        });
+
+        return renderJson(result);
+    }
+
 }
