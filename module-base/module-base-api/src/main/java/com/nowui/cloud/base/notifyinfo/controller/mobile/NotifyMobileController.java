@@ -212,20 +212,20 @@ public class NotifyMobileController extends BaseController {
 
         Boolean result = true;
 
-        // 2、遍历动作组，每一个动作新建一则Subscription记录
-        list.forEach((item)->{
-            // TODO: 遍历JSON数组.
-            JSONObject jsonObject = JSONObject.parseObject(item.getConfigValue());
-            jsonObject.keySet().stream().forEach(key->jsonObject.get(key));
-
-            // 存储 action 动作.
-            Subscription tSubscription = new Subscription();
-            tSubscription.setAppId(body.getAppId());
-            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
-            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTargetType());
-
-            subscriptionService.save(tSubscription,Util.getRandomUUID(),body.getSystemCreateUserId())
-        });
+//        // 2、遍历动作组，每一个动作新建一则Subscription记录
+//        list.forEach((item)->{
+//            // TODO: 遍历JSON数组.
+//            JSONObject jsonObject = JSONObject.parseObject(item.getConfigValue());
+//            jsonObject.keySet().stream().forEach(key->jsonObject.get(key));
+//
+//            // 存储 action 动作.
+//            Subscription tSubscription = new Subscription();
+//            tSubscription.setAppId(body.getAppId());
+//            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
+//            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTargetType());
+//
+//            subscriptionService.save(tSubscription,Util.getRandomUUID(),body.getSystemCreateUserId())
+//        });
 
         return renderJson(result);
     }
