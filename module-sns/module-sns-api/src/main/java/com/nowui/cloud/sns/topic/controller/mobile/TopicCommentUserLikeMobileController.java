@@ -46,8 +46,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         validateRequest(
         		body,
                 TopicCommentUserLike.APP_ID,
-                TopicCommentUserLike.COMMENT_ID,
-                TopicCommentUserLike.USER_ID
+                TopicCommentUserLike.COMMENT_ID
         );
         String commentId = body.getCommentId();
         String userId = body.getSystemRequestUserId();

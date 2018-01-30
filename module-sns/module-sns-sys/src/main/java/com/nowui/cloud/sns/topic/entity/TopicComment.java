@@ -106,6 +106,8 @@ public class TopicComment extends BaseEntity {
      */
     public static final String TOPIC_COMMENT_IS_LIKE = "topicCommentIsLike";
     
+    public static final String TOPIC_COMMENT_LIKE_COUNT = "topicCommentLikeCount";
+    
 
     public String getTopicCommentId() {
         return getString(TOPIC_COMMENT_ID);
