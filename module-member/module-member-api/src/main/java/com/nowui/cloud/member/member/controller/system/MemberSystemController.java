@@ -223,7 +223,7 @@ public class MemberSystemController implements MemberRpc {
     
     @Override
     public Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId) {
-        Member member = findDetailByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(followUserId);
         
         if (member == null) {
             return null;

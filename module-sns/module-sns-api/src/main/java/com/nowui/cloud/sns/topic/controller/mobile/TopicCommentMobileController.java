@@ -112,12 +112,11 @@ public class TopicCommentMobileController extends BaseController {
         List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
     
         if (!Util.isNullOrEmpty(respondMemberList)) {
-            Stream<Member> respondMemberStream = respondMemberList.stream();
             for (TopicComment topicComment : topicCommentList) {
                 if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
                     continue;
                 }
-                Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
                 topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
             }
         }
