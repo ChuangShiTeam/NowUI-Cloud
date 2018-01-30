@@ -189,9 +189,14 @@ public class Topic extends BaseEntity {
     public static final String TOPIC_IS_SELF = "topicIsSelf";
     
     /**
-     * 话题发布人的userId
+     * 话题发布人
      */
-    public static final String TOPIC_SEND_USER_ID = "topicSendUserId";
+    public static final String TOPIC_USER = "topicUser";
+    
+   /**
+    * 请求用户
+    */
+    public static final String REQUEST_USER = "requestUser";
     
     public String getTopicId() {
         return getString(TOPIC_ID);

@@ -386,7 +386,7 @@ public class ForumMobileController extends BaseController {
             
             String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
             List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
+            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
 
             
             for (Forum forum : resultList) {
@@ -416,6 +416,7 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID,
                 Forum.FORUM_ID
         );
+        String requestUserId = body.getSystemRequestUserId();
         
         Forum forum = forumService.find(body.getForumId());
         
@@ -431,6 +432,7 @@ public class ForumMobileController extends BaseController {
 
     	// 版主昵称、头像、签名
         Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(forum.getForumModerator());
+        forumModerator.put(Forum.FORUM_USER_IS_MODERATOR, forumModerator.getUserId().equals(requestUserId));
         forum.put(Forum.FORUM_MODERATOR, forumModerator);
 
         // 根据systemRequestUserId查询是否加入了这个论坛
@@ -440,6 +442,8 @@ public class ForumMobileController extends BaseController {
         // 统计加入论坛人数
         Integer forumUserFollowCount = forumUserFollowService.countByForumId(body.getAppId(), body.getForumId());
         forum.put(Forum.FORUM_USER_FOLLOW_COUNT, forumUserFollowCount);
+        
+        
         
         validateResponse(
                 Forum.FORUM_ID,

@@ -15,7 +15,10 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
+
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
@@ -339,7 +342,16 @@ public class Util {
         for (BaseEntity bean : beanList) {
             Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
             for (String fieldCloumn : fieldCloumns) {
-                bean.put(fieldCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().get(fieldCloumn) : null);
+                if (fieldBeanOption.isPresent()) {
+                    Object object = fieldBeanOption.get().get(fieldCloumn);
+                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+                    } else {
+                        bean.put(fieldCloumn, object);
+                    }
+                } else {
+                    bean.put(fieldCloumn, null);
+                }
             }
         }
         return beanList;
@@ -383,7 +395,16 @@ public class Util {
         for (BaseEntity bean : beanList) {
             Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
             for (String fieldCloumn : fieldCloumns) {
-                bean.put(fieldCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().get(fieldCloumn) : null);
+                if (fieldBeanOption.isPresent()) {
+                    Object object = fieldBeanOption.get().get(fieldCloumn);
+                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+                    } else {
+                        bean.put(fieldCloumn, object);
+                    }
+                } else {
+                    bean.put(fieldCloumn, null);
+                }
             }
         }
         return beanList;

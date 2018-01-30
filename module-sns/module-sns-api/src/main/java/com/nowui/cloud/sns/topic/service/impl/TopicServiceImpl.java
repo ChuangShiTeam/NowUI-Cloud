@@ -225,6 +225,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		// 话题多媒体列表
         List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        for (TopicMedia topicMedia : topicMediaList) {
+            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
+        }
 
         // 论坛列表
         List<TopicForum> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
@@ -237,8 +240,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         topic.put(Topic.TOPIC_FORUM_LIST, forumList);
 
         // 话题最新3条评论
-        //List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-        //topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
+//        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+//        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
 
         // 话题收藏数
         Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
@@ -259,7 +262,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         // 是否被用户点赞
         TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
-
+        
 		return topic;
 	}
 

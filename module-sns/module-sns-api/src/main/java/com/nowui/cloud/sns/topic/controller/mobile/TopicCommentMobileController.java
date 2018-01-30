@@ -86,6 +86,10 @@ public class TopicCommentMobileController extends BaseController {
 			}else {
 				topicComment.put(TopicComment.TOPIC_COMMENT_IS_LIKE, false);
 			}
+            
+            // 获取评论点赞数
+            Integer likeCount = topicCommentUserLikeService.countByCommentIdWithRedis(topicComment.getTopicCommentId());
+            topicComment.put(TopicComment.TOPIC_COMMENT_LIKE_COUNT, likeCount);
 		}
         
         //处理用户信息(昵称,头像)
@@ -108,12 +112,11 @@ public class TopicCommentMobileController extends BaseController {
         List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
     
         if (!Util.isNullOrEmpty(respondMemberList)) {
-            Stream<Member> respondMemberStream = respondMemberList.stream();
             for (TopicComment topicComment : topicCommentList) {
                 if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
                     continue;
                 }
-                Optional<Member> memberOption = respondMemberStream.filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
                 topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
             }
         }
@@ -131,7 +134,8 @@ public class TopicCommentMobileController extends BaseController {
         		UserNickName.USER_NICK_NAME,
         		TopicComment.SYSTEM_CREATE_TIME,
         		TopicComment.TOPIC_COMMENT_IS_SELF,
-        		TopicComment.TOPIC_COMMENT_IS_LIKE
+        		TopicComment.TOPIC_COMMENT_IS_LIKE,
+        		TopicComment.TOPIC_COMMENT_LIKE_COUNT
         );
 
         return renderJson(resultTotal, topicCommentList);

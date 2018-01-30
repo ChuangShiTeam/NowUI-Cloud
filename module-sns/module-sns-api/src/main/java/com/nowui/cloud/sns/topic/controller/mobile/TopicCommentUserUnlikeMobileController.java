@@ -43,12 +43,11 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         validateRequest(
         		body,
                 TopicCommentUserUnlike.APP_ID,
-                TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID
+                TopicCommentUserUnlike.COMMENT_ID
         );
         String appId = body.getAppId();
         String commentId = body.getCommentId();
-        String userId = body.getUserId();
+        String userId = body.getSystemRequestUserId();
         
         // 先去取消评论点赞表查询有没有记录
         TopicCommentUserUnlike userUnlike = topicCommentUserUnlikeService.findTheCommentUserUnlike(commentId, userId);
