@@ -446,8 +446,11 @@ public class TopicMobileController extends BaseController {
                     UserAvatar.USER_AVATAR,
                     UserNickName.USER_NICK_NAME
             );
-        }
-        topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
+            for (TopicUserLike topicUserLike : userLikeList) {
+            	topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
+			}
+            topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
+       }
        
         validateResponse(
                 Topic.TOPIC_ID,

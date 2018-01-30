@@ -262,6 +262,12 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         // 是否被用户点赞
         TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
+        
+        // 查找所有点赞用户(取三条数据,展示到话题详情页)
+        List<TopicUserLike> userLikeList = topicUserLikeService.listByTopicIdHavePage(topicId, 1, 3);
+        topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
+        
+        
 
 		return topic;
 	}
