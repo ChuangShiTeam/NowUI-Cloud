@@ -386,7 +386,7 @@ public class ForumMobileController extends BaseController {
             
             String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
             List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
+            resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, Member.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
 
             
             for (Forum forum : resultList) {
