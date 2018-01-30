@@ -30,7 +30,6 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
-import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
@@ -39,6 +38,7 @@ import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -78,6 +78,9 @@ public class TopicMobileController extends BaseController {
     
     @Autowired
     private MemberFollowRpc memberFollowRpc;
+    
+    @Autowired
+    private TopicUserLikeService topicUserLikeService;
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -430,10 +433,11 @@ public class TopicMobileController extends BaseController {
         topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         
-        // 处理点赞的用户头像
-        List<TopicUserLike> userLikeList = (List<TopicUserLike>) topic.get(Topic.TOPIC_USER_LIKE_LIST);
+        // 查找所有点赞用户(取三条数据,展示到话题详情页)
+        List<TopicUserLike> userLikeList = topicUserLikeService.listByTopicIdHavePage(topicId, 1, 3);
         
         if (!Util.isNullOrEmpty(userLikeList)) {
+            // 处理点赞的用户头像
             String userIds = Util.beanToFieldString(userLikeList, TopicUserLike.USER_ID);
             List<Member> nickAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
             
@@ -446,11 +450,13 @@ public class TopicMobileController extends BaseController {
                     UserAvatar.USER_AVATAR,
                     UserNickName.USER_NICK_NAME
             );
+            
             for (TopicUserLike topicUserLike : userLikeList) {
             	topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
 			}
+            
             topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
-       }
+        }
        
         validateResponse(
                 Topic.TOPIC_ID,

@@ -216,8 +216,10 @@ public class MemberSystemController implements MemberRpc {
         if (!Util.isNullOrEmpty(myFollowList)) {
             List<String> myFollowUserIdList = myFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());
             memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, myFollowUserIdList.contains(member.getUserId())));
-
+        } else {
+            memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, false)); 
         }
+        
         return memberList;
     }
     
