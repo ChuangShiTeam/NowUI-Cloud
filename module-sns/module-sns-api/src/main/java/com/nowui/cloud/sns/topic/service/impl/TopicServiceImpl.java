@@ -240,8 +240,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         topic.put(Topic.TOPIC_FORUM_LIST, forumList);
 
         // 话题最新3条评论
-        //List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-        //topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
+//        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+//        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
 
         // 话题收藏数
         Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
@@ -263,12 +263,6 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
         
-        // 查找所有点赞用户(取三条数据,展示到话题详情页)
-        List<TopicUserLike> userLikeList = topicUserLikeService.listByTopicIdHavePage(topicId, 1, 3);
-        topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
-        
-        
-
 		return topic;
 	}
 

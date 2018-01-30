@@ -97,7 +97,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 	public List<TopicUserLike> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize) {
 		List<TopicUserLike> topicUserLikeList = list(
                 new BaseWrapper<TopicUserLike>()
-                        .likeAllowEmpty(TopicUserLike.TOPIC_ID, topicId)
+                        .eq(TopicUserLike.TOPIC_ID, topicId)
                         .eq(TopicUserLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME)),
                 pageIndex,

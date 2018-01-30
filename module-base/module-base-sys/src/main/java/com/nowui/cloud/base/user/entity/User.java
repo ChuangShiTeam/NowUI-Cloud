@@ -13,11 +13,14 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 用户
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-02
  */
 @Component
@@ -66,15 +69,15 @@ public class User extends BaseEntity {
     public static final String USER_TYPE = "userType";
 
     public static final String USER_ACCOUNT = "userAccount";
-    
+
     public static final String USER_PASSWORD = "userPassword";
 
     public static final String USER_NICK_NAME = "userNickName";
 
     public static final String USER_IDCARD_NUMBER = "userIdcardNumber";
-    
+
     public static final String USER_NAME = "userName";
-    
+
     public static final String USER_SEX = "userSex";
 
     public static final String USER_MOBILE = "userMobile";
@@ -82,9 +85,20 @@ public class User extends BaseEntity {
     public static final String USER_EMAIL = "userEmail";
 
     public static final String USER_AVATAR = "userAvatar";
-    
+
     public static final String USER_WECHAT = "userWechat";
 
+    public static final String REASON = "reason";
+
+
+
+    public String getReason() {
+        return getString(REASON);
+    }
+
+    public void setReason(String reason) {
+        put(REASON, reason);
+    }
 
     public String getUserId() {
         return getString(USER_ID);
@@ -93,7 +107,7 @@ public class User extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
-    
+
     public String getAppId() {
         return getString(APP_ID);
     }
@@ -101,7 +115,7 @@ public class User extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
-    
+
     public String getObjectId() {
         return getString(OBJECT_ID);
     }
@@ -109,7 +123,7 @@ public class User extends BaseEntity {
     public void setObjectId(String objectId) {
         put(OBJECT_ID, objectId);
     }
-    
+
     public String getUserType() {
         return getString(USER_TYPE);
     }
@@ -117,7 +131,7 @@ public class User extends BaseEntity {
     public void setUserType(String userType) {
         put(USER_TYPE, userType);
     }
-    
+
     public String getUserNickName() {
         return getString(USER_NICK_NAME);
     }
@@ -125,7 +139,7 @@ public class User extends BaseEntity {
     public void setUserNickName(String userNickName) {
         put(USER_NICK_NAME, userNickName);
     }
-    
+
     public String getUserAccount() {
         return getString(USER_ACCOUNT);
     }
@@ -133,7 +147,7 @@ public class User extends BaseEntity {
     public void setUserAccount(String userAccount) {
         put(USER_ACCOUNT, userAccount);
     }
-    
+
     public String getUserPassword() {
         return getString(USER_PASSWORD);
     }
@@ -141,7 +155,7 @@ public class User extends BaseEntity {
     public void setUserPassword(String userPassword) {
         put(USER_PASSWORD, userPassword);
     }
-    
+
     public String getUserIdcardNumber() {
         return getString(USER_IDCARD_NUMBER);
     }
@@ -149,7 +163,7 @@ public class User extends BaseEntity {
     public void setUserIdcardNumber(String userIdcardNumber) {
         put(USER_IDCARD_NUMBER, userIdcardNumber);
     }
-    
+
     public String getUserName() {
         return getString(USER_NAME);
     }
@@ -157,7 +171,7 @@ public class User extends BaseEntity {
     public void setUserName(String userName) {
         put(USER_NAME, userName);
     }
-    
+
     public String getUserSex() {
         return getString(USER_SEX);
     }
@@ -165,7 +179,7 @@ public class User extends BaseEntity {
     public void setUserSex(String userSex) {
         put(USER_SEX, userSex);
     }
-    
+
     public String getUserMobile() {
         return getString(USER_MOBILE);
     }
@@ -173,7 +187,7 @@ public class User extends BaseEntity {
     public void setUserMobile(String userMobile) {
         put(USER_MOBILE, userMobile);
     }
-    
+
     public String getUserEmail() {
         return getString(USER_EMAIL);
     }
@@ -181,7 +195,7 @@ public class User extends BaseEntity {
     public void setUserEmail(String userEmail) {
         put(USER_EMAIL, userEmail);
     }
-    
+
     public String getUserAvatar() {
         return getString(USER_AVATAR);
     }
@@ -189,7 +203,7 @@ public class User extends BaseEntity {
     public void setUserAvatar(String userAvatar) {
         put(USER_AVATAR, userAvatar);
     }
-    
+
     public UserWechat getUserWechat() {
         return (UserWechat) get(USER_WECHAT);
     }
@@ -197,5 +211,5 @@ public class User extends BaseEntity {
     public void setUserWechat(String userWechat) {
         put(USER_WECHAT, userWechat);
     }
-    
+
 }

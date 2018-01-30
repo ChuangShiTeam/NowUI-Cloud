@@ -30,7 +30,6 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
-import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
@@ -39,6 +38,7 @@ import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -78,6 +78,9 @@ public class TopicMobileController extends BaseController {
     
     @Autowired
     private MemberFollowRpc memberFollowRpc;
+    
+    @Autowired
+    private TopicUserLikeService topicUserLikeService;
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -162,26 +165,25 @@ public class TopicMobileController extends BaseController {
                 Topic.USER_ID
         );
         
-        String beSearchUserId = body.getUserId();
+        String userId = body.getUserId();
         String requestUserId = body.getSystemRequestUserId();
         
         // 获取用户头像,昵称,签名,背景
-        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(beSearchUserId);
+        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
         // 获取用户头像,昵称,是否关注
-        Member thePartIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(beSearchUserId, requestUserId);
-        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, thePartIsFollow.getBoolean(MemberFollow.MEMBER_IS_FOLLOW));
-		
+        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, userId);
+        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
         // TODO 我的宠物
         
         
         // 粉丝数
-        Integer countBeFollowed = memberFollowRpc.countBeFollowed(beSearchUserId);
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(userId);
         memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
         // 关注数
-        Integer countFollow = memberFollowRpc.countFollow(beSearchUserId);
+        Integer countFollow = memberFollowRpc.countFollow(userId);
         memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
         // 动态数
-        Integer countTopic = topicService.countTopicByUserIdWithRedis(beSearchUserId);
+        Integer countTopic = topicService.countTopicByUserIdWithRedis(userId);
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
@@ -288,25 +290,21 @@ public class TopicMobileController extends BaseController {
                 Topic.SYSTEM_REQUEST_USER_ID
         );
         
-        String beSearchUserId = body.getSystemRequestUserId();
+        String userId = body.getSystemRequestUserId();
         
         // 获取用户头像,昵称,签名,背景
-        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(beSearchUserId);
-        // 获取用户头像,昵称,是否关注
-        // Member thePartIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(beSearchUserId, requestUserId);
-        // memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, thePartIsFollow.getBoolean(MemberFollow.MEMBER_IS_FOLLOW));
+        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
 		
         // TODO 我的宠物
         
-        
         // 粉丝数
-        Integer countBeFollowed = memberFollowRpc.countBeFollowed(beSearchUserId);
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(userId);
         memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
         // 关注数
-        Integer countFollow = memberFollowRpc.countFollow(beSearchUserId);
+        Integer countFollow = memberFollowRpc.countFollow(userId);
         memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
         // 动态数
-        Integer countTopic = topicService.countTopicByUserIdWithRedis(beSearchUserId);
+        Integer countTopic = topicService.countTopicByUserIdWithRedis(userId);
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
@@ -337,7 +335,6 @@ public class TopicMobileController extends BaseController {
         userIdToSearchList.add(body.getSystemRequestUserId());
         Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
         List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, body.getPageIndex(), body.getPageSize());
-        
         
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -371,9 +368,6 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
         }
         
-        
-        
-        
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
@@ -394,7 +388,6 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_USER_IS_LIKE,
                 Topic.TOPIC_USER_LIKE_LIST,
                 Topic.TOPIC_IS_SELF,
-                
                 User.USER_ID,
                 UserAvatar.USER_AVATAR,
                 UserNickName.USER_NICK_NAME,
@@ -419,13 +412,18 @@ public class TopicMobileController extends BaseController {
         String userId = body.getSystemRequestUserId();
         
         Topic topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
-        String theSendUserId = topic.getUserId();
-
         
         //处理用户信息(昵称,头像,是否关注)
         Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), userId);
-        topic.put(Topic.USER_ID, nickNameAndAvatarAndIsFollow);
-
+        topic.put(Topic.TOPIC_USER, nickNameAndAvatarAndIsFollow);
+        
+        Member nickNameAndAvatar = memberRpc.nickNameAndAvatarFindV1(userId);
+        topic.put(Topic.REQUEST_USER, nickNameAndAvatar);
+        
+        if (userId.equals(topic.getUserId())) {
+            // 验证话题发布者是否自己
+            topic.put(Topic.TOPIC_IS_SELF, true);
+        } 
         
         //处理图片
         List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
@@ -433,53 +431,37 @@ public class TopicMobileController extends BaseController {
         String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-       // topicMediaList = Util.beanAddField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_PATH);
         topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
-        //这里本来就是从topic里面取出来的,还用不用再放回去?引用的地址?
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         
+        // 查找所有点赞用户(取三条数据,展示到话题详情页)
+        List<TopicUserLike> userLikeList = topicUserLikeService.listByTopicIdHavePage(topicId, 1, 3);
         
-        //处理点赞的用户头像
-        List<TopicUserLike> userLikeList = (List<TopicUserLike>)topic.get(Topic.TOPIC_USER_LIKE_LIST);
-        
-       if (!Util.isNullOrEmpty(userLikeList)) {
+        if (!Util.isNullOrEmpty(userLikeList)) {
+            // 处理点赞的用户头像
             String userIds = Util.beanToFieldString(userLikeList, TopicUserLike.USER_ID);
-            List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+            List<Member> nickAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
             
             userLikeList = Util.beanAddField(
                     userLikeList,
                     TopicUserLike.USER_ID,
                     User.USER_ID,
-                    nickAndAvatarAndIsFollowList,
+                    nickAndAvatarList,
                     User.USER_ID,
                     UserAvatar.USER_AVATAR,
-                    UserNickName.USER_NICK_NAME,
-                    MemberFollow.MEMBER_IS_FOLLOW
+                    UserNickName.USER_NICK_NAME
             );
+            
             for (TopicUserLike topicUserLike : userLikeList) {
             	topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
 			}
-       }
+            
+            topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
+        }
        
-       topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
-       
-       // 验证话题发布者是否自己
-       topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(userId));
-
-       // 把话题发布者id put进去
-       topic.put(Topic.TOPIC_SEND_USER_ID, theSendUserId);
-       
-       // 处理评论是否自己发布
-//       List<TopicComment> commentList = (List<TopicComment>) topic.get(Topic.TOPIC_COMMENT_LIST);
-//       for (TopicComment topicComment : commentList) {
-//    	   topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, userId.equals(topicComment.getUserId()));
-//	}
-
-
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -489,7 +471,6 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST,
                 Topic.TOPIC_FORUM_LIST,
-                Topic.TOPIC_COMMENT_LIST,
                 Topic.TOPIC_COUNT_BOOKMARK,
                 Topic.TOPIC_COUNT_LIKE,
                 Topic.TOPIC_COUNT_COMMENT,
@@ -498,8 +479,8 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_USER_LIKE_LIST,
                 BaseEntity.SYSTEM_CREATE_TIME,
                 Topic.TOPIC_IS_SELF,
-                Topic.TOPIC_SEND_USER_ID,
-                TopicComment.TOPIC_COMMENT_IS_SELF
+                Topic.TOPIC_USER,
+                Topic.REQUEST_USER
         );
 
         return renderJson(topic);

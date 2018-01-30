@@ -84,13 +84,13 @@ public class WawiMyMobileController extends BaseController {
     
     @ApiOperation(value = "更新我的个人资料")
     @RequestMapping(value = "/wawi/mobile/v1/my/info/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> myInfoUpdateV1(@RequestBody Member body) {
+    public Map<String, Object> myInfoUpdateV1(@RequestBody Member body){
         validateRequest(
             body, 
             Member.APP_ID,
             Member.SYSTEM_REQUEST_USER_ID
         );
-        
+
         UserAvatar userAvatar = getEntry(UserAvatar.class);
         validateRequest(
             userAvatar,
@@ -108,7 +108,7 @@ public class WawiMyMobileController extends BaseController {
                 userIdcard,
                 UserIdcard.USER_SEX
         );
-    
+
         MemberSignature memberSignature = getEntry(MemberSignature.class);
         validateRequest(
                 memberSignature,
