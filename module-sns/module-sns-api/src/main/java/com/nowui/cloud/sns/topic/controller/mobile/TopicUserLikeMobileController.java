@@ -55,7 +55,7 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
                 TopicUserLike.PAGE_SIZE,
-                TopicUserLike.SYSTEM_REQUEST_USER_ID//前端传来参数可用于只显示3个头像,和点赞列表
+                TopicUserLike.SYSTEM_REQUEST_USER_ID
         );
         //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countByTopicId(body.getTopicId());
