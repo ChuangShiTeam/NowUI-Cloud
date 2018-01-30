@@ -192,7 +192,8 @@ public class TopicMobileController extends BaseController {
         		MemberSignature.MEMBER_SIGNATURE,
         		MemberBackground.MEMBER_BACKGROUND,
         		UserNickName.USER_NICK_NAME,
-        		UserAvatar.USER_AVATAR
+        		UserAvatar.USER_AVATAR,
+        		Member.USER_ID
         );
         return renderJson(memberInfo);
 
