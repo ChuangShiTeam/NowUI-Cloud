@@ -214,6 +214,8 @@ public class TopicMobileController extends BaseController {
                 body,
                 Topic.APP_ID,
                 Topic.USER_ID,
+                Topic.SYSTEM_CREATE_TIME,
+                Topic.SYSTEM_REQUEST_USER_ID,
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
@@ -221,8 +223,7 @@ public class TopicMobileController extends BaseController {
         ArrayList<String> userIdToSearchList = new ArrayList<>();
         userIdToSearchList.add(body.getUserId());
         Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
-        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, body.getPageIndex(), body.getPageSize());
-        
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         //复制start
         
@@ -251,7 +252,6 @@ public class TopicMobileController extends BaseController {
 
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-            
         }
         
         //复制end
@@ -331,6 +331,8 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
+                Topic.SYSTEM_CREATE_TIME,
+                Topic.SYSTEM_REQUEST_USER_ID,
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
@@ -340,7 +342,7 @@ public class TopicMobileController extends BaseController {
         ArrayList<String> userIdToSearchList = new ArrayList<>();
         userIdToSearchList.add(body.getSystemRequestUserId());
         Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
-        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, body.getPageIndex(), body.getPageSize());
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -500,7 +502,8 @@ public class TopicMobileController extends BaseController {
                 Topic.APP_ID,
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE,
-                Topic.SYSTEM_REQUEST_USER_ID
+                Topic.SYSTEM_REQUEST_USER_ID,
+                Topic.SYSTEM_CREATE_TIME
         );
         String requestUserId = body.getSystemRequestUserId();
         
@@ -510,7 +513,7 @@ public class TopicMobileController extends BaseController {
         followUserIdList.add(body.getSystemRequestUserId());
         
         Integer countResult = topicService.countByUserIdList(body.getAppId(), followUserIdList);
-        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, body.getPageIndex(), body.getPageSize());
+        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         if (!Util.isNullOrEmpty(resultList)) {
             // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
