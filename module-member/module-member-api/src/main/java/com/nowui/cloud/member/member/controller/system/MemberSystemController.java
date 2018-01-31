@@ -324,7 +324,7 @@ public class MemberSystemController implements MemberRpc {
         
         if (!memberAddressCity.equals(member.getString(Member.MEMBER_ADDRESS_CITY))) {
             // 刪除旧的会员地址信息
-            memberService.deleteMemberAddressByMemberId(member.getMemberId(), systemRequestUserId);
+            memberService.deleteMemberAddressByMemberId(member.getMemberId(), userId, systemRequestUserId);
             
             MemberAddress memberAddress = new MemberAddress();
             memberAddress.setMemberAddressProvince(member.getString(Member.MEMBER_ADDRESS_PROVINCE));
@@ -332,18 +332,18 @@ public class MemberSystemController implements MemberRpc {
             memberAddress.setMemberAddressCity(memberAddressCity);
             memberAddress.setMemberAddressAddress(member.getString(Member.MEMBER_ADDRESS_ADDRESS));
             
-            memberService.saveMemberAddress(member.getAppId(), member.getMemberId(), memberAddress, Util.getRandomUUID(), systemRequestUserId);
+            memberService.saveMemberAddress(member.getAppId(), member.getMemberId(), userId, memberAddress, Util.getRandomUUID(), systemRequestUserId);
 
         };
         
         if (!memberSignature.equals(member.getString(Member.MEMBER_SIGNATURE))) {
             // 删除旧的会员签名
-            memberService.deleteMemberSignatureByMemberId(member.getMemberId(), systemRequestUserId);
+            memberService.deleteMemberSignatureByMemberId(member.getMemberId(), userId, systemRequestUserId);
             
             MemberSignature memberSignatureBean = new MemberSignature();
             memberSignatureBean.setMemberSignature(memberSignature);
             
-            memberService.saveMemberSignature(member.getAppId(), member.getMemberId(), memberSignatureBean, Util.getRandomUUID(), systemRequestUserId);
+            memberService.saveMemberSignature(member.getAppId(), member.getMemberId(), userId, memberSignatureBean, Util.getRandomUUID(), systemRequestUserId);
 
         }
         
