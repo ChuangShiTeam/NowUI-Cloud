@@ -383,14 +383,14 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 	@Override
 	public Integer countTopicByUserIdWithRedis(String userId) {
-		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND);
+		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
 		if (num == null) {
 			Integer count = count(
 	                new BaseWrapper<Topic>()
 	                        .eq(Topic.USER_ID, userId)
 	                        .eq(Topic.SYSTEM_STATUS, true)
 	        );
-			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND, count);
+			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
 			return count;
 		}
 		

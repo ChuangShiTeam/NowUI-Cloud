@@ -486,38 +486,42 @@ public class ForumMobileController extends BaseController {
         
         // 3,从TopicForum获取topicIdList, 
         List<String> topicIdList = Util.beanToField(topicForumList, TopicForum.TOPIC_ID);
-        
+
+        List<Topic> topicList = new ArrayList<>();
         // 4,根据topicIdList查找topicList
-        List<Topic> topicList = topicService.listDetailByTopicIdList(userId, topicIdList, pageIndex, pageSize);
+        if (!Util.isNullOrEmpty(topicIdList)) {
+        	topicList = topicService.listDetailByTopicIdList(userId, topicIdList, pageIndex, pageSize);
         
-        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
-        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
-        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+	        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
+	        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);
+	        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+	        
+	        topicList = Util.beanAddField(
+	        		topicList, 
+	        		Topic.USER_ID, 
+	        		User.USER_ID, 
+	        		nickAndAvatarAndIsFollowList, 
+	        		User.USER_ID,
+	        		UserAvatar.USER_AVATAR,
+	        		UserNickName.USER_NICK_NAME,
+	        		MemberFollow.MEMBER_IS_FOLLOW
+	    	);
         
-        topicList = Util.beanAddField(
-        		topicList, 
-        		Topic.USER_ID, 
-        		User.USER_ID, 
-        		nickAndAvatarAndIsFollowList, 
-        		User.USER_ID,
-        		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
-    	);
         
-        
-        // 图片多媒体
-        for (Topic topic : topicList) {
-            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
-
-            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
-            List<File> fileList = fileRpc.findsV1(fileIds);
-
-            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
-            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-            
-            // 处理评论是否自己发布
-            topic.put(Topic.TOPIC_IS_SELF, userId.equals(topic.getUserId()));
+	        // 图片多媒体
+	        for (Topic topic : topicList) {
+	            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+	
+	            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
+	            List<File> fileList = fileRpc.findsV1(fileIds);
+	
+	            topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
+	            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+	            
+	            // 处理评论是否自己发布
+	            topic.put(Topic.TOPIC_IS_SELF, userId.equals(topic.getUserId()));
+	        
+	        }
         
         }
         
