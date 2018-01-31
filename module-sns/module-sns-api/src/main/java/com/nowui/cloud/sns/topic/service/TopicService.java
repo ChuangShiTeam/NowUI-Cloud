@@ -148,6 +148,17 @@ public interface TopicService extends BaseService<Topic> {
      */
     List<Topic> listByTopicIdList(List<String> topicIdList, Integer pageIndex, Integer pageSize);
     
+    
+    /**
+     * 根据topicId的list集合查询所有话题信息(不分页)
+     * 
+     * @param topicIdList 话题编号列表
+     * @param pageIndex 从第几条开始
+     * @param pageSize 取多少条
+     * @return topic列表
+     */
+    List<Topic> listByTopicIdList(List<String> topicIdList);
+    
     /**
      * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
      * 
@@ -158,6 +169,18 @@ public interface TopicService extends BaseService<Topic> {
      * @return
      */
     List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
+     * (不分页)
+     * 
+     * @param userId
+     * @param topicIdList
+     * @return
+     */
+    List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList);
+    
+    
     
     /**
      * 根据话题编号删除话题相关信息

@@ -129,6 +129,8 @@ public class ForumMobileController extends BaseController {
                 Forum.PAGE_SIZE,
                 Forum.SYSTEM_REQUEST_USER_ID
         );
+        String requestUserId = body.getSystemRequestUserId();
+        
         // forum包含了论坛简介,论坛名称,论坛头像
         Forum forum = forumService.find(body.getForumId());
         // 处理论坛头像
@@ -177,6 +179,11 @@ public class ForumMobileController extends BaseController {
         //处理关注论坛列表的昵称,头像
         String userIds = Util.beanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
         List<Member> nickNameAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
+        
+        // 判断会员是不是请求本人
+        for (Member member : nickNameAndAvatarList) {
+			member.put(Member.MEMBER_IS_SELF, member.getUserId().equals(requestUserId));
+		}
         forum.put(Forum.FORUM_USER_FOLLOW_LIST, nickNameAndAvatarList);
         
         validateResponse(
@@ -188,7 +195,8 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_REQUEST_USER_IS_FOLLOW,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
-                Forum.FORUM_USER_FOLLOW_LIST
+                Forum.FORUM_USER_FOLLOW_LIST,
+                Member.MEMBER_IS_SELF
         );
 
         return renderJson(forum);
@@ -490,7 +498,7 @@ public class ForumMobileController extends BaseController {
         List<Topic> topicList = new ArrayList<>();
         // 4,根据topicIdList查找topicList
         if (!Util.isNullOrEmpty(topicIdList)) {
-        	topicList = topicService.listDetailByTopicIdList(userId, topicIdList, pageIndex, pageSize);
+        	topicList = topicService.listDetailByTopicIdList(userId, topicIdList);
         
 	        // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 	        String userIds = Util.beanToFieldString(topicList, Topic.USER_ID);

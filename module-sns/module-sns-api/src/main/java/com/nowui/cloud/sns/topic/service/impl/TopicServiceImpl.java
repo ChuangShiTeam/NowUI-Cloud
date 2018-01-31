@@ -419,4 +419,31 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		return result;
 	}
 
+	@Override
+	public List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList) {
+		List<Topic> topicList = listByTopicIdList(topicIdList);
+		
+		if (Util.isNullOrEmpty(topicList)) {
+            return new ArrayList<>();
+        }
+        
+        for (Topic topic : topicList) {
+            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+        }
+
+        return topicList;
+	}
+
+	@Override
+	public List<Topic> listByTopicIdList(List<String> topicIdList) {
+		List<Topic> topicList = list(
+                new BaseWrapper<Topic>()
+                        .in(Topic.TOPIC_ID, topicIdList)
+                        .eq(Topic.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME))
+            );
+
+		return topicList;
+	}
+
 }
