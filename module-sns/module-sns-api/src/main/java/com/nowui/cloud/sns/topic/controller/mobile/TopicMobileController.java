@@ -130,7 +130,7 @@ public class TopicMobileController extends BaseController {
             String theSendUserId = topic.getUserId();
             
             topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
-			
+            
             
         }
         
@@ -187,14 +187,14 @@ public class TopicMobileController extends BaseController {
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
-        		Member.MEMBER_SEND_TOPIC_COUNT,
-        		Member.MEMBER_FOLLOW_COUNT,
-        		Member.MEMBER_BE_FOLLOW_COUNT,
-        		MemberFollow.MEMBER_IS_FOLLOW,
-        		MemberSignature.MEMBER_SIGNATURE,
-        		MemberBackground.MEMBER_BACKGROUND,
-        		UserNickName.USER_NICK_NAME,
-        		UserAvatar.USER_AVATAR
+                Member.MEMBER_SEND_TOPIC_COUNT,
+                Member.MEMBER_FOLLOW_COUNT,
+                Member.MEMBER_BE_FOLLOW_COUNT,
+                MemberFollow.MEMBER_IS_FOLLOW,
+                MemberSignature.MEMBER_SIGNATURE,
+                MemberBackground.MEMBER_BACKGROUND,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR
         );
         return renderJson(memberInfo);
 
@@ -293,7 +293,7 @@ public class TopicMobileController extends BaseController {
         
         // 获取用户头像,昵称,签名,背景
         Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
-		
+        
         // TODO 我的宠物
         
         // 粉丝数
@@ -307,13 +307,13 @@ public class TopicMobileController extends BaseController {
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
-        		Member.MEMBER_SEND_TOPIC_COUNT,
-        		Member.MEMBER_FOLLOW_COUNT,
-        		Member.MEMBER_BE_FOLLOW_COUNT,
-        		MemberSignature.MEMBER_SIGNATURE,
-        		MemberBackground.MEMBER_BACKGROUND,
-        		UserNickName.USER_NICK_NAME,
-        		UserAvatar.USER_AVATAR
+                Member.MEMBER_SEND_TOPIC_COUNT,
+                Member.MEMBER_FOLLOW_COUNT,
+                Member.MEMBER_BE_FOLLOW_COUNT,
+                MemberSignature.MEMBER_SIGNATURE,
+                MemberBackground.MEMBER_BACKGROUND,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR
         );
         return renderJson(memberInfo);
 
@@ -452,8 +452,8 @@ public class TopicMobileController extends BaseController {
             );
             
             for (TopicUserLike topicUserLike : userLikeList) {
-            	topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
-			}
+                topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
+            }
             
             topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
         }
