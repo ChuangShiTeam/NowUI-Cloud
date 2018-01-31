@@ -170,4 +170,14 @@ public interface TopicService extends BaseService<Topic> {
      */
     Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion);
     
+    /**
+     * 新增topic记录,并往redis中增加动态数
+     * 
+     * @param entity 要保存的实体类
+     * @param id 话题Id
+     * @param systemCreateUserId 创建者id
+     * @return
+     */
+    Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId);
+    
 }

@@ -634,7 +634,7 @@ public class TopicMobileController extends BaseController {
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
         // 保存话题
-        Boolean result = topicService.save(body, topicId, userId);
+        Boolean result = topicService.saveWithRedis(body, topicId, userId);
         
         if (result) {
             

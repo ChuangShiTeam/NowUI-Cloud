@@ -397,4 +397,26 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		return num;
 	}
 
+	@Override
+	public Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId) {
+		// 保存话题
+        Boolean result = topicService.save(entity, id, systemCreateUserId);
+        
+        if (result) {
+        	Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
+        	if (num == null) {
+    			Integer count = count(
+    	                new BaseWrapper<Topic>()
+    	                        .eq(Topic.USER_ID, systemCreateUserId)
+    	                        .eq(Topic.SYSTEM_STATUS, true)
+    	        );
+    			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
+    		}
+        	
+        	redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
+		}
+		
+		return result;
+	}
+
 }
