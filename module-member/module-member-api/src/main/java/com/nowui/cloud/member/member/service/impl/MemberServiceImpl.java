@@ -123,7 +123,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
     }
 
     @Override
-    public Boolean saveMemberAddress(String appId, String memberId, MemberAddress memberAddress, String memberAddressId,
+    public Boolean saveMemberAddress(String appId, String memberId, String userId, MemberAddress memberAddress, String memberAddressId,
             String systemRequestUserId) {
         memberAddress.setAppId(appId);
         memberAddress.setMemberId(memberId);
@@ -132,36 +132,36 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         
         if (result) {
             // 更新会员地址缓存
-            Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
             if (member != null) {
                 member.put(Member.MEMBER_ADDRESS_PROVINCE,memberAddress.getMemberAddressProvince());
                 member.put(Member.MEMBER_ADDRESS_CITY, memberAddress.getMemberAddressCity());
                 member.put(Member.MEMBER_ADDRESS_AREA, memberAddress.getMemberAddressArea());
                 member.put(Member.MEMBER_ADDRESS_ADDRESS, memberAddress.getMemberAddressAddress());
                 
-                redis.opsForValue().set(getItemCacheName(memberId), member);
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
             }
         }
         return result;
     }
 
     @Override
-    public void deleteMemberAddressByMemberId(String memberId, String systemRequestUserId) {
+    public void deleteMemberAddressByMemberId(String memberId, String userId, String systemRequestUserId) {
         memberAddressService.deleteByMemberId(memberId, systemRequestUserId);
         
         // 更新会员地址缓存
-        Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
         if (member != null) {
             member.put(Member.MEMBER_ADDRESS_PROVINCE, "");
             member.put(Member.MEMBER_ADDRESS_CITY, "");
             member.put(Member.MEMBER_ADDRESS_AREA, "");
             member.put(Member.MEMBER_ADDRESS_ADDRESS, "");
-            redis.opsForValue().set(getItemCacheName(memberId), member);
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
         }
     }
 
     @Override
-    public Boolean saveMemberSignature(String appId, String memberId, MemberSignature memberSignature,
+    public Boolean saveMemberSignature(String appId, String memberId, String userId, MemberSignature memberSignature,
             String memberSignatureId, String systemRequestUserId) {
         memberSignature.setAppId(appId);
         memberSignature.setMemberId(memberId);
@@ -170,30 +170,30 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         
         if (result) {
             // 更新会员签名缓存
-            Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
             if (member != null) {
                 member.put(Member.MEMBER_SIGNATURE, memberSignature.getMemberSignature());
                 
-                redis.opsForValue().set(getItemCacheName(memberId), member);
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
             }
         }
         return result;
     }
 
     @Override
-    public void deleteMemberSignatureByMemberId(String memberId, String systemRequestUserId) {
+    public void deleteMemberSignatureByMemberId(String memberId, String userId, String systemRequestUserId) {
         memberSignatureService.deleteByMemberId(memberId, systemRequestUserId);
         
         // 更新会员签名缓存
-        Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
         if (member != null) {
             member.put(Member.MEMBER_SIGNATURE, "");
-            redis.opsForValue().set(getItemCacheName(memberId), member);
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
         }
     }
 
     @Override
-    public Boolean saveMemberPerferenceLanguage(String appId, String memberId,
+    public Boolean saveMemberPerferenceLanguage(String appId, String memberId, String userId,
             MemberPerferenceLanguage memberPerferenceLanguage, String memberPerferenceLanguageId,
             String systemRequestUserId) {
         memberPerferenceLanguage.setAppId(appId);
@@ -203,30 +203,30 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         
         if (result) {
             // 更新会员签名缓存
-            Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
             if (member != null) {
                 member.put(Member.MEMBER_PREFERENCE_LANGUAGE, memberPerferenceLanguage.getMemberPreferenceLanguage());
                 
-                redis.opsForValue().set(getItemCacheName(memberId), member);
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
             }
         }
         return result;
     }
 
     @Override
-    public void deleteMemberPerferenceLanguageByMemberId(String memberId, String systemRequestUserId) {
+    public void deleteMemberPerferenceLanguageByMemberId(String memberId, String userId, String systemRequestUserId) {
         memberPerferenceLanguageService.deleteByMemberId(memberId, systemRequestUserId);
         
         // 更新会员签名缓存
-        Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
         if (member != null) {
             member.put(Member.MEMBER_PREFERENCE_LANGUAGE, "");
-            redis.opsForValue().set(getItemCacheName(memberId), member);
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
         }
     }
 
     @Override
-    public Boolean saveMemberBackground(String appId, String memberId, MemberBackground memberBackground,
+    public Boolean saveMemberBackground(String appId, String memberId, String userId, MemberBackground memberBackground,
             String memberBackgroundId, String systemRequestUserId) {
         memberBackground.setAppId(appId);
         memberBackground.setMemberId(memberId);
@@ -235,25 +235,25 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         
         if (result) {
             // 更新会员背景缓存
-            Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
             if (member != null) {
                 member.put(Member.MEMBER_BACKGROUND, memberBackground.getMemberBackground());
                 
-                redis.opsForValue().set(getItemCacheName(memberId), member);
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
             }
         }
         return result;
     }
 
     @Override
-    public void deleteMemberBackgroundByMemberId(String memberId, String systemRequestUserId) {
+    public void deleteMemberBackgroundByMemberId(String memberId, String userId, String systemRequestUserId) {
         memberBackgroundService.deleteByMemberId(memberId, systemRequestUserId);
         
         // 更新会员背景缓存
-        Member member = (Member) redis.opsForValue().get(getItemCacheName(memberId));
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
         if (member != null) {
             member.put(Member.MEMBER_BACKGROUND, "");
-            redis.opsForValue().set(getItemCacheName(memberId), member);
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
         }
     }
 }

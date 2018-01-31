@@ -3,6 +3,7 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,12 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
+import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
@@ -81,6 +84,9 @@ public class TopicMobileController extends BaseController {
     
     @Autowired
     private TopicUserLikeService topicUserLikeService;
+    
+    @Autowired
+    private TopicCommentService topicCommentService;
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -130,7 +136,7 @@ public class TopicMobileController extends BaseController {
             String theSendUserId = topic.getUserId();
             
             topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
-			
+            
             
         }
         
@@ -294,7 +300,7 @@ public class TopicMobileController extends BaseController {
         
         // 获取用户头像,昵称,签名,背景
         Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
-		
+        
         // TODO 我的宠物
         
         // 粉丝数
@@ -308,13 +314,13 @@ public class TopicMobileController extends BaseController {
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
-        		Member.MEMBER_SEND_TOPIC_COUNT,
-        		Member.MEMBER_FOLLOW_COUNT,
-        		Member.MEMBER_BE_FOLLOW_COUNT,
-        		MemberSignature.MEMBER_SIGNATURE,
-        		MemberBackground.MEMBER_BACKGROUND,
-        		UserNickName.USER_NICK_NAME,
-        		UserAvatar.USER_AVATAR
+                Member.MEMBER_SEND_TOPIC_COUNT,
+                Member.MEMBER_FOLLOW_COUNT,
+                Member.MEMBER_BE_FOLLOW_COUNT,
+                MemberSignature.MEMBER_SIGNATURE,
+                MemberBackground.MEMBER_BACKGROUND,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR
         );
         return renderJson(memberInfo);
 
@@ -453,8 +459,8 @@ public class TopicMobileController extends BaseController {
             );
             
             for (TopicUserLike topicUserLike : userLikeList) {
-            	topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
-			}
+                topicUserLike.keep(UserAvatar.USER_AVATAR, TopicUserLike.USER_ID, MemberFollow.MEMBER_IS_FOLLOW);
+            }
             
             topic.put(Topic.TOPIC_USER_LIKE_LIST, userLikeList);
         }
@@ -522,9 +528,8 @@ public class TopicMobileController extends BaseController {
                     MemberFollow.MEMBER_IS_FOLLOW
             );
             
-            
-            // 图片多媒体
             for (Topic topic : resultList) {
+                // 话题多媒体
                 List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
                 String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
@@ -534,7 +539,41 @@ public class TopicMobileController extends BaseController {
                 topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
                 // 话题是否自己发布
                 topic.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topic.getUserId()));
+                
+                // 评论列表
+                List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+                
+                //处理发送用户信息(昵称)
+                String sendUserIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
+                List<Member> memberList = memberRpc.nickNameAndAvatarListV1(sendUserIds);
+                topicCommentList = Util.beanAddField(
+                        topicCommentList, 
+                        TopicComment.USER_ID, 
+                        User.USER_ID, 
+                        memberList, 
+                        User.USER_ID,
+                        UserNickName.USER_NICK_NAME
+                    );
+                
+                
+                // 处理回复用户信息(昵称)
+                String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
+                
+                List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
+            
+                for (TopicComment topicComment : topicCommentList) {
+                    topicComment.defaultKeep();
+                    if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId()) || !Util.isNullOrEmpty(respondMemberList)) {
+                        continue;
+                    }
+                    
+                    Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+                    topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+                }
+                
+                topic.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
             }
+            
         }
         
         validateResponse(
