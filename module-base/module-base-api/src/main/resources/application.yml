@@ -13,10 +13,10 @@ feign:
 spring:
   application:
     name: module-base
-  mvc:
-    static-path-pattern: /upload/**
-  resources:
-    static-locations: file:D:/static/upload/
+#  mvc:
+#    static-path-pattern: /upload/**
+#  resources:
+#    static-locations: file:D:/static/upload/
   datasource:
       url: jdbc:mysql://118.31.229.16:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi

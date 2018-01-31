@@ -55,6 +55,20 @@ public class MemberFollowMobileController extends BaseController {
 
         List<MemberFollow> resultList = memberFollowService.listByUserId(body.getSystemRequestUserId());
         
+        // 处理requestUser是否关注了列表中的粉丝
+        for (MemberFollow memberFollow : resultList) {
+			
+        	MemberFollow myFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getFollowUserId());
+        	
+        	if (!Util.isNullOrEmpty(myFollow)) {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
+			}
+        	else {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
+			}
+		}
+        
+        
         //处理会员头像和昵称
         String userIds = Util.beanToFieldString(resultList, MemberFollow.FOLLOW_USER_ID);
         
@@ -76,7 +90,8 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.FOLLOW_USER_ID,
                 File.FILE_PATH,
-                User.USER_NICK_NAME
+                User.USER_NICK_NAME,
+                MemberFollow.MEMBER_IS_FOLLOW
         );
 
         return renderJson(resultList);
@@ -91,7 +106,20 @@ public class MemberFollowMobileController extends BaseController {
         );
         
         List<MemberFollow> resultList = memberFollowService.listByFollowUserId(body.getSystemRequestUserId());
-
+        
+        // 处理requestUser是否关注了列表中的粉丝
+        for (MemberFollow memberFollow : resultList) {
+			
+        	MemberFollow FollowHim = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getUserId());
+        	
+        	if (!Util.isNullOrEmpty(FollowHim)) {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
+			}
+        	else {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
+			}
+		}
+        
         //处理会员头像和昵称
         String userIds = Util.beanToFieldString(resultList, MemberFollow.USER_ID);
         
@@ -113,7 +141,8 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 File.FILE_PATH,
-                User.USER_NICK_NAME
+                User.USER_NICK_NAME,
+                MemberFollow.MEMBER_IS_FOLLOW
         );
 
         return renderJson(resultList);
@@ -129,6 +158,12 @@ public class MemberFollowMobileController extends BaseController {
         );
 
         List<MemberFollow> resultList = memberFollowService.listByUserId(body.getUserId());
+        
+        for (MemberFollow memberFollow2 : resultList) {
+        	// 处理关注他的人是否是自己
+        	memberFollow2.put(MemberFollow.MEMBER_IS_SELF, memberFollow2.getFollowUserId().equals(body.getSystemRequestUserId()));
+        	
+		}
         
         //处理会员头像和昵称
         String userIds = Util.beanToFieldString(resultList, MemberFollow.FOLLOW_USER_ID);
@@ -160,11 +195,77 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_USER_ID,
                 File.FILE_PATH,
                 User.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW
+                MemberFollow.MEMBER_IS_FOLLOW,
+                MemberFollow.MEMBER_IS_SELF
         );
 
         return renderJson(resultList);
     }
+    
+    
+    
+    @ApiOperation(value = "关注他的列表")
+    @RequestMapping(value = "/member/follow/mobile/v1/him/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> himFollowListV1(@RequestBody MemberFollow body) {
+        validateRequest(
+                body,
+                MemberFollow.USER_ID,
+                MemberFollow.SYSTEM_REQUEST_USER_ID
+        );
+        
+        List<MemberFollow> resultList = memberFollowService.listByFollowUserId(body.getUserId());
+        
+        // 处理requestUser是否关注了列表中的粉丝
+        for (MemberFollow memberFollow : resultList) {
+			
+        	MemberFollow FollowHim = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getUserId());
+        	
+        	if (!Util.isNullOrEmpty(FollowHim)) {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
+			}
+        	else {
+        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
+			}
+        	
+        	// 处理关注他的人是否是自己
+        	memberFollow.put(MemberFollow.MEMBER_IS_SELF, memberFollow.getUserId().equals(body.getSystemRequestUserId()));
+        	
+		}
+        
+        
+        
+        
+        //处理会员头像和昵称
+        String userIds = Util.beanToFieldString(resultList, MemberFollow.USER_ID);
+        
+        List<User> userList = userRpc.findsV1(userIds);
+        
+        if (!Util.isNullOrEmpty(userList)) {
+            
+            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
+            
+            List<File> fileList = fileRpc.findsV1(fileIds);
+            
+            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
+            
+            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
+        }
+               
+        validateResponse(
+                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.MEMBER_ID,
+                MemberFollow.USER_ID,
+                File.FILE_PATH,
+                User.USER_NICK_NAME,
+                MemberFollow.MEMBER_IS_FOLLOW,
+                MemberFollow.MEMBER_IS_SELF
+        );
+
+        return renderJson(resultList);
+    }
+    
+    
+    
     
     @ApiOperation(value = "新增会员关注")
     @RequestMapping(value = "/member/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
