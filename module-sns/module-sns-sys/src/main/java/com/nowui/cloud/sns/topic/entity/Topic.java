@@ -198,6 +198,11 @@ public class Topic extends BaseEntity {
     */
     public static final String REQUEST_USER = "requestUser";
     
+    /**
+     * 排除的话题Id列表
+     */
+    public static final String EXCLUDE_TOPIC_ID_LIST = "excludeTopicIdList";
+    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }

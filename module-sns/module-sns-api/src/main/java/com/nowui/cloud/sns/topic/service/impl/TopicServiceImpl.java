@@ -2,6 +2,7 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -280,12 +282,14 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 
 	@Override
-	public List<Topic> listByUserIdList(String appId, List<String> userIdList, Integer pageIndex, Integer pageSize) {
-		List<Topic> topicList = list(
+	public List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+	    List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
                         .in(Topic.USER_ID, userIdList)
+                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
                         .eq(Topic.SYSTEM_STATUS, true)
+                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
                         .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
                 pageIndex,
                 pageSize
@@ -295,8 +299,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 	
 	@Override
-    public List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, Integer pageIndex, Integer pageSize) {
-        List<Topic> topicList = listByUserIdList(appId, userIdList, pageIndex, pageSize);
+    public List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+        List<Topic> topicList = listByUserIdList(appId, userIdList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
             return topicList;

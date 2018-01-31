@@ -1,4 +1,5 @@
 package com.nowui.cloud.sns.topic.service;
+import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
@@ -120,11 +121,13 @@ public interface TopicService extends BaseService<Topic> {
      * 
      * @param appId 应用编号
      * @param userIdList 用户编号列表
+     * @param excludeTopicIdList 排除的话题编号列表
+     * @param systemCreateTime 创建时间
      * @param pageIndex 从第几条开始
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listByUserIdList(String appId, List<String> userIdList, Integer pageIndex, Integer pageSize);
+    List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据userId的list集合查询所有话题相关
@@ -132,11 +135,13 @@ public interface TopicService extends BaseService<Topic> {
      * @param appId 应用编号
      * @param userId 用户编号
      * @param userIdList 用户编号列表
+     * @param excludeTopicIdList 排除的话题编号列表
+     * @param systemCreateTime 创建时间
      * @param pageIndex 从第几条开始
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, Integer pageIndex, Integer pageSize);
+    List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据topicId的list集合查询所有话题信息
