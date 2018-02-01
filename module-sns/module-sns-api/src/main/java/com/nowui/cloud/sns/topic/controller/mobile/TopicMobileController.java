@@ -219,10 +219,6 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
-        
-        Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
-        Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
-        
 
         ArrayList<String> userIdToSearchList = new ArrayList<>();
         userIdToSearchList.add(body.getUserId());
@@ -256,42 +252,6 @@ public class TopicMobileController extends BaseController {
 
             topicMediaList = Util.beanReplaceField(topicMediaList, TopicMedia.TOPIC_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-            
-          //取话题前3条评论
-            if (Util.isNullOrEmpty(commentPageIndex) || Util.isNullOrEmpty(commentPageSize)) {
-            	commentPageIndex = 1;
-            	commentPageSize = 3;
-			}
-            List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topic.getTopicId(), commentPageIndex, commentPageSize);
-            
-            //处理发送用户信息(昵称)
-            String sendUserIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
-            List<Member> memberList = memberRpc.nickNameAndAvatarListV1(sendUserIds);
-            topicCommentList = Util.beanAddField(
-                    topicCommentList, 
-                    TopicComment.USER_ID, 
-                    User.USER_ID, 
-                    memberList, 
-                    UserNickName.USER_NICK_NAME
-                );
-            
-            
-            // 处理回复用户信息(昵称)
-            String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
-            
-            List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
-        
-            for (TopicComment topicComment : topicCommentList) {
-                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId()) || Util.isNullOrEmpty(respondMemberList)) {
-                    continue;
-                }
-                
-                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-                topicComment.keep(TopicComment.USER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_USER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
-            }
-            
-            topic.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
         }
         
         //复制end
@@ -378,8 +338,6 @@ public class TopicMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
-        Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
         
         ArrayList<String> userIdToSearchList = new ArrayList<>();
         userIdToSearchList.add(body.getSystemRequestUserId());
@@ -416,43 +374,6 @@ public class TopicMobileController extends BaseController {
             String theSendUserId = topic.getUserId();
             
             topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
-            
-            //取话题前3条评论
-            if (Util.isNullOrEmpty(commentPageIndex) || Util.isNullOrEmpty(commentPageSize)) {
-            	commentPageIndex = 1;
-            	commentPageSize = 3;
-			}
-            List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topic.getTopicId(), commentPageIndex, commentPageSize);
-            
-            //处理发送用户信息(昵称)
-            String sendUserIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
-            List<Member> memberList = memberRpc.nickNameAndAvatarListV1(sendUserIds);
-            topicCommentList = Util.beanAddField(
-                    topicCommentList, 
-                    TopicComment.USER_ID, 
-                    User.USER_ID, 
-                    memberList, 
-                    UserNickName.USER_NICK_NAME
-                );
-            
-            
-            // 处理回复用户信息(昵称)
-            String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
-            
-            List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
-        
-            for (TopicComment topicComment : topicCommentList) {
-                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId()) || Util.isNullOrEmpty(respondMemberList)) {
-                    continue;
-                }
-                
-                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-                topicComment.keep(TopicComment.USER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_USER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
-            }
-            
-            topic.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
-            
         }
         
         validateResponse(

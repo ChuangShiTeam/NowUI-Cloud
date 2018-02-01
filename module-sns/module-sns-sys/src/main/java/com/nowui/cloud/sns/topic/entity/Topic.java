@@ -202,14 +202,6 @@ public class Topic extends BaseEntity {
      * 排除的话题Id列表
      */
     public static final String EXCLUDE_TOPIC_ID_LIST = "excludeTopicIdList";
-    /**
-     * 话题评论查询第几页
-     */
-    public static final String COMMENT_PAGE_INDEX = "commentPageIndex";
-    /**
-     * 话题评论查询多少条
-     */
-    public static final String COMMENT_PAGE_SIZE = "commentPageSize";
     
     public String getTopicId() {
         return getString(TOPIC_ID);

@@ -110,7 +110,7 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
     	List<TopicComment> topicCommentList = list(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.TOPIC_ID, topicId)
-                        .notIn(TopicComment.TOPIC_COMMENT_ID, excludeCommentIdList)
+                        .notIn(TopicComment.TOPIC_ID, excludeCommentIdList)
                         .eq(TopicComment.SYSTEM_STATUS, true)
                         .le(TopicComment.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
                         .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
