@@ -60,9 +60,7 @@ public class CodeController extends BaseController {
 ///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
         Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
-
         System.out.println(product);
-
 //        productMq.sendBar2Rabbitmq("123456789");
 
         productMq.sendFoo2Rabbitmq("987654321");
