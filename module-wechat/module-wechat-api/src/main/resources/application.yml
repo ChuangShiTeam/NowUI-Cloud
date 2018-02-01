@@ -97,8 +97,8 @@ hystrix:
           strategy: THREAD
 
 ribbon:
-  ReadTimeout: 30000 # 处理时间
-  ConnectTimeout: 30000 # 连接时间
+  ReadTimeout: 60000 # 处理时间
+  ConnectTimeout: 3000 # 连接时间
   MaxAutoRetries: 0 #最大自动重试次数
   MaxAutoRetriesNextServer: 1 # 换实例重试次数
   MaxTotalHttpConnections: 2000 # 最大http连接数，越大越好，但到到达一个临界点之后，就不会提高响应速度了

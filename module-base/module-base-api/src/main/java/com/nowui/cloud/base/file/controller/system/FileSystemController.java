@@ -33,13 +33,11 @@ public class FileSystemController implements FileRpc {
         if (Util.isNullOrEmpty(fileId)) {
             return null;
         }
-        System.out.println(fileId);
         File file = fileService.find(fileId);
         if (Util.isNullOrEmpty(file)) {
             return null;
         }
-        file.defaultKeep();
-        System.out.println(file.toJSONString());
+        file.removeBaseTableField();
         return file;
     }
 

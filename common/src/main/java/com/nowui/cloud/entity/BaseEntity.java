@@ -3,11 +3,11 @@ package com.nowui.cloud.entity;
 import java.io.Serializable;
 import java.util.*;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import com.baomidou.mybatisplus.annotations.*;
 
+import com.nowui.cloud.constant.Constant;
 import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -70,7 +70,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     @Version
     @TableField(value = SYSTEM_VERSION)
     @NotNull(message = "版本号不能为空")
-    @Max(11)
     private Integer systemVersion;
     public static final String SYSTEM_VERSION = "systemVersion";
 
@@ -345,11 +344,34 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
         }
         return (T) this;
     }
+
+    public <T extends BaseEntity> T removeSystemValue() {
+        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            if (Constant.TOKEN.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SIGN.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.TIMESTAMP.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.PLATFORM.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.VERSION.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SYSTEM_REQUEST_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SYSTEM_REQUEST_IP_ADDRESS.equals(entry.getKey())) {
+                iterator.remove();
+            }
+        }
+        return (T) this;
+    }
     
     /**
      * 对象默认保留属性，去除基本公共字段
      */
-    public <T extends BaseEntity> T defaultKeep() {
+    public <T extends BaseEntity> T removeBaseTableField() {
         Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();

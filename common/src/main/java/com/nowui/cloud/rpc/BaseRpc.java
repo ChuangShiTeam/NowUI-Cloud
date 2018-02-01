@@ -1,8 +1,12 @@
 package com.nowui.cloud.rpc;
 
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional
+/**
+ * RPC
+ *
+ * @author ZhongYongQiang
+ *
+ * 2018-01-29
+ */
 public interface BaseRpc {
 
 }

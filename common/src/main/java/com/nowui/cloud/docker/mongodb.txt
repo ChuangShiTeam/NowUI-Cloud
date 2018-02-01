@@ -1,0 +1,9 @@
+docker pull tutum/mongodb
+
+docker run -d -p 27017:27017 -p 28017:28017 -e AUTH=no -e MONGODB_USER="user" -e MONGODB_PASS="123456" -e MONGODB_DATABASE="nowui" --name mongodb tutum/mongodb
+
+docker start mongodb
+
+docker stop mongodb
+
+docker rm /mongodb
