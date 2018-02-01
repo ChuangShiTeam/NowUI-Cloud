@@ -11,8 +11,6 @@ import java.util.Map;
 
 import com.nowui.cloud.base.code.entity.Code;
 import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.mq.ProductMq;
 import com.nowui.cloud.shop.product.rpc.ProductRpc;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
@@ -48,9 +46,6 @@ public class CodeController extends BaseController {
     @Autowired
     private ProductRpc productRpc;
 
-    @Autowired
-    private ProductMq productMq;
-
     @ApiOperation(value = "测试")
     @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String test() {
@@ -58,13 +53,7 @@ public class CodeController extends BaseController {
 
 ///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
 
-        Product product = productRpc.find("c01e2a21271e433dac70c561d06cfe9c");
-
-        System.out.println(product);
-
 //        productMq.sendBar2Rabbitmq("123456789");
-
-        productMq.sendFoo2Rabbitmq("987654321");
 
         return "Hello World!";
     }
