@@ -554,7 +554,6 @@ public class TopicMobileController extends BaseController {
                         TopicComment.USER_ID, 
                         User.USER_ID, 
                         memberList, 
-                        User.USER_ID,
                         UserNickName.USER_NICK_NAME
                     );
                 
@@ -565,13 +564,13 @@ public class TopicMobileController extends BaseController {
                 List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
             
                 for (TopicComment topicComment : topicCommentList) {
-                    topicComment.defaultKeep();
-                    if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId()) || !Util.isNullOrEmpty(respondMemberList)) {
+                    if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId()) || Util.isNullOrEmpty(respondMemberList)) {
                         continue;
                     }
                     
                     Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
                     topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+                    topicComment.keep(TopicComment.USER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_USER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
                 }
                 
                 topic.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
