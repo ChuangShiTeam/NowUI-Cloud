@@ -124,6 +124,11 @@ public class Member extends BaseEntity {
      */
     public static final String MEMBER_FOLLOW_COUNT = "memberFollowCount";
     
+    /**
+     * 查询到的会员是否是自己
+     */
+    public static final String MEMBER_IS_SELF = "memberIsSelf";
+    
     public String getMemberId() {
         return getString(MEMBER_ID);
     }
