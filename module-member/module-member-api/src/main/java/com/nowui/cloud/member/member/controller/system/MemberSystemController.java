@@ -138,7 +138,7 @@ public class MemberSystemController implements MemberRpc {
             user = userRpc.findV1(userId);
         }
         
-        user.defaultKeep();
+        user.removeBaseTableField();
         
         member.putAll(user);
         
