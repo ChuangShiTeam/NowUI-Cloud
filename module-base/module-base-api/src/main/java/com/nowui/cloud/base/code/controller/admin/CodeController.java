@@ -28,6 +28,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.code.service.CodeService;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,7 +72,7 @@ public class CodeController extends BaseController {
 
         return renderJson(resultList.size(), resultList);
     }
- 
+
     @ApiOperation(value = "数据库表字段列表")
     @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> fieldlLst() {
@@ -99,9 +100,9 @@ public class CodeController extends BaseController {
             String apiPath = path + "/api";
             String apiPackagePath = apiPath + "/" + codeEntity.getPackageName();
             String sysPath = path + "/sys";
-            String sysPackagePath = sysPath + "/"  + codeEntity.getPackageName();
+            String sysPackagePath = sysPath + "/" + codeEntity.getPackageName();
             String webPath = path + "/web";
-            String webPackagePath = webPath + "/"  + codeEntity.getPackageName();
+            String webPackagePath = webPath + "/" + codeEntity.getPackageName();
             String entityPath = sysPackagePath + "/entity";
             String mqPath = sysPackagePath + "/mq";
             String mqImplPath = mqPath + "/impl";
@@ -167,7 +168,7 @@ public class CodeController extends BaseController {
             String firstLowerWithoutUnderlineEntityName = removeUnderline(firstLowerEntityName);
             String firstUpperWithoutUnderlineEntityName = removeUnderline(firstUpperEntityName);
             String tableId = "";
-            
+
             String viewPackagePath = viewPath + "/" + firstLowerWithoutUnderlineEntityName;
             FileUtil.createPath(viewPackagePath);
 
@@ -274,11 +275,11 @@ public class CodeController extends BaseController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
 
-            throw new RuntimeException("代码生成发生错误");
+            throw new BusinessException("代码生成发生错误");
         } catch (IOException e) {
             e.printStackTrace();
 
-            throw new RuntimeException("代码生成发生错误");
+            throw new BusinessException("代码生成发生错误");
         }
 
         return renderJson(true);

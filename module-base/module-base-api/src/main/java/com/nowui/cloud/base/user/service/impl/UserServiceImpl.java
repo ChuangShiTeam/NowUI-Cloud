@@ -68,7 +68,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Integer count = count(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
-                        .likeAllowEmpty(User.USER_TYPE, userType)
+                        .eq(User.USER_TYPE, userType)
                         .eq(User.SYSTEM_STATUS, true)
         );
         return count;
@@ -79,7 +79,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         List<User> userList = list(
                 new BaseWrapper<User>()
                         .eq(User.APP_ID, appId)
-                        .likeAllowEmpty(User.USER_TYPE, userType)
+                        .eq(User.USER_TYPE, userType)
                         .eq(User.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(User.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -119,47 +119,48 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public User findById(String userId) {
-        User user = find(userId);
-        if (user != null) {
+        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
+        
+        if (user == null) {
+            user = find(userId);
+            
             // 查询用户账号
-            user.put(User.USER_ACCOUNT, findUserAccountByUserId(userId));
+            UserAccount userAccount = userAccountService.findByUserId(userId);
+            user.put(User.USER_ACCOUNT, userAccount == null ? "" : userAccount.getUserAccount());
+            
             // 查询用户密码
-            user.put(User.USER_PASSWORD, findUserPasswordByUserId(userId));
+            UserPassword userPassword = userPasswordService.findByUserId(userId);
+            user.put(User.USER_PASSWORD, userPassword == null ? "" : userPassword.getUserPassword());
+            
             // 查询用户头像
-            user.put(User.USER_AVATAR, userAvatarService.findByUserId(userId));
+            UserAvatar userAvatar = userAvatarService.findByUserId(userId);
+            user.put(User.USER_AVATAR, userAvatar == null ? "" : userAvatar.getUserAvatar());
+            
             // 查询用户身份证
-            user.put(User.USER_IDCARD, userIdcardService.findByUserId(userId));
+            UserIdcard userIdcard = userIdcardService.findByUserId(userId);
+            user.put(User.USER_NAME, userIdcard == null ? "" : userIdcard.getUserName());
+            user.put(User.USER_IDCARD_NUMBER, userIdcard == null ? "" : userIdcard.getUserIdcardNumber());
+            user.put(User.USER_SEX, userIdcard == null ? "" : userIdcard.getUserSex());
+            
             // 查询用户手机号码
-            user.put(User.USER_MOBILE, userMobileService.findByUserId(userId));
+            UserMobile userMobile = userMobileService.findByUserId(userId);
+            user.put(User.USER_MOBILE, userMobile == null ? "" : userMobile.getUserMobile());
+            
             // 查询用户邮箱
-            user.put(User.USER_EMAIL, userEmailService.findByUserId(userId));
+            UserEmail userEmail = userEmailService.findByUserId(userId);
+            user.put(User.USER_EMAIL, userEmail == null ? "" : userEmail.getUserEmail());
+            
             // 查询用户昵称
-            user.put(User.USER_NICK_NAME, userNickNameService.findByUserId(userId));
+            UserNickName userNickName = userNickNameService.findByUserId(userId);
+            user.put(User.USER_NICK_NAME, userNickName == null ? "" : userNickName.getUserNickName());
+           
             // 查询用户微信
             user.put(User.USER_WECHAT, userWechatService.findByUserId(userId));
+            
+            redis.opsForValue().set(getItemCacheName(userId), user);
         }
         
         return user;
-    }
-
-    @Override
-    public UserAccount findUserAccountByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserAccount userAccount = (UserAccount) user.get(User.USER_ACCOUNT);
-            
-            if (userAccount != null) {
-                return userAccount;
-            }
-            userAccount = userAccountService.findByUserId(userId);
-            
-            user.put(User.USER_ACCOUNT, userAccount);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userAccount;
-        }
-        return userAccountService.findByUserId(userId);
     }
 
     @Override
@@ -172,7 +173,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             // 更新用户缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_ACCOUNT, userAccountService.find(userAccountId));
+                user.put(User.USER_ACCOUNT, userAccountService.find(userAccountId).getUserAccount());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -187,30 +188,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         // 更新用户缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_ACCOUNT);
+            user.put(User.USER_ACCOUNT, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserPassword findUserPasswordByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserPassword userPassword = (UserPassword) user.get(User.USER_PASSWORD);
-            
-            if (userPassword != null) {
-                return userPassword;
-            }
-            userPassword = userPasswordService.findByUserId(userId);
-            
-            user.put(User.USER_PASSWORD, userPassword);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userPassword;
-        }
-        return userPasswordService.findByUserId(userId);
     }
 
     @Override
@@ -226,7 +207,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             // 更新用户缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_PASSWORD, userPasswordService.find(userPasswordId));
+                user.put(User.USER_PASSWORD, userPasswordService.find(userPasswordId).getUserPassword());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -241,30 +222,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         // 更新用户缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_PASSWORD);
+            user.put(User.USER_PASSWORD, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserEmail findUserEmailByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserEmail userEmail = (UserEmail) user.get(User.USER_EMAIL);
-            
-            if (userEmail != null) {
-                return userEmail;
-            }
-            userEmail = userEmailService.findByUserId(userId);
-            
-            user.put(User.USER_EMAIL, userEmail);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userEmail;
-        }
-        return userEmailService.findByUserId(userId);
     }
 
     @Override
@@ -276,10 +237,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userEmailService.save(userEmail, userEmailId, systemRequestUserId);
         
         if (result) {
-            // 更新用户缓存
+            // 更新用户邮箱缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_EMAIL, userEmailService.find(userEmailId));
+                user.put(User.USER_EMAIL, userEmailService.find(userEmailId).getUserEmail());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -291,33 +252,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserEmailByUserId(String userId, String systemRequestUserId) {
         userEmailService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户邮箱缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_EMAIL);
+            user.put(User.USER_EMAIL, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserAvatar findUserAvatarByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-            
-            if (userAvatar != null) {
-                return userAvatar;
-            }
-            userAvatar = userAvatarService.findByUserId(userId);
-            
-            user.put(User.USER_AVATAR, userAvatar);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userAvatar;
-        }
-        return userAvatarService.findByUserId(userId);
     }
 
     @Override
@@ -329,10 +270,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userAvatarService.save(userAvatar, userAvatarId, systemRequestUserId);
         
         if (result) {
-            // 更新用户缓存
+            // 更新用户头像缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_AVATAR, userAvatarService.find(userAvatarId));
+                user.put(User.USER_AVATAR, userAvatarService.find(userAvatarId).getUserAvatar());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -344,33 +285,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserAvatarByUserId(String userId, String systemRequestUserId) {
         userAvatarService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户头像缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_AVATAR);
+            user.put(User.USER_AVATAR, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserMobile findUserMobileByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserMobile userMobile = (UserMobile) user.get(User.USER_MOBILE);
-            
-            if (userMobile != null) {
-                return userMobile;
-            }
-            userMobile = userMobileService.findByUserId(userId);
-            
-            user.put(User.USER_MOBILE, userMobile);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userMobile;
-        }
-        return userMobileService.findByUserId(userId);
     }
 
     @Override
@@ -382,10 +303,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userMobileService.save(userMobile, userMobileId, systemRequestUserId);
         
         if (result) {
-         // 更新用户缓存
+            // 更新用户手机号码缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_MOBILE, userMobileService.find(userMobileId));
+                user.put(User.USER_MOBILE, userMobileService.find(userMobileId).getUserMobile());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -397,33 +318,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserMobileByUserId(String userId, String systemRequestUserId) {
         userMobileService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户手机号码缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_MOBILE);
+            user.put(User.USER_MOBILE, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserIdcard findUserIdcardByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserIdcard userIdcard = (UserIdcard) user.get(User.USER_IDCARD);
-            
-            if (userIdcard != null) {
-                return userIdcard;
-            }
-            userIdcard = userIdcardService.findByUserId(userId);
-            
-            user.put(User.USER_IDCARD, userIdcard);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userIdcard;
-        }
-        return userIdcardService.findByUserId(userId);
     }
 
     @Override
@@ -435,10 +336,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userIdcardService.save(userIdcard, userIdcardId, systemRequestUserId);
         
         if (result) {
-         // 更新用户缓存
+            // 更新用户身份证缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_IDCARD, userIdcardService.find(userIdcardId));
+                UserIdcard bean = userIdcardService.find(userIdcardId);
+                
+                user.put(User.USER_IDCARD_NUMBER, bean.getUserIdcardNumber());
+                user.put(User.USER_SEX, bean.getUserSex());
+                user.put(User.USER_NAME, bean.getUserName());
                 
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
@@ -450,34 +355,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserIdcardByUserId(String userId, String systemRequestUserId) {
         userIdcardService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户身份证缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_IDCARD);
+            user.put(User.USER_IDCARD_NUMBER, "");
+            user.put(User.USER_NAME, "");
+            user.put(User.USER_SEX, "");
             
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
         
-    }
-
-    @Override
-    public UserNickName findUserNickNameByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-            
-            if (userNickName != null) {
-                return userNickName;
-            }
-            userNickName = userNickNameService.findByUserId(userId);
-            
-            user.put(User.USER_IDCARD, userNickName);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userNickName;
-        }
-        return userNickNameService.findByUserId(userId);
     }
 
     @Override
@@ -489,11 +376,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userNickNameService.save(userNickName, userNickNameId, systemRequestUserId);
         
         if (result) {
-         // 更新用户缓存
+            // 更新用户昵称缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_NICK_NAME, userNickNameService.find(userNickNameId));
-                
+                user.put(User.USER_NICK_NAME, userNickNameService.find(userNickNameId).getUserNickName());
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
         }
@@ -504,33 +390,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserNickNameByUserId(String userId, String systemRequestUserId) {
         userNickNameService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户昵称缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_NICK_NAME);
-            
+            user.put(User.USER_NICK_NAME, "");
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
-    }
-
-    @Override
-    public UserWechat findUserWechatByUserId(String userId) {
-        User user = (User) redis.opsForValue().get(getItemCacheName(userId));
-        
-        if (user != null) {
-            UserWechat userWechat = (UserWechat) user.get(User.USER_WECHAT);
-            
-            if (userWechat != null) {
-                return userWechat;
-            }
-            userWechat = userWechatService.findByUserId(userId);
-            
-            user.put(User.USER_WECHAT, userWechat);
-            redis.opsForValue().set(getItemCacheName(userId), user);
-            
-            return userWechat;
-        }
-        return userWechatService.findByUserId(userId);
     }
 
     @Override
@@ -542,11 +407,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         Boolean result = userWechatService.save(userWechat, userWechatId, systemRequestUserId);
         
         if (result) {
-         // 更新用户缓存
+            // 更新用户微信缓存
             User user = (User) redis.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
-                user.put(User.USER_NICK_NAME, userWechatService.find(userWechatId));
-                
+                user.put(User.USER_WECHAT, userWechatService.find(userWechatId));
                 redis.opsForValue().set(getItemCacheName(userId), user);
             }
         }
@@ -557,15 +421,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void deleteUserWechatByUserId(String userId, String systemRequestUserId) {
         userWechatService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
+        // 更新用户微信缓存
         User user = (User) redis.opsForValue().get(getItemCacheName(userId));
         if (user != null) {
-            user.remove(User.USER_WECHAT);
-            
+            user.put(User.USER_WECHAT, null);
             redis.opsForValue().set(getItemCacheName(userId), user);
         }
     }
-
+    
     @Override
     public UserAccount findByUserAccount(String appId, String userAccount) {
         return userAccountService.findByUserAccount(appId, userAccount);

@@ -18,16 +18,16 @@ import io.swagger.annotations.Api;
  * 应用配置系统端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-01
  */
 @Api(value = "应用配置", description = "应用配置系统端接口管理")
 @RestController
 public class AppConfigSystemController implements AppConfigRpc {
-    
+
     @Autowired
     private AppConfigCategoryService appConfigCategoryService;
-    
+
     @Autowired
     private AppConfigService appConfigService;
 
@@ -48,4 +48,16 @@ public class AppConfigSystemController implements AppConfigRpc {
         return jsonObject;
     }
 
+    @Override
+    public List<AppConfig> findAppConfigsByAppCode(String appId, String appConfigCategoryCode) {
+        AppConfigCategory appConfigCategory = appConfigCategoryService.findByConfigCategoryCode(appId, appConfigCategoryCode);
+        if (appConfigCategory == null) {
+            return null;
+        }
+        List<AppConfig> appConfigList = appConfigService.abledListByConfigCategoryId(appId, appConfigCategory.getConfigCategoryId());
+        if (appConfigList == null || appConfigList.size() == 0) {
+            return null;
+        }
+        return appConfigList;
+    }
 }

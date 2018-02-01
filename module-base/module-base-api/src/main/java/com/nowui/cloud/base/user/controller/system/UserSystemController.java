@@ -11,6 +11,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserEmail;
+import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
@@ -76,20 +77,21 @@ public class UserSystemController implements UserRpc {
             return false;
         }
         
-        UserPassword bean = userService.findUserPasswordByUserId(userId);
+        User user = userService.findById(userId);
         
-        if (bean == null) {
+        if (user == null) {
             return false;
         }
+        
         String encryptPassword = Util.generatePassword(userPassword);
-        if (encryptPassword.equals(bean.getUserPassword())) {
+        if (encryptPassword.equals(user.getUserPassword())) {
             return true;
         }
         return false;
     }
 
     @Override
-    public User fingByUserWechatV1(String appId, String userType, String wechatOpenId, String wechatUnionId) {
+    public User findByUserWechatV1(String appId, String userType, String wechatOpenId, String wechatUnionId) {
         UserWechat userWechat = userService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
         
         if (userWechat == null || Util.isNullOrEmpty(userWechat.getUserId())) {
@@ -145,76 +147,82 @@ public class UserSystemController implements UserRpc {
     @Override
     public Boolean updateUserWechatV1(String userId, UserWechat userWechat, String systemRequestUserId) {
         
-       UserWechat bean = userService.findUserWechatByUserId(userId);
+        User user = userService.findById(userId);
+        
+        UserWechat bean = user.getUserWechat();
        
-       Boolean result = true;
+        Boolean result = true;
        
-       Boolean isNeedUpdate = false;
+        Boolean isNeedUpdate = false;
        
-       // 头像更新
-       if (!userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
-           UserAvatar userAvatar = userService.findUserAvatarByUserId(userId);
-           if (userAvatar != null) {
-               // 刪除旧的用户头像
-               userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
-           }
-           // 保存用户头像
-           userAvatar = new UserAvatar();
-           userAvatar.setAppId(bean.getAppId());
-           userAvatar.setUserId(userId);
-           userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
-           userService.saveUserAvatar(bean.getAppId(), userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
+        // 头像更新
+        if (!userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
+            // 刪除旧的用户头像
+            userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
+            // 保存用户头像
+            UserAvatar userAvatar = new UserAvatar();
+            userAvatar.setAppId(bean.getAppId());
+            userAvatar.setUserId(userId);
+            userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
+            userService.saveUserAvatar(bean.getAppId(), userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
 
-           isNeedUpdate = true;
-       }
+            isNeedUpdate = true;
+        }
            
-       // 保存或更新用户昵称
-       if (!userWechat.getWechatNickName().equals(bean.getWechatNickName())) {
-           UserNickName userNickName = userService.findUserNickNameByUserId(userId);
+        // 保存或更新用户昵称
+        if (!userWechat.getWechatNickName().equals(bean.getWechatNickName())) {
+            // 删除用户昵称
+            userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
+            // 保存用户昵称
+            UserNickName userNickName = new UserNickName();
+            userNickName.setAppId(bean.getAppId());
+            userNickName.setUserId(userId);
+            userNickName.setUserNickName(userWechat.getWechatNickName());
            
-           if (userNickName != null) {
-               // 删除用户昵称
-               userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
-           }
-           // 保存用户昵称
-           userNickName = new UserNickName();
-           userNickName.setAppId(bean.getAppId());
-           userNickName.setUserId(userId);
-           userNickName.setUserNickName(userWechat.getWechatNickName());
-           
-           userService.saveUserNickName(bean.getAppId(), userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
+            userService.saveUserNickName(bean.getAppId(), userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
 
-           isNeedUpdate = true;
-       }
+            isNeedUpdate = true;
+        }
+        
+        // 保存或更新用户性别
+        if (!userWechat.getWechatSex().equals(bean.getWechatSex())) {
+            
+            //删除旧的用户身份证信息
+            userService.deleteUserIdcardByUserId(userId, systemRequestUserId);
+            
+            UserIdcard userIdcard = new UserIdcard();
+            userIdcard.setUserSex(userWechat.getWechatSex());
+            userIdcard.setUserName(user.getUserName());
+            userIdcard.setUserIdcardNumber(user.getUserIdcardNumber());
+            
+            userService.saveUserIdcard(bean.getAppId(), systemRequestUserId, userIdcard, Util.getRandomUUID(), systemRequestUserId);
+            
+            isNeedUpdate = true;
+        }
+        
+        // 国家更新
+        if (!userWechat.getWechatCountry().equals(bean.getWechatCountry())) {
+            isNeedUpdate = true;
+        }
        
-       // 国家更新
-       if (!userWechat.getWechatCountry().equals(bean.getWechatCountry())) {
-           isNeedUpdate = true;
-       }
+        // 省份更新
+        if (!userWechat.getWechatProvince().equals(bean.getWechatProvince())) {
+            isNeedUpdate = true;
+        }
        
-       // 省份更新
-       if (!userWechat.getWechatProvince().equals(bean.getWechatProvince())) {
-           isNeedUpdate = true;
-       }
+        // 市更新
+        if (!userWechat.getWechatCity().equals(bean.getWechatCity())) {
+            isNeedUpdate = true;
+        }
        
-       // 市更新
-       if (!userWechat.getWechatCity().equals(bean.getWechatCity())) {
-           isNeedUpdate = true;
-       }
+        if (isNeedUpdate) {
+            // 删除旧的用户微信信息
+            userService.deleteUserWechatByUserId(userId, systemRequestUserId);
+            // 保存用户微信信息
+            result = userService.saveUserWechat(bean.getAppId(), userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
+        }
        
-       // 性别更新
-       if (!userWechat.getWechatSex().equals(bean.getWechatSex())) {
-           isNeedUpdate = true;
-       }
-       
-       if (isNeedUpdate) {
-           // 删除旧的用户微信信息
-           userService.deleteUserWechatByUserId(userId, systemRequestUserId);
-           // 保存用户微信信息
-           result = userService.saveUserWechat(bean.getAppId(), userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
-       }
-       
-       return result;
+        return result;
        
     }
 
@@ -233,8 +241,16 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userAvatar.equals(user.getUserAvatar())) {
+            return true;
+        }
         //删除旧的头像信息
         userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
+        if (Util.isNullOrEmpty(userAvatar)) {
+            return true;
+        }
         //保存新的头像信息
         UserAvatar userAvatarBean = new UserAvatar();
         userAvatarBean.setUserAvatar(userAvatar);
@@ -246,14 +262,41 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean updateUserNickNameV1(String appId, String userId, String userNickName, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userNickName.equals(user.getUserNickName())) {
+            return true;
+        }
         //删除旧的用户昵称信息
         userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
+        if (Util.isNullOrEmpty(userNickName)) {
+            return true;
+        }
+        
         //保存新的用户昵称信息
         UserNickName userNickNameBean = new UserNickName();
         userNickNameBean.setUserNickName(userNickName);
         
         Boolean result = userService.saveUserNickName(appId, userId, userNickNameBean, Util.getRandomUUID(), systemRequestUserId);
         return result;
+    }
+    
+    @Override
+    public Boolean updateUserSexV1(String appId, String userId, String userSex, String systemRequestUserId) {
+        User user = userService.findById(userId);
+        
+        if (userSex.equals(user.getUserSex())) {
+            return true;
+        }
+        //删除旧的用户身份证信息
+        userService.deleteUserIdcardByUserId(userId, systemRequestUserId);
+        
+        UserIdcard userIdcard = new UserIdcard();
+        userIdcard.setUserSex(userSex);
+        userIdcard.setUserName(user.getUserName());
+        userIdcard.setUserIdcardNumber(user.getUserIdcardNumber());
+        
+        return userService.saveUserIdcard(appId, systemRequestUserId, userIdcard, Util.getRandomUUID(), systemRequestUserId);
     }
 
     @Override

@@ -70,7 +70,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
                 <%for(column in detailColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},%>
+            	${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},
                 <%}%>
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );

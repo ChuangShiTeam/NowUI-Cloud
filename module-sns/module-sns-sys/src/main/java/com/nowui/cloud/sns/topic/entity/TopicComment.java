@@ -95,7 +95,28 @@ public class TopicComment extends BaseEntity {
     @Length(max = 32, message = "被回复评论id长度超出限制")
     private String topicReplyCommentId;
     public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
-
+    
+    /**
+     * 评论是否自己发的
+     */
+    public static final String TOPIC_COMMENT_IS_SELF = "topicCommentIsSelf";
+    
+    /**
+     * 评论是否被用户点赞
+     */
+    public static final String TOPIC_COMMENT_IS_LIKE = "topicCommentIsLike";
+    
+    /**
+     * 评论被点赞数
+     */
+    public static final String TOPIC_COMMENT_LIKE_COUNT = "topicCommentLikeCount";
+    
+    /**
+     * 被排除的评论id (用于滚动加载)
+     */
+    public static final String EXCLUDE_COMMENT_ID_LIST = "excludeCommentIdList";
+    
+    
 
     public String getTopicCommentId() {
         return getString(TOPIC_COMMENT_ID);

@@ -173,6 +173,13 @@ public class BaseWrapper<T> extends Wrapper<T> {
         super.lt(column, params);
         return this;
     }
+    
+    public BaseWrapper<T> ltAllowEmpty(String column, Object params) {
+        if (params != null) {
+            super.lt(column, params);
+        }
+        return this;
+    }
 
     @Override
     public BaseWrapper<T> le(boolean condition, String column, Object params) {

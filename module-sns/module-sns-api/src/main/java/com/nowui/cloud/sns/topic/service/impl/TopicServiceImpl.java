@@ -2,6 +2,7 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -65,6 +67,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	
 	@Autowired
 	private TopicUserUnlikeService topicUserUnlikeService;
+	
+	public static final String TOPIC_COUTN_THE_USER_SEND = "topic_count_the_user_send_";
+
 	
     @Override
     public Integer countForAdmin(String appId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
@@ -222,6 +227,9 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 		// 话题多媒体列表
         List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+        for (TopicMedia topicMedia : topicMediaList) {
+            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
+        }
 
         // 论坛列表
         List<TopicForum> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
@@ -234,8 +242,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         topic.put(Topic.TOPIC_FORUM_LIST, forumList);
 
         // 话题最新3条评论
-        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
+//        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
+//        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
 
         // 话题收藏数
         Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
@@ -256,7 +264,7 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
         // 是否被用户点赞
         TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
-
+        
 		return topic;
 	}
 
@@ -274,12 +282,14 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 
 	@Override
-	public List<Topic> listByUserIdList(String appId, List<String> userIdList, Integer pageIndex, Integer pageSize) {
-		List<Topic> topicList = list(
+	public List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+	    List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
                         .in(Topic.USER_ID, userIdList)
+                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
                         .eq(Topic.SYSTEM_STATUS, true)
+                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
                         .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
                 pageIndex,
                 pageSize
@@ -289,8 +299,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 	
 	@Override
-    public List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, Integer pageIndex, Integer pageSize) {
-        List<Topic> topicList = listByUserIdList(appId, userIdList, pageIndex, pageSize);
+    public List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+        List<Topic> topicList = listByUserIdList(appId, userIdList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
             return topicList;
@@ -362,6 +372,82 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
         return topicList;
 		
+	}
+
+	@Override
+	public Integer countTopicByUserId(String userId) {
+		
+		Integer count = count(
+                new BaseWrapper<Topic>()
+                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.SYSTEM_STATUS, true)
+        );
+		return count;
+	}
+
+	@Override
+	public Integer countTopicByUserIdWithRedis(String userId) {
+		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
+		if (num == null) {
+			Integer count = count(
+	                new BaseWrapper<Topic>()
+	                        .eq(Topic.USER_ID, userId)
+	                        .eq(Topic.SYSTEM_STATUS, true)
+	        );
+			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
+			return count;
+		}
+		
+		return num;
+	}
+
+	@Override
+	public Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId) {
+		// 保存话题
+        Boolean result = topicService.save(entity, id, systemCreateUserId);
+        
+        if (result) {
+        	Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
+        	if (num == null) {
+    			Integer count = count(
+    	                new BaseWrapper<Topic>()
+    	                        .eq(Topic.USER_ID, systemCreateUserId)
+    	                        .eq(Topic.SYSTEM_STATUS, true)
+    	        );
+    			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
+    		}
+        	
+        	redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList) {
+		List<Topic> topicList = listByTopicIdList(topicIdList);
+		
+		if (Util.isNullOrEmpty(topicList)) {
+            return new ArrayList<>();
+        }
+        
+        for (Topic topic : topicList) {
+            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+        }
+
+        return topicList;
+	}
+
+	@Override
+	public List<Topic> listByTopicIdList(List<String> topicIdList) {
+		List<Topic> topicList = list(
+                new BaseWrapper<Topic>()
+                        .in(Topic.TOPIC_ID, topicIdList)
+                        .eq(Topic.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME))
+            );
+
+		return topicList;
 	}
 
 }

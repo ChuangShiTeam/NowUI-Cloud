@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
@@ -50,7 +51,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         TopicUserBookmark bookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, userId);
         
         if (bookmark != null) {
-			throw new RuntimeException("已经收藏过了");
+			throw new BusinessException("已经收藏过了");
 		}
         
         Boolean result = topicUserBookmarkService.save(appId, topicId, userId, userId);

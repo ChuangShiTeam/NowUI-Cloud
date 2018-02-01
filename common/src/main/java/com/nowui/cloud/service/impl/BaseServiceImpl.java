@@ -115,8 +115,18 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
             return null;
         }
 
-        GetQuery getQuery = new GetQuery();
+        /*GetQuery getQuery = new GetQuery();
         getQuery.setId(id);
+        T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
+
+        if (baseEntity == null) {
+            baseEntity = mapper.selectById(id);
+
+            if (baseEntity != null) {
+                redis.opsForValue().set(getItemCacheName(id), baseEntity);
+            }
+        }*/
+        
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
         if (baseEntity == null) {
@@ -215,7 +225,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         ) != 0;
 
         if (success) {
-            elasticsearchSaveOrUpdate(baseEntity, id);
+            replace(id);
         }
 
         return success;

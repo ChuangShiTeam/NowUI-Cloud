@@ -19,7 +19,9 @@ import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.entity.MemberSignature;
@@ -53,13 +55,13 @@ public class MemberSystemController implements MemberRpc {
     
     @Autowired
     private MemberFollowService memberFollowService;
-
+    
     @Override
     public String wechatLoginV1(String appId, UserWechat userWechat, String systemRequestUserId) {
         
         String userId = "";
         
-        User user = userRpc.fingByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
+        User user = userRpc.findByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
                 
         if (user == null) {
             String memberId = Util.getRandomUUID();
@@ -77,7 +79,7 @@ public class MemberSystemController implements MemberRpc {
             Boolean isSave = memberService.save(bean, memberId, systemRequestUserId);
 
             if (!isSave) {
-                throw new RuntimeException("保存不成功");
+                throw new BusinessException("保存不成功");
             }
             
             String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
@@ -85,7 +87,7 @@ public class MemberSystemController implements MemberRpc {
             isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
             
             if (!isSave) {
-                throw new RuntimeException("保存不成功");
+                throw new BusinessException("保存不成功");
             }
         } else {
             userId = user.getUserId();
@@ -99,7 +101,7 @@ public class MemberSystemController implements MemberRpc {
                 Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
                 
                 if (!isUpdate) {
-                    throw new RuntimeException("更新不成功");
+                    throw new BusinessException("更新不成功");
                 }
             }
             
@@ -118,21 +120,27 @@ public class MemberSystemController implements MemberRpc {
             return AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("登录不成功");
+            throw new BusinessException("登录不成功");
         }
     }
 
     @Override
     public Member findByUserIdV1(String userId) {
-        Member member = memberService.findWithCacheUserByUserId(userId);
+        Member member = memberService.findByUserId(userId);
+        
+        if (member == null) {
+            return null;
+        }
         
         User user = (User) member.get(Member.MEMBER_USER);
         
         if (user == null) {
             user = userRpc.findV1(userId);
-            
-            member.put(Member.MEMBER_USER, user);
         }
+        
+        user.defaultKeep();
+        
+        member.putAll(user);
         
         return member;
     }
@@ -145,23 +153,24 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         
-        User user = (User) member.get(Member.MEMBER_USER);
         // 处理用户头像
-        UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-        
-        if (userAvatar == null) {
-            member.put(UserAvatar.USER_AVATAR, null);
-        } else {
-            File file = fileRpc.findV1(userAvatar.getUserAvatar());
-            member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
+        String userAvatar = (String) member.get(UserAvatar.USER_AVATAR);
+        if (!Util.isNullOrEmpty(userAvatar)) {
+            File file = fileRpc.findV1(userAvatar);
+            if (!Util.isNullOrEmpty(file)) {
+                file.keep(File.FILE_ID, File.FILE_PATH);
+            }
+            member.put(UserAvatar.USER_AVATAR, file == null ? "" : file);
         }
         
-        // 处理用户昵称
-        UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-        if (userNickName == null) {
-            member.put(UserNickName.USER_NICK_NAME, null);
-        } else {
-            member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
+        // 处理会员背景
+        String memberBackground = (String) member.get(Member.MEMBER_BACKGROUND);
+        if (!Util.isNullOrEmpty(memberBackground)) {
+            File file = fileRpc.findV1(memberBackground);
+            if (!Util.isNullOrEmpty(file)) {
+                file.keep(File.FILE_ID, File.FILE_PATH);
+            }
+            member.put(Member.MEMBER_BACKGROUND, file == null ? "" : file);
         }
         
         return member;
@@ -191,26 +200,13 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         
+        String fileIds = Util.beanToFieldString(memberList, User.USER_AVATAR);
+        List<File> fileList = fileRpc.findsV1(fileIds);
+        if (!Util.isNullOrEmpty(fileList)) {
+            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH); 
+        }
+        
         for (Member member : memberList) {
-            User user = (User) member.get(Member.MEMBER_USER);
-            // 处理用户头像
-            UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-            
-            if (userAvatar == null) {
-                member.put(UserAvatar.USER_AVATAR, null);
-            } else {
-                File file = fileRpc.findV1(userAvatar.getUserAvatar());
-                member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-            }
-            
-            // 处理用户昵称
-            UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-            if (userNickName == null) {
-                member.put(UserNickName.USER_NICK_NAME, null);
-            } else {
-                member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
-            }
-            
             member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
         }
         
@@ -220,14 +216,16 @@ public class MemberSystemController implements MemberRpc {
         if (!Util.isNullOrEmpty(myFollowList)) {
             List<String> myFollowUserIdList = myFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());
             memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, myFollowUserIdList.contains(member.getUserId())));
-
+        } else {
+            memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, false)); 
         }
+        
         return memberList;
     }
     
     @Override
     public Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId) {
-        Member member = findDetailByUserIdV1(userId);
+        Member member = findDetailByUserIdV1(followUserId);
         
         if (member == null) {
             return null;
@@ -251,26 +249,13 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         
+        String fileIds = Util.beanToFieldString(memberList, User.USER_AVATAR);
+        List<File> fileList = fileRpc.findsV1(fileIds);
+        if (!Util.isNullOrEmpty(fileList)) {
+            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH); 
+        }
+        
         for (Member member : memberList) {
-            User user = (User) member.get(Member.MEMBER_USER);
-            // 处理用户头像
-            UserAvatar userAvatar = (UserAvatar) user.get(User.USER_AVATAR);
-            
-            if (userAvatar == null) {
-                member.put(UserAvatar.USER_AVATAR, null);
-            } else {
-                File file = fileRpc.findV1(userAvatar.getUserAvatar());
-                member.put(UserAvatar.USER_AVATAR, file == null?null:file.getFilePath());
-            }
-            
-            // 处理用户昵称
-            UserNickName userNickName = (UserNickName) user.get(User.USER_NICK_NAME);
-            if (userNickName == null) {
-                member.put(UserNickName.USER_NICK_NAME, null);
-            } else {
-                member.put(UserNickName.USER_NICK_NAME, userNickName.getUserNickName());
-            }
-            
             member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
         }
         
@@ -299,23 +284,6 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         
-        // 处理用户签名
-        MemberSignature memberSignature = (MemberSignature) member.get(Member.MEMBER_SIGNATURE);
-        if (memberSignature == null) {
-            member.put(MemberSignature.MEMBER_SIGNATURE, null);
-        } else {
-            member.put(MemberSignature.MEMBER_SIGNATURE, memberSignature.getMemberSignature());
-        }
-        
-        // 处理用户背景
-        MemberBackground memberBackground = (MemberBackground) member.get(Member.MEMBER_BACKGROUND);
-        
-        if (memberBackground == null) {
-            member.put(MemberBackground.MEMBER_BACKGROUND, null);
-        } else {
-            File file = fileRpc.findV1(memberBackground.getMemberBackground());
-            member.put(MemberBackground.MEMBER_BACKGROUND, file == null?null:file.getFilePath());
-        }
         member.keep(
                 User.USER_ID, 
                 UserNickName.USER_NICK_NAME, 
@@ -335,14 +303,6 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         
-        // 处理用户签名
-        MemberSignature memberSignature = (MemberSignature) member.get(Member.MEMBER_SIGNATURE);
-        if (memberSignature == null) {
-            member.put(MemberSignature.MEMBER_SIGNATURE, null);
-        } else {
-            member.put(MemberSignature.MEMBER_SIGNATURE, memberSignature.getMemberSignature());
-        }
-        
         member.keep(
                 User.USER_ID, 
                 UserNickName.USER_NICK_NAME, 
@@ -351,6 +311,47 @@ public class MemberSystemController implements MemberRpc {
         );
         
         return member;
+    }
+
+    @Override
+    public Boolean update(String userId, String userAvatar, String userNickName, String userSex, String memberSignature,
+            String memberAddressCity, String systemRequestUserId) {
+        Member member = memberService.findByUserId(userId);
+        
+        if (member == null) {
+            return false;
+        }
+        
+        if (!memberAddressCity.equals(member.getString(Member.MEMBER_ADDRESS_CITY))) {
+            // 刪除旧的会员地址信息
+            memberService.deleteMemberAddressByMemberId(member.getMemberId(), userId, systemRequestUserId);
+            
+            MemberAddress memberAddress = new MemberAddress();
+            memberAddress.setMemberAddressProvince(member.getString(Member.MEMBER_ADDRESS_PROVINCE));
+            memberAddress.setMemberAddressArea(member.getString(Member.MEMBER_ADDRESS_AREA));
+            memberAddress.setMemberAddressCity(memberAddressCity);
+            memberAddress.setMemberAddressAddress(member.getString(Member.MEMBER_ADDRESS_ADDRESS));
+            
+            memberService.saveMemberAddress(member.getAppId(), member.getMemberId(), userId, memberAddress, Util.getRandomUUID(), systemRequestUserId);
+
+        };
+        
+        if (!memberSignature.equals(member.getString(Member.MEMBER_SIGNATURE))) {
+            // 删除旧的会员签名
+            memberService.deleteMemberSignatureByMemberId(member.getMemberId(), userId, systemRequestUserId);
+            
+            MemberSignature memberSignatureBean = new MemberSignature();
+            memberSignatureBean.setMemberSignature(memberSignature);
+            
+            memberService.saveMemberSignature(member.getAppId(), member.getMemberId(), userId, memberSignatureBean, Util.getRandomUUID(), systemRequestUserId);
+
+        }
+        
+        userRpc.updateUserNickNameV1(member.getAppId(), userId, userNickName, systemRequestUserId);
+        userRpc.updateUserAvatarV1(member.getAppId(), userId, userAvatar, systemRequestUserId);
+        userRpc.updateUserSexV1(member.getAppId(), userId, userSex, systemRequestUserId);
+        
+        return true;
     }
 
 }

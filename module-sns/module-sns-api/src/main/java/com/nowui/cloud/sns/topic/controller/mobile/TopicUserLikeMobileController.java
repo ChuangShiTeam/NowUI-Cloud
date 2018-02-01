@@ -14,6 +14,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
@@ -54,7 +55,7 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
                 TopicUserLike.PAGE_SIZE,
-                TopicUserLike.SYSTEM_REQUEST_USER_ID//前端传来参数可用于只显示3个头像,和点赞列表
+                TopicUserLike.SYSTEM_REQUEST_USER_ID
         );
         //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countByTopicId(body.getTopicId());
@@ -112,7 +113,7 @@ public class TopicUserLikeMobileController extends BaseController {
         TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
         
         if (userLike != null) {
-            throw new RuntimeException("已经点过赞了");
+            throw new BusinessException("已经点过赞了");
 		}
 
         body.setUserId(userId);

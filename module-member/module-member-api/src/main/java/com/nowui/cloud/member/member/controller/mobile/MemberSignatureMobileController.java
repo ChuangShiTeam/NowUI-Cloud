@@ -13,7 +13,7 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.MemberSignature;
-import com.nowui.cloud.member.member.service.MemberSignatureService;
+import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -34,10 +34,10 @@ public class MemberSignatureMobileController extends BaseController {
     private UserRpc userRpc;
     
     @Autowired
-    private MemberSignatureService memberSignatureService;
+    private MemberService memberService;
     
     @ApiOperation(value = "更新会员签名")
-    @RequestMapping(value = "/member/signature/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/signature/mobile/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberSignature body) {
         validateRequest(
                 body,
@@ -47,12 +47,11 @@ public class MemberSignatureMobileController extends BaseController {
         );
 
         User user = userRpc.findV1(body.getSystemRequestUserId());
-        //删除旧的会员签名
-        memberSignatureService.deleteByMemberId(user.getObjectId(), body.getSystemRequestUserId());
+        // 删除旧的会员签名
+        memberService.deleteMemberSignatureByMemberId(user.getObjectId(), user.getUserId(), body.getSystemRequestUserId());
         
-        body.setMemberId(user.getObjectId());
-        //保存新的会员签名
-        Boolean result = memberSignatureService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        // 保存新的会员签名
+        Boolean result = memberService.saveMemberSignature(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

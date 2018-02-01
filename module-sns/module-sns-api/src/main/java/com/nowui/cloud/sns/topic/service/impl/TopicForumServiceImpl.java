@@ -2,14 +2,17 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.mapper.TopicForumMapper;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
@@ -119,6 +122,23 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 
         return topicForumList;
     }
+    
+    @Override
+	public List<TopicForum> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime,
+			Integer pageIndex, Integer pageSize) {
+    	List<TopicForum> topicForumList = list(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.FORUM_ID, forumId)
+                        .eq(TopicForum.SYSTEM_STATUS, true)
+                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
+                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
+                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return topicForumList;
+	}
 
 	@Override
 	public List<TopicForum> listByTopicId(String topicId) {
@@ -177,7 +197,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                 Boolean flag = save(topicForum, topicForumId, systemRequestUserId);
                 
                 if (!flag) {
-                    throw new RuntimeException("保存失败");
+                    throw new BusinessException("保存失败");
                 }
                                 
                 topicForumIdList.add(topicForumId);
@@ -196,5 +216,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
         // 缓存话题论坛编号列表
         redis.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
     }
+
+	
 
 }

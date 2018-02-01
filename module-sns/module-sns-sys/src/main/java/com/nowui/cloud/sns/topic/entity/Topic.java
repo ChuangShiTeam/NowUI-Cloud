@@ -188,6 +188,21 @@ public class Topic extends BaseEntity {
      */
     public static final String TOPIC_IS_SELF = "topicIsSelf";
     
+    /**
+     * 话题发布人
+     */
+    public static final String TOPIC_USER = "topicUser";
+    
+   /**
+    * 请求用户
+    */
+    public static final String REQUEST_USER = "requestUser";
+    
+    /**
+     * 排除的话题Id列表
+     */
+    public static final String EXCLUDE_TOPIC_ID_LIST = "excludeTopicIdList";
+    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }

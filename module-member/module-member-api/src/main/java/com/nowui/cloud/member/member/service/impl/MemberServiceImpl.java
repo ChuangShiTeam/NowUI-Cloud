@@ -8,8 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.entity.MemberAddress;
+import com.nowui.cloud.member.member.entity.MemberBackground;
+import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
+import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.mapper.MemberMapper;
+import com.nowui.cloud.member.member.service.MemberAddressService;
 import com.nowui.cloud.member.member.service.MemberBackgroundService;
+import com.nowui.cloud.member.member.service.MemberPerferenceLanguageService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -26,11 +32,19 @@ import com.nowui.cloud.util.Util;
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> implements MemberService {
     
+    public static final String MEMBER_ITEM_BY_USER_ID = "member_item_by_user_id_";
+    
     @Autowired
     private MemberSignatureService memberSignatureService;
     
     @Autowired
     private MemberBackgroundService memberBackgroundService;
+    
+    @Autowired
+    private MemberAddressService memberAddressService;
+    
+    @Autowired
+    private MemberPerferenceLanguageService memberPerferenceLanguageService;
     
     @Override
     public Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
@@ -62,25 +76,38 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
 
     @Override
     public Member findByUserId(String userId) {
-        Member member = find(
-                new BaseWrapper<Member>()
-                .eq(Member.USER_ID, userId)
-                .eq(Member.SYSTEM_STATUS, true)
-        );
-        
-        member.put(Member.MEMBER_SIGNATURE, memberSignatureService.findByMemberId(member.getMemberId()));
-        
-        member.put(Member.MEMBER_BACKGROUND, memberBackgroundService.findByMemberId(member.getMemberId()));
-        
-        return member;
-    }
-
-    @Override
-    public Member findWithCacheUserByUserId(String userId) {
-        Member member = findByUserId(userId);
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
         
         if (member == null) {
-            return null;
+            member = find(
+                    new BaseWrapper<Member>()
+                    .eq(Member.USER_ID, userId)
+                    .eq(Member.SYSTEM_STATUS, true)
+            );
+            
+            if (member == null) {
+                return null;
+            }
+            // 会员个性签名
+            MemberSignature memberSignature = memberSignatureService.findByMemberId(member.getMemberId());
+            member.put(Member.MEMBER_SIGNATURE, memberSignature == null ? "" : memberSignature.getMemberSignature());
+            
+            // 会员背景
+            MemberBackground memberBackground = memberBackgroundService.findByMemberId(member.getMemberId());
+            member.put(Member.MEMBER_BACKGROUND, memberBackground == null ? "" : memberBackground.getMemberBackground());
+
+            // 会员地址
+            MemberAddress memberAddress = memberAddressService.findByMemberId(member.getMemberId());
+            member.put(Member.MEMBER_ADDRESS_PROVINCE, memberAddress == null ? "" : memberAddress.getMemberAddressProvince());
+            member.put(Member.MEMBER_ADDRESS_CITY, memberAddress == null ? "" : memberAddress.getMemberAddressCity());
+            member.put(Member.MEMBER_ADDRESS_AREA, memberAddress == null ? "" : memberAddress.getMemberAddressArea());
+            member.put(Member.MEMBER_ADDRESS_ADDRESS, memberAddress == null ? "" : memberAddress.getMemberAddressAddress());
+            
+            // 会员偏好语言
+            MemberPerferenceLanguage memberPerferenceLanguage = memberPerferenceLanguageService.findByMemberId(member.getMemberId());
+            member.put(Member.MEMBER_PREFERENCE_LANGUAGE, memberPerferenceLanguage == null ? "" : memberPerferenceLanguage.getMemberPreferenceLanguage());
+            
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + userId, member);
         }
         
         String userTableName = Util.getTableName(User.class);
@@ -95,4 +122,138 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         return member;
     }
 
+    @Override
+    public Boolean saveMemberAddress(String appId, String memberId, String userId, MemberAddress memberAddress, String memberAddressId,
+            String systemRequestUserId) {
+        memberAddress.setAppId(appId);
+        memberAddress.setMemberId(memberId);
+        
+        Boolean result = memberAddressService.save(memberAddress, memberAddressId, systemRequestUserId);
+        
+        if (result) {
+            // 更新会员地址缓存
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+            if (member != null) {
+                member.put(Member.MEMBER_ADDRESS_PROVINCE,memberAddress.getMemberAddressProvince());
+                member.put(Member.MEMBER_ADDRESS_CITY, memberAddress.getMemberAddressCity());
+                member.put(Member.MEMBER_ADDRESS_AREA, memberAddress.getMemberAddressArea());
+                member.put(Member.MEMBER_ADDRESS_ADDRESS, memberAddress.getMemberAddressAddress());
+                
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteMemberAddressByMemberId(String memberId, String userId, String systemRequestUserId) {
+        memberAddressService.deleteByMemberId(memberId, systemRequestUserId);
+        
+        // 更新会员地址缓存
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+        if (member != null) {
+            member.put(Member.MEMBER_ADDRESS_PROVINCE, "");
+            member.put(Member.MEMBER_ADDRESS_CITY, "");
+            member.put(Member.MEMBER_ADDRESS_AREA, "");
+            member.put(Member.MEMBER_ADDRESS_ADDRESS, "");
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+        }
+    }
+
+    @Override
+    public Boolean saveMemberSignature(String appId, String memberId, String userId, MemberSignature memberSignature,
+            String memberSignatureId, String systemRequestUserId) {
+        memberSignature.setAppId(appId);
+        memberSignature.setMemberId(memberId);
+        
+        Boolean result = memberSignatureService.save(memberSignature, memberSignatureId, systemRequestUserId);
+        
+        if (result) {
+            // 更新会员签名缓存
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+            if (member != null) {
+                member.put(Member.MEMBER_SIGNATURE, memberSignature.getMemberSignature());
+                
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteMemberSignatureByMemberId(String memberId, String userId, String systemRequestUserId) {
+        memberSignatureService.deleteByMemberId(memberId, systemRequestUserId);
+        
+        // 更新会员签名缓存
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+        if (member != null) {
+            member.put(Member.MEMBER_SIGNATURE, "");
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+        }
+    }
+
+    @Override
+    public Boolean saveMemberPerferenceLanguage(String appId, String memberId, String userId,
+            MemberPerferenceLanguage memberPerferenceLanguage, String memberPerferenceLanguageId,
+            String systemRequestUserId) {
+        memberPerferenceLanguage.setAppId(appId);
+        memberPerferenceLanguage.setMemberId(memberId);
+        
+        Boolean result = memberPerferenceLanguageService.save(memberPerferenceLanguage, memberPerferenceLanguageId, systemRequestUserId);
+        
+        if (result) {
+            // 更新会员签名缓存
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+            if (member != null) {
+                member.put(Member.MEMBER_PREFERENCE_LANGUAGE, memberPerferenceLanguage.getMemberPreferenceLanguage());
+                
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteMemberPerferenceLanguageByMemberId(String memberId, String userId, String systemRequestUserId) {
+        memberPerferenceLanguageService.deleteByMemberId(memberId, systemRequestUserId);
+        
+        // 更新会员签名缓存
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+        if (member != null) {
+            member.put(Member.MEMBER_PREFERENCE_LANGUAGE, "");
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+        }
+    }
+
+    @Override
+    public Boolean saveMemberBackground(String appId, String memberId, String userId, MemberBackground memberBackground,
+            String memberBackgroundId, String systemRequestUserId) {
+        memberBackground.setAppId(appId);
+        memberBackground.setMemberId(memberId);
+        
+        Boolean result = memberBackgroundService.save(memberBackground, memberBackgroundId, systemRequestUserId);
+        
+        if (result) {
+            // 更新会员背景缓存
+            Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+            if (member != null) {
+                member.put(Member.MEMBER_BACKGROUND, memberBackground.getMemberBackground());
+                
+                redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteMemberBackgroundByMemberId(String memberId, String userId, String systemRequestUserId) {
+        memberBackgroundService.deleteByMemberId(memberId, systemRequestUserId);
+        
+        // 更新会员背景缓存
+        Member member = (Member) redis.opsForValue().get(MEMBER_ITEM_BY_USER_ID + userId);
+        if (member != null) {
+            member.put(Member.MEMBER_BACKGROUND, "");
+            redis.opsForValue().set(MEMBER_ITEM_BY_USER_ID + member.getUserId(), member);
+        }
+    }
 }

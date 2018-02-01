@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
@@ -42,18 +43,17 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         validateRequest(
         		body,
                 TopicCommentUserUnlike.APP_ID,
-                TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID
+                TopicCommentUserUnlike.COMMENT_ID
         );
         String appId = body.getAppId();
         String commentId = body.getCommentId();
-        String userId = body.getUserId();
+        String userId = body.getSystemRequestUserId();
         
         // 先去取消评论点赞表查询有没有记录
         TopicCommentUserUnlike userUnlike = topicCommentUserUnlikeService.findTheCommentUserUnlike(commentId, userId);
         // 有: 就不做操作,并返回提示
         if (userUnlike != null) {
-        	throw new RuntimeException("已经取消过点赞了");
+        	throw new BusinessException("已经取消过点赞了");
 		}
         
         body.setAppId(appId);

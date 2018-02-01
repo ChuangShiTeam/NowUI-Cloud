@@ -1,4 +1,5 @@
 package com.nowui.cloud.sns.topic.service;
+import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
@@ -30,6 +31,8 @@ public interface TopicService extends BaseService<Topic> {
      * @return Integer 话题信息统计
      */
     Integer countForAdmin(String appId, String topicSummary, String userId, String topicLocation, Boolean topicIsLocation);
+    
+    
 
     /**
      * 话题信息列表
@@ -73,6 +76,20 @@ public interface TopicService extends BaseService<Topic> {
 	List<Topic> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
 	
 	/**
+	 * 根据用户id查找动态数量(使用redis)
+	 * 
+	 * @param userId 用户编号
+	 */
+	Integer countTopicByUserIdWithRedis(String userId);
+	
+	/**
+	 * 根据用户id查找动态数量
+	 * 
+	 * @param userId 用户编号
+	 */
+	Integer countTopicByUserId(String userId);
+	
+	/**
      * 根据userId查找全部话题信息
      * @param body Topic对象
      * @return List<Topic> 话题信息列表
@@ -104,11 +121,13 @@ public interface TopicService extends BaseService<Topic> {
      * 
      * @param appId 应用编号
      * @param userIdList 用户编号列表
+     * @param excludeTopicIdList 排除的话题编号列表
+     * @param systemCreateTime 创建时间
      * @param pageIndex 从第几条开始
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listByUserIdList(String appId, List<String> userIdList, Integer pageIndex, Integer pageSize);
+    List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据userId的list集合查询所有话题相关
@@ -116,11 +135,13 @@ public interface TopicService extends BaseService<Topic> {
      * @param appId 应用编号
      * @param userId 用户编号
      * @param userIdList 用户编号列表
+     * @param excludeTopicIdList 排除的话题编号列表
+     * @param systemCreateTime 创建时间
      * @param pageIndex 从第几条开始
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, Integer pageIndex, Integer pageSize);
+    List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据topicId的list集合查询所有话题信息
@@ -131,6 +152,17 @@ public interface TopicService extends BaseService<Topic> {
      * @return topic列表
      */
     List<Topic> listByTopicIdList(List<String> topicIdList, Integer pageIndex, Integer pageSize);
+    
+    
+    /**
+     * 根据topicId的list集合查询所有话题信息(不分页)
+     * 
+     * @param topicIdList 话题编号列表
+     * @param pageIndex 从第几条开始
+     * @param pageSize 取多少条
+     * @return topic列表
+     */
+    List<Topic> listByTopicIdList(List<String> topicIdList);
     
     /**
      * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
@@ -144,6 +176,18 @@ public interface TopicService extends BaseService<Topic> {
     List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList, Integer pageIndex, Integer pageSize);
     
     /**
+     * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
+     * (不分页)
+     * 
+     * @param userId
+     * @param topicIdList
+     * @return
+     */
+    List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList);
+    
+    
+    
+    /**
      * 根据话题编号删除话题相关信息
      * 
      * @param appId 应用编号
@@ -153,5 +197,15 @@ public interface TopicService extends BaseService<Topic> {
      * @return
      */
     Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion);
+    
+    /**
+     * 新增topic记录,并往redis中增加动态数
+     * 
+     * @param entity 要保存的实体类
+     * @param id 话题Id
+     * @param systemCreateUserId 创建者id
+     * @return
+     */
+    Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId);
     
 }

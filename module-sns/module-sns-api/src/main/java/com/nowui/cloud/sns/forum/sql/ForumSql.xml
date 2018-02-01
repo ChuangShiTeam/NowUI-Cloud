@@ -35,7 +35,7 @@
 			t.randomId ASC
 		LIMIT #{n}
     </select>
-    
+
     <select id="getLatestAndNotFollowListByUserId" parameterType="java.util.Map" resultType="java.lang.String">
 		SELECT
 			forum.forumId
