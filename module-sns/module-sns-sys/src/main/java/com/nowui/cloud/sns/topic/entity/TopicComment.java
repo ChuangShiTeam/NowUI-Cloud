@@ -106,7 +106,16 @@ public class TopicComment extends BaseEntity {
      */
     public static final String TOPIC_COMMENT_IS_LIKE = "topicCommentIsLike";
     
+    /**
+     * 评论被点赞数
+     */
     public static final String TOPIC_COMMENT_LIKE_COUNT = "topicCommentLikeCount";
+    
+    /**
+     * 被排除的评论id (用于滚动加载)
+     */
+    public static final String EXCLUDE_COMMENT_ID_LIST = "excludeCommentIdList";
+    
     
 
     public String getTopicCommentId() {

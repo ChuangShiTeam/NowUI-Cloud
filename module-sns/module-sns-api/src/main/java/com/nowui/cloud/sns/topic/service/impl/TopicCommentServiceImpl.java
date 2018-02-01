@@ -2,14 +2,17 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentMapper;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,6 +103,24 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
 
         return topicCommentList;
     }
+    
+    @Override
+	public List<TopicComment> listByTopicId(String topicId, List<String> excludeCommentIdList, Date systemCreateTime,
+			Integer pageIndex, Integer pageSize) {
+    	List<TopicComment> topicCommentList = list(
+                new BaseWrapper<TopicComment>()
+                        .eq(TopicComment.TOPIC_ID, topicId)
+                        .notIn(TopicComment.TOPIC_ID, excludeCommentIdList)
+                        .eq(TopicComment.SYSTEM_STATUS, true)
+                        .le(TopicComment.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
+                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return topicCommentList;
+	}
+    
 
     @Override
     public void deleteByTopicId(String topicId, String systemRequestUserId) {
@@ -127,5 +148,6 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
         }
         return result;
     }
+
 
 }

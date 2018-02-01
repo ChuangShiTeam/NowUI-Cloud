@@ -2,6 +2,7 @@ package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +65,19 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * @return List<TopicComment> 话题评论列表
      */
     List<TopicComment> listByTopicId(String topicId, Integer pageIndex, Integer pageSize);
+    
+    
+    /**
+     * 根据话题编号查询话题评论分页列表
+     * (用于滚动加载,根据上次查询记录的最后一个记录的创建时间
+     * 和
+     * 被排除的最后一个创建时间的commentIdList)
+     * 
+     * @param topicId 话题编号
+     * @return List<TopicComment> 话题评论列表
+     */
+    List<TopicComment> listByTopicId(String topicId,  List<String> excludeCommentIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    
     
     /**
      * 根据话题编号逻辑删除话题评论信息
