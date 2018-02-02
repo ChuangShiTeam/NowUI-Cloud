@@ -193,15 +193,15 @@ public class TopicMobileController extends BaseController {
         memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
-        		Member.MEMBER_SEND_TOPIC_COUNT,
-        		Member.MEMBER_FOLLOW_COUNT,
-        		Member.MEMBER_BE_FOLLOW_COUNT,
-        		MemberFollow.MEMBER_IS_FOLLOW,
-        		MemberSignature.MEMBER_SIGNATURE,
-        		MemberBackground.MEMBER_BACKGROUND,
-        		UserNickName.USER_NICK_NAME,
-        		UserAvatar.USER_AVATAR,
-        		Member.USER_ID
+                Member.MEMBER_SEND_TOPIC_COUNT,
+                Member.MEMBER_FOLLOW_COUNT,
+                Member.MEMBER_BE_FOLLOW_COUNT,
+                MemberFollow.MEMBER_IS_FOLLOW,
+                MemberSignature.MEMBER_SIGNATURE,
+                MemberBackground.MEMBER_BACKGROUND,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR,
+                Member.USER_ID
         );
         return renderJson(memberInfo);
 
