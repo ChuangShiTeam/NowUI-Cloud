@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-29
  */
-@Component
 @Document(collection = "product_info")
 public class ProductView extends BaseView {
 

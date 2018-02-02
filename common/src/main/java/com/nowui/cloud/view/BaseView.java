@@ -1,9 +1,11 @@
 package com.nowui.cloud.view;
 
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * baseView
@@ -12,6 +14,7 @@ import java.io.Serializable;
  *
  * 2018-01-29
  */
+@Component
 public class BaseView extends JSONObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
