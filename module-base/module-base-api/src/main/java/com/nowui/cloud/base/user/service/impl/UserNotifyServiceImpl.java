@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.base.notify.entity.Notify;
 import com.nowui.cloud.base.user.entity.UserNotify;
 import com.nowui.cloud.base.user.mapper.UserNotifyMapper;
 import com.nowui.cloud.base.user.service.UserNotifyService;
@@ -57,9 +56,9 @@ public class UserNotifyServiceImpl extends BaseServiceImpl<UserNotifyMapper, Use
 
         List<UserNotify> notifys = list(
                 new BaseWrapper<UserNotify>()
-                        .eq(Notify.APP_ID, appId)
-                        .eq(Notify.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Notify.SYSTEM_CREATE_TIME))
+                        .eq(UserNotify.APP_ID, appId)
+                        .eq(UserNotify.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(UserNotify.SYSTEM_CREATE_TIME))
         );
 
         return notifys == null ? null : notifys.get(0);

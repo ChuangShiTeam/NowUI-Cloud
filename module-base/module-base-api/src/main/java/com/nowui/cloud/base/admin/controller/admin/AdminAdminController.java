@@ -18,7 +18,6 @@ import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.enums.UserType;
-import com.nowui.cloud.base.user.mq.UserMq;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -39,9 +38,6 @@ public class AdminAdminController extends BaseController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private UserMq userMq;
-    
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
@@ -150,11 +146,6 @@ public class AdminAdminController extends BaseController {
         
         Boolean result = true;
         if (result) {
-            userMq.sendSave(userEntity, userId, userEntity.getSystemRequestUserId());
-            userMq.sendSaveAccount(userAccountEntity, userId, userEntity.getSystemRequestUserId());
-            userMq.sendSaveNickName(userNickNameEntity, userId, userEntity.getSystemRequestUserId());
-            userMq.sendSaveIdcard(userIdcardEntity, userId, userEntity.getSystemRequestUserId());
-            userMq.sendSaveMobile(userMobileEntity, userId, userEntity.getSystemRequestUserId());
 		}
         
         return renderJson(result);
@@ -214,11 +205,6 @@ public class AdminAdminController extends BaseController {
         Boolean result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
 
         if (result) {
-            userMq.sendUpdate(userEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId(), userEntity.getSystemVersion());
-            userMq.sendUpdateAccount(userAccountEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
-            userMq.sendUpdateNickName(userNickNameEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
-            userMq.sendUpdateIdcard(userIdcardEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
-            userMq.sendUpdateMobile(userMobileEntity, userEntity.getUserId(), userEntity.getSystemRequestUserId());
         }
         
         return renderJson(result);
