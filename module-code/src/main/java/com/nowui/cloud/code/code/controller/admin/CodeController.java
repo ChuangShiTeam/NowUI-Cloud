@@ -1,12 +1,6 @@
-package com.nowui.cloud.base.code.controller.admin;
+package com.nowui.cloud.code.code.controller.admin;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.code.code.entity.Code;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.util.FileUtil;
+import com.nowui.cloud.util.Util;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -27,14 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.code.entity.Code;
-import com.nowui.cloud.base.code.service.CodeService;
-import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.code.code.service.CodeService;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.shop.product.rpc.ProductRpc;
-import com.nowui.cloud.util.FileUtil;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,13 +43,14 @@ public class CodeController extends BaseController {
     @Autowired
     private CodeService codeService;
 
-    @Autowired
-    private ProductRpc productRpc;
-
     @ApiOperation(value = "测试")
     @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String test() {
         Code codeEntity = getEntry(Code.class);
+
+///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
+
+//        productMq.sendBar2Rabbitmq("123456789");
 
         return "Hello World!";
     }
@@ -106,10 +100,8 @@ public class CodeController extends BaseController {
             String webPath = path + "/web";
             String webPackagePath = webPath + "/" + codeEntity.getPackageName();
             String entityPath = sysPackagePath + "/entity";
-            String mqPath = sysPackagePath + "/mq";
-            String mqImplPath = mqPath + "/impl";
+            String apiRouterPath = sysPackagePath + "/router";
             String rpcPath = sysPackagePath + "/rpc";
-//            String rpcFallbackPath = rpcPath + "/fallback";
             String sqlPath = apiPackagePath + "/sql";
             String mapperPath = apiPackagePath + "/mapper";
             String servicePath = apiPackagePath + "/service";
@@ -119,8 +111,10 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
-            String configPath = apiPackagePath + "/config";
             String listenerPath = apiPackagePath + "/listener";
+            String repositoryPath = apiPackagePath + "/repository";
+            String repositoryImplPath = repositoryPath + "/impl";
+            String apiviewPath = apiPackagePath + "/view";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
@@ -133,14 +127,11 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
-            if (codeEntity.getIsMq()) {
-                FileUtil.createPath(mqPath);
-                FileUtil.createPath(mqImplPath);
-                FileUtil.createPath(configPath);
-                FileUtil.createPath(listenerPath);
-            }
+            FileUtil.createPath(apiRouterPath);
+            FileUtil.createPath(listenerPath);
+            FileUtil.createPath(repositoryPath);
+            FileUtil.createPath(repositoryImplPath);
             FileUtil.createPath(rpcPath);
-///            FileUtil.createPath(rpcFallbackPath);
             FileUtil.createPath(sqlPath);
             FileUtil.createPath(mapperPath);
             FileUtil.createPath(servicePath);
@@ -150,6 +141,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerDesktopPath);
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
+            FileUtil.createPath(apiviewPath);
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
@@ -250,12 +242,10 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
-            if (codeEntity.getIsMq()) {
-                write(templateMap, "mq.txt", mqPath + "/" + firstUpperWithoutUnderlineEntityName + "Mq.java");
-                write(templateMap, "mqImpl.txt", mqImplPath + "/" + firstUpperWithoutUnderlineEntityName + "MqImpl.java");
-            }
+            write(templateMap, "apiRoute.txt", apiRouterPath + "/" + firstUpperWithoutUnderlineEntityName + "Router.java");
+            write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
+            write(templateMap, "repositoryImpl.txt", repositoryImplPath + "/" + firstUpperWithoutUnderlineEntityName + "RepositoryImpl.java");
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
-//            write(templateMap, "rpcFallback.txt", rpcFallbackPath + "/" + firstUpperWithoutUnderlineEntityName + "RpcFallback.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
             write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
             write(templateMap, "service.txt", servicePath + "/" + firstUpperWithoutUnderlineEntityName + "Service.java");
@@ -264,11 +254,12 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
-            if (codeEntity.getIsMq()) {
-//                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
-                write(templateMap, "config.txt", configPath + "/" + firstUpperWithoutUnderlineEntityName + "Config.java");
-                write(templateMap, "listener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "Listener.java");
-            }
+            write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
+            write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
+            write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
+            write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
+            write(templateMap, "repositoryImpl.txt", repositoryImplPath + "/" + firstUpperWithoutUnderlineEntityName + "RepositoryImpl.java");
+            write(templateMap, "apiView.txt", apiviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");
