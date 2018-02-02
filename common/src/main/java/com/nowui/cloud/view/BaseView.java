@@ -1,12 +1,11 @@
 package com.nowui.cloud.view;
 
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * baseView

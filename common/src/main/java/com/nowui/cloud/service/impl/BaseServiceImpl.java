@@ -49,9 +49,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 //    @Autowired
 //    protected ElasticsearchTemplate elasticsearch;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
     protected String getItemCacheName(String id) {
         return entity.getTableName() + "_item_" + id;
     }

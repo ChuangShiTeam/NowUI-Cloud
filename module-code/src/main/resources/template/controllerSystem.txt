@@ -1,0 +1,18 @@
+package com.nowui.cloud.${moduleName}.${packageName}.controller.system;
+
+import com.nowui.cloud.${moduleName}.${packageName}.rpc.${firstUpperWithoutUnderlineEntityName}Rpc;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * ${tableComment}系统端控制器
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+@Api(value = "${tableComment}", description = "${tableComment}系统端接口管理")
+@RestController
+public class ${firstUpperWithoutUnderlineEntityName}SystemController implements ${firstUpperWithoutUnderlineEntityName}Rpc {
+
+}

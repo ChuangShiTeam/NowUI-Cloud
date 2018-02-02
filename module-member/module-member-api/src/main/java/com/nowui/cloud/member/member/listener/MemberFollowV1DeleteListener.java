@@ -1,10 +1,10 @@
-package com.nowui.cloud.shop.product.listener;
+package com.nowui.cloud.member.member.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.shop.product.router.ProductRouter;
-import com.nowui.cloud.shop.product.view.ProductView;
+import com.nowui.cloud.member.member.router.MemberFollowRouter;
+import com.nowui.cloud.member.member.view.MemberFollowView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -14,51 +14,51 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 产品新增消息绑定
+ * 会员关注新增消息队列
  *
- * @author ZhongYongQiang
+ * @author marcus
  *
- * 2018-01-29
+ * 2018-02-02
  */
 @Configuration
-public class ProductV1SaveListener {
+public class MemberFollowV1DeleteListener {
 
-    private final String queueName = "product_v1_save";
+    private final String queueName = "member_follow_v1_delete";
 
     @Bean
-    Queue productV1SaveQueue(RabbitAdmin rabbitAdmin) {
+    Queue MemberFollowV1DeleteQueue(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(queueName, true);
         rabbitAdmin.declareQueue(queue);
         return queue;
     }
 
     @Bean
-    Binding productV1SaveQueueBindingExchange(Queue productV1SaveQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(productV1SaveQueue).to(exchange).with(ProductRouter.PRODUCT_V1_SAVE);
+    Binding MemberFollowV1DeleteQueueBindingExchange(Queue MemberFollowV1DeleteQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(MemberFollowV1DeleteQueue).to(exchange).with(MemberFollowRouter.MEMBER_FOLLOW_V1_DELETE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }
 
     @Bean
-    public MessageListenerContainer productV1SaveMessageListenerContainer(ConnectionFactory connectionFactory) {
+    public MessageListenerContainer MemberFollowV1DeleteMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setQueueNames(queueName);
-        simpleMessageListenerContainer.setMessageListener(productV1SaveMessageListener());
+        simpleMessageListenerContainer.setMessageListener(MemberFollowV1DeleteMessageListener());
         simpleMessageListenerContainer.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         simpleMessageListenerContainer.setPrefetchCount(Constant.PREFETCH_COUNT);
         return simpleMessageListenerContainer;
     }
 
     @Bean
-    public RabbitListener productV1SaveMessageListener() {
+    public RabbitListener MemberFollowV1DeleteMessageListener() {
         return new RabbitListener() {
 
             @Override
             public void receive(String message) {
-                ProductView productView = JSON.parseObject(message, ProductView.class);
+                MemberFollowView memberFollowView = JSON.parseObject(message, MemberFollowView.class);
 
-                System.out.println(productView.toJSONString());
+                System.out.println(memberFollowView.toJSONString());
             }
 
         };

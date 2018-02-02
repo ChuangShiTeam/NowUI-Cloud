@@ -1,10 +1,10 @@
-package com.nowui.cloud.shop.product.listener;
+package com.nowui.cloud.base.admin.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.shop.product.router.ProductRouter;
-import com.nowui.cloud.shop.product.view.ProductView;
+import com.nowui.cloud.base.admin.router.AdminRouter;
+import com.nowui.cloud.base.admin.view.AdminView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -14,51 +14,51 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 产品新增消息绑定
+ * 管理员新增消息队列
  *
  * @author ZhongYongQiang
  *
- * 2018-01-29
+ * 2018-02-02
  */
 @Configuration
-public class ProductV1SaveListener {
+public class AdminV1DeleteListener {
 
-    private final String queueName = "product_v1_save";
+    private final String queueName = "admin_v1_delete";
 
     @Bean
-    Queue productV1SaveQueue(RabbitAdmin rabbitAdmin) {
+    Queue AdminV1DeleteQueue(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(queueName, true);
         rabbitAdmin.declareQueue(queue);
         return queue;
     }
 
     @Bean
-    Binding productV1SaveQueueBindingExchange(Queue productV1SaveQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(productV1SaveQueue).to(exchange).with(ProductRouter.PRODUCT_V1_SAVE);
+    Binding AdminV1DeleteQueueBindingExchange(Queue AdminV1DeleteQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(AdminV1DeleteQueue).to(exchange).with(AdminRouter.ADMIN_V1_DELETE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }
 
     @Bean
-    public MessageListenerContainer productV1SaveMessageListenerContainer(ConnectionFactory connectionFactory) {
+    public MessageListenerContainer AdminV1DeleteMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setQueueNames(queueName);
-        simpleMessageListenerContainer.setMessageListener(productV1SaveMessageListener());
+        simpleMessageListenerContainer.setMessageListener(AdminV1DeleteMessageListener());
         simpleMessageListenerContainer.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         simpleMessageListenerContainer.setPrefetchCount(Constant.PREFETCH_COUNT);
         return simpleMessageListenerContainer;
     }
 
     @Bean
-    public RabbitListener productV1SaveMessageListener() {
+    public RabbitListener AdminV1DeleteMessageListener() {
         return new RabbitListener() {
 
             @Override
             public void receive(String message) {
-                ProductView productView = JSON.parseObject(message, ProductView.class);
+                AdminView adminView = JSON.parseObject(message, AdminView.class);
 
-                System.out.println(productView.toJSONString());
+                System.out.println(adminView.toJSONString());
             }
 
         };

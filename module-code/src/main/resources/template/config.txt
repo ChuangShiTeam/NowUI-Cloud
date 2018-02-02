@@ -1,0 +1,23 @@
+package com.nowui.cloud.${moduleName}.${packageName}.config;
+
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * ${tableComment}消息队列配置信息
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+@Configuration
+public class ProductConfig {
+
+    @Bean
+    RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+}

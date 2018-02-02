@@ -1,0 +1,15 @@
+package com.nowui.cloud.${moduleName}.${packageName}.repository;
+
+import com.nowui.cloud.repository.BaseRepository;
+import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
+
+/**
+ * ${tableComment}视图访问组件接口
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+public interface ${firstUpperWithoutUnderlineEntityName}Repository extends BaseRepository<${firstUpperWithoutUnderlineEntityName}View> {
+
+}

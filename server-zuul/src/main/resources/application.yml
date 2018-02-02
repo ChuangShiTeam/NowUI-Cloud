@@ -27,7 +27,7 @@ zuul:
       stripPrefix: false
     code:
       path: /code/**
-      serviceId: module-base
+      serviceId: module-code
       stripPrefix: false
     advertisement:
       path: /advertisement/**
