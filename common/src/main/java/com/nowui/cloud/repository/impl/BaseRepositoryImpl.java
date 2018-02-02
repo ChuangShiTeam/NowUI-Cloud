@@ -1,5 +1,6 @@
 package com.nowui.cloud.repository.impl;
 
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.nowui.cloud.repository.BaseRepository;
 import com.nowui.cloud.view.BaseView;
@@ -55,10 +56,11 @@ public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T>
 
     @Override
     public T find(String id) {
-        Criteria criteria = new Criteria();
+        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
         Query query = new Query(criteria);
 
         T result = (T) mongoTemplate.findOne(query, view.getClass());
+
         return result;
     }
 
@@ -79,18 +81,11 @@ public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T>
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
 
-            update.pull(entry.getKey(), entry.getValue());
+            update.set(entry.getKey(), entry.getValue());
         }
-        UpdateResult updateResult = mongoTemplate.upsert(query, update, view.getClass());
 
-        System.out.println(updateResult);
-        System.out.println(updateResult.isModifiedCountAvailable());
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, view.getClass());
 
-        return true;
-    }
-
-    @Override
-    public Boolean delete(String id) {
-        return null;
+        return updateResult.isModifiedCountAvailable();
     }
 }

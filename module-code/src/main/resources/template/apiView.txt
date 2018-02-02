@@ -22,7 +22,7 @@ public class ${firstUpperWithoutUnderlineEntityName}View extends BaseView {
      * ${column.columnComment}
      */
     <%if(column.columnName == tableId){%>
-    @Id
+    @Field
     <%}else{%>
     @Field
     <%}%>

@@ -66,7 +66,7 @@ public class ProductV1DeleteListener {
             public void receive(String message) {
                 ProductView productView = JSON.parseObject(message, ProductView.class);
 
-//                productRepository.delete(productView.getProductId());
+                productRepository.update(productView);
             }
 
         };

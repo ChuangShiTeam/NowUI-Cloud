@@ -6,15 +6,7 @@ import java.util.List;
 
 import com.nowui.cloud.rabbit.RabbitSender;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.GetQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -46,9 +38,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
     @Autowired
     protected RedisTemplate<String, Object> redis;
 
-//    @Autowired
-//    protected ElasticsearchTemplate elasticsearch;
-
     protected String getItemCacheName(String id) {
         return entity.getTableName() + "_item_" + id;
     }
@@ -56,12 +45,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
     protected String getItemCacheName(String tableName, String id) {
         return tableName + "_item_" + id;
     }
-
-//    public Integer count(SearchQuery searchQuery) {
-//        long count = elasticsearch.count(searchQuery);
-//
-//        return new Long(count).intValue();
-//    }
 
     @Override
     public Integer count(@Param("ew") Wrapper<T> var1) {
@@ -111,18 +94,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         if (Util.isNullOrEmpty(id)) {
             return null;
         }
-
-        /*GetQuery getQuery = new GetQuery();
-        getQuery.setId(id);
-        T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
-
-        if (baseEntity == null) {
-            baseEntity = mapper.selectById(id);
-
-            if (baseEntity != null) {
-                redis.opsForValue().set(getItemCacheName(id), baseEntity);
-            }
-        }*/
         
         T baseEntity = (T) redis.opsForValue().get(getItemCacheName(id));
 
@@ -253,9 +224,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         baseEntity.keepTableFieldValue();
 
         redis.opsForValue().set(getItemCacheName(id), baseEntity);
-
-//        IndexQuery indexQuery = new IndexQueryBuilder().withId(id).withObject(baseEntity).build();
-//        elasticsearch.index(indexQuery);
     }
 
     @Override
@@ -275,8 +243,28 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
         if (success) {
             redis.delete(getItemCacheName(id));
+        }
 
-//            elasticsearch.delete(entity.getClass(), id);
+        return success;
+    }
+
+    @Override
+    public Boolean delete(String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
+        entity.setSystemUpdateUserId(systemUpdateUserId);
+        entity.setSystemUpdateTime(new Date());
+        entity.setSystemVersion(systemVersion + 1);
+        entity.setSystemStatus(false);
+
+        Boolean success = mapper.update(
+                entity,
+                new EntityWrapper<T>()
+                        .eq(entity.getTableId(), id)
+                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
+                        .eq(BaseEntity.SYSTEM_STATUS, true)
+        ) != 0;
+
+        if (success) {
+            rabbitSender.send(appId, routing, entity, systemUpdateUserId);
         }
 
         return success;
@@ -285,8 +273,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
     @Override
     public void replace(String id) {
         redis.delete(getItemCacheName(id));
-
-//        elasticsearch.delete(entity.getClass(), id);
 
         T baseEntity = mapper.selectById(id);
 

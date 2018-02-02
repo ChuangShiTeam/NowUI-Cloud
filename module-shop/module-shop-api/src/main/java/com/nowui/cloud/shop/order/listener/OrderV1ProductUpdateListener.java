@@ -65,9 +65,6 @@ public class OrderV1ProductUpdateListener {
 
             @Override
             public void receive(String message) {
-                System.out.println("order++++++");
-                System.out.println(message);
-                System.out.println("++++++");
 
 //                ProductView productView = JSON.parseObject(message, ProductView.class);
 //                productRepository.save(productView);

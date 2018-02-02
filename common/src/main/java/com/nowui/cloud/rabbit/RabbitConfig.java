@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -19,6 +20,7 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
  * 2018-01-29
  */
 @Configuration
+@ConfigurationProperties(prefix = "spring.rabbitmq")
 public class RabbitConfig {
 
     @Bean

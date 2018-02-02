@@ -3,6 +3,7 @@ package com.nowui.cloud.shop.product.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.shop.product.repository.ProductRepository;
 import com.nowui.cloud.shop.product.router.ProductRouter;
 import com.nowui.cloud.shop.product.view.ProductView;
 import org.springframework.amqp.core.*;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +26,9 @@ import org.springframework.context.annotation.Configuration;
 public class ProductV1SaveListener {
 
     private final String queueName = "product_v1_save";
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Bean
     Queue productV1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -56,9 +61,10 @@ public class ProductV1SaveListener {
 
             @Override
             public void receive(String message) {
+
                 ProductView productView = JSON.parseObject(message, ProductView.class);
 
-                System.out.println(productView.toJSONString());
+                productRepository.save(productView);
             }
 
         };

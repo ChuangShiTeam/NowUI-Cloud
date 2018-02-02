@@ -1,7 +1,6 @@
 package com.nowui.cloud.shop.product.view;
 
 import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -13,10 +12,11 @@ import org.springframework.stereotype.Component;
  *
  * 2018-01-29
  */
+@Component
 @Document(collection = "product_info")
 public class ProductView extends BaseView {
 
-    @Id
+    @Field
     private String productId;
     public static final String PRODUCT_ID = "productId";
 

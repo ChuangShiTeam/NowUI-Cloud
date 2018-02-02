@@ -43,7 +43,7 @@ public class ProductAdminController extends BaseController {
                 Product.PAGE_SIZE
         );
 
-        Criteria criteria = new Criteria();
+        Criteria criteria = Criteria.where(ProductView.SYSTEM_STATUS).is(true);
 
         long resultTotal = productRepository.count(criteria);
         List<ProductView> resultList = productRepository.list(criteria);
@@ -103,7 +103,7 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(product, Product.PRODUCT_ID, Product.SYSTEM_VERSION);
 
-        Boolean result = productService.delete(product.getProductId(), product.getSystemRequestUserId(), product.getSystemVersion());
+        Boolean result = productService.delete(product.getProductId(), product.getAppId(), ProductRouter.PRODUCT_V1_DELETE, product.getSystemRequestUserId(), product.getSystemVersion());
 
         return renderJson(result);
     }

@@ -65,10 +65,8 @@ public class ProductV1UpdateListener {
             @Override
             public void receive(String message) {
                 ProductView productView = JSON.parseObject(message, ProductView.class);
-                System.out.println("update");
-                System.out.println(productView.toJSONString());
 
-//                productRepository.update(productView);
+                productRepository.update(productView);
             }
 
         };

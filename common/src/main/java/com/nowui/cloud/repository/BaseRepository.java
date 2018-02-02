@@ -66,12 +66,4 @@ public interface BaseRepository<T extends BaseView> {
      */
     Boolean update(T view);
 
-    /**
-     * 实体类删除
-     *
-     * @param id 视图类编号
-     * @return 是否成功
-     */
-    Boolean delete(String id);
-
 }

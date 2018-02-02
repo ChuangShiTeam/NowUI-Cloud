@@ -1,9 +1,12 @@
 package com.nowui.cloud.rabbit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 消息接收者
@@ -13,6 +16,9 @@ import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
  * 2018-01-29
  */
 public class RabbitListener implements ChannelAwareMessageListener {
+
+    @Autowired
+    private Jackson2JsonMessageConverter messageConverter;
 
     /**
      * 接收消息
@@ -29,7 +35,7 @@ public class RabbitListener implements ChannelAwareMessageListener {
         Long deliveryTag = messageProperties.getDeliveryTag();
 
         try {
-            receive(new String(message.getBody(),"UTF-8"));
+            receive(messageConverter.fromMessage(message).toString());
 
             channel.basicAck(deliveryTag,false);
         } catch (Exception e) {
