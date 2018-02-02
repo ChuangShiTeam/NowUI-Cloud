@@ -13,6 +13,7 @@ import com.nowui.cloud.base.usernotifyinfo.entity.UserNotify;
 import com.nowui.cloud.base.usernotifyinfo.service.UserNotifyService;
 import com.nowui.cloud.controller.BaseController;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ import com.nowui.cloud.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import static com.alibaba.fastjson.JSONArray.*;
+
 /**
  * 消息表移动端控制器
  *
@@ -41,36 +44,28 @@ public class NotifyMobileController extends BaseController {
 
     @Autowired
     private NotifyService notifyService;
-
     @Autowired
     private UserNotifyService userNotifyService;
-
     @Autowired
     private SubscriptionService subscriptionService;
-
     @Autowired
     private AppConfigRpc appConfigRpc;
 
     @ApiOperation(value = "新增一条公告记录")
     @RequestMapping(value = "/notify/mobile/v1/create/notify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> createAnnounceV1(@RequestBody Notify body) {
-
         validateRequest(
                 body,
                 Notify.APP_ID,
                 Notify.NOTIFY_CONTENT,
                 Notify.NOTIFY_SENDER
         );
-
         String notifyId = Util.getRandomUUID();
         body.setAppId(body.getAppId());
         body.setNotifyContent(body.getNotifyContent());
         body.setNotifySender(body.getNotifySender());
-
         String userId = body.getSystemCreateUserId();
-
         Boolean result = notifyService.save(body, notifyId, userId);
-
         return renderJson(result);
     }
 
@@ -147,17 +142,13 @@ public class NotifyMobileController extends BaseController {
         );
 
         String userId = body.getSystemCreateUserId();
-
         List<Notify> notifyList = new ArrayList<Notify>();
-
         // 1、查询用户的订阅表，得到用户的一系列订阅记录
         List<Subscription> subscriptions = subscriptionService.getSubscriptionByUserId(body.getAppId(), userId);
-
         // 2、通过每一条的订阅记录的target、targetType、action、createdAt去查询Notify表，获取订阅的Notify记录。（注意订阅时间必须早于提醒创建时间）
         subscriptions.forEach((entity) -> {
             List<Notify> notifies = notifyService.getNotifyInfoBySubscription(body.getAppId(), entity.getSubscriptionTarget(), entity.getSubscriptionTargetType(),
                     entity.getSubscriptionAction(), userId, entity.getSystemCreateTime().toString());
-
             notifies.forEach((notify) -> {
                 notifyList.add(notify);
             });
@@ -165,26 +156,31 @@ public class NotifyMobileController extends BaseController {
 
         // TODO:3、查询用户的配置文件SubscriptionConfig，如果没有则使用默认的配置DefaultSubscriptionConfig
 
-
         // 4、使用过滤好的Notify作为关联新建UserNotify
         notifyList.forEach((notify) -> {
-            UserNotify userNotify = new UserNotify();
-            userNotify.setAppId(notify.getAppId());
-            userNotify.setUserNotifyIsRead(false);
-            userNotify.setUserNotifyOwerId(userId);
-            userNotify.setNotifyId(notify.getNotifyId());
-            userNotifyService.save(userNotify, Util.getRandomUUID(), userId);
+            UserNotify aUserNotify = userNotifyService.find(notify.getNotifyId());
+            if (aUserNotify == null){
+                UserNotify userNotify = new UserNotify();
+                userNotify.setAppId(notify.getAppId());
+                userNotify.setUserNotifyIsRead(false);
+                userNotify.setUserNotifyOwerId(userId);
+                userNotify.setNotifyId(notify.getNotifyId());
+                userNotifyService.save(userNotify, Util.getRandomUUID(), userId);
+            }
         });
 
         List<UserNotify> userNotifies = userNotifyService.getUserNotifyByUserId(userId, body.getAppId(), "Remind");
+
+
+        // 构建JSON
+
 
         return renderJson(userNotifies);
     }
 
     @ApiOperation(value = "订阅消息")
-    @RequestMapping(value = "/notify/mobile/v1/subscribe", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/mobile/v1/subscribe/message", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> subscribeV1(@RequestBody User body) {
-
         validateRequest(
                 body,
                 User.APP_ID,
@@ -196,37 +192,33 @@ public class NotifyMobileController extends BaseController {
                 Subscription.SUBSCRIPTION_TARGET,
                 Subscription.SUBSCRIPTION_TARGET_TYPE
         );
-
         // 1、通过reason，查询NotifyConfig，获取对应的动作组:actions.
         List<AppConfig> appConfigs = appConfigRpc.findAppConfigsByAppCode(body.getAppId(), "NOWUI_CLOUD");
-        if (appConfigs == null){
+        if (appConfigs == null) {
             throw new BusinessException("系统配置初始化错误!");
         }
-
-        List<AppConfig> list = appConfigs.stream().filter(appConfig -> appConfig.getConfigKey() == "REASONACTION")
+        List<AppConfig> list = appConfigs.stream().filter(appConfig -> "REASONACTION".equals(appConfig.getConfigKey()))
                 .collect(Collectors.toList());
-
         if (list == null) {
             throw new BusinessException("系统配置初始化错误!");
         }
-
         Boolean result = true;
-
-//        // 2、遍历动作组，每一个动作新建一则Subscription记录
-//        list.forEach((item)->{
-//            // TODO: 遍历JSON数组.
-//            JSONObject jsonObject = JSONObject.parseObject(item.getConfigValue());
-//            jsonObject.keySet().stream().forEach(key->jsonObject.get(key));
-//
-//            // 存储 action 动作.
-//            Subscription tSubscription = new Subscription();
-//            tSubscription.setAppId(body.getAppId());
-//            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
-//            tSubscription.setSubscriptionTarget(subscription.getSubscriptionTargetType());
-//
-//            subscriptionService.save(tSubscription,Util.getRandomUUID(),body.getSystemCreateUserId())
-//        });
-
+        // 2、遍历动作组，每一个动作新建一则Subscription记录
+        list.forEach((AppConfig item) -> {
+            JSONObject jsonObject = JSONObject.parseObject(item.getConfigValue());
+            JSONArray json = JSONArray.parseArray(jsonObject.get(body.getReason()).toString());
+            if (json.size() > 0) {
+                for (int i = 0; i < json.size(); i++) {
+                    // 存储 action 动作.
+                    Subscription tSubscription = new Subscription();
+                    tSubscription.setAppId(body.getAppId());
+                    tSubscription.setSubscriptionAction(json.get(i).toString());
+                    tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
+                    tSubscription.setSubscriptionTargetType(subscription.getSubscriptionTargetType());
+                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getSystemCreateUserId());
+                }
+            }
+        });
         return renderJson(result);
     }
 
@@ -255,16 +247,12 @@ public class NotifyMobileController extends BaseController {
                 body,
                 UserNotify.APP_ID
         );
-
         JSONArray notifyIdsJsonArray = body.getJSONArray(UserNotify.NOTIFYIDS);
-
         if (Util.isNullOrEmpty(notifyIdsJsonArray)) {
             throw new BusinessException("NOTIFYIDS不能为空!");
         }
-
         List<String> notifyIds = notifyIdsJsonArray.toJavaList(String.class);
         Boolean result = true;
-
         notifyIds.forEach((item) -> {
             UserNotify userNotify = new UserNotify();
             userNotify.setAppId(body.getAppId());
@@ -272,7 +260,6 @@ public class NotifyMobileController extends BaseController {
             userNotify.setNotifyId(item);
             userNotifyService.update(userNotify, item, userNotify.getSystemUpdateUserId(), userNotify.getSystemVersion());
         });
-
         return renderJson(result);
     }
 

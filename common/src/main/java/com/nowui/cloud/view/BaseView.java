@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
  *
  * 2018-01-29
  */
+@Component
 public class BaseView extends JSONObject implements Serializable {
 
     private static final long serialVersionUID = 1L;

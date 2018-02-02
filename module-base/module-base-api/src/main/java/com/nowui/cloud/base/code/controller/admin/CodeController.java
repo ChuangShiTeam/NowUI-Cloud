@@ -1,6 +1,12 @@
 package com.nowui.cloud.base.code.controller.admin;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,11 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.base.code.entity.Code;
-import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.shop.product.rpc.ProductRpc;
-import com.nowui.cloud.util.FileUtil;
-import com.nowui.cloud.util.Util;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -26,9 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.nowui.cloud.base.code.entity.Code;
 import com.nowui.cloud.base.code.service.CodeService;
+import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.shop.product.rpc.ProductRpc;
+import com.nowui.cloud.util.FileUtil;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,10 +57,6 @@ public class CodeController extends BaseController {
     @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String test() {
         Code codeEntity = getEntry(Code.class);
-
-///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
-
-//        productMq.sendBar2Rabbitmq("123456789");
 
         return "Hello World!";
     }
