@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowui.cloud.code.code.mapper.CodeMapper">
+
+    <select id="tableSchemaList" resultType="com.nowui.cloud.code.code.entity.Code">
+        SELECT
+        #{tableSchema} AS tableSchema,
+        table_name AS tableName,
+        engine,
+        table_comment AS tableComment,
+        create_time AS systemCreateTime
+        FROM
+        information_schema.tables
+        WHERE table_schema = #{tableSchema}
+        <if test="tableName != null and tableName !=''">
+            AND table_name LIKE CONCAT('%','${tableName}','%')
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="tableNameList" resultType="java.util.Map">
+		SELECT 
+		column_name AS columnName,
+	    column_key AS columnKey,
+	    character_maximum_length AS characterMaximumLength,
+	    column_type AS columnType,
+	    data_type AS dataType,
+	    column_comment AS columnComment
+	    FROM information_schema.columns
+	    WHERE table_schema = #{tableSchema}
+	    AND table_name = #{tableName}
+	</select>
+
+</mapper>

@@ -1,0 +1,39 @@
+package com.nowui.cloud.${moduleName}.${packageName}.service;
+import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
+
+import java.util.List;
+
+/**
+ * ${tableComment}业务接口
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseService<${firstUpperWithoutUnderlineEntityName}> {
+
+    /**
+     * ${tableComment}统计
+     *
+     * @param appId 应用编号
+     <%for(column in searchColumnList){%>
+     * @param ${column.columnName} ${column.columnComment}
+     <%}%>
+     * @return Integer ${tableComment}统计
+     */
+    Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
+
+    /**
+     * ${tableComment}列表
+     *
+     * @param appId 应用编号
+     <%for(column in searchColumnList){%>
+     * @param ${column.columnName} ${column.columnComment}
+     <%}%>
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
+     */
+    List<${firstUpperWithoutUnderlineEntityName}> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
+}

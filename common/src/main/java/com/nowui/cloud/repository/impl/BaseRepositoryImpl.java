@@ -1,6 +1,5 @@
 package com.nowui.cloud.repository.impl;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mongodb.client.result.UpdateResult;
 import com.nowui.cloud.repository.BaseRepository;
 import com.nowui.cloud.view.BaseView;
@@ -9,7 +8,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.Map;
  *
  * 2018-01-29
  */
-@Repository
 public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T> {
 
     @Autowired

@@ -1,0 +1,67 @@
+package com.nowui.cloud.${moduleName}.${packageName}.listener;
+
+import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.shop.product.router.${firstUpperWithoutUnderlineEntityName}Router;
+import com.nowui.cloud.shop.product.view.${firstUpperWithoutUnderlineEntityName}View;
+import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * ${tableComment}新增消息队列
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+@Configuration
+public class ${firstUpperWithoutUnderlineEntityName}V1UpdateListener {
+
+    private final String queueName = "${firstLowerEntityName}_v1_update";
+
+    @Bean
+    Queue ${firstUpperWithoutUnderlineEntityName}V1UpdateQueue(RabbitAdmin rabbitAdmin) {
+        Queue queue = new Queue(queueName, true);
+        rabbitAdmin.declareQueue(queue);
+        return queue;
+    }
+
+    @Bean
+    Binding ${firstUpperWithoutUnderlineEntityName}V1UpdateQueueBindingExchange(Queue ${firstUpperWithoutUnderlineEntityName}V1UpdateQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(${firstUpperWithoutUnderlineEntityName}V1UpdateQueue).to(exchange).with(${firstUpperWithoutUnderlineEntityName}Router.${firstLowerWithoutUnderlineEntityName}_V1_UPDATE);
+        rabbitAdmin.declareBinding(binding);
+        return binding;
+    }
+
+    @Bean
+    public MessageListenerContainer ${firstUpperWithoutUnderlineEntityName}V1UpdateMessageListenerContainer(ConnectionFactory connectionFactory) {
+        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
+        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
+        simpleMessageListenerContainer.setQueueNames(queueName);
+        simpleMessageListenerContainer.setMessageListener(${firstUpperWithoutUnderlineEntityName}V1UpdateMessageListener());
+        simpleMessageListenerContainer.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        simpleMessageListenerContainer.setPrefetchCount(Constant.PREFETCH_COUNT);
+        return simpleMessageListenerContainer;
+    }
+
+    @Bean
+    public RabbitListener ${firstUpperWithoutUnderlineEntityName}V1UpdateMessageListener() {
+        return new RabbitListener() {
+
+            @Override
+            public void receive(String message) {
+                ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(message, ${firstUpperWithoutUnderlineEntityName}View.class);
+
+                System.out.println(${firstLowerWithoutUnderlineEntityName}View.toJSONString());
+            }
+
+        };
+    }
+
+}

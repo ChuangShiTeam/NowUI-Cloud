@@ -1,9 +1,7 @@
 package com.nowui.cloud.view;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.io.Serializable;
 

@@ -1,0 +1,16 @@
+package com.nowui.cloud.${moduleName}.${packageName}.router;
+
+/**
+ * ${tableComment}消息队列路由
+ *
+ * @author ${author}
+ *
+ * ${date}
+ */
+public class ${firstUpperWithoutUnderlineEntityName}Router {
+
+    public static final String ${upperEntityName}_V1_SAVE = "${firstLowerWithoutUnderlineEntityName}.v1.save";
+    public static final String ${upperEntityName}_V1_DELETE = "${firstLowerWithoutUnderlineEntityName}.v1.delete";
+    public static final String ${upperEntityName}_V1_UPDATE = "${firstLowerWithoutUnderlineEntityName}.v1.update";
+
+}
