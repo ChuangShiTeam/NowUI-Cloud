@@ -1,5 +1,6 @@
 package com.nowui.cloud.rabbit;
 
+import com.nowui.cloud.constant.Constant;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -11,7 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 
 /**
+ * rabbit配置
+ *
  * @author ZhongYongQiang
+ * <p>
+ * 2018-01-29
  */
 @Configuration
 public class RabbitConfig {
@@ -21,19 +26,6 @@ public class RabbitConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
         rabbitTemplate.setMandatory(true);
-
-        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
-            if (ack) {
-
-            } else {
-
-            }
-        });
-
-        //消息发送到RabbitMQ交换器，但无相应Exchange时的回调
-        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
-
-        });
 
         return rabbitTemplate;
     }
@@ -57,10 +49,10 @@ public class RabbitConfig {
         MappingJackson2MessageConverter mappingJackson2MessageConverter = new MappingJackson2MessageConverter();
         return mappingJackson2MessageConverter;
     }
-    
+
     @Bean
     TopicExchange exchange(RabbitAdmin rabbitAdmin) {
-        TopicExchange topicExchange = new TopicExchange("exchange");
+        TopicExchange topicExchange = new TopicExchange(Constant.EXCHANGE);
         rabbitAdmin.declareExchange(topicExchange);
         return topicExchange;
     }

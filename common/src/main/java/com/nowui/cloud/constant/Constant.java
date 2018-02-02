@@ -7,6 +7,8 @@ public class Constant {
 
     public static String PRIVATE_KEY;
 
+    public static final String EXCHANGE = "exchange";
+
     public static final String CODE = "code";
 
     public static final String TOTAL = "total";
@@ -16,6 +18,8 @@ public class Constant {
     public static final String LIST = "list";
 
     public static final String MESSAGE = "message";
+
+    public static final String ERROR = "网络繁忙，请稍后访问！";
     
     public static final String CHILDREN = "children";
 
@@ -34,12 +38,22 @@ public class Constant {
     public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
     
     public static final String EXPIRE_TIME = "expireTime";
-    
+
     public static final String TOKEN = "token";
+
+    public static final String SIGN = "sign";
+
+    public static final String TIMESTAMP = "timestamp";
     
     public static final String PLATFORM = "platform";
-    
+
     public static final String VERSION = "version";
+
+    public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
+
+    public static final String SYSTEM_REQUEST_IP_ADDRESS = "systemRequestIpAddress";
+
+    public static final int PREFETCH_COUNT = 10;
     
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");

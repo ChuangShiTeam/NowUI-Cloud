@@ -40,9 +40,9 @@ public class ElasticSearchConfig {
 //        return null;
 //    }
 
-    @Bean
-    public ElasticsearchTemplate elasticsearchTemplate(Client client) {
-        return new ElasticsearchTemplate(client);
-    }
+//    @Bean
+//    public ElasticsearchTemplate elasticsearchTemplate(Client client) {
+//        return new ElasticsearchTemplate(client);
+//    }
 
 }

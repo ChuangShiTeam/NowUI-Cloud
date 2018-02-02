@@ -104,11 +104,11 @@ public class RequestFilter extends ZuulFilter {
 //                e.printStackTrace();
 //            }
 
-            String token = parameterJSONObject.getString("token");
+            String token = parameterJSONObject.getString(Constant.TOKEN);
             String systemRequestUserId = decipherToken(token, context);
 
-            parameterJSONObject.put("systemRequestUserId", systemRequestUserId);
-            parameterJSONObject.put("systemRequestIpAddress", Util.getIpAddress(request));
+            parameterJSONObject.put(Constant.SYSTEM_REQUEST_USER_ID, systemRequestUserId);
+            parameterJSONObject.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Util.getIpAddress(request));
 
             final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
             context.setRequest(new HttpServletRequestWrapper(context.getRequest()) {
@@ -131,12 +131,12 @@ public class RequestFilter extends ZuulFilter {
         } else if (contentType.contains(formDataType)) {
             MultipartHttpServletRequest multipartRequest =
                     WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
-            String token = multipartRequest.getParameter("token");
+            String token = multipartRequest.getParameter(Constant.TOKEN);
             String systemRequestUserId = decipherToken(token, context);
             List<String> params = new ArrayList<String>();
             params.add(systemRequestUserId);
             Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
-            map.put("systemRequestUserId", params);
+            map.put(Constant.SYSTEM_REQUEST_USER_ID, params);
             context.setRequestQueryParams(map);
         }
 
@@ -160,7 +160,7 @@ public class RequestFilter extends ZuulFilter {
             } catch (Exception e) {
                 Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
                 map.put("code", 400);
-                map.put("message", "Token不对");
+                map.put("message", "token不对");
 
                 context.setSendZuulResponse(false);
                 context.setResponseStatusCode(200);

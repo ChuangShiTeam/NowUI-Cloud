@@ -477,6 +477,7 @@ public class ForumMobileController extends BaseController {
                 body,
                 Forum.APP_ID,
                 Forum.FORUM_ID,
+                Topic.SYSTEM_CREATE_TIME,
                 Forum.PAGE_INDEX,
                 Forum.PAGE_SIZE
         );
@@ -490,7 +491,7 @@ public class ForumMobileController extends BaseController {
         Integer countResult = topicForumService.countByForumId(forumId);
         
         // 2,获得topic的分页列表
-        List<TopicForum> topicForumList = topicForumService.listByForumId(forumId, pageIndex, pageSize);
+        List<TopicForum> topicForumList = topicForumService.listByForumId(forumId, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), pageIndex, pageSize);
         
         // 3,从TopicForum获取topicIdList, 
         List<String> topicIdList = Util.beanToField(topicForumList, TopicForum.TOPIC_ID);

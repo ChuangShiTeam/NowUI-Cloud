@@ -61,15 +61,15 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.APP_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.PAGE_INDEX,
-                TopicComment.PAGE_SIZE
+                TopicComment.PAGE_SIZE,
+                TopicComment.SYSTEM_CREATE_TIME
         );
 
         String requestUserId = body.getSystemRequestUserId();
         
         String topicId = body.getTopicId();
         Integer resultTotal = topicCommentService.countByTopicId(topicId);
-        List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topicId, body.getPageIndex(), body.getPageSize());
-		
+        List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topicId, (List<String>) body.get(TopicComment.EXCLUDE_COMMENT_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         if (Util.isNullOrEmpty(topicCommentList)) {
             return renderJson(resultTotal, topicCommentList);
         }

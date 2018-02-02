@@ -32,7 +32,11 @@ import com.nowui.cloud.util.Util;
 import com.nowui.cloud.util.ValidateUtil;
 
 /**
+ * BaseController
+ *
  * @author ZhongYongQiang
+ *
+ * 2018-01-29
  */
 @Transactional
 public class BaseController {
@@ -48,8 +52,6 @@ public class BaseController {
         if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
             getRequest().setAttribute(Constant.REQUEST_BODY, Util.readData(getRequest()));
         }
-        System.out.println(Util.readData(getRequest()));
-        System.out.println("+++");
         return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }
 
@@ -113,10 +115,10 @@ public class BaseController {
             map.put(Constant.MESSAGE, e.getMessage());
         } else if (e instanceof SystemException) {
             map.put(Constant.CODE, 500);
-            map.put(Constant.MESSAGE, "网络出现错误");
+            map.put(Constant.MESSAGE, Constant.ERROR);
         } else {
             map.put(Constant.CODE, 500);
-            map.put(Constant.MESSAGE, "网络出现错误");
+            map.put(Constant.MESSAGE, Constant.ERROR);
         }
         return map;
     }
@@ -128,7 +130,7 @@ public class BaseController {
 
         Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
         map.put(Constant.CODE, 500);
-        map.put(Constant.MESSAGE, "网络出现错误");
+        map.put(Constant.MESSAGE, Constant.ERROR);
         return map;
     }
 
@@ -166,6 +168,19 @@ public class BaseController {
     }
 
     protected Map<String, Object> renderJson(int total, Object data) {
+        data = checkFirstResponse(data);
+
+        Map<String, Object> dataMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+        dataMap.put(Constant.TOTAL, total);
+        dataMap.put(Constant.LIST, data);
+
+        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+        map.put(Constant.CODE, 200);
+        map.put(Constant.DATA, dataMap);
+        return map;
+    }
+
+    protected Map<String, Object> renderJson(long total, Object data) {
         data = checkFirstResponse(data);
 
         Map<String, Object> dataMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
