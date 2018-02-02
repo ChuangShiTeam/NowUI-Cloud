@@ -57,21 +57,6 @@ public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T>
     }
 
     @Override
-    public Integer count(org.springframework.data.elasticsearch.core.query.Criteria criteria) {
-        return null;
-    }
-
-    @Override
-    public List<T> list(org.springframework.data.elasticsearch.core.query.Criteria criteria) {
-        return null;
-    }
-
-    @Override
-    public List<T> list(org.springframework.data.elasticsearch.core.query.Criteria criteria, Integer m, Integer n) {
-        return null;
-    }
-
-    @Override
     public T find(String id) {
         Criteria criteria = new Criteria();
         Query query = new Query(criteria);

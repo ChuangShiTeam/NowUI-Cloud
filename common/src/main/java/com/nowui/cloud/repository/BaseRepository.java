@@ -3,7 +3,7 @@ package com.nowui.cloud.repository;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.view.BaseView;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.List;
 
