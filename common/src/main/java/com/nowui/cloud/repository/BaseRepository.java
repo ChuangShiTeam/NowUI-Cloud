@@ -16,13 +16,13 @@ import java.util.List;
  */
 public interface BaseRepository<T extends BaseView> {
 
-    /**
-     * 统计查询
-     *
-     * @param criteria
-     * @return
-     */
-    Integer count(Criteria criteria);
+//    /**
+//     * 统计查询
+//     *
+//     * @param criteria
+//     * @return
+//     */
+//    Integer count(Criteria criteria);
 
     /**
      * 列表查询
@@ -30,17 +30,17 @@ public interface BaseRepository<T extends BaseView> {
      * @param criteria
      * @return
      */
-    List<T> list(Criteria criteria);
-
-    /**
-     * 分页列表查询
-     *
-     * @param criteria
-     * @param m
-     * @param n
-     * @return
-     */
-    List<T> list(Criteria criteria, Integer m, Integer n);
+//    List<T> list(Criteria criteria);
+//
+//    /**
+//     * 分页列表查询
+//     *
+//     * @param criteria
+//     * @param m
+//     * @param n
+//     * @return
+//     */
+//    List<T> list(Criteria criteria, Integer m, Integer n);
 
     /**
      * 单个实体类查询

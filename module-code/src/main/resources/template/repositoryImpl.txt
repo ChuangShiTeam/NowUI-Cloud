@@ -15,4 +15,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class ${firstUpperWithoutUnderlineEntityName}RepositoryImpl extends BaseRepositoryImpl<${firstUpperWithoutUnderlineEntityName}View> implements ${firstUpperWithoutUnderlineEntityName}Repository {
 
+    @Override
+    public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
+        Integer count = count(
+                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
+                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
+                        <%for(column in searchColumnList){%>
+                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
+                         <%}%>
+                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
+        );
+        return count;
+    }
+
+    @Override
+    public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
+        List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = list(
+                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
+                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
+                        <%for(column in searchColumnList){%>
+                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
+                         <%}%>
+                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(${firstUpperWithoutUnderlineEntityName}.SYSTEM_CREATE_TIME)),
+                pageIndex,
+                pageSize
+        );
+
+        return ${firstLowerWithoutUnderlineEntityName}List;
+    }
+
 }

@@ -43,10 +43,8 @@ public class ProductAdminController extends BaseController {
                 Product.PAGE_SIZE
         );
 
-        Criteria criteria = Criteria.where(ProductView.SYSTEM_STATUS).is(true);
-
-        long resultTotal = productRepository.count(criteria);
-        List<ProductView> resultList = productRepository.list(criteria);
+        long resultTotal = productRepository.countForAdmin(product.getAppId(), product.getProductName());
+        List<ProductView> resultList = productRepository.listForAdmin(product.getAppId(), product.getProductName(), product.getM(), product.getN());
 
         validateResponse(
                 ProductView.PRODUCT_ID,

@@ -27,10 +27,9 @@ public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T>
     private T view;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 
-    @Override
-    public Integer count(Criteria criteria) {
+    protected Integer count(Criteria criteria) {
         Query query = new Query(criteria);
 
         long result = mongoTemplate.count(query, view.getClass());
@@ -38,16 +37,14 @@ public class BaseRepositoryImpl<T extends BaseView> implements BaseRepository<T>
         return new Long(result).intValue();
     }
 
-    @Override
-    public List<T> list(Criteria criteria) {
+    protected List<T> list(Criteria criteria) {
         Query query = new Query(criteria);
         List<T> resultList = (List<T>) mongoTemplate.find(query, view.getClass());
 
         return resultList;
     }
 
-    @Override
-    public List<T> list(Criteria criteria, Integer m, Integer n) {
+    protected List<T> list(Criteria criteria, Integer m, Integer n) {
         Query query = new Query(criteria);
         List<T> resultList = (List<T>) mongoTemplate.find(query, view.getClass());
 

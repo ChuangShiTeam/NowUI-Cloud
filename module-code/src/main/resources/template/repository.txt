@@ -12,4 +12,28 @@ import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnde
  */
 public interface ${firstUpperWithoutUnderlineEntityName}Repository extends BaseRepository<${firstUpperWithoutUnderlineEntityName}View> {
 
+    /**
+     * ${tableComment}统计
+     *
+     * @param appId 应用编号
+     <%for(column in searchColumnList){%>
+     * @param ${column.columnName} ${column.columnComment}
+     <%}%>
+     * @return Integer ${tableComment}统计
+     */
+    Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
+
+    /**
+     * ${tableComment}列表
+     *
+     * @param appId 应用编号
+     <%for(column in searchColumnList){%>
+     * @param ${column.columnName} ${column.columnComment}
+     <%}%>
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
+     */
+    List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
+
 }
