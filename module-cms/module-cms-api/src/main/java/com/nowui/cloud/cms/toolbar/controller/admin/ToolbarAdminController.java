@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
+import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
+import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -39,7 +41,8 @@ public class ToolbarAdminController extends BaseController {
     
     @ApiOperation(value = "工具栏分页列表")
     @RequestMapping(value = "/toolbar/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Toolbar body) {
+    public Map<String, Object> listV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(
             body, 
             Toolbar.APP_ID, 
@@ -75,10 +78,11 @@ public class ToolbarAdminController extends BaseController {
 
     @ApiOperation(value = "根据编号查询工具栏信息")
     @RequestMapping(value = "/toolbar/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Toolbar body) {
+    public Map<String, Object> findV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(body, Toolbar.TOOLBAR_ID);
 
-        Toolbar result = toolbarService.find(body.getToolbarId());
+        ToolbarView result = toolbarService.find(body.getToolbarId());
         
         File file = fileRpc.findV1(result.getToolbarImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
@@ -103,7 +107,8 @@ public class ToolbarAdminController extends BaseController {
 
     @ApiOperation(value = "工具栏新增")
     @RequestMapping(value = "/toolbar/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Toolbar body) {
+    public Map<String, Object> saveV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(
             body, 
             Toolbar.APP_ID, 
@@ -114,14 +119,15 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.TOOLBAR_SORT
         );
 
-        Boolean result = toolbarService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = toolbarService.save(body, Util.getRandomUUID(),body.getAppId(), ToolbarRouter.TOOLBAR_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "工具栏修改")
     @RequestMapping(value = "/toolbar/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Toolbar body) {
+    public Map<String, Object> updateV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(
             body, 
             Toolbar.TOOLBAR_ID, 
@@ -133,28 +139,30 @@ public class ToolbarAdminController extends BaseController {
             Toolbar.SYSTEM_VERSION
         );
 
-        Boolean result = toolbarService.update(body, body.getToolbarId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = toolbarService.update(body, body.getToolbarId(),body.getAppId(), ToolbarRouter.TOOLBAR_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "工具栏删除")
     @RequestMapping(value = "/toolbar/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Toolbar body) {
+    public Map<String, Object> deleteV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(
             body, 
             Toolbar.TOOLBAR_ID, 
             Toolbar.SYSTEM_VERSION
         );
 
-        Boolean result = toolbarService.delete(body.getToolbarId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = toolbarService.delete(body.getToolbarId(),body.getAppId(), ToolbarRouter.TOOLBAR_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
     
     @ApiOperation(value = "工具栏重建缓存")
     @RequestMapping(value = "/toolbar/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody Toolbar body) {
+    public Map<String, Object> replaceV1() {
+    	Toolbar body = getEntry(Toolbar.class);
         validateRequest(body, Toolbar.TOOLBAR_ID);
 
         toolbarService.replace(body.getToolbarId());

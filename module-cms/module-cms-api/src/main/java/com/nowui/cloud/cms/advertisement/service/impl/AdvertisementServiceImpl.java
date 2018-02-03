@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.mapper.AdvertisementMapper;
+import com.nowui.cloud.cms.advertisement.repository.AdvertisementRepository;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
+import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 广告业务接口实现
@@ -19,7 +21,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2017年12月26日
  */
 @Service
-public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMapper, Advertisement> implements AdvertisementService {
+public class AdvertisementServiceImpl extends SuperServiceImpl<AdvertisementMapper, Advertisement, AdvertisementRepository, AdvertisementView> implements AdvertisementService {
     
     @Override
     public Integer countForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle) {

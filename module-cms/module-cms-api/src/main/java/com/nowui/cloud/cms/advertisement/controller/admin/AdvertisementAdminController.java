@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
+import com.nowui.cloud.cms.advertisement.router.AdvertisementRouter;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
+import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
+import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -83,7 +86,7 @@ public class AdvertisementAdminController extends BaseController {
                 advertisementEntity,
                 Advertisement.ADEVERTISEMENT_ID);
 
-        Advertisement result = advertisementService.find(advertisementEntity.getAdvertisementId());
+        AdvertisementView result = advertisementService.find(advertisementEntity.getAdvertisementId());
 
         File file = fileRpc.findV1(result.getAdvertisementImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
@@ -126,7 +129,7 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.ADEVERTISEMENT_TITLE
         );
 
-        Boolean result = advertisementService.save(advertisementEntity, Util.getRandomUUID(), advertisementEntity.getSystemRequestUserId());
+        Boolean result = advertisementService.save(advertisementEntity, Util.getRandomUUID(), advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -152,7 +155,7 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.SYSTEM_VERSION
         );
 
-        Boolean result = advertisementService.update(advertisementEntity, advertisementEntity.getAdvertisementId(), advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
+        Boolean result = advertisementService.update(advertisementEntity, advertisementEntity.getAdvertisementId(), advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -168,7 +171,7 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.SYSTEM_VERSION
         );
 
-        Boolean result = advertisementService.delete(advertisementEntity.getAdvertisementId(), advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
+        Boolean result = advertisementService.delete(advertisementEntity.getAdvertisementId() ,advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
 
         return renderJson(result);
     }

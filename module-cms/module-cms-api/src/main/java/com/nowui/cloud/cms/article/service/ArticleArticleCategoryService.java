@@ -2,7 +2,9 @@ package com.nowui.cloud.cms.article.service;
 import java.util.List;
 
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
+import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 文章文章分类业务接口
@@ -11,7 +13,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-03
  */
-public interface ArticleArticleCategoryService extends BaseService<ArticleArticleCategory> {
+public interface ArticleArticleCategoryService extends SuperService<ArticleArticleCategory, ArticleArticleCategoryView> {
     
     /**
      * 根据文章ID查询文章的主文章分类
@@ -44,7 +46,7 @@ public interface ArticleArticleCategoryService extends BaseService<ArticleArticl
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    void deleteByArticleId(String articleId, String systemRequestUserId);
+    void deleteByArticleId(String articleId, String appId, String systemRequestUserId);
     
     /**
      * 根据文章分类编号查询问文章的主分类列表

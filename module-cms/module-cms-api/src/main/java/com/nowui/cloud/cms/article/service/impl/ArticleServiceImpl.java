@@ -13,10 +13,12 @@ import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMapper;
+import com.nowui.cloud.cms.article.router.ArticleArticleCategoryRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
+import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
@@ -99,7 +101,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
+                articleArticleCategoryService.save(articleArticleCategory, appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_SAVE,  Util.getRandomUUID(), systemRequestUserId);
             }
         }
         return result;
@@ -129,7 +131,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
+                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_SAVE, systemRequestUserId);
             }
         }
         return result;

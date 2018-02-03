@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.mapper.ToolbarMapper;
+import com.nowui.cloud.cms.toolbar.repository.ToolbarRepository;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
+import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 工具栏业务接口实现
@@ -19,7 +21,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2017年12月26日
  */
 @Service
-public class ToolbarServiceImpl extends BaseServiceImpl<ToolbarMapper, Toolbar> implements ToolbarService {
+public class ToolbarServiceImpl extends SuperServiceImpl<ToolbarMapper, Toolbar, ToolbarRepository, ToolbarView> implements ToolbarService {
 
     @Override
     public Integer countForAdmin(String appId, String toolbarName) {

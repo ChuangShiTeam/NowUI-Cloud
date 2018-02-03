@@ -6,9 +6,15 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.mapper.ArticleArticleCategoryMapper;
+import com.nowui.cloud.cms.article.repository.ArticleArticleCategoryRepository;
+import com.nowui.cloud.cms.article.router.ArticleArticleCategoryRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
+import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
+import com.nowui.cloud.cms.toolbar.repository.ToolbarRepository;
+import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 文章文章分类业务实现
@@ -18,7 +24,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleArticleCategoryServiceImpl extends BaseServiceImpl<ArticleArticleCategoryMapper, ArticleArticleCategory> implements ArticleArticleCategoryService {
+public class ArticleArticleCategoryServiceImpl extends SuperServiceImpl<ArticleArticleCategoryMapper, ArticleArticleCategory,  ArticleArticleCategoryRepository, ArticleArticleCategoryView> implements ArticleArticleCategoryService {
 
     @Override
     public ArticleArticleCategory findPrimaryByArticleId(String articleId) {
@@ -63,13 +69,13 @@ public class ArticleArticleCategoryServiceImpl extends BaseServiceImpl<ArticleAr
     }
 
     @Override
-    public void deleteByArticleId(String articleId, String systemRequestUserId) {
+    public void deleteByArticleId(String articleId, String appId, String systemRequestUserId) {
         
         List<ArticleArticleCategory> articleArticleCategoryList = listByArticleId(articleId);
         
         if (articleArticleCategoryList != null && articleArticleCategoryList.size() > 0) {
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-                delete(articleArticleCategory.getArticleArticleCategoryId(), systemRequestUserId, articleArticleCategory.getSystemVersion());
+                delete(articleArticleCategory.getArticleArticleCategoryId(), appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_DELETE, systemRequestUserId, articleArticleCategory.getSystemVersion());
             }
         }
         
