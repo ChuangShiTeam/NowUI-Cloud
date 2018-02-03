@@ -3,6 +3,7 @@ package com.nowui.cloud.${moduleName}.${packageName}.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.${moduleName}.${packageName}.repository.${firstUpperWithoutUnderlineEntityName}Repository;
 import com.nowui.cloud.${moduleName}.${packageName}.router.${firstUpperWithoutUnderlineEntityName}Router;
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 import org.springframework.amqp.core.*;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +26,9 @@ import org.springframework.context.annotation.Configuration;
 public class ${firstUpperWithoutUnderlineEntityName}V1SaveListener {
 
     private final String queueName = "${firstLowerEntityName}_v1_save";
+
+    @Autowired
+    private ${firstUpperWithoutUnderlineEntityName}Repository ${firstLowerWithoutUnderlineEntityName}Repository;
 
     @Bean
     Queue ${firstUpperWithoutUnderlineEntityName}V1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -58,7 +63,7 @@ public class ${firstUpperWithoutUnderlineEntityName}V1SaveListener {
             public void receive(String message) {
                 ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(message, ${firstUpperWithoutUnderlineEntityName}View.class);
 
-                System.out.println(${firstLowerWithoutUnderlineEntityName}View.toJSONString());
+                ${firstLowerWithoutUnderlineEntityName}Repository.save(${firstLowerWithoutUnderlineEntityName}View);
             }
 
         };

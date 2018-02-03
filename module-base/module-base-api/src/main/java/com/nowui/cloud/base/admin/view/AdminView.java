@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 /**
  * 管理员视图
  *
- * @author ZhongYongQiang
+ * @author marcus
  *
- * 2018-02-02
+ * 2018-02-03
  */
 @Component
 @Document(collection = "admin_info")
@@ -20,7 +20,7 @@ public class AdminView extends BaseView {
     /**
      * 管理员编号
      */
-    @Id
+    @Field
     private String adminId;
     public static final String ADMIN_ID = "adminId";
 
