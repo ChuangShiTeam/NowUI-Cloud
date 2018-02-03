@@ -6,7 +6,9 @@ import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
 import com.nowui.cloud.member.member.entity.MemberSignature;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 会员业务接口
@@ -15,7 +17,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface MemberService extends BaseService<Member> {
+public interface MemberService extends SuperService<Member,MemberView> {
 
     /**
      * 会员统计

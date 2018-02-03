@@ -2,14 +2,16 @@ package com.nowui.cloud.member.member.repository;
 
 import com.nowui.cloud.repository.BaseRepository;
 import com.nowui.cloud.member.member.view.MemberFollowView;
+import org.springframework.stereotype.Component;
 
 /**
- * 会员关注视图访问组件接口
+ * 关注会员信息视图访问组件接口
  *
- * @author marcus
+ * @author shawn
  *
- * 2018-02-02
+ * 2018-02-03
  */
+@Component
 public interface MemberFollowRepository extends BaseRepository<MemberFollowView> {
 
 }

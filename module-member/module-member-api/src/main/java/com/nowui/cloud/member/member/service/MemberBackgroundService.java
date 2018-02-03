@@ -1,6 +1,8 @@
 package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.entity.MemberBackground;
+import com.nowui.cloud.member.member.view.MemberBackgroundView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 会员背景业务接口
@@ -9,7 +11,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-14
  */
-public interface MemberBackgroundService extends BaseService<MemberBackground> {
+public interface MemberBackgroundService extends SuperService<MemberBackground,MemberBackgroundView> {
 
     /**
      * 根据会员编号查询会员背景信息

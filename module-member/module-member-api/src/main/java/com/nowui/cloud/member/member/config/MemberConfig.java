@@ -7,10 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MemberConfig {
-
     @Bean
     RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
-    
 }

@@ -7,11 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 /**
- * 会员关注视图
+ * 关注会员信息视图
  *
- * @author marcus
+ * @author shawn
  *
- * 2018-02-02
+ * 2018-02-03
  */
 @Component
 @Document(collection = "member_follow_info")
@@ -20,7 +20,7 @@ public class MemberFollowView extends BaseView {
     /**
      * 会员关注编号
      */
-    @Id
+    @Field
     private String memberFollowId;
     public static final String MEMBER_FOLLOW_ID = "memberFollowId";
 

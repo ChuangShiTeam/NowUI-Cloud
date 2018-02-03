@@ -81,36 +81,47 @@ public class UserNotify extends BaseEntity {
     /**
      * 用户头像
      */
+    private String header;
     public static final String HEADER = "header";
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     /*
     *  用户姓名
     * */
+    private String userName;
     public static final String USERNAME = "userName";
 
     /*
     * 动作类型
      */
+    private String action;
     public static final String ACTION = "action";
 
     /*
     * 目标类型
     * */
+    private String targetType;
     public static final String TARGETTYPE = "targetType";
 
     /*
      * 目标ID
      * */
+    private String targetId;
     public static final String TARGETID = "targetId";
 
     /*
     *  目标内容
     * */
+    private String targetContent;
     public static final String TARGETCONTENT = "targetContent";
 
     /*
     *  发送的消息
     * */
+    private String message;
     public static final String MESSAGE = "message";
 
     public String getUserNotifyId() {

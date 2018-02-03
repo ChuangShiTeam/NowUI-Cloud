@@ -3,7 +3,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.member.member.entity.MemberDialogueRecord;
+import com.nowui.cloud.member.member.view.MemberDialogueRecordView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 会员对话记录业务接口
@@ -12,7 +14,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface MemberDialogueRecordService extends BaseService<MemberDialogueRecord> {
+public interface MemberDialogueRecordService extends SuperService<MemberDialogueRecord,MemberDialogueRecordView> {
 
     /**
      * 会员对话记录统计

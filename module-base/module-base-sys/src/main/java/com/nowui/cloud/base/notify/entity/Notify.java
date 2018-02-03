@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 @Component
 @TableName(value = "notify_info")
 public class Notify extends BaseEntity {
-
     /**
      * 消息编号
      */
@@ -102,6 +101,10 @@ public class Notify extends BaseEntity {
     @Length(max = 32, message = " 发送者编号长度超出限制")
     private String notifySender;
     public static final String NOTIFY_SENDER = "notifySender";
+
+
+//    private String header;
+//    public static final String header = "notifySender";
 
 
     public String getNotifyId() {

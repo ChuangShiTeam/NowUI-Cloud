@@ -2,7 +2,9 @@ package com.nowui.cloud.member.member.service;
 import java.util.List;
 
 import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 会员关注业务接口
@@ -11,7 +13,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-02
  */
-public interface MemberFollowService extends BaseService<MemberFollow> {
+public interface MemberFollowService extends SuperService<MemberFollow,MemberFollowView> {
 
     /**
      * 会员关注统计

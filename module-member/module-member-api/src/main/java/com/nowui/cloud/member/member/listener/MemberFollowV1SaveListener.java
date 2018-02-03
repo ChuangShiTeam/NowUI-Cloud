@@ -3,6 +3,7 @@ package com.nowui.cloud.member.member.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.member.member.router.MemberFollowRouter;
 import com.nowui.cloud.member.member.view.MemberFollowView;
 import org.springframework.amqp.core.*;
@@ -10,20 +11,24 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 会员关注新增消息队列
+ * 关注会员信息新增消息队列
  *
- * @author marcus
+ * @author shawn
  *
- * 2018-02-02
+ * 2018-02-03
  */
 @Configuration
 public class MemberFollowV1SaveListener {
 
     private final String queueName = "member_follow_v1_save";
+
+    @Autowired
+    private MemberFollowService memberFollowService;
 
     @Bean
     Queue MemberFollowV1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -58,7 +63,7 @@ public class MemberFollowV1SaveListener {
             public void receive(String message) {
                 MemberFollowView memberFollowView = JSON.parseObject(message, MemberFollowView.class);
 
-                System.out.println(memberFollowView.toJSONString());
+                memberFollowService.save(memberFollowView);
             }
 
         };

@@ -1,6 +1,8 @@
 package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
+import com.nowui.cloud.member.member.view.MemberPerferenceLanguageView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 会员偏好语言业务接口
@@ -9,7 +11,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-29
  */
-public interface MemberPerferenceLanguageService extends BaseService<MemberPerferenceLanguage> {
+public interface MemberPerferenceLanguageService extends SuperService<MemberPerferenceLanguage, MemberPerferenceLanguageView> {
 
     /**
      * 根据会员编号查询会员偏好语言信息

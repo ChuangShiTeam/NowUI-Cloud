@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +51,8 @@ public class NotifyMobileController extends BaseController {
     private SubscriptionService subscriptionService;
     @Autowired
     private AppConfigRpc appConfigRpc;
+    @Autowired
+    private MemberRpc memberRpc;
 
     @ApiOperation(value = "新增一条公告记录")
     @RequestMapping(value = "/notify/mobile/v1/create/notify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,10 +130,31 @@ public class NotifyMobileController extends BaseController {
             userNotifyService.save(uNotify, Util.getRandomUUID(), userId);
         });
 
-        //新建UserNotify并关联查询出来的公告信息
-        List<UserNotify> userNotifies = userNotifyService.getUserNotifyByUserId(userId, body.getAppId(), "Announce");
+        List<UserNotify> userNotifies = userNotifyService.getUserNotifyByUserId(userId, body.getAppId(), "Remind");
+
+        userNotifies.forEach((entity) -> {
+            Notify notify = notifyService.find(userNotify.getNotifyId());
+            Member member = memberRpc.nickNameAndAvatarFindV1(notify.getNotifySender());
+//            entity.setHeader(User.USER_AVATAR);
+            entity.setUserName(User.USER_NICK_NAME);
+//            entity.setAction(notify.getNotifyAction());
+//            entity.setTargetType(notify.getNotifyTargetType());
+//            entity.setTargetContent(notify.getNotifyContent());
+//            entity.setTargetId(notify.getNotifyTarget());
+            entity.setSystemCreateTime(notify.getSystemCreateTime());
+        });
+
+        // 构建JSON
+        validateResponse(UserNotify.HEADER, UserNotify.USERNAME, UserNotify.ACTION,
+                UserNotify.TARGETTYPE, UserNotify.TARGETID, UserNotify.TARGETCONTENT,
+                UserNotify.MESSAGE);
 
         return renderJson(userNotifies);
+
+        //新建UserNotify并关联查询出来的公告信息
+//        List<UserNotify> userNotifies = userNotifyService.getUserNotifyByUserId(userId, body.getAppId(), "Announce");
+//
+//        return renderJson(userNotifies);
     }
 
     @ApiOperation(value = "拉取提醒信息")
