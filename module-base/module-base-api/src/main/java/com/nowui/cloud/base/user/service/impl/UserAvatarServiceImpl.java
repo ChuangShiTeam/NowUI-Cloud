@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.mapper.UserAvatarMapper;
 import com.nowui.cloud.base.user.service.UserAvatarService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户头像业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserAvatarServiceImpl extends BaseServiceImpl<UserAvatarMapper, UserAvatar> implements UserAvatarService {
+public class UserAvatarServiceImpl extends SuperServiceImpl<UserAvatarMapper, UserAvatar> implements UserAvatarService {
 
     @Override
     public UserAvatar findByUserId(String userId) {

@@ -31,25 +31,25 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "${tableComment}列表")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}Entity,
-                ${firstUpperWithoutUnderlineEntityName}.APP_ID,
+                ${firstLowerWithoutUnderlineEntityName}View,
+                ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in searchColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},
+                ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
                 <%}%>
-                ${firstUpperWithoutUnderlineEntityName}.PAGE_INDEX,
-                ${firstUpperWithoutUnderlineEntityName}.PAGE_SIZE
+                ${firstUpperWithoutUnderlineEntityName}View.PAGE_INDEX,
+                ${firstUpperWithoutUnderlineEntityName}View.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}Entity.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}Entity.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}Entity.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}Entity.getPageSize());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>);
+        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}View.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}View.getPageSize());
 
         validateResponse(
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 <%for(column in listColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
                 <%}%>
         );
 
@@ -59,22 +59,22 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "${tableComment}信息")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}Entity,
-                ${firstUpperWithoutUnderlineEntityName}.APP_ID,
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId}
+                ${firstLowerWithoutUnderlineEntityName}View,
+                ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId}
         );
 
-        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}());
+        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}());
 
         validateResponse(
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 <%for(column in detailColumnList){%>
-            	${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},
+            	${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
                 <%}%>
-                ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
+                ${firstUpperWithoutUnderlineEntityName}View.SYSTEM_VERSION
         );
 
         return renderJson(result);
@@ -83,7 +83,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "新增${tableComment}")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         String ${firstLowerWithoutUnderlineEntityName}Id = Util.getRandomUUID();
 

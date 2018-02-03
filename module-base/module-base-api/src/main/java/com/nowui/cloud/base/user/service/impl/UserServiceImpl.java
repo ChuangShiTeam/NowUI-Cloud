@@ -26,7 +26,7 @@ import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.service.UserService;
 import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -37,7 +37,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-02
  */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implements UserService {
 	
 	@Autowired
 	private UserAccountService userAccountService;

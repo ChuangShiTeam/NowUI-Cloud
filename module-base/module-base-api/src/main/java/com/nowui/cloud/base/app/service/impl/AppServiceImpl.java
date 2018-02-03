@@ -10,7 +10,7 @@ import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.mapper.AppMapper;
 import com.nowui.cloud.base.app.service.AppService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 
@@ -18,7 +18,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppServiceImpl extends BaseServiceImpl<AppMapper, App> implements AppService {
+public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements AppService {
 
     @Override
     public Integer countForAdmin(String appName) {

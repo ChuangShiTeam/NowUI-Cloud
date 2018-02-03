@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserMobile;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户手机号码业务接口
@@ -9,7 +9,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface UserMobileService extends BaseService<UserMobile> {
+public interface UserMobileService extends SuperService<UserMobile> {
     
     /**
      * 根据用户编号查询用户手机号码信息

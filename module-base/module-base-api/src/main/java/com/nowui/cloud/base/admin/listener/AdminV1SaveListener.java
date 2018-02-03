@@ -1,10 +1,12 @@
 package com.nowui.cloud.base.admin.listener;
 
-import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.base.admin.service.AdminService;
+import com.nowui.cloud.base.admin.router.AdminRouter;
+import com.nowui.cloud.base.admin.view.AdminView;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
@@ -12,13 +14,6 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.alibaba.fastjson.JSON;
-import com.nowui.cloud.base.admin.repository.AdminRepository;
-import com.nowui.cloud.base.admin.router.AdminRouter;
-import com.nowui.cloud.base.admin.view.AdminView;
-import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.rabbit.RabbitListener;
 
 /**
  * 管理员新增消息队列
@@ -33,7 +28,7 @@ public class AdminV1SaveListener {
     private final String queueName = "admin_v1_save";
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminService adminService;
 
     @Bean
     Queue AdminV1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -68,7 +63,7 @@ public class AdminV1SaveListener {
             public void receive(String message) {
                 AdminView adminView = JSON.parseObject(message, AdminView.class);
 
-                adminRepository.save(adminView);
+                adminService.save(adminView);
             }
 
         };

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.admin.entity.Admin;
+import com.nowui.cloud.base.admin.router.AdminRouter;
 import com.nowui.cloud.base.admin.service.AdminService;
+import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserEmail;
@@ -51,10 +53,10 @@ public class AdminAdminController extends BaseController {
         );
 
         Integer resultTotal = adminService.countForAdmin(userEntity.getAppId());
-        List<Admin> resultList = adminService.listForAdmin(userEntity.getAppId(), userEntity.getPageIndex(), userEntity.getPageSize());
+        List<AdminView> resultList = adminService.listForAdmin(userEntity.getAppId(), userEntity.getPageIndex(), userEntity.getPageSize());
 
         validateResponse(
-                Admin.ADMIN_ID,
+                AdminView.ADMIN_ID,
         		User.USER_ID,
                 User.USER_TYPE,
                 User.USER_ACCOUNT,
@@ -70,25 +72,25 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "管理员信息")
     @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        Admin adminEntity = getEntry(Admin.class);
+        AdminView adminEntity = getEntry(AdminView.class);
 
         validateRequest(
                 adminEntity,
-                Admin.APP_ID,
-                Admin.ADMIN_ID
+                AdminView.APP_ID,
+                AdminView.ADMIN_ID
         );
 
-        Admin result = adminService.find(adminEntity.getAdminId());
+        AdminView result = adminService.find(adminEntity.getAdminId());
 
         validateResponse(
-                Admin.ADMIN_ID,
+                AdminView.ADMIN_ID,
                 User.USER_ID,
                 User.USER_ACCOUNT,
                 User.USER_NICK_NAME,
                 User.USER_MOBILE,
                 User.USER_EMAIL,
                 User.USER_AVATAR,
-                Admin.SYSTEM_VERSION
+                AdminView.SYSTEM_VERSION
         );
 
         return renderJson(result);
@@ -202,7 +204,7 @@ public class AdminAdminController extends BaseController {
                 UserMobile.USER_MOBILE
         );
         
-        Boolean result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
+        Boolean result = adminService.update(admin, admin.getAdminId(), admin.getAppId(), AdminRouter.ADMIN_V1_UPDATE, admin.getSystemRequestUserId(), admin.getSystemVersion());
 
         if (result) {
         }
@@ -222,10 +224,10 @@ public class AdminAdminController extends BaseController {
                 Admin.SYSTEM_VERSION
         );
 
-        Boolean result = adminService.delete(adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
+        Boolean result = adminService.delete(adminEntity.getAdminId(), adminEntity.getAppId(), AdminRouter.ADMIN_V1_DELETE, adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
 
         if (result) {
-            //adminMq.sendDeleteUser(body.getAdminId(), body.getSystemRequestUserId());
+            
         }
         return renderJson(result);
     }

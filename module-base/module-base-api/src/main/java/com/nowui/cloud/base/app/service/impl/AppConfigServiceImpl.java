@@ -12,7 +12,7 @@ import com.nowui.cloud.base.app.mapper.AppConfigMapper;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.service.AppConfigService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 
@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppConfig> implements AppConfigService {
+public class AppConfigServiceImpl extends SuperServiceImpl<AppConfigMapper, AppConfig> implements AppConfigService {
 
     @Autowired
     private AppConfigCategoryService appConfigCategoryService;

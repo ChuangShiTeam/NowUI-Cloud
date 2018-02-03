@@ -9,7 +9,7 @@ import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.mapper.AppConfigCategoryMapper;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 
@@ -17,7 +17,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppConfigCategoryServiceImpl extends BaseServiceImpl<AppConfigCategoryMapper, AppConfigCategory> implements AppConfigCategoryService {
+public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCategoryMapper, AppConfigCategory> implements AppConfigCategoryService {
 
     @Override
     public Integer countForAdmin(String appId, String configCategoryName, String configCategoryCode) {

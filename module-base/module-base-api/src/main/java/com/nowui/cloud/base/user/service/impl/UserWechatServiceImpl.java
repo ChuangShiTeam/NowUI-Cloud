@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.mapper.UserWechatMapper;
 import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户微信业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
+public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
 
     @Override
     public UserWechat findByUserId(String userId) {

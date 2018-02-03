@@ -9,7 +9,7 @@ import com.nowui.cloud.base.notify.entity.Notify;
 import com.nowui.cloud.base.notify.mapper.NotifyMapper;
 import com.nowui.cloud.base.notify.service.NotifyService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 消息表业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-28
  */
 @Service
-public class NotifyServiceImpl extends BaseServiceImpl<NotifyMapper, Notify> implements NotifyService {
+public class NotifyServiceImpl extends SuperServiceImpl<NotifyMapper, Notify> implements NotifyService {
 
     public static final String NOTIFY_ANNOUNCE_RECORD_BY_APP_ID = "notify_announce_record_by_app_id";
 

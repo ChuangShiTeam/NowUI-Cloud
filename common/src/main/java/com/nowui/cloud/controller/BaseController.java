@@ -30,6 +30,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.exception.SystemException;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.util.ValidateUtil;
+import com.nowui.cloud.view.BaseView;
 
 /**
  * BaseController
@@ -134,14 +135,6 @@ public class BaseController {
         return map;
     }
 
-    public void validateRequest(Class<? extends BaseEntity> clazz, String... columns) {
-        BaseEntity entity = getEntry(clazz);
-
-        System.out.println(entity.toJSONString());
-
-        validateRequest(entity, columns);
-    }
-
     public void validateRequest(BaseEntity entity, String... columns) {
         for (String column : columns) {
             Set<? extends ConstraintViolation<? extends BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateValue(entity.getClass(), column, entity.get(column));
@@ -149,6 +142,18 @@ public class BaseController {
             Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
             while (iterator.hasNext()) {
                 ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
+                throw new BusinessException(constraintViolation.getMessage());
+            }
+        }
+    }
+    
+    public void validateRequest(BaseView view, String... columns) {
+        for (String column : columns) {
+            Set<? extends ConstraintViolation<? extends BaseView>> constraintViolations = ValidateUtil.getValidator().validateValue(view.getClass(), column, view.get(column));
+
+            Iterator<ConstraintViolation<BaseView>> iterator = (Iterator<ConstraintViolation<BaseView>>) constraintViolations.iterator();
+            while (iterator.hasNext()) {
+                ConstraintViolation<BaseView> constraintViolation = iterator.next();
                 throw new BusinessException(constraintViolation.getMessage());
             }
         }

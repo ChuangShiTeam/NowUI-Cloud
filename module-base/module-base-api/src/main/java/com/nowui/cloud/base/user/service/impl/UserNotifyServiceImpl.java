@@ -10,7 +10,7 @@ import com.nowui.cloud.base.user.entity.UserNotify;
 import com.nowui.cloud.base.user.mapper.UserNotifyMapper;
 import com.nowui.cloud.base.user.service.UserNotifyService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -21,7 +21,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-28
  */
 @Service
-public class UserNotifyServiceImpl extends BaseServiceImpl<UserNotifyMapper, UserNotify> implements UserNotifyService {
+public class UserNotifyServiceImpl extends SuperServiceImpl<UserNotifyMapper, UserNotify> implements UserNotifyService {
 
     @Override
     public Integer countForAdmin(String appId, Boolean userNotifyIsRead, String userNotifyOwerId) {

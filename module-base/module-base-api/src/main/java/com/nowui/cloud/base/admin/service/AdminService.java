@@ -1,8 +1,9 @@
 package com.nowui.cloud.base.admin.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.base.admin.entity.Admin;
-
 import java.util.List;
+
+import com.nowui.cloud.base.admin.entity.Admin;
+import com.nowui.cloud.base.admin.view.AdminView;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 管理员业务接口
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * 2018-01-01
  */
-public interface AdminService extends BaseService<Admin> {
+public interface AdminService extends SuperService<Admin, AdminView> {
 
     /**
      * 管理员统计
@@ -29,6 +30,6 @@ public interface AdminService extends BaseService<Admin> {
      * @param pageSize 每页个数
      * @return List<Admin> 管理员列表
      */
-    List<Admin> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
+    List<AdminView> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
 
 }

@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户头像业务接口
@@ -9,7 +9,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface UserAvatarService extends BaseService<UserAvatar> {
+public interface UserAvatarService extends SuperService<UserAvatar> {
     
     /**
      * 根据用户编号查询用户头像信息
