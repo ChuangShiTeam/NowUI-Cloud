@@ -113,7 +113,6 @@ public class CodeController extends BaseController {
             String controllerSystemPath = controllerPath + "/system";
             String listenerPath = apiPackagePath + "/listener";
             String repositoryPath = apiPackagePath + "/repository";
-//            String repositoryImplPath = repositoryPath + "/impl";
             String apiviewPath = apiPackagePath + "/view";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
@@ -130,7 +129,6 @@ public class CodeController extends BaseController {
             FileUtil.createPath(apiRouterPath);
             FileUtil.createPath(listenerPath);
             FileUtil.createPath(repositoryPath);
-//            FileUtil.createPath(repositoryImplPath);
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(sqlPath);
             FileUtil.createPath(mapperPath);
@@ -256,7 +254,6 @@ public class CodeController extends BaseController {
             write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
             write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
             write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
-//            write(templateMap, "repositoryImpl.txt", repositoryImplPath + "/" + firstUpperWithoutUnderlineEntityName + "RepositoryImpl.java");
             write(templateMap, "apiView.txt", apiviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");

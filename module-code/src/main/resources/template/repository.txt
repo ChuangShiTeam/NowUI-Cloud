@@ -1,8 +1,8 @@
 package com.nowui.cloud.${moduleName}.${packageName}.repository;
 
 import com.nowui.cloud.repository.BaseRepository;
-import java.util.List;
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
+import org.springframework.stereotype.Component;
 
 /**
  * ${tableComment}视图访问组件接口
@@ -11,30 +11,7 @@ import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnde
  *
  * ${date}
  */
+@Component
 public interface ${firstUpperWithoutUnderlineEntityName}Repository extends BaseRepository<${firstUpperWithoutUnderlineEntityName}View> {
-
-    /**
-     * ${tableComment}统计
-     *
-     * @param appId 应用编号
-     <%for(column in searchColumnList){%>
-     * @param ${column.columnName} ${column.columnComment}
-     <%}%>
-     * @return Integer ${tableComment}统计
-     */
-    Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>);
-
-    /**
-     * ${tableComment}列表
-     *
-     * @param appId 应用编号
-     <%for(column in searchColumnList){%>
-     * @param ${column.columnName} ${column.columnComment}
-     <%}%>
-     * @param pageIndex 页码
-     * @param pageSize 每页个数
-     * @return List<${firstUpperWithoutUnderlineEntityName}> ${tableComment}列表
-     */
-    List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize);
 
 }

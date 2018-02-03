@@ -3,7 +3,7 @@ package com.nowui.cloud.shop.product.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.shop.product.repository.ProductRepository;
+import com.nowui.cloud.shop.product.service.ProductService;
 import com.nowui.cloud.shop.product.router.ProductRouter;
 import com.nowui.cloud.shop.product.view.ProductView;
 import org.springframework.amqp.core.*;
@@ -16,11 +16,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 产品新增消息绑定
+ * 商品新增消息队列
  *
  * @author ZhongYongQiang
  *
- * 2018-01-29
+ * 2018-02-03
  */
 @Configuration
 public class ProductV1SaveListener {
@@ -28,43 +28,42 @@ public class ProductV1SaveListener {
     private final String queueName = "product_v1_save";
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Bean
-    Queue productV1SaveQueue(RabbitAdmin rabbitAdmin) {
+    Queue ProductV1SaveQueue(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(queueName, true);
         rabbitAdmin.declareQueue(queue);
         return queue;
     }
 
     @Bean
-    Binding productV1SaveQueueBindingExchange(Queue productV1SaveQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(productV1SaveQueue).to(exchange).with(ProductRouter.PRODUCT_V1_SAVE);
+    Binding ProductV1SaveQueueBindingExchange(Queue ProductV1SaveQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(ProductV1SaveQueue).to(exchange).with(ProductRouter.PRODUCT_V1_SAVE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }
 
     @Bean
-    public MessageListenerContainer productV1SaveMessageListenerContainer(ConnectionFactory connectionFactory) {
+    public MessageListenerContainer ProductV1SaveMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setQueueNames(queueName);
-        simpleMessageListenerContainer.setMessageListener(productV1SaveMessageListener());
+        simpleMessageListenerContainer.setMessageListener(ProductV1SaveMessageListener());
         simpleMessageListenerContainer.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         simpleMessageListenerContainer.setPrefetchCount(Constant.PREFETCH_COUNT);
         return simpleMessageListenerContainer;
     }
 
     @Bean
-    public RabbitListener productV1SaveMessageListener() {
+    public RabbitListener ProductV1SaveMessageListener() {
         return new RabbitListener() {
 
             @Override
             public void receive(String message) {
-
                 ProductView productView = JSON.parseObject(message, ProductView.class);
 
-                productRepository.save(productView);
+                productService.save(productView);
             }
 
         };

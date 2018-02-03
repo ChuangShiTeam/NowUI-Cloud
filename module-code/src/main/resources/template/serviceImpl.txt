@@ -1,10 +1,19 @@
 package com.nowui.cloud.${moduleName}.${packageName}.service.impl;
 
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 import com.nowui.cloud.${moduleName}.${packageName}.mapper.${firstUpperWithoutUnderlineEntityName}Mapper;
+import com.nowui.cloud.${moduleName}.${packageName}.repository.${firstUpperWithoutUnderlineEntityName}Repository;
 import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
+import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ${tableComment}业务实现
@@ -14,36 +23,41 @@ import org.springframework.stereotype.Service;
  * ${date}
  */
 @Service
-public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}> implements ${firstUpperWithoutUnderlineEntityName}Service {
+public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends SuperServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}Repository, ${firstUpperWithoutUnderlineEntityName}View> implements ${firstUpperWithoutUnderlineEntityName}Service {
 
     @Override
-    public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
-        Integer count = count(
-                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
-                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
-                        <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
-                         <%}%>
-                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
-        );
-        return count;
-    }
+        public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
+            Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
+                    <%for(column in searchColumnList){%>
+                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                    <%}%>
+                    .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
-    @Override
-    public List<${firstUpperWithoutUnderlineEntityName}> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
-        List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = list(
-                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
-                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
-                        <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
-                        <%}%>
-                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(${firstUpperWithoutUnderlineEntityName}.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+            Query query = new Query(criteria);
 
-        return ${firstLowerWithoutUnderlineEntityName}List;
-    }
+            Integer count = count(query);
+
+            return count;
+        }
+
+        @Override
+        public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
+            Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}.APP_ID).is(appId)
+                    <%for(column in searchColumnList){%>
+                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                    <%}%>
+                    .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
+
+            List<Order> orders = new ArrayList<Order>();
+            orders.add(new Order(Sort.Direction.DESC, ${firstUpperWithoutUnderlineEntityName}View.SYSTEM_CREATE_TIME));
+            Sort sort = Sort.by(orders);
+
+            Query query = new Query(criteria);
+            query.with(sort);
+
+            List<${firstUpperWithoutUnderlineEntityName}View> ${firstLowerWithoutUnderlineEntityName}ViewList = list(query, sort, pageIndex, pageSize);
+
+            return ${firstLowerWithoutUnderlineEntityName}ViewList;
+        }
 
 }

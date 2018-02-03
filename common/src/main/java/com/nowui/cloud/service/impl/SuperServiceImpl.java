@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.mongodb.client.result.UpdateResult;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
+import com.nowui.cloud.mongodb.BasePageable;
 import com.nowui.cloud.rabbit.RabbitSender;
 import com.nowui.cloud.repository.BaseRepository;
 import com.nowui.cloud.service.SuperService;
@@ -13,6 +14,7 @@ import com.nowui.cloud.util.Util;
 import com.nowui.cloud.view.BaseView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -60,9 +62,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
-    public Integer count(Criteria criteria) {
-        Query query = new Query(criteria);
-
+    public Integer count(Query query) {
         long result = mongoTemplate.count(query, view.getClass());
 
         return new Long(result).intValue();
@@ -75,16 +75,21 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
-    public List<V> list(Criteria criteria) {
-        Query query = new Query(criteria);
+    public List<V> list(Query query) {
         List<V> resultList = (List<V>) mongoTemplate.find(query, view.getClass());
 
         return resultList;
     }
 
     @Override
-    public List<V> list(Criteria criteria, Integer m, Integer n) {
-        Query query = new Query(criteria);
+    public List<V> list(Query query, Sort sort, Integer pageIndex, Integer pageSize) {
+        BasePageable basePageable = new BasePageable();
+        basePageable.setSort(sort);
+        basePageable.setIndex(pageIndex);
+        basePageable.setSize(pageSize);
+
+        query.with(basePageable);
+
         List<V> resultList = (List<V>) mongoTemplate.find(query, view.getClass());
 
         return resultList;
@@ -171,6 +176,13 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
                 return null;
             }
         }
+    }
+
+    @Override
+    public Boolean save(V view) {
+        mongoTemplate.save(view);
+
+        return true;
     }
 
     @Override

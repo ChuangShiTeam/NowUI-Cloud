@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.view.BaseView;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -20,10 +22,10 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
     /**
      * 统计查询
      *
-     * @param criteria
+     * @param query
      * @return
      */
-    Integer count(Criteria criteria);
+    Integer count(Query query);
 
     /**
      * 统计查询
@@ -36,30 +38,30 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
     /**
      * 列表查询
      *
-     * @param criteria
+     * @param query
      * @return
      */
-    List<V> list(Criteria criteria);
+    List<V> list(Query query);
 
     /**
      * 分页列表查询
      *
-     * @param criteria
-     * @param m
-     * @param n
+     * @param query
+     * @param pageIndex
+     * @param pageSize
      * @return
      */
-    List<V> list(Criteria criteria, Integer m, Integer n);
+    List<V> list(Query query, Sort sort, Integer pageIndex, Integer pageSize);
 
     /**
      * 分页列表查询
      *
      * @param var1
-     * @param m
-     * @param n
+     * @param pageIndex
+     * @param pageSize
      * @return
      */
-    List<E> list(@Param("ew") Wrapper<E> var1, Integer m, Integer n);
+    List<E> list(@Param("ew") Wrapper<E> var1, Integer pageIndex, Integer pageSize);
 
     /**
      * 列表查询
@@ -105,12 +107,12 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
 //    Boolean save(E entity, String id, String systemCreateUserId);
 
     /**
-     * 实体类修改
+     * 实体类新增
      *
      * @param view 视图类
      * @return 是否成功
      */
-    Boolean update(V view);
+    Boolean save(V view);
 
     /**
      * 实体类新增
@@ -123,6 +125,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      * @return Boolean 是否成功
      */
     Boolean save(E entity, String id, String appId, String routing, String systemCreateUserId);
+
+    /**
+     * 实体类修改
+     *
+     * @param view 视图类
+     * @return 是否成功
+     */
+    Boolean update(V view);
 
     /**
      * 实体类修改

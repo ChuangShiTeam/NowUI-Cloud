@@ -1,4 +1,5 @@
 package com.nowui.cloud.shop.product.service;
+
 import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.view.ProductView;
