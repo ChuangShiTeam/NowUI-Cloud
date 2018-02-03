@@ -3,7 +3,7 @@ package com.nowui.cloud.base.user.service;
 import java.util.List;
 
 import com.nowui.cloud.base.user.entity.UserNotify;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户消息队列表业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.BaseService;
  * <p>
  * 2018-01-28
  */
-public interface UserNotifyService extends BaseService<UserNotify> {
+public interface UserNotifyService extends SuperService<UserNotify> {
 
     /**
      * 用户消息队列表统计

@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserAccount;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户账号业务接口
@@ -9,7 +9,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface UserAccountService extends BaseService<UserAccount> {
+public interface UserAccountService extends SuperService<UserAccount> {
 
     /**
      * 根据用户编号查询用户账号信息

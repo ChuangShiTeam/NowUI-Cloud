@@ -2,7 +2,7 @@ package com.nowui.cloud.base.notify.service;
 import java.util.List;
 
 import com.nowui.cloud.base.notify.entity.Notify;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 消息业务接口
@@ -11,7 +11,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-28
  */
-public interface NotifyService extends BaseService<Notify> {
+public interface NotifyService extends SuperService<Notify> {
 
     /**
      * 消息统计

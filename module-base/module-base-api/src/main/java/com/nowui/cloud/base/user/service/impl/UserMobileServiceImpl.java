@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.mapper.UserMobileMapper;
 import com.nowui.cloud.base.user.service.UserMobileService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户手机号码业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, UserMobile> implements UserMobileService {
+public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile> implements UserMobileService {
 
     @Override
     public UserMobile findByUserId(String userId) {

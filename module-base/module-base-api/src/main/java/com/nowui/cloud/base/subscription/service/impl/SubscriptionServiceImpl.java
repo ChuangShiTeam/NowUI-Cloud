@@ -9,7 +9,7 @@ import com.nowui.cloud.base.subscription.entity.Subscription;
 import com.nowui.cloud.base.subscription.mapper.SubscriptionMapper;
 import com.nowui.cloud.base.subscription.service.SubscriptionService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户订阅表业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-28
  */
 @Service
-public class SubscriptionServiceImpl extends BaseServiceImpl<SubscriptionMapper, Subscription> implements SubscriptionService {
+public class SubscriptionServiceImpl extends SuperServiceImpl<SubscriptionMapper, Subscription> implements SubscriptionService {
 
     @Override
     public Integer countForAdmin(String appId, String subscriptionTarget, String subscriptionTargetType, String subscriptionAction, String subscriptionUser, String systemCreateUserId) {

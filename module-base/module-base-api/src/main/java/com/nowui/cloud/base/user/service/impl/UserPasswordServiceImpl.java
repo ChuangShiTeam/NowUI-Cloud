@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.mapper.UserPasswordMapper;
 import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户密码业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-11
  */
 @Service
-public class UserPasswordServiceImpl extends BaseServiceImpl<UserPasswordMapper, UserPassword> implements UserPasswordService {
+public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword> implements UserPasswordService {
 
     @Override
     public UserPassword findByUserId(String userId) {

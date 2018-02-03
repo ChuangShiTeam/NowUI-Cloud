@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.mapper.UserEmailMapper;
 import com.nowui.cloud.base.user.service.UserEmailService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户邮箱业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserEmail> implements UserEmailService {
+public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail> implements UserEmailService {
 
     @Override
     public UserEmail findByUserId(String userId) {

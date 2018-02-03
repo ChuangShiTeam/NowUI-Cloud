@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.mapper.UserIdcardMapper;
 import com.nowui.cloud.base.user.service.UserIdcardService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户身份证业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserIdcardServiceImpl extends BaseServiceImpl<UserIdcardMapper, UserIdcard> implements UserIdcardService {
+public class UserIdcardServiceImpl extends SuperServiceImpl<UserIdcardMapper, UserIdcard> implements UserIdcardService {
 
     @Override
     public UserIdcard findByUserId(String userId) {

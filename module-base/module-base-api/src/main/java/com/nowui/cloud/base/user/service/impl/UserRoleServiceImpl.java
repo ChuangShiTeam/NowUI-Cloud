@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.base.user.entity.UserRole;
 import com.nowui.cloud.base.user.mapper.UserRoleMapper;
 import com.nowui.cloud.base.user.service.UserRoleService;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户角色业务实现
@@ -15,6 +15,6 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-02
  */
 @Service
-public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
+public class UserRoleServiceImpl extends SuperServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
 
 }

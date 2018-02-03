@@ -9,7 +9,7 @@ import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.mapper.UserAccountMapper;
 import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 用户账号业务实现
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserAccountServiceImpl extends BaseServiceImpl<UserAccountMapper, UserAccount> implements UserAccountService {
+public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, UserAccount> implements UserAccountService {
 
     @Override
     public UserAccount findByUserId(String userId) {

@@ -21,7 +21,7 @@ import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
 
@@ -33,7 +33,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-01
  */
 @Service
-public class FileServiceImpl extends BaseServiceImpl<FileMapper, File> implements FileService {
+public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implements FileService {
     
     @Autowired
     private Config config;

@@ -1,7 +1,7 @@
 package com.nowui.cloud.base.role.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.base.role.entity.Role;
 import com.nowui.cloud.base.role.mapper.RoleMapper;
 import com.nowui.cloud.base.role.service.RoleService;
@@ -18,7 +18,7 @@ import java.util.List;
  * 2018-01-02
  */
 @Service
-public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implements RoleService {
+public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Override
     public Integer countForAdmin(String appId, String roleName, String roleCode) {

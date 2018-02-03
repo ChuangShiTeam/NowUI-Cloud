@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserWechat;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户微信业务接口
@@ -9,7 +9,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface UserWechatService extends BaseService<UserWechat> {
+public interface UserWechatService extends SuperService<UserWechat> {
     
     /**
      * 根据用户编号查询用户微信信息

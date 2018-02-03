@@ -2,7 +2,7 @@ package com.nowui.cloud.base.subscription.service;
 import java.util.List;
 
 import com.nowui.cloud.base.subscription.entity.Subscription;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 订阅业务接口
@@ -11,7 +11,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-28
  */
-public interface SubscriptionService extends BaseService<Subscription> {
+public interface SubscriptionService extends SuperService<Subscription> {
 
     /**
      * 订阅统计

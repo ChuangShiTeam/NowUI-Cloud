@@ -10,7 +10,7 @@ import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 用户业务接口
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-02
  */
-public interface UserService extends BaseService<User> {
+public interface UserService extends SuperService<User> {
 
     /**
      * 用户统计
