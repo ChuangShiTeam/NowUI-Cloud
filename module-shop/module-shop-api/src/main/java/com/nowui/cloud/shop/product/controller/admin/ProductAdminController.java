@@ -1,7 +1,6 @@
 package com.nowui.cloud.shop.product.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.repository.ProductRepository;
 import com.nowui.cloud.shop.product.router.ProductRouter;
 import com.nowui.cloud.shop.product.service.ProductService;
 import com.nowui.cloud.shop.product.view.ProductView;
@@ -10,7 +9,6 @@ import com.nowui.cloud.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +25,6 @@ public class ProductAdminController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductRepository productRepository;
-
     @ApiOperation(value = "商品列表")
     @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
@@ -43,8 +38,8 @@ public class ProductAdminController extends BaseController {
                 Product.PAGE_SIZE
         );
 
-        long resultTotal = productRepository.countForAdmin(product.getAppId(), product.getProductName());
-        List<ProductView> resultList = productRepository.listForAdmin(product.getAppId(), product.getProductName(), product.getM(), product.getN());
+        Integer resultTotal = productService.countForAdmin(product.getAppId(), product.getProductName());
+        List<ProductView> resultList = productService.listForAdmin(product.getAppId(), product.getProductName(), product.getPageIndex(), product.getPageSize());
 
         validateResponse(
                 ProductView.PRODUCT_ID,
@@ -61,7 +56,7 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(product, Product.APP_ID, Product.PRODUCT_ID);
 
-        ProductView result = productRepository.find(product.getProductId());
+        ProductView result = productService.find(product.getProductId());
 
         validateResponse(Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
 

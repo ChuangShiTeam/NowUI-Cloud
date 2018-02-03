@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitConfig;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.shop.product.repository.ProductRepository;
 import com.nowui.cloud.shop.product.router.ProductRouter;
+import com.nowui.cloud.shop.product.service.ProductService;
 import com.nowui.cloud.shop.product.view.ProductView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -31,7 +31,7 @@ public class ProductV1DeleteListener {
     private final String queueName = "product_v1_delete";
 
     @Autowired
-    protected ProductRepository productRepository;
+    protected ProductService productService;
 
     @Bean
     Queue productV1DeleteQueue(RabbitAdmin rabbitAdmin) {
@@ -66,7 +66,7 @@ public class ProductV1DeleteListener {
             public void receive(String message) {
                 ProductView productView = JSON.parseObject(message, ProductView.class);
 
-                productRepository.update(productView);
+                productService.update(productView);
             }
 
         };
