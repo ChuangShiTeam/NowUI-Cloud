@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,6 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2017年12月26日
  */
 @Component(value = "article")
-@Document(indexName = "nowui", type = "article_info")
 @TableName(value = "article_info")
 public class Article extends BaseEntity {
     
