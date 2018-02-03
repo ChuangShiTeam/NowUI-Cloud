@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,6 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2018-01-01
  */
 @Component
-@Document(indexName = "nowui", type = "menu_info")
 @TableName(value = "menu_info")
 public class Menu extends BaseEntity {
 

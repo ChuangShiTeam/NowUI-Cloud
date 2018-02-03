@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
  * 2018-01-11
  */
 @Component
-@Document(indexName = "nowui", type = "user_password_info")
 @TableName(value = "user_password_info")
 public class UserPassword extends BaseEntity {
 

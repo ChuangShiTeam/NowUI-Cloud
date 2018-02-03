@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
  * 2018-01-28
  */
 @Component
-@Document(indexName = "nowui", type = "subscription_config_info")
 @TableName(value = "subscription_config_info")
 public class SubscriptionConfig extends BaseEntity {
 

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  * 2018-01-24
  */
 @Component
-@Document(indexName = "nowui", type = "pet_category_info")
+
 @TableName(value = "pet_category_info")
 public class PetCategory extends BaseEntity {
 
