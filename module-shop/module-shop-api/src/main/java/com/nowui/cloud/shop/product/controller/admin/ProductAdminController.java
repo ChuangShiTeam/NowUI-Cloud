@@ -43,7 +43,7 @@ public class ProductAdminController extends BaseController {
                 Product.PAGE_SIZE
         );
 
-        long resultTotal = productRepository.countForAdmin(product.getAppId(), product.getProductName());
+        Integer resultTotal = productRepository.countForAdmin(product.getAppId(), product.getProductName());
         List<ProductView> resultList = productRepository.listForAdmin(product.getAppId(), product.getProductName(), product.getM(), product.getN());
 
         validateResponse(
