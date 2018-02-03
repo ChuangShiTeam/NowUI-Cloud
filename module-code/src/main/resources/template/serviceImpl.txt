@@ -36,7 +36,7 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServ
                         .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
                         <%for(column in searchColumnList){%>
                         .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
-                         <%}%>
+                        <%}%>
                         .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(${firstUpperWithoutUnderlineEntityName}.SYSTEM_CREATE_TIME)),
                 pageIndex,

@@ -3,7 +3,10 @@ package com.nowui.cloud.${moduleName}.${packageName}.repository.impl;
 import com.nowui.cloud.repository.impl.BaseRepositoryImpl;
 import com.nowui.cloud.${moduleName}.${packageName}.repository.${firstUpperWithoutUnderlineEntityName}Repository;
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * ${tableComment}视图访问组件接口实现
@@ -17,32 +20,28 @@ public class ${firstUpperWithoutUnderlineEntityName}RepositoryImpl extends BaseR
 
     @Override
     public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
-        Integer count = count(
-                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
-                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
-                        <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
-                         <%}%>
-                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
-        );
+        Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
+                <%for(column in searchColumnList){%>
+                .and(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                <%}%>
+                .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
+
+        Integer count = count(criteria);
+
         return count;
     }
 
     @Override
     public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
-        List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = list(
-                new BaseWrapper<${firstUpperWithoutUnderlineEntityName}>()
-                        .eq(${firstUpperWithoutUnderlineEntityName}.APP_ID, appId)
-                        <%for(column in searchColumnList){%>
-                        .likeAllowEmpty(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}, ${column.columnName})
-                         <%}%>
-                        .eq(${firstUpperWithoutUnderlineEntityName}.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(${firstUpperWithoutUnderlineEntityName}.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+        Criteria criteria = Criteria.where(ProductView.APP_ID).is(appId)
+                <%for(column in searchColumnList){%>
+                .and(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                <%}%>
+                .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
-        return ${firstLowerWithoutUnderlineEntityName}List;
+        List<${firstUpperWithoutUnderlineEntityName}View> ${firstLowerWithoutUnderlineEntityName}ViewList = list(criteria, pageIndex, pageSize);
+
+        return ${firstLowerWithoutUnderlineEntityName}ViewList;
     }
 
 }
