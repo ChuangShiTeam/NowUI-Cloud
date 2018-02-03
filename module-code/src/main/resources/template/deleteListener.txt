@@ -3,6 +3,7 @@ package com.nowui.cloud.${moduleName}.${packageName}.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.${moduleName}.${packageName}.repository.${firstUpperWithoutUnderlineEntityName}Repository;
 import com.nowui.cloud.${moduleName}.${packageName}.router.${firstUpperWithoutUnderlineEntityName}Router;
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 import org.springframework.amqp.core.*;
@@ -24,6 +25,9 @@ import org.springframework.context.annotation.Configuration;
 public class ${firstUpperWithoutUnderlineEntityName}V1DeleteListener {
 
     private final String queueName = "${firstLowerEntityName}_v1_delete";
+
+    @Autowired
+    private ${firstUpperWithoutUnderlineEntityName}Repository ${firstLowerWithoutUnderlineEntityName}Repository;
 
     @Bean
     Queue ${firstUpperWithoutUnderlineEntityName}V1DeleteQueue(RabbitAdmin rabbitAdmin) {
@@ -58,7 +62,7 @@ public class ${firstUpperWithoutUnderlineEntityName}V1DeleteListener {
             public void receive(String message) {
                 ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(message, ${firstUpperWithoutUnderlineEntityName}View.class);
 
-                System.out.println(${firstLowerWithoutUnderlineEntityName}View.toJSONString());
+                ${firstLowerWithoutUnderlineEntityName}Repository.save(${firstLowerWithoutUnderlineEntityName}View);
             }
 
         };
