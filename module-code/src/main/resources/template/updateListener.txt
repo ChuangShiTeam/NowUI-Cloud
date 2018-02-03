@@ -3,8 +3,8 @@ package com.nowui.cloud.${moduleName}.${packageName}.listener;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.shop.product.router.${firstUpperWithoutUnderlineEntityName}Router;
-import com.nowui.cloud.shop.product.view.${firstUpperWithoutUnderlineEntityName}View;
+import com.nowui.cloud.${moduleName}.${packageName}.router.${firstUpperWithoutUnderlineEntityName}Router;
+import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -34,7 +34,7 @@ public class ${firstUpperWithoutUnderlineEntityName}V1UpdateListener {
 
     @Bean
     Binding ${firstUpperWithoutUnderlineEntityName}V1UpdateQueueBindingExchange(Queue ${firstUpperWithoutUnderlineEntityName}V1UpdateQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(${firstUpperWithoutUnderlineEntityName}V1UpdateQueue).to(exchange).with(${firstUpperWithoutUnderlineEntityName}Router.${firstLowerWithoutUnderlineEntityName}_V1_UPDATE);
+        Binding binding = BindingBuilder.bind(${firstUpperWithoutUnderlineEntityName}V1UpdateQueue).to(exchange).with(${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }
