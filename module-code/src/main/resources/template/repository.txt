@@ -1,6 +1,7 @@
 package com.nowui.cloud.${moduleName}.${packageName}.repository;
 
 import com.nowui.cloud.repository.BaseRepository;
+import java.util.List;
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 
 /**

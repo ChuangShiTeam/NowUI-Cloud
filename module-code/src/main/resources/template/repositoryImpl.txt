@@ -22,7 +22,7 @@ public class ${firstUpperWithoutUnderlineEntityName}RepositoryImpl extends BaseR
     public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
         Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
                 <%for(column in searchColumnList){%>
-                .and(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
                 <%}%>
                 .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
@@ -33,9 +33,9 @@ public class ${firstUpperWithoutUnderlineEntityName}RepositoryImpl extends BaseR
 
     @Override
     public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
-        Criteria criteria = Criteria.where(ProductView.APP_ID).is(appId)
+        Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}.APP_ID).is(appId)
                 <%for(column in searchColumnList){%>
-                .and(${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
                 <%}%>
                 .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
