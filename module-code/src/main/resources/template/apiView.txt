@@ -1,7 +1,7 @@
 package com.nowui.cloud.${moduleName}.${packageName}.view;
 
 import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,6 @@ public class ${firstUpperWithoutUnderlineEntityName}View extends BaseView {
     <%}%>
 
     <%for(column in columnList){%>
-    @NotNull(message = "${column.columnComment}不能为空")
     <%if(column.dataType == "TINYINT"){%>
     public Boolean get${column.firstUpperColumnName}() {
         return getBoolean(${column.upperWithUnderlineColumnName});

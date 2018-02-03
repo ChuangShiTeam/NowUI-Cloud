@@ -80,6 +80,15 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         return resultList;
     }
+    
+    @Override
+    public List<V> list(Query query, Sort sort) {
+        query.with(sort);
+
+        List<V> resultList = (List<V>) mongoTemplate.find(query, view.getClass());
+
+        return resultList;
+    }
 
     @Override
     public List<V> list(Query query, Sort sort, Integer pageIndex, Integer pageSize) {

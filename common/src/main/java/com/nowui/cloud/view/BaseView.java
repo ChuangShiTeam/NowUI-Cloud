@@ -3,7 +3,12 @@ package com.nowui.cloud.view;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -64,6 +69,21 @@ public class BaseView extends JSONObject implements Serializable {
     private Boolean systemStatus;
     public static final String SYSTEM_STATUS = "systemStatus";
 
+    /**
+     * 分页页数
+     */
+    @NotNull(message = "分页页数不能为空")
+    @JsonIgnore
+    private Integer pageIndex;
+    public static final String PAGE_INDEX = "pageIndex";
+
+    /**
+     * 每页数量
+     */
+    @NotNull(message = "每页数量不能为空")
+    @JsonIgnore
+    private Integer pageSize;
+    public static final String PAGE_SIZE = "pageSize";
 
 
     public String getSystemCreateUserId() {
@@ -131,6 +151,22 @@ public class BaseView extends JSONObject implements Serializable {
             }
         }
         return tableId;
+    }
+    
+    public Integer getPageIndex() {
+        return getInteger(PAGE_INDEX);
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        put(PAGE_INDEX, pageIndex);
+    }
+
+    public Integer getPageSize() {
+        return getInteger(PAGE_SIZE);
+    }
+
+    public void setPageSize(Integer pageSize) {
+        put(PAGE_SIZE, pageSize);
     }
 
 }

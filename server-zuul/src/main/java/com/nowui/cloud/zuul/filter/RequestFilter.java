@@ -155,7 +155,7 @@ public class RequestFilter extends ZuulFilter {
         if (token != null) {
             JSONObject jsonObject = null;
             try {
-                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, Constant.PRIVATE_KEY));
+                jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, "ShengLiUnion2010"));
                 return jsonObject.getString("userId");
             } catch (Exception e) {
                 Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);

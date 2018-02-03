@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.App;
+import com.nowui.cloud.base.app.router.AppRouter;
 import com.nowui.cloud.base.app.service.AppService;
+import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
@@ -31,14 +33,14 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用列表")
     @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        App appEntity = getEntry(App.class);
+        AppView appView = getEntry(AppView.class);
 
-        validateRequest(appEntity, App.APP_NAME, App.PAGE_INDEX, App.PAGE_SIZE);
+        validateRequest(appView, AppView.APP_NAME, AppView.PAGE_INDEX, AppView.PAGE_SIZE);
 
-        Integer resultTotal = appService.countForAdmin(appEntity.getAppName());
-        List<App> resultList = appService.listForAdmin(appEntity.getAppName(), appEntity.getPageIndex(), appEntity.getPageSize());
+        Integer resultTotal = appService.countForAdmin(appView.getAppName());
+        List<AppView> resultList = appService.listForAdmin(appView.getAppName(), appView.getPageIndex(), appView.getPageSize());
 
-        validateResponse(App.APP_ID, App.APP_NAME);
+        validateResponse(AppView.APP_ID, AppView.APP_NAME);
 
         return renderJson(resultTotal, resultList);
     }
@@ -46,13 +48,13 @@ public class AppController extends BaseController {
     @ApiOperation(value = "应用信息")
     @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        App appEntity = getEntry(App.class);
+        App appView = getEntry(App.class);
 
-        validateRequest(appEntity, App.APP_ID);
+        validateRequest(appView, App.APP_ID);
 
-        App result = appService.find(appEntity.getAppId());
+        AppView result = appService.find(appView.getAppId());
 
-        validateResponse(App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
+        validateResponse(AppView.APP_ID, AppView.APP_NAME, AppView.SYSTEM_VERSION);
 
         return renderJson(result);
     }
@@ -70,7 +72,7 @@ public class AppController extends BaseController {
         }
         
         appEntity.setAppId(Util.getRandomUUID());
-        Boolean result = appService.save(appEntity, Util.getRandomUUID(), appEntity.getSystemRequestUserId());
+        Boolean result = appService.save(appEntity, Util.getRandomUUID(), appEntity.getAppId(), AppRouter.APP_V1_SAVE, appEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -86,7 +88,7 @@ public class AppController extends BaseController {
             throw new BusinessException("应用名称重复");
         }
         
-        Boolean result = appService.update(appEntity, appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+        Boolean result = appService.update(appEntity, appEntity.getAppId(), appEntity.getAppId(), AppRouter.APP_V1_UPDATE, appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -98,7 +100,7 @@ public class AppController extends BaseController {
 
         validateRequest(appEntity, App.APP_ID, App.APP_NAME);
 
-        Boolean result = appService.delete(appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+        Boolean result = appService.delete(appEntity.getAppId(), appEntity.getAppId(), AppRouter.APP_V1_DELETE, appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
         return renderJson(result);
     }

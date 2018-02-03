@@ -1,6 +1,9 @@
 package com.nowui.cloud.base.admin.view;
 
 import com.nowui.cloud.view.BaseView;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -21,6 +24,7 @@ public class AdminView extends BaseView {
      * 管理员编号
      */
     @Field
+    @NotNull(message = "管理员编号不能为空")
     private String adminId;
     public static final String ADMIN_ID = "adminId";
 
@@ -28,6 +32,7 @@ public class AdminView extends BaseView {
      * 应用编号
      */
     @Field
+    @NotNull(message = "应用编号不能为空")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -35,6 +40,7 @@ public class AdminView extends BaseView {
      * 用户编号
      */
     @Field
+    @NotNull(message = "用户编号不能为空")
     private String userId;
     public static final String USER_ID = "userId";
 

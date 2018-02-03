@@ -1,15 +1,19 @@
 package com.nowui.cloud.base.app.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.mapper.AppMapper;
+import com.nowui.cloud.base.app.repository.AppRepository;
 import com.nowui.cloud.base.app.service.AppService;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
@@ -18,47 +22,53 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements AppService {
+public class AppServiceImpl extends SuperServiceImpl<AppMapper, App, AppRepository, AppView> implements AppService {
 
     @Override
     public Integer countForAdmin(String appName) {
-        Integer count = count(
-                new BaseWrapper<App>()
-                        .like(App.APP_NAME, appName)
-                        .eq(App.SYSTEM_STATUS, true)
-        );
+    	Criteria criteria = Criteria.where(AppView.APP_NAME).regex(".*?" + appName + ".*")
+                .and(AppView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+        
+        Integer count = count(query);
+        
         return count;
     }
 
     @Override
-    public List<App> listForAdmin(String appName, Integer pageIndex, Integer pageSize) {
-        List<App> appList = list(
-                new BaseWrapper<App>()
-                        .like(App.APP_NAME, appName)
-                        .eq(App.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(App.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<AppView> listForAdmin(String appName, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(AppView.APP_NAME).regex(".*?" + appName + ".*")
+        		.and(AppView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, AppView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<AppView> appViewList = list(query, sort, pageIndex, pageSize);
         
-        return appList;
+        return appViewList;
     }
 
     @Override
     public Boolean checkName(String appName) {
-        Integer count = mapper.selectCount(
-                new EntityWrapper<App>()
-                        .eq(App.APP_NAME, appName)
-                        .eq(App.SYSTEM_STATUS, true)
-        );
+    	Criteria criteria = Criteria.where(AppView.APP_NAME).regex(".*?" + appName + ".*")
+                .and(AppView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+        
+        Integer count = count(query);
         return count > 0;
     }
 
     @Override
     public Boolean checkName(String appId, String appName) {
-        App app = find(appId);
+        AppView appView = find(appId);
         
-        if (appName.equals(app.getAppName())) {
+        if (appName.equals(appView.getAppName())) {
             return false;
         }
         

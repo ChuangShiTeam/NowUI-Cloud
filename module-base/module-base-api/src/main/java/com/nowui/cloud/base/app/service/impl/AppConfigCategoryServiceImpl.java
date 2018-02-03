@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.mapper.AppConfigCategoryMapper;
+import com.nowui.cloud.base.app.repository.AppConfigCategoryRepository;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
+import com.nowui.cloud.base.app.view.AppConfigCategoryView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
@@ -17,7 +19,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCategoryMapper, AppConfigCategory> implements AppConfigCategoryService {
+public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCategoryMapper, AppConfigCategory, AppConfigCategoryRepository, AppConfigCategoryView> implements AppConfigCategoryService {
 
     @Override
     public Integer countForAdmin(String appId, String configCategoryName, String configCategoryCode) {
@@ -32,7 +34,7 @@ public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCate
     }
 
     @Override
-    public List<AppConfigCategory> listForAdmin(String appId, String configCategoryName, String configCategoryCode,
+    public List<AppConfigCategoryView> listForAdmin(String appId, String configCategoryName, String configCategoryCode,
             Integer m, Integer n) {
         List<AppConfigCategory> appConfigCategoryList = list(
                 new BaseWrapper<AppConfigCategory>()
@@ -49,7 +51,7 @@ public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCate
     }
 
     @Override
-    public List<AppConfigCategory> appList(String appId) {
+    public List<AppConfigCategoryView> appList(String appId) {
         List<AppConfigCategory> appConfigCategoryList = list(
                 new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)
@@ -61,7 +63,7 @@ public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCate
     }
 
     @Override
-    public AppConfigCategory findByConfigCategoryCode(String appId, String configCategoryCode) {
+    public AppConfigCategoryView findByConfigCategoryCode(String appId, String configCategoryCode) {
         AppConfigCategory appConfigCategory = find(
                 new BaseWrapper<AppConfigCategory>()
                         .eq(AppConfigCategory.APP_ID, appId)

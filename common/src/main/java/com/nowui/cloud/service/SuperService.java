@@ -1,14 +1,14 @@
 package com.nowui.cloud.service;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
+
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.view.BaseView;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
-import java.util.List;
 
 /**
  * SuperService
@@ -42,6 +42,15 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      * @return
      */
     List<V> list(Query query);
+    
+    /**
+     * 列表查询
+     * 
+     * @param query
+     * @param sort
+     * @return
+     */
+    List<V> list(Query query, Sort sort);
 
     /**
      * 分页列表查询

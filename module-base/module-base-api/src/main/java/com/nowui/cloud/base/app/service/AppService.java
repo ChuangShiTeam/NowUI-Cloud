@@ -3,6 +3,7 @@ package com.nowui.cloud.base.app.service;
 import java.util.List;
 
 import com.nowui.cloud.base.app.entity.App;
+import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -10,7 +11,7 @@ import com.nowui.cloud.service.SuperService;
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppService extends SuperService<App> {
+public interface AppService extends SuperService<App, AppView> {
     
     /**
      * 应用统计
@@ -28,7 +29,7 @@ public interface AppService extends SuperService<App> {
      * @param pageSize 每页个数
      * @return List<App> 应用列表
      */
-    List<App> listForAdmin(String appName, Integer pageIndex, Integer pageSize);
+    List<AppView> listForAdmin(String appName, Integer pageIndex, Integer pageSize);
     
     /**
      * 验证名称唯一性

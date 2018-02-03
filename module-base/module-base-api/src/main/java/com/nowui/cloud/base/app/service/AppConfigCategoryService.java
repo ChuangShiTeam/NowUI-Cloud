@@ -3,6 +3,7 @@ package com.nowui.cloud.base.app.service;
 import java.util.List;
 
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
+import com.nowui.cloud.base.app.view.AppConfigCategoryView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -10,7 +11,7 @@ import com.nowui.cloud.service.SuperService;
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppConfigCategoryService extends SuperService<AppConfigCategory> {
+public interface AppConfigCategoryService extends SuperService<AppConfigCategory, AppConfigCategoryView> {
     
     /**
      * 应用配置分类统计
@@ -30,17 +31,17 @@ public interface AppConfigCategoryService extends SuperService<AppConfigCategory
      * @param configCategoryCode 编码
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<AppConfigCategory> 应用配置分类列表
+     * @return List<AppConfigCategoryView> 应用配置分类列表
      */
-    List<AppConfigCategory> listForAdmin(String appId, String configCategoryName, String configCategoryCode, Integer pageIndex, Integer pageSize);
+    List<AppConfigCategoryView> listForAdmin(String appId, String configCategoryName, String configCategoryCode, Integer pageIndex, Integer pageSize);
     
     /**
      * 应用配置分类列表
      *
      * @param appId 应用编号
-     * @return List<AppConfigCategory> 应用配置分类列表
+     * @return List<AppConfigCategoryView> 应用配置分类列表
      */
-    List<AppConfigCategory> appList(String appId);
+    List<AppConfigCategoryView> appList(String appId);
     
     /**
      * 根据配置分类编码查询应用配置分类信息
@@ -49,6 +50,6 @@ public interface AppConfigCategoryService extends SuperService<AppConfigCategory
      * @param configCategoryCode 配置分类编码
      * @return 应用配置分类
      */
-    AppConfigCategory findByConfigCategoryCode(String appId, String configCategoryCode);
+    AppConfigCategoryView findByConfigCategoryCode(String appId, String configCategoryCode);
 
 }
