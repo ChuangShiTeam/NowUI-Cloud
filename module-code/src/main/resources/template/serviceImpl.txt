@@ -29,7 +29,7 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends SuperSer
         public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
             Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
                     <%for(column in searchColumnList){%>
-                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?" + ${column.columnName} + ".*")
                     <%}%>
                     .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
@@ -44,7 +44,7 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends SuperSer
         public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
             Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}.APP_ID).is(appId)
                     <%for(column in searchColumnList){%>
-                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?\\" + ${column.columnName} + ".*")
+                    .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?" + ${column.columnName} + ".*")
                     <%}%>
                     .and(${firstUpperWithoutUnderlineEntityName}View.SYSTEM_STATUS).is(true);
 
