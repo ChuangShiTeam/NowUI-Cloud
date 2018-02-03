@@ -45,6 +45,7 @@ public class ${firstUpperWithoutUnderlineEntityName}View extends BaseView {
     <%}%>
 
     <%for(column in columnList){%>
+    @NotNull(message = "${column.columnComment}不能为空")
     <%if(column.dataType == "TINYINT"){%>
     public Boolean get${column.firstUpperColumnName}() {
         return getBoolean(${column.upperWithUnderlineColumnName});
