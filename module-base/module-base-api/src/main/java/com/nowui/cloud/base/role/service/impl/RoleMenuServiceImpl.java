@@ -1,5 +1,7 @@
 package com.nowui.cloud.base.role.service.impl;
 
+import com.nowui.cloud.base.role.repository.RoleMenuRepository;
+import com.nowui.cloud.base.role.view.RoleMenuView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.base.role.entity.RoleMenu;
@@ -18,7 +20,7 @@ import java.util.List;
  * 2018-01-02
  */
 @Service
-public class RoleMenuServiceImpl extends SuperServiceImpl<RoleMenuMapper, RoleMenu> implements RoleMenuService {
+public class RoleMenuServiceImpl extends SuperServiceImpl<RoleMenuMapper, RoleMenu, RoleMenuRepository, RoleMenuView> implements RoleMenuService {
 
     @Override
     public Integer countForAdmin(String appId, String roleId, String menuId) {

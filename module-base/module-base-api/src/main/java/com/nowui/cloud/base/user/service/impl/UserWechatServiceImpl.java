@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserWechatRepository;
+import com.nowui.cloud.base.user.router.UserWechatRouter;
+import com.nowui.cloud.base.user.view.UserWechatView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserWechat;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, UserWechat> implements UserWechatService {
+public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, UserWechat,UserWechatRepository,UserWechatView> implements UserWechatService {
 
     @Override
     public UserWechat findByUserId(String userId) {
@@ -42,7 +45,9 @@ public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, Us
         );
         if (userWechatList != null && userWechatList.size() > 0) {
             for (UserWechat userWechat : userWechatList) {
-                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
+                delete(userWechat.getUserWechatId(),userWechat.getAppId(), UserWechatRouter.USER_WECHAT_V1_DELETE,systemUpdateUserId,
+                        userWechat.getSystemVersion());
+//                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
             }
         }
     }

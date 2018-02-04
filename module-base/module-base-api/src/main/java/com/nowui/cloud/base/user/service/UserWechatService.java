@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.view.UserWechatView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -9,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-08
  */
-public interface UserWechatService extends SuperService<UserWechat> {
+public interface UserWechatService extends SuperService<UserWechat,UserWechatView> {
     
     /**
      * 根据用户编号查询用户微信信息

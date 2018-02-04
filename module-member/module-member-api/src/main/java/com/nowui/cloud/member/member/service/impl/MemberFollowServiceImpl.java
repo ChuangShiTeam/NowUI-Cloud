@@ -48,7 +48,6 @@ public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper
                 pageIndex,
                 pageSize
         );
-
         return memberFollowList;
     }
 

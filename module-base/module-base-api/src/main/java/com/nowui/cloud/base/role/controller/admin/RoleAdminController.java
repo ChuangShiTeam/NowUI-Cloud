@@ -1,4 +1,6 @@
 package com.nowui.cloud.base.role.controller.admin;
+import com.nowui.cloud.base.role.router.RoleRouter;
+import com.nowui.cloud.base.role.view.RoleView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.role.entity.Role;
@@ -64,7 +66,7 @@ public class RoleAdminController extends BaseController {
                 Role.ROLE_ID
         );
 
-        Role result = roleService.find(roleEntity.getRoleId());
+        RoleView result = roleService.find(roleEntity.getRoleId());
 
         validateResponse(
                 Role.ROLE_ID,
@@ -91,7 +93,9 @@ public class RoleAdminController extends BaseController {
                 Role.ROLE_SORT
         );
 
-        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(), roleEntity.getSystemRequestUserId());
+        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(),roleEntity.getAppId(), RoleRouter.ROLE_V1_SAVE,
+                roleEntity.getSystemCreateUserId());
+        //        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(), roleEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -112,7 +116,9 @@ public class RoleAdminController extends BaseController {
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
+        Boolean result = roleService.update(roleEntity,roleEntity.getRoleId(),roleEntity.getAppId(),RoleRouter.ROLE_V1_UPDATE,
+                roleEntity.getSystemUpdateUserId(),roleEntity.getSystemVersion());
+//        Boolean result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -129,7 +135,9 @@ public class RoleAdminController extends BaseController {
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
+        Boolean result = roleService.delete(roleEntity.getRoleId(),roleEntity.getAppId(),
+                RoleRouter.ROLE_V1_DELETE,roleEntity.getSystemUpdateUserId(),roleEntity.getSystemVersion());
+//        Boolean result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
 
         return renderJson(result);
     }

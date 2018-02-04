@@ -2,6 +2,7 @@ package com.nowui.cloud.base.notify.service;
 import java.util.List;
 
 import com.nowui.cloud.base.notify.entity.Notify;
+import com.nowui.cloud.base.notify.view.NotifyView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -11,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-28
  */
-public interface NotifyService extends SuperService<Notify> {
+public interface NotifyService extends SuperService<Notify,NotifyView> {
 
     /**
      * 消息统计

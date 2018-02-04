@@ -36,42 +36,52 @@ public class AppConfigCategoryServiceImpl extends SuperServiceImpl<AppConfigCate
     @Override
     public List<AppConfigCategoryView> listForAdmin(String appId, String configCategoryName, String configCategoryCode,
             Integer m, Integer n) {
-        List<AppConfigCategory> appConfigCategoryList = list(
-                new BaseWrapper<AppConfigCategory>()
-                        .eq(AppConfigCategory.APP_ID, appId)
-                        .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
-                        .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
-                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME)),
-                m,
-                n
-        );
+        // TODO: 暂时无法判断错误原因.
+
+        return null;
+//        List<AppConfigCategory> appConfigCategoryList = list(
+//                new BaseWrapper<AppConfigCategory>()
+//                        .eq(AppConfigCategory.APP_ID, appId)
+//                        .like(AppConfigCategory.CONFIG_CATEGORY_NAME, configCategoryName)
+//                        .like(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
+//                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME)),
+//                m,
+//                n
+//        );
         
-        return appConfigCategoryList;
+//        return appConfigCategoryList;
     }
 
     @Override
     public List<AppConfigCategoryView> appList(String appId) {
-        List<AppConfigCategory> appConfigCategoryList = list(
-                new BaseWrapper<AppConfigCategory>()
-                        .eq(AppConfigCategory.APP_ID, appId)
-                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
-        );
-        
-        return appConfigCategoryList;
+
+        // TODO: 暂时无法判断错误原因.
+
+        return null;
+//        List<AppConfigCategory> appConfigCategoryList = list(
+//                new BaseWrapper<AppConfigCategory>()
+//                        .eq(AppConfigCategory.APP_ID, appId)
+//                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
+//        );
+//
+//        return appConfigCategoryList;
     }
 
     @Override
     public AppConfigCategoryView findByConfigCategoryCode(String appId, String configCategoryCode) {
-        AppConfigCategory appConfigCategory = find(
-                new BaseWrapper<AppConfigCategory>()
-                        .eq(AppConfigCategory.APP_ID, appId)
-                        .eq(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
-                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
-        );
-        return appConfigCategory;
+
+        // TODO: 暂时无法判断错误原因.
+        return null;
+//        AppConfigCategory appConfigCategory = find(
+////                new BaseWrapper<AppConfigCategory>()
+////                        .eq(AppConfigCategory.APP_ID, appId)
+////                        .eq(AppConfigCategory.CONFIG_CATEGORY_CODE, configCategoryCode)
+////                        .eq(AppConfigCategory.SYSTEM_STATUS, true)
+////                        .orderDesc(Arrays.asList(AppConfigCategory.SYSTEM_CREATE_TIME))
+////        );
+//        return appConfigCategory;
     }
 
 }

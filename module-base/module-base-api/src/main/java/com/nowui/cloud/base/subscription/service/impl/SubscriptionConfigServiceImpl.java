@@ -3,6 +3,8 @@ package com.nowui.cloud.base.subscription.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.subscription.repository.SubscriptionConfigRepository;
+import com.nowui.cloud.base.subscription.view.SubscriptionConfigView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.subscription.entity.SubscriptionConfig;
@@ -19,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-28
  */
 @Service
-public class SubscriptionConfigServiceImpl extends SuperServiceImpl<SubscriptionConfigMapper, SubscriptionConfig> implements SubscriptionConfigService {
+public class SubscriptionConfigServiceImpl extends SuperServiceImpl<SubscriptionConfigMapper, SubscriptionConfig,SubscriptionConfigRepository,SubscriptionConfigView> implements SubscriptionConfigService {
 
     @Override
     public Integer countForAdmin(String appId, String subscriptionAction, String subscriptionUserId) {

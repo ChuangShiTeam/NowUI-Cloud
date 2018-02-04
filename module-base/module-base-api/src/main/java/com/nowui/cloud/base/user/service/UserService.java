@@ -10,6 +10,7 @@ import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -19,7 +20,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-02
  */
-public interface UserService extends SuperService<User> {
+public interface UserService extends SuperService<User,UserView> {
 
     /**
      * 用户统计
@@ -66,7 +67,7 @@ public interface UserService extends SuperService<User> {
      * @param userId 用户编号
      * @return User 用户详细信息
      */
-    User findById(String userId);
+    UserView findById(String userId);
     
     /**
      * 保存用户账号信息

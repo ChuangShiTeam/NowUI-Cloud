@@ -2,6 +2,8 @@ package com.nowui.cloud.base.user.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.user.router.UserNotifyRouter;
+import com.nowui.cloud.base.user.view.UserNotifyView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +61,7 @@ public class UserNotifyAdminController extends BaseController {
 
     @ApiOperation(value = "用户消息队列表信息")
     @RequestMapping(value = "/user/notify/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
+    public Map<String, Object> findV1(){
         UserNotify userNotifyEntity = getEntry(UserNotify.class);
 
         validateRequest(
@@ -68,7 +70,7 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.USER_NOTIFY_ID
         );
 
-        UserNotify result = userNotifyService.find(userNotifyEntity.getUserNotifyId());
+        UserNotifyView result = userNotifyService.find(userNotifyEntity.getUserNotifyId());
 
         validateResponse(
                 UserNotify.USER_NOTIFY_ID,
@@ -94,7 +96,9 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.NOTIFY_ID
         );
 
-        Boolean result = userNotifyService.save(userNotifyEntity, Util.getRandomUUID(), userNotifyEntity.getSystemRequestUserId());
+        Boolean result = userNotifyService.save(userNotifyEntity,Util.getRandomUUID(),userNotifyEntity.getAppId(),
+                UserNotifyRouter.USER_NOTIFY_V1_SAVE,userNotifyEntity.getSystemCreateUserId());
+//        Boolean result = userNotifyService.save(userNotifyEntity, Util.getRandomUUID(), userNotifyEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -114,7 +118,9 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.SYSTEM_VERSION
         );
 
-        Boolean result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
+//        Boolean result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
+        Boolean result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(),userNotifyEntity.getAppId(),UserNotifyRouter.USER_NOTIFY_V1_UPDATE,
+                userNotifyEntity.getSystemUpdateUserId(),userNotifyEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -131,7 +137,10 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.SYSTEM_VERSION
         );
 
-        Boolean result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
+        Boolean result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(),
+                userNotifyEntity.getSystemRequestUserId(),UserNotifyRouter.USER_NOTIFY_V1_DELETE,userNotifyEntity.getSystemUpdateUserId(),
+                userNotifyEntity.getSystemVersion());
+//        Boolean result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
 
         return renderJson(result);
     }

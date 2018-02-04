@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserPasswordRepository;
+import com.nowui.cloud.base.user.router.UserPasswordRouter;
+import com.nowui.cloud.base.user.view.UserPasswordView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserPassword;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-11
  */
 @Service
-public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword> implements UserPasswordService {
+public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword,UserPasswordRepository,UserPasswordView> implements UserPasswordService {
 
     @Override
     public UserPassword findByUserId(String userId) {
@@ -41,7 +44,9 @@ public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper
         );
         if (userPasswordList != null && userPasswordList.size() > 0) {
             for (UserPassword userPassword : userPasswordList) {
-                delete(userPassword.getUserPasswordId(), systemUpdateUserId, userPassword.getSystemVersion());
+//                delete(userPassword.getUserPasswordId(), systemUpdateUserId, userPassword.getSystemVersion());
+                delete(userPassword.getUserPasswordId(), systemUpdateUserId, UserPasswordRouter.USER_PASSWORD_V1_DELETE,systemUpdateUserId,
+                        userPassword.getSystemVersion());
             }
         }
         

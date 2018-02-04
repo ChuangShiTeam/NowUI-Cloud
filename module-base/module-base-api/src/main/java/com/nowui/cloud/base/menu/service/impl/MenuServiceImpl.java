@@ -1,5 +1,7 @@
 package com.nowui.cloud.base.menu.service.impl;
 
+import com.nowui.cloud.base.menu.repository.MenuRepository;
+import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
@@ -24,7 +26,7 @@ import java.util.Map;
  * 2018-01-01
  */
 @Service
-public class MenuServiceImpl extends SuperServiceImpl<MenuMapper, Menu> implements MenuService {
+public class MenuServiceImpl extends SuperServiceImpl<MenuMapper, Menu,MenuRepository,MenuView> implements MenuService {
 
     @Override
     public Integer countForAdmin(String appId, String menuName) {

@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.menu.service;
+import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.base.menu.entity.Menu;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  *
  * 2018-01-01
  */
-public interface MenuService extends SuperService<Menu> {
+public interface MenuService extends SuperService<Menu,MenuView> {
 
     /**
      * 菜单统计

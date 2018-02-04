@@ -33,31 +33,35 @@ public class AppConfigSystemController implements AppConfigRpc {
 
     @Override
     public JSONObject findByCategoryCode(String appId, String appConfigCategoryCode) {
-        AppConfigCategory appConfigCategory = appConfigCategoryService.findByConfigCategoryCode(appId, appConfigCategoryCode);
-        if (appConfigCategory == null) {
-            return null;
-        }
-        List<AppConfig> appConfigList = appConfigService.abledListByConfigCategoryId(appId, appConfigCategory.getConfigCategoryId());
-        if (appConfigList == null || appConfigList.size() == 0) {
-            return null;
-        }
-        JSONObject jsonObject = new JSONObject();
-        for (AppConfig appConfig : appConfigList) {
-            jsonObject.put(appConfig.getConfigKey(), appConfig.getConfigValue());
-        }
-        return jsonObject;
+        // TODO: 暂时无法判断错误原因.
+        return null;
+//        AppConfigCategory appConfigCategory = appConfigCategoryService.findByConfigCategoryCode(appId, appConfigCategoryCode);
+//        if (appConfigCategory == null) {
+//            return null;
+//        }
+//        List<AppConfig> appConfigList = appConfigService.abledListByConfigCategoryId(appId, appConfigCategory.getConfigCategoryId());
+//        if (appConfigList == null || appConfigList.size() == 0) {
+//            return null;
+//        }
+//        JSONObject jsonObject = new JSONObject();
+//        for (AppConfig appConfig : appConfigList) {
+//            jsonObject.put(appConfig.getConfigKey(), appConfig.getConfigValue());
+//        }
+//        return jsonObject;
     }
 
     @Override
     public List<AppConfig> findAppConfigsByAppCode(String appId, String appConfigCategoryCode) {
-        AppConfigCategory appConfigCategory = appConfigCategoryService.findByConfigCategoryCode(appId, appConfigCategoryCode);
-        if (appConfigCategory == null) {
-            return null;
-        }
-        List<AppConfig> appConfigList = appConfigService.abledListByConfigCategoryId(appId, appConfigCategory.getConfigCategoryId());
-        if (appConfigList == null || appConfigList.size() == 0) {
-            return null;
-        }
-        return appConfigList;
+        // TODO: 暂时无法判断错误原因.
+        return null;
+//        AppConfigCategory appConfigCategory = appConfigCategoryService.findByConfigCategoryCode(appId, appConfigCategoryCode);
+//        if (appConfigCategory == null) {
+//            return null;
+//        }
+//        List<AppConfig> appConfigList = appConfigService.abledListByConfigCategoryId(appId, appConfigCategory.getConfigCategoryId());
+//        if (appConfigList == null || appConfigList.size() == 0) {
+//            return null;
+//        }
+//        return appConfigList;
     }
 }

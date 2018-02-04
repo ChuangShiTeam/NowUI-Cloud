@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.base.file.entity.File;
 
+import javax.swing.filechooser.FileView;
+
 /**
  * 文件服务调用
  *

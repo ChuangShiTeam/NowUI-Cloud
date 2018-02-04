@@ -1,4 +1,6 @@
 package com.nowui.cloud.base.role.controller.admin;
+import com.nowui.cloud.base.role.router.RoleMenuRouter;
+import com.nowui.cloud.base.role.view.RoleMenuView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.role.entity.RoleMenu;
@@ -63,7 +65,7 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.ROLE_MENU_ID
         );
 
-        RoleMenu result = roleMenuService.find(roleMenuEntity.getRoleMenuId());
+        RoleMenuView result = roleMenuService.find(roleMenuEntity.getRoleMenuId());
 
         validateResponse(
                 RoleMenu.ROLE_MENU_ID,
@@ -86,7 +88,9 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.MENU_ID
         );
 
-        Boolean result = roleMenuService.save(roleMenuEntity, Util.getRandomUUID(), roleMenuEntity.getSystemRequestUserId());
+        Boolean result = roleMenuService.save(roleMenuEntity,Util.getRandomUUID(),roleMenuEntity.getAppId(),
+                RoleMenuRouter.ROLE_MENU_V1_SAVE,roleMenuEntity.getSystemCreateUserId());
+//        Boolean result = roleMenuService.save(roleMenuEntity, Util.getRandomUUID(), roleMenuEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -95,7 +99,6 @@ public class RoleMenuAdminController extends BaseController {
     @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
-
         validateRequest(
                 roleMenuEntity,
                 RoleMenu.ROLE_MENU_ID,
@@ -105,7 +108,9 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.update(roleMenuEntity, roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
+        Boolean result = roleMenuService.update(roleMenuEntity,roleMenuEntity.getRoleMenuId(),roleMenuEntity.getAppId(),RoleMenuRouter.ROLE_MENU_V1_UPDATE
+        ,roleMenuEntity.getSystemUpdateUserId(),roleMenuEntity.getSystemVersion());
+//        Boolean result = roleMenuService.update(roleMenuEntity, roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -122,8 +127,10 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
+        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(),roleMenuEntity.getAppId(),RoleMenuRouter.ROLE_MENU_V1_DELETE,
+                roleMenuEntity.getSystemUpdateUserId(),roleMenuEntity.getSystemVersion());
 
+//        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
         return renderJson(result);
     }
 

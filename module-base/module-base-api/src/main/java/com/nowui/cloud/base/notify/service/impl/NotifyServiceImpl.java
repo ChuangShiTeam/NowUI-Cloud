@@ -3,6 +3,8 @@ package com.nowui.cloud.base.notify.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.notify.repository.NotifyRepository;
+import com.nowui.cloud.base.notify.view.NotifyView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.notify.entity.Notify;
@@ -19,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-28
  */
 @Service
-public class NotifyServiceImpl extends SuperServiceImpl<NotifyMapper, Notify> implements NotifyService {
+public class NotifyServiceImpl extends SuperServiceImpl<NotifyMapper, Notify,NotifyRepository,NotifyView> implements NotifyService {
 
     public static final String NOTIFY_ANNOUNCE_RECORD_BY_APP_ID = "notify_announce_record_by_app_id";
 

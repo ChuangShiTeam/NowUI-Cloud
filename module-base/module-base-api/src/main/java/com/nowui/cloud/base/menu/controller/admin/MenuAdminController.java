@@ -1,4 +1,6 @@
 package com.nowui.cloud.base.menu.controller.admin;
+import com.nowui.cloud.base.menu.router.MenuRouter;
+import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.alibaba.fastjson.JSONArray;
@@ -72,7 +74,7 @@ public class MenuAdminController extends BaseController {
                 Menu.MENU_ID
         );
 
-        Menu result = menuService.find(menuEntity.getMenuId());
+        MenuView result = menuService.find(menuEntity.getMenuId());
 
         validateResponse(
                 Menu.MENU_ID,
@@ -110,7 +112,7 @@ public class MenuAdminController extends BaseController {
 
             menuParentPath = jsonArray.toJSONString();
         } else {
-            Menu parent = menuService.find(menuEntity.getMenuParentId());
+            MenuView parent = menuService.find(menuEntity.getMenuParentId());
 
             JSONArray jsonArray;
             if (Util.isNullOrEmpty(parent.getMenuParentPath())) {
@@ -125,7 +127,9 @@ public class MenuAdminController extends BaseController {
 
         menuEntity.setMenuParentPath(menuParentPath);
 
-        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(), menuEntity.getSystemRequestUserId());
+        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(),menuEntity.getAppId(), MenuRouter.MENU_V1_SAVE,
+                menuEntity.getSystemCreateUserId());
+//        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(), menuEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -147,7 +151,9 @@ public class MenuAdminController extends BaseController {
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
+        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(),MenuRouter.MENU_V1_UPDATE,
+                menuEntity.getSystemUpdateUserId(),menuEntity.getSystemVersion());
+//        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -164,7 +170,8 @@ public class MenuAdminController extends BaseController {
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.delete(menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
+        Boolean result = menuService.delete(menuEntity.getMenuId(),menuEntity.getAppId(),MenuRouter.MENU_V1_DELETE,menuEntity.getSystemUpdateUserId(),
+                menuEntity.getSystemVersion());
 
         return renderJson(result);
     }

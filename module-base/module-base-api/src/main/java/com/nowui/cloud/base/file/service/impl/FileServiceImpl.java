@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.imageio.stream.FileImageOutputStream;
 
+import com.nowui.cloud.base.file.repository.FileRepository;
+import com.nowui.cloud.base.file.router.FileRouter;
+import com.nowui.cloud.base.file.view.FileView;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-01
  */
 @Service
-public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implements FileService {
+public class FileServiceImpl extends SuperServiceImpl<FileMapper, File,FileRepository,FileView> implements FileService {
     
     @Autowired
     private Config config;
@@ -130,7 +133,8 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implemen
                 entity.setFileThumbnailPath(fileThumbnailPath);
                 entity.setFileType(fileType);
                 entity.setFileCoverImage("");
-                Boolean result = save(entity, fileId, userId);
+                Boolean result = save(entity, fileId, userId, FileRouter.FILE_V1_SAVE,userId);
+//                Boolean result = save(entity, fileId, userId);
 
                 if (!result) {
                     throw new BusinessException("上传不成功");
@@ -202,7 +206,8 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implemen
         entity.setFileThumbnailPath(fileThumbnailPath);
         entity.setFileType(fileType);
         entity.setFileCoverImage("");
-        Boolean result = save(entity, fileId, userId);
+        Boolean result = save(entity, fileId, userId,FileRouter.FILE_V1_SAVE,userId);
+//        Boolean result = save(entity, fileId, userId);
 
         if (!result) {
             throw new BusinessException("上传不成功");
@@ -243,8 +248,9 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implemen
             file.setFileOriginalPath(filePath);
             file.setFileThumbnailPath(filePath);
             file.setFileSuffix(".jpg");
-            Boolean isSave = save(file, fileId, userId);
-            
+            Boolean isSave = save(file, fileId, userId,FileRouter.FILE_V1_SAVE,userId);
+//            Boolean isSave = save(file, fileId, userId);
+
             if (!isSave) {
                 throw new BusinessException("保存失败");
             }

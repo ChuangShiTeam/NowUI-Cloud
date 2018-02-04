@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
+import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -12,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-05
  */
-public interface SmsCaptchaService extends SuperService<SmsCaptcha> {
+public interface SmsCaptchaService extends SuperService<SmsCaptcha,SmsCaptchaView> {
 
     /**
      * 短信验证码统计
