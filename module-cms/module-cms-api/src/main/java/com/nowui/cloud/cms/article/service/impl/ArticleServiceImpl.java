@@ -1,11 +1,15 @@
 package com.nowui.cloud.cms.article.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.Article;
@@ -61,28 +65,41 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
     }
 
     @Override
-    public List<Article> listForAdmin(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
+    public List<ArticleView> listForAdmin(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
+//
+//        List<Article> articleList = list(
+//                new BaseWrapper<Article>()
+//                        .eq(Article.APP_ID, appId)
+//                        .likeAllowEmpty(Article.ARTICLE_TITLE, articleTitle)
+//                        .eq(Article.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(Article.ARTICLE_IS_TOP))
+//                        .orderAsc(Arrays.asList(Article.ARTICLE_TOP_LEVEL, Article.ARTICLE_SORT))
+//                        .orderDesc(Arrays.asList(Article.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        for (Article article : articleList) {
+//            ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
+//            if (articleArticleCategory != null) {
+//                article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleCategoryId()).getArticleCategoryName());
+//            }
+//        }
+
+        Criteria criteria = Criteria.where(ArticleView.APP_ID).is(appId)
+                .and(ArticleView.ARTICLE_TITLE).regex(".*?" + articleTitle + ".*")
+                .and(ArticleView.SYSTEM_STATUS).is(true);
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, ArticleView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<ArticleView> articleViewList = list(query, sort, pageIndex, pageSize);
         
-        List<Article> articleList = list(
-                new BaseWrapper<Article>()
-                        .eq(Article.APP_ID, appId)
-                        .likeAllowEmpty(Article.ARTICLE_TITLE, articleTitle)
-                        .eq(Article.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Article.ARTICLE_IS_TOP))
-                        .orderAsc(Arrays.asList(Article.ARTICLE_TOP_LEVEL, Article.ARTICLE_SORT))
-                        .orderDesc(Arrays.asList(Article.SYSTEM_CREATE_TIME)),
-                pageIndex, 
-                pageSize
-        );
-        
-        for (Article article : articleList) {
-            ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
-            if (articleArticleCategory != null) {
-                article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleCategoryId()).getArticleCategoryName());
-            }
-        }
-        
-        return articleList;
+        return articleViewList;
     }
 
     @Override
@@ -114,12 +131,10 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
 
     //TODO 
     @Override
-    public Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList,
-            Article article, String systemRequestUserId) {
-        
+    public Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
         String appId = article.getAppId();
         String articleId = article.getArticleId();
-        Boolean result = update(article, articleId, appId, ArticleRouter.ARTICLE_V1_UPDATE, systemRequestUserId, article.getSystemVersion());
+        Boolean result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
 
         if (result) {
             //删除旧的文章文章分类
@@ -130,16 +145,19 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
             for (ArticleMedia articleMedia : articleMediaList) {
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, Util.getRandomUUID(), articleMedia.getAppId(), ArticleMediaRouter.ARTICLE_MEDIA_V1_SAVE, systemRequestUserId);
+                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
             }
             
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_SAVE, systemRequestUserId);
+                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
             }
+
+            rabbitSender.send(appId, ArticleRouter.ARTICLE_V1_UPDATE, article, systemRequestUserId);
         }
+
         return result;
     }
 
@@ -176,14 +194,16 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
             return null;
         }
         
-        // 查询文章列表并按文章排序字段排序
-        List<Article> articleList = articleArticleCategoryList
-                                    .stream()
-                                    .map(articleArticleCategory -> find(articleArticleCategory.getArticleId()))
-                                    .sorted(Comparator.comparing(Article::getArticleSort))
-                                    .collect(Collectors.toList());
-        
-        return articleList;
+//        // 查询文章列表并按文章排序字段排序
+//        List<Article> articleList = articleArticleCategoryList
+//                                    .stream()
+//                                    .map(articleArticleCategory -> find(articleArticleCategory.getArticleId()))
+//                                    .sorted(Comparator.comparing(Article::getArticleSort))
+//                                    .collect(Collectors.toList());
+//
+//        return articleList;
+
+        return null;
     }
 
 }

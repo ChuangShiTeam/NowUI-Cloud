@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.router.AdvertisementRouter;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
-import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -36,9 +33,6 @@ public class AdvertisementAdminController extends BaseController {
     @Autowired
     private AdvertisementService advertisementService;
 
-    @Autowired
-    private FileRpc fileRpc;
-
     @ApiOperation(value = "广告分页列表")
     @RequestMapping(value = "/advertisement/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
@@ -47,31 +41,25 @@ public class AdvertisementAdminController extends BaseController {
         validateRequest(
                 advertisementEntity,
                 Advertisement.APP_ID,
-                Advertisement.ADEVERTISEMENT_CATEGORY_CODE,
-                Advertisement.ADEVERTISEMENT_TITLE,
+                Advertisement.ADVERTISEMENT_CATEGORY_CODE,
+                Advertisement.ADVERTISEMENT_TITLE,
                 Advertisement.PAGE_INDEX,
                 Advertisement.PAGE_SIZE
         );
 
         Integer resultTotal = advertisementService.countForAdmin(advertisementEntity.getAppId(), advertisementEntity.getAdvertisementCategoryCode(), advertisementEntity.getAdvertisementTitle());
-        List<Advertisement> resultList = advertisementService.listForAdmin(advertisementEntity.getAppId(), advertisementEntity.getAdvertisementCategoryCode(), advertisementEntity.getAdvertisementTitle(), advertisementEntity.getM(), advertisementEntity.getN());
-
-        String fileIds = Util.beanToFieldString(resultList, Advertisement.ADEVERTISEMENT_IMAGE);
-        List<File> fileList = fileRpc.findsV1(fileIds);
-
-        resultList = Util.beanAddField(resultList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_PATH);
+        List<AdvertisementView> resultList = advertisementService.listForAdmin(advertisementEntity.getAppId(), advertisementEntity.getAdvertisementCategoryCode(), advertisementEntity.getAdvertisementTitle(), advertisementEntity.getM(), advertisementEntity.getN());
 
         validateResponse(
-                Advertisement.ADEVERTISEMENT_ID,
-                Advertisement.ADEVERTISEMENT_CATEGORY_CODE,
-                Advertisement.ADEVERTISEMENT_TITLE,
-                Advertisement.ADEVERTISEMENT_CODE,
-                Advertisement.ADEVERTISEMENT_IMAGE,
-                File.FILE_PATH,
-                Advertisement.ADEVERTISEMENT_IS_EFFICIENT,
-                Advertisement.ADEVERTISEMENT_LINK,
-                Advertisement.ADEVERTISEMENT_POSITION,
-                Advertisement.ADEVERTISEMENT_SORT
+                AdvertisementView.ADVERTISEMENT_ID,
+                AdvertisementView.ADVERTISEMENT_CATEGORY_CODE,
+                AdvertisementView.ADVERTISEMENT_TITLE,
+                AdvertisementView.ADVERTISEMENT_CODE,
+                AdvertisementView.ADVERTISEMENT_IMAGE,
+                AdvertisementView.ADVERTISEMENT_IS_EFFICIENT,
+                AdvertisementView.ADVERTISEMENT_LINK,
+                AdvertisementView.ADVERTISEMENT_POSITION,
+                AdvertisementView.ADVERTISEMENT_SORT
         );
 
         return renderJson(resultTotal, resultList);
@@ -84,26 +72,25 @@ public class AdvertisementAdminController extends BaseController {
 
         validateRequest(
                 advertisementEntity,
-                Advertisement.ADEVERTISEMENT_ID);
+                Advertisement.ADVERTISEMENT_ID);
 
         AdvertisementView result = advertisementService.find(advertisementEntity.getAdvertisementId());
 
-        File file = fileRpc.findV1(result.getAdvertisementImage());
-        file.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Advertisement.ADEVERTISEMENT_IMAGE, file);
-
+//        File file = fileRpc.findV1(result.getAdvertisementImageId());
+//        file.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Advertisement.ADVERTISEMENT_IMAGE_ID, file);
 
         validateResponse(
-                Advertisement.ADEVERTISEMENT_ID,
-                Advertisement.ADEVERTISEMENT_CATEGORY_CODE,
-                Advertisement.ADEVERTISEMENT_CODE,
-                Advertisement.ADEVERTISEMENT_CONTENT,
-                Advertisement.ADEVERTISEMENT_IMAGE,
-                Advertisement.ADEVERTISEMENT_IS_EFFICIENT,
-                Advertisement.ADEVERTISEMENT_LINK,
-                Advertisement.ADEVERTISEMENT_POSITION,
-                Advertisement.ADEVERTISEMENT_SORT,
-                Advertisement.ADEVERTISEMENT_TITLE,
+                Advertisement.ADVERTISEMENT_ID,
+                Advertisement.ADVERTISEMENT_CATEGORY_CODE,
+                Advertisement.ADVERTISEMENT_CODE,
+                Advertisement.ADVERTISEMENT_CONTENT,
+                Advertisement.ADVERTISEMENT_IMAGE_ID,
+                Advertisement.ADVERTISEMENT_IS_EFFICIENT,
+                Advertisement.ADVERTISEMENT_LINK,
+                Advertisement.ADVERTISEMENT_POSITION,
+                Advertisement.ADVERTISEMENT_SORT,
+                Advertisement.ADVERTISEMENT_TITLE,
                 Advertisement.SYSTEM_VERSION
         );
 
@@ -118,15 +105,15 @@ public class AdvertisementAdminController extends BaseController {
         validateRequest(
                 advertisementEntity,
                 Advertisement.APP_ID,
-                Advertisement.ADEVERTISEMENT_CATEGORY_CODE,
-                Advertisement.ADEVERTISEMENT_CODE,
-                Advertisement.ADEVERTISEMENT_CONTENT,
-                Advertisement.ADEVERTISEMENT_IMAGE,
-                Advertisement.ADEVERTISEMENT_IS_EFFICIENT,
-                Advertisement.ADEVERTISEMENT_LINK,
-                Advertisement.ADEVERTISEMENT_POSITION,
-                Advertisement.ADEVERTISEMENT_SORT,
-                Advertisement.ADEVERTISEMENT_TITLE
+                Advertisement.ADVERTISEMENT_CATEGORY_CODE,
+                Advertisement.ADVERTISEMENT_CODE,
+                Advertisement.ADVERTISEMENT_CONTENT,
+                Advertisement.ADVERTISEMENT_IMAGE_ID,
+                Advertisement.ADVERTISEMENT_IS_EFFICIENT,
+                Advertisement.ADVERTISEMENT_LINK,
+                Advertisement.ADVERTISEMENT_POSITION,
+                Advertisement.ADVERTISEMENT_SORT,
+                Advertisement.ADVERTISEMENT_TITLE
         );
 
         Boolean result = advertisementService.save(advertisementEntity, Util.getRandomUUID(), advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getSystemRequestUserId());
@@ -141,17 +128,17 @@ public class AdvertisementAdminController extends BaseController {
 
         validateRequest(
                 advertisementEntity,
-                Advertisement.ADEVERTISEMENT_ID,
+                Advertisement.ADVERTISEMENT_ID,
                 Advertisement.APP_ID,
-                Advertisement.ADEVERTISEMENT_CATEGORY_CODE,
-                Advertisement.ADEVERTISEMENT_CODE,
-                Advertisement.ADEVERTISEMENT_CONTENT,
-                Advertisement.ADEVERTISEMENT_IMAGE,
-                Advertisement.ADEVERTISEMENT_IS_EFFICIENT,
-                Advertisement.ADEVERTISEMENT_LINK,
-                Advertisement.ADEVERTISEMENT_POSITION,
-                Advertisement.ADEVERTISEMENT_SORT,
-                Advertisement.ADEVERTISEMENT_TITLE,
+                Advertisement.ADVERTISEMENT_CATEGORY_CODE,
+                Advertisement.ADVERTISEMENT_CODE,
+                Advertisement.ADVERTISEMENT_CONTENT,
+                Advertisement.ADVERTISEMENT_IMAGE_ID,
+                Advertisement.ADVERTISEMENT_IS_EFFICIENT,
+                Advertisement.ADVERTISEMENT_LINK,
+                Advertisement.ADVERTISEMENT_POSITION,
+                Advertisement.ADVERTISEMENT_SORT,
+                Advertisement.ADVERTISEMENT_TITLE,
                 Advertisement.SYSTEM_VERSION
         );
 
@@ -167,7 +154,7 @@ public class AdvertisementAdminController extends BaseController {
 
         validateRequest(
                 advertisementEntity,
-                Advertisement.ADEVERTISEMENT_ID,
+                Advertisement.ADVERTISEMENT_ID,
                 Advertisement.SYSTEM_VERSION
         );
 
@@ -181,7 +168,7 @@ public class AdvertisementAdminController extends BaseController {
     public Map<String, Object> replaceV1() {
         Advertisement advertisementEntity = getEntry(Advertisement.class);
 
-        validateRequest(advertisementEntity, Advertisement.ADEVERTISEMENT_ID);
+        validateRequest(advertisementEntity, Advertisement.ADVERTISEMENT_ID);
 
         advertisementService.replace(advertisementEntity.getAdvertisementId());
 

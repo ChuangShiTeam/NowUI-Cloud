@@ -2,6 +2,7 @@ package com.nowui.cloud.base.file.rpc;
 
 import java.util.List;
 
+import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.base.file.entity.File;
-
-import javax.swing.filechooser.FileView;
 
 /**
  * 文件服务调用
@@ -30,7 +29,7 @@ public interface FileRpc {
      * @return file 文件
      */
     @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.POST)
-    File findV1(@RequestParam(value = "fileId", required = true) String fileId);
+    FileView findV1(@RequestParam(value = "fileId", required = true) String fileId);
     
     /**
      * 多文件查找
@@ -43,8 +42,10 @@ public interface FileRpc {
     
     /**
      * 下载微信头像到本地并保存文件
-     * 
-     * @param fileId
+     *
+     * @param appId
+     * @param userId
+     * @param wechatHeadImgUrl
      * @return
      */
     @RequestMapping(value = "/file/system/v1/download/wechat/head/img/to/native", method = RequestMethod.POST)

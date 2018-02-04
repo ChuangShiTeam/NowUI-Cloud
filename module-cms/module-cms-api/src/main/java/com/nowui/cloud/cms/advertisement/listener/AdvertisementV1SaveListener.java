@@ -1,6 +1,8 @@
 package com.nowui.cloud.cms.advertisement.listener;
 
 import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.file.view.FileView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
@@ -29,6 +31,9 @@ public class AdvertisementV1SaveListener {
 
     @Autowired
     private AdvertisementService advertisementService;
+
+    @Autowired
+    private FileRpc fileRpc;
 
     @Bean
     Queue AdvertisementV1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -62,6 +67,9 @@ public class AdvertisementV1SaveListener {
             @Override
             public void receive(String message) {
                 AdvertisementView advertisementView = JSON.parseObject(message, AdvertisementView.class);
+
+                FileView fileView = fileRpc.findV1(advertisementView.getAdvertisementId());
+                advertisementView.setAdvertisementImage(fileView);
 
                 advertisementService.save(advertisementView);
             }

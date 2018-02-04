@@ -128,6 +128,16 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      *
      * @param entity 实体类
      * @param id 实体类编号
+     * @param systemCreateUserId 创建人编号
+     * @return Boolean 是否成功
+     */
+    Boolean save(E entity, String id, String systemCreateUserId);
+
+    /**
+     * 实体类新增
+     *
+     * @param entity 实体类
+     * @param id 实体类编号
      * @param appId 应用编号
      * @param routing 路由
      * @param systemCreateUserId 创建人编号
@@ -142,6 +152,17 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      * @return 是否成功
      */
     Boolean update(V view);
+
+    /**
+     * 实体类修改
+     *
+     * @param entity 实体类
+     * @param id 实体类编号
+     * @param systemUpdateUserId 更新人编号
+     * @param systemVersion 版本号
+     * @return 是否成功
+     */
+    Boolean update(E entity, String id, String systemUpdateUserId, Integer systemVersion);
 
     /**
      * 实体类修改

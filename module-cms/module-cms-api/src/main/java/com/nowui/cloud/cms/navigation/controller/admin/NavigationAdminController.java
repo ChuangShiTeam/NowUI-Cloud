@@ -83,9 +83,9 @@ public class NavigationAdminController extends BaseController {
 
         Navigation result = navigationService.find(body.getNavigationId());
 
-        File file = fileRpc.findV1(result.getNavigationImage());
-        file.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Navigation.NAVIGATION_IMAGE, file);
+//        File file = fileRpc.findV1(result.getNavigationImage());
+//        file.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Navigation.NAVIGATION_IMAGE, file);
         
         validateResponse(
                 Navigation.NAVIGATION_ID,

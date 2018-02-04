@@ -37,7 +37,7 @@ public interface AdvertisementService extends SuperService<Advertisement, Advert
      * @param n 取n条数据
      * @return List<Advertisement> 广告列表
      */
-    List<Advertisement> listForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m, Integer n);
+    List<AdvertisementView> listForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle, Integer m, Integer n);
 
     /**
      * 广告列表

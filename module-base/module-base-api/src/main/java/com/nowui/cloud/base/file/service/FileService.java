@@ -39,7 +39,7 @@ public interface FileService extends SuperService<File,FileView> {
      * @param pageSize 每页个数
      * @return List<File> 文件列表
      */
-    List<File> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize);
+    List<FileView> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize);
     
     /**
      * 视频上传

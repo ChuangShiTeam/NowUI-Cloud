@@ -41,9 +41,9 @@ public class AdvertisementMobileController extends BaseController {
         List<Advertisement> resultList = advertisementService.mobileList(body.getAppId(), "INDEX_BANNER");
 
         validateResponse(
-                Advertisement.ADEVERTISEMENT_TITLE,
-                Advertisement.ADEVERTISEMENT_IMAGE,
-                Advertisement.ADEVERTISEMENT_LINK
+                Advertisement.ADVERTISEMENT_TITLE,
+                Advertisement.ADVERTISEMENT_IMAGE_ID,
+                Advertisement.ADVERTISEMENT_LINK
         );
 
         return renderJson(resultList);

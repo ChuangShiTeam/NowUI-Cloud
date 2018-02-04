@@ -32,7 +32,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告编号不能为空")
     @Length(max = 32, message = "广告编号长度超出限制")
     private String advertisementId;
-    public static final String ADEVERTISEMENT_ID = "advertisementId";
+    public static final String ADVERTISEMENT_ID = "advertisementId";
     
     /**
      * 应用编号
@@ -52,7 +52,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告分类编码不能为空")
     @Length(max = 50, message = "广告分类编码长度超出限制")
     private String advertisementCategoryCode;
-    public static final String ADEVERTISEMENT_CATEGORY_CODE = "advertisementCategoryCode";
+    public static final String ADVERTISEMENT_CATEGORY_CODE = "advertisementCategoryCode";
     
     /**
      * 广告编码
@@ -62,7 +62,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告编码不能为空")
     @Length(max = 50, message = "广告编码长度超出限制")
     private String advertisementCode;
-    public static final String ADEVERTISEMENT_CODE = "advertisementCode";
+    public static final String ADVERTISEMENT_CODE = "advertisementCode";
     
     /**
      * 广告标题
@@ -72,7 +72,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告标题不能为空")
     @Length(max = 200, message = "广告标题长度超出限制")
     private String advertisementTitle;
-    public static final String ADEVERTISEMENT_TITLE = "advertisementTitle";
+    public static final String ADVERTISEMENT_TITLE = "advertisementTitle";
     
     /**
      * 广告图片
@@ -81,8 +81,8 @@ public class Advertisement extends BaseEntity {
     @TableField
     @NotNull(message = "广告图片不能为空")
     @Length(max = 200, message = "广告图片长度超出限制")
-    private String advertisementImage;
-    public static final String ADEVERTISEMENT_IMAGE = "advertisementImage";
+    private String advertisementImageId;
+    public static final String ADVERTISEMENT_IMAGE_ID = "advertisementImageId";
     
     /**
      * 广告内容
@@ -92,7 +92,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告内容不能为空")
     @Length(max = 2000, message = "广告内容长度超出限制")
     private String advertisementContent;
-    public static final String ADEVERTISEMENT_CONTENT = "advertisementContent";
+    public static final String ADVERTISEMENT_CONTENT = "advertisementContent";
     
     /**
      * 广告位置
@@ -102,7 +102,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告位置不能为空")
     @Length(max = 200, message = "广告位置长度超出限制")
     private String advertisementPosition;
-    public static final String ADEVERTISEMENT_POSITION = "advertisementPosition";
+    public static final String ADVERTISEMENT_POSITION = "advertisementPosition";
     
     /**
      * 广告超链接
@@ -112,7 +112,7 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告超链接不能为空")
     @Length(max = 200, message = "广告超链接长度超出限制")
     private String advertisementLink;
-    public static final String ADEVERTISEMENT_LINK = "advertisementLink";
+    public static final String ADVERTISEMENT_LINK = "advertisementLink";
     
     /**
      * 广告是否失效
@@ -121,7 +121,7 @@ public class Advertisement extends BaseEntity {
     @TableField
     @NotNull(message = "广告是否失效不能为空")
     private Boolean advertisementIsEfficient;
-    public static final String ADEVERTISEMENT_IS_EFFICIENT = "advertisementIsEfficient";
+    public static final String ADVERTISEMENT_IS_EFFICIENT = "advertisementIsEfficient";
     
     /**
      * 广告排序
@@ -130,14 +130,14 @@ public class Advertisement extends BaseEntity {
     @TableField
     @NotNull(message = "广告排序不能为空")
     private Boolean advertisementSort;
-    public static final String ADEVERTISEMENT_SORT = "advertisementSort";
+    public static final String ADVERTISEMENT_SORT = "advertisementSort";
     
     public String getAdvertisementId() {
-        return getString(ADEVERTISEMENT_ID);
+        return getString(ADVERTISEMENT_ID);
     }
     
     public void setAdvertisementId(String advertisementId) {
-        put(ADEVERTISEMENT_ID, advertisementId);
+        put(ADVERTISEMENT_ID, advertisementId);
     }
     
     public String getAppId() {
@@ -149,51 +149,51 @@ public class Advertisement extends BaseEntity {
     }
     
     public String getAdvertisementCategoryCode() {
-        return getString(ADEVERTISEMENT_CATEGORY_CODE);
+        return getString(ADVERTISEMENT_CATEGORY_CODE);
     }
     
     public void setAdvertisementCategoryCode(String advertisementCategoryCode) {
-        put(ADEVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode);
+        put(ADVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode);
     }
     
     public String getAdvertisementCode() {
-        return getString(ADEVERTISEMENT_CODE);
+        return getString(ADVERTISEMENT_CODE);
     }
     
     public void setAdvertisementCode(String advertisementCode) {
-        put(ADEVERTISEMENT_CODE, advertisementCode);
+        put(ADVERTISEMENT_CODE, advertisementCode);
     }
     
     public String getAdvertisementTitle() {
-        return getString(ADEVERTISEMENT_TITLE);
+        return getString(ADVERTISEMENT_TITLE);
     }
     
     public void setAdvertisementTitle(String advertisementTitle) {
-        put(ADEVERTISEMENT_TITLE, advertisementTitle);
+        put(ADVERTISEMENT_TITLE, advertisementTitle);
     }
     
-    public String getAdvertisementImage() {
-        return getString(ADEVERTISEMENT_IMAGE);
+    public String getAdvertisementImageId() {
+        return getString(ADVERTISEMENT_IMAGE_ID);
     }
     
-    public void setAdvertisementImage(String advertisementImage) {
-        put(ADEVERTISEMENT_IMAGE, advertisementImage);
+    public void setAdvertisementImageId(String advertisementImageId) {
+        put(ADVERTISEMENT_IMAGE_ID, advertisementImageId);
     }
     
     public String getAdvertisementContent() {
-        return getString(ADEVERTISEMENT_CONTENT);
+        return getString(ADVERTISEMENT_CONTENT);
     }
     
     public void setAdvertisementContent(String advertisementContent) {
-        put(ADEVERTISEMENT_CONTENT, advertisementContent);
+        put(ADVERTISEMENT_CONTENT, advertisementContent);
     }
     
     public String getAdvertisementPosition() {
-        return getString(ADEVERTISEMENT_POSITION);
+        return getString(ADVERTISEMENT_POSITION);
     }
     
     public void setAdvertisementPosition(String advertisementPosition) {
-        put(ADEVERTISEMENT_POSITION, advertisementPosition);
+        put(ADVERTISEMENT_POSITION, advertisementPosition);
     }
     
     public String getAdvertisementLink() {
@@ -201,23 +201,23 @@ public class Advertisement extends BaseEntity {
     }
     
     public void setAdvertisementLink(String advertisementLink) {
-        put(ADEVERTISEMENT_LINK, advertisementLink);
+        put(ADVERTISEMENT_LINK, advertisementLink);
     }
     
     public Boolean getAdvertisementIsEfficient() {
-        return getBoolean(ADEVERTISEMENT_IS_EFFICIENT);
+        return getBoolean(ADVERTISEMENT_IS_EFFICIENT);
     }
     
     public void setAdvertisementIsEfficient(Boolean advertisementIsEfficient) {
-        put(ADEVERTISEMENT_IS_EFFICIENT, advertisementIsEfficient);
+        put(ADVERTISEMENT_IS_EFFICIENT, advertisementIsEfficient);
     }
     
     public Boolean getAdvertisementSort() {
-        return getBoolean(ADEVERTISEMENT_SORT);
+        return getBoolean(ADVERTISEMENT_SORT);
     }
     
     public void setAdvertisementSort(Boolean advertisementSort) {
-        put(ADEVERTISEMENT_SORT, advertisementSort);
+        put(ADVERTISEMENT_SORT, advertisementSort);
     }
 
 }

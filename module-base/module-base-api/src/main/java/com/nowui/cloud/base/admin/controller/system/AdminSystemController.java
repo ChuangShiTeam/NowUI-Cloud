@@ -1,12 +1,7 @@
 package com.nowui.cloud.base.admin.controller.system;
 
-import com.alibaba.fastjson.JSON;
-import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.rpc.AdminRpc;
-import com.nowui.cloud.base.admin.service.AdminService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

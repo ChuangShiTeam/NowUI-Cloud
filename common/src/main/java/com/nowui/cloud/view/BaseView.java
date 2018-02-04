@@ -2,13 +2,15 @@ package com.nowui.cloud.view;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.nowui.cloud.entity.BaseEntity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -167,6 +169,30 @@ public class BaseView extends JSONObject implements Serializable {
 
     public void setPageSize(Integer pageSize) {
         put(PAGE_SIZE, pageSize);
+    }
+
+    /**
+     * 对象默认保留属性，去除基本公共字段
+     */
+    public <V extends BaseView> V removeBaseTableField() {
+        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            if (SYSTEM_CREATE_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_CREATE_TIME.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_UPDATE_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_UPDATE_TIME.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_VERSION.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (SYSTEM_STATUS.equals(entry.getKey())) {
+                iterator.remove();
+            }
+        }
+        return (V) this;
     }
 
 }

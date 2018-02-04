@@ -44,6 +44,8 @@ public class BaseController {
 
     private String[] validateResponseColumnList = new String[]{};
 
+    private String[] validateSecondResponseColumnList = new String[]{};
+
     
     protected HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -161,6 +163,10 @@ public class BaseController {
 
     public void validateResponse(String... columns) {
         validateResponseColumnList = columns;
+    }
+
+    public void validateSecondResponse(String... columns) {
+        validateSecondResponseColumnList = columns;
     }
 
     protected Map<String, Object> renderJson(Object data) {

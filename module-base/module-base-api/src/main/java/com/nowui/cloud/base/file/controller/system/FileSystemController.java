@@ -1,14 +1,11 @@
 package com.nowui.cloud.base.file.controller.system;
 import java.util.List;
-import java.util.stream.Collectors;
 import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.service.FileService;
-import com.nowui.cloud.util.Util;
 import io.swagger.annotations.Api;
 
 /**
@@ -26,9 +23,12 @@ public class FileSystemController implements FileRpc {
     private FileService fileService;
 
     @Override
-    public File findV1(String fileId) {
+    public FileView findV1(String fileId) {
+        FileView fileView = fileService.find(fileId);
 
-        return null;
+        fileView.removeBaseTableField();
+
+        return fileView;
 //        if (Util.isNullOrEmpty(fileId)) {
 //            return null;
 //        }

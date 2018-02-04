@@ -10,8 +10,12 @@ import javax.imageio.stream.FileImageOutputStream;
 import com.nowui.cloud.base.file.repository.FileRepository;
 import com.nowui.cloud.base.file.router.FileRouter;
 import com.nowui.cloud.base.file.view.FileView;
+import com.nowui.cloud.shop.product.entity.Product;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -43,32 +47,35 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File,FileRepos
 
     @Override
     public Integer countForAdmin(String appId, String systemCreateUserId, String fileName, String fileType) {
-        Integer count = count(
-                new BaseWrapper<File>()
-                        .eq(File.APP_ID, appId)
-                        .eq(File.SYSTEM_CREATE_USER_ID, systemCreateUserId)
-                        .likeAllowEmpty(File.FILE_NAME, fileName)
-                        .eqAllowEmpty(File.FILE_TYPE, fileType)
-                        .eq(File.SYSTEM_STATUS, true)
-        );
+        Criteria criteria = Criteria.where(FileView.APP_ID).is(appId)
+                .and(FileView.FILE_NAME).regex(".*?" + fileName + ".*")
+                .and(FileView.FILE_TYPE).is(fileType)
+                .and(FileView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
     }
 
     @Override
-    public List<File> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
-        List<File> fileList = list(
-                new BaseWrapper<File>()
-                        .eq(File.APP_ID, appId)
-                        .eq(File.SYSTEM_CREATE_USER_ID, systemCreateUserId)
-                        .likeAllowEmpty(File.FILE_NAME, fileName)
-                        .eqAllowEmpty(File.FILE_TYPE, fileType)
-                        .eq(File.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(File.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<FileView> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(Product.APP_ID).is(appId)
+                .and(FileView.FILE_NAME).regex(".*?" + fileName + ".*")
+                .and(FileView.FILE_TYPE).is(fileType)
+                .and(FileView.SYSTEM_STATUS).is(true);
 
-        return fileList;
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, FileView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<FileView> fileViewList = list(query, sort, pageIndex, pageSize);
+
+        return fileViewList;
     }
 
     @Override

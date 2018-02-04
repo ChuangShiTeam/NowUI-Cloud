@@ -39,8 +39,9 @@ public class RabbitListener implements ChannelAwareMessageListener {
 
             channel.basicAck(deliveryTag,false);
         } catch (Exception e) {
-            //消息消费失败
+            e.printStackTrace();
 
+            //消息消费失败
         }
     }
 }

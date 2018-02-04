@@ -212,24 +212,24 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         return updateResult.isModifiedCountAvailable();
     }
 
-//    @Override
-//    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
-//        baseEntity.put(entity.getTableId(), id);
-//        baseEntity.setSystemCreateUserId(systemCreateUserId);
-//        baseEntity.setSystemCreateTime(new Date());
-//        baseEntity.setSystemUpdateUserId(systemCreateUserId);
-//        baseEntity.setSystemUpdateTime(new Date());
-//        baseEntity.setSystemVersion(0);
-//        baseEntity.setSystemStatus(true);
-//
-//        Boolean success = mapper.insert(baseEntity) != 0;
-//
-//        if (success) {
-//            elasticsearchSaveOrUpdate(baseEntity, id);
-//        }
-//
-//        return success;
-//    }
+    @Override
+    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
+        baseEntity.put(entity.getTableId(), id);
+        baseEntity.setSystemCreateUserId(systemCreateUserId);
+        baseEntity.setSystemCreateTime(new Date());
+        baseEntity.setSystemUpdateUserId(systemCreateUserId);
+        baseEntity.setSystemUpdateTime(new Date());
+        baseEntity.setSystemVersion(0);
+        baseEntity.setSystemStatus(true);
+
+        Boolean success = mapper.insert(baseEntity) != 0;
+
+        if (success) {
+
+        }
+
+        return success;
+    }
 
     @Override
     public Boolean save(E baseEntity, String id, String appId, String routing, String systemCreateUserId) {
@@ -250,26 +250,26 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         return success;
     }
 
-//    @Override
-//    public Boolean update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
-//        baseEntity.setSystemUpdateUserId(systemUpdateUserId);
-//        baseEntity.setSystemUpdateTime(new Date());
-//        baseEntity.setSystemVersion(systemVersion + 1);
-//
-//        Boolean success = mapper.update(
-//                baseEntity,
-//                new EntityWrapper<E>()
-//                        .eq(entity.getTableId(), id)
-//                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
-//                        .eq(BaseEntity.SYSTEM_STATUS, true)
-//        ) != 0;
-//
-//        if (success) {
-//            replace(id);
-//        }
-//
-//        return success;
-//    }
+    @Override
+    public Boolean update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
+        baseEntity.setSystemUpdateUserId(systemUpdateUserId);
+        baseEntity.setSystemUpdateTime(new Date());
+        baseEntity.setSystemVersion(systemVersion + 1);
+
+        Boolean success = mapper.update(
+                baseEntity,
+                new EntityWrapper<E>()
+                        .eq(entity.getTableId(), id)
+                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
+                        .eq(BaseEntity.SYSTEM_STATUS, true)
+        ) != 0;
+
+        if (success) {
+            replace(id);
+        }
+
+        return success;
+    }
 
     @Override
     public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {

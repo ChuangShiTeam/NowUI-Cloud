@@ -53,7 +53,7 @@ public class FileAdminController extends BaseController {
         );
 
         Integer resultTotal = fileService.countForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType());
-        List<File> resultList = fileService.listForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType(), fileEntity.getPageIndex(), fileEntity.getPageSize());
+        List<FileView> resultList = fileService.listForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType(), fileEntity.getPageIndex(), fileEntity.getPageSize());
 
         validateResponse(
                 File.FILE_ID,

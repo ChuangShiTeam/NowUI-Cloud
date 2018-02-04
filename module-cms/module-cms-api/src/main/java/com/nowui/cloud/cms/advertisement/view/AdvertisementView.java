@@ -1,10 +1,12 @@
 package com.nowui.cloud.cms.advertisement.view;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+
+import javax.swing.filechooser.FileView;
 
 /**
  * 广告视图
@@ -56,7 +58,14 @@ public class AdvertisementView extends BaseView {
      * 图片
      */
     @Field
-    private String advertisementImage;
+    private String advertisementImageId;
+    public static final String ADEVERTISEMENT_IMAGE_ID = "advertisementImageId";
+
+    /**
+     * 图片
+     */
+    @Field
+    private JSONObject advertisementImage;
     public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
 
     /**
@@ -135,11 +144,19 @@ public class AdvertisementView extends BaseView {
         put(ADVERTISEMENT_TITLE, advertisementTitle);
     }
 
-    public String getAdvertisementImage() {
-        return getString(ADVERTISEMENT_IMAGE);
+    public String getAdvertisementImageId() {
+        return getString(ADEVERTISEMENT_IMAGE_ID);
     }
 
-    public void setAdvertisementImage(String advertisementImage) {
+    public void setAdvertisementImageId(String advertisementImageId) {
+        put(ADEVERTISEMENT_IMAGE_ID, advertisementImageId);
+    }
+
+    public JSONObject getAdvertisementImage() {
+        return getJSONObject(ADVERTISEMENT_IMAGE);
+    }
+
+    public void setAdvertisementImage(JSONObject advertisementImage) {
         put(ADVERTISEMENT_IMAGE, advertisementImage);
     }
 

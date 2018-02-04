@@ -6,7 +6,6 @@ import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.view.ArticleView;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -36,7 +35,7 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
      * @param pageSize 每页个数
      * @return List<Article> 文章列表
      */
-    List<Article> listForAdmin(String appId, String articleName, Integer pageIndex, Integer pageSize);
+    List<ArticleView> listForAdmin(String appId, String articleName, Integer pageIndex, Integer pageSize);
     
     /**
      * 文章保存

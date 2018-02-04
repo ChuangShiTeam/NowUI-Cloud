@@ -41,11 +41,11 @@ public class AdvertisementSystemController implements AdvertisementRpc {
             return new ArrayList<>();
         }
         
-        String fileIds = Util.beanToFieldString(advertisementList, Advertisement.ADEVERTISEMENT_IMAGE);
+        String fileIds = Util.beanToFieldString(advertisementList, Advertisement.ADVERTISEMENT_IMAGE_ID);
         
         List<File> fileList = fileRpc.findsV1(fileIds);
         
-        advertisementList = Util.beanAddField(advertisementList, Advertisement.ADEVERTISEMENT_IMAGE, fileList, File.FILE_PATH);
+        advertisementList = Util.beanAddField(advertisementList, Advertisement.ADVERTISEMENT_IMAGE_ID, fileList, File.FILE_PATH);
         
         return advertisementList;
     }

@@ -66,12 +66,12 @@ public class ArticleAdminController extends BaseController {
         );
 
         Integer resultTotal = articleService.countForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle());
-        List<Article> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
+        List<ArticleView> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
 
-        String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
-        List<File> fileList = fileRpc.findsV1(fileIds);
-
-        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_PATH);
+//        String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
+//        List<File> fileList = fileRpc.findsV1(fileIds);
+//
+//        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_PATH);
 
         validateResponse(
                 Article.ARTICLE_ID,
@@ -97,32 +97,32 @@ public class ArticleAdminController extends BaseController {
         validateRequest(articleEntity, Article.ARTICLE_ID);
 
         ArticleView result = articleService.find(articleEntity.getArticleId());
-        //查询文章分类
-        List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(articleEntity.getArticleId());
-        for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-            articleArticleCategory.keep(ArticleArticleCategory.ARTICLE_CATEGORY_ID, ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY);
-        }
-        result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
-        //查询文章主媒体
-        if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
-            System.out.println(result.toJSONString());
-            System.out.println(result.getArticleMediaId());
-            File file = fileRpc.findV1(result.getArticleMediaId());
-            file.keep(File.FILE_ID, File.FILE_PATH);
-            result.put(Article.ARTICLE_MEDIA, file);
-        }
-        //查询文章副媒体
-        List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(articleEntity.getArticleId());
-
-        if (Util.isNullOrEmpty(articleMeidaList)) {
-            result.put(Article.ARTICLE_MEDIA_LIST, new ArrayList<>());
-        } else {
-            String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
-            List<File> fileList = fileRpc.findsV1(fileIds);
-
-            articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
-            result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
-        }
+//        //查询文章分类
+//        List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(articleEntity.getArticleId());
+//        for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
+//            articleArticleCategory.keep(ArticleArticleCategory.ARTICLE_CATEGORY_ID, ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY);
+//        }
+//        result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
+//        //查询文章主媒体
+//        if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
+//            System.out.println(result.toJSONString());
+//            System.out.println(result.getArticleMediaId());
+//            File file = fileRpc.findV1(result.getArticleMediaId());
+//            file.keep(File.FILE_ID, File.FILE_PATH);
+//            result.put(Article.ARTICLE_MEDIA, file);
+//        }
+//        //查询文章副媒体
+//        List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(articleEntity.getArticleId());
+//
+//        if (Util.isNullOrEmpty(articleMeidaList)) {
+//            result.put(Article.ARTICLE_MEDIA_LIST, new ArrayList<>());
+//        } else {
+//            String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
+//            List<File> fileList = fileRpc.findsV1(fileIds);
+//
+//            articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
+//            result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
+//        }
 
 
         validateResponse(

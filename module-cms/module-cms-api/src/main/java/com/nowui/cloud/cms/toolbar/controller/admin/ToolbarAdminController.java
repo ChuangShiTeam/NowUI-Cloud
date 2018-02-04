@@ -84,13 +84,13 @@ public class ToolbarAdminController extends BaseController {
 
         ToolbarView result = toolbarService.find(body.getToolbarId());
         
-        File file = fileRpc.findV1(result.getToolbarImage());
-        file.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Toolbar.TOOLBAR_IMAGE, file);
+//        File file = fileRpc.findV1(result.getToolbarImage());
+//        file.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Toolbar.TOOLBAR_IMAGE, file);
 
-        File activeFile = fileRpc.findV1(result.getToolbarActiveImage());
-        file.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFile);
+//        File activeFile = fileRpc.findV1(result.getToolbarActiveImage());
+//        file.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFile);
         
         validateResponse(
             Toolbar.TOOLBAR_ID, 
