@@ -3,9 +3,7 @@ package com.nowui.cloud.cms.toolbar.entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.stereotype.Component;
+import org.springframework.data.annotation.Id;import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -36,7 +34,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -46,7 +43,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 工具栏名称
      */
-    @Field
     @TableField
     @NotNull(message = "工具栏名称不能为空")
     @Length(max = 50, message = "工具栏名称长度超出限制")
@@ -56,7 +52,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 工具栏激活图片(选择)
      */
-    @Field
     @TableField
     @NotNull(message = "工具栏激活图片不能为空")
     @Length(max = 32, message = "工具栏激活图片长度超出限制")
@@ -66,7 +61,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 工具栏图片
      */
-    @Field
     @TableField
     @NotNull(message = "工具栏图片不能为空")
     @Length(max = 32, message = "工具栏图片长度超出限制")
@@ -77,7 +71,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 工具栏地址
      */
-    @Field
     @TableField
     @NotNull(message = "工具栏地址不能为空")
     @Length(max = 200, message = "工具栏地址长度超出限制")
@@ -88,7 +81,6 @@ public class Toolbar extends BaseEntity {
     /**
      * 工具栏排序
      */
-    @Field
     @TableField
     @NotNull(message = "工具栏排序不能为空")
     private Integer toolbarSort;

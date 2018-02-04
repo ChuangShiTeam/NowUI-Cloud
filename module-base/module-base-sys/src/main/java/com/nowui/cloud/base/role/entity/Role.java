@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class Role extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class Role extends BaseEntity {
     /**
      * 名称
      */
-    @Field
     @TableField
     @NotNull(message = "名称不能为空")
     @Length(max = 50, message = "名称长度超出限制")
@@ -57,7 +53,6 @@ public class Role extends BaseEntity {
     /**
      * 编码
      */
-    @Field
     @TableField
     @NotNull(message = "编码不能为空")
     @Length(max = 25, message = "编码长度超出限制")
@@ -67,7 +62,6 @@ public class Role extends BaseEntity {
     /**
      * 描述
      */
-    @Field
     @TableField
     @NotNull(message = "描述不能为空")
     @Length(max = 200, message = "描述长度超出限制")
@@ -77,7 +71,6 @@ public class Role extends BaseEntity {
     /**
      * 排序
      */
-    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     private Integer roleSort;

@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +34,6 @@ public class MemberInform extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -46,7 +43,6 @@ public class MemberInform extends BaseEntity {
     /**
      * 会员编号
      */
-    @Field
     @TableField
     @NotNull(message = "会员编号不能为空")
     @Length(max = 32, message = "会员编号长度超出限制")
@@ -56,7 +52,6 @@ public class MemberInform extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -66,7 +61,6 @@ public class MemberInform extends BaseEntity {
     /**
      * 被举报用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "被举报用户编号不能为空")
     @Length(max = 32, message = "被举报用户编号长度超出限制")
@@ -76,7 +70,6 @@ public class MemberInform extends BaseEntity {
     /**
      * 被举报会员编号
      */
-    @Field
     @TableField
     @NotNull(message = "被举报会员编号不能为空")
     @Length(max = 32, message = "被举报会员编号长度超出限制")

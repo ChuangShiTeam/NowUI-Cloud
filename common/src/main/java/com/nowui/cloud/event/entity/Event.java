@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class Event extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class Event extends BaseEntity {
     /**
      * 事件名称
      */
-    @Field
     @TableField
     @NotNull(message = "事件名称不能为空")
     @Length(max = 200, message = "事件名称长度超出限制")
@@ -57,7 +53,6 @@ public class Event extends BaseEntity {
     /**
      * 事件内容
      */
-    @Field
     @TableField
     @NotNull(message = "事件内容不能为空")
     @Length(max = 0, message = "事件内容长度超出限制")

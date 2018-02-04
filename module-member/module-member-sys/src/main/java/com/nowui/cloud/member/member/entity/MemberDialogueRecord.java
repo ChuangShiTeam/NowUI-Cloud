@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class MemberDialogueRecord extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class MemberDialogueRecord extends BaseEntity {
     /**
      * 会员对话编号
      */
-    @Field
     @TableField
     @NotNull(message = "会员对话编号不能为空")
     @Length(max = 32, message = "会员对话编号长度超出限制")
@@ -57,7 +53,6 @@ public class MemberDialogueRecord extends BaseEntity {
     /**
      * 会员编号
      */
-    @Field
     @TableField
     @NotNull(message = "会员编号不能为空")
     @Length(max = 32, message = "会员编号长度超出限制")
@@ -67,7 +62,6 @@ public class MemberDialogueRecord extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -77,7 +71,6 @@ public class MemberDialogueRecord extends BaseEntity {
     /**
      * 对话内容
      */
-    @Field
     @TableField
     @NotNull(message = "对话内容不能为空")
     @Length(max = 2000, message = "对话内容长度超出限制")

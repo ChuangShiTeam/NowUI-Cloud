@@ -113,7 +113,7 @@ public class CodeController extends BaseController {
             String controllerSystemPath = controllerPath + "/system";
             String listenerPath = apiPackagePath + "/listener";
             String repositoryPath = apiPackagePath + "/repository";
-            String apiviewPath = apiPackagePath + "/view";
+            String sysviewPath = sysPackagePath + "/view";
             String storePath = webPackagePath + "/store";
             String routerPath = webPackagePath + "/router";
             String viewPath = webPackagePath + "/view";
@@ -139,7 +139,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(controllerDesktopPath);
             FileUtil.createPath(controllerMobilePath);
             FileUtil.createPath(controllerSystemPath);
-            FileUtil.createPath(apiviewPath);
+            FileUtil.createPath(sysviewPath);
             FileUtil.createPath(storePath);
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
@@ -254,7 +254,7 @@ public class CodeController extends BaseController {
             write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
             write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
             write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
-            write(templateMap, "apiView.txt", apiviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
+            write(templateMap, "sysView.txt", sysviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");

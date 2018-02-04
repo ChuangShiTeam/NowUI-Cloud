@@ -73,10 +73,10 @@ public class WawiIndexMobileController extends BaseController {
         
         for (Advertisement advertisement : indexBannerList) {
             advertisement.keep(
-                    Advertisement.ADEVERTISEMENT_ID,
+                    Advertisement.ADVERTISEMENT_ID,
                     File.FILE_PATH,
-                    Advertisement.ADEVERTISEMENT_LINK,
-                    Advertisement.ADEVERTISEMENT_TITLE
+                    Advertisement.ADVERTISEMENT_LINK,
+                    Advertisement.ADVERTISEMENT_TITLE
             );
         }
         

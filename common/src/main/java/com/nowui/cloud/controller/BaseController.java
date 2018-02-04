@@ -44,7 +44,7 @@ public class BaseController {
 
     private String[] validateResponseColumnList = new String[]{};
 
-    private String[] validateSecondResponseColumnList = new String[]{};
+    private Map<String, String[]> validateSecondResponseColumnList = new HashMap<>();
 
     
     protected HttpServletRequest getRequest() {
@@ -58,7 +58,7 @@ public class BaseController {
         return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }
 
-    private JSONObject checkMap(Object data) {
+    private JSONObject checkFirstMap(Object data) {
         JSONObject result = (JSONObject) JSON.toJSON(data);
 
         Iterator iterator = result.entrySet().iterator();
@@ -76,6 +76,51 @@ public class BaseController {
             if (isNotExit) {
                 iterator.remove();
             } else {
+                if (entry.getValue() instanceof BaseEntity) {
+                    entry.setValue(checkSecondMap(entry.getKey(), entry.getValue()));
+                } else if (entry.getValue() instanceof BaseView) {
+                    entry.setValue(checkSecondMap(entry.getKey(), entry.getValue()));
+                } else if (entry.getValue() instanceof List) {
+                    List list = new ArrayList();
+                    for (Object item : (List) entry.getValue()) {
+                        if (item instanceof BaseEntity) {
+                            list.add(checkSecondMap(entry.getKey(), item));
+                        } else if (item instanceof Map) {
+                            list.add(checkSecondMap(entry.getKey(), item));
+                        }
+                    }
+                    entry.setValue(list);
+                } else if (entry.getValue() instanceof Map) {
+                    entry.setValue(checkSecondMap(entry.getKey(), entry.getValue()));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private Object checkSecondMap(String secondKey, Object data) {
+        JSONObject result = (JSONObject) JSON.toJSON(data);
+
+        Iterator iterator = result.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) iterator.next();
+            String key = entry.getKey();
+
+            Boolean isNotExit = true;
+            for (Map.Entry<String, String[]> responses : validateSecondResponseColumnList.entrySet()) {
+                if (secondKey.equals(responses.getKey())) {
+                    for (String value : responses.getValue()) {
+                        if (value.equals(key)) {
+                            isNotExit = false;
+                        }
+                    }
+                }
+            }
+
+            if (isNotExit) {
+                iterator.remove();
+            } else {
 
             }
         }
@@ -85,14 +130,16 @@ public class BaseController {
 
     private Object checkFirstResponse(Object data) {
         if (data instanceof BaseEntity) {
-            return checkMap(data);
+            return checkFirstMap(data);
+        } else if (data instanceof BaseView) {
+            return checkFirstMap(data);
         } else if (data instanceof List) {
             List list = new ArrayList();
             for (Object item : (List) data) {
                 if (item instanceof BaseEntity) {
-                    list.add(checkMap(item));
+                    list.add(checkFirstMap(item));
                 } else if (item instanceof Map) {
-                    list.add(checkMap(item));
+                    list.add(checkFirstMap(item));
                 }
             }
 
@@ -100,7 +147,7 @@ public class BaseController {
         } else if (data instanceof Boolean) {
             return data;
         } else if (data instanceof Map) {
-            return checkMap(data);
+            return checkFirstMap(data);
         }
 
         return null;
@@ -165,8 +212,8 @@ public class BaseController {
         validateResponseColumnList = columns;
     }
 
-    public void validateSecondResponse(String... columns) {
-        validateSecondResponseColumnList = columns;
+    public void validateSecondResponse(String key, String... columns) {
+        validateSecondResponseColumnList.put(key, columns);
     }
 
     protected Map<String, Object> renderJson(Object data) {

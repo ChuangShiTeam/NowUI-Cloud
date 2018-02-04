@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 应用配置分类编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用配置分类编号不能为空")
     @Length(max = 32, message = "应用配置分类编号长度超出限制")
@@ -57,7 +53,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 键
      */
-    @Field
     @TableField
     @NotNull(message = "键不能为空")
     @Length(max = 50, message = "键长度超出限制")
@@ -67,7 +62,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 值
      */
-    @Field
     @TableField
     @NotNull(message = "值不能为空")
     @Length(max = 2000, message = "值长度超出限制")
@@ -77,7 +71,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 是否禁用
      */
-    @Field
     @TableField
     @NotNull(message = "是否禁用不能为空")
     private Boolean configIsDisabled;
@@ -86,7 +79,6 @@ public class AppConfig extends BaseEntity {
     /**
      * 描述
      */
-    @Field
     @TableField
     @NotNull(message = "描述不能为空")
     @Length(max = 500, message = "描述长度超出限制")

@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -57,7 +53,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "话题编号不能为空")
     @Length(max = 32, message = "话题编号长度超出限制")
@@ -67,7 +62,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 话题评论内容
      */
-    @Field
     @TableField
     @NotNull(message = "话题评论内容不能为空")
     @Length(max = 255, message = "话题评论内容长度超出限制")
@@ -77,7 +71,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 回复人
      */
-    @Field
     @TableField
     @NotNull(message = "回复人不能为空")
     @Length(max = 32, message = "回复人长度超出限制")
@@ -89,7 +82,6 @@ public class TopicComment extends BaseEntity {
     /**
      * 被回复评论id
      */
-    @Field
     @TableField
     @NotNull(message = "被回复评论id不能为空")
     @Length(max = 32, message = "被回复评论id长度超出限制")

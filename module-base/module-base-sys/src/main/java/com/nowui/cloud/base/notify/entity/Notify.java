@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -35,7 +33,6 @@ public class Notify extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -45,7 +42,6 @@ public class Notify extends BaseEntity {
     /**
      * 消息内容( 消息的类型：1：公告 Announce, 2: 提醒 Remind, 3:信息 Message)
      */
-    @Field
     @TableField
     @NotNull(message = "消息内容不能为空")
     @Length(max = 500, message = "消息内容长度超出限制")
@@ -55,7 +51,6 @@ public class Notify extends BaseEntity {
     /**
      * 目标编号
      */
-    @Field
     @TableField
     @NotNull(message = "目标编号不能为空")
     @Length(max = 32, message = "目标编号长度超出限制")
@@ -65,7 +60,6 @@ public class Notify extends BaseEntity {
     /**
      * 目标类型(文章，话题)
      */
-    @Field
     @TableField
     @NotNull(message = "目标类型不能为空")
     @Length(max = 32, message = "目标类型长度超出限制")
@@ -75,7 +69,6 @@ public class Notify extends BaseEntity {
     /**
      * 消息类型( 消息的类型：1：公告 Announce, 2: 提醒 Remind, 3:信息 Message)
      */
-    @Field
     @TableField
     @NotNull(message = "消息类型不能为空")
     @Length(max = 32, message = "消息类型长度超出限制")
@@ -85,7 +78,6 @@ public class Notify extends BaseEntity {
     /**
      * 提醒信息动作类型
      */
-    @Field
     @TableField
     @NotNull(message = "提醒信息动作类型不能为空")
     @Length(max = 32, message = "提醒信息动作类型长度超出限制")
@@ -95,7 +87,6 @@ public class Notify extends BaseEntity {
     /**
      * 发送者编号
      */
-    @Field
     @TableField
     @NotNull(message = " 发送者编号不能为空")
     @Length(max = 32, message = " 发送者编号长度超出限制")

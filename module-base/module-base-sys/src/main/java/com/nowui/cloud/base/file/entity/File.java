@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class File extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class File extends BaseEntity {
     /**
      * 类型
      */
-    @Field
     @TableField
     @NotNull(message = "类型不能为空")
     @Length(max = 25, message = "类型长度超出限制")
@@ -57,7 +53,6 @@ public class File extends BaseEntity {
     /**
      * 名称
      */
-    @Field
     @TableField
     @NotNull(message = "名称不能为空")
     @Length(max = 100, message = "名称长度超出限制")
@@ -67,7 +62,6 @@ public class File extends BaseEntity {
     /**
      * 后缀
      */
-    @Field
     @TableField
     @NotNull(message = "后缀不能为空")
     @Length(max = 10, message = "后缀长度超出限制")
@@ -77,7 +71,6 @@ public class File extends BaseEntity {
     /**
      * 大小
      */
-    @Field
     @TableField
     @NotNull(message = "大小不能为空")
     @Length(max = 11, message = "大小长度超出限制")
@@ -87,7 +80,6 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
-    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -97,7 +89,6 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
-    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -107,7 +98,6 @@ public class File extends BaseEntity {
     /**
      * 文件路径
      */
-    @Field
     @TableField
     @NotNull(message = "文件路径不能为空")
     @Length(max = 200, message = "文件路径长度超出限制")
@@ -117,7 +107,6 @@ public class File extends BaseEntity {
     /**
      * 文件封面图片
      */
-    @Field
     @TableField
     @NotNull(message = "文件封面图片不能为空")
     @Length(max = 32, message = "文件封面图片长度超出限制")
@@ -127,7 +116,6 @@ public class File extends BaseEntity {
     /**
      * 外部链接
      */
-    @Field
     @TableField
     @NotNull(message = "外部链接不能为空")
     @Length(max = 200, message = "外部链接长度超出限制")
@@ -137,7 +125,6 @@ public class File extends BaseEntity {
     /**
      * 是否外部链接
      */
-    @Field
     @TableField
     @NotNull(message = "是否外部链接不能为空")
     private Boolean fileIsOuter;

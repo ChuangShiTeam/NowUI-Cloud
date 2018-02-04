@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class TopicForum extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class TopicForum extends BaseEntity {
     /**
      * 论坛编号
      */
-    @Field
     @TableField
     @NotNull(message = "论坛编号不能为空")
     @Length(max = 32, message = "论坛编号长度超出限制")
@@ -57,7 +53,6 @@ public class TopicForum extends BaseEntity {
     /**
      * 话题编号
      */
-    @Field
     @TableField
     @NotNull(message = "话题编号不能为空")
     @Length(max = 32, message = "话题编号长度超出限制")

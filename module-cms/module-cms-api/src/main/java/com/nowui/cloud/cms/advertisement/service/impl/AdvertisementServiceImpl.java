@@ -29,29 +29,20 @@ public class AdvertisementServiceImpl extends SuperServiceImpl<AdvertisementMapp
     
     @Override
     public Integer countForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle) {
-        Integer count = count(
-                new BaseWrapper<Advertisement>()
-                        .eq(Advertisement.APP_ID, appId)
-                        .like(Advertisement.ADVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-                        .like(Advertisement.ADVERTISEMENT_TITLE, advertisementTitle)
-                        .eq(Advertisement.SYSTEM_STATUS, true)
-        );
+        Criteria criteria = Criteria.where(AdvertisementView.APP_ID).is(appId)
+                .and(AdvertisementView.ADVERTISEMENT_CATEGORY_CODE).regex(".*?" + advertisementCategoryCode + ".*")
+                .and(AdvertisementView.ADVERTISEMENT_TITLE).regex(".*?" + advertisementTitle + ".*")
+                .and(AdvertisementView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
     }
 
     @Override
     public List<AdvertisementView> listForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle, Integer pageIndex, Integer pageSize) {
-//        List<Advertisement> advertisementList = list(
-//                new BaseWrapper<Advertisement>()
-//                        .eq(Advertisement.APP_ID, appId)
-//                        .like(Advertisement.ADVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-//                        .like(Advertisement.ADVERTISEMENT_TITLE, advertisementTitle)
-//                        .eq(Advertisement.SYSTEM_STATUS, true)
-//                        .orderAsc(Arrays.asList(Advertisement.ADVERTISEMENT_SORT))
-//                ,m
-//                ,n
-//        );
-
         Criteria criteria = Criteria.where(AdvertisementView.APP_ID).is(appId)
                 .and(AdvertisementView.ADVERTISEMENT_CATEGORY_CODE).regex(".*?" + advertisementCategoryCode + ".*")
                 .and(AdvertisementView.ADVERTISEMENT_TITLE).regex(".*?" + advertisementTitle + ".*")

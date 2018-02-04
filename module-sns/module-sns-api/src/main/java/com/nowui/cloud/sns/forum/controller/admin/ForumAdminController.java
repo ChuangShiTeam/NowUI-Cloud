@@ -140,14 +140,14 @@ public class ForumAdminController extends BaseController {
         ForumView result = forumService.find(body.getForumId());
         
         // 论坛图片
-        File forumMediaFile = fileRpc.findV1(result.getForumMedia());
-        forumMediaFile.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Forum.FORUM_MEDIA, forumMediaFile);
+//        File forumMediaFile = fileRpc.findV1(result.getForumMedia());
+//        forumMediaFile.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Forum.FORUM_MEDIA, forumMediaFile);
         
         // 论坛背景
-        File forumBackgroundFile = fileRpc.findV1(result.getForumBackgroundMedia());
-        forumBackgroundFile.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(Forum.FORUM_BACKGROUND_MEDIA, forumBackgroundFile);
+//        File forumBackgroundFile = fileRpc.findV1(result.getForumBackgroundMedia());
+//        forumBackgroundFile.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(Forum.FORUM_BACKGROUND_MEDIA, forumBackgroundFile);
         
         // 版主昵称和头像
         Member forumModerator = memberRpc.nickNameAndAvatarFindV1(result.getForumModerator());

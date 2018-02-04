@@ -2,10 +2,9 @@ package com.nowui.cloud.cms.advertisement.entity;
 
 import javax.validation.constraints.NotNull;
 
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +36,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +45,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告分类编码
      */
-    @Field
     @TableField
     @NotNull(message = "广告分类编码不能为空")
     @Length(max = 50, message = "广告分类编码长度超出限制")
@@ -57,7 +54,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告编码
      */
-    @Field
     @TableField
     @NotNull(message = "广告编码不能为空")
     @Length(max = 50, message = "广告编码长度超出限制")
@@ -67,7 +63,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告标题
      */
-    @Field
     @TableField
     @NotNull(message = "广告标题不能为空")
     @Length(max = 200, message = "广告标题长度超出限制")
@@ -77,17 +72,23 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告图片
      */
-    @Field
     @TableField
     @NotNull(message = "广告图片不能为空")
     @Length(max = 200, message = "广告图片长度超出限制")
     private String advertisementImageId;
     public static final String ADVERTISEMENT_IMAGE_ID = "advertisementImageId";
+
+    /**
+     * 广告图片
+     */
+    @TableField(exist = false)
+    @NotNull(message = "广告图片不能为空")
+    private JSONObject advertisementImage;
+    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
     
     /**
      * 广告内容
      */
-    @Field
     @TableField
     @NotNull(message = "广告内容不能为空")
     @Length(max = 2000, message = "广告内容长度超出限制")
@@ -97,7 +98,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告位置
      */
-    @Field
     @TableField
     @NotNull(message = "广告位置不能为空")
     @Length(max = 200, message = "广告位置长度超出限制")
@@ -107,7 +107,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告超链接
      */
-    @Field
     @TableField
     @NotNull(message = "广告超链接不能为空")
     @Length(max = 200, message = "广告超链接长度超出限制")
@@ -117,7 +116,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告是否失效
      */
-    @Field
     @TableField
     @NotNull(message = "广告是否失效不能为空")
     private Boolean advertisementIsEfficient;
@@ -126,7 +124,6 @@ public class Advertisement extends BaseEntity {
     /**
      * 广告排序
      */
-    @Field
     @TableField
     @NotNull(message = "广告排序不能为空")
     private Boolean advertisementSort;
@@ -178,6 +175,14 @@ public class Advertisement extends BaseEntity {
     
     public void setAdvertisementImageId(String advertisementImageId) {
         put(ADVERTISEMENT_IMAGE_ID, advertisementImageId);
+    }
+
+    public JSONObject getAdvertisementImage() {
+        return getJSONObject(ADVERTISEMENT_IMAGE);
+    }
+
+    public void setAdvertisementImage(JSONObject advertisementImage) {
+        put(ADVERTISEMENT_IMAGE, advertisementImage);
     }
     
     public String getAdvertisementContent() {

@@ -1,6 +1,10 @@
 server:
   port: 8086
 
+logging:
+  level:
+    root: info
+
 eureka:
   client:
     serviceUrl:

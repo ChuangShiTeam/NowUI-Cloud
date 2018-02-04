@@ -4,17 +4,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 用户
@@ -40,7 +35,6 @@ public class User extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -50,7 +44,6 @@ public class User extends BaseEntity {
     /**
      * 用户主体编号（会员、管理员、员工等编号）
      */
-    @Field
     @TableField
     @NotNull(message = "用户主体编号（会员、管理员、员工等编号）不能为空")
     @Length(max = 32, message = "用户主体编号（会员、管理员、员工等编号）长度超出限制")
@@ -60,7 +53,6 @@ public class User extends BaseEntity {
     /**
      * 类型
      */
-    @Field
     @TableField
     @NotNull(message = "类型不能为空")
     @Length(max = 25, message = "类型长度超出限制")

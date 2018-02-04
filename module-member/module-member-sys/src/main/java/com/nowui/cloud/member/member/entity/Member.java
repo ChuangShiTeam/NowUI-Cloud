@@ -6,8 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -39,7 +37,6 @@ public class Member extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -49,7 +46,6 @@ public class Member extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -59,7 +55,6 @@ public class Member extends BaseEntity {
     /**
      * 是否置顶
      */
-    @Field
     @TableField
     @NotNull(message = "是否置顶不能为空")
     private Boolean memberIsTop;
@@ -68,7 +63,6 @@ public class Member extends BaseEntity {
     /**
      * 会员置顶级别
      */
-    @Field
     @TableField
     @NotNull(message = "会员置顶级别不能为空")
     private Integer memberTopLevel;
@@ -77,7 +71,6 @@ public class Member extends BaseEntity {
     /**
      * 置顶结束时间
      */
-    @Field
     @TableField
     @NotNull(message = "置顶结束时间不能为空")
     private Date memberTopEndTime;
@@ -86,7 +79,6 @@ public class Member extends BaseEntity {
     /**
      * 会员是否推荐
      */
-    @Field
     @TableField
     @NotNull(message = "会员是否推荐不能为空")
     private Boolean memberIsRecommed;

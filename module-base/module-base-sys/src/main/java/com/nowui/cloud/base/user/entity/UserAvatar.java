@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -27,7 +25,6 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户头像编号
      */
-    @Field
     @TableId
     @NotNull(message = "用户头像编号不能为空")
     @Length(max = 32, message = "用户头像编号长度超出限制")
@@ -37,7 +34,6 @@ public class UserAvatar extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -48,7 +44,6 @@ public class UserAvatar extends BaseEntity {
      * 用户编号
      */
     @Id
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -58,7 +53,6 @@ public class UserAvatar extends BaseEntity {
     /**
      * 头像文件编号
      */
-    @Field
     @TableField
     @NotNull(message = "头像文件编号不能为空")
     @Length(max = 32, message = "头像文件编号长度超出限制")

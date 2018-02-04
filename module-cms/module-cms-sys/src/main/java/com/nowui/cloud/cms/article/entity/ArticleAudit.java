@@ -6,8 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -39,7 +37,6 @@ public class ArticleAudit extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -49,7 +46,6 @@ public class ArticleAudit extends BaseEntity {
     /**
      * 文章编号
      */
-    @Field
     @TableField
     @NotNull(message = "文章编号不能为空")
     @Length(max = 32, message = "文章编号长度超出限制")
@@ -59,7 +55,6 @@ public class ArticleAudit extends BaseEntity {
     /**
      * 审核人编号
      */
-    @Field
     @TableField
     @NotNull(message = "审核人编号不能为空")
     @Length(max = 32, message = "审核人编号长度超出限制")
@@ -69,7 +64,6 @@ public class ArticleAudit extends BaseEntity {
     /**
      * 审核状态
      */
-    @Field
     @TableField
     @NotNull(message = "审核状态不能为空")
     @Length(max = 25, message = "审核状态长度超出限制")
@@ -79,7 +73,6 @@ public class ArticleAudit extends BaseEntity {
     /**
      * 审核时间
      */
-    @Field
     @TableField
     @NotNull(message = "审核时间不能为空")
     @Length(max = 0, message = "审核时间长度超出限制")

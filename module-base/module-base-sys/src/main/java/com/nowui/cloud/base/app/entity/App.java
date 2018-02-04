@@ -2,9 +2,7 @@ package com.nowui.cloud.base.app.entity;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
-import org.springframework.stereotype.Component;
+import org.hibernate.validator.constraints.Length;import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;

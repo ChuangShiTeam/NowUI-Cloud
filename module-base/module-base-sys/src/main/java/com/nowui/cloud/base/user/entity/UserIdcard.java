@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class UserIdcard extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class UserIdcard extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -57,7 +53,6 @@ public class UserIdcard extends BaseEntity {
     /**
      * 真实姓名
      */
-    @Field
     @TableField
     @NotNull(message = "真实姓名不能为空")
     @Length(max = 50, message = "真实姓名长度超出限制")
@@ -67,7 +62,6 @@ public class UserIdcard extends BaseEntity {
     /**
      * 性别    （0：未知，1：男，2：女）
      */
-    @Field
     @TableField
     @NotNull(message = "性别不能为空")
     @Length(max = 1, message = "性别长度超出限制")
@@ -77,7 +71,6 @@ public class UserIdcard extends BaseEntity {
     /**
      * 身份证号码
      */
-    @Field
     @TableField
     @NotNull(message = "身份证号码不能为空")
     @Length(max = 18, message = "身份证号码长度超出限制")

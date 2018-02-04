@@ -87,18 +87,18 @@ public class MemberDialogueMobileController extends BaseController {
         
             String initiateUserAvatar = initiateUser.getUserAvatar();
             if (!Util.isNullOrEmpty(initiateUserAvatar)) {
-                File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
-                if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
-                    initiateUserAvatar = initiateUserAvatarfile.getFilePath();
-                }
+//                File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
+//                if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
+//                    initiateUserAvatar = initiateUserAvatarfile.getFilePath();
+//                }
             }
             
             String respondUserAvatar = respondUser.getUserAvatar();
             if (!Util.isNullOrEmpty(respondUserAvatar)) {
-                File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
-                if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
-                    respondUserAvatar = respondUserAvatarfile.getFilePath();
-                }
+//                File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
+//                if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
+//                    respondUserAvatar = respondUserAvatarfile.getFilePath();
+//                }
             }
             
             for (MemberDialogueRecord memberDialogueRecord : memberDialogueRecordList) {
@@ -154,18 +154,18 @@ public class MemberDialogueMobileController extends BaseController {
         
         String initiateUserAvatar = initiateUser.getUserAvatar();
         if (!Util.isNullOrEmpty(initiateUserAvatar)) {
-            File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
-            if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
-                initiateUserAvatar = initiateUserAvatarfile.getFilePath();
-            }
+//            File initiateUserAvatarfile = fileRpc.findV1(initiateUserAvatar);
+//            if (!Util.isNullOrEmpty(initiateUserAvatarfile)) {
+//                initiateUserAvatar = initiateUserAvatarfile.getFilePath();
+//            }
         }
         
         String respondUserAvatar = respondUser.getUserAvatar();
         if (!Util.isNullOrEmpty(respondUserAvatar)) {
-            File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
-            if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
-                respondUserAvatar = respondUserAvatarfile.getFilePath();
-            }
+//            File respondUserAvatarfile = fileRpc.findV1(respondUserAvatar);
+//            if (!Util.isNullOrEmpty(respondUserAvatarfile)) {
+//                respondUserAvatar = respondUserAvatarfile.getFilePath();
+//            }
         }
         
         for (MemberDialogueRecord memberDialogueRecord : memberDialogueRecordList) {

@@ -138,9 +138,9 @@ public class ForumMobileController extends BaseController {
         // forum包含了论坛简介,论坛名称,论坛头像
         ForumView forum = forumService.find(body.getForumId());
         // 处理论坛头像
-        File file = fileRpc.findV1(forum.getForumMedia());
-    	file.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_MEDIA, file);
+//        File file = fileRpc.findV1(forum.getForumMedia());
+//    	file.keep(File.FILE_ID, File.FILE_PATH);
+//    	forum.put(Forum.FORUM_MEDIA, file);
         
         String userId = forum.getForumModerator();
         // 根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
@@ -441,14 +441,14 @@ public class ForumMobileController extends BaseController {
         ForumView forum = forumService.find(body.getForumId());
         
         // 处理论坛图片
-        File file = fileRpc.findV1(forum.getForumMedia());
-    	file.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_MEDIA, file);
+//        File file = fileRpc.findV1(forum.getForumMedia());
+//    	file.keep(File.FILE_ID, File.FILE_PATH);
+//    	forum.put(Forum.FORUM_MEDIA, file);
     	
     	// 处理论坛背景图片
-        File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMedia());
-        backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
-    	forum.put(Forum.FORUM_BACKGROUND_MEDIA, backgroundfile);
+//        File backgroundfile = fileRpc.findV1(forum.getForumBackgroundMedia());
+//        backgroundfile.keep(File.FILE_ID, File.FILE_PATH);
+//    	forum.put(Forum.FORUM_BACKGROUND_MEDIA, backgroundfile);
 
     	// 版主昵称、头像、签名
         Member forumModerator = memberRpc.nickNameAndAvatarAndSignatureFind(forum.getForumModerator());

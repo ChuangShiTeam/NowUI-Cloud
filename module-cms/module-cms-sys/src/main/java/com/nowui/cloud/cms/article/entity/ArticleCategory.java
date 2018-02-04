@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 上级文章分类编号
      */
-    @Field
     @TableField
     @NotNull(message = "上级文章分类编号不能为空")
     @Length(max = 32, message = "上级文章分类编号长度超出限制")
@@ -57,7 +53,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 上级文章分类路径
      */
-    @Field
     @TableField
     @NotNull(message = "上级文章分类路径不能为空")
     @Length(max = 2000, message = "上级文章分类路径长度超出限制")
@@ -67,7 +62,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 分类名称
      */
-    @Field
     @TableField
     @NotNull(message = "分类名称不能为空")
     @Length(max = 100, message = "分类名称长度超出限制")
@@ -77,7 +71,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 分类编码
      */
-    @Field
     @TableField
     @NotNull(message = "分类编码不能为空")
     @Length(max = 50, message = "分类编码超出限制")
@@ -87,7 +80,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 关键字
      */
-    @Field
     @TableField
     @NotNull(message = "关键字不能为空")
     @Length(max = 200, message = "关键字长度超出限制")
@@ -97,7 +89,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 描述
      */
-    @Field
     @TableField
     @NotNull(message = "描述不能为空")
     @Length(max = 500, message = "描述长度超出限制")
@@ -107,7 +98,6 @@ public class ArticleCategory extends BaseEntity {
     /**
      * 排序
      */
-    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     @Length(max = 11, message = "排序长度超出限制")

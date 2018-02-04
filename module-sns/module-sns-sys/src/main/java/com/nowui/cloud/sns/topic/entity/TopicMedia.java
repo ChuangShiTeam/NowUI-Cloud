@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class TopicMedia extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class TopicMedia extends BaseEntity {
     /**
      * 话题编号
      */
-    @Field
     @TableField
     @NotNull(message = "话题编号不能为空")
     @Length(max = 32, message = "话题编号长度超出限制")
@@ -57,7 +53,6 @@ public class TopicMedia extends BaseEntity {
     /**
      * 多媒体
      */
-    @Field
     @TableField
     @NotNull(message = "多媒体不能为空")
     @Length(max = 25, message = "多媒体长度超出限制")
@@ -67,7 +62,6 @@ public class TopicMedia extends BaseEntity {
     /**
      * 多媒体类型
      */
-    @Field
     @TableField
     @NotNull(message = "多媒体类型不能为空")
     @Length(max = 25, message = "多媒体类型长度超出限制")
@@ -77,7 +71,6 @@ public class TopicMedia extends BaseEntity {
     /**
      * 排序
      */
-    @Field
     @TableField
     @NotNull(message = "排序不能为空")
     @Length(max = 11, message = "排序长度超出限制")

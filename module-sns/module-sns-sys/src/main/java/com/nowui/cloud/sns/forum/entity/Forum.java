@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -39,7 +37,6 @@ public class Forum extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -49,7 +46,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛名称
      */
-    @Field
     @TableField
     @NotNull(message = "论坛名称不能为空")
     @Length(max = 25, message = "论坛名称长度超出限制")
@@ -59,7 +55,6 @@ public class Forum extends BaseEntity {
     /**
      * 版主(用户编号)
      */
-    @Field
     @TableField
     @NotNull(message = "版主(用户编号)不能为空")
     @Length(max = 32, message = "版主(用户编号)长度超出限制")
@@ -69,7 +64,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体
      */
-    @Field
     @TableField
     @NotNull(message = "论坛多媒体不能为空")
     @Length(max = 32, message = "论坛多媒体长度超出限制")
@@ -79,7 +73,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛多媒体类型
      */
-    @Field
     @TableField
     @NotNull(message = "论坛多媒体类型不能为空")
     @Length(max = 25, message = "论坛多媒体类型长度超出限制")
@@ -89,7 +82,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛背景
      */
-    @Field
     @TableField
     @NotNull(message = "论坛背景不能为空")
     @Length(max = 32, message = "论坛多媒体背景长度超出限制")
@@ -99,7 +91,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛背景类型
      */
-    @Field
     @TableField
     @NotNull(message = "论坛背景类型不能为空")
     @Length(max = 32, message = "论坛背景类型长度超出限制")
@@ -109,7 +100,6 @@ public class Forum extends BaseEntity {
     /**
      * 位置
      */
-    @Field
     @TableField
     @NotNull(message = "位置不能为空")
     @Length(max = 200, message = "位置长度超出限制")
@@ -119,7 +109,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛是否置顶
      */
-    @Field
     @TableField
     @NotNull(message = "论坛是否置顶不能为空")
     @Length(max = 1, message = "论坛是否置顶长度超出限制")
@@ -129,7 +118,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛置顶级别
      */
-    @Field
     @TableField
     private Integer forumTopLevel;
     public static final String FORUM_TOP_LEVEL = "forumTopLevel";
@@ -137,7 +125,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛置顶结束时间
      */
-    @Field
     @TableField
     private Date forumTopEndTime;
     public static final String FORUM_TOP_END_TIME = "forumTopEndTime";
@@ -145,7 +132,6 @@ public class Forum extends BaseEntity {
     /**
      * 是否有效
      */
-    @Field
     @TableField
     @NotNull(message = "是否有效不能为空")
     private Boolean forumIsActive;
@@ -154,7 +140,6 @@ public class Forum extends BaseEntity {
     /**
      * 是否推荐
      */
-    @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
     private Boolean forumIsRecommend;
@@ -163,7 +148,6 @@ public class Forum extends BaseEntity {
     /**
      * 审核状态
      */
-    @Field
     @TableField
     @NotNull(message = "审核状态不能为空")
     @Length(max = 25, message = "审核状态长度超出限制")
@@ -173,7 +157,6 @@ public class Forum extends BaseEntity {
     /**
      * 审核内容
      */
-    @Field
     @TableField
     @Length(max = 500, message = "是否推荐长度超出限制")
     private String forumAuditContent;
@@ -182,7 +165,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛简介
      */
-    @Field
     @TableField
     @NotNull(message = "论坛简介不能为空")
     @Length(max = 255, message = "论坛简介长度超出限制")
@@ -192,7 +174,6 @@ public class Forum extends BaseEntity {
     /**
      * 论坛排序
      */
-    @Field
     @TableField
     @NotNull(message = "论坛排序不能为空")
     @Length(max = 11, message = "论坛排序长度超出限制")

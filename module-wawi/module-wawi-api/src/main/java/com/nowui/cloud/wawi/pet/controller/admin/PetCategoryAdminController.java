@@ -119,9 +119,9 @@ public class PetCategoryAdminController extends BaseController {
 
         PetCategoryView result = petCategoryService.find(petCategoryEntity.getPetCategoryId());
 
-        File file = fileRpc.findV1(result.getPetCategoryImage());
-        file.keep(File.FILE_ID, File.FILE_PATH);
-        result.put(PetCategory.PET_CATEGORY_IMAGE, file);
+//        File file = fileRpc.findV1(result.getPetCategoryImage());
+//        file.keep(File.FILE_ID, File.FILE_PATH);
+//        result.put(PetCategory.PET_CATEGORY_IMAGE, file);
         
         validateResponse(
                 PetCategory.PET_CATEGORY_ID,

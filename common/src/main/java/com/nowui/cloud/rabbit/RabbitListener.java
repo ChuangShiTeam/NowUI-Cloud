@@ -42,6 +42,7 @@ public class RabbitListener implements ChannelAwareMessageListener {
             e.printStackTrace();
 
             //消息消费失败
+            channel.basicNack(deliveryTag, false, true);
         }
     }
 }

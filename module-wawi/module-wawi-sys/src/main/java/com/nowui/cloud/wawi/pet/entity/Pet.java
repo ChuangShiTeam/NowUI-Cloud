@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class Pet extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class Pet extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -57,7 +53,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物分类编号
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类编号不能为空")
     @Length(max = 32, message = "宠物分类编号长度超出限制")
@@ -67,7 +62,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物名称
      */
-    @Field
     @TableField
     @NotNull(message = "宠物名称不能为空")
     @Length(max = 100, message = "宠物名称长度超出限制")
@@ -77,7 +71,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物性别
      */
-    @Field
     @TableField
     @NotNull(message = "宠物性别不能为空")
     @Length(max = 1, message = "宠物性别长度超出限制")
@@ -87,7 +80,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物生日
      */
-    @Field
     @TableField
     @NotNull(message = "宠物生日不能为空")
     @Length(max = 10, message = "宠物生日长度超出限制")
@@ -97,7 +89,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物头像
      */
-    @Field
     @TableField
     @NotNull(message = "宠物头像不能为空")
     @Length(max = 32, message = "宠物头像长度超出限制")
@@ -107,7 +98,6 @@ public class Pet extends BaseEntity {
     /**
      * 宠物简介
      */
-    @Field
     @TableField
     @NotNull(message = "宠物简介不能为空")
     @Length(max = 500, message = "宠物简介长度超出限制")

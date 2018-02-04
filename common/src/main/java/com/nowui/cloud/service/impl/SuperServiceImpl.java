@@ -147,8 +147,13 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
             return null;
         }
 
-        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
-        Query query = new Query(criteria);
+        if (Util.isNullOrEmpty(view.getTableId())) {
+            return null;
+        }
+
+        Criteria criteria = Criteria.where(view.getTableId()).is(id);
+        Query query = new Query();
+        query.addCriteria(criteria);
 
         V result = (V) mongoTemplate.findOne(query, view.getClass());
 

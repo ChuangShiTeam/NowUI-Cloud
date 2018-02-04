@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.elasticsearch.annotations.Field;
+
 
 /**
  * 实体父类
@@ -28,7 +28,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 创建人编号
      */
-    @Field
     @TableField
     @NotNull(message = "创建人编号不能为空")
     @Length(max = 32, message = "创建人编号长度超出限制")
@@ -38,7 +37,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 创建时间
      */
-    @Field
     @TableField
     @NotNull(message = "创建时间不能为空")
     private Date systemCreateTime;
@@ -47,7 +45,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 更新人编号
      */
-    @Field
     @TableField(value = SYSTEM_UPDATE_USER_ID)
     @NotNull(message = "更新人编号不能为空")
     @Length(max = 32, message = "更新人编号长度超出限制")
@@ -57,7 +54,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 更新时间
      */
-    @Field
     @TableField(value = SYSTEM_UPDATE_TIME)
     @NotNull(message = "更新时间不能为空")
     private Date systemUpdateTime;
@@ -66,7 +62,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 版本号
      */
-    @Field
     @Version
     @TableField(value = SYSTEM_VERSION)
     @NotNull(message = "版本号不能为空")
@@ -76,7 +71,6 @@ public abstract class BaseEntity extends JSONObject implements Serializable {
     /**
      * 删除标识
      */
-    @Field
     @TableField(value = SYSTEM_STATUS)
     @NotNull(message = "删除标识不能为空")
     private Boolean systemStatus;

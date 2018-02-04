@@ -68,7 +68,7 @@ public class AdvertisementV1SaveListener {
             public void receive(String message) {
                 AdvertisementView advertisementView = JSON.parseObject(message, AdvertisementView.class);
 
-                FileView fileView = fileRpc.findV1(advertisementView.getAdvertisementId());
+                FileView fileView = fileRpc.findV1(advertisementView.getAdvertisementImageId());
                 advertisementView.setAdvertisementImage(fileView);
 
                 advertisementService.save(advertisementView);

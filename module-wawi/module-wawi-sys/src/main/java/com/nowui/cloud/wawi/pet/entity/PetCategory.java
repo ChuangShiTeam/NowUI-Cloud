@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物父分类编号
      */
-    @Field
     @TableField
     @NotNull(message = "宠物父分类编号不能为空")
     @Length(max = 32, message = "宠物父分类编号长度超出限制")
@@ -57,7 +53,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 父级路径
      */
-    @Field
     @TableField
     @NotNull(message = "父级路径不能为空")
     @Length(max = 2000, message = "父级路径长度超出限制")
@@ -67,7 +62,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物分类名称
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类名称不能为空")
     @Length(max = 50, message = "宠物分类名称长度超出限制")
@@ -77,7 +71,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物分类编码
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类编码不能为空")
     @Length(max = 50, message = "宠物分类编码长度超出限制")
@@ -87,7 +80,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物分类图片
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类图片不能为空")
     @Length(max = 32, message = "宠物分类图片长度超出限制")
@@ -97,7 +89,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物分类简介
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类简介不能为空")
     @Length(max = 2000, message = "宠物分类简介长度超出限制")
@@ -107,7 +98,6 @@ public class PetCategory extends BaseEntity {
     /**
      * 宠物分类排序
      */
-    @Field
     @TableField
     @NotNull(message = "宠物分类排序不能为空")
     private Integer petCategorySort;

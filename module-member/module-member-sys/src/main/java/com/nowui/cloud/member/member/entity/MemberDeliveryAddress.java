@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +34,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -46,7 +43,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 会员编号
      */
-    @Field
     @TableField
     @NotNull(message = "会员编号不能为空")
     @Length(max = 32, message = "会员编号长度超出限制")
@@ -56,7 +52,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 姓名
      */
-    @Field
     @TableField
     @NotNull(message = "姓名不能为空")
     @Length(max = 50, message = "姓名长度超出限制")
@@ -66,7 +61,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 手机号
      */
-    @Field
     @TableField
     @NotNull(message = "手机号不能为空")
     @Length(max = 20, message = "手机号长度超出限制")
@@ -76,7 +70,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 省
      */
-    @Field
     @TableField
     @NotNull(message = "省不能为空")
     @Length(max = 50, message = "省长度超出限制")
@@ -86,7 +79,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 市
      */
-    @Field
     @TableField
     @NotNull(message = "市不能为空")
     @Length(max = 50, message = "市长度超出限制")
@@ -96,7 +88,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 区
      */
-    @Field
     @TableField
     @NotNull(message = "区不能为空")
     @Length(max = 50, message = "区长度超出限制")
@@ -106,7 +97,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 详细地址
      */
-    @Field
     @TableField
     @NotNull(message = "详细地址不能为空")
     @Length(max = 200, message = "详细地址长度超出限制")
@@ -116,7 +106,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 邮政编码
      */
-    @Field
     @TableField
     @NotNull(message = "邮政编码不能为空")
     @Length(max = 10, message = "邮政编码长度超出限制")
@@ -126,7 +115,6 @@ public class MemberDeliveryAddress extends BaseEntity {
     /**
      * 是否默认收货地址
      */
-    @Field
     @TableField
     @NotNull(message = "是否默认收货地址不能为空")
     @Length(max = 1, message = "是否默认收货地址长度超出限制")

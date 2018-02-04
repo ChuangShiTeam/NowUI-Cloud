@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +34,6 @@ public class UserNotify extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -46,7 +43,6 @@ public class UserNotify extends BaseEntity {
     /**
      * 是否已读
      */
-    @Field
     @TableField
     @NotNull(message = "是否已读不能为空")
     @Length(max = 1, message = "是否已读长度超出限制")
@@ -56,7 +52,6 @@ public class UserNotify extends BaseEntity {
     /**
      * 用户消息所属者
      */
-    @Field
     @TableField
     @NotNull(message = "用户消息所属者不能为空")
     @Length(max = 32, message = "用户消息所属者长度超出限制")
@@ -66,7 +61,6 @@ public class UserNotify extends BaseEntity {
     /**
      * 消息编号
      */
-    @Field
     @TableField
     @NotNull(message = "消息编号不能为空")
     @Length(max = 32, message = "消息编号长度超出限制")

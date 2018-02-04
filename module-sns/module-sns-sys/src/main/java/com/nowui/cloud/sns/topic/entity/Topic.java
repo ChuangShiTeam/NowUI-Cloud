@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -39,7 +37,6 @@ public class Topic extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -49,7 +46,6 @@ public class Topic extends BaseEntity {
     /**
      * 用户编号
      */
-    @Field
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -59,7 +55,6 @@ public class Topic extends BaseEntity {
     /**
      * 动态内容
      */
-    @Field
     @TableField
     @NotNull(message = "动态内容不能为空")
     @Length(max = 1000, message = "动态长度超出限制")
@@ -69,7 +64,6 @@ public class Topic extends BaseEntity {
     /**
      * 纬度
      */
-    @Field
     @TableField
     @NotNull(message = "纬度不能为空")
     @Length(max = 12, message = "纬度长度超出限制")
@@ -79,7 +73,6 @@ public class Topic extends BaseEntity {
     /**
      * 经度
      */
-    @Field
     @TableField
     @NotNull(message = "经度不能为空")
     @Length(max = 12, message = "经度长度超出限制")
@@ -89,7 +82,6 @@ public class Topic extends BaseEntity {
     /**
      * 位置
      */
-    @Field
     @TableField
     @NotNull(message = "位置不能为空")
     @Length(max = 200, message = "位置长度超出限制")
@@ -99,7 +91,6 @@ public class Topic extends BaseEntity {
     /**
      * 是否有位置
      */
-    @Field
     @TableField
     @NotNull(message = "是否有位置不能为空")
     private Boolean topicIsLocation;
@@ -108,7 +99,6 @@ public class Topic extends BaseEntity {
     /**
      * 置顶
      */
-    @Field
     @TableField
     @NotNull(message = "置顶不能为空")
     private Boolean topicIsTop;
@@ -117,7 +107,6 @@ public class Topic extends BaseEntity {
     /**
      * 是否推荐
      */
-    @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
     private Boolean topicIsRecommend;
@@ -126,7 +115,6 @@ public class Topic extends BaseEntity {
     /**
      * 置顶级别
      */
-    @Field
     @TableField
     @NotNull(message = "置顶级别不能为空")
     private Integer topicTopLevel;
@@ -135,7 +123,6 @@ public class Topic extends BaseEntity {
     /**
      * 置顶截止时间
      */
-    @Field
     @TableField
     private Date topicTopEndTime;
     public static final String TOPIC_TOP_END_TIME = "topicTopEndTime";

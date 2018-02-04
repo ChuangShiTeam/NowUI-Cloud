@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.nowui.cloud.entity.BaseEntity;
-import org.springframework.data.annotation.Id;
+import com.nowui.cloud.annotation.KeyId;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
@@ -144,8 +143,8 @@ public class BaseView extends JSONObject implements Serializable {
         if (tableId == null) {
             java.lang.reflect.Field[] fields = this.getClass().getDeclaredFields();
             for (java.lang.reflect.Field field : fields) {
-                boolean isId = field.isAnnotationPresent(Id.class);
-                if (isId) {
+                boolean isKeyId = field.isAnnotationPresent(KeyId.class);
+                if (isKeyId) {
                     field.setAccessible(true);
                     tableId = field.getName();
                     return tableId;
@@ -193,6 +192,34 @@ public class BaseView extends JSONObject implements Serializable {
             }
         }
         return (V) this;
+    }
+
+    public Integer getM() {
+        int index = 0;
+        if (getPageIndex() != null) {
+            index = getPageIndex();
+        }
+
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+
+        if (index > 0) {
+            return (index - 1) * size;
+        } else {
+            return 0;
+        }
+    }
+
+    public Integer getN() {
+        int size = 0;
+        if (getPageSize() != null) {
+            size = getPageSize();
+        }
+
+        return size > 0 ? size : 0;
     }
 
 }

@@ -158,21 +158,21 @@ public class MemberSystemController implements MemberRpc {
         // 处理用户头像
         String userAvatar = (String) member.get(UserAvatar.USER_AVATAR);
         if (!Util.isNullOrEmpty(userAvatar)) {
-            File file = fileRpc.findV1(userAvatar);
-            if (!Util.isNullOrEmpty(file)) {
-                file.keep(File.FILE_ID, File.FILE_PATH);
-            }
-            member.put(UserAvatar.USER_AVATAR, file == null ? "" : file);
+//            File file = fileRpc.findV1(userAvatar);
+//            if (!Util.isNullOrEmpty(file)) {
+//                file.keep(File.FILE_ID, File.FILE_PATH);
+//            }
+//            member.put(UserAvatar.USER_AVATAR, file == null ? "" : file);
         }
         
         // 处理会员背景
         String memberBackground = (String) member.get(Member.MEMBER_BACKGROUND);
         if (!Util.isNullOrEmpty(memberBackground)) {
-            File file = fileRpc.findV1(memberBackground);
-            if (!Util.isNullOrEmpty(file)) {
-                file.keep(File.FILE_ID, File.FILE_PATH);
-            }
-            member.put(Member.MEMBER_BACKGROUND, file == null ? "" : file);
+//            File file = fileRpc.findV1(memberBackground);
+//            if (!Util.isNullOrEmpty(file)) {
+//                file.keep(File.FILE_ID, File.FILE_PATH);
+//            }
+//            member.put(Member.MEMBER_BACKGROUND, file == null ? "" : file);
         }
         
         return member;

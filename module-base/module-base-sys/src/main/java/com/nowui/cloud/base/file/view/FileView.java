@@ -2,6 +2,7 @@ package com.nowui.cloud.base.file.view;
 
 import javax.validation.constraints.NotNull;
 
+import com.nowui.cloud.annotation.KeyId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ public class FileView extends BaseView {
     /**
      * 文件编号
      */
+    @KeyId
     @Field
     @NotNull(message = "文件编号不能为空")
     private String fileId;

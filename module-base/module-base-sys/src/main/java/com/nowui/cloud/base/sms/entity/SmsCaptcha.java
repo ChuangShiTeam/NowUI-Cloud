@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -37,7 +35,6 @@ public class SmsCaptcha extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class SmsCaptcha extends BaseEntity {
     /**
      * 验证码类型
      */
-    @Field
     @TableField
     @NotNull(message = "验证码类型不能为空")
     @Length(max = 25, message = "验证码类型长度超出限制")
@@ -57,7 +53,6 @@ public class SmsCaptcha extends BaseEntity {
     /**
      * 手机号码
      */
-    @Field
     @TableField
     @NotNull(message = "手机号码不能为空")
     @Length(max = 11, message = "手机号码长度超出限制")
@@ -67,7 +62,6 @@ public class SmsCaptcha extends BaseEntity {
     /**
      * 验证码
      */
-    @Field
     @TableField
     @NotNull(message = "验证码不能为空")
     @Length(max = 6, message = "验证码长度超出限制")
@@ -77,7 +71,6 @@ public class SmsCaptcha extends BaseEntity {
     /**
      * IP地址
      */
-    @Field
     @TableField
     @NotNull(message = "IP地址不能为空")
     @Length(max = 25, message = "IP地址长度超出限制")

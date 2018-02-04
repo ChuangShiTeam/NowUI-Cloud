@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +34,6 @@ public class SubscriptionConfig extends BaseEntity {
     /**
      * 应用Id
      */
-    @Field
     @TableField
     @NotNull(message = "应用Id不能为空")
     @Length(max = 32, message = "应用Id长度超出限制")
@@ -46,7 +43,6 @@ public class SubscriptionConfig extends BaseEntity {
     /**
      * 用户的设置
      */
-    @Field
     @TableField
     @NotNull(message = "用户的设置不能为空")
     @Length(max = 32, message = "用户的设置长度超出限制")
@@ -56,7 +52,6 @@ public class SubscriptionConfig extends BaseEntity {
     /**
      * 订阅用户Id
      */
-    @Field
     @TableField
     @NotNull(message = "订阅用户Id不能为空")
     @Length(max = 32, message = "订阅用户Id长度超出限制")

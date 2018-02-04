@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-
-import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 应用编号
      */
-    @Field
     @TableField
     @NotNull(message = "应用编号不能为空")
     @Length(max = 32, message = "应用编号长度超出限制")
@@ -47,7 +44,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 论坛分类名称
      */
-    @Field
     @TableField
     @NotNull(message = "论坛分类名称不能为空")
     @Length(max = 32, message = "论坛分类名称长度超出限制")
@@ -57,7 +53,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 论坛分类缩略图
      */
-    @Field
     @TableField
     @NotNull(message = "论坛分类缩略图不能为空")
     @Length(max = 500, message = "论坛分类缩略图长度超出限制")
@@ -67,7 +62,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 是否生效
      */
-    @Field
     @TableField
     @NotNull(message = "是否生效不能为空")
     private Boolean forumCategoryIsActive;
@@ -76,7 +70,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 是否推荐
      */
-    @Field
     @TableField
     @NotNull(message = "是否推荐不能为空")
     private Boolean forumCategoryIsRecommend;
@@ -85,7 +78,6 @@ public class ForumCategory extends BaseEntity {
     /**
      * 论坛分类排序
      */
-    @Field
     @TableField
     @NotNull(message = "论坛分类排序不能为空")
     @Length(max = 11, message = "论坛分类排序长度超出限制")
