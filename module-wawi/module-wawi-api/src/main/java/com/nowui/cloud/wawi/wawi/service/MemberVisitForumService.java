@@ -2,7 +2,9 @@ package com.nowui.cloud.wawi.wawi.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.view.MemberVisitForumView;
 
 /**
  * 会员访问圈子业务接口
@@ -11,7 +13,7 @@ import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
  *
  * 2018-01-17
  */
-public interface MemberVisitForumService extends BaseService<MemberVisitForum> {
+public interface MemberVisitForumService extends SuperService<MemberVisitForum, MemberVisitForumView> {
 
     /**
      * 会员访问圈子统计

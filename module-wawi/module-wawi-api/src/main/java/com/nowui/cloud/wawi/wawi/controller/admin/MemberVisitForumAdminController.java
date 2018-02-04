@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.router.MemberVisitForumRouter;
 import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
+import com.nowui.cloud.wawi.wawi.view.MemberVisitForumView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,7 +66,7 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID
         );
 
-        MemberVisitForum result = memberVisitForumService.find(body.getMemberVisitForumId());
+        MemberVisitForumView result = memberVisitForumService.find(body.getMemberVisitForumId());
 
         validateResponse(
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID,
@@ -85,7 +87,7 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.USER_ID
         );
 
-        Boolean result = memberVisitForumService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberVisitForumService.save(body, Util.getRandomUUID(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -102,7 +104,7 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.SYSTEM_VERSION
         );
 
-        Boolean result = memberVisitForumService.update(body, body.getMemberVisitForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberVisitForumService.update(body, body.getMemberVisitForumId(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -117,7 +119,7 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.SYSTEM_VERSION
         );
 
-        Boolean result = memberVisitForumService.delete(body.getMemberVisitForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberVisitForumService.delete(body.getMemberVisitForumId(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

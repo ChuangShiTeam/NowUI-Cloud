@@ -2,9 +2,13 @@ package com.nowui.cloud.wawi.pet.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.wawi.pet.entity.Pet;
 import com.nowui.cloud.wawi.pet.mapper.PetMapper;
+import com.nowui.cloud.wawi.pet.repository.PetRepository;
 import com.nowui.cloud.wawi.pet.service.PetService;
+import com.nowui.cloud.wawi.pet.view.PetView;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,7 +22,7 @@ import java.util.List;
  * 2018-01-21
  */
 @Service
-public class PetServiceImpl extends BaseServiceImpl<PetMapper, Pet> implements PetService {
+public class PetServiceImpl extends SuperServiceImpl<PetMapper, Pet, PetRepository, PetView> implements PetService {
 
     @Override
     public Integer countForAdmin(String appId, String petCategoryId, String petName) {

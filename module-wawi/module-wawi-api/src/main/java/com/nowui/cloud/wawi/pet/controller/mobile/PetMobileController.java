@@ -5,7 +5,11 @@ import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.Pet;
+import com.nowui.cloud.wawi.pet.repository.PetRepository;
+import com.nowui.cloud.wawi.pet.router.PetRouter;
 import com.nowui.cloud.wawi.pet.service.PetService;
+import com.nowui.cloud.wawi.pet.view.PetView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +78,7 @@ public class PetMobileController extends BaseController {
                 Pet.PET_ID
         );
 
-        Pet result = petService.find(petEntity.getPetId());
+        PetView result = petService.find(petEntity.getPetId());
 
         validateResponse(
                 Pet.PET_ID,
@@ -107,7 +111,7 @@ public class PetMobileController extends BaseController {
                 Pet.PET_DESCRIPTION
         );
 
-        Boolean result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getSystemCreateUserId());
+        Boolean result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getAppId(), PetRouter.PET_V1_SAVE, petEntity.getSystemCreateUserId());
 
         return renderJson(result);
     }
@@ -131,7 +135,7 @@ public class PetMobileController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.update(petEntity, petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
+        Boolean result = petService.update(petEntity, petEntity.getPetId(), petEntity.getAppId(), PetRouter.PET_V1_UPDATE, petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -148,7 +152,7 @@ public class PetMobileController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
+        Boolean result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getAppId(), PetRouter.PET_V1_DELETE, petEntity.getSystemVersion());
 
         return renderJson(result);
     }

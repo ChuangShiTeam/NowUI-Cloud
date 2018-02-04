@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.TreeUtil;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
 import com.nowui.cloud.wawi.pet.mapper.PetCategoryMapper;
+import com.nowui.cloud.wawi.pet.repository.PetCategoryRepository;
+import com.nowui.cloud.wawi.pet.router.PetCategoryRouter;
 import com.nowui.cloud.wawi.pet.service.PetCategoryService;
+import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
 /**
  * 宠物分类业务实现
@@ -22,7 +26,7 @@ import com.nowui.cloud.wawi.pet.service.PetCategoryService;
  * 2018-01-24
  */
 @Service
-public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, PetCategory> implements PetCategoryService {
+public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, PetCategory, PetCategoryRepository, PetCategoryView> implements PetCategoryService {
 
     /**
      * 应用宠物一级分类缓存KEY
@@ -141,7 +145,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                 );
             }
 
-            redis.opsForList().rightPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
+            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
 
             return topList;
         }
@@ -162,7 +166,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
             );
 
-            redis.opsForList().rightPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
+            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
         }
         return topList;
     }
@@ -217,7 +221,7 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
                             .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
             );
 
-            redis.opsForList().rightPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
+            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
         }
         return petCategoryList;
     }
@@ -235,36 +239,36 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
     }
 
     @Override
-    public Boolean save(PetCategory entity, String petCategoryId, String systemReuqestUserId) {
-        Boolean result = super.save(entity, petCategoryId, systemReuqestUserId);
+    public Boolean save(PetCategory entity, String petCategoryId, String appId, String router, String systemReuqestUserId) {
+        Boolean result = super.save(entity, petCategoryId, appId, router, systemReuqestUserId);
         if (result) {
             // 清空相关缓存
-            redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
-            redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
-            redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
+        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
+        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
+        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
         }
         return result;
     }
 
     @Override
-    public Boolean update(PetCategory entity, String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
-        Boolean result = super.update(entity, petCategoryId, systemReuqestUserId, systemVersion);
+    public Boolean update(PetCategory entity, String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion) {
+        Boolean result = super.update(entity, petCategoryId, appId, router, systemReuqestUserId, systemVersion);
 
         if (result) {
             // 清空相关缓存
-            redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
-            redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
-            redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
+        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
+        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
+        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
         }
 
         return result;
     }
 
     @Override
-    public Boolean delete(String appId, String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
-        PetCategory petCategory = find(petCategoryId);
+    public Boolean delete(String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion) {
+        PetCategoryView petCategory = find(petCategoryId);
 
-        Boolean result = super.delete(petCategoryId, systemReuqestUserId, systemVersion);
+        Boolean result = super.delete(petCategoryId, appId, router, systemReuqestUserId, systemVersion);
 
         if (result) {
 
@@ -272,20 +276,22 @@ public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, P
             List<PetCategory> list = listByParentId(petCategoryId);
             if (!Util.isNullOrEmpty(list)) {
                 for (PetCategory entity : list) {
-                    super.delete(entity.getPetCategoryId(), systemReuqestUserId, entity.getSystemVersion());
+                    super.delete(entity.getPetCategoryId(), appId, PetCategoryRouter.PET_CATEGORY_V1_DELETE, systemReuqestUserId, entity.getSystemVersion());
                 }
             }
             // 清空相关缓存
-            redis.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
-            redis.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
-            redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategoryId);
+            redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+            redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
+            redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategoryId);
             // 删除父级缓存
             if (!Util.isNullOrEmpty(petCategory.getPetCategoryParentId())) {
-                redis.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());
+            	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());
             }
         }
 
         return result;
     }
+
+	
 
 }

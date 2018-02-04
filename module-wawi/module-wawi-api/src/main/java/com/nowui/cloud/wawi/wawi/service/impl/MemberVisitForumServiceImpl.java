@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
 import com.nowui.cloud.wawi.wawi.mapper.MemberVisitForumMapper;
+import com.nowui.cloud.wawi.wawi.repository.MemberVisitForumRepository;
 import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
+import com.nowui.cloud.wawi.wawi.view.MemberVisitForumView;
 
 /**
  * 会员访问圈子业务实现
@@ -19,7 +22,7 @@ import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
  * 2018-01-17
  */
 @Service
-public class MemberVisitForumServiceImpl extends BaseServiceImpl<MemberVisitForumMapper, MemberVisitForum> implements MemberVisitForumService {
+public class MemberVisitForumServiceImpl extends SuperServiceImpl<MemberVisitForumMapper, MemberVisitForum, MemberVisitForumRepository, MemberVisitForumView> implements MemberVisitForumService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId) {
