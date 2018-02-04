@@ -2,6 +2,10 @@ package com.nowui.cloud.member.member.service.impl;
 
 import java.util.List;
 
+import com.nowui.cloud.member.member.repository.MemberAddressRepository;
+import com.nowui.cloud.member.member.router.MemberAddressRouter;
+import com.nowui.cloud.member.member.view.MemberAddressView;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberAddress;
@@ -18,7 +22,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class MemberAddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, MemberAddress> implements MemberAddressService {
+public class MemberAddressServiceImpl extends SuperServiceImpl<MemberAddressMapper, MemberAddress,MemberAddressRepository,MemberAddressView> implements MemberAddressService {
 
     @Override
     public MemberAddress findByMemberId(String memberId) {
@@ -40,7 +44,7 @@ public class MemberAddressServiceImpl extends BaseServiceImpl<MemberAddressMappe
         
         if (memberAddressList != null && memberAddressList.size() > 0) {
             memberAddressList.stream()
-                                .forEach(memberAddress -> delete(memberAddress.getMemberAddressId(), systemRequestUserId, memberAddress.getSystemVersion()));
+                                .forEach(memberAddress -> delete(memberAddress.getMemberAddressId(),memberAddress.getAppId(), MemberAddressRouter.MEMBER_ADDRESS_V1_DELETE, systemRequestUserId, memberAddress.getSystemVersion()));
         }
         
     }

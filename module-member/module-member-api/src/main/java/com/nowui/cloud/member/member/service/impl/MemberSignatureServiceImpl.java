@@ -2,6 +2,10 @@ package com.nowui.cloud.member.member.service.impl;
 
 import java.util.List;
 
+import com.nowui.cloud.member.member.repository.MemberSignatureRepository;
+import com.nowui.cloud.member.member.router.MemberSignatureRouter;
+import com.nowui.cloud.member.member.view.MemberSignatureView;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberSignature;
@@ -18,7 +22,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-14
  */
 @Service
-public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureMapper, MemberSignature> implements MemberSignatureService {
+public class MemberSignatureServiceImpl extends SuperServiceImpl<MemberSignatureMapper, MemberSignature,MemberSignatureRepository,MemberSignatureView> implements MemberSignatureService {
 
     @Override
     public MemberSignature findByMemberId(String memberId) {
@@ -42,7 +46,7 @@ public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureM
         
         if (memberSignatureList != null && memberSignatureList.size() > 0) {
             memberSignatureList.stream()
-                                .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(), systemRequestUserId, memberSignature.getSystemVersion()));
+                                .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(),memberSignature.getAppId(), MemberSignatureRouter.MEMBER_SIGNATURE_V1_DELETE, systemRequestUserId, memberSignature.getSystemVersion()));
         }
     }
 

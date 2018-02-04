@@ -3,6 +3,9 @@ package com.nowui.cloud.member.member.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.member.member.repository.MemberFollowRepository;
+import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberFollow;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-02
  */
 @Service
-public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper, MemberFollow> implements MemberFollowService {
+public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper, MemberFollow,MemberFollowRepository,MemberFollowView> implements MemberFollowService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId) {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nowui.cloud.member.member.router.MemberFollowRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -289,8 +290,8 @@ public class MemberFollowMobileController extends BaseController {
         body.setMemberId(user.getObjectId());
         body.setFollowMemberId(followUser.getObjectId());
         
-        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-
+        Boolean result = memberFollowService.save(body,Util.getRandomUUID(),body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_SAVE,body.getSystemCreateUserId());
+//, Util.getRandomUUID(), body.getSystemRequestUserId()
         return renderJson(result);
     }
 
@@ -309,8 +310,8 @@ public class MemberFollowMobileController extends BaseController {
         if (memberFollow == null) {
             throw new BusinessException("没有关注该会员");
         }
-        Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion());
-
+        Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(),memberFollow.getAppId(),MemberFollowRouter.MEMBER_FOLLOW_V1_DELETE,memberFollow.getSystemUpdateUserId(),memberFollow.getSystemVersion());
+//        memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion()
         return renderJson(result);
     }
 

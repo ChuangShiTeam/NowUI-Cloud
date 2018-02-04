@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.nowui.cloud.member.member.repository.MemberDialogueRecordRepository;
+import com.nowui.cloud.member.member.router.MemberDialogueRecordRouter;
+import com.nowui.cloud.member.member.view.MemberDialogueRecordView;
+import com.nowui.cloud.member.member.view.MemberDialogueView;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberDialogueRecord;
@@ -20,7 +25,8 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class MemberDialogueRecordServiceImpl extends BaseServiceImpl<MemberDialogueRecordMapper, MemberDialogueRecord> implements MemberDialogueRecordService {
+public class MemberDialogueRecordServiceImpl extends
+        SuperServiceImpl<MemberDialogueRecordMapper, MemberDialogueRecord,MemberDialogueRecordRepository,MemberDialogueRecordView> implements MemberDialogueRecordService {
 
     @Override
     public Integer countForAdmin(String appId, String memberDialogueId, String memberId, String userId) {

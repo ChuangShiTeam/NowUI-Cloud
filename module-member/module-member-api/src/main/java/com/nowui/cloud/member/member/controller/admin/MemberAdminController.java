@@ -2,6 +2,8 @@ package com.nowui.cloud.member.member.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.member.member.router.MemberRouter;
+import com.nowui.cloud.member.member.view.MemberView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +66,8 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_ID
         );
 
-        Member result = memberService.find(body.getMemberId());
+        MemberView result = memberService.find(body.getMemberId());
+//        body.getMemberId()body.getMemberId()
 
         validateResponse(
                 Member.MEMBER_ID,
@@ -91,8 +94,8 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_IS_RECOMMED
         );
 
-        Boolean result = memberService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-
+        Boolean result = memberService.save(body,Util.getRandomUUID(),body.getAppId(),MemberRouter.MEMBER_V1_SAVE,body.getSystemCreateUserId());
+//        Util.getRandomUUID(), body.getSystemRequestUserId()
         return renderJson(result);
     }
 
@@ -111,8 +114,8 @@ public class MemberAdminController extends BaseController {
                 Member.SYSTEM_VERSION
         );
 
-        Boolean result = memberService.update(body, body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion());
-
+        Boolean result = memberService.update(body,body.getMemberId(),body.getAppId(), MemberRouter.MEMBER_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        body, body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion()
         return renderJson(result);
     }
 
@@ -126,8 +129,8 @@ public class MemberAdminController extends BaseController {
                 Member.SYSTEM_VERSION
         );
 
-        Boolean result = memberService.delete(body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion());
-
+        Boolean result = memberService.delete(body.getMemberId(),body.getAppId(),MemberRouter.MEMBER_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
+        // body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion()
         return renderJson(result);
     }
 

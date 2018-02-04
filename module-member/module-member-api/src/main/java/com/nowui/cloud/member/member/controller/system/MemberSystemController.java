@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nowui.cloud.member.member.router.MemberRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -76,7 +77,8 @@ public class MemberSystemController implements MemberRpc {
             bean.setMemberTopEndTime(new Date());
             bean.setMemberTopLevel(0);
 
-            Boolean isSave = memberService.save(bean, memberId, systemRequestUserId);
+            Boolean isSave = memberService.save(bean,memberId,bean.getAppId(), MemberRouter.MEMBER_V1_SAVE,bean.getSystemCreateUserId());
+//            bean, memberId, systemRequestUserId
 
             if (!isSave) {
                 throw new BusinessException("保存不成功");

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.member.member.router.MemberDialogueRouter;
+import com.nowui.cloud.member.member.view.MemberDialogueView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,8 +77,8 @@ public class MemberDialogueMobileController extends BaseController {
             memberDialogue.setInitiateMemberId(initiateUser.getObjectId());
             memberDialogue.setRespondUserId(body.getRespondUserId());
             memberDialogue.setRespondMemberId(respondUser.getObjectId());
-            memberDialogueService.save(memberDialogue, Util.getRandomUUID(), body.getSystemCreateUserId());
-            
+            memberDialogueService.save(memberDialogue,Util.getRandomUUID(),body.getAppId(), MemberDialogueRouter.MEMBER_DIALOGUE_V1_SAVE,body.getSystemCreateUserId());
+//            memberDialogueService.save(memberDialogue, Util.getRandomUUID(), body.getSystemCreateUserId());
             memberDialogue.put(MemberDialogue.MEMBER_DIALOGUE_RECORD_LIST, new ArrayList<>());
             memberDialogue.put(MemberDialogue.MEMBER_DIALOGUE_RECORD_COUNT, 0);
         } else {
@@ -139,8 +141,9 @@ public class MemberDialogueMobileController extends BaseController {
                 MemberDialogue.PAGE_SIZE,
                 MemberDialogue.SYSTEM_CREATE_TIME
         );
-        MemberDialogue memberDialogue = memberDialogueService.find(body.getMemberDialogueId());
-        
+        MemberDialogueView memberDialogue = memberDialogueService.find(body.getMemberDialogueId());
+//        MemberDialogue memberDialogue = memberDialogueService.find(body.getMemberDialogueId());
+
         User initiateUser = userRpc.findV1(memberDialogue.getInitiateUserId());
         
         User respondUser = userRpc.findV1(memberDialogue.getRespondUserId());
@@ -210,7 +213,8 @@ public class MemberDialogueMobileController extends BaseController {
         body.setMemberId(user.getObjectId());
         body.setUserId(user.getUserId());
         
-        Boolean result = memberDialogueRecordService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberDialogueRecordService.save(body,Util.getRandomUUID(),body.getAppId(),MemberDialogueRouter.MEMBER_DIALOGUE_V1_SAVE,body.getSystemCreateUserId());
+//        Boolean result = memberDialogueRecordService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }

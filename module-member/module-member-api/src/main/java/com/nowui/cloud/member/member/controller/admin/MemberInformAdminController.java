@@ -2,6 +2,8 @@ package com.nowui.cloud.member.member.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.member.member.router.MemberInformRouter;
+import com.nowui.cloud.member.member.view.MemberInformView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +70,8 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.MEMBER_INFORM_ID
         );
 
-        MemberInform result = memberInformService.find(body.getMemberInformId());
+        MemberInformView result = memberInformService.find(body.getMemberInformId());
+//        MemberInform result = memberInformService.find(body.getMemberInformId());
 
         validateResponse(
                 MemberInform.MEMBER_INFORM_ID,
@@ -93,7 +96,8 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.INFORM_MEMBER_ID
         );
 
-        Boolean result = memberInformService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberInformService.save(body, Util.getRandomUUID(),body.getAppId(),MemberInformRouter.MEMBER_INFORM_V1_SAVE,body.getSystemCreateUserId());
+//        Boolean result = memberInformService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -112,7 +116,8 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.SYSTEM_VERSION
         );
 
-        Boolean result = memberInformService.update(body, body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberInformService.update(body,body.getMemberInformId(),body.getAppId(), MemberInformRouter.MEMBER_INFORM_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        Boolean result = memberInformService.update(body, body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -127,7 +132,8 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.SYSTEM_VERSION
         );
 
-        Boolean result = memberInformService.delete(body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberInformService.delete(body.getMemberInformId(),body.getAppId(),MemberInformRouter.MEMBER_INFORM_V1_DELETE,body.getSystemUpdateUserId(), body.getSystemVersion());
+//        Boolean result = memberInformService.delete(body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

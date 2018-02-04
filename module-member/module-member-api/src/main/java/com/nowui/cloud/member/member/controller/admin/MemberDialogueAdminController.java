@@ -2,6 +2,8 @@ package com.nowui.cloud.member.member.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.member.member.router.MemberDialogueRouter;
+import com.nowui.cloud.member.member.view.MemberDialogueView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,7 +69,8 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.MEMBER_DIALOGUE_ID
         );
 
-        MemberDialogue result = memberDialogueService.find(body.getMemberDialogueId());
+        MemberDialogueView result = memberDialogueService.find(body.getMemberDialogueId());
+//        MemberDialogue result = memberDialogueService.find(body.getMemberDialogueId());
 
         validateResponse(
                 MemberDialogue.MEMBER_DIALOGUE_ID,
@@ -92,7 +95,8 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.RESPOND_USER_ID
         );
 
-        Boolean result = memberDialogueService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberDialogueService.save(body,Util.getRandomUUID(),body.getAppId(),MemberDialogueRouter.MEMBER_DIALOGUE_V1_SAVE,body.getSystemCreateUserId());
+//        Boolean result = memberDialogueService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -111,7 +115,8 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.SYSTEM_VERSION
         );
 
-        Boolean result = memberDialogueService.update(body, body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberDialogueService.update(body,body.getMemberDialogueId(),body.getAppId(), MemberDialogueRouter.MEMBER_DIALOGUE_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        Boolean result = memberDialogueService.update(body, body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -126,7 +131,8 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.SYSTEM_VERSION
         );
 
-        Boolean result = memberDialogueService.delete(body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberDialogueService.delete(body.getMemberDialogueId(),body.getAppId(),MemberDialogueRouter.MEMBER_DIALOGUE_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        Boolean result = memberDialogueService.delete(body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

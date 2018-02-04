@@ -1,5 +1,7 @@
 package com.nowui.cloud.member.member.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.member.member.router.MemberDeliveryAddressRouter;
+import com.nowui.cloud.member.member.view.MemberDeliveryAddressView;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.member.member.entity.MemberDeliveryAddress;
 import com.nowui.cloud.member.member.service.MemberDeliveryAddressService;
@@ -65,7 +67,8 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.MEMBER_DELIVERY_ADDRESS_ID
         );
 
-        MemberDeliveryAddress result = memberDeliveryAddressService.find(body.getMemberDeliveryAddressId());
+        MemberDeliveryAddressView result = memberDeliveryAddressService.find(body.getMemberDeliveryAddressId());
+//        MemberDeliveryAddress result = memberDeliveryAddressService.find(body.getMemberDeliveryAddressId());
 
         validateResponse(
                 MemberDeliveryAddress.MEMBER_DELIVERY_ADDRESS_ID,
@@ -100,8 +103,8 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.MEMBER_DELIVERY_ADDRESS_IS_DEFAULT
         );
 
-        Boolean result = memberDeliveryAddressService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-
+        Boolean result = memberDeliveryAddressService.save(body,Util.getRandomUUID(),body.getAppId(), MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_SAVE,body.getSystemCreateUserId());
+// body, Util.getRandomUUID(), body.getSystemRequestUserId()
         return renderJson(result);
     }
 
@@ -124,8 +127,9 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.SYSTEM_VERSION
         );
 
-        Boolean result = memberDeliveryAddressService.update(body, body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberDeliveryAddressService.update(body,body.getMemberDeliveryAddressId(),body.getAppId(),MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
 
+        // body, body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion()
         return renderJson(result);
     }
 
@@ -139,7 +143,8 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.SYSTEM_VERSION
         );
 
-        Boolean result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(),body.getAppId(),MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        Boolean result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

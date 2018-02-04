@@ -1,7 +1,10 @@
 package com.nowui.cloud.member.member.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.member.member.router.MemberFollowRouter;
+import com.nowui.cloud.member.member.view.MemberFollowView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
  * 会员关注管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-02
  */
 @Api(value = "会员关注", description = "会员关注管理端接口管理")
@@ -43,7 +46,7 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.PAGE_SIZE
         );
 
-        Integer resultTotal = memberFollowService.countForAdmin(body.getAppId() , body.getMemberId(), body.getUserId());
+        Integer resultTotal = memberFollowService.countForAdmin(body.getAppId(), body.getMemberId(), body.getUserId());
         List<MemberFollow> resultList = memberFollowService.listForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
@@ -66,7 +69,8 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.MEMBER_FOLLOW_ID
         );
 
-        MemberFollow result = memberFollowService.find(body.getMemberFollowId());
+        MemberFollowView result = memberFollowService.find(body.getMemberFollowId());
+//        MemberFollow result = memberFollowService.find(body.getMemberFollowId());
 
         validateResponse(
                 MemberFollow.MEMBER_FOLLOW_ID,
@@ -91,7 +95,8 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.FOLLOW_USER_ID
         );
 
-        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_SAVE, body.getSystemCreateUserId());
+//        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -110,7 +115,8 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        Boolean result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = memberFollowService.update(body, body.getMemberFollowId(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -125,8 +131,8 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        Boolean result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
-
+        Boolean result = memberFollowService.delete(body.getMemberFollowId(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
         return renderJson(result);
     }
 
