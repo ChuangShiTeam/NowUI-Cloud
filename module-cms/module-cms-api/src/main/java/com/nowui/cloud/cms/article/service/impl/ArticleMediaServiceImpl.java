@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMediaMapper;
+import com.nowui.cloud.cms.article.repository.ArticleMediaRepository;
+import com.nowui.cloud.cms.article.router.ArticleMediaRouter;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
+import com.nowui.cloud.cms.article.view.ArticleMediaView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 文章多媒体业务实现
@@ -18,7 +21,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleMediaServiceImpl extends BaseServiceImpl<ArticleMediaMapper, ArticleMedia> implements ArticleMediaService {
+public class ArticleMediaServiceImpl extends SuperServiceImpl<ArticleMediaMapper, ArticleMedia, ArticleMediaRepository, ArticleMediaView> implements ArticleMediaService {
 
     @Override
     public List<ArticleMedia> listByArticleId(String articleId) {
@@ -39,7 +42,7 @@ public class ArticleMediaServiceImpl extends BaseServiceImpl<ArticleMediaMapper,
         
         if (articleMediaList != null && articleMediaList.size() > 0) {
             for (ArticleMedia articleMedia : articleMediaList) {
-                delete(articleMedia.getArticleMediaId(), systemRequestUserId, articleMedia.getSystemVersion());
+                delete(articleMedia.getArticleMediaId(), articleMedia.getAppId(), ArticleMediaRouter.ARTICLE_MEDIA_V1_DELETE, systemRequestUserId, articleMedia.getSystemVersion());
             }
         }
         

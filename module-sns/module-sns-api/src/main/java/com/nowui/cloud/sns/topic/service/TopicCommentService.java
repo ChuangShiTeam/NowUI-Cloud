@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
+import com.nowui.cloud.sns.topic.view.TopicCommentView;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicCommentService extends BaseService<TopicComment> {
+public interface TopicCommentService extends SuperService<TopicComment, TopicCommentView> {
 
     /**
      * 话题评论统计
@@ -83,9 +85,10 @@ public interface TopicCommentService extends BaseService<TopicComment> {
      * 根据话题编号逻辑删除话题评论信息
      * 
      * @param topicId 话题编号
+     * @param appId 应用编号
      * @param systemRequestUserId 请求用户编号
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题评论

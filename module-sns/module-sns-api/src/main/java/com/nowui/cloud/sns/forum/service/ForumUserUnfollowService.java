@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.forum.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
+import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ForumUserUnfollowService extends BaseService<ForumUserUnfollow> {
+public interface ForumUserUnfollowService extends SuperService<ForumUserUnfollow, ForumUserUnfollowView> {
 
     /**
      * 论坛用户取关关联统计

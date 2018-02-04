@@ -2,7 +2,10 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserCommentUserLike;
+import com.nowui.cloud.cms.article.router.ArticleUserCommentUserLikeRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserCommentUserLikeService;
+import com.nowui.cloud.cms.article.view.ArticleUserCommentUserLikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID
         );
 
-        ArticleUserCommentUserLike result = articleUserCommentUserLikeService.find(body.getArticleUserCommentUserLikeId());
+        ArticleUserCommentUserLikeView result = articleUserCommentUserLikeService.find(body.getArticleUserCommentUserLikeId());
 
         validateResponse(
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
@@ -80,7 +83,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.USER_ID
         );
 
-        Boolean result = articleUserCommentUserLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleUserCommentUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE , body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentUserLikeService.update(body, body.getArticleUserCommentUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserCommentUserLikeService.update(body, body.getArticleUserCommentUserLikeId(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentUserLikeService.delete(body.getArticleUserCommentUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserCommentUserLikeService.delete(body.getArticleUserCommentUserLikeId(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

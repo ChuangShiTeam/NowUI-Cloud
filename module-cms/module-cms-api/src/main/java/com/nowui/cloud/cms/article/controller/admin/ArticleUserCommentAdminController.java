@@ -2,7 +2,10 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserComment;
+import com.nowui.cloud.cms.article.router.ArticleUserCommentRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserCommentService;
+import com.nowui.cloud.cms.article.view.ArticleUserCommentView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID
         );
 
-        ArticleUserComment result = articleUserCommentService.find(body.getArticleUserCommentId());
+        ArticleUserCommentView result = articleUserCommentService.find(body.getArticleUserCommentId());
 
         validateResponse(
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID,
@@ -86,7 +89,7 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.ARTICLE_COMMENT_CONTENT
         );
 
-        Boolean result = articleUserCommentService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleUserCommentService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -106,7 +109,7 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentService.update(body, body.getArticleUserCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserCommentService.update(body, body.getArticleUserCommentId(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -121,7 +124,7 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentService.delete(body.getArticleUserCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserCommentService.delete(body.getArticleUserCommentId(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

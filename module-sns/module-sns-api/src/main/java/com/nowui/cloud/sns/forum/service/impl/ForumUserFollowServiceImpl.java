@@ -2,9 +2,14 @@ package com.nowui.cloud.sns.forum.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.mapper.ForumUserFollowMapper;
+import com.nowui.cloud.sns.forum.repository.ForumUserFollowRepository;
+import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
+import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,7 +23,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowMapper, ForumUserFollow> implements ForumUserFollowService {
+public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollowMapper, ForumUserFollow, ForumUserFollowRepository, ForumUserFollowView> implements ForumUserFollowService {
 
     @Override
     public Integer countForAdmin(String appId, String userId, String forumId) {
@@ -159,7 +164,7 @@ public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowM
 
 		//得到全部用户关注list,遍历
 		for (ForumUserFollow forumUserFollow : forumUserFollowList) {
-			delete(forumUserFollow.getForumUserFollowId(), systemUpdateUserId, forumUserFollow.getSystemVersion());
+			delete(forumUserFollow.getForumUserFollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, systemUpdateUserId, forumUserFollow.getSystemVersion());
 		}
 		
 		return false;

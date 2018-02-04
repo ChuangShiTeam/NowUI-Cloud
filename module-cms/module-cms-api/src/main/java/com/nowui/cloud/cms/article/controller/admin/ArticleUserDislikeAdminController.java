@@ -2,7 +2,10 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserDislike;
+import com.nowui.cloud.cms.article.router.ArticleUserDislikeRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserDislikeService;
+import com.nowui.cloud.cms.article.view.ArticleUserDislikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID
         );
 
-        ArticleUserDislike result = articleUserDislikeService.find(body.getArticleUserDislikeId());
+        ArticleUserDislikeView result = articleUserDislikeService.find(body.getArticleUserDislikeId());
 
         validateResponse(
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID,
@@ -80,7 +83,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.USER_ID
         );
 
-        Boolean result = articleUserDislikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleUserDislikeService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserDislikeService.update(body, body.getArticleUserDislikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserDislikeService.update(body, body.getArticleUserDislikeId(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserDislikeService.delete(body.getArticleUserDislikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserDislikeService.delete(body.getArticleUserDislikeId(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

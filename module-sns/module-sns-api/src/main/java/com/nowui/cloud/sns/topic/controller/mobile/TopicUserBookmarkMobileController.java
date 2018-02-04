@@ -57,7 +57,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         Boolean result = topicUserBookmarkService.save(appId, topicId, userId, userId);
         
         if (result) {
-            topicUserUnbookmarkService.deleteByTopicIdAndUserId(topicId, userId, userId);
+            topicUserUnbookmarkService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
         }
 
         return renderJson(result);

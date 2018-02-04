@@ -25,9 +25,11 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
+import com.nowui.cloud.sns.forum.router.ForumRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
@@ -72,7 +74,8 @@ public class ForumMobileController extends BaseController {
 
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public Map<String, Object> saveV1(@RequestBody Forum body) {
+	 public Map<String, Object> saveV1() {
+		 Forum body = getEntry(Forum.class);
 	     validateRequest(
 	             body,
 	             Forum.APP_ID,
@@ -102,7 +105,7 @@ public class ForumMobileController extends BaseController {
 	     String forumId = Util.getRandomUUID();
 	     String userId = body.getSystemRequestUserId();
 	     
-	     Boolean result = forumService.save(body, forumId, userId);
+	     Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, userId);
 	     
 	     if (result) {
 
@@ -112,7 +115,7 @@ public class ForumMobileController extends BaseController {
 	         forumUserFollow.setForumId(forumId);
 	         forumUserFollow.setUserId(userId);
 	         
-	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), userId);
+	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, userId);
 	     }
         
 	     return renderJson(result);
@@ -120,7 +123,8 @@ public class ForumMobileController extends BaseController {
 	 
 	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Forum body) {
+    public Map<String, Object> findV1() {
+		Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -132,7 +136,7 @@ public class ForumMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
         
         // forum包含了论坛简介,论坛名称,论坛头像
-        Forum forum = forumService.find(body.getForumId());
+        ForumView forum = forumService.find(body.getForumId());
         // 处理论坛头像
         File file = fileRpc.findV1(forum.getForumMedia());
     	file.keep(File.FILE_ID, File.FILE_PATH);
@@ -204,7 +208,8 @@ public class ForumMobileController extends BaseController {
 	
 	@ApiOperation(value = "论坛中所有用户信息")
     @RequestMapping(value = "/forum/mobile/v1/findAll", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findAllV1(@RequestBody Forum body) {
+    public Map<String, Object> findAllV1() {
+		Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -232,7 +237,8 @@ public class ForumMobileController extends BaseController {
 	
 	@ApiOperation(value = "论坛推荐列表")
     @RequestMapping(value = "/forum/mobile/v1/recommend/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> recommendListV1(@RequestBody Forum body) {
+    public Map<String, Object> recommendListV1() {
+		Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -241,22 +247,22 @@ public class ForumMobileController extends BaseController {
         );
         
         // 查询编辑推荐的且用户没有关注过的论坛
-        List<Forum> recommendList = forumService.getRandomRecommendAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), body.getPageSize());
+        List<ForumView> recommendList = forumService.getRandomRecommendAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), body.getPageSize());
 
         if (recommendList.size() < body.getPageSize()) {
             // 推荐的数量不满足则从最新的圈子里面增加推荐
             int pageSize = body.getPageSize() - recommendList.size();
             
             // 查询用户没有关注过的最新论坛
-            List<Forum> latestList = forumService.getLatestAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), 0, pageSize);
+            List<ForumView> latestList = forumService.getLatestAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), 0, pageSize);
             recommendList.addAll(latestList);
         }
         
-        //处理论坛头像
-        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
-        List<File> fileList = fileRpc.findsV1(fileIds);
-        
-        recommendList = Util.beanReplaceField(recommendList, Forum.FORUM_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
+        //处理论坛头像    =======这里的逻辑 以后不用rpc了
+//        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
+//        List<File> fileList = fileRpc.findsV1(fileIds);
+//        
+//        recommendList = Util.beanReplaceField(recommendList, Forum.FORUM_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
 
         validateResponse(
                 Forum.FORUM_ID,
@@ -270,14 +276,15 @@ public class ForumMobileController extends BaseController {
 
 	@ApiOperation(value = "更新论坛头像")
 	@RequestMapping(value = "/forum/mobile/v1/update/media", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> updateMediaV1(@RequestBody Forum body) {
+	public Map<String, Object> updateMediaV1() {
+	   Forum body = getEntry(Forum.class);
 	   validateRequest(
           body,
           Forum.APP_ID,
           Forum.FORUM_ID,
           Forum.FORUM_MEDIA
        );
-	    Forum forum = forumService.find(body.getForumId());
+	    ForumView forum = forumService.find(body.getForumId());
 	    if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
 	    return renderJson(false);
 		}
@@ -285,14 +292,15 @@ public class ForumMobileController extends BaseController {
 	   //不清楚是否单独写一个更改背景图片的接口
 	   body.setForumBackgroundMedia(body.getForumMedia());
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
 
        return renderJson(result);
     }
 
 	@ApiOperation(value = "更新论坛名称")
 	@RequestMapping(value = "/forum/mobile/v1/update/name", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> updateNameV1(@RequestBody Forum body) {
+	public Map<String, Object> updateNameV1() {
+		Forum body = getEntry(Forum.class);
 	    validateRequest(
           body,
           Forum.APP_ID,
@@ -300,33 +308,34 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_NAME
        );
 	    
-       Forum forum = forumService.find(body.getForumId());
+       ForumView forum = forumService.find(body.getForumId());
        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
        	return renderJson(false);
 		}
        
        Integer systemVersion = forum.getSystemVersion();
        
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), systemVersion);
+       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), systemVersion);
 
        return renderJson(result);
     }
 
 	@ApiOperation(value = "更新论坛简介")
 	@RequestMapping(value = "/forum/mobile/v1/update/description", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> updateDescriptionV1(@RequestBody Forum body) {
+	public Map<String, Object> updateDescriptionV1() {
+		Forum body = getEntry(Forum.class);
 	    validateRequest(
           body,
           Forum.APP_ID,
           Forum.FORUM_ID,
           Forum.FORUM_DESCRIPTION
        );
-	    Forum forum = forumService.find(body.getForumId());
+	    ForumView forum = forumService.find(body.getForumId());
         if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
         	return renderJson(false);
 		}
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
 
        return renderJson(result);
     }
@@ -334,20 +343,21 @@ public class ForumMobileController extends BaseController {
 
 	@ApiOperation(value = "删除论坛")
     @RequestMapping(value = "/forum/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Forum body) {
+    public Map<String, Object> deleteV1() {
+		Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.FORUM_ID,
                 Forum.APP_ID
         );
         
-        Forum forum = forumService.find(body.getForumId());
+        ForumView forum = forumService.find(body.getForumId());
         if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
         	return renderJson(false);
 		}
         
         //先从论坛信息表删除
-        Boolean result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
         if (result == false) {
     		return renderJson(result);
 		}
@@ -375,7 +385,8 @@ public class ForumMobileController extends BaseController {
 	
     @ApiOperation(value = "论坛信息搜索列表")
     @RequestMapping(value = "/forum/mobile/v1/search/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> searchListV1(@RequestBody Forum body) {
+    public Map<String, Object> searchListV1() {
+    	Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -418,7 +429,8 @@ public class ForumMobileController extends BaseController {
     
     @ApiOperation(value = "论坛主页信息(论坛主页)")
     @RequestMapping(value = "/forum/mobile/v1/home", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> homeV1(@RequestBody Forum body) {
+    public Map<String, Object> homeV1() {
+    	Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -426,7 +438,7 @@ public class ForumMobileController extends BaseController {
         );
         String requestUserId = body.getSystemRequestUserId();
         
-        Forum forum = forumService.find(body.getForumId());
+        ForumView forum = forumService.find(body.getForumId());
         
         // 处理论坛图片
         File file = fileRpc.findV1(forum.getForumMedia());
@@ -472,7 +484,8 @@ public class ForumMobileController extends BaseController {
     
     @ApiOperation(value = "论坛详情的主页的动态列表")
     @RequestMapping(value = "/forum/mobile/v1/home/topic/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> homeTopicV1(@RequestBody Forum body) {
+    public Map<String, Object> homeTopicV1() {
+    	Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,

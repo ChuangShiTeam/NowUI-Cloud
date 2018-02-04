@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark> {
+public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark, TopicUserBookmarkView> {
 
     /**
      * 话题收藏统计
@@ -67,7 +69,7 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
      * @param topicId
      * @param systemRequestUserId
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号和用户编号逻辑删除话题收藏
@@ -76,7 +78,7 @@ public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark>
      * @param userId
      * @param systemRequestUserId
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题收藏

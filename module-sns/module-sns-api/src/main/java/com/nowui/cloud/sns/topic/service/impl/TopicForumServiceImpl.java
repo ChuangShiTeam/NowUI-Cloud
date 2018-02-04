@@ -12,10 +12,14 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.mapper.TopicForumMapper;
+import com.nowui.cloud.sns.topic.repository.TopicForumRepository;
+import com.nowui.cloud.sns.topic.router.TopicForumRouter;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
@@ -27,7 +31,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, TopicForum> implements TopicForumService {
+public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, TopicForum, TopicForumRepository, TopicForumView> implements TopicForumService {
 
     public static final String TOPIC_FORUM_ID_LIST_BY_TOPIC_ID = "topic_forum_id_list_by_topic_id_";
     
@@ -73,11 +77,11 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
     	//遍历删除
     	if (!Util.isNullOrEmpty(topicForumList)) {
     	    topicForumList.stream().forEach(topicForum -> {
-    	    	redis.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicForum.TOPIC_ID);
-    	        delete(topicForum.getTopicForumId(), systemUpdateUserId, topicForum.getSystemVersion());
+    	    	redisTemplate.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicForum.TOPIC_ID);
+    	        delete(topicForum.getTopicForumId(), appId, TopicForumRouter.TOPIC_FORUM_V1_DELETE, systemUpdateUserId, topicForum.getSystemVersion());
     	    });
     	    
-    	    redis.delete(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
+    	    redisTemplate.delete(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
     	}
     }
 
@@ -94,7 +98,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 	
 	@Override
     public Integer countByForumId(String forumId) {
-        Integer forumTopicCount = (Integer) redis.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
+        Integer forumTopicCount = (Integer) redisTemplate.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
         
         if (forumTopicCount == null) {
             forumTopicCount = count(
@@ -103,7 +107,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                     .eq(TopicForum.SYSTEM_STATUS, true)
             );
             
-            redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId, forumTopicCount);
+            redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId, forumTopicCount);
         }
         
         return forumTopicCount;
@@ -141,47 +145,49 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
 	}
 
 	@Override
-	public List<TopicForum> listByTopicId(String topicId) {
-        List<String> topicForumIdList = (List<String>) redis.opsForValue().get(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);
+	public List<TopicForumView> listByTopicId(String topicId) {
+        List<String> topicForumIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);
         
-        if (topicForumIdList == null) {
-            List<TopicForum> topicForumList = list(
-                    new BaseWrapper<TopicForum>()
-                            .eq(TopicForum.TOPIC_ID, topicId)
-                            .eq(TopicForum.SYSTEM_STATUS, true)
-                            .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
-            );
-            
-            topicForumIdList = topicForumList.stream().map(topicForum -> topicForum.getTopicForumId()).collect(Collectors.toList());
-            // 缓存话题论坛编号列表
-            redis.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
-            
-            return topicForumList;
-        }
+        // TODO 暂时注释掉,返回null值,回来再调
+//        if (topicForumIdList == null) {
+//            List<TopicForumView> topicForumList = list(
+//                    new BaseWrapper<TopicForumView>()
+//                            .eq(TopicForum.TOPIC_ID, topicId)
+//                            .eq(TopicForum.SYSTEM_STATUS, true)
+//                            .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
+//            );
+//            
+//            topicForumIdList = topicForumList.stream().map(topicForum -> topicForum.getTopicForumId()).collect(Collectors.toList());
+//            // 缓存话题论坛编号列表
+//            redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
+//            
+//            return topicForumList;
+//        }
 		
-        return topicForumIdList.stream().map(topicForumId -> find(topicForumId)).collect(Collectors.toList());
+//        return topicForumIdList.stream().map(topicForumId -> find(topicForumId)).collect(Collectors.toList());
+        return null;
 	}
 
     @Override
-    public void deleteByTopicId(String topicId, String systemRequestUserId) {
-        List<TopicForum> topicForumList = listByTopicId(topicId);
+    public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
+        List<TopicForumView> topicForumList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicForumList)) {
         	
         	topicForumList.stream().forEach(topicForum -> {
-                delete(topicForum.getTopicForumId(), systemRequestUserId, topicForum.getSystemVersion());
+                delete(topicForum.getTopicForumId(), appId, TopicForumRouter.TOPIC_FORUM_V1_DELETE, systemRequestUserId, topicForum.getSystemVersion());
             });
             
         	topicForumList.stream().forEach(topicForum -> {
         		// 论坛话题数缓存减一
         		Integer forumTopicCount = countByForumId(topicForum.getForumId());
         		
-                redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount - 1);
+        		redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount - 1);
         	});
         }
         
         // 清空缓存
-        redis.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);    
+        redisTemplate.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);    
     }
 
     @Override
@@ -194,7 +200,7 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
                 topicForum.setAppId(appId);
                 String topicForumId = Util.getRandomUUID();
                 
-                Boolean flag = save(topicForum, topicForumId, systemRequestUserId);
+                Boolean flag = save(topicForum, topicForumId, appId, TopicForumRouter.TOPIC_FORUM_V1_SAVE, systemRequestUserId);
                 
                 if (!flag) {
                     throw new BusinessException("保存失败");
@@ -204,17 +210,17 @@ public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, Top
             }
             
             topicForumIdList.forEach(topicForumId -> {
-            	TopicForum topicForum = find(topicForumId);
+            	TopicForumView topicForum = find(topicForumId);
             	
             	// 论坛话题数缓存加一
                 Integer forumTopicCount = countByForumId(topicForum.getForumId());
                 
-                redis.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
+                redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
 
             });
         }
         // 缓存话题论坛编号列表
-        redis.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
+        redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
     }
 
 	

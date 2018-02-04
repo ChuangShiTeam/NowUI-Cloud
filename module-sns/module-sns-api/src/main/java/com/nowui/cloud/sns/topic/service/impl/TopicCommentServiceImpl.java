@@ -2,10 +2,14 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentMapper;
+import com.nowui.cloud.sns.topic.repository.TopicCommentRepository;
+import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
@@ -23,7 +27,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper, TopicComment> implements TopicCommentService {
+public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper, TopicComment, TopicCommentRepository, TopicCommentView> implements TopicCommentService {
 
     public static final String TOPIC_COMMENT_COUNT_BY_TOPIC_ID = "topic_comment_count_by_topic_id_";
     
@@ -63,7 +67,7 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
     
     @Override
     public Integer countByTopicId(String topicId) {
-        Integer count = (Integer) redis.opsForValue().get(TOPIC_COMMENT_COUNT_BY_TOPIC_ID);
+        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_COMMENT_COUNT_BY_TOPIC_ID);
         
         if (count == null) {
             count = count(
@@ -72,7 +76,7 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
                             .eq(TopicComment.SYSTEM_STATUS, true)
             );
             // 更新话题评论数缓存
-            redis.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, count);
+            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, count);
         }
         
         return count;
@@ -123,13 +127,13 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
     
 
     @Override
-    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+    public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
         List<TopicComment> topicCommentList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicCommentList)) {
-            topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), systemRequestUserId, topicComment.getSystemVersion()));
+            topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), appId, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, systemRequestUserId, topicComment.getSystemVersion()));
         }
-        redis.delete(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId);
+        redisTemplate.delete(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -139,12 +143,12 @@ public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper,
         topicComment.setUserId(userId);
         topicComment.setTopicId(topicId);
         
-        Boolean result = save(topicComment, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = save(topicComment, appId, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
         
         if (result) {
             // 更新话题评论数缓存
             Integer count = countByTopicId(topicId);
-            redis.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
+            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
         }
         return result;
     }

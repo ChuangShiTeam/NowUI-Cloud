@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-23
  */
-public interface TopicCommentUserLikeService extends BaseService<TopicCommentUserLike> {
+public interface TopicCommentUserLikeService extends SuperService<TopicCommentUserLike, TopicCommentUserLikeView> {
 
     /**
      * 话题的评论用户点赞统计
@@ -52,7 +54,7 @@ public interface TopicCommentUserLikeService extends BaseService<TopicCommentUse
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
      */
-    boolean deleteByCommentIdAndUserIdWithRedis(String commentId, String userId, String systemRequestUserId);
+    boolean deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId);
     
     /**
      * 根据评论id删除所有 话题评论的点赞记录(redis中的点赞数也删除)
@@ -61,7 +63,7 @@ public interface TopicCommentUserLikeService extends BaseService<TopicCommentUse
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
      */
-    boolean deleteAllCommentLikeByCommentIdWithRedis(String commentId, String systemRequestUserId);
+    boolean deleteAllCommentLikeByCommentIdWithRedis(String commentId, String appId, String systemRequestUserId);
     
     /**
      * 根据评论id查找所有此评论的点赞记录(不分页)

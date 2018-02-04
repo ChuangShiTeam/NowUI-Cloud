@@ -3,8 +3,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.view.TopicView;
 
 /**
  * 话题信息业务接口
@@ -13,7 +15,7 @@ import com.nowui.cloud.sns.topic.entity.TopicForum;
  *
  * 2018-01-08
  */
-public interface TopicService extends BaseService<Topic> {
+public interface TopicService extends SuperService<Topic, TopicView> {
 
     /**
      * 话题信息统计
@@ -62,7 +64,7 @@ public interface TopicService extends BaseService<Topic> {
      * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<Topic> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize);
+    List<TopicView> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号查找所有topic记录
@@ -103,7 +105,7 @@ public interface TopicService extends BaseService<Topic> {
      * @param userId 用户编号
      * @return Topic 话题详情
      */
-    Topic findDetailByTopicIdAndUserId(String topicId, String userId);
+    TopicView findDetailByTopicIdAndUserId(String topicId, String userId);
 
 
     /**

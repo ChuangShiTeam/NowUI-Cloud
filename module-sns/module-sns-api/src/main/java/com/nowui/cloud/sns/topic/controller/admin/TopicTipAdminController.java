@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
+import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.view.TopicTipView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.TOPIC_TIP_ID
         );
 
-        TopicTip result = topicTipService.find(body.getTopicTipId());
+        TopicTipView result = topicTipService.find(body.getTopicTipId());
 
         validateResponse(
                 TopicTip.TOPIC_TIP_ID,
@@ -80,7 +83,7 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.USER_ID
         );
 
-        Boolean result = topicTipService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicTipService.save(body, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.SYSTEM_VERSION
         );
 
-        Boolean result = topicTipService.update(body, body.getTopicTipId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicTipService.update(body, body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.SYSTEM_VERSION
         );
 
-        Boolean result = topicTipService.delete(body.getTopicTipId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicTipService.delete(body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

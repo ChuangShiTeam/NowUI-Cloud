@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
+import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.util.Util;
@@ -48,6 +49,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
+        String appId = body.getAppId();
 
         TopicUserUnbookmark topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
         if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
@@ -55,10 +57,10 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 		}
 
         body.setUserId(userId);
-        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), userId);
+        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
 
         if (result) {
-            topicUserBookmarkService.deleteByTopicIdAndUserId(topicId, userId, userId);
+            topicUserBookmarkService.deleteByTopicIdAndUserId(topicId, userId, body.getAppId(), userId);
         }
         return renderJson(result);
     }

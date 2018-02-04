@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.forum.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.view.ForumView;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ForumService extends BaseService<Forum> {
+public interface ForumService extends SuperService<Forum, ForumView> {
 
     /**
      * 论坛信息统计(用于Admin)
@@ -69,7 +71,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param n 个数
      * @return List<Forum> 论坛列表
      */
-    List<Forum> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n);
+    List<ForumView> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n);
     
     /**
      * 获取用户没有关注的最新论坛列表
@@ -80,7 +82,7 @@ public interface ForumService extends BaseService<Forum> {
      * @param n 结束数
      * @return List<Forum> 论坛列表
      */
-    List<Forum> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n);
+    List<ForumView> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n);
     
     /**
      * 验证论坛名称唯一性

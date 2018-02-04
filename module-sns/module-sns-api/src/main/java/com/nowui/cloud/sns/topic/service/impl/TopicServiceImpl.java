@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.topic.entity.Topic;
@@ -20,6 +21,8 @@ import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.mapper.TopicMapper;
+import com.nowui.cloud.sns.topic.repository.TopicRepository;
+import com.nowui.cloud.sns.topic.router.TopicRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
@@ -28,6 +31,9 @@ import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
+import com.nowui.cloud.sns.topic.view.TopicMediaView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
@@ -39,7 +45,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implements TopicService {
+public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, TopicRepository, TopicView> implements TopicService {
     
 	@Autowired
 	private TopicForumService topicForumService;
@@ -125,11 +131,11 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 
 	@Override
-	public List<Topic> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize) {
+	public List<TopicView> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize) {
 	    
 		List<TopicForum> topicForumList = topicForumService.listByForumId(forumId, pageIndex, pageSize);
 		
-		List<Topic> topicList = topicForumList.stream().map(topicForum -> findDetailByTopicIdAndUserId(topicForum.getTopicId(), userId)).collect(Collectors.toList());
+		List<TopicView> topicList = topicForumList.stream().map(topicForum -> findDetailByTopicIdAndUserId(topicForum.getTopicId(), userId)).collect(Collectors.toList());
 
 		return topicList;
 	}
@@ -148,15 +154,15 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 
     		//取得topicId去话题图片表查询图片,所有图片放入list中(处理图片放在controller)
-        	List<TopicMedia> topicMedias = topicMediaService.listByTopicId(topicId);
+        	List<TopicMediaView> topicMedias = topicMediaService.listByTopicId(topicId);
         	topic.put(Topic.TOPIC_MEDIA_LIST, topicMedias);
 
         	//取得topicId去话题论坛表查询,得到所有话题所在论坛
-        	List<TopicForum> allTopicForumList = topicForumService.listByTopicId(topicId);
+        	List<TopicForumView> allTopicForumList = topicForumService.listByTopicId(topicId);
         	//new一个list存放所有论坛对象,论坛对象存放,id和名称
         	ArrayList<Forum> forumList = new ArrayList<>();
         	//遍历allTopicForumList
-        	for (TopicForum aTopicForum : allTopicForumList) {
+        	for (TopicForumView aTopicForum : allTopicForumList) {
         		//得到论坛编号
 				String forumId = aTopicForum.getForumId();
 				//根据论坛编号去论坛信息表查询名称
@@ -214,10 +220,10 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	}
 
 	@Override
-	public Topic findDetailByTopicIdAndUserId(String topicId, String userId) {
+	public TopicView findDetailByTopicIdAndUserId(String topicId, String userId) {
 		
 		//根据topicId查询topic
-		Topic topic = find(topicId);
+		TopicView topic = find(topicId);
 		
 		//TODO 检查topic是否为null
 //		if (Util.isNullOrEmpty(topic)) {
@@ -225,16 +231,17 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 //		}
 		
 		// 话题多媒体列表
-        List<TopicMedia> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
+        List<TopicMediaView> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-        for (TopicMedia topicMedia : topicMediaList) {
-            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
-        }
+        //TODO 暂时注释掉,回来在调试
+//        for (TopicMediaView topicMedia : topicMediaList) {
+//            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
+//        }
 
         // 论坛列表
-        List<TopicForum> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
+        List<TopicForumView> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
         ArrayList<Forum> forumList = new ArrayList<>();
-        for (TopicForum topicForum : topicForumList) {
+        for (TopicForumView topicForum : topicForumList) {
             Forum forum = forumService.find(topicForum.getForumId(), true);
             forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
             forumList.add(forum);
@@ -315,29 +322,29 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	
     @Override
     public Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion) {
-        Boolean result = topicService.delete(topicId, systemRequestUserId, systemVersion);
+        Boolean result = topicService.delete(topicId, appId, TopicRouter.TOPIC_V1_DELETE, systemRequestUserId, systemVersion);
 
         if (result) {
             //删除话题论坛关联
-            topicForumService.deleteByTopicId(topicId, systemRequestUserId);
+            topicForumService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除话题多媒体
-            topicMediaService.deleteByTopicId(topicId, systemRequestUserId);
+            topicMediaService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除话题评论
-            topicCommentService.deleteByTopicId(topicId, systemRequestUserId);
+            topicCommentService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除话题收藏
-            topicUserBookmarkService.deleteByTopicId(topicId, systemRequestUserId);
+            topicUserBookmarkService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除话题点赞 
-            topicUserLikeService.deleteByTopicId(topicId, systemRequestUserId);
+            topicUserLikeService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除取消收藏 
-            topicUserUnbookmarkService.deleteByTopicId(topicId, systemRequestUserId);
+            topicUserUnbookmarkService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
             //删除话题取消点赞
-            topicUserUnlikeService.deleteByTopicId(topicId, systemRequestUserId);
+            topicUserUnlikeService.deleteByTopicId(topicId, appId, systemRequestUserId);
         }
         
         return result;
@@ -387,14 +394,14 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 
 	@Override
 	public Integer countTopicByUserIdWithRedis(String userId) {
-		Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
+		Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
 		if (num == null) {
 			Integer count = count(
 	                new BaseWrapper<Topic>()
 	                        .eq(Topic.USER_ID, userId)
 	                        .eq(Topic.SYSTEM_STATUS, true)
 	        );
-			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
+			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
 			return count;
 		}
 		
@@ -404,20 +411,20 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic> implem
 	@Override
 	public Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId) {
 		// 保存话题
-        Boolean result = topicService.save(entity, id, systemCreateUserId);
+        Boolean result = topicService.save(entity, id, entity.getAppId(), TopicRouter.TOPIC_V1_SAVE, systemCreateUserId);
         
         if (result) {
-        	Integer num = (Integer)redis.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
+        	Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
         	if (num == null) {
     			Integer count = count(
     	                new BaseWrapper<Topic>()
     	                        .eq(Topic.USER_ID, systemCreateUserId)
     	                        .eq(Topic.SYSTEM_STATUS, true)
     	        );
-    			redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
+    			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
     		}
         	
-        	redis.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
+        	redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
 		}
 		
 		return result;

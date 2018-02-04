@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.mapper.ForumMapper;
+import com.nowui.cloud.sns.forum.repository.ForumRepository;
 import com.nowui.cloud.sns.forum.service.ForumService;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -23,7 +26,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implements ForumService {
+public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, ForumRepository, ForumView> implements ForumService {
 
     @Override
     public Integer countForAdmin(String appId, String forumName, Boolean forumIsActive, Boolean forumIsRecommend, String forumAuditStatus) {
@@ -90,7 +93,7 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
 	}
 
     @Override
-    public List<Forum> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n) {
+    public List<ForumView> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n) {
         List<String> forumIdList = mapper.getRandomRecommendAndNotFollowListByUserId(appId, userId, n);
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();
@@ -99,7 +102,7 @@ public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum> implem
     }
 
     @Override
-    public List<Forum> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n) {
+    public List<ForumView> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n) {
         List<String> forumIdList = mapper.getLatestAndNotFollowListByUserId(appId, userId, m, n);
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();

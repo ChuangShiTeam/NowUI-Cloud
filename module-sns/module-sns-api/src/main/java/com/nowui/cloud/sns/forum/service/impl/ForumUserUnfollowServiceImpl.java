@@ -2,9 +2,14 @@ package com.nowui.cloud.sns.forum.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.mapper.ForumUserUnfollowMapper;
+import com.nowui.cloud.sns.forum.repository.ForumUserUnfollowRepository;
+import com.nowui.cloud.sns.forum.router.ForumUserUnfollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,7 +23,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfollowMapper, ForumUserUnfollow> implements ForumUserUnfollowService {
+public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfollowMapper, ForumUserUnfollow, ForumUserUnfollowRepository, ForumUserUnfollowView> implements ForumUserUnfollowService {
 
     @Override
     public Integer countForAdmin(String appId, String userId, String forumId) {
@@ -80,7 +85,7 @@ public class ForumUserUnfollowServiceImpl extends BaseServiceImpl<ForumUserUnfol
 		
 		//遍历
 		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
-			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), systemUpdateUserId, forumUserUnfollow.getSystemVersion());
+			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), appId, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_DELETE, systemUpdateUserId, forumUserUnfollow.getSystemVersion());
 			if (delete == false) {
 				return false;
 			}

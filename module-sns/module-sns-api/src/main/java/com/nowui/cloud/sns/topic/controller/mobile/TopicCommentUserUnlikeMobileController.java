@@ -3,6 +3,7 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
+import com.nowui.cloud.sns.topic.router.TopicCommentUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
 import com.nowui.cloud.util.Util;
@@ -60,11 +61,11 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         body.setCommentId(commentId);
         body.setUserId(userId);
         // 没有: 就去取消评论点赞表插入一条记录,并且删除点赞表的记录
-        Boolean result = topicCommentUserUnlikeService.save(body, Util.getRandomUUID(), userId);
+        Boolean result = topicCommentUserUnlikeService.save(body, appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, Util.getRandomUUID(), userId);
 
         if (result) {
         	// 去点赞表删除点赞记录
-        	topicCommentUserLikeService.deleteByCommentIdAndUserIdWithRedis(commentId, userId, userId);
+        	topicCommentUserLikeService.deleteByCommentIdAndUserIdWithRedis(commentId, appId,userId, userId);
 		}
         
         return renderJson(result);

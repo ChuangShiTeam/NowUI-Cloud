@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
+import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +66,7 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.COMMENT_USER_LIKE_ID
         );
 
-        TopicCommentUserLike result = topicCommentUserLikeService.find(topicCommentUserLikeEntity.getCommentUserLikeId());
+        TopicCommentUserLikeView result = topicCommentUserLikeService.find(topicCommentUserLikeEntity.getCommentUserLikeId());
 
         validateResponse(
                 TopicCommentUserLike.COMMENT_USER_LIKE_ID,
@@ -86,7 +89,7 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.USER_ID
         );
 
-        Boolean result = topicCommentUserLikeService.save(topicCommentUserLikeEntity, Util.getRandomUUID(), topicCommentUserLikeEntity.getSystemRequestUserId());
+        Boolean result = topicCommentUserLikeService.save(topicCommentUserLikeEntity, Util.getRandomUUID(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, topicCommentUserLikeEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -105,7 +108,7 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserLikeService.update(topicCommentUserLikeEntity, topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
+        Boolean result = topicCommentUserLikeService.update(topicCommentUserLikeEntity, topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_UPDATE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -122,7 +125,7 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserLikeService.delete(topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
+        Boolean result = topicCommentUserLikeService.delete(topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_DELETE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
 
         return renderJson(result);
     }

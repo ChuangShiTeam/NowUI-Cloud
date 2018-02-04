@@ -9,9 +9,12 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
+import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
+import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -157,7 +160,7 @@ public class TopicCommentMobileController extends BaseController {
         String systemRequestUserId = body.getSystemRequestUserId();
         String topicReplayUserId = body.getTopicReplayUserId();
         
-        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
         //提醒被回复人
         if (!Util.isNullOrEmpty(topicReplayUserId)) {
         	System.out.println("=="+topicReplayUserId);
@@ -166,7 +169,7 @@ public class TopicCommentMobileController extends BaseController {
         	topicTip.setAppId(body.getAppId());
         	topicTip.setTopicId(body.getTopicId());
         	topicTip.setUserId(body.getTopicReplayUserId());
-        	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
+        	topicTipService.save(topicTip, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
 		}
 
         return renderJson(result);
@@ -181,8 +184,8 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.APP_ID
         );
-        TopicComment TopicComment = topicCommentService.find(body.getTopicCommentId());
-        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getSystemRequestUserId(), TopicComment.getSystemVersion());
+        TopicCommentView TopicComment = topicCommentService.find(body.getTopicCommentId());
+        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), TopicComment.getSystemVersion());
 
         return renderJson(result);
     }

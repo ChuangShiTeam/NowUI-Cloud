@@ -46,7 +46,7 @@ public interface ArticleArticleCategoryService extends SuperService<ArticleArtic
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    void deleteByArticleId(String articleId, String appId, String systemRequestUserId);
+    void deleteByArticleId(String articleId, String systemRequestUserId);
     
     /**
      * 根据文章分类编号查询问文章的主分类列表

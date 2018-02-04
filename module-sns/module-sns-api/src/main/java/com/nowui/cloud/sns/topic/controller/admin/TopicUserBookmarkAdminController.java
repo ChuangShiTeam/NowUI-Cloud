@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
+import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.TOPIC_USER_BOOKMARK_ID
         );
 
-        TopicUserBookmark result = topicUserBookmarkService.find(body.getTopicUserBookmarkId());
+        TopicUserBookmarkView result = topicUserBookmarkService.find(body.getTopicUserBookmarkId());
 
         validateResponse(
                 TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
@@ -80,7 +83,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.USER_ID
         );
 
-        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.update(body, body.getTopicUserBookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserBookmarkService.update(body, body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.delete(body.getTopicUserBookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserBookmarkService.delete(body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

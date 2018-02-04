@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserLikeService extends BaseService<TopicUserLike> {
+public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicUserLikeView> {
 
     /**
      * 点赞话题统计
@@ -74,7 +76,7 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
      * @param topicId 话题编号
      * @param systemRequestUserId
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号和用户编号删除话题点赞
@@ -84,7 +86,7 @@ public interface TopicUserLikeService extends BaseService<TopicUserLike> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题点赞

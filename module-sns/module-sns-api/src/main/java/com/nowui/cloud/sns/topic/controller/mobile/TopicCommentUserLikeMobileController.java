@@ -62,7 +62,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         // 没有: 就去评论点赞表插入一条记录,并且删除取消点赞表的记录
         Boolean result = topicCommentUserLikeService.saveWithRedis(appId, commentId, userId, userId);
         if (result) {
-        	topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, userId, userId);
+        	topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
 		}
         return renderJson(result);
     }

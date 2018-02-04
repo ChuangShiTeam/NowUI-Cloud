@@ -3,8 +3,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
 
 /**
  * 话题论坛关联业务接口
@@ -13,7 +15,7 @@ import com.nowui.cloud.sns.topic.entity.TopicForum;
  *
  * 2018-01-08
  */
-public interface TopicForumService extends BaseService<TopicForum> {
+public interface TopicForumService extends SuperService<TopicForum, TopicForumView> {
 
     /**
      * 话题论坛关联统计
@@ -91,7 +93,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param topicId 话题编号
      * @return List<TopicForum> 话题论坛列表
      */
-    List<TopicForum> listByTopicId(String topicId);
+    List<TopicForumView> listByTopicId(String topicId);
     
     /**
      * 根据话题编号逻辑删除话题论坛信息
@@ -99,7 +101,7 @@ public interface TopicForumService extends BaseService<TopicForum> {
      * @param topicId 话题编号
      * @param systemRequestUserId 请求用户编号
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 批量保存话题论坛

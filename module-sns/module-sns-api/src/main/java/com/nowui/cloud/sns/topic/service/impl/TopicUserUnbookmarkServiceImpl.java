@@ -1,16 +1,19 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.mapper.TopicUserUnbookmarkMapper;
-import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
-import com.nowui.cloud.util.Util;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
+import com.nowui.cloud.sns.topic.mapper.TopicUserUnbookmarkMapper;
+import com.nowui.cloud.sns.topic.repository.TopicUserUnbookmarkRepository;
+import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
+import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
+import com.nowui.cloud.util.Util;
 
 /**
  * 话题用户取消收藏关联业务实现
@@ -20,7 +23,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark> implements TopicUserUnbookmarkService {
+public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark, TopicUserUnbookmarkRepository, TopicUserUnbookmarkView> implements TopicUserUnbookmarkService {
 
     @Override
     public Integer countForAdmin(String appId, String topicId, String userId) {
@@ -75,26 +78,26 @@ public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnb
 	}
 
     @Override
-    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+    public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
         List<TopicUserUnbookmark> topicUserUnbookmarkList = listByTopicId(topicId);
         
         if (Util.isNullOrEmpty(topicUserUnbookmarkList)) {
             return;
         }
         
-        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
+        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
         
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserUnbookmark topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserUnbookmark)) {
             return true;
         }
         
-        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         
         return result;
     }

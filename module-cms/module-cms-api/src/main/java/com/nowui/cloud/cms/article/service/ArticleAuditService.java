@@ -1,6 +1,8 @@
 package com.nowui.cloud.cms.article.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.cms.article.entity.ArticleAudit;
+import com.nowui.cloud.cms.article.view.ArticleAuditView;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-03
  */
-public interface ArticleAuditService extends BaseService<ArticleAudit> {
+public interface ArticleAuditService extends SuperService<ArticleAudit, ArticleAuditView> {
 
     /**
      * 文章审核统计

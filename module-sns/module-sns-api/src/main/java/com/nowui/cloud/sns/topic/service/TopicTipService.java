@@ -2,7 +2,9 @@ package com.nowui.cloud.sns.topic.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
+import com.nowui.cloud.sns.topic.view.TopicTipView;
 
 /**
  * 话题提醒业务接口
@@ -11,7 +13,7 @@ import com.nowui.cloud.sns.topic.entity.TopicTip;
  *
  * 2018-01-08
  */
-public interface TopicTipService extends BaseService<TopicTip> {
+public interface TopicTipService extends SuperService<TopicTip, TopicTipView> {
 
     /**
      * 话题提醒统计
@@ -41,7 +43,7 @@ public interface TopicTipService extends BaseService<TopicTip> {
      * @param topicId 话题编号
      * @return List<TopicTip> 话题提醒列表
      */
-    List<TopicTip> listByTopicId(String topicId);
+    List<TopicTipView> listByTopicId(String topicId);
     
     /**
      * 根据话题编号逻辑删除话题提醒信息
@@ -49,7 +51,7 @@ public interface TopicTipService extends BaseService<TopicTip> {
      * @param topicId 话题编号
      * @param systemRequestUserId 请求用户编号
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 批量保存话题提醒

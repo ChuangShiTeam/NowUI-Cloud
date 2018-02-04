@@ -1,7 +1,9 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-23
  */
-public interface TopicCommentUserUnlikeService extends BaseService<TopicCommentUserUnlike> {
+public interface TopicCommentUserUnlikeService extends SuperService<TopicCommentUserUnlike, TopicCommentUserUnlikeView> {
 
     /**
      * 话题评论的取消点赞统计
@@ -44,7 +46,7 @@ public interface TopicCommentUserUnlikeService extends BaseService<TopicCommentU
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
      */
-    boolean deleteByCommentIdAndUserId(String commentId, String userId, String systemRequestUserId);
+    boolean deleteByCommentIdAndUserId(String commentId, String appId, String userId, String systemRequestUserId);
     
     /**
      * 根据评论id和取消点赞的用户id查找用户评论取消点赞记录

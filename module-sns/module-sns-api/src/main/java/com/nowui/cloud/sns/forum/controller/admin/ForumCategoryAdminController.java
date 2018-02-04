@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumCategory;
+import com.nowui.cloud.sns.forum.router.ForumCategoryRouter;
 import com.nowui.cloud.sns.forum.service.ForumCategoryService;
+import com.nowui.cloud.sns.forum.view.ForumCategoryView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +68,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_ID
         );
 
-        ForumCategory result = forumCategoryService.find(body.getForumCategoryId());
+        ForumCategoryView result = forumCategoryService.find(body.getForumCategoryId());
 
         validateResponse(
                 ForumCategory.FORUM_CATEGORY_ID,
@@ -92,7 +95,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
-        Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-        Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -127,7 +130,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-        Boolean result = forumCategoryService.delete(body.getForumCategoryId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

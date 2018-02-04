@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.cms.article.router.ArticleCategoryRouter;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -91,7 +93,7 @@ public class ArticleCategoryAdminController extends BaseController {
 
         validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
 
-        ArticleCategory result = articleCategoryService.find(articleCategoryEntity.getArticleCategoryId());
+        ArticleCategoryView result = articleCategoryService.find(articleCategoryEntity.getArticleCategoryId());
 
         validateResponse(
                 ArticleCategory.ARTICLE_CATEGORY_ID, 
@@ -130,7 +132,7 @@ public class ArticleCategoryAdminController extends BaseController {
 
             articleCategoryParentPath = jsonArray.toJSONString();
         } else {
-            ArticleCategory parent = articleCategoryService.find(articleCategoryEntity.getArticleCategoryParentId());
+            ArticleCategoryView parent = articleCategoryService.find(articleCategoryEntity.getArticleCategoryParentId());
 
             JSONArray jsonArray = new JSONArray();;
             if (!Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
@@ -143,7 +145,7 @@ public class ArticleCategoryAdminController extends BaseController {
         
         articleCategoryEntity.setArticleCategoryParentPath(articleCategoryParentPath);
         
-        Boolean result = articleCategoryService.save(articleCategoryEntity, Util.getRandomUUID(), articleCategoryEntity.getSystemRequestUserId());
+        Boolean result = articleCategoryService.save(articleCategoryEntity, Util.getRandomUUID(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -165,7 +167,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        Boolean result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -181,7 +183,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        Boolean result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }

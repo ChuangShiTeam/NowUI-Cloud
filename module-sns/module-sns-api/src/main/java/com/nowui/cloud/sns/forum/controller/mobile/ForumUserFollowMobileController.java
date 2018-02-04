@@ -23,6 +23,8 @@ import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
+import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
+import com.nowui.cloud.sns.forum.router.ForumUserUnfollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
@@ -63,7 +65,8 @@ public class ForumUserFollowMobileController extends BaseController {
 
 	@ApiOperation(value = "新增用户论坛关注")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> saveV1() {
+		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -79,7 +82,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(null, userId, forumId);
         //有: 删除
         if (!Util.isNullOrEmpty(unfollow)) {
-        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), userId, unfollow.getSystemVersion());
+        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, userId, unfollow.getSystemVersion());
 		}
         //没有: 去关注表看有没有记录
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
@@ -94,7 +97,7 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setUserId(userId);
         bean.setForumUserFollowIsTop(false);
         
-        Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+        Boolean result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
         
         return renderJson(result);
         
@@ -103,7 +106,8 @@ public class ForumUserFollowMobileController extends BaseController {
 
 	@ApiOperation(value = "邀请用户加入论坛")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> inviteUserV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> inviteUserV1() {
+		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -124,7 +128,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserUnfollow unfollow = forumUserUnfollowService.findByUserIdAndForumId(null, beInvitedUserId, forumId);
         //有: 删除
         if (!Util.isNullOrEmpty(unfollow)) {
-        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), beInvitedUserId, unfollow.getSystemVersion());
+        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_DELETE, beInvitedUserId, unfollow.getSystemVersion());
 		}
         //没有: 去关注表看有没有记录
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, beInvitedUserId, forumId);
@@ -140,7 +144,7 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setForumUserFollowIsTop(false);
         
         //这里的createUserId使用邀请人的
-        Boolean result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
+        Boolean result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), requestUserId);
         
         return renderJson(result);
         
@@ -148,7 +152,8 @@ public class ForumUserFollowMobileController extends BaseController {
 	
 	@ApiOperation(value = "批量新增用户论坛关注")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> batchSaveV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> batchSaveV1() {
+		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -177,7 +182,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 bean.setUserId(userId);
                 bean.setForumUserFollowIsTop(false);
                 
-                result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+                result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
                 
                 if (!result) {
                     throw new BusinessException("加入失败");
@@ -190,7 +195,8 @@ public class ForumUserFollowMobileController extends BaseController {
 
     @ApiOperation(value = "用户关注论坛列表")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> listV1() {
+    	ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -243,7 +249,8 @@ public class ForumUserFollowMobileController extends BaseController {
     
     @ApiOperation(value = "用户所有关注论坛名称列表")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/name/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> nameListV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> nameListV1() {
+    	ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
@@ -272,7 +279,8 @@ public class ForumUserFollowMobileController extends BaseController {
     
     @ApiOperation(value = "置顶用户关注论坛")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/top", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> topV1(@RequestBody ForumUserFollow body) {
+    public Map<String, Object> topV1() {
+    	ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
                 body,
                 ForumUserFollow.FORUM_ID,
@@ -281,7 +289,7 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserFollow forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getSystemRequestUserId(), body.getForumId());
         forumUserFollow.setForumUserFollowIsTop(true);
         forumUserFollow.setSystemCreateTime(null);
-        Boolean result = forumUserFollowService.update(forumUserFollow, forumUserFollow.getForumUserFollowId(), body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
+        Boolean result = forumUserFollowService.update(forumUserFollow, forumUserFollow.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, body.getSystemRequestUserId(), forumUserFollow.getSystemVersion());
 
         return renderJson(result);
     }

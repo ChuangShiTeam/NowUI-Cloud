@@ -13,14 +13,19 @@ import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMapper;
+import com.nowui.cloud.cms.article.repository.ArticleRepository;
 import com.nowui.cloud.cms.article.router.ArticleArticleCategoryRouter;
+import com.nowui.cloud.cms.article.router.ArticleMediaRouter;
+import com.nowui.cloud.cms.article.router.ArticleRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
+import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -31,7 +36,7 @@ import com.nowui.cloud.util.Util;
  * 2017年12月26日
  */
 @Service
-public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> implements ArticleService {
+public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article, ArticleRepository, ArticleView> implements ArticleService {
     
     @Autowired
     private ArticleArticleCategoryService articleArticleCategoryService;
@@ -87,14 +92,14 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         //保存文章
         String articleId = Util.getRandomUUID();
         String appId = article.getAppId();
-        Boolean result = save(article, articleId, systemRequestUserId);
+        Boolean result = save(article, articleId, appId, ArticleRouter.ARTICLE_V1_SAVE, systemRequestUserId);
         
         if (result) {
             //保存文章多媒体
             for (ArticleMedia articleMedia : articleMediaList) {
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
+                articleMediaService.save(articleMedia, appId, ArticleMediaRouter.ARTICLE_MEDIA_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
             }
             
             //保存文章文章分类关联
@@ -107,13 +112,14 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         return result;
     }
 
+    //TODO 
     @Override
     public Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList,
             Article article, String systemRequestUserId) {
         
         String appId = article.getAppId();
         String articleId = article.getArticleId();
-        Boolean result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
+        Boolean result = update(article, articleId, appId, ArticleRouter.ARTICLE_V1_UPDATE, systemRequestUserId, article.getSystemVersion());
 
         if (result) {
             //删除旧的文章文章分类
@@ -124,7 +130,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
             for (ArticleMedia articleMedia : articleMediaList) {
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
+                articleMediaService.save(articleMedia, Util.getRandomUUID(), articleMedia.getAppId(), ArticleMediaRouter.ARTICLE_MEDIA_V1_SAVE, systemRequestUserId);
             }
             
             //保存文章文章分类关联
@@ -137,13 +143,13 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         return result;
     }
 
-    /**
+    /** TODO 修改了参数,添加了super.delete
      * 重写delete方法
      */
     @Override
-    public Boolean delete(String articleId, String systemRequestUserId, Integer systemVersion) {
+    public Boolean delete(String articleId, String appId, String router, String systemRequestUserId, Integer systemVersion) {
 
-        Boolean result = delete(articleId, systemRequestUserId, systemVersion);
+        Boolean result = super.delete(articleId, appId, router, systemRequestUserId, systemVersion);
 
         if (result) {
             //删除旧的文章文章分类

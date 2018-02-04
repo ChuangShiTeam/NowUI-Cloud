@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.sns.topic.router.TopicForumRouter;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -64,7 +66,7 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.TOPIC_FORUM_ID
         );
 
-        TopicForum result = topicForumService.find(body.getTopicForumId());
+        TopicForumView result = topicForumService.find(body.getTopicForumId());
 
         validateResponse(
                 TopicForum.TOPIC_FORUM_ID,
@@ -85,7 +87,7 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.TOPIC_ID
         );
 
-        Boolean result = topicForumService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicForumService.save(body, Util.getRandomUUID(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -102,7 +104,7 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.update(body, body.getTopicForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicForumService.update(body, body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -117,7 +119,7 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.delete(body.getTopicForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicForumService.delete(body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

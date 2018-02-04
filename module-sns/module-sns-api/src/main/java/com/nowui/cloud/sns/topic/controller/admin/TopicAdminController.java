@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.Topic;
+import com.nowui.cloud.sns.topic.router.TopicRouter;
 import com.nowui.cloud.sns.topic.service.TopicService;
+import com.nowui.cloud.sns.topic.view.TopicView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +76,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_ID
         );
 
-        Topic result = topicService.find(body.getTopicId());
+        TopicView result = topicService.find(body.getTopicId());
 
         validateResponse(
                 Topic.TOPIC_ID,
@@ -108,7 +111,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_TOP_LEVEL
         );
 
-        Boolean result = topicService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicService.save(body, Util.getRandomUUID(), body.getAppId(), TopicRouter.TOPIC_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -132,7 +135,7 @@ public class TopicAdminController extends BaseController {
                 Topic.SYSTEM_VERSION
         );
 
-        Boolean result = topicService.update(body, body.getTopicId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicService.update(body, body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -147,7 +150,7 @@ public class TopicAdminController extends BaseController {
                 Topic.SYSTEM_VERSION
         );
 
-        Boolean result = topicService.delete(body.getTopicId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicService.delete(body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

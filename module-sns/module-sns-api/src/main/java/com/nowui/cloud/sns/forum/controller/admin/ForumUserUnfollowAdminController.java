@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
+import com.nowui.cloud.sns.forum.router.ForumUserUnfollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID
         );
 
-        ForumUserUnfollow result = forumUserUnfollowService.find(body.getForumUserUnfollowId());
+        ForumUserUnfollowView result = forumUserUnfollowService.find(body.getForumUserUnfollowId());
 
         validateResponse(
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
@@ -80,7 +83,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.FORUM_ID
         );
 
-        Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

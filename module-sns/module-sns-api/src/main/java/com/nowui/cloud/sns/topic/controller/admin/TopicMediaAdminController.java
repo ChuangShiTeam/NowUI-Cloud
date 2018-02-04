@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
+import com.nowui.cloud.sns.topic.router.TopicMediaRouter;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
+import com.nowui.cloud.sns.topic.view.TopicMediaView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +64,7 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.TOPIC_MEDIA
         );
 
-        TopicMedia result = topicMediaService.find(body.getTopicMediaId());
+        TopicMediaView result = topicMediaService.find(body.getTopicMediaId());
 
         validateResponse(
                 TopicMedia.TOPIC_MEDIA,
@@ -84,7 +87,7 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
-        Boolean result = topicMediaService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicMediaService.save(body, Util.getRandomUUID(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -102,7 +105,7 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.update(body, body.getTopicMediaId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicMediaService.update(body, body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -117,7 +120,7 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.delete(body.getTopicMediaId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicMediaService.delete(body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

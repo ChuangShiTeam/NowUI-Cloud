@@ -17,9 +17,11 @@ import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
+import com.nowui.cloud.cms.article.router.ArticleRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
+import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
@@ -94,7 +96,7 @@ public class ArticleAdminController extends BaseController {
 
         validateRequest(articleEntity, Article.ARTICLE_ID);
 
-        Article result = articleService.find(articleEntity.getArticleId());
+        ArticleView result = articleService.find(articleEntity.getArticleId());
         //查询文章分类
         List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(articleEntity.getArticleId());
         for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
@@ -268,7 +270,7 @@ public class ArticleAdminController extends BaseController {
                 Article.SYSTEM_VERSION
         );
 
-        Boolean result = articleService.delete(articleEntity.getArticleId(), articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
+        Boolean result = articleService.delete(articleEntity.getArticleId(), articleEntity.getAppId(), ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
 
         return renderJson(result);
     }

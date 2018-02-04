@@ -5,7 +5,9 @@ import java.util.List;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
+import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 文章业务接口
@@ -14,7 +16,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2017年12月26日
  */
-public interface ArticleService extends BaseService<Article> {
+public interface ArticleService extends SuperService<Article, ArticleView> {
     
     /**
      * 文章统计

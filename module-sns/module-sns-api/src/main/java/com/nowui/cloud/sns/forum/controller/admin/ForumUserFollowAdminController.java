@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
+import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
+import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.FORUM_USER_FOLLOW_ID
         );
 
-        ForumUserFollow result = forumUserFollowService.find(body.getForumUserFollowId());
+        ForumUserFollowView result = forumUserFollowService.find(body.getForumUserFollowId());
 
         validateResponse(
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
@@ -80,7 +83,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.FORUM_ID
         );
 
-        Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

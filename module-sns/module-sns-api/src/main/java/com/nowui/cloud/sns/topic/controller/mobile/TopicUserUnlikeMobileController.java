@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
+import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.util.Util;
@@ -48,6 +49,7 @@ public class TopicUserUnlikeMobileController extends BaseController {
         
         String userId = body.getSystemRequestUserId();
         String topicId = body.getTopicId();
+        String appId = body.getAppId();
         
         TopicUserUnlike unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
         
@@ -56,10 +58,10 @@ public class TopicUserUnlikeMobileController extends BaseController {
 		}
         
         body.setUserId(userId);
-        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
 
         if (result) {
-            topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, userId);
+            topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
         }
         return renderJson(result);
     }

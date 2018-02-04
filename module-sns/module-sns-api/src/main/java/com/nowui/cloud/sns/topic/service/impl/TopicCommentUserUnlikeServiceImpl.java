@@ -2,11 +2,15 @@ package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentUserUnlikeMapper;
+import com.nowui.cloud.sns.topic.repository.TopicCommentUserUnlikeRepository;
+import com.nowui.cloud.sns.topic.router.TopicCommentUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
 import com.nowui.cloud.util.Util;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,7 @@ import java.util.List;
  * 2018-01-23
  */
 @Service
-public class TopicCommentUserUnlikeServiceImpl extends BaseServiceImpl<TopicCommentUserUnlikeMapper, TopicCommentUserUnlike> implements TopicCommentUserUnlikeService {
+public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCommentUserUnlikeMapper, TopicCommentUserUnlike, TopicCommentUserUnlikeRepository, TopicCommentUserUnlikeView> implements TopicCommentUserUnlikeService {
 	
 
     @Override
@@ -55,13 +59,13 @@ public class TopicCommentUserUnlikeServiceImpl extends BaseServiceImpl<TopicComm
     }
 
 	@Override
-	public boolean deleteByCommentIdAndUserId(String commentId, String userId, String systemRequestUserId) {
+	public boolean deleteByCommentIdAndUserId(String commentId, String appId, String userId, String systemRequestUserId) {
 		// 先根据commentId 和 userId 找记录的id
 		TopicCommentUserUnlike userUnlike = findTheCommentUserUnlike(commentId , userId);
 		if (Util.isNullOrEmpty(userUnlike)) {
 			return true;
 		}
-		Boolean delete = delete(userUnlike.getCommentUserUnlikeId(), systemRequestUserId, userUnlike.getSystemVersion());
+		Boolean delete = delete(userUnlike.getCommentUserUnlikeId(), appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, systemRequestUserId, userUnlike.getSystemVersion());
 		return delete;
 	}
 

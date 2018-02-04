@@ -5,7 +5,9 @@ import java.util.Map;
 
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.rpc.ArticleCategoryRpc;
+import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 文章分类业务接口
@@ -14,7 +16,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2017年12月26日
  */
-public interface ArticleCategoryService extends BaseService<ArticleCategory>, ArticleCategoryRpc {
+public interface ArticleCategoryService extends SuperService<ArticleCategory, ArticleCategoryView>, ArticleCategoryRpc {
     
     /**
      * 文章分类统计

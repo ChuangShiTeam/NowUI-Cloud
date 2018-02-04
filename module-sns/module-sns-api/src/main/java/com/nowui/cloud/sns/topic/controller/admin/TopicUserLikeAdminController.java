@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.TOPIC_USER_LIKE_ID
         );
 
-        TopicUserLike result = topicUserLikeService.find(body.getTopicUserLikeId());
+        TopicUserLikeView result = topicUserLikeService.find(body.getTopicUserLikeId());
 
         validateResponse(
                 TopicUserLike.TOPIC_USER_LIKE_ID,
@@ -80,7 +83,7 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.TOPIC_ID
         );
 
-        Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.update(body, body.getTopicUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserLikeService.update(body, body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.delete(body.getTopicUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserLikeService.delete(body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

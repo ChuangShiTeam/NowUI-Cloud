@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
+import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.TOPIC_USER_UNLIKE_ID
         );
 
-        TopicUserUnlike result = topicUserUnlikeService.find(body.getTopicUserUnlikeId());
+        TopicUserUnlikeView result = topicUserUnlikeService.find(body.getTopicUserUnlikeId());
 
         validateResponse(
                 TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
@@ -80,7 +83,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.TOPIC_ID
         );
 
-        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.update(body, body.getTopicUserUnlikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnlikeService.update(body, body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.delete(body.getTopicUserUnlikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnlikeService.delete(body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

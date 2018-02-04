@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
+import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.TOPIC_USER_UNBOOKMARK_ID
         );
 
-        TopicUserUnbookmark result = topicUserUnbookmarkService.find(body.getTopicUserUnbookmarkId());
+        TopicUserUnbookmarkView result = topicUserUnbookmarkService.find(body.getTopicUserUnbookmarkId());
 
         validateResponse(
                 TopicUserUnbookmark.TOPIC_USER_UNBOOKMARK_ID,
@@ -80,7 +83,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.USER_ID
         );
 
-        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.update(body, body.getTopicUserUnbookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnbookmarkService.update(body, body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.delete(body.getTopicUserUnbookmarkId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicUserUnbookmarkService.delete(body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

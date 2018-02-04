@@ -19,9 +19,11 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
+import com.nowui.cloud.sns.forum.router.ForumRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
 
@@ -135,7 +137,7 @@ public class ForumAdminController extends BaseController {
                 Forum.FORUM_ID
         );
 
-        Forum result = forumService.find(body.getForumId());
+        ForumView result = forumService.find(body.getForumId());
         
         // 论坛图片
         File forumMediaFile = fileRpc.findV1(result.getForumMedia());
@@ -203,7 +205,7 @@ public class ForumAdminController extends BaseController {
       String forumId = Util.getRandomUUID();
       String systemRequestUserId = body.getSystemRequestUserId();
 
-      Boolean result = forumService.save(body, forumId, systemRequestUserId);
+      Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, systemRequestUserId);
 
       return renderJson(result);
   }
@@ -232,7 +234,7 @@ public class ForumAdminController extends BaseController {
                 Forum.SYSTEM_VERSION
         );
 
-        Boolean result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -247,7 +249,7 @@ public class ForumAdminController extends BaseController {
                 Forum.SYSTEM_VERSION
         );
 
-        Boolean result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

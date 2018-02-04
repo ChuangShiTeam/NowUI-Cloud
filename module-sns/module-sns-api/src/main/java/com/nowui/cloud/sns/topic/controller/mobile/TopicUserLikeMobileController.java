@@ -121,7 +121,7 @@ public class TopicUserLikeMobileController extends BaseController {
         Boolean result = topicUserLikeService.save(appId, topicId, userId, userId);
                 
         if (result) {
-            topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, userId);
+            topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
         }
 
         return renderJson(result);

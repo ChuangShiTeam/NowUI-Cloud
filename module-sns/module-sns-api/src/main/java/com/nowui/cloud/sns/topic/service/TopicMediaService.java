@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
+import com.nowui.cloud.sns.topic.view.TopicMediaView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicMediaService extends BaseService<TopicMedia> {
+public interface TopicMediaService extends SuperService<TopicMedia, TopicMediaView> {
 
     /**
      * 话题多媒体统计
@@ -43,15 +45,16 @@ public interface TopicMediaService extends BaseService<TopicMedia> {
      * @param topicId 话题编号
      * @return List<TopicMedia> 话题多媒体列表
      */
-	List<TopicMedia> listByTopicId(String topicId);
+	List<TopicMediaView> listByTopicId(String topicId);
 	
 	/**
 	 * 根据话题编号逻辑删除话题多媒体信息
 	 * 
 	 * @param topicId 话题编号
+	 * @param appId 应用编号
 	 * @param systemRequestUserId 请求用户编号
 	 */
-	void deleteByTopicId(String topicId, String systemRequestUserId);
+	void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
 	
 	/**
 	 * 批量保存话题多媒体

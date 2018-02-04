@@ -2,9 +2,13 @@ package com.nowui.cloud.cms.article.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.cms.article.entity.ArticleUserLike;
 import com.nowui.cloud.cms.article.mapper.ArticleUserLikeMapper;
+import com.nowui.cloud.cms.article.repository.ArticleUserLikeRepository;
 import com.nowui.cloud.cms.article.service.ArticleUserLikeService;
+import com.nowui.cloud.cms.article.view.ArticleUserLikeView;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,7 +22,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ArticleUserLikeServiceImpl extends BaseServiceImpl<ArticleUserLikeMapper, ArticleUserLike> implements ArticleUserLikeService {
+public class ArticleUserLikeServiceImpl extends SuperServiceImpl<ArticleUserLikeMapper, ArticleUserLike, ArticleUserLikeRepository, ArticleUserLikeView> implements ArticleUserLikeService {
 
     @Override
     public Integer countForAdmin(String appId, String articleId, String userId) {

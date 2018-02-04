@@ -1,16 +1,19 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.mapper.TopicUserLikeMapper;
-import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
-import com.nowui.cloud.util.Util;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.mapper.TopicUserLikeMapper;
+import com.nowui.cloud.sns.topic.repository.TopicUserLikeRepository;
+import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
+import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
+import com.nowui.cloud.util.Util;
 
 /**
  * 点赞话题关联业务实现
@@ -20,7 +23,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMapper, TopicUserLike> implements TopicUserLikeService {
+public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapper, TopicUserLike, TopicUserLikeRepository, TopicUserLikeView> implements TopicUserLikeService {
 
     public static final String TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID = "topic_user_like_count_by_topic_id_";
     
@@ -67,7 +70,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 	@Override
     public Integer countByTopicId(String topicId) {
 	    
-	    Integer count = (Integer) redis.opsForValue().get(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
+	    Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
 	    
 	    if (count == null) {
 	        count = count(
@@ -75,7 +78,7 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 	                        .eq(TopicUserLike.TOPIC_ID, topicId)
 	                        .eq(TopicUserLike.SYSTEM_STATUS, true)
 	        );
-	        redis.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, count);
+	        redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, count);
 	   }
 	    
         return count;
@@ -108,13 +111,13 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
 	}
 
     @Override
-    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+    public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
         List<TopicUserLike> topicUserLikeList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserLikeList)) {
-            topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion()));
+            topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion()));
         }
-        redis.delete(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
+        redisTemplate.delete(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -124,18 +127,18 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
         topicUserLike.setTopicId(topicId);
         topicUserLike.setUserId(userId);
         
-        Boolean result = save(topicUserLike, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = save(topicUserLike, Util.getRandomUUID(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, systemRequestUserId);
         
         if (result) {
             // 更新话题点赞数缓存
             Integer count = countByTopicId(topicId);
-            redis.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count + 1));
+            redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count + 1));
         }
         return result;
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserLike topicUserLike = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserLike)) {
@@ -144,11 +147,11 @@ public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMappe
         
         Integer count = countByTopicId(topicId);
         
-        Boolean result = delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
+        Boolean result = delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion());
         
         if (result) {
             // 更新话题点赞数缓存
-            redis.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count - 1));
+        	redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count - 1));
         }
         
         return result;

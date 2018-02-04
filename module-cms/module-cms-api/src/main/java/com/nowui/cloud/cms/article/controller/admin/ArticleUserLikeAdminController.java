@@ -2,7 +2,10 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserLike;
+import com.nowui.cloud.cms.article.router.ArticleUserLikeRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserLikeService;
+import com.nowui.cloud.cms.article.view.ArticleUserLikeView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ public class ArticleUserLikeAdminController extends BaseController {
                 ArticleUserLike.ARTICLE_USER_LIKE_ID
         );
 
-        ArticleUserLike result = articleUserLikeService.find(body.getArticleUserLikeId());
+        ArticleUserLikeView result = articleUserLikeService.find(body.getArticleUserLikeId());
 
         validateResponse(
                 ArticleUserLike.ARTICLE_USER_LIKE_ID,
@@ -80,7 +83,7 @@ public class ArticleUserLikeAdminController extends BaseController {
                 ArticleUserLike.USER_ID
         );
 
-        Boolean result = articleUserLikeService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = articleUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -97,7 +100,7 @@ public class ArticleUserLikeAdminController extends BaseController {
                 ArticleUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserLikeService.update(body, body.getArticleUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserLikeService.update(body, body.getArticleUserLikeId(), body.getAppId(), ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class ArticleUserLikeAdminController extends BaseController {
                 ArticleUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserLikeService.delete(body.getArticleUserLikeId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = articleUserLikeService.delete(body.getArticleUserLikeId(), body.getAppId(), ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

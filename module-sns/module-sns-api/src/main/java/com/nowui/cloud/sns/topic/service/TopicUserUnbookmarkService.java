@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
+import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookmark> {
+public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbookmark, TopicUserUnbookmarkView> {
 
     /**
      * 话题用户取消收藏关联统计
@@ -57,18 +59,20 @@ public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookm
      * 根据话题编号逻辑删除用户取消收藏记录
      * 
      * @param topicId
+     * @param appId
      * @param systemRequestUserId
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号和用户编号逻辑删除用户取消收藏记录
      * 
      * @param topicId 话题编号
      * @param userId 用户编号
+     * @param appId 应用编号
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功    false 失败
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
 }

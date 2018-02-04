@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
+import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
+public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, TopicUserUnlikeView> {
 
     /**
      * 话题用户取消点赞关联统计
@@ -48,9 +50,10 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * 根据话题编号逻辑删除用户取消点赞记录
      * 
      * @param topicId 话题编号
+     * @param appId 应用编号
      * @param systemRequestUserId 请求用户编号
      */
-    void deleteByTopicId(String topicId, String systemRequestUserId);
+    void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号和用户编号
@@ -60,7 +63,7 @@ public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true  成功      false  失败
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId);
+    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号查询话题用户取消点赞记录

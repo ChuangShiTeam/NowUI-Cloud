@@ -2,7 +2,10 @@ package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
+import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
+import com.nowui.cloud.sns.topic.view.TopicCommentView;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +68,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.TOPIC_COMMENT_ID
         );
 
-        TopicComment result = topicCommentService.find(body.getTopicCommentId());
+        TopicCommentView result = topicCommentService.find(body.getTopicCommentId());
 
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
@@ -92,7 +95,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
-        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -112,7 +115,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentService.update(body, body.getTopicCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicCommentService.update(body, body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }
@@ -127,7 +130,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(result);
     }

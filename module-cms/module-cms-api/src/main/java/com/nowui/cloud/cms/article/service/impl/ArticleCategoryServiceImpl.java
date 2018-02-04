@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.mapper.ArticleCategoryMapper;
+import com.nowui.cloud.cms.article.repository.ArticleCategoryRepository;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -24,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2017年12月26日
  */
 @Service
-public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryMapper, ArticleCategory> implements ArticleCategoryService {
+public class ArticleCategoryServiceImpl extends SuperServiceImpl<ArticleCategoryMapper, ArticleCategory, ArticleCategoryRepository, ArticleCategoryView> implements ArticleCategoryService {
 
     @Override
     public Integer countForAdmin(String appId, String articleCategoryName, String articleCategoryCode) {

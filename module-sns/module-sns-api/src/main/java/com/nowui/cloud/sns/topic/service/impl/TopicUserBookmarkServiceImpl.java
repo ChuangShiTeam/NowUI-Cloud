@@ -1,16 +1,19 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
-import com.nowui.cloud.sns.topic.mapper.TopicUserBookmarkMapper;
-import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
-import com.nowui.cloud.util.Util;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
+import com.nowui.cloud.sns.topic.mapper.TopicUserBookmarkMapper;
+import com.nowui.cloud.sns.topic.repository.TopicUserBookmarkRepository;
+import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
+import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
+import com.nowui.cloud.util.Util;
 
 /**
  * 话题收藏业务实现
@@ -20,7 +23,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookmarkMapper, TopicUserBookmark> implements TopicUserBookmarkService {
+public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBookmarkMapper, TopicUserBookmark, TopicUserBookmarkRepository, TopicUserBookmarkView> implements TopicUserBookmarkService {
 
     public static final String TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID = "topic_user_bookmark_count_by_topic_id_";
 
@@ -66,7 +69,7 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
 
     @Override
     public Integer countByTopicId(String topicId) {
-        Integer count = (Integer) redis.opsForValue().get(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
+        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
         
         if (count == null) {
             count = count(
@@ -75,7 +78,7 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
                         .eq(TopicUserBookmark.SYSTEM_STATUS, true)
             );
             
-            redis.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, count);
+            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, count);
         }
         
         return count;
@@ -94,13 +97,13 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
     }
 
     @Override
-    public void deleteByTopicId(String topicId, String systemRequestUserId) {
+    public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
         List<TopicUserBookmark> topicUserBookmarkList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserBookmarkList)) {
-            topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion()));
+            topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, systemRequestUserId, topicUserBookmark.getSystemVersion()));
         }
-        redis.delete(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
+        redisTemplate.delete(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -110,18 +113,18 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
         topicUserBookmark.setTopicId(topicId);
         topicUserBookmark.setUserId(userId);
         
-        Boolean result = save(topicUserBookmark, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = save(topicUserBookmark, Util.getRandomUUID(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE,systemRequestUserId);
         
         if (result) {
             // 更新话题收藏数缓存
             Integer count = countByTopicId(topicId);
-            redis.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count + 1));
+            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count + 1));
         }
         return result;
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String systemRequestUserId) {
+    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserBookmark topicUserBookmark = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserBookmark)) {
@@ -130,11 +133,11 @@ public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookm
         // 查询缓存收藏数
         Integer count = countByTopicId(topicId);  
         
-        Boolean result = delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
+        Boolean result = delete(topicUserBookmark.getTopicUserBookmarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE,systemRequestUserId, topicUserBookmark.getSystemVersion());
         
         if (result) {
             // 更新话题收藏数缓存
-            redis.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count - 1));
+        	redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count - 1));
         }
         
         return result;

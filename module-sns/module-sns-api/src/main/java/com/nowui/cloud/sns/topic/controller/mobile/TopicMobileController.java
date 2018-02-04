@@ -30,6 +30,7 @@ import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
@@ -42,6 +43,7 @@ import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -103,26 +105,27 @@ public class TopicMobileController extends BaseController {
 
         Integer resultTotal = topicForumService.countByForumId(body.getForumId());
         
-        List<Topic> resultList = topicService.listByForumId(body.getForumId(), body.getSystemRequestUserId(), body.getPageIndex(), body.getPageSize());
+        List<TopicView> resultList = topicService.listByForumId(body.getForumId(), body.getSystemRequestUserId(), body.getPageIndex(), body.getPageSize());
         
-        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
-        
-        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-        
-        resultList = Util.beanAddField(
-                resultList, 
-                Topic.USER_ID, 
-                User.USER_ID, 
-                nickAndAvatarAndIsFollowList, 
-                User.USER_ID,
-                UserAvatar.USER_AVATAR,
-                UserNickName.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW
-            );
+        //TODO 先注释掉,新架构不用再调用rpc来处理头像
+//        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
+//        
+//        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+//        
+//        resultList = Util.beanAddField(
+//                resultList, 
+//                Topic.USER_ID, 
+//                User.USER_ID, 
+//                nickAndAvatarAndIsFollowList, 
+//                User.USER_ID,
+//                UserAvatar.USER_AVATAR,
+//                UserNickName.USER_NICK_NAME,
+//                MemberFollow.MEMBER_IS_FOLLOW
+//            );
         
         
         // 处理话题
-        for (Topic topic : resultList) {
+        for (TopicView topic : resultList) {
             
             List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
           
@@ -498,7 +501,7 @@ public class TopicMobileController extends BaseController {
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
         
-        Topic topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
+        TopicView topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
         
         //处理用户信息(昵称,头像,是否关注)
         Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), userId);
@@ -731,7 +734,7 @@ public class TopicMobileController extends BaseController {
                 List<TopicForum> topicForumList = new ArrayList<TopicForum>();
                 
                 for (String forumId : forumIdList) {
-                    Forum forum = forumService.find(forumId);
+                    ForumView forum = forumService.find(forumId);
                     if (Util.isNullOrEmpty(forum)) {
                         continue;
                     }
@@ -772,7 +775,7 @@ public class TopicMobileController extends BaseController {
         String systemRequestUserId = body.getSystemRequestUserId();
 
         //删除话题信息
-        Topic topic = topicService.find(topicId);
+        TopicView topic = topicService.find(topicId);
 
         Boolean result = topicService.deleteByTopicId(body.getAppId(), topicId, systemRequestUserId, topic.getSystemVersion());
         

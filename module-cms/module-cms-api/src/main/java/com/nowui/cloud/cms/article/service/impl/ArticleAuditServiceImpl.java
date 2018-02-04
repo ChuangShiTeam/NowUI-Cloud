@@ -7,9 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleAudit;
 import com.nowui.cloud.cms.article.mapper.ArticleAuditMapper;
+import com.nowui.cloud.cms.article.repository.ArticleAuditRepository;
 import com.nowui.cloud.cms.article.service.ArticleAuditService;
+import com.nowui.cloud.cms.article.view.ArticleAuditView;
+import com.nowui.cloud.cms.toolbar.repository.ToolbarRepository;
+import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 文章审核业务实现
@@ -19,7 +24,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper, ArticleAudit> implements ArticleAuditService {
+public class ArticleAuditServiceImpl extends SuperServiceImpl<ArticleAuditMapper, ArticleAudit,  ArticleAuditRepository, ArticleAuditView> implements ArticleAuditService {
 
     @Override
     public Integer countForAdmin(String appId, String articleId, String userId, String articleAuditStatus) {

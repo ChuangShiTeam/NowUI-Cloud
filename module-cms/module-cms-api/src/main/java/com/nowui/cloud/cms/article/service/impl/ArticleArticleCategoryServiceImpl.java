@@ -69,13 +69,13 @@ public class ArticleArticleCategoryServiceImpl extends SuperServiceImpl<ArticleA
     }
 
     @Override
-    public void deleteByArticleId(String articleId, String appId, String systemRequestUserId) {
+    public void deleteByArticleId(String articleId, String systemRequestUserId) {
         
         List<ArticleArticleCategory> articleArticleCategoryList = listByArticleId(articleId);
         
         if (articleArticleCategoryList != null && articleArticleCategoryList.size() > 0) {
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-                delete(articleArticleCategory.getArticleArticleCategoryId(), appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_DELETE, systemRequestUserId, articleArticleCategory.getSystemVersion());
+                delete(articleArticleCategory.getArticleArticleCategoryId(), articleArticleCategory.getAppId(), ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_DELETE, systemRequestUserId, articleArticleCategory.getSystemVersion());
             }
         }
         
