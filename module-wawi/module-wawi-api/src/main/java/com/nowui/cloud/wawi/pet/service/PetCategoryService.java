@@ -2,7 +2,9 @@ package com.nowui.cloud.wawi.pet.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
+import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
 /**
  * 宠物分类业务接口
@@ -11,7 +13,7 @@ import com.nowui.cloud.wawi.pet.entity.PetCategory;
  *
  * 2018-01-24
  */
-public interface PetCategoryService extends BaseService<PetCategory> {
+public interface PetCategoryService extends SuperService<PetCategory, PetCategoryView> {
 
     /**
      * 宠物分类统计
@@ -94,12 +96,13 @@ public interface PetCategoryService extends BaseService<PetCategory> {
 
     /**
      * 删除宠物分类
-     *
-     * @param appId 应用编号
+     * 
      * @param petCategoryId 宠物分类编号
+     * @param appId 应用编号
+     * @param router 路由
      * @param systemReuqestUserId 请求用户编号
      * @param systemVersion 版本号
      * @return Boolean 是否成功
      */
-    Boolean delete(String appId, String petCategoryId, String systemReuqestUserId, Integer systemVersion);
+    Boolean delete(String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion);
 }

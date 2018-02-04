@@ -15,7 +15,9 @@ import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
+import com.nowui.cloud.wawi.pet.router.PetCategoryRouter;
 import com.nowui.cloud.wawi.pet.service.PetCategoryService;
+import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -115,7 +117,7 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.PET_CATEGORY_ID
         );
 
-        PetCategory result = petCategoryService.find(petCategoryEntity.getPetCategoryId());
+        PetCategoryView result = petCategoryService.find(petCategoryEntity.getPetCategoryId());
 
         File file = fileRpc.findV1(result.getPetCategoryImage());
         file.keep(File.FILE_ID, File.FILE_PATH);
@@ -148,7 +150,7 @@ public class PetCategoryAdminController extends BaseController {
 
             petCategoryParentPath = jsonArray.toJSONString();
         } else {
-            PetCategory parent = petCategoryService.find(petCategoryEntity.getPetCategoryParentId());
+            PetCategoryView parent = petCategoryService.find(petCategoryEntity.getPetCategoryParentId());
 
             JSONArray jsonArray = new JSONArray();;
             if (!Util.isNullOrEmpty(parent.getPetCategoryParentPath())) {
@@ -173,7 +175,7 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.PET_CATEGORY_SORT
         );
 
-        Boolean result = petCategoryService.save(petCategoryEntity, Util.getRandomUUID(), petCategoryEntity.getSystemRequestUserId());
+        Boolean result = petCategoryService.save(petCategoryEntity, Util.getRandomUUID(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -196,7 +198,7 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.SYSTEM_VERSION
         );
 
-        Boolean result = petCategoryService.update(petCategoryEntity, petCategoryEntity.getPetCategoryId(), petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
+        Boolean result = petCategoryService.update(petCategoryEntity, petCategoryEntity.getPetCategoryId(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -213,7 +215,7 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.SYSTEM_VERSION
         );
 
-        Boolean result = petCategoryService.delete(petCategoryEntity.getAppId(), petCategoryEntity.getPetCategoryId(), petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
+        Boolean result = petCategoryService.delete(petCategoryEntity.getPetCategoryId(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
 
         return renderJson(result);
     }

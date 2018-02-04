@@ -15,6 +15,7 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.wawi.entity.MemberVisitForum;
+import com.nowui.cloud.wawi.wawi.router.MemberVisitForumRouter;
 import com.nowui.cloud.wawi.wawi.service.MemberVisitForumService;
 
 import io.swagger.annotations.Api;
@@ -57,7 +58,7 @@ public class MemberVisitForumMobileController extends BaseController {
         	body.setUserId(body.getSystemRequestUserId());
         	body.setMemberId(member.getMemberId());
         	
-        	memberVisitForumService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        	memberVisitForumService.save(body, Util.getRandomUUID(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, body.getSystemRequestUserId());
         	
         	result.put("isVisit", "false");
         } else {
