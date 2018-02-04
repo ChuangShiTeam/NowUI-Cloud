@@ -1,17 +1,14 @@
 package com.nowui.cloud.base.file.controller.system;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
+import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.service.FileService;
 import com.nowui.cloud.util.Util;
-
 import io.swagger.annotations.Api;
 
 /**
@@ -30,15 +27,17 @@ public class FileSystemController implements FileRpc {
 
     @Override
     public File findV1(String fileId) {
-        if (Util.isNullOrEmpty(fileId)) {
-            return null;
-        }
-        File file = fileService.find(fileId);
-        if (Util.isNullOrEmpty(file)) {
-            return null;
-        }
-        file.removeBaseTableField();
-        return file;
+
+        return null;
+//        if (Util.isNullOrEmpty(fileId)) {
+//            return null;
+//        }
+//        FileView file = fileService.find(fileId);
+//        if (Util.isNullOrEmpty(file)) {
+//            return null;
+//        }
+////        file.removeBaseTableField();
+//        return file;
     }
 
     @Override
@@ -52,18 +51,19 @@ public class FileSystemController implements FileRpc {
 
     @Override
     public List<File> findsV1(String fileIds) {
-        if (Util.isNullOrEmpty(fileIds)) {
-            return null;
-        }
-        List<String> fileIdList = JSONArray.parseArray(fileIds, String.class);
-        
-        if (Util.isNullOrEmpty(fileIdList)) {
-            return null;
-        }
-        
-        List<File> fileList = fileIdList.stream().map(fileId -> findV1(fileId)).filter(file -> !Util.isNullOrEmpty(file)).collect(Collectors.toList());
-        
-        return fileList;
+        return null;
+//        if (Util.isNullOrEmpty(fileIds)) {
+//            return null;
+//        }
+//        List<String> fileIdList = JSONArray.parseArray(fileIds, String.class);
+//
+//        if (Util.isNullOrEmpty(fileIdList)) {
+//            return null;
+//        }
+//
+//        List<FileView> fileList = fileIdList.stream().map(fileId -> findV1(fileId)).filter(file -> !Util.isNullOrEmpty(file)).collect(Collectors.toList());
+//
+//        return fileList;
     }
 
 }

@@ -1,10 +1,10 @@
 package com.nowui.cloud.base.user.listener;
 
 import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.base.user.router.UserAccountRouter;
+import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.base.user.service.UserAcService;
-import com.nowui.cloud.base.user.router.UserAcRouter;
 import com.nowui.cloud.base.user.view.UserAccountView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -28,7 +28,7 @@ public class UserAcV1UpdateListener {
     private final String queueName = "user_ac_v1_update";
 
     @Autowired
-    private UserAcService userAcService;
+    private UserAccountService userAcService;
 
     @Bean
     Queue UserAcV1UpdateQueue(RabbitAdmin rabbitAdmin) {
@@ -39,7 +39,7 @@ public class UserAcV1UpdateListener {
 
     @Bean
     Binding UserAcV1UpdateQueueBindingExchange(Queue UserAcV1UpdateQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(UserAcV1UpdateQueue).to(exchange).with(UserAcRouter.USER_AC_V1_UPDATE);
+        Binding binding = BindingBuilder.bind(UserAcV1UpdateQueue).to(exchange).with(UserAccountRouter.USER_ACCOUNT_V1_SAVE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }

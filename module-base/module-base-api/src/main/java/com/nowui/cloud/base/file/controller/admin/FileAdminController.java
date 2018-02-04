@@ -2,6 +2,8 @@ package com.nowui.cloud.base.file.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.file.router.FileRouter;
+import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,7 +77,7 @@ public class FileAdminController extends BaseController {
                 File.FILE_ID
         );
 
-        File result = fileService.find(fileEntity.getFileId());
+        FileView result = fileService.find(fileEntity.getFileId());
 
         validateResponse(
                 File.FILE_ID,
@@ -106,7 +108,10 @@ public class FileAdminController extends BaseController {
                 File.SYSTEM_VERSION
         );
 
-        Boolean result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemRequestUserId(), fileEntity.getSystemVersion());
+        Boolean result = fileService.delete(fileEntity.getFileId(),fileEntity.getAppId(), FileRouter.FILE_V1_DELETE,
+                fileEntity.getSystemUpdateUserId(),fileEntity.getSystemVersion());
+
+        //        Boolean result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemRequestUserId(), fileEntity.getSystemVersion());
 
         return renderJson(result);
     }

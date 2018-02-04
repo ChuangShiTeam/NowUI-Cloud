@@ -1,10 +1,10 @@
 package com.nowui.cloud.base.user.service.impl;
-
 import java.util.Arrays;
 import java.util.List;
-
+import com.nowui.cloud.base.user.repository.UserNickNameRepository;
+import com.nowui.cloud.base.user.router.UserNickNameRouter;
+import com.nowui.cloud.base.user.view.UserNickNameView;
 import org.springframework.stereotype.Service;
-
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.mapper.UserNickNameMapper;
 import com.nowui.cloud.base.user.service.UserNickNameService;
@@ -19,7 +19,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserNickNameServiceImpl extends SuperServiceImpl<UserNickNameMapper, UserNickName> implements UserNickNameService {
+public class UserNickNameServiceImpl extends SuperServiceImpl<UserNickNameMapper, UserNickName,UserNickNameRepository,UserNickNameView> implements UserNickNameService {
 
     @Override
     public UserNickName findByUserId(String userId) {
@@ -42,7 +42,10 @@ public class UserNickNameServiceImpl extends SuperServiceImpl<UserNickNameMapper
         );
         if (userNickNameList != null && userNickNameList.size() > 0) {
             for (UserNickName userNickName : userNickNameList) {
-                delete(userNickName.getUserNickNameId(), systemUpdateUserId, userNickName.getSystemVersion());
+                delete(userNickName.getUserNickNameId(), systemUpdateUserId, UserNickNameRouter.USER_NICK_NAME_V1_DELETE,systemUpdateUserId,
+                        userNickName.getSystemVersion());
+//                delete(userNickName.getUserNickNameId(), systemUpdateUserId, userNickName.getSystemVersion());
+
             }
         }
     }

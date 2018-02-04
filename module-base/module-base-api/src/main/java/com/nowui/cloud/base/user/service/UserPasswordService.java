@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserPassword;
+import com.nowui.cloud.base.user.view.UserPasswordView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -9,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-11
  */
-public interface UserPasswordService extends SuperService<UserPassword> {
+public interface UserPasswordService extends SuperService<UserPassword,UserPasswordView> {
 
     /**
      * 根据用户编号查询用户密码信息

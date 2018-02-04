@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserEmailRepository;
+import com.nowui.cloud.base.user.router.UserEmailRouter;
+import com.nowui.cloud.base.user.view.UserEmailView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserEmail;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail> implements UserEmailService {
+public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail,UserEmailRepository,UserEmailView> implements UserEmailService {
 
     @Override
     public UserEmail findByUserId(String userId) {
@@ -42,7 +45,9 @@ public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, User
         );
         if (userEmailList != null && userEmailList.size() > 0) {
             for (UserEmail userEmail : userEmailList) {
-                delete(userEmail.getUserEmailId(), systemUpdateUserId, userEmail.getSystemVersion());
+                delete(userEmail.getUserEmailId(), systemUpdateUserId, UserEmailRouter.USER_EMAIL_V1_DELETE,systemUpdateUserId,
+                        userEmail.getSystemVersion());
+//                delete(userEmail.getUserEmailId(), systemUpdateUserId, userEmail.getSystemVersion());
             }
         }
     }

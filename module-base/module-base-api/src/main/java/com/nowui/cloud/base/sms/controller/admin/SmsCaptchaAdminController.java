@@ -1,4 +1,6 @@
 package com.nowui.cloud.base.sms.controller.admin;
+import com.nowui.cloud.base.sms.router.SmsCaptchaRouter;
+import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
@@ -66,7 +68,7 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_ID
         );
 
-        SmsCaptcha result = smsCaptchaService.find(smsCaptchaEntity.getSmsCaptchaId());
+        SmsCaptchaView result = smsCaptchaService.find(smsCaptchaEntity.getSmsCaptchaId());
 
         validateResponse(
                 SmsCaptcha.SMS_CAPTCHA_ID,
@@ -93,7 +95,9 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS
         );
 
-        Boolean result = smsCaptchaService.save(smsCaptchaEntity, Util.getRandomUUID(), smsCaptchaEntity.getSystemRequestUserId());
+        Boolean result = smsCaptchaService.save(smsCaptchaEntity,Util.getRandomUUID(),smsCaptchaEntity.getAppId(),
+                SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE,smsCaptchaEntity.getSystemCreateUserId());
+//        Boolean result = smsCaptchaService.save(smsCaptchaEntity, Util.getRandomUUID(), smsCaptchaEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -114,7 +118,9 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.update(smsCaptchaEntity, smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
+        Boolean result = smsCaptchaService.update(smsCaptchaEntity,smsCaptchaEntity.getSmsCaptchaId(),smsCaptchaEntity.getAppId(),
+                SmsCaptchaRouter.SMS_CAPTCHA_V1_UPDATE,smsCaptchaEntity.getSystemUpdateUserId(),smsCaptchaEntity.getSystemVersion());
+//        Boolean result = smsCaptchaService.update(smsCaptchaEntity, smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -131,7 +137,9 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
+        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(),smsCaptchaEntity.getAppId(),
+                SmsCaptchaRouter.SMS_CAPTCHA_V1_DELETE,smsCaptchaEntity.getSystemUpdateUserId(),smsCaptchaEntity.getSystemVersion());
+//        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
 
         return renderJson(result);
     }

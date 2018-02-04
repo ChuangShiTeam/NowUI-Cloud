@@ -3,8 +3,14 @@ package com.nowui.cloud.base.notify.controller.mobile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
+import com.nowui.cloud.base.notify.router.NotifyRouter;
+import com.nowui.cloud.base.notify.view.NotifyView;
+import com.nowui.cloud.base.subscription.router.SubscriptionRouter;
+import com.nowui.cloud.base.user.router.UserNotifyRouter;
+import com.nowui.cloud.base.user.view.UserNotifyView;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +74,8 @@ public class NotifyMobileController extends BaseController {
         body.setNotifyContent(body.getNotifyContent());
         body.setNotifySender(body.getNotifySender());
         String userId = body.getSystemCreateUserId();
-        Boolean result = notifyService.save(body, notifyId, userId);
+        Boolean result = notifyService.save(body,notifyId,body.getAppId(), NotifyRouter.NOTIFY_V1_SAVE,body.getSystemCreateUserId());
+//        Boolean result = notifyService.save(body, notifyId, userId);
         return renderJson(result);
     }
 
@@ -94,7 +101,9 @@ public class NotifyMobileController extends BaseController {
         body.setNotifyContent(body.getNotifyContent());
 
         String userId = body.getSystemCreateUserId();
-        Boolean result = notifyService.save(body, notifyId, userId);
+        Boolean result = notifyService.save(body,notifyId,body.getAppId(),NotifyRouter.NOTIFY_V1_SAVE,body.getSystemCreateUserId());
+//        Boolean result = notifyService.save(body, notifyId, userId);
+
         return renderJson(result);
     }
 
@@ -127,13 +136,15 @@ public class NotifyMobileController extends BaseController {
             uNotify.setUserNotifyIsRead(false);
             uNotify.setUserNotifyOwerId(userId);
             uNotify.setNotifyId(entity.getNotifyId());
-            userNotifyService.save(uNotify, Util.getRandomUUID(), userId);
+            userNotifyService.save(uNotify, Util.getRandomUUID(), body.getAppId(), UserNotifyRouter.USER_NOTIFY_V1_SAVE,body.getSystemCreateUserId());
+//            userNotifyService.save(uNotify, Util.getRandomUUID(), userId);
         });
 
         List<UserNotify> userNotifies = userNotifyService.getUserNotifyByUserId(userId, body.getAppId(), "Remind");
 
         userNotifies.forEach((entity) -> {
-            Notify notify = notifyService.find(userNotify.getNotifyId());
+//            Notify notify = notifyService.find(userNotify.getNotifyId());
+            NotifyView notify = notifyService.find(userNotify.getNotifyId());
             Member member = memberRpc.nickNameAndAvatarFindV1(notify.getNotifySender());
 //            entity.setHeader(User.USER_AVATAR);
             entity.setUserName(User.USER_NICK_NAME);
@@ -182,14 +193,16 @@ public class NotifyMobileController extends BaseController {
 
         // 4、使用过滤好的Notify作为关联新建UserNotify
         notifyList.forEach((notify) -> {
-            UserNotify aUserNotify = userNotifyService.find(notify.getNotifyId());
+            UserNotifyView aUserNotify = userNotifyService.find(notify.getNotifyId());
             if (aUserNotify == null){
                 UserNotify userNotify = new UserNotify();
                 userNotify.setAppId(notify.getAppId());
                 userNotify.setUserNotifyIsRead(false);
                 userNotify.setUserNotifyOwerId(userId);
                 userNotify.setNotifyId(notify.getNotifyId());
-                userNotifyService.save(userNotify, Util.getRandomUUID(), userId);
+                userNotifyService.save(userNotify,Util.getRandomUUID(),body.getAppId(),UserNotifyRouter.USER_NOTIFY_V1_SAVE,body.getSystemCreateUserId());
+
+//                userNotifyService.save(userNotify, Util.getRandomUUID(), userId);
             }
         });
 
@@ -239,7 +252,9 @@ public class NotifyMobileController extends BaseController {
                     tSubscription.setSubscriptionAction(json.get(i).toString());
                     tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
                     tSubscription.setSubscriptionTargetType(subscription.getSubscriptionTargetType());
-                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getSystemCreateUserId());
+                    subscriptionService.save(tSubscription,Util.getRandomUUID(),body.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_SAVE,body.getSystemCreateUserId());
+//                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getSystemCreateUserId());
+
                 }
             }
         });
@@ -260,7 +275,8 @@ public class NotifyMobileController extends BaseController {
                 Subscription.SUBSCRIPTION_TARGET,
                 Subscription.SUBSCRIPTION_TARGET_TYPE
         );
-        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), subscription.getSystemRequestUserId(), subscription.getSystemVersion());
+        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(),body.getAppId(),SubscriptionRouter.SUBSCRIPTION_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), subscription.getSystemRequestUserId(), subscription.getSystemVersion());
         return renderJson(result);
     }
 
@@ -282,7 +298,9 @@ public class NotifyMobileController extends BaseController {
             userNotify.setAppId(body.getAppId());
             userNotify.setUserNotifyIsRead(true);
             userNotify.setNotifyId(item);
-            userNotifyService.update(userNotify, item, userNotify.getSystemUpdateUserId(), userNotify.getSystemVersion());
+            userNotifyService.update(userNotify,item,body.getAppId(),UserNotifyRouter.USER_NOTIFY_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
+//            userNotifyService.update(userNotify, item, userNotify.getSystemUpdateUserId(), userNotify.getSystemVersion());
+
         });
         return renderJson(result);
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserNotifyRepository;
+import com.nowui.cloud.base.user.view.UserNotifyView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserNotify;
@@ -21,7 +23,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-28
  */
 @Service
-public class UserNotifyServiceImpl extends SuperServiceImpl<UserNotifyMapper, UserNotify> implements UserNotifyService {
+public class UserNotifyServiceImpl extends SuperServiceImpl<UserNotifyMapper, UserNotify,UserNotifyRepository,UserNotifyView> implements UserNotifyService {
 
     @Override
     public Integer countForAdmin(String appId, Boolean userNotifyIsRead, String userNotifyOwerId) {

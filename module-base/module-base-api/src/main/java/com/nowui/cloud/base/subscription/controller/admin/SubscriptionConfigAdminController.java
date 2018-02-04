@@ -2,6 +2,9 @@ package com.nowui.cloud.base.subscription.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.subscription.router.SubscriptionConfigRouter;
+import com.nowui.cloud.base.subscription.router.SubscriptionRouter;
+import com.nowui.cloud.base.subscription.view.SubscriptionConfigView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +70,8 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SUBSCRIPTION_CONFIG_ID
         );
 
-        SubscriptionConfig result = subscriptionConfigService.find(subscriptionConfigEntity.getSubscriptionConfigId());
+        SubscriptionConfigView result = subscriptionConfigService.find(subscriptionConfigEntity.getSubscriptionConfigId());
+//        SubscriptionConfig result = subscriptionConfigService.find(subscriptionConfigEntity.getSubscriptionConfigId());
 
         validateResponse(
                 SubscriptionConfig.SUBSCRIPTION_CONFIG_ID,
@@ -91,7 +95,8 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SUBSCRIPTION_USER_ID
         );
 
-        Boolean result = subscriptionConfigService.save(subscriptionConfigEntity, Util.getRandomUUID(), subscriptionConfigEntity.getSystemRequestUserId());
+        Boolean result = subscriptionConfigService.save(subscriptionConfigEntity,Util.getRandomUUID(),subscriptionConfigEntity.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_SAVE,subscriptionConfigEntity.getSystemRequestUserId());
+//        Boolean result = subscriptionConfigService.save(subscriptionConfigEntity, Util.getRandomUUID(), subscriptionConfigEntity.getSystemRequestUserId());
 
         return renderJson(result);
     }
@@ -109,9 +114,8 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SUBSCRIPTION_USER_ID,
                 SubscriptionConfig.SYSTEM_VERSION
         );
-
-        Boolean result = subscriptionConfigService.update(subscriptionConfigEntity, subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
-
+        Boolean result = subscriptionConfigService.update(subscriptionConfigEntity,subscriptionConfigEntity.getSubscriptionConfigId(),subscriptionConfigEntity.getAppId(), SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE,subscriptionConfigEntity.getSystemUpdateUserId(),subscriptionConfigEntity.getSystemVersion());
+//        Boolean result = subscriptionConfigService.update(subscriptionConfigEntity, subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
         return renderJson(result);
     }
 
@@ -127,7 +131,9 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SYSTEM_VERSION
         );
 
-        Boolean result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
+        Boolean result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(),subscriptionConfigEntity
+                .getAppId(),SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE,subscriptionConfigEntity.getSystemUpdateUserId(),subscriptionConfigEntity.getSystemVersion());
+//        Boolean result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
 
         return renderJson(result);
     }

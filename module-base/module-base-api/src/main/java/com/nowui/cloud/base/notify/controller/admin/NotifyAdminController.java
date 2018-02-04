@@ -2,6 +2,8 @@ package com.nowui.cloud.base.notify.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.notify.router.NotifyRouter;
+import com.nowui.cloud.base.notify.view.NotifyView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,7 +73,9 @@ public class NotifyAdminController extends BaseController {
                 Notify.NOTIFY_ID
         );
 
-        Notify result = notifyService.find(notifyEntity.getNotifyId());
+        NotifyView result = notifyService.find(notifyEntity.getNotifyId());
+//        Notify result = notifyService.find(notifyEntity.getNotifyId());
+
 
         validateResponse(
                 Notify.NOTIFY_ID,
@@ -101,7 +105,11 @@ public class NotifyAdminController extends BaseController {
                 Notify.NOTIFY_SENDER
         );
 
-        Boolean result = notifyService.save(notifyEntity, Util.getRandomUUID(), notifyEntity.getSystemRequestUserId());
+        Boolean result = notifyService.save(notifyEntity, Util.getRandomUUID(), notifyEntity.getSystemRequestUserId(),
+                NotifyRouter.NOTIFY_V1_SAVE,notifyEntity.getSystemCreateUserId());
+
+//        Boolean result = notifyService.save(notifyEntity, Util.getRandomUUID(), notifyEntity.getSystemRequestUserId());
+
 
         return renderJson(result);
     }
@@ -123,7 +131,9 @@ public class NotifyAdminController extends BaseController {
                 Notify.SYSTEM_VERSION
         );
 
-        Boolean result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
+        Boolean result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(),
+                NotifyRouter.NOTIFY_V1_UPDATE,notifyEntity.getSystemUpdateUserId(),notifyEntity.getSystemVersion());
+//        Boolean result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
 
         return renderJson(result);
     }
@@ -140,7 +150,9 @@ public class NotifyAdminController extends BaseController {
                 Notify.SYSTEM_VERSION
         );
 
-        Boolean result = notifyService.delete(notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
+        Boolean result = notifyService.delete(notifyEntity.getNotifyId(),notifyEntity.getAppId(),NotifyRouter
+        .NOTIFY_V1_DELETE,notifyEntity.getSystemUpdateUserId(),notifyEntity.getSystemVersion());
+//        Boolean result = notifyService.delete(notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
 
         return renderJson(result);
     }

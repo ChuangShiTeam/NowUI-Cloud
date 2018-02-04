@@ -3,6 +3,7 @@ package com.nowui.cloud.base.user.service;
 import java.util.List;
 
 import com.nowui.cloud.base.user.entity.UserNotify;
+import com.nowui.cloud.base.user.view.UserNotifyView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -12,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  * <p>
  * 2018-01-28
  */
-public interface UserNotifyService extends SuperService<UserNotify> {
+public interface UserNotifyService extends SuperService<UserNotify,UserNotifyView> {
 
     /**
      * 用户消息队列表统计

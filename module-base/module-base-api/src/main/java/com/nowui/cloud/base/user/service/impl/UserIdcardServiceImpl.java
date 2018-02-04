@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserIdcardRepository;
+import com.nowui.cloud.base.user.router.UserIdcardRouter;
+import com.nowui.cloud.base.user.view.UserIdcardView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserIdcard;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserIdcardServiceImpl extends SuperServiceImpl<UserIdcardMapper, UserIdcard> implements UserIdcardService {
+public class UserIdcardServiceImpl extends SuperServiceImpl<UserIdcardMapper, UserIdcard,UserIdcardRepository,UserIdcardView> implements UserIdcardService {
 
     @Override
     public UserIdcard findByUserId(String userId) {
@@ -42,7 +45,9 @@ public class UserIdcardServiceImpl extends SuperServiceImpl<UserIdcardMapper, Us
         );
         if (userIdcardList != null && userIdcardList.size() > 0) {
             for (UserIdcard userIdcard : userIdcardList) {
-                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, userIdcard.getSystemVersion());
+                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, UserIdcardRouter.USER_IDCARD_V1_DELETE,systemUpdateUserId,
+                        userIdcard.getSystemVersion());
+//                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, userIdcard.getSystemVersion());
             }
         }
     }

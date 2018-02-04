@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Document(collection = "member_address_info")
-public class MemberAddressView extends BaseView {
-
+public class MemberAddressView extends BaseView{
     /**
      * 会员地址编号
      */

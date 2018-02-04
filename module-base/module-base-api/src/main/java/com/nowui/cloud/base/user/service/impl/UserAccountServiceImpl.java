@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserAcRepository;
+import com.nowui.cloud.base.user.router.UserAccountRouter;
+import com.nowui.cloud.base.user.view.UserAccountView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserAccount;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, UserAccount> implements UserAccountService {
+public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, UserAccount,UserAcRepository,UserAccountView> implements UserAccountService {
 
     @Override
     public UserAccount findByUserId(String userId) {
@@ -41,7 +44,9 @@ public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, 
         );
         if (userAccountList != null && userAccountList.size() > 0) {
             for (UserAccount userAccount : userAccountList) {
-                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
+//                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
+                delete(userAccount.getUserAccountId(),userAccount.getAppId(), UserAccountRouter.USER_ACCOUNT_V1_DELETE,
+                        userAccount.getSystemUpdateUserId(),userAccount.getSystemVersion());
             }
         }
     }

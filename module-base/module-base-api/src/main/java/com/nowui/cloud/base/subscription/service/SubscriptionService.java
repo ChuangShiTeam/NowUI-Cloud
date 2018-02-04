@@ -2,6 +2,7 @@ package com.nowui.cloud.base.subscription.service;
 import java.util.List;
 
 import com.nowui.cloud.base.subscription.entity.Subscription;
+import com.nowui.cloud.base.subscription.view.SubscriptionView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -11,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-28
  */
-public interface SubscriptionService extends SuperService<Subscription> {
+public interface SubscriptionService extends SuperService<Subscription,SubscriptionView> {
 
     /**
      * 订阅统计

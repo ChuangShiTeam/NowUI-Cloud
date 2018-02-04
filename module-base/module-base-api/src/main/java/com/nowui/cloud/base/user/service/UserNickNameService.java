@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserNickName;
+import com.nowui.cloud.base.user.view.UserNickNameView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -9,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-08
  */
-public interface UserNickNameService extends SuperService<UserNickName> {
+public interface UserNickNameService extends SuperService<UserNickName,UserNickNameView> {
     
     /**
      * 根据用户编号查询用户昵称信息

@@ -3,6 +3,9 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nowui.cloud.base.user.repository.UserMobileRepository;
+import com.nowui.cloud.base.user.router.UserMobileRouter;
+import com.nowui.cloud.base.user.view.UserMobileView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserMobile;
@@ -19,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile> implements UserMobileService {
+public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile,UserMobileRepository,UserMobileView> implements UserMobileService {
 
     @Override
     public UserMobile findByUserId(String userId) {
@@ -42,7 +45,10 @@ public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, Us
         );
         if (userMobileList != null && userMobileList.size() > 0) {
             for (UserMobile userMobile : userMobileList) {
-                delete(userMobile.getUserMobileId(), systemUpdateUserId, userMobile.getSystemVersion());
+                delete(userMobile.getUserMobileId(), systemUpdateUserId, UserMobileRouter.USER_MOBILE_V1_DELETE,systemUpdateUserId,
+                        userMobile.getSystemVersion());
+//                delete(userMobile.getUserMobileId(), systemUpdateUserId, userMobile.getSystemVersion());
+
             }
         }
     }

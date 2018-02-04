@@ -1,10 +1,9 @@
 package com.nowui.cloud.base.user.listener;
-
 import com.alibaba.fastjson.JSON;
+import com.nowui.cloud.base.user.router.UserAccountRouter;
+import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
-import com.nowui.cloud.base.user.service.UserAcService;
-import com.nowui.cloud.base.user.router.UserAcRouter;
 import com.nowui.cloud.base.user.view.UserAccountView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -28,7 +27,7 @@ public class UserAcV1DeleteListener {
     private final String queueName = "user_ac_v1_delete";
 
     @Autowired
-    private UserAcService userAcService;
+    private UserAccountService userAcService;
 
     @Bean
     Queue UserAcV1DeleteQueue(RabbitAdmin rabbitAdmin) {
@@ -39,7 +38,7 @@ public class UserAcV1DeleteListener {
 
     @Bean
     Binding UserAcV1DeleteQueueBindingExchange(Queue UserAcV1DeleteQueue, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(UserAcV1DeleteQueue).to(exchange).with(UserAcRouter.USER_AC_V1_DELETE);
+        Binding binding = BindingBuilder.bind(UserAcV1DeleteQueue).to(exchange).with(UserAccountRouter.USER_ACCOUNT_V1_DELETE);
         rabbitAdmin.declareBinding(binding);
         return binding;
     }

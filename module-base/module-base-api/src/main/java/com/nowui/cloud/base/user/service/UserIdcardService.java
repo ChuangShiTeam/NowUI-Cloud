@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserIdcard;
+import com.nowui.cloud.base.user.view.UserIdcardView;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -9,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-08
  */
-public interface UserIdcardService extends SuperService<UserIdcard> {
+public interface UserIdcardService extends SuperService<UserIdcard,UserIdcardView> {
     
     /**
      * 根据用户编号查询用户账号信息

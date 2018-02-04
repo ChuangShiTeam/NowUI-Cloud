@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.nowui.cloud.base.sms.repository.SmsCaptchaRepository;
+import com.nowui.cloud.base.sms.router.SmsCaptchaRouter;
+import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-05
  */
 @Service
-public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, SmsCaptcha> implements SmsCaptchaService {
+public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, SmsCaptcha,SmsCaptchaRepository,SmsCaptchaView> implements SmsCaptchaService {
 
     @Autowired
     private AppConfigRpc appConfigRpc;
@@ -164,7 +167,8 @@ public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, Sm
         smsCaptcha.setSmsCaptchaMobile(smsCaptchaMobile);
         smsCaptcha.setSmsCaptchaCode(smsCaptchaCode);
         smsCaptcha.setSmsCaptchaIpAddress(smsCaptchaIpAddress);
-        Boolean result = save(smsCaptcha, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = save(smsCaptcha, Util.getRandomUUID(),appId, SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE,systemRequestUserId);
+//        Boolean result = save(smsCaptcha, Util.getRandomUUID(), systemRequestUserId);
 
         if (!result) {
             throw new RuntimeException("验证码发送不成功");
