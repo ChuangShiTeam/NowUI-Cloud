@@ -164,7 +164,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listByTopicIdList(List<String> topicIdList);
+    List<TopicView> listByTopicIdList(List<String> topicIdList);
     
     /**
      * 根据topicId的list集合查询所有话题相关的信息(其中调用了listByTopicIdList方法)
@@ -185,7 +185,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param topicIdList
      * @return
      */
-    List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList);
+    List<TopicView> listDetailByTopicIdList(String userId, List<String> topicIdList);
     
     
     

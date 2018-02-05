@@ -1,8 +1,13 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -56,32 +61,61 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     }
 
 	@Override
-	public TopicUserBookmark findByTopicIdAndUserId(String topicId, String userId) {
-		TopicUserBookmark topicUserBookmark = find(
-                new BaseWrapper<TopicUserBookmark>()
-                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-                        .eq(TopicUserBookmark.USER_ID, userId)
-                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-        );
+	public TopicUserBookmarkView findByTopicIdAndUserId(String topicId, String userId) {
+//		TopicUserBookmark topicUserBookmark = find(
+//                new BaseWrapper<TopicUserBookmark>()
+//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
+//                        .eq(TopicUserBookmark.USER_ID, userId)
+//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
+//        );
+//
+//        return topicUserBookmark;
+		
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserBookmarkView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
-        return topicUserBookmark;
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicUserBookmarkView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicUserBookmarkView> topicUserBookmarkList = list(query, sort);
+        
+        if (Util.isNullOrEmpty(topicUserBookmarkList)) {
+			return null;
+		}
+
+        return topicUserBookmarkList.get(0);
 	}
 
     @Override
     public Integer countByTopicId(String topicId) {
-        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
-        
-        if (count == null) {
-            count = count(
-                new BaseWrapper<TopicUserBookmark>()
-                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-            );
-            
-            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, count);
-        }
-        
+//        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
+//        
+//        if (count == null) {
+//            count = count(
+//                new BaseWrapper<TopicUserBookmark>()
+//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
+//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
+//            );
+//            
+//            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, count);
+//        }
+//        
+//        return count;
+    	
+    	Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
+    	
     }
 
     @Override

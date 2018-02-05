@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -14,6 +18,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
@@ -33,6 +38,8 @@ import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.sns.topic.view.TopicMediaView;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
@@ -240,10 +247,10 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
         // 论坛列表
         List<TopicForumView> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
-        ArrayList<Forum> forumList = new ArrayList<>();
+        ArrayList<ForumView> forumList = new ArrayList<>();
         for (TopicForumView topicForum : topicForumList) {
-            Forum forum = forumService.find(topicForum.getForumId(), true);
-            forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
+            ForumView forum = forumService.find(topicForum.getForumId());
+//TODO      forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
             forumList.add(forum);
         }
         topic.put(Topic.TOPIC_FORUM_LIST, forumList);
@@ -265,11 +272,11 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         topic.put(Topic.TOPIC_COUNT_COMMENT, countComment);
         
         // 是否被用户收藏
-        TopicUserBookmark topicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topic.getTopicId(), userId);
+        TopicUserBookmarkView topicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(topicUserBookmark));
         
         // 是否被用户点赞
-        TopicUserLike topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
+        TopicUserLikeView topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
         
 		return topic;
@@ -431,14 +438,14 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList) {
-		List<Topic> topicList = listByTopicIdList(topicIdList);
+	public List<TopicView> listDetailByTopicIdList(String userId, List<String> topicIdList) {
+		List<TopicView> topicList = listByTopicIdList(topicIdList);
 		
 		if (Util.isNullOrEmpty(topicList)) {
             return new ArrayList<>();
         }
         
-        for (Topic topic : topicList) {
+        for (TopicView topic : topicList) {
             topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
         }
 
@@ -446,15 +453,27 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<Topic> listByTopicIdList(List<String> topicIdList) {
-		List<Topic> topicList = list(
-                new BaseWrapper<Topic>()
-                        .in(Topic.TOPIC_ID, topicIdList)
-                        .eq(Topic.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME))
-            );
+	public List<TopicView> listByTopicIdList(List<String> topicIdList) {
+//		List<Topic> topicList = list(
+//                new BaseWrapper<Topic>()
+//                        .in(Topic.TOPIC_ID, topicIdList)
+//                        .eq(Topic.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME))
+//            );
+		
+		Criteria criteria = Criteria.where(TopicView.TOPIC_ID).in(topicIdList)
+                .and(TopicView.SYSTEM_STATUS).is(true);
 
-		return topicList;
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicView> topicList = list(query, sort);
+
+        return topicList;
 	}
 
 }

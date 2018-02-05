@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,6 +18,9 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.shop.product.view.ProductView;
+import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
+import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.mapper.TopicForumMapper;
@@ -82,30 +86,49 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 
 	@Override
 	public Integer countTodayByForumId(String forumId) {
-		Integer count = count(
-                new BaseWrapper<TopicForum>()
-                        .eq(TopicForum.FORUM_ID, forumId)
-                        .ge(TopicForum.SYSTEM_CREATE_TIME, DateUtil.getTodayStartDateTime())
-                        .eq(TopicForum.SYSTEM_STATUS, true)
-        );
+//		Integer count = count(
+//                new BaseWrapper<TopicForum>()
+//                        .eq(TopicForum.FORUM_ID, forumId)
+//                        .ge(TopicForum.SYSTEM_CREATE_TIME, DateUtil.getTodayStartDateTime())
+//                        .eq(TopicForum.SYSTEM_STATUS, true)
+//        );
+//        return count;
+
+		Criteria criteria = Criteria.where(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
+			    .and(TopicForumView.SYSTEM_CREATE_TIME).gte(DateUtil.getTodayStartDateTime())
+                .and(TopicForumView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
 	}
 	
 	@Override
     public Integer countByForumId(String forumId) {
-        Integer forumTopicCount = (Integer) redisTemplate.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
-        
-        if (forumTopicCount == null) {
-            forumTopicCount = count(
-                    new BaseWrapper<TopicForum>()
-                    .eq(TopicForum.FORUM_ID, forumId)
-                    .eq(TopicForum.SYSTEM_STATUS, true)
-            );
-            
-            redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId, forumTopicCount);
-        }
-        
-        return forumTopicCount;
+//        Integer forumTopicCount = (Integer) redisTemplate.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
+//        
+//        if (forumTopicCount == null) {
+//            forumTopicCount = count(
+//                    new BaseWrapper<TopicForum>()
+//                    .eq(TopicForum.FORUM_ID, forumId)
+//                    .eq(TopicForum.SYSTEM_STATUS, true)
+//            );
+//            
+//            redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId, forumTopicCount);
+//        }
+//        
+//        return forumTopicCount;
+		
+		Criteria criteria = Criteria.where(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(TopicForumView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
+        return count;
     }
 
     @Override
@@ -123,25 +146,42 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
     }
     
     @Override
-	public List<TopicForum> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime,
+	public List<TopicForumView> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime,
 			Integer pageIndex, Integer pageSize) {
-    	List<TopicForum> topicForumList = list(
-                new BaseWrapper<TopicForum>()
-                        .eq(TopicForum.FORUM_ID, forumId)
-                        .eq(TopicForum.SYSTEM_STATUS, true)
-                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
-                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
-                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return topicForumList;
+//    	List<TopicForum> topicForumList = list(
+//                new BaseWrapper<TopicForum>()
+//                        .eq(TopicForum.FORUM_ID, forumId)
+//                        .eq(TopicForum.SYSTEM_STATUS, true)
+//                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
+//                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
+//                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return topicForumList;
+			
+        
+		Criteria criteria = Criteria.where(TopicForum.FORUM_ID).regex(".*?" + forumId + ".*")
+				.and(TopicForumView.TOPIC_ID).nin(excludeTopicIdList)
+				.and(Topic.SYSTEM_CREATE_TIME).lt(DateUtil.getDateTimeString(systemCreateTime))
+				.and(TopicForumView.SYSTEM_STATUS).is(true);
+	
+	    List<Order> orders = new ArrayList<Order>();
+	    orders.add(new Order(Sort.Direction.DESC, TopicForumView.SYSTEM_CREATE_TIME));
+	    Sort sort = Sort.by(orders);
+	
+	    Query query = new Query(criteria);
+	    query.with(sort);
+	
+	    List<TopicForumView> topicForumList = list(query, sort, pageIndex, pageSize);
+	
+	    return topicForumList;
 	}
 
 	@Override
 	public List<TopicForumView> listByTopicId(String topicId) {
-        List<String> topicForumIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);
+//        List<String> topicForumIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);
         
         // TODO 暂时注释掉,返回null值,回来再调
 //        if (topicForumIdList == null) {
@@ -160,29 +200,31 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 //        }
 		
 //        return topicForumIdList.stream().map(topicForumId -> find(topicForumId)).collect(Collectors.toList());
-        return null;
+        
+        Criteria criteria = Criteria.where(TopicForumView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicForumView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicForumView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicForumView> topicForumList = list(query, sort);
+
+        return topicForumList;
 	}
 
     @Override
     public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
-        List<TopicForumView> topicForumList = listByTopicId(topicId);
-        
-        if (!Util.isNullOrEmpty(topicForumList)) {
-        	
-        	topicForumList.stream().forEach(topicForum -> {
-                delete(topicForum.getTopicForumId(), appId, TopicForumRouter.TOPIC_FORUM_V1_DELETE, systemRequestUserId, topicForum.getSystemVersion());
-            });
-            
-        	topicForumList.stream().forEach(topicForum -> {
-        		// 论坛话题数缓存减一
-        		Integer forumTopicCount = countByForumId(topicForum.getForumId());
-        		
-        		redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount - 1);
-        	});
-        }
-        
-        // 清空缓存
-        redisTemplate.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId);    
+        delete(
+                new BaseWrapper<TopicForum>()
+                        .eq(TopicForum.APP_ID, appId)
+                        .eq(TopicForum.TOPIC_ID, topicId)
+                        .eq(TopicForum.SYSTEM_STATUS, true),
+                systemRequestUserId
+        );
     }
 
     @Override

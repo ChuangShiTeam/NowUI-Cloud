@@ -1,4 +1,5 @@
 package com.nowui.cloud.sns.forum.controller.admin;
+import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
@@ -83,9 +84,9 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.FORUM_ID
         );
 
-        Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId());
+//  TODO      Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改论坛用户关注")
@@ -100,9 +101,9 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO       Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除论坛用户关注")
@@ -115,9 +116,9 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO       Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
 }

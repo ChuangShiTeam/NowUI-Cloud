@@ -1,8 +1,13 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -12,6 +17,7 @@ import com.nowui.cloud.sns.topic.mapper.TopicUserLikeMapper;
 import com.nowui.cloud.sns.topic.repository.TopicUserLikeRepository;
 import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.util.Util;
 
@@ -56,31 +62,59 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
 	@Override
-	public TopicUserLike findByTopicIdAndUserId(String topicId, String userId) {
-		TopicUserLike topicUserLike = find(
-                new BaseWrapper<TopicUserLike>()
-                        .eq(TopicUserLike.USER_ID, userId)
-                        .eq(TopicUserLike.TOPIC_ID, topicId)
-                        .eq(TopicUserLike.SYSTEM_STATUS, true)
-        );
+	public TopicUserLikeView findByTopicIdAndUserId(String topicId, String userId) {
+//		TopicUserLike topicUserLike = find(
+//                new BaseWrapper<TopicUserLike>()
+//                        .eq(TopicUserLike.USER_ID, userId)
+//                        .eq(TopicUserLike.TOPIC_ID, topicId)
+//                        .eq(TopicUserLike.SYSTEM_STATUS, true)
+//        );
+//
+//        return topicUserLike;
+		
+		Criteria criteria = Criteria.where(TopicUserLikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserLikeView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserLikeView.SYSTEM_STATUS).is(true);
 
-        return topicUserLike;
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicUserLikeView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicUserLikeView> topicUserLikeList = list(query, sort);
+        
+        if (Util.isNullOrEmpty(topicUserLikeList)) {
+			return null;
+		}
+
+        return topicUserLikeList.get(0);
 	}
 	
 	@Override
     public Integer countByTopicId(String topicId) {
 	    
-	    Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
-	    
-	    if (count == null) {
-	        count = count(
-	                new BaseWrapper<TopicUserLike>()
-	                        .eq(TopicUserLike.TOPIC_ID, topicId)
-	                        .eq(TopicUserLike.SYSTEM_STATUS, true)
-	        );
-	        redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, count);
-	   }
-	    
+//	    Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
+//	    
+//	    if (count == null) {
+//	        count = count(
+//	                new BaseWrapper<TopicUserLike>()
+//	                        .eq(TopicUserLike.TOPIC_ID, topicId)
+//	                        .eq(TopicUserLike.SYSTEM_STATUS, true)
+//	        );
+//	        redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, count);
+//	   }
+//	    
+//        return count;
+		
+		Criteria criteria = Criteria.where(TopicUserLike.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserLike.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
     }
 

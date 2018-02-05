@@ -85,7 +85,7 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
      * @param pageSize 每页个数
      * @return List<TopicForum> 话题论坛列表
      */
-    List<TopicForum> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicForumView> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     
     /**

@@ -13,6 +13,8 @@ import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -67,19 +69,29 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     
     @Override
     public Integer countByTopicId(String topicId) {
-        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_COMMENT_COUNT_BY_TOPIC_ID);
-        
-        if (count == null) {
-            count = count(
-                    new BaseWrapper<TopicComment>()
-                            .eq(TopicComment.TOPIC_ID, topicId)
-                            .eq(TopicComment.SYSTEM_STATUS, true)
-            );
-            // 更新话题评论数缓存
-            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, count);
-        }
-        
+//        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_COMMENT_COUNT_BY_TOPIC_ID);
+//        
+//        if (count == null) {
+//            count = count(
+//                    new BaseWrapper<TopicComment>()
+//                            .eq(TopicComment.TOPIC_ID, topicId)
+//                            .eq(TopicComment.SYSTEM_STATUS, true)
+//            );
+//            // 更新话题评论数缓存
+//            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, count);
+//        }
+//        
+//        return count;
+    	
+    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicCommentView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
+    	
     }
     
 	@Override

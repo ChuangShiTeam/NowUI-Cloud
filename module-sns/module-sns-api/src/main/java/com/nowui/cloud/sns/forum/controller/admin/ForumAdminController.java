@@ -293,12 +293,17 @@ public class ForumAdminController extends BaseController {
         return renderJson(success);
     }
     
-    @ApiOperation(value = "论坛重建缓存")
-    @RequestMapping(value = "/forum/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "论坛数据同步")
+    @RequestMapping(value = "/forum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody Forum body) {
-        validateRequest(body, Forum.FORUM_ID);
-
-        forumService.replace(body.getForumId());
+    	
+    	List<Forum> Forumlist = forumService.listByMysql();
+    	
+    	for (Forum forum : Forumlist) {
+			ForumView forumView = new ForumView();
+			forumView.putAll(forum);
+			forumService.update(forumView);
+		}
 
         return renderJson(true);
     }

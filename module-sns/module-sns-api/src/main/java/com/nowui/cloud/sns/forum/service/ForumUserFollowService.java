@@ -24,6 +24,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @return Integer 论坛用户关注统计
      */
     Integer countForAdmin(String appId, String userId, String forumId);
+    
 
     /**
      * 论坛用户关注列表
@@ -37,6 +38,18 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      */
     List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
 
+    /**
+     * 论坛用户关注列表
+     *
+     * @param appId 应用编号
+     * @param forumId 论坛编号
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<ForumUserFollow> 论坛用户关注列表
+     */
+    List<ForumUserFollowView> listByforumId(String appId, String forumId, Integer pageIndex, Integer pageSize);
+
+    
     /**
      * 根据论坛编号统计关注论坛用户数
      *
@@ -64,7 +77,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param pageSize 每页个数
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
-    List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
+    List<ForumUserFollowView> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize);
     
     /**
      * 论坛用户关注列表
@@ -73,7 +86,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param userId 用户编号
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
-    List<ForumUserFollow> listByUserId(String appId, String userId);
+    List<ForumUserFollowView> listByUserId(String appId, String userId);
     
     /**
      * 论坛用户关注列表
@@ -81,7 +94,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param userId 用户编号
      * @return List<ForumUserFollow> 论坛用户关注列表
      */
-    List<ForumUserFollow> listByUserId(String userId);
+    List<ForumUserFollowView> listByUserId(String userId);
     
     /**
      * 根据用户编号和论坛编号查询用户关注信息
@@ -91,7 +104,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param forumId 论坛编号
      * @return ForumUserFollow 论坛用户关注信息
      */
-    ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId);
+    ForumUserFollowView findByUserIdAndForumId(String appId, String userId, String forumId);
     
     /**
      * 根据用户编号和论坛编号查询用户关注信息(不用appId)
@@ -100,7 +113,7 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param forumId 论坛编号
      * @return ForumUserFollow 论坛用户关注信息
      */
-    ForumUserFollow findByUserIdAndForumId(String userId, String forumId);
+    ForumUserFollowView findByUserIdAndForumId(String userId, String forumId);
     
     /**
      * 查询符合论坛编号的所有用户关注信息
@@ -116,6 +129,17 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * 
      * @param appId 应用编号
      * @param forumId 论坛编号
+     * @param systemRequestUserId 操作者Id
+     * @return boolean 返回删除结果
+     */
+    ForumUserFollow updateTopForum(String appId, String forumId, String systemRequestUserId);
+    
+    /**
+     * 根据论坛编号逻辑删除用户关注论坛记录
+     * 
+     * @param appId 应用编号
+     * @param forumId 论坛编号
+     * @param systemUpdateUserId 操作者Id
      * @return boolean 返回删除结果
      */
     boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId);

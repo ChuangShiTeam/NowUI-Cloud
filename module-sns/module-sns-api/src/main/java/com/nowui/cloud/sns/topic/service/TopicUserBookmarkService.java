@@ -44,7 +44,7 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * @param userId 用户编号
      * @return TopicUserBookmark 单条话题收藏记录
      */
-    TopicUserBookmark findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserBookmarkView findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 话题收藏统计

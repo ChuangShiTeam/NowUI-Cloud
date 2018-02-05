@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.shop.product.entity.Product;
+import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.mapper.TopicMediaMapper;
 import com.nowui.cloud.sns.topic.repository.TopicMediaRepository;
@@ -61,7 +67,7 @@ public class TopicMediaServiceImpl extends SuperServiceImpl<TopicMediaMapper, To
     @Override
     public List<TopicMediaView> listByTopicId(String topicId) {
         // 查询缓存
-        List<String> topicMediaIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId);
+//        List<String> topicMediaIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId);
         
         //TODO 先注释掉,固定返回null,回来再调试
 //        if (topicMediaIdList == null) {
@@ -80,7 +86,20 @@ public class TopicMediaServiceImpl extends SuperServiceImpl<TopicMediaMapper, To
 //        } 
         
 //        return topicMediaIdList.stream().map(topicMediaId -> find(topicMediaId)).collect(Collectors.toList());
-        return null;
+    	
+    	Criteria criteria = Criteria.where(TopicMediaView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicMediaView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicMediaView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicMediaView> topicMediaList = list(query, sort);
+
+        return topicMediaList;
     }
     
     @Override

@@ -201,6 +201,17 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      */
     E update(E entity, String id, String systemUpdateUserId, Integer systemVersion);
 
+    /**
+     * 实体类修改
+     *
+     * @param entity 实体类
+     * @param id 实体类编号
+     * @param systemUpdateUserId 更新人编号
+     * @param systemVersion 版本号
+     * @return 是否成功
+     */
+    E update(E entity, @Param("ew") Wrapper<E> var1, String systemUpdateUserId);
+
 //    /**
 //     * 实体类修改
 //     *

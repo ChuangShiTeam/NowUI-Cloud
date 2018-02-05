@@ -342,6 +342,23 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         }
     }
 
+	@Override
+	public E update(E entity, Wrapper<E> var1, String systemUpdateUserId) {
+		entity.setSystemUpdateUserId(systemUpdateUserId);
+		entity.setSystemUpdateTime(new Date());
+
+        Boolean success = mapper.update(
+        		entity,
+        		var1
+        ) != 0;
+
+        if(success) {
+            return entity;
+        } else {
+            return null;
+        }
+	}
+
 //    @Override
 //    public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
 //        baseEntity.setSystemUpdateUserId(systemUpdateUserId);

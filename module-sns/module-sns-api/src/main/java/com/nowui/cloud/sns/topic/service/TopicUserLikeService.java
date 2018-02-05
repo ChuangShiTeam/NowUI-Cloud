@@ -44,7 +44,7 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * @param userId 用户编号
      * @return TopicUserLike 单调点赞记录
      */
-    TopicUserLike findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserLikeView findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 点赞话题统计

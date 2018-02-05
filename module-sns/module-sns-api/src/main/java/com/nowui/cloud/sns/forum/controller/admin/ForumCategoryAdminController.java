@@ -95,9 +95,9 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
-        Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_SAVE, body.getSystemRequestUserId());
+//  TODO admin论坛分类      Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改论坛分类")
@@ -115,9 +115,9 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-        Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO admin论坛分类       Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除论坛分类")
@@ -130,9 +130,9 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-        Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO admin论坛分类      Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
 }

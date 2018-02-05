@@ -3,7 +3,6 @@ package com.nowui.cloud.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,13 +14,12 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeanUtils;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.view.BaseView;
 
 /**
  * @author ZhongYongQiang
@@ -311,6 +309,20 @@ public class Util {
         }
         return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
     }
+    
+    /**
+     * 实体对象列表映射实体对象字段列表
+     *
+     * @param beanList 实体对象列表
+     * @param field 实体对象字段
+     * @return List<String> 实体对象字段列表
+     */
+    public static List<String> viewBeanToField(List<? extends BaseView> beanList, String field) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+    }
 
     /**
      * 实体对象列表映射实体对象字段列表json字符串
@@ -320,6 +332,21 @@ public class Util {
      * @return String 字段列表json字符串
      */
     public static String beanToFieldString(List<? extends BaseEntity> beanList, String field) {
+        if (Util.isNullOrEmpty(beanList)) {
+            return null;
+        }
+        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
+        return JSONArray.toJSONString(list);
+    }
+    
+    /**
+     * 实体对象列表映射实体对象字段列表json字符串
+     *
+     * @param beanList 实体对象列表
+     * @param field 实体对象字段
+     * @return String 字段列表json字符串
+     */
+    public static String viewBeanToFieldString(List<? extends BaseView> beanList, String field) {
         if (Util.isNullOrEmpty(beanList)) {
             return null;
         }
@@ -394,6 +421,37 @@ public class Util {
         }
         for (BaseEntity bean : beanList) {
             Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+            for (String fieldCloumn : fieldCloumns) {
+                if (fieldBeanOption.isPresent()) {
+                    Object object = fieldBeanOption.get().get(fieldCloumn);
+                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+                    } else {
+                        bean.put(fieldCloumn, object);
+                    }
+                } else {
+                    bean.put(fieldCloumn, null);
+                }
+            }
+        }
+        return beanList;
+    }
+    
+    /**
+     * 实体对象列表关联字段映射实体字段对象
+     * @param beanList 实体对象列表
+     * @param beanCloumn 实体对象匹配字段
+     * @param fieldMapCloumn 实体字段对象映射匹配字段
+     * @param fieldBeanList 实体对象映射实体字段列表
+     * @param fieldCloumns 实体对象映射实体字段列表字段集合
+     * @return List<T> 实体对象列表
+     */
+    public static <T extends BaseView> List<T> viewBeanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseView> fieldBeanList, String ...fieldCloumns) {
+        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+            return beanList;
+        }
+        for (BaseView bean : beanList) {
+            Optional<? extends BaseView> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
             for (String fieldCloumn : fieldCloumns) {
                 if (fieldBeanOption.isPresent()) {
                     Object object = fieldBeanOption.get().get(fieldCloumn);

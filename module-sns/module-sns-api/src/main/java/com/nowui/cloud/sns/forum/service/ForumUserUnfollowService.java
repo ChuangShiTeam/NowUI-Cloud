@@ -44,7 +44,7 @@ public interface ForumUserUnfollowService extends SuperService<ForumUserUnfollow
      * @param forumId 论坛编号
      * @return ForumUserUnfollow 论坛用户取关记录
      */
-    ForumUserUnfollow findByUserIdAndForumId(String appId, String userId, String forumId);
+    ForumUserUnfollowView findByUserIdAndForumId(String appId, String userId, String forumId);
     
     /**
      * 根据forumId删除全部取消关注表的记录

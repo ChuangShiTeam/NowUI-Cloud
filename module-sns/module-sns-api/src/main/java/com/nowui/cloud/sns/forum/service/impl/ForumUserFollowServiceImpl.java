@@ -10,9 +10,15 @@ import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
+import com.nowui.cloud.util.Util;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,89 +62,174 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     
     @Override
     public Integer countByUserId(String appId, String userId) {
-        Integer count = count(
-                new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-        );
+//        Integer count = count(
+//                new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.APP_ID, appId)
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//        );
+//        return count;
+
+    	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
+                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
     }
     
     @Override
     public Integer countByForumId(String appId, String forumId) {
-        Integer count = count(
-                new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.FORUM_ID, forumId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-        );
+//        Integer count = count(
+//                new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.APP_ID, appId)
+//                        .eq(ForumUserFollow.FORUM_ID, forumId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//        );
+//        return count;
+    	
+    	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
+                .and(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count;
     }
     
     @Override
-    public List<ForumUserFollow> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
-        List<ForumUserFollow> forumUserFollowList = list(
-                new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<ForumUserFollowView> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
+//        List<ForumUserFollow> forumUserFollowList = list(
+//                new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.APP_ID, appId)
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
+//                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return forumUserFollowList;
+    	
+    	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
+                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP));
+        orders.add(new Order(Sort.Direction.DESC, ForumUserFollowView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<ForumUserFollowView> forumUserFollowList = list(query, sort, pageIndex, pageSize);
 
         return forumUserFollowList;
     }
     
     @Override
-    public List<ForumUserFollow> listByUserId(String appId, String userId) {
-        List<ForumUserFollow> forumUserFollowList = list(
-                new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
-                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME))
-        );
+    public List<ForumUserFollowView> listByUserId(String appId, String userId) {
+//        List<ForumUserFollow> forumUserFollowList = list(
+//                new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.APP_ID, appId)
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP))
+//                        .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME))
+//        );
+//
+//        return forumUserFollowList;
+    	
+    	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).regex(".*?" + appId + ".*")
+    			.and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
-        return forumUserFollowList;
+        Query query = new Query(criteria);
+
+        List<ForumUserFollowView> forumUserFollow = list(query);
+        
+        return forumUserFollow;
     }
     
     @Override
-    public List<ForumUserFollow> listByUserId(String userId) {
-        List<ForumUserFollow> forumUserFollowList = list(
-                new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-        );
+    public List<ForumUserFollowView> listByUserId(String userId) {
+//        List<ForumUserFollow> forumUserFollowList = list(
+//                new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//        );
+//
+//        return forumUserFollowList;
+    	
+    	Criteria criteria = Criteria.where(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
-        return forumUserFollowList;
+        Query query = new Query(criteria);
+
+        List<ForumUserFollowView> forumUserFollow = list(query);
+        
+        return forumUserFollow;
     }
 
 	@Override
-	public ForumUserFollow findByUserIdAndForumId(String appId, String userId, String forumId) {
-		ForumUserFollow forumUserFollow = find( 
-				new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.FORUM_ID, forumId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-		);
-		return forumUserFollow;
+	public ForumUserFollowView findByUserIdAndForumId(String appId, String userId, String forumId) {
+//		ForumUserFollow forumUserFollow = find( 
+//				new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.APP_ID, appId)
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.FORUM_ID, forumId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//		);
+//		return forumUserFollow;
+		
+		Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
+                .and(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        List<ForumUserFollowView> forumUserFollow = list(query);
+        
+        if (Util.isNullOrEmpty(forumUserFollow)) {
+			return null;
+		}
+        
+        return forumUserFollow.get(0);
 	}
 	
 	@Override
-	public ForumUserFollow findByUserIdAndForumId(String userId, String forumId) {
-	    ForumUserFollow forumUserFollow = find( 
-				new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.USER_ID, userId)
-                        .eq(ForumUserFollow.FORUM_ID, forumId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-		);
+	public ForumUserFollowView findByUserIdAndForumId(String userId, String forumId) {
+//	    ForumUserFollow forumUserFollow = find( 
+//				new BaseWrapper<ForumUserFollow>()
+//                        .eq(ForumUserFollow.USER_ID, userId)
+//                        .eq(ForumUserFollow.FORUM_ID, forumId)
+//                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
+//		);
+//		
+//		return forumUserFollow;
 		
-		return forumUserFollow;
+		
+		Criteria criteria = Criteria.where(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        List<ForumUserFollowView> forumUserFollow = list(query);
+        
+        if (Util.isNullOrEmpty(forumUserFollow)) {
+			return null;
+		}
+        
+        return forumUserFollow.get(0);
 	}
 
 	@Override
@@ -155,6 +246,24 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 	}
 
 	@Override
+	public ForumUserFollow updateTopForum(String appId, String forumId, String systemRequestUserId) {
+		ForumUserFollow forumUserFollow = new ForumUserFollow();
+		forumUserFollow.setForumUserFollowIsTop(true);
+
+		update(
+				forumUserFollow,
+				new BaseWrapper<ForumUserFollow>()
+	                .eq(ForumUserFollow.APP_ID, appId)
+	                .eq(ForumUserFollow.FORUM_ID, forumId)
+	                .eq(ForumUserFollow.USER_ID, systemRequestUserId)
+	                .eq(ForumUserFollow.SYSTEM_STATUS, true),
+	            systemRequestUserId
+		);
+
+		return forumUserFollow;
+	}
+
+	@Override
 	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
         delete(
                 new BaseWrapper<ForumUserFollow>()
@@ -163,8 +272,27 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
                         .eq(ForumUserFollow.SYSTEM_STATUS, true),
                 systemUpdateUserId
         );
+
+		return true;
+	}
+
+	@Override
+	public List<ForumUserFollowView> listByforumId(String appId, String forumId, Integer pageIndex, Integer pageSize) {
 		
-		return false;
+		Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
+                .and(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, ForumUserFollowView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<ForumUserFollowView> productViewList = list(query, sort, pageIndex, pageSize);
+
+        return productViewList;
 	}
 
 	
