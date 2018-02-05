@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMediaMapper;
 import com.nowui.cloud.cms.article.repository.ArticleMediaRepository;
-import com.nowui.cloud.cms.article.router.ArticleMediaRouter;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.view.ArticleMediaView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -42,7 +41,7 @@ public class ArticleMediaServiceImpl extends SuperServiceImpl<ArticleMediaMapper
         
         if (articleMediaList != null && articleMediaList.size() > 0) {
             for (ArticleMedia articleMedia : articleMediaList) {
-                delete(articleMedia.getArticleMediaId(), articleMedia.getAppId(), ArticleMediaRouter.ARTICLE_MEDIA_V1_DELETE, systemRequestUserId, articleMedia.getSystemVersion());
+                delete(articleMedia.getArticleMediaId(), systemRequestUserId, articleMedia.getSystemVersion());
             }
         }
         

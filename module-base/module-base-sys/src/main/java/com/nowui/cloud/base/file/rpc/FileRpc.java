@@ -30,6 +30,15 @@ public interface FileRpc {
      */
     @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.POST)
     FileView findV1(@RequestParam(value = "fileId", required = true) String fileId);
+
+    /**
+     * 文件查找
+     *
+     * @param fileId 文件编号
+     * @return file 文件
+     */
+    @RequestMapping(value = "/file/system/v1/find", method = RequestMethod.POST)
+    File findByMysqlV1(@RequestParam(value = "fileId", required = true) String fileId);
     
     /**
      * 多文件查找

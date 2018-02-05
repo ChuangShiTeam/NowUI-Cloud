@@ -31,9 +31,11 @@ public class ArticleUserCommentAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户评论列表")
     @RequestMapping(value = "/article/user/comment/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ArticleUserComment body) {
+    public Map<String, Object> listV1() {
+        ArticleUserComment articleUserCommentEntity = getEntry(ArticleUserComment.class);
+
         validateRequest(
-                body,
+                articleUserCommentEntity,
                 ArticleUserComment.APP_ID,
                 ArticleUserComment.ARTICLE_ID,
                 ArticleUserComment.USER_ID,
@@ -41,8 +43,8 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserCommentService.countForAdmin(body.getAppId() , body.getArticleId(), body.getUserId());
-        List<ArticleUserComment> resultList = articleUserCommentService.listForAdmin(body.getAppId(), body.getArticleId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserCommentService.countForAdmin(articleUserCommentEntity.getAppId() , articleUserCommentEntity.getArticleId(), articleUserCommentEntity.getUserId());
+        List<ArticleUserComment> resultList = articleUserCommentService.listForAdmin(articleUserCommentEntity.getAppId(), articleUserCommentEntity.getArticleId(), articleUserCommentEntity.getUserId(), articleUserCommentEntity.getPageIndex(), articleUserCommentEntity.getPageSize());
 
         validateResponse(
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID,
@@ -55,14 +57,16 @@ public class ArticleUserCommentAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户评论信息")
     @RequestMapping(value = "/article/user/comment/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody ArticleUserComment body) {
+    public Map<String, Object> findV1() {
+        ArticleUserComment articleUserCommentEntity = getEntry(ArticleUserComment.class);
+
         validateRequest(
-                body,
+                articleUserCommentEntity,
                 ArticleUserComment.APP_ID,
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID
         );
 
-        ArticleUserCommentView result = articleUserCommentService.find(body.getArticleUserCommentId());
+        ArticleUserCommentView result = articleUserCommentService.find(articleUserCommentEntity.getArticleUserCommentId());
 
         validateResponse(
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID,
@@ -78,9 +82,11 @@ public class ArticleUserCommentAdminController extends BaseController {
 
     @ApiOperation(value = "新增文章用户评论")
     @RequestMapping(value = "/article/user/comment/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ArticleUserComment body) {
+    public Map<String, Object> saveV1() {
+        ArticleUserComment articleUserCommentEntity = getEntry(ArticleUserComment.class);
+
         validateRequest(
-                body,
+                articleUserCommentEntity,
                 ArticleUserComment.APP_ID,
                 ArticleUserComment.ARTICLE_ID,
                 ArticleUserComment.USER_ID,
@@ -89,16 +95,28 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.ARTICLE_COMMENT_CONTENT
         );
 
-        Boolean result = articleUserCommentService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, body.getSystemRequestUserId());
+        String articleUserCommentId = Util.getRandomUUID();
 
-        return renderJson(result);
+        ArticleUserComment result = articleUserCommentService.save(articleUserCommentEntity, articleUserCommentId, articleUserCommentEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改文章用户评论")
     @RequestMapping(value = "/article/user/comment/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody ArticleUserComment body) {
+    public Map<String, Object> updateV1() {
+        ArticleUserComment articleUserCommentEntity = getEntry(ArticleUserComment.class);
+
         validateRequest(
-                body,
+                articleUserCommentEntity,
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID,
                 ArticleUserComment.APP_ID,
                 ArticleUserComment.ARTICLE_ID,
@@ -109,24 +127,57 @@ public class ArticleUserCommentAdminController extends BaseController {
                 ArticleUserComment.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentService.update(body, body.getArticleUserCommentId(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserComment result = articleUserCommentService.update(articleUserCommentEntity, articleUserCommentEntity.getArticleUserCommentId(), articleUserCommentEntity.getSystemRequestUserId(), articleUserCommentEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除文章用户评论")
     @RequestMapping(value = "/article/user/comment/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody ArticleUserComment body) {
+    public Map<String, Object> deleteV1() {
+        ArticleUserComment articleUserCommentEntity = getEntry(ArticleUserComment.class);
+
         validateRequest(
-                body,
+                articleUserCommentEntity,
                 ArticleUserComment.ARTICLE_USER_COMMENT_ID,
                 ArticleUserComment.APP_ID,
                 ArticleUserComment.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentService.delete(body.getArticleUserCommentId(), body.getAppId(), ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserComment result = articleUserCommentService.delete(articleUserCommentEntity.getArticleUserCommentId(), articleUserCommentEntity.getSystemRequestUserId(), articleUserCommentEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "文章用户评论数据同步")
+    @RequestMapping(value = "/article/user/comment/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<ArticleUserComment> articleUserCommentList = articleUserCommentService.listByMysql();
+
+        for (ArticleUserComment articleUserComment : articleUserCommentList) {
+            ArticleUserCommentView articleUserCommentView = new ArticleUserCommentView();
+            articleUserCommentView.putAll(articleUserComment);
+
+            articleUserCommentService.update(articleUserCommentView);
+        }
+
+        return renderJson(true);
     }
 
 }

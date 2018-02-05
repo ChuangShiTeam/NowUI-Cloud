@@ -1,5 +1,6 @@
 package com.nowui.cloud.rabbit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.event.service.EventService;
@@ -78,6 +79,28 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
             rabbitTemplate.convertAndSend(Constant.EXCHANGE, routing, message, messagePostProcessor, new CorrelationData(eventId));
         } else {
             throw new SystemException("");
+        }
+    }
+
+    public void send(String appId, String routing, JSONObject message, String systemCreateUserId) {
+        String eventId = Util.getRandomUUID();
+
+        Boolean success = eventService.save(eventId, appId, routing, message.toJSONString(), systemCreateUserId);
+
+        if (success) {
+            MessagePostProcessor messagePostProcessor = new MessagePostProcessor() {
+                @Override
+                public Message postProcessMessage(Message message) throws AmqpException {
+                    message.getMessageProperties().setMessageId(eventId);
+                    // 设置消息持久化
+                    message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+                    return message;
+                }
+            };
+
+            rabbitTemplate.convertAndSend(Constant.EXCHANGE, routing, message, messagePostProcessor, new CorrelationData(eventId));
+        } else {
+            throw new SystemException(Constant.ERROR);
         }
     }
 

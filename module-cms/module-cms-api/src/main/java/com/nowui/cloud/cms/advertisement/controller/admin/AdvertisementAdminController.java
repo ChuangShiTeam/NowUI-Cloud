@@ -3,6 +3,9 @@ package com.nowui.cloud.cms.advertisement.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.nowui.cloud.base.file.entity.File;
+import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,6 +36,9 @@ public class AdvertisementAdminController extends BaseController {
 
     @Autowired
     private AdvertisementService advertisementService;
+
+    @Autowired
+    private FileRpc fileRpc;
 
     @ApiOperation(value = "广告分页列表")
     @RequestMapping(value = "/advertisement/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -117,11 +123,21 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.ADVERTISEMENT_TITLE
         );
 
+        String advertisementId = Util.getRandomUUID();
+
         advertisementEntity.setAdvertisementImageId(advertisementEntity.getAdvertisementImage().getString(FileView.FILE_ID));
 
-        Boolean result = advertisementService.save(advertisementEntity, Util.getRandomUUID(), advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getSystemRequestUserId());
+        Advertisement result = advertisementService.save(advertisementEntity, advertisementId, advertisementEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "广告修改")
@@ -147,9 +163,17 @@ public class AdvertisementAdminController extends BaseController {
 
         advertisementEntity.setAdvertisementImageId(advertisementEntity.getAdvertisementImage().getString(FileView.FILE_ID));
 
-        Boolean result = advertisementService.update(advertisementEntity, advertisementEntity.getAdvertisementId(), advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
+        Advertisement result = advertisementService.update(advertisementEntity, advertisementEntity.getAdvertisementId(), advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "广告删除")
@@ -163,19 +187,33 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.SYSTEM_VERSION
         );
 
-        Boolean result = advertisementService.delete(advertisementEntity.getAdvertisementId() ,advertisementEntity.getAppId(), AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
+        Advertisement result = advertisementService.delete(advertisementEntity.getAdvertisementId(), advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "广告重建缓存")
-    @RequestMapping(value = "/advertisement/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1() {
-        Advertisement advertisementEntity = getEntry(Advertisement.class);
+    @ApiOperation(value = "广告数据同步")
+    @RequestMapping(value = "/advertisement/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Advertisement> advertisementList = advertisementService.listByMysql();
 
-        validateRequest(advertisementEntity, Advertisement.ADVERTISEMENT_ID);
+        for (Advertisement advertisement : advertisementList) {
+            AdvertisementView advertisementView = new AdvertisementView();
+            advertisementView.putAll(advertisement);
 
-        advertisementService.replace(advertisementEntity.getAdvertisementId());
+            File file = fileRpc.findByMysqlV1(advertisement.getAdvertisementImageId());
+            advertisementView.setAdvertisementImage(file);
+
+            advertisementService.update(advertisementView);
+        }
 
         return renderJson(true);
     }

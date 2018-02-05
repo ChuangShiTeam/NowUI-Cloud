@@ -123,7 +123,8 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
             ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION
         );
-        
+
+        String articleCategoryId = Util.getRandomUUID();
         String articleCategoryParentPath = "";
 
         if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryParentId())) {
@@ -144,10 +145,18 @@ public class ArticleCategoryAdminController extends BaseController {
         }
         
         articleCategoryEntity.setArticleCategoryParentPath(articleCategoryParentPath);
-        
-        Boolean result = articleCategoryService.save(articleCategoryEntity, Util.getRandomUUID(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        ArticleCategory result = articleCategoryService.save(articleCategoryEntity, articleCategoryId, articleCategoryEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章分类修改")
@@ -167,9 +176,17 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        ArticleCategory result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章分类删除")
@@ -183,19 +200,30 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategory.SYSTEM_VERSION
         );
 
-        Boolean result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getAppId(), ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        ArticleCategory result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
     
-    @ApiOperation(value = "文章分类重建缓存")
-    @RequestMapping(value = "/article/category/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+    @ApiOperation(value = "文章分类数据同步")
+    @RequestMapping(value = "/article/category/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<ArticleCategory> articleCategoryList = articleCategoryService.listByMysql();
 
-        validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
+        for (ArticleCategory articleCategory : articleCategoryList) {
+            ArticleCategoryView articleCategoryView = new ArticleCategoryView();
+            articleCategoryView.putAll(articleCategory);
 
-        articleCategoryService.replace(articleCategoryEntity.getArticleCategoryId());
+            articleCategoryService.update(articleCategoryView);
+        }
 
         return renderJson(true);
     }

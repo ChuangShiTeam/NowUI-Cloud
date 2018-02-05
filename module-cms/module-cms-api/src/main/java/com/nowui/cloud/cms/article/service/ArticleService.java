@@ -2,6 +2,7 @@ package com.nowui.cloud.cms.article.service;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
@@ -46,7 +47,7 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    Boolean save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
+    Article save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
     
     /**
      * 文章更新
@@ -57,7 +58,7 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
+    Article update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
     
     /**
      * 根据文章主分类编码查询文章列表

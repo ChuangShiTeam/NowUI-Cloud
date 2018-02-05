@@ -1,5 +1,6 @@
 package com.nowui.cloud.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -7,6 +8,7 @@ import com.mongodb.client.result.UpdateResult;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
 import com.nowui.cloud.mongodb.BasePageable;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.rabbit.RabbitSender;
 import com.nowui.cloud.repository.BaseRepository;
 import com.nowui.cloud.service.SuperService;
@@ -127,6 +129,13 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
+    public List<E> listByMysql() {
+        List<E> list = mapper.selectList(new BaseWrapper<E>());
+
+        return list;
+    }
+
+    @Override
     public E find(@Param("ew") Wrapper<E> var1) {
         List<E> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
 
@@ -161,6 +170,24 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
+    public E findByMysql(String id) {
+        if (Util.isNullOrEmpty(id)) {
+            return null;
+        }
+
+        List<E> list = mapper.selectList(
+                new EntityWrapper<E>()
+                        .eq(entity.getTableId(), id)
+        );
+
+        if (list.size() == 0) {
+            return null;
+        } else {
+            return list.get(0);
+        }
+    }
+
+    @Override
     public E find(String id, Boolean systemStatus) {
         if (Util.isNullOrEmpty(id)) {
             return null;
@@ -174,6 +201,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
                             .eq(entity.getTableId(), id)
                             .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
             );
+
             if (list.size() == 0) {
                 return null;
             } else {
@@ -199,6 +227,63 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         return true;
     }
 
+//    @Override
+//    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
+//        baseEntity.put(entity.getTableId(), id);
+//        baseEntity.setSystemCreateUserId(systemCreateUserId);
+//        baseEntity.setSystemCreateTime(new Date());
+//        baseEntity.setSystemUpdateUserId(systemCreateUserId);
+//        baseEntity.setSystemUpdateTime(new Date());
+//        baseEntity.setSystemVersion(0);
+//        baseEntity.setSystemStatus(true);
+//
+//        Boolean success = mapper.insert(baseEntity) != 0;
+//
+//        if (success) {
+//
+//        }
+//
+//        return success;
+//    }
+
+    @Override
+    public E save(E baseEntity, String id, String systemCreateUserId) {
+        baseEntity.put(entity.getTableId(), id);
+        baseEntity.setSystemCreateUserId(systemCreateUserId);
+        baseEntity.setSystemCreateTime(new Date());
+        baseEntity.setSystemUpdateUserId(systemCreateUserId);
+        baseEntity.setSystemUpdateTime(new Date());
+        baseEntity.setSystemVersion(0);
+        baseEntity.setSystemStatus(true);
+
+        Boolean success = mapper.insert(baseEntity) != 0;
+
+        if(success) {
+            return baseEntity;
+        } else {
+            return null;
+        }
+    }
+
+//    @Override
+//    public Boolean save(E baseEntity, String id, String appId, String routing, String systemCreateUserId) {
+//        baseEntity.put(entity.getTableId(), id);
+//        baseEntity.setSystemCreateUserId(systemCreateUserId);
+//        baseEntity.setSystemCreateTime(new Date());
+//        baseEntity.setSystemUpdateUserId(systemCreateUserId);
+//        baseEntity.setSystemUpdateTime(new Date());
+//        baseEntity.setSystemVersion(0);
+//        baseEntity.setSystemStatus(true);
+//
+//        Boolean success = mapper.insert(baseEntity) != 0;
+//
+//        if (success) {
+//            rabbitSender.send(appId, routing, baseEntity, systemCreateUserId);
+//        }
+//
+//        return success;
+//    }
+
     @Override
     public Boolean update(V view) {
         Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
@@ -218,54 +303,14 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
-    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
-        baseEntity.put(entity.getTableId(), id);
-        baseEntity.setSystemCreateUserId(systemCreateUserId);
-        baseEntity.setSystemCreateTime(new Date());
-        baseEntity.setSystemUpdateUserId(systemCreateUserId);
-        baseEntity.setSystemUpdateTime(new Date());
-        baseEntity.setSystemVersion(0);
-        baseEntity.setSystemStatus(true);
-
-        Boolean success = mapper.insert(baseEntity) != 0;
-
-        if (success) {
-
-        }
-
-        return success;
-    }
-
-    @Override
-    public Boolean save(E baseEntity, String id, String appId, String routing, String systemCreateUserId) {
-        baseEntity.put(entity.getTableId(), id);
-        baseEntity.setSystemCreateUserId(systemCreateUserId);
-        baseEntity.setSystemCreateTime(new Date());
-        baseEntity.setSystemUpdateUserId(systemCreateUserId);
-        baseEntity.setSystemUpdateTime(new Date());
-        baseEntity.setSystemVersion(0);
-        baseEntity.setSystemStatus(true);
-
-        Boolean success = mapper.insert(baseEntity) != 0;
-
-        if (success) {
-            rabbitSender.send(appId, routing, baseEntity, systemCreateUserId);
-        }
-
-        return success;
-    }
-
-    @Override
-    public Boolean update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
+    public Boolean update(E baseEntity, String id, String systemUpdateUserId) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
-        baseEntity.setSystemVersion(systemVersion + 1);
 
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<E>()
                         .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
 
@@ -277,7 +322,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
-    public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
+    public E update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
@@ -290,12 +335,33 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
 
-        if (success) {
-            rabbitSender.send(appId, routing, baseEntity, systemUpdateUserId);
+        if(success) {
+            return baseEntity;
+        } else {
+            return null;
         }
-
-        return success;
     }
+
+//    @Override
+//    public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
+//        baseEntity.setSystemUpdateUserId(systemUpdateUserId);
+//        baseEntity.setSystemUpdateTime(new Date());
+//        baseEntity.setSystemVersion(systemVersion + 1);
+//
+//        Boolean success = mapper.update(
+//                baseEntity,
+//                new EntityWrapper<E>()
+//                        .eq(entity.getTableId(), id)
+//                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
+//                        .eq(BaseEntity.SYSTEM_STATUS, true)
+//        ) != 0;
+//
+//        if (success) {
+//            rabbitSender.send(appId, routing, baseEntity, systemUpdateUserId);
+//        }
+//
+//        return success;
+//    }
 
     private void elasticsearchSaveOrUpdate(E baseEntity, String id) {
         baseEntity.keepTableFieldValue();
@@ -325,8 +391,28 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //        return success;
 //    }
 
+//    @Override
+//    public Boolean delete(String id, String appId, String routing, String systemUpdateUserId) {
+//        entity.setSystemUpdateUserId(systemUpdateUserId);
+//        entity.setSystemUpdateTime(new Date());
+//        entity.setSystemStatus(false);
+//
+//        Boolean success = mapper.update(
+//                entity,
+//                new EntityWrapper<E>()
+//                        .eq(entity.getTableId(), id)
+//                        .eq(BaseEntity.SYSTEM_STATUS, true)
+//        ) != 0;
+//
+//        if (success) {
+//            rabbitSender.send(appId, routing, entity, systemUpdateUserId);
+//        }
+//
+//        return success;
+//    }
+
     @Override
-    public Boolean delete(String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
+    public E delete(String id, String systemUpdateUserId, Integer systemVersion) {
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
         entity.setSystemVersion(systemVersion + 1);
@@ -340,11 +426,11 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
                         .eq(BaseEntity.SYSTEM_STATUS, true)
         ) != 0;
 
-        if (success) {
-            rabbitSender.send(appId, routing, entity, systemUpdateUserId);
+        if(success) {
+            return entity;
+        } else {
+            return null;
         }
-
-        return success;
     }
 
     @Override

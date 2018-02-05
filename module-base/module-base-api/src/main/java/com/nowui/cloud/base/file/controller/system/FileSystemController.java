@@ -41,6 +41,15 @@ public class FileSystemController implements FileRpc {
     }
 
     @Override
+    public File findByMysqlV1(String fileId) {
+        File file = fileService.findByMysql(fileId);
+
+        file.removeBaseTableField();
+
+        return file;
+    }
+
+    @Override
     public String downloadWechatHeadImgToNativeV1(String appId, String userId, String wechatHeadImgUrl) {
         File file = fileService.downloadWechatHeadImgToNative(appId, userId, wechatHeadImgUrl);
         if (file == null) {

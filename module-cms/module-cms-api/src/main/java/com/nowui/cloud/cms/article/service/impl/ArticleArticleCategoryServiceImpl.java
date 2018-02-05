@@ -7,13 +7,9 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.mapper.ArticleArticleCategoryMapper;
 import com.nowui.cloud.cms.article.repository.ArticleArticleCategoryRepository;
-import com.nowui.cloud.cms.article.router.ArticleArticleCategoryRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
-import com.nowui.cloud.cms.toolbar.repository.ToolbarRepository;
-import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
@@ -75,7 +71,7 @@ public class ArticleArticleCategoryServiceImpl extends SuperServiceImpl<ArticleA
         
         if (articleArticleCategoryList != null && articleArticleCategoryList.size() > 0) {
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-                delete(articleArticleCategory.getArticleArticleCategoryId(), articleArticleCategory.getAppId(), ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_DELETE, systemRequestUserId, articleArticleCategory.getSystemVersion());
+                delete(articleArticleCategory.getArticleArticleCategoryId(), systemRequestUserId, articleArticleCategory.getSystemVersion());
             }
         }
         

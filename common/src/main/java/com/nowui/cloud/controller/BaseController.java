@@ -12,8 +12,10 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 
+import com.nowui.cloud.rabbit.RabbitSender;
 import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,6 +43,9 @@ import com.nowui.cloud.view.BaseView;
  */
 @Transactional
 public class BaseController {
+
+    @Autowired
+    protected RabbitSender rabbitSender;
 
     private String[] validateResponseColumnList = new String[]{};
 
@@ -249,6 +254,10 @@ public class BaseController {
         map.put(Constant.CODE, 200);
         map.put(Constant.DATA, dataMap);
         return map;
+    }
+
+    protected void sendMessage(JSONObject message, String routing, String appId, String systemCreateUserId) {
+        rabbitSender.send(appId, routing, message, systemCreateUserId);
     }
 
 }

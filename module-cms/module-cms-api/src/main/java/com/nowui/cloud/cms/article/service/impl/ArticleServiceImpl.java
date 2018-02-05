@@ -1,10 +1,7 @@
 package com.nowui.cloud.cms.article.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,17 +15,13 @@ import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMapper;
 import com.nowui.cloud.cms.article.repository.ArticleRepository;
-import com.nowui.cloud.cms.article.router.ArticleArticleCategoryRouter;
-import com.nowui.cloud.cms.article.router.ArticleMediaRouter;
 import com.nowui.cloud.cms.article.router.ArticleRouter;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
-import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
@@ -103,40 +96,43 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
     }
 
     @Override
-    public Boolean save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList,
-            Article article, String systemRequestUserId) {
+    public Article save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
         
         //保存文章
         String articleId = Util.getRandomUUID();
         String appId = article.getAppId();
-        Boolean result = save(article, articleId, appId, ArticleRouter.ARTICLE_V1_SAVE, systemRequestUserId);
+        Article result = save(article, articleId, systemRequestUserId);
         
-        if (result) {
+        if (result != null) {
             //保存文章多媒体
             for (ArticleMedia articleMedia : articleMediaList) {
+                String articleMediaId = Util.getRandomUUID();
+
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, appId, ArticleMediaRouter.ARTICLE_MEDIA_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
+                articleMediaService.save(articleMedia, articleMediaId, systemRequestUserId);
             }
             
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
+                String articleArticleCategoryId = Util.getRandomUUID();
+
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory, appId, ArticleArticleCategoryRouter.ARTICLE_ARTICLE_CATEGORY_V1_SAVE,  Util.getRandomUUID(), systemRequestUserId);
+                articleArticleCategoryService.save(articleArticleCategory, articleArticleCategoryId, systemRequestUserId);
             }
         }
+
         return result;
     }
 
-    //TODO 
     @Override
-    public Boolean update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
+    public Article update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
         String appId = article.getAppId();
         String articleId = article.getArticleId();
-        Boolean result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
+        Article result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
 
-        if (result) {
+        if (result != null) {
             //删除旧的文章文章分类
             articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
             //删除旧的文章多媒体
@@ -161,15 +157,12 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
         return result;
     }
 
-    /** TODO 修改了参数,添加了super.delete
-     * 重写delete方法
-     */
     @Override
-    public Boolean delete(String articleId, String appId, String router, String systemRequestUserId, Integer systemVersion) {
+    public Article delete(String articleId, String systemRequestUserId, Integer systemVersion) {
 
-        Boolean result = super.delete(articleId, appId, router, systemRequestUserId, systemVersion);
+        Article result = super.delete(articleId, systemRequestUserId, systemVersion);
 
-        if (result) {
+        if (result != null) {
             //删除旧的文章文章分类
             articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
             //删除旧的文章多媒体

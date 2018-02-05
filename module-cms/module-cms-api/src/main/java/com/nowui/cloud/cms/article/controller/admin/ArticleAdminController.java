@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -173,6 +174,7 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_IS_DRAFT,
                 Article.ARTICLE_IS_OUTER_LINK,
                 Article.ARTICLE_IS_TOP,
+                Article.ARTICLE_TOP_LEVEL,
                 Article.ARTICLE_KEYWORDS,
                 Article.ARTICLE_OUTER_LINK,
                 Article.ARTICLE_PUBLISH_TIME,
@@ -196,14 +198,17 @@ public class ArticleAdminController extends BaseController {
             mediaList = JSONArray.parseArray(articleMediaJsonArray.toJSONString(), ArticleMedia.class);
         }
 
-        // 文章置顶级别
-        if (Util.isNullOrEmpty(articleEntity.getArticleTopLevel())) {
-            articleEntity.setArticleTopLevel(null);
+        Article result = articleService.save(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleRouter.ARTICLE_V1_SAVE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+
+            success = true;
         }
 
-        Boolean result = articleService.save(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
-
-        return renderJson(result);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章修改")
@@ -254,9 +259,17 @@ public class ArticleAdminController extends BaseController {
             articleEntity.setArticleTopLevel(null);
         }
 
-        Boolean result = articleService.update(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
+        Article result = articleService.update(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleRouter.ARTICLE_V1_UPDATE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章删除")
@@ -270,19 +283,30 @@ public class ArticleAdminController extends BaseController {
                 Article.SYSTEM_VERSION
         );
 
-        Boolean result = articleService.delete(articleEntity.getArticleId(), articleEntity.getAppId(), ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
+        Article result = articleService.delete(articleEntity.getArticleId(), articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "文章重建缓存")
-    @RequestMapping(value = "/article/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1() {
-        Article articleEntity = getEntry(Article.class);
+    @ApiOperation(value = "文章数据同步")
+    @RequestMapping(value = "/article/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Article> articleList = articleService.listByMysql();
 
-        validateRequest(articleEntity, Article.ARTICLE_ID);
+        for(Article article : articleList) {
+            ArticleView articleView = new ArticleView();
+            articleView.putAll(article);
 
-        articleService.replace(articleEntity.getArticleId());
+            articleService.update(articleView);
+        }
 
         return renderJson(true);
     }

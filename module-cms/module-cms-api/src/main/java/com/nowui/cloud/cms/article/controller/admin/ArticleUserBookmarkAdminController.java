@@ -31,9 +31,11 @@ public class ArticleUserBookmarkAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户收藏列表")
     @RequestMapping(value = "/article/user/bookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ArticleUserBookmark body) {
+    public Map<String, Object> listV1() {
+        ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
+        
         validateRequest(
-                body,
+                articleUserBookmarkEntity,
                 ArticleUserBookmark.APP_ID,
                 ArticleUserBookmark.ARTICLE_ID,
                 ArticleUserBookmark.USE_ID,
@@ -41,8 +43,8 @@ public class ArticleUserBookmarkAdminController extends BaseController {
                 ArticleUserBookmark.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserBookmarkService.countForAdmin(body.getAppId() , body.getArticleId(), body.getUseId());
-        List<ArticleUserBookmark> resultList = articleUserBookmarkService.listForAdmin(body.getAppId(), body.getArticleId(), body.getUseId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserBookmarkService.countForAdmin(articleUserBookmarkEntity.getAppId() , articleUserBookmarkEntity.getArticleId(), articleUserBookmarkEntity.getUseId());
+        List<ArticleUserBookmark> resultList = articleUserBookmarkService.listForAdmin(articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getArticleId(), articleUserBookmarkEntity.getUseId(), articleUserBookmarkEntity.getPageIndex(), articleUserBookmarkEntity.getPageSize());
 
         validateResponse(
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
@@ -55,14 +57,16 @@ public class ArticleUserBookmarkAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户收藏信息")
     @RequestMapping(value = "/article/user/bookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody ArticleUserBookmark body) {
+    public Map<String, Object> findV1() {
+        ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
+
         validateRequest(
-                body,
+                articleUserBookmarkEntity,
                 ArticleUserBookmark.APP_ID,
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID
         );
 
-        ArticleUserBookmarkView result = articleUserBookmarkService.find(body.getArticleUserBookMarkId());
+        ArticleUserBookmarkView result = articleUserBookmarkService.find(articleUserBookmarkEntity.getArticleUserBookMarkId());
 
         validateResponse(
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
@@ -75,24 +79,38 @@ public class ArticleUserBookmarkAdminController extends BaseController {
 
     @ApiOperation(value = "新增文章用户收藏")
     @RequestMapping(value = "/article/user/bookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ArticleUserBookmark body) {
+    public Map<String, Object> saveV1() {
+        ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
+
         validateRequest(
-                body,
+                articleUserBookmarkEntity,
                 ArticleUserBookmark.APP_ID,
                 ArticleUserBookmark.ARTICLE_ID,
                 ArticleUserBookmark.USE_ID
         );
 
-        Boolean result = articleUserBookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_SAVE, body.getSystemRequestUserId());
+        String articleUserBookMarkId = Util.getRandomUUID();
 
-        return renderJson(result);
+        ArticleUserBookmark result = articleUserBookmarkService.save(articleUserBookmarkEntity, articleUserBookMarkId, articleUserBookmarkEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_SAVE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改文章用户收藏")
     @RequestMapping(value = "/article/user/bookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody ArticleUserBookmark body) {
+    public Map<String, Object> updateV1() {
+        ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
+
         validateRequest(
-                body,
+                articleUserBookmarkEntity,
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
                 ArticleUserBookmark.APP_ID,
                 ArticleUserBookmark.ARTICLE_ID,
@@ -100,24 +118,57 @@ public class ArticleUserBookmarkAdminController extends BaseController {
                 ArticleUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserBookmarkService.update(body, body.getArticleUserBookMarkId(), body.getAppId(), ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserBookmark result = articleUserBookmarkService.update(articleUserBookmarkEntity, articleUserBookmarkEntity.getArticleUserBookMarkId(), articleUserBookmarkEntity.getSystemRequestUserId(), articleUserBookmarkEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_UPDATE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除文章用户收藏")
     @RequestMapping(value = "/article/user/bookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody ArticleUserBookmark body) {
+    public Map<String, Object> deleteV1() {
+        ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
+
         validateRequest(
-                body,
+                articleUserBookmarkEntity,
                 ArticleUserBookmark.ARTICLE_USER_BOOK_MARK_ID,
                 ArticleUserBookmark.APP_ID,
                 ArticleUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserBookmarkService.delete(body.getArticleUserBookMarkId(), body.getAppId(), ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserBookmark result = articleUserBookmarkService.delete(articleUserBookmarkEntity.getArticleUserBookMarkId(), articleUserBookmarkEntity.getSystemRequestUserId(), articleUserBookmarkEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_DELETE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "文章用户收藏数据同步")
+    @RequestMapping(value = "/article/user/bookmark/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<ArticleUserBookmark> articleUserBookmarkList = articleUserBookmarkService.listByMysql();
+
+        for (ArticleUserBookmark articleUserBookmark : articleUserBookmarkList) {
+            ArticleUserBookmarkView articleUserBookmarkView = new ArticleUserBookmarkView();
+            articleUserBookmarkView.putAll(articleUserBookmark);
+
+            articleUserBookmarkService.update(articleUserBookmarkView);
+        }
+
+        return renderJson(true);
     }
 
 }

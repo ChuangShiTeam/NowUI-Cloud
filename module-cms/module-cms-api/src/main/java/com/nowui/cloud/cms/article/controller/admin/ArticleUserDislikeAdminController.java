@@ -31,9 +31,11 @@ public class ArticleUserDislikeAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户鄙视列表")
     @RequestMapping(value = "/article/user/dislike/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ArticleUserDislike body) {
+    public Map<String, Object> listV1() {
+        ArticleUserDislike articleUserDislikeEntity = getEntry(ArticleUserDislike.class);
+
         validateRequest(
-                body,
+                articleUserDislikeEntity,
                 ArticleUserDislike.APP_ID,
                 ArticleUserDislike.ARTICLE_ID,
                 ArticleUserDislike.USER_ID,
@@ -41,8 +43,8 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserDislikeService.countForAdmin(body.getAppId() , body.getArticleId(), body.getUserId());
-        List<ArticleUserDislike> resultList = articleUserDislikeService.listForAdmin(body.getAppId(), body.getArticleId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserDislikeService.countForAdmin(articleUserDislikeEntity.getAppId() , articleUserDislikeEntity.getArticleId(), articleUserDislikeEntity.getUserId());
+        List<ArticleUserDislike> resultList = articleUserDislikeService.listForAdmin(articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getArticleId(), articleUserDislikeEntity.getUserId(), articleUserDislikeEntity.getPageIndex(), articleUserDislikeEntity.getPageSize());
 
         validateResponse(
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID,
@@ -55,14 +57,16 @@ public class ArticleUserDislikeAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户鄙视信息")
     @RequestMapping(value = "/article/user/dislike/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody ArticleUserDislike body) {
+    public Map<String, Object> findV1() {
+        ArticleUserDislike articleUserDislikeEntity = getEntry(ArticleUserDislike.class);
+
         validateRequest(
-                body,
+                articleUserDislikeEntity,
                 ArticleUserDislike.APP_ID,
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID
         );
 
-        ArticleUserDislikeView result = articleUserDislikeService.find(body.getArticleUserDislikeId());
+        ArticleUserDislikeView result = articleUserDislikeService.find(articleUserDislikeEntity.getArticleUserDislikeId());
 
         validateResponse(
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID,
@@ -75,24 +79,38 @@ public class ArticleUserDislikeAdminController extends BaseController {
 
     @ApiOperation(value = "新增文章用户鄙视")
     @RequestMapping(value = "/article/user/dislike/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ArticleUserDislike body) {
+    public Map<String, Object> saveV1() {
+        ArticleUserDislike articleUserDislikeEntity = getEntry(ArticleUserDislike.class);
+
         validateRequest(
-                body,
+                articleUserDislikeEntity,
                 ArticleUserDislike.APP_ID,
                 ArticleUserDislike.ARTICLE_ID,
                 ArticleUserDislike.USER_ID
         );
 
-        Boolean result = articleUserDislikeService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_SAVE, body.getSystemRequestUserId());
+        String articleUserDislikeId = Util.getRandomUUID();
 
-        return renderJson(result);
+        ArticleUserDislike result = articleUserDislikeService.save(articleUserDislikeEntity, articleUserDislikeId, articleUserDislikeEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_SAVE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改文章用户鄙视")
     @RequestMapping(value = "/article/user/dislike/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody ArticleUserDislike body) {
+    public Map<String, Object> updateV1() {
+        ArticleUserDislike articleUserDislikeEntity = getEntry(ArticleUserDislike.class);
+
         validateRequest(
-                body,
+                articleUserDislikeEntity,
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID,
                 ArticleUserDislike.APP_ID,
                 ArticleUserDislike.ARTICLE_ID,
@@ -100,24 +118,57 @@ public class ArticleUserDislikeAdminController extends BaseController {
                 ArticleUserDislike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserDislikeService.update(body, body.getArticleUserDislikeId(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserDislike result = articleUserDislikeService.update(articleUserDislikeEntity, articleUserDislikeEntity.getArticleUserDislikeId(), articleUserDislikeEntity.getSystemRequestUserId(), articleUserDislikeEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_UPDATE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除文章用户鄙视")
     @RequestMapping(value = "/article/user/dislike/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody ArticleUserDislike body) {
+    public Map<String, Object> deleteV1() {
+        ArticleUserDislike articleUserDislikeEntity = getEntry(ArticleUserDislike.class);
+
         validateRequest(
-                body,
+                articleUserDislikeEntity,
                 ArticleUserDislike.ARTICLE_USER_DISLIKE_ID,
                 ArticleUserDislike.APP_ID,
                 ArticleUserDislike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserDislikeService.delete(body.getArticleUserDislikeId(), body.getAppId(), ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserDislike result = articleUserDislikeService.delete(articleUserDislikeEntity.getArticleUserDislikeId(), articleUserDislikeEntity.getSystemRequestUserId(), articleUserDislikeEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_DELETE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "文章用户鄙视数据同步")
+    @RequestMapping(value = "/article/user/dislike/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<ArticleUserDislike> articleUserDislikeList = articleUserDislikeService.listByMysql();
+
+        for (ArticleUserDislike articleUserDislike : articleUserDislikeList) {
+            ArticleUserDislikeView articleUserDislikeView = new ArticleUserDislikeView();
+            articleUserDislikeView.putAll(articleUserDislike);
+
+            articleUserDislikeService.update(articleUserDislikeView);
+        }
+
+        return renderJson(true);
     }
 
 }

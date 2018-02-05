@@ -72,9 +72,17 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(product, Product.APP_ID, Product.PRODUCT_NAME);
 
-        Boolean result = productService.save(product, productId, product.getAppId(), ProductRouter.PRODUCT_V1_SAVE, product.getSystemRequestUserId());
+        Product result = productService.save(product, productId, product.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ProductRouter.PRODUCT_V1_SAVE, product.getAppId(), product.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "商品修改")
@@ -84,9 +92,17 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(product, Product.APP_ID, Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
 
-        Boolean result = productService.update(product, product.getProductId(), product.getAppId(), ProductRouter.PRODUCT_V1_UPDATE, product.getSystemRequestUserId(), product.getSystemVersion());
+        Product result = productService.update(product, product.getProductId(), product.getSystemRequestUserId(), product.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ProductRouter.PRODUCT_V1_UPDATE, product.getAppId(), product.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "商品删除")
@@ -96,19 +112,30 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(product, Product.PRODUCT_ID, Product.SYSTEM_VERSION);
 
-        Boolean result = productService.delete(product.getProductId(), product.getAppId(), ProductRouter.PRODUCT_V1_DELETE, product.getSystemRequestUserId(), product.getSystemVersion());
+        Product result = productService.delete(product.getProductId(), product.getSystemRequestUserId(), product.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ProductRouter.PRODUCT_V1_DELETE, product.getAppId(), product.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "商品更新")
-    @RequestMapping(value = "/product/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "商品数据同步")
+    @RequestMapping(value = "/product/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
-        Product product = getEntry(Product.class);
+        List<Product> productList = productService.listByMysql();
 
-        validateRequest(product, Product.PRODUCT_ID);
+        for (Product product : productList) {
+            ProductView productView = new ProductView();
+            productView.putAll(product);
 
-        productService.replace(product.getProductId());
+            productService.update(productView);
+        }
 
         return renderJson(true);
     }

@@ -1,4 +1,5 @@
 package com.nowui.cloud.cms.article.controller.admin;
+
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserCommentUserLike;
@@ -19,7 +20,7 @@ import java.util.Map;
  * 文章用户评论用户点赞管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-08
  */
 @Api(value = "文章用户评论用户点赞", description = "文章用户评论用户点赞管理端接口管理")
@@ -31,9 +32,11 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户评论用户点赞列表")
     @RequestMapping(value = "/article/user/comment/user/like/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody ArticleUserCommentUserLike body) {
+    public Map<String, Object> listV1() {
+        ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
+
         validateRequest(
-                body,
+                articleUserCommentUserLikeEntity,
                 ArticleUserCommentUserLike.APP_ID,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_ID,
                 ArticleUserCommentUserLike.USER_ID,
@@ -41,8 +44,8 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.PAGE_SIZE
         );
 
-        Integer resultTotal = articleUserCommentUserLikeService.countForAdmin(body.getAppId() , body.getArticleUserCommentId(), body.getUserId());
-        List<ArticleUserCommentUserLike> resultList = articleUserCommentUserLikeService.listForAdmin(body.getAppId(), body.getArticleUserCommentId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = articleUserCommentUserLikeService.countForAdmin(articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getArticleUserCommentId(), articleUserCommentUserLikeEntity.getUserId());
+        List<ArticleUserCommentUserLike> resultList = articleUserCommentUserLikeService.listForAdmin(articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getArticleUserCommentId(), articleUserCommentUserLikeEntity.getUserId(), articleUserCommentUserLikeEntity.getPageIndex(), articleUserCommentUserLikeEntity.getPageSize());
 
         validateResponse(
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
@@ -55,14 +58,16 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
 
     @ApiOperation(value = "文章用户评论用户点赞信息")
     @RequestMapping(value = "/article/user/comment/user/like/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody ArticleUserCommentUserLike body) {
+    public Map<String, Object> findV1() {
+        ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
+
         validateRequest(
-                body,
+                articleUserCommentUserLikeEntity,
                 ArticleUserCommentUserLike.APP_ID,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID
         );
 
-        ArticleUserCommentUserLikeView result = articleUserCommentUserLikeService.find(body.getArticleUserCommentUserLikeId());
+        ArticleUserCommentUserLikeView result = articleUserCommentUserLikeService.find(articleUserCommentUserLikeEntity.getArticleUserCommentUserLikeId());
 
         validateResponse(
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
@@ -75,24 +80,38 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
 
     @ApiOperation(value = "新增文章用户评论用户点赞")
     @RequestMapping(value = "/article/user/comment/user/like/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody ArticleUserCommentUserLike body) {
+    public Map<String, Object> saveV1() {
+        ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
+
         validateRequest(
-                body,
+                articleUserCommentUserLikeEntity,
                 ArticleUserCommentUserLike.APP_ID,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_ID,
                 ArticleUserCommentUserLike.USER_ID
         );
 
-        Boolean result = articleUserCommentUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE , body.getSystemRequestUserId());
+        String articleUserCommentUserLikeId = Util.getRandomUUID();
 
-        return renderJson(result);
+        ArticleUserCommentUserLike result = articleUserCommentUserLikeService.save(articleUserCommentUserLikeEntity, articleUserCommentUserLikeId, articleUserCommentUserLikeEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改文章用户评论用户点赞")
     @RequestMapping(value = "/article/user/comment/user/like/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody ArticleUserCommentUserLike body) {
+    public Map<String, Object> updateV1() {
+        ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
+
         validateRequest(
-                body,
+                articleUserCommentUserLikeEntity,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
                 ArticleUserCommentUserLike.APP_ID,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_ID,
@@ -100,24 +119,57 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
                 ArticleUserCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentUserLikeService.update(body, body.getArticleUserCommentUserLikeId(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserCommentUserLike result = articleUserCommentUserLikeService.update(articleUserCommentUserLikeEntity, articleUserCommentUserLikeEntity.getArticleUserCommentUserLikeId(), articleUserCommentUserLikeEntity.getSystemRequestUserId(), articleUserCommentUserLikeEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除文章用户评论用户点赞")
     @RequestMapping(value = "/article/user/comment/user/like/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody ArticleUserCommentUserLike body) {
+    public Map<String, Object> deleteV1() {
+        ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
+
         validateRequest(
-                body,
+                articleUserCommentUserLikeEntity,
                 ArticleUserCommentUserLike.ARTICLE_USER_COMMENT_USER_LIKE_ID,
                 ArticleUserCommentUserLike.APP_ID,
                 ArticleUserCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = articleUserCommentUserLikeService.delete(body.getArticleUserCommentUserLikeId(), body.getAppId(), ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        ArticleUserCommentUserLike result = articleUserCommentUserLikeService.delete(articleUserCommentUserLikeEntity.getArticleUserCommentUserLikeId(), articleUserCommentUserLikeEntity.getSystemRequestUserId(), articleUserCommentUserLikeEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_DELETE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "文章用户评论用户点赞数据同步")
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<ArticleUserCommentUserLike> articleUserCommentUserLikeList = articleUserCommentUserLikeService.listByMysql();
+
+        for (ArticleUserCommentUserLike articleUserCommentUserLike : articleUserCommentUserLikeList) {
+            ArticleUserCommentUserLikeView articleUserCommentUserLikeView = new ArticleUserCommentUserLikeView();
+            articleUserCommentUserLikeView.putAll(articleUserCommentUserLike);
+
+            articleUserCommentUserLikeService.update(articleUserCommentUserLikeView);
+        }
+
+        return renderJson(true);
     }
 
 }

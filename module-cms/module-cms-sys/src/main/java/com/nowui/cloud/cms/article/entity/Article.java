@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
@@ -69,6 +70,14 @@ public class Article extends BaseEntity {
     @Length(max = 200, message = "文章来源长度超出限制")
     private String articleSource;
     public static final String ARTICLE_SOURCE = "articleSource";
+
+    /**
+     * 文章媒体
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文章媒体不能为空")
+    private JSONObject articleMedia;
+    public static final String ARTICLE_MEDIA = "articleMedia";
     
     /**
      * 文章媒体
@@ -222,8 +231,6 @@ public class Article extends BaseEntity {
     
     public static final String ARTICLE_ARTICLE_CATEGORY_LIST = "articleArticleCategoryList";
     
-    public static final String ARTICLE_MEDIA = "articleMedia";
-    
     public String getArticleId() {
         return getString(ARTICLE_ID);
     }
@@ -255,7 +262,15 @@ public class Article extends BaseEntity {
     public void setArticleAuthor(String articleAuthor) {
         put(ARTICLE_AUTHOR, articleAuthor);
     }
-    
+
+    public JSONObject getArticleMedia() {
+        return getJSONObject(ARTICLE_MEDIA);
+    }
+
+    public void setArticleMedia(JSONObject articleMedia) {
+        put(ARTICLE_MEDIA, articleMedia);
+    }
+
     public String getArticleMediaId() {
         return getString(ARTICLE_MEDIA_ID);
     }
