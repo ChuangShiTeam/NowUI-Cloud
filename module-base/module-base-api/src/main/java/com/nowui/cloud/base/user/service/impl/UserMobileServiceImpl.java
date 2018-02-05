@@ -45,9 +45,7 @@ public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, Us
         );
         if (userMobileList != null && userMobileList.size() > 0) {
             for (UserMobile userMobile : userMobileList) {
-                delete(userMobile.getUserMobileId(), systemUpdateUserId, UserMobileRouter.USER_MOBILE_V1_DELETE,systemUpdateUserId,
-                        userMobile.getSystemVersion());
-//                delete(userMobile.getUserMobileId(), systemUpdateUserId, userMobile.getSystemVersion());
+                delete(userMobile.getUserMobileId(), systemUpdateUserId, userMobile.getSystemVersion());
 
             }
         }

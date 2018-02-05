@@ -6,7 +6,6 @@ import com.nowui.cloud.member.member.router.MemberRouter;
 import com.nowui.cloud.member.member.view.MemberView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +34,11 @@ public class MemberAdminController extends BaseController {
 
     @ApiOperation(value = "会员列表")
     @RequestMapping(value = "/member/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Member body) {
+    public Map<String, Object> listV1() {
+        Member memberEntity = getEntry(Member.class);
+
         validateRequest(
-                body,
+                memberEntity,
                 Member.APP_ID,
                 Member.MEMBER_IS_TOP,
                 Member.MEMBER_IS_RECOMMED,
@@ -45,8 +46,8 @@ public class MemberAdminController extends BaseController {
                 Member.PAGE_SIZE
         );
 
-        Integer resultTotal = memberService.countForAdmin(body.getAppId() , body.getMemberIsTop(), body.getMemberIsRecommed());
-        List<Member> resultList = memberService.listForAdmin(body.getAppId(), body.getMemberIsTop(), body.getMemberIsRecommed(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberService.countForAdmin(memberEntity.getAppId() , memberEntity.getMemberIsTop(), memberEntity.getMemberIsRecommed());
+        List<Member> resultList = memberService.listForAdmin(memberEntity.getAppId(), memberEntity.getMemberIsTop(), memberEntity.getMemberIsRecommed(), memberEntity.getPageIndex(), memberEntity.getPageSize());
 
         validateResponse(
                 Member.MEMBER_ID,
@@ -59,15 +60,17 @@ public class MemberAdminController extends BaseController {
 
     @ApiOperation(value = "会员信息")
     @RequestMapping(value = "/member/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Member body) {
+    public Map<String, Object> findV1() {
+        Member memberEntity = getEntry(Member.class);
+
         validateRequest(
-                body,
+                memberEntity,
                 Member.APP_ID,
                 Member.MEMBER_ID
         );
 
-        MemberView result = memberService.find(body.getMemberId());
-//        body.getMemberId()body.getMemberId()
+        MemberView result = memberService.find(memberEntity.getMemberId());
+//        memberEntity.getMemberId()memberEntity.getMemberId()
 
         validateResponse(
                 Member.MEMBER_ID,
@@ -83,9 +86,11 @@ public class MemberAdminController extends BaseController {
 
     @ApiOperation(value = "新增会员")
     @RequestMapping(value = "/member/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Member body) {
+    public Map<String, Object> saveV1() {
+        Member memberEntity = getEntry(Member.class);
+
         validateRequest(
-                body,
+                memberEntity,
                 Member.APP_ID,
                 Member.USER_ID,
                 Member.MEMBER_IS_TOP,
@@ -94,16 +99,26 @@ public class MemberAdminController extends BaseController {
                 Member.MEMBER_IS_RECOMMED
         );
 
-        Boolean result = memberService.save(body,Util.getRandomUUID(),body.getAppId(),MemberRouter.MEMBER_V1_SAVE,body.getSystemCreateUserId());
-//        Util.getRandomUUID(), body.getSystemRequestUserId()
-        return renderJson(result);
+        Member result = memberService.save(memberEntity,Util.getRandomUUID(),memberEntity.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberRouter.MEMBER_V1_SAVE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员")
     @RequestMapping(value = "/member/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Member body) {
+    public Map<String, Object> updateV1() {
+        Member memberEntity = getEntry(Member.class);
+
         validateRequest(
-                body,
+                memberEntity,
                 Member.MEMBER_ID,
                 Member.APP_ID,
                 Member.USER_ID,
@@ -114,24 +129,42 @@ public class MemberAdminController extends BaseController {
                 Member.SYSTEM_VERSION
         );
 
-        Boolean result = memberService.update(body,body.getMemberId(),body.getAppId(), MemberRouter.MEMBER_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
-//        body, body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion()
-        return renderJson(result);
+        Member result = memberService.update(memberEntity,memberEntity.getMemberId(),memberEntity.getSystemUpdateUserId(),memberEntity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberRouter.MEMBER_V1_UPDATE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员")
     @RequestMapping(value = "/member/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Member body) {
+    public Map<String, Object> deleteV1() {
+        Member memberEntity = getEntry(Member.class);
+
         validateRequest(
-                body,
+                memberEntity,
                 Member.MEMBER_ID,
                 Member.APP_ID,
                 Member.SYSTEM_VERSION
         );
 
-        Boolean result = memberService.delete(body.getMemberId(),body.getAppId(),MemberRouter.MEMBER_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
-        // body.getMemberId(), body.getSystemRequestUserId(), body.getSystemVersion()
-        return renderJson(result);
+        Member result = memberService.delete(memberEntity.getMemberId(),memberEntity.getSystemUpdateUserId(),memberEntity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberRouter.MEMBER_V1_DELETE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

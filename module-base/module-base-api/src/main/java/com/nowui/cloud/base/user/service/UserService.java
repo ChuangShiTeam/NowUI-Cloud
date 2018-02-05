@@ -57,7 +57,7 @@ public interface UserService extends SuperService<User,UserView> {
      * @param objectId 用户主体编号
      * @param userType 用户信息
      * @param systemRequestUserId 请求用户编号
-     * @param Boolean 成功或失败
+     * @return Boolean 成功或失败
      */
     Boolean deleteByObjectIdAndUserType(String objectId, String userType, String systemRequestUserId);
     

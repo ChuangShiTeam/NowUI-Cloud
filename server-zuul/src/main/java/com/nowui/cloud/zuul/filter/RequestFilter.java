@@ -108,6 +108,8 @@ public class RequestFilter extends ZuulFilter {
             String systemRequestUserId = decipherToken(token, context);
 
             parameterJSONObject.put(Constant.SYSTEM_REQUEST_USER_ID, systemRequestUserId);
+            parameterJSONObject.put(Constant.SYSTEM_CREATE_USER_ID, systemRequestUserId);
+            parameterJSONObject.put(Constant.SYSTEM_UPDATE_USER_ID, systemRequestUserId);
             parameterJSONObject.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Util.getIpAddress(request));
 
             final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();

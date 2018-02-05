@@ -44,9 +44,7 @@ public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper
         );
         if (userPasswordList != null && userPasswordList.size() > 0) {
             for (UserPassword userPassword : userPasswordList) {
-//                delete(userPassword.getUserPasswordId(), systemUpdateUserId, userPassword.getSystemVersion());
-                delete(userPassword.getUserPasswordId(), systemUpdateUserId, UserPasswordRouter.USER_PASSWORD_V1_DELETE,systemUpdateUserId,
-                        userPassword.getSystemVersion());
+                delete(userPassword.getUserPasswordId(), systemUpdateUserId, userPassword.getSystemVersion());
             }
         }
         

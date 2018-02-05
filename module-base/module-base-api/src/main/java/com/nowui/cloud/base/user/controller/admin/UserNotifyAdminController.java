@@ -96,11 +96,19 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.NOTIFY_ID
         );
 
-        Boolean result = userNotifyService.save(userNotifyEntity,Util.getRandomUUID(),userNotifyEntity.getAppId(),
-                UserNotifyRouter.USER_NOTIFY_V1_SAVE,userNotifyEntity.getSystemCreateUserId());
-//        Boolean result = userNotifyService.save(userNotifyEntity, Util.getRandomUUID(), userNotifyEntity.getSystemRequestUserId());
+        String userNotifyId = Util.getRandomUUID();
 
-        return renderJson(result);
+        UserNotify result = userNotifyService.save(userNotifyEntity, userNotifyId, userNotifyEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_SAVE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改用户消息队列表")
@@ -118,11 +126,17 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.SYSTEM_VERSION
         );
 
-//        Boolean result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
-        Boolean result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(),userNotifyEntity.getAppId(),UserNotifyRouter.USER_NOTIFY_V1_UPDATE,
-                userNotifyEntity.getSystemUpdateUserId(),userNotifyEntity.getSystemVersion());
+        UserNotify result = userNotifyService.update(userNotifyEntity, userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_UPDATE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除用户消息队列表")
@@ -137,12 +151,32 @@ public class UserNotifyAdminController extends BaseController {
                 UserNotify.SYSTEM_VERSION
         );
 
-        Boolean result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(),
-                userNotifyEntity.getSystemRequestUserId(),UserNotifyRouter.USER_NOTIFY_V1_DELETE,userNotifyEntity.getSystemUpdateUserId(),
-                userNotifyEntity.getSystemVersion());
-//        Boolean result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
+        UserNotify result = userNotifyService.delete(userNotifyEntity.getUserNotifyId(), userNotifyEntity.getSystemRequestUserId(), userNotifyEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_DELETE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "管理员数据同步")
+    @RequestMapping(value = "/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<UserNotify> userNotifyList = userNotifyService.listByMysql();
+
+        for (UserNotify userNotify : userNotifyList) {
+            UserNotifyView userNotifyView = new UserNotifyView();
+            userNotifyView.putAll(userNotify);
+
+            userNotifyService.update(userNotifyView);
+        }
+
+        return renderJson(true);
     }
 
 }

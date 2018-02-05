@@ -46,9 +46,7 @@ public class UserAvatarServiceImpl extends SuperServiceImpl<UserAvatarMapper, Us
         );
         if (userAvatarList != null && userAvatarList.size() > 0) {
             for (UserAvatar userAvatar : userAvatarList) {
-                delete(userAvatar.getUserAvatarId(), systemUpdateUserId, UserAvatarRouter.USER_AVATAR_V1_DELETE,userAvatar.getSystemUpdateUserId(),
-                        userAvatar.getSystemVersion());
-//                delete(userAvatar.getUserAvatarId(), systemUpdateUserId, userAvatar.getSystemVersion());
+                delete(userAvatar.getUserAvatarId(), systemUpdateUserId, userAvatar.getSystemVersion());
             }
         }
     }

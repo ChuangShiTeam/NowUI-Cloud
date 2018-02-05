@@ -51,6 +51,10 @@ public class Constant {
 
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
+    public static final String SYSTEM_CREATE_USER_ID = "systemCreateUserId";
+
+    public static final String SYSTEM_UPDATE_USER_ID = "systemUpdateUserId";
+
     public static final String SYSTEM_REQUEST_IP_ADDRESS = "systemRequestIpAddress";
 
     public static final int PREFETCH_COUNT = 10;

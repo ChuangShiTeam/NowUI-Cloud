@@ -45,9 +45,7 @@ public class UserIdcardServiceImpl extends SuperServiceImpl<UserIdcardMapper, Us
         );
         if (userIdcardList != null && userIdcardList.size() > 0) {
             for (UserIdcard userIdcard : userIdcardList) {
-                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, UserIdcardRouter.USER_IDCARD_V1_DELETE,systemUpdateUserId,
-                        userIdcard.getSystemVersion());
-//                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, userIdcard.getSystemVersion());
+                delete(userIdcard.getUserIdcardId(), systemUpdateUserId, userIdcard.getSystemVersion());
             }
         }
     }

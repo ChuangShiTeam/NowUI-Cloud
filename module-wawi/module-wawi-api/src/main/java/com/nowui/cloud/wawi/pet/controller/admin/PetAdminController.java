@@ -102,9 +102,19 @@ public class PetAdminController extends BaseController {
                 Pet.PET_DESCRIPTION
         );
 
-        Boolean result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getAppId(), PetRouter.PET_V1_SAVE, petEntity.getSystemRequestUserId());
+        String petId = Util.getRandomUUID();
 
-        return renderJson(result);
+        Pet result = petService.save(petEntity, petId, petEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_SAVE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改宠物")
@@ -126,9 +136,17 @@ public class PetAdminController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.update(petEntity, petEntity.getPetId(), petEntity.getAppId(), PetRouter.PET_V1_UPDATE, petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
+        Pet result = petService.update(petEntity, petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_UPDATE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除宠物")
@@ -143,9 +161,32 @@ public class PetAdminController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.delete(petEntity.getPetId(), petEntity.getAppId(), PetRouter.PET_V1_DELETE, petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
+        Pet result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_DELETE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "宠物数据同步")
+    @RequestMapping(value = "/pet/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Pet> petList = petService.listByMysql();
+
+        for (Pet pet : petList) {
+            PetView petView = new PetView();
+            petView.putAll(pet);
+
+            petService.update(petView);
+        }
+
+        return renderJson(true);
     }
 
 }

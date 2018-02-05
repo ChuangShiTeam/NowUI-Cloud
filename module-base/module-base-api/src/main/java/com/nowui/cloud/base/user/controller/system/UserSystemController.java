@@ -123,10 +123,9 @@ public class UserSystemController implements UserRpc {
         user.setUserId(userId);
         user.setObjectId(objectId);
         user.setUserType(userType);
-        
-        Boolean result = userService.save(user,userId, appId,UserRouter.USER_V1_SAVE,user.getSystemCreateUserId());
-//        Boolean result = userService.save(user, userId, systemRequestUserId);
-        if (result) {
+
+        User result = userService.save(user, userId, systemRequestUserId);
+        if (result != null) {
             userWechat.setAppId(appId);
             userWechat.setUserId(userId);
             
@@ -146,9 +145,11 @@ public class UserSystemController implements UserRpc {
             }
             // 保存用户微信头像
             userService.saveUserWechat(appId, userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
+
+            return true;
+        } else {
+            return false;
         }
-        
-        return result;
     }
 
     @Override
@@ -325,9 +326,9 @@ public class UserSystemController implements UserRpc {
         user.setUserType(userType);
         user.setObjectId(objectId);
         
-        Boolean result = userService.save(user, userId, userId,UserRouter.USER_V1_SAVE,systemRequestUserId);
+        User result = userService.save(user, userId,systemRequestUserId);
         
-        if (result) {
+        if (result != null) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
             userAccountBean.setUserAccount(userAccount);
@@ -340,23 +341,24 @@ public class UserSystemController implements UserRpc {
             UserMobile userMobile = new UserMobile();
             userMobile.setUserMobile(userAccount);
             userService.saveUserMobile(appId, userId, userMobile, Util.getRandomUUID(), userId);
+
+            return true;
+        } else {
+            return false;
         }
-        
-        return result;
     }
 
     @Override
-    public Boolean registerUserEmailV1(String appId, String userId, String objectId, String userType,
-            String userAccount, String userPassword, String systemRequestUserId) {
+    public Boolean registerUserEmailV1(String appId, String userId, String objectId, String userType, String userAccount, String userPassword, String systemRequestUserId) {
         User user = new User();
         user.setUserId(userId);
         user.setAppId(appId);
         user.setUserType(userType);
         user.setObjectId(objectId);
         
-        Boolean result = userService.save(user, userId, userId,UserRouter.USER_V1_SAVE,systemRequestUserId);
+        User result = userService.save(user, userId,systemRequestUserId);
         
-        if (result) {
+        if (result != null) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
             userAccountBean.setUserAccount(userAccount);
@@ -369,9 +371,11 @@ public class UserSystemController implements UserRpc {
             UserEmail userEmail = new UserEmail();
             userEmail.setUserEmail(userAccount);
             userService.saveUserEmail(appId, userId, userEmail, Util.getRandomUUID(), userId);
+
+            return true;
+        } else {
+            return false;
         }
-        
-        return result;
     }
 
     @Override

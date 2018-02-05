@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.role.controller.admin;
+
 import com.nowui.cloud.base.role.router.RoleMenuRouter;
 import com.nowui.cloud.base.role.view.RoleMenuView;
 import com.nowui.cloud.controller.BaseController;
@@ -18,7 +19,7 @@ import java.util.Map;
  * 角色菜单管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-02
  */
 @Api(value = "角色菜单", description = "角色菜单管理端接口管理")
@@ -42,7 +43,7 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.PAGE_SIZE
         );
 
-        Integer resultTotal = roleMenuService.countForAdmin(roleMenuEntity.getAppId() , roleMenuEntity.getRoleId(), roleMenuEntity.getMenuId());
+        Integer resultTotal = roleMenuService.countForAdmin(roleMenuEntity.getAppId(), roleMenuEntity.getRoleId(), roleMenuEntity.getMenuId());
         List<RoleMenu> resultList = roleMenuService.listForAdmin(roleMenuEntity.getAppId(), roleMenuEntity.getRoleId(), roleMenuEntity.getMenuId(), roleMenuEntity.getPageIndex(), roleMenuEntity.getPageSize());
 
         validateResponse(
@@ -88,17 +89,24 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.MENU_ID
         );
 
-        Boolean result = roleMenuService.save(roleMenuEntity,Util.getRandomUUID(),roleMenuEntity.getAppId(),
-                RoleMenuRouter.ROLE_MENU_V1_SAVE,roleMenuEntity.getSystemCreateUserId());
-//        Boolean result = roleMenuService.save(roleMenuEntity, Util.getRandomUUID(), roleMenuEntity.getSystemRequestUserId());
+        RoleMenu result = roleMenuService.save(roleMenuEntity, Util.getRandomUUID(), roleMenuEntity.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_SAVE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改角色菜单")
     @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
+
         validateRequest(
                 roleMenuEntity,
                 RoleMenu.ROLE_MENU_ID,
@@ -108,11 +116,17 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.update(roleMenuEntity,roleMenuEntity.getRoleMenuId(),roleMenuEntity.getAppId(),RoleMenuRouter.ROLE_MENU_V1_UPDATE
-        ,roleMenuEntity.getSystemUpdateUserId(),roleMenuEntity.getSystemVersion());
-//        Boolean result = roleMenuService.update(roleMenuEntity, roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
+        RoleMenu result = roleMenuService.update(roleMenuEntity, roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemUpdateUserId(), roleMenuEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_UPDATE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除角色菜单")
@@ -127,11 +141,32 @@ public class RoleMenuAdminController extends BaseController {
                 RoleMenu.SYSTEM_VERSION
         );
 
-        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(),roleMenuEntity.getAppId(),RoleMenuRouter.ROLE_MENU_V1_DELETE,
-                roleMenuEntity.getSystemUpdateUserId(),roleMenuEntity.getSystemVersion());
+        RoleMenu result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemUpdateUserId(), roleMenuEntity.getSystemVersion());
 
-//        Boolean result = roleMenuService.delete(roleMenuEntity.getRoleMenuId(), roleMenuEntity.getSystemRequestUserId(), roleMenuEntity.getSystemVersion());
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_DELETE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "角色数据同步")
+    @RequestMapping(value = "/role/menu/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<RoleMenu> roleMenuList = roleMenuService.listByMysql();
+
+        for(RoleMenu roleMenu : roleMenuList) {
+            RoleMenuView roleMenuView = new RoleMenuView();
+            roleMenuView.putAll(roleMenu);
+
+            roleMenuService.update(roleMenuView);
+        }
+
+        return renderJson(true);
     }
 
 }

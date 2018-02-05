@@ -44,9 +44,7 @@ public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, 
         );
         if (userAccountList != null && userAccountList.size() > 0) {
             for (UserAccount userAccount : userAccountList) {
-//                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
-                delete(userAccount.getUserAccountId(),userAccount.getAppId(), UserAccountRouter.USER_ACCOUNT_V1_DELETE,
-                        userAccount.getSystemUpdateUserId(),userAccount.getSystemVersion());
+                delete(userAccount.getUserAccountId(), systemUpdateUserId, userAccount.getSystemVersion());
             }
         }
     }
