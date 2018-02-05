@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.role.controller.admin;
+
 import com.nowui.cloud.base.role.router.RoleRouter;
 import com.nowui.cloud.base.role.view.RoleView;
 import com.nowui.cloud.controller.BaseController;
@@ -18,7 +19,7 @@ import java.util.Map;
  * 角色管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-02
  */
 @Api(value = "角色", description = "角色管理端接口管理")
@@ -42,7 +43,7 @@ public class RoleAdminController extends BaseController {
                 Role.PAGE_SIZE
         );
 
-        Integer resultTotal = roleService.countForAdmin(roleEntity.getAppId() , roleEntity.getRoleName(), roleEntity.getRoleCode());
+        Integer resultTotal = roleService.countForAdmin(roleEntity.getAppId(), roleEntity.getRoleName(), roleEntity.getRoleCode());
         List<Role> resultList = roleService.listForAdmin(roleEntity.getAppId(), roleEntity.getRoleName(), roleEntity.getRoleCode(), roleEntity.getPageIndex(), roleEntity.getPageSize());
 
         validateResponse(
@@ -93,11 +94,19 @@ public class RoleAdminController extends BaseController {
                 Role.ROLE_SORT
         );
 
-        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(),roleEntity.getAppId(), RoleRouter.ROLE_V1_SAVE,
-                roleEntity.getSystemCreateUserId());
-        //        Boolean result = roleService.save(roleEntity, Util.getRandomUUID(), roleEntity.getSystemRequestUserId());
+        String roleId = Util.getRandomUUID();
 
-        return renderJson(result);
+        Role result = roleService.save(roleEntity, roleId, roleEntity.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleRouter.ROLE_V1_SAVE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改角色")
@@ -116,11 +125,17 @@ public class RoleAdminController extends BaseController {
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.update(roleEntity,roleEntity.getRoleId(),roleEntity.getAppId(),RoleRouter.ROLE_V1_UPDATE,
-                roleEntity.getSystemUpdateUserId(),roleEntity.getSystemVersion());
-//        Boolean result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
+        Role result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemUpdateUserId(), roleEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleRouter.ROLE_V1_UPDATE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除角色")
@@ -135,21 +150,30 @@ public class RoleAdminController extends BaseController {
                 Role.SYSTEM_VERSION
         );
 
-        Boolean result = roleService.delete(roleEntity.getRoleId(),roleEntity.getAppId(),
-                RoleRouter.ROLE_V1_DELETE,roleEntity.getSystemUpdateUserId(),roleEntity.getSystemVersion());
-//        Boolean result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemRequestUserId(), roleEntity.getSystemVersion());
+        Role result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemUpdateUserId(), roleEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, RoleRouter.ROLE_V1_DELETE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
-    
-    @ApiOperation(value = "角色重建缓存")
-    @RequestMapping(value = "/role/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1() {
-        Role roleEntity = getEntry(Role.class);
 
-        validateRequest(roleEntity, Role.ROLE_ID);
+    @ApiOperation(value = "角色数据同步")
+    @RequestMapping(value = "/role/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Role> roleList = roleService.listByMysql();
 
-        roleService.replace(roleEntity.getRoleId());
+        for(Role role : roleList) {
+            RoleView roleView = new RoleView();
+            roleView.putAll(role);
+
+            roleService.update(roleView);
+        }
 
         return renderJson(true);
     }

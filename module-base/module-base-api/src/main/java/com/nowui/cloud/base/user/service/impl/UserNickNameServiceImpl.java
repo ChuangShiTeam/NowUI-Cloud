@@ -42,9 +42,7 @@ public class UserNickNameServiceImpl extends SuperServiceImpl<UserNickNameMapper
         );
         if (userNickNameList != null && userNickNameList.size() > 0) {
             for (UserNickName userNickName : userNickNameList) {
-                delete(userNickName.getUserNickNameId(), systemUpdateUserId, UserNickNameRouter.USER_NICK_NAME_V1_DELETE,systemUpdateUserId,
-                        userNickName.getSystemVersion());
-//                delete(userNickName.getUserNickNameId(), systemUpdateUserId, userNickName.getSystemVersion());
+                delete(userNickName.getUserNickNameId(), systemUpdateUserId, userNickName.getSystemVersion());
 
             }
         }

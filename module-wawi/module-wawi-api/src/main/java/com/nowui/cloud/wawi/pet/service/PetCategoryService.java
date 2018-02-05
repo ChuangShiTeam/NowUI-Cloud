@@ -93,16 +93,4 @@ public interface PetCategoryService extends SuperService<PetCategory, PetCategor
      * @return List<PetCategory> 宠物分类列表
      */
     List<PetCategory> childrenList(String appId);
-
-    /**
-     * 删除宠物分类
-     * 
-     * @param petCategoryId 宠物分类编号
-     * @param appId 应用编号
-     * @param router 路由
-     * @param systemReuqestUserId 请求用户编号
-     * @param systemVersion 版本号
-     * @return Boolean 是否成功
-     */
-    Boolean delete(String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion);
 }

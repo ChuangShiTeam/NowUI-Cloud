@@ -51,21 +51,21 @@ public class MemberVisitForumMobileController extends BaseController {
         MemberVisitForum memberVisitForum = memberVisitForumService.findByUserId(body.getSystemRequestUserId());
 
         Map<String, Object> result = new HashMap<>();
-        if (Util.isNullOrEmpty(memberVisitForum)) {
-        	// 保存会员访问圈子记录
-        	Member member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
-        	
-        	body.setUserId(body.getSystemRequestUserId());
-        	body.setMemberId(member.getMemberId());
-        	
-        	memberVisitForumService.save(body, Util.getRandomUUID(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, body.getSystemRequestUserId());
-        	
-        	result.put("isVisit", "false");
-        } else {
-        	result.put("isVisit", "true");
-        }
-        
-        validateResponse("isVisit");
+//        if (Util.isNullOrEmpty(memberVisitForum)) {
+//        	// 保存会员访问圈子记录
+//        	Member member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
+//
+//        	body.setUserId(body.getSystemRequestUserId());
+//        	body.setMemberId(member.getMemberId());
+//
+//        	memberVisitForumService.save(body, Util.getRandomUUID(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, body.getSystemRequestUserId());
+//
+//        	result.put("isVisit", "false");
+//        } else {
+//        	result.put("isVisit", "true");
+//        }
+//
+//        validateResponse("isVisit");
 
         return renderJson(result);
     }

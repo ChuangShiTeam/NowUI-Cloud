@@ -147,7 +147,7 @@ public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, Sm
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -captchaMinute);
 
-        Integer count = countByTypeAndMobile(appId, smsCaptchaType, smsCaptchaMobile, calendar.getTime());
+//        Integer count = countByTypeAndMobile(appId, smsCaptchaType, smsCaptchaMobile, calendar.getTime());
 /*
         if (count > 0) {
             throw new RuntimeException(captchaMinute + "分钟内不能重复申请");
@@ -167,10 +167,10 @@ public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, Sm
         smsCaptcha.setSmsCaptchaMobile(smsCaptchaMobile);
         smsCaptcha.setSmsCaptchaCode(smsCaptchaCode);
         smsCaptcha.setSmsCaptchaIpAddress(smsCaptchaIpAddress);
-        Boolean result = save(smsCaptcha, Util.getRandomUUID(),appId, SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE,systemRequestUserId);
-//        Boolean result = save(smsCaptcha, Util.getRandomUUID(), systemRequestUserId);
 
-        if (!result) {
+        SmsCaptcha result = save(smsCaptcha, Util.getRandomUUID(),systemRequestUserId);
+
+        if (result == null) {
             throw new RuntimeException("验证码发送不成功");
         }
 

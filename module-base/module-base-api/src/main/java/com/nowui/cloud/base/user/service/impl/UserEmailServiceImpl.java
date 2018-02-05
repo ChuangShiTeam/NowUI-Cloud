@@ -45,9 +45,7 @@ public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, User
         );
         if (userEmailList != null && userEmailList.size() > 0) {
             for (UserEmail userEmail : userEmailList) {
-                delete(userEmail.getUserEmailId(), systemUpdateUserId, UserEmailRouter.USER_EMAIL_V1_DELETE,systemUpdateUserId,
-                        userEmail.getSystemVersion());
-//                delete(userEmail.getUserEmailId(), systemUpdateUserId, userEmail.getSystemVersion());
+                delete(userEmail.getUserEmailId(), systemUpdateUserId, userEmail.getSystemVersion());
             }
         }
     }

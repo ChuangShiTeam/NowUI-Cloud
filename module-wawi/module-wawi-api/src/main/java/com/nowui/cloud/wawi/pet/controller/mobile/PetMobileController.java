@@ -111,9 +111,17 @@ public class PetMobileController extends BaseController {
                 Pet.PET_DESCRIPTION
         );
 
-        Boolean result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getAppId(), PetRouter.PET_V1_SAVE, petEntity.getSystemCreateUserId());
+        Pet result = petService.save(petEntity, Util.getRandomUUID(), petEntity.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_SAVE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改宠物")
@@ -135,9 +143,17 @@ public class PetMobileController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.update(petEntity, petEntity.getPetId(), petEntity.getAppId(), PetRouter.PET_V1_UPDATE, petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
+        Pet result = petService.update(petEntity, petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_UPDATE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除宠物")
@@ -152,8 +168,16 @@ public class PetMobileController extends BaseController {
                 Pet.SYSTEM_VERSION
         );
 
-        Boolean result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getAppId(), PetRouter.PET_V1_DELETE, petEntity.getSystemVersion());
+        Pet result = petService.delete(petEntity.getPetId(), petEntity.getSystemRequestUserId(), petEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetRouter.PET_V1_DELETE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 }

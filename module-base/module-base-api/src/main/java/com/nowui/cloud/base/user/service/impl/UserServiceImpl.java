@@ -118,10 +118,14 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
         if (user == null) {
             return false;
         }
-//        return delete(user.getUserId(), systemRequestUserId, user.getSystemVersion());
 
-        return delete(user.getUserId(),user.getAppId(), UserRouter.USER_V1_DELETE,systemRequestUserId,
-                user.getSystemVersion());
+        User result = delete(user.getUserId(), systemRequestUserId, user.getSystemVersion());
+
+        if (result == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -175,11 +179,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userAccount.setAppId(appId);
         userAccount.setUserId(userId);
-        Boolean result = userAccountService.save(userAccount,userAccountId,appId, UserAccountRouter.USER_ACCOUNT_V1_SAVE,
-                systemRequestUserId);
-//        Boolean result = userAccountService.save(userAccount, userAccountId, systemRequestUserId);
 
-        if (result) {
+        UserAccount result = userAccountService.save(userAccount, userAccountId, systemRequestUserId);
+
+        if (result != null) {
             // 更新用户缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -187,8 +190,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -211,11 +217,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
         userPassword.setUserId(userId);
         
         userPassword.setUserPassword(Util.generatePassword(userPassword.getUserPassword()));
-        Boolean result = userPasswordService.save(userPassword, userPasswordId,appId,
-                UserPasswordRouter.USER_PASSWORD_V1_SAVE,systemRequestUserId);
-//        Boolean result = userPasswordService.save(userPassword, userPasswordId, systemRequestUserId);
 
-        if (result) {
+        UserPassword result = userPasswordService.save(userPassword, userPasswordId, systemRequestUserId);
+
+        if (result != null) {
             // 更新用户缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -223,8 +228,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -245,12 +253,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userEmail.setAppId(appId);
         userEmail.setUserId(userId);
-        
-        Boolean result = userEmailService.save(userEmail, userEmailId,appId, UserEmailRouter.USER_EMAIL_V1_SAVE,
-                systemRequestUserId);
 
-//        Boolean result = userEmailService.save(userEmail, userEmailId, systemRequestUserId);
-        if (result) {
+        UserEmail result = userEmailService.save(userEmail, userEmailId, systemRequestUserId);
+
+        if (result != null) {
             // 更新用户邮箱缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -258,8 +264,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -281,11 +290,9 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
         userAvatar.setAppId(appId);
         userAvatar.setUserId(userId);
         
-//        Boolean result = userAvatarService.save(userAvatar, userAvatarId, systemRequestUserId);
-        Boolean result = userAvatarService.save(userAvatar, userAvatarId,appId,UserAvatarRouter.USER_AVATAR_V1_SAVE,
-                systemRequestUserId);
+        UserAvatar result = userAvatarService.save(userAvatar, userAvatarId, systemRequestUserId);
 
-        if (result) {
+        if (result != null) {
             // 更新用户头像缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -293,8 +300,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -315,12 +325,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userMobile.setAppId(appId);
         userMobile.setUserId(userId);
-        
-        Boolean result = userMobileService.save(userMobile, userMobileId,appId,
-                UserMobileRouter.USER_MOBILE_V1_SAVE,systemRequestUserId);
-//        Boolean result = userMobileService.save(userMobile, userMobileId, systemRequestUserId);
 
-        if (result) {
+        UserMobile result = userMobileService.save(userMobile, userMobileId, systemRequestUserId);
+
+        if (result != null) {
             // 更新用户手机号码缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -328,8 +336,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -350,12 +361,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userIdcard.setAppId(appId);
         userIdcard.setUserId(userId);
-        
-        Boolean result = userIdcardService.save(userIdcard,userIdcardId,appId, UserIdcardRouter.USER_IDCARD_V1_SAVE,
-                systemRequestUserId);
-//        Boolean result = userIdcardService.save(userIdcard, userIdcardId, systemRequestUserId);
 
-        if (result) {
+        UserIdcard result = userIdcardService.save(userIdcard, userIdcardId, systemRequestUserId);
+
+        if (result != null) {
             // 更新用户身份证缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
@@ -367,8 +376,11 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -392,21 +404,22 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userNickName.setAppId(appId);
         userNickName.setUserId(userId);
-        
-        Boolean result = userNickNameService.save(userNickName, userNickNameId,appId,
-                UserNickNameRouter.USER_NICK_NAME_V1_SAVE,systemRequestUserId);
-//        Boolean result = userNickNameService.save(userNickName, userNickNameId, systemRequestUserId);
+
+        UserNickName result = userNickNameService.save(userNickName, userNickNameId, systemRequestUserId);
 
 
-        if (result) {
+        if (result != null) {
             // 更新用户昵称缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
                 user.put(User.USER_NICK_NAME, userNickNameService.find(userNickNameId).getUserNickName());
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override
@@ -426,20 +439,21 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
             String systemRequestUserId) {
         userWechat.setAppId(appId);
         userWechat.setUserId(userId);
-        
-        Boolean result = userWechatService.save(userWechat, userWechatId,appId,UserWechatRouter.USER_WECHAT_V1_SAVE,systemRequestUserId);
-//        Boolean result = userWechatService.save(userWechat, userWechatId, systemRequestUserId);
 
+        UserWechat result = userWechatService.save(userWechat, userWechatId, systemRequestUserId);
 
-        if (result) {
+        if (result != null) {
             // 更新用户微信缓存
             User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
             if (user != null) {
                 user.put(User.USER_WECHAT, userWechatService.find(userWechatId));
                 redisTemplate.opsForValue().set(getItemCacheName(userId), user);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
     @Override

@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.subscription.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,12 @@ import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import rx.subscriptions.Subscriptions;
 
 /**
  * 订阅管理端控制器
  *
  * @author shawn
- *
+ * <p>
  * 2018-01-28
  */
 @Api(value = "订阅", description = "订阅管理端接口管理")
@@ -67,7 +67,7 @@ public class SubscriptionAdminController extends BaseController {
 
     @ApiOperation(value = "订阅信息")
     @RequestMapping(value = "/subscription/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(){
+    public Map<String, Object> findV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
         validateRequest(
@@ -77,7 +77,6 @@ public class SubscriptionAdminController extends BaseController {
         );
 
         SubscriptionView result = subscriptionService.find(subscriptionEntity.getSubscriptionId());
-//        Subscription result = subscriptionService.find(subscriptionEntity.getSubscriptionId());
 
         validateResponse(
                 Subscription.SUBSCRIPTION_ID,
@@ -105,11 +104,17 @@ public class SubscriptionAdminController extends BaseController {
                 Subscription.SUBSCRIPTION_USER
         );
 
-        Boolean result = subscriptionService.save(subscriptionEntity, Util.getRandomUUID(),subscriptionEntity.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_SAVE,
-                subscriptionEntity.getSystemCreateUserId());
-//        Boolean result = subscriptionService.save(subscriptionEntity, Util.getRandomUUID(), subscriptionEntity.getSystemRequestUserId());
+        Subscription result = subscriptionService.save(subscriptionEntity, Util.getRandomUUID(), subscriptionEntity.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改订阅")
@@ -128,11 +133,17 @@ public class SubscriptionAdminController extends BaseController {
                 Subscription.SYSTEM_VERSION
         );
 
-        Boolean result = subscriptionService.update(subscriptionEntity, subscriptionEntity.getSubscriptionId(),subscriptionEntity.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_UPDATE,
-                subscriptionEntity.getSystemUpdateUserId(),subscriptionEntity.getSystemVersion());
-//        Boolean result = subscriptionService.update(subscriptionEntity, subscriptionEntity.getSubscriptionId(), subscriptionEntity.getSystemRequestUserId(), subscriptionEntity.getSystemVersion());
+        Subscription result = subscriptionService.update(subscriptionEntity, subscriptionEntity.getSubscriptionId(), subscriptionEntity.getSystemUpdateUserId(), subscriptionEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_UPDATE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除订阅")
@@ -147,11 +158,32 @@ public class SubscriptionAdminController extends BaseController {
                 Subscription.SYSTEM_VERSION
         );
 
-        Boolean result = subscriptionService.delete(subscriptionEntity.getSubscriptionId(), subscriptionEntity.getSystemRequestUserId(),SubscriptionRouter.SUBSCRIPTION_V1_DELETE
-        ,subscriptionEntity.getSystemUpdateUserId(),subscriptionEntity.getSystemVersion());
-//        Boolean result = subscriptionService.delete(subscriptionEntity.getSubscriptionId(), subscriptionEntity.getSystemRequestUserId(), subscriptionEntity.getSystemVersion());
+        Subscription result = subscriptionService.delete(subscriptionEntity.getSubscriptionId(), subscriptionEntity.getSystemRequestUserId(), subscriptionEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_DELETE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "订阅数据同步")
+    @RequestMapping(value = "/subscription/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Subscription> subscriptionList = subscriptionService.listByMysql();
+
+        for(Subscription subscription : subscriptionList) {
+            SubscriptionView subscriptionView = new SubscriptionView();
+            subscriptionView.putAll(subscription);
+
+            subscriptionService.update(subscriptionView);
+        }
+
+        return renderJson(true);
     }
 
 }

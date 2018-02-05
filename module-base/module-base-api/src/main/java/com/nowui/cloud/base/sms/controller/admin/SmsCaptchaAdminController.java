@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.sms.controller.admin;
+
 import com.nowui.cloud.base.sms.router.SmsCaptchaRouter;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import com.nowui.cloud.controller.BaseController;
@@ -18,7 +19,7 @@ import java.util.Map;
  * 短信验证码管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-05
  */
 @Api(value = "短信验证码", description = "短信验证码管理端接口管理")
@@ -43,7 +44,7 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.PAGE_SIZE
         );
 
-        Integer resultTotal = smsCaptchaService.countForAdmin(smsCaptchaEntity.getAppId() , smsCaptchaEntity.getSmsCaptchaType(), smsCaptchaEntity.getSmsCaptchaMobile(), smsCaptchaEntity.getSmsCaptchaIpAddress());
+        Integer resultTotal = smsCaptchaService.countForAdmin(smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSmsCaptchaType(), smsCaptchaEntity.getSmsCaptchaMobile(), smsCaptchaEntity.getSmsCaptchaIpAddress());
         List<SmsCaptcha> resultList = smsCaptchaService.listForAdmin(smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSmsCaptchaType(), smsCaptchaEntity.getSmsCaptchaMobile(), smsCaptchaEntity.getSmsCaptchaIpAddress(), smsCaptchaEntity.getPageIndex(), smsCaptchaEntity.getPageSize());
 
         validateResponse(
@@ -95,11 +96,19 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS
         );
 
-        Boolean result = smsCaptchaService.save(smsCaptchaEntity,Util.getRandomUUID(),smsCaptchaEntity.getAppId(),
-                SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE,smsCaptchaEntity.getSystemCreateUserId());
-//        Boolean result = smsCaptchaService.save(smsCaptchaEntity, Util.getRandomUUID(), smsCaptchaEntity.getSystemRequestUserId());
+        String smsCaptchaId = Util.getRandomUUID();
 
-        return renderJson(result);
+        SmsCaptcha result = smsCaptchaService.save(smsCaptchaEntity, smsCaptchaId, smsCaptchaEntity.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改短信验证码")
@@ -118,11 +127,17 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.update(smsCaptchaEntity,smsCaptchaEntity.getSmsCaptchaId(),smsCaptchaEntity.getAppId(),
-                SmsCaptchaRouter.SMS_CAPTCHA_V1_UPDATE,smsCaptchaEntity.getSystemUpdateUserId(),smsCaptchaEntity.getSystemVersion());
-//        Boolean result = smsCaptchaService.update(smsCaptchaEntity, smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
+        SmsCaptcha result = smsCaptchaService.update(smsCaptchaEntity, smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemUpdateUserId(), smsCaptchaEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_UPDATE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除短信验证码")
@@ -137,11 +152,32 @@ public class SmsCaptchaAdminController extends BaseController {
                 SmsCaptcha.SYSTEM_VERSION
         );
 
-        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(),smsCaptchaEntity.getAppId(),
-                SmsCaptchaRouter.SMS_CAPTCHA_V1_DELETE,smsCaptchaEntity.getSystemUpdateUserId(),smsCaptchaEntity.getSystemVersion());
-//        Boolean result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemRequestUserId(), smsCaptchaEntity.getSystemVersion());
+        SmsCaptcha result = smsCaptchaService.delete(smsCaptchaEntity.getSmsCaptchaId(), smsCaptchaEntity.getSystemUpdateUserId(), smsCaptchaEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_DELETE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "短信验证码数据同步")
+    @RequestMapping(value = "/sms/captcha/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<SmsCaptcha> smsCaptchaList = smsCaptchaService.listByMysql();
+
+        for(SmsCaptcha smsCaptcha : smsCaptchaList) {
+            SmsCaptchaView smsCaptchaView = new SmsCaptchaView();
+            smsCaptchaView.putAll(smsCaptcha);
+
+            smsCaptchaService.update(smsCaptchaView);
+        }
+
+        return renderJson(true);
     }
 
 }

@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.TreeUtil;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
 import com.nowui.cloud.wawi.pet.mapper.PetCategoryMapper;
 import com.nowui.cloud.wawi.pet.repository.PetCategoryRepository;
-import com.nowui.cloud.wawi.pet.router.PetCategoryRouter;
 import com.nowui.cloud.wawi.pet.service.PetCategoryService;
 import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
@@ -239,9 +237,10 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
     }
 
     @Override
-    public Boolean save(PetCategory entity, String petCategoryId, String appId, String router, String systemReuqestUserId) {
-        Boolean result = super.save(entity, petCategoryId, appId, router, systemReuqestUserId);
-        if (result) {
+    public PetCategory save(PetCategory entity, String petCategoryId, String systemReuqestUserId) {
+        PetCategory result = super.save(entity, petCategoryId, systemReuqestUserId);
+
+        if (result != null) {
             // 清空相关缓存
         	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
         	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
@@ -251,10 +250,10 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
     }
 
     @Override
-    public Boolean update(PetCategory entity, String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion) {
-        Boolean result = super.update(entity, petCategoryId, appId, router, systemReuqestUserId, systemVersion);
+    public PetCategory update(PetCategory entity, String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
+        PetCategory result = super.update(entity, petCategoryId, systemReuqestUserId, systemVersion);
 
-        if (result) {
+        if (result != null) {
             // 清空相关缓存
         	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
         	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
@@ -265,24 +264,24 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
     }
 
     @Override
-    public Boolean delete(String petCategoryId, String appId, String router, String systemReuqestUserId, Integer systemVersion) {
+    public PetCategory delete(String petCategoryId, String systemReuqestUserId, Integer systemVersion) {
         PetCategoryView petCategory = find(petCategoryId);
 
-        Boolean result = super.delete(petCategoryId, appId, router, systemReuqestUserId, systemVersion);
+        PetCategory result = super.delete(petCategoryId, systemReuqestUserId, systemVersion);
 
-        if (result) {
+        if (result != null) {
 
             //删除子级分类
             List<PetCategory> list = listByParentId(petCategoryId);
             if (!Util.isNullOrEmpty(list)) {
                 for (PetCategory entity : list) {
-                    super.delete(entity.getPetCategoryId(), appId, PetCategoryRouter.PET_CATEGORY_V1_DELETE, systemReuqestUserId, entity.getSystemVersion());
+                    super.delete(entity.getPetCategoryId(), systemReuqestUserId, entity.getSystemVersion());
                 }
             }
-            // 清空相关缓存
-            redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
-            redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
-            redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategoryId);
+//            // 清空相关缓存
+//            redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+//            redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
+//            redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategoryId);
             // 删除父级缓存
             if (!Util.isNullOrEmpty(petCategory.getPetCategoryParentId())) {
             	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());

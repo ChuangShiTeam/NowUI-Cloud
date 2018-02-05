@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.subscription.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
  * 订阅配置管理端控制器
  *
  * @author shawn
- *
+ * <p>
  * 2018-01-28
  */
 @Api(value = "订阅配置", description = "订阅配置管理端接口管理")
@@ -95,10 +96,19 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SUBSCRIPTION_USER_ID
         );
 
-        Boolean result = subscriptionConfigService.save(subscriptionConfigEntity,Util.getRandomUUID(),subscriptionConfigEntity.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_SAVE,subscriptionConfigEntity.getSystemRequestUserId());
-//        Boolean result = subscriptionConfigService.save(subscriptionConfigEntity, Util.getRandomUUID(), subscriptionConfigEntity.getSystemRequestUserId());
+        String subscriptionConfigId = Util.getRandomUUID();
 
-        return renderJson(result);
+        SubscriptionConfig result = subscriptionConfigService.save(subscriptionConfigEntity, subscriptionConfigId, subscriptionConfigEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改订阅配置")
@@ -114,9 +124,18 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SUBSCRIPTION_USER_ID,
                 SubscriptionConfig.SYSTEM_VERSION
         );
-        Boolean result = subscriptionConfigService.update(subscriptionConfigEntity,subscriptionConfigEntity.getSubscriptionConfigId(),subscriptionConfigEntity.getAppId(), SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE,subscriptionConfigEntity.getSystemUpdateUserId(),subscriptionConfigEntity.getSystemVersion());
-//        Boolean result = subscriptionConfigService.update(subscriptionConfigEntity, subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
-        return renderJson(result);
+
+        SubscriptionConfig result = subscriptionConfigService.update(subscriptionConfigEntity, subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemUpdateUserId(), subscriptionConfigEntity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除订阅配置")
@@ -131,11 +150,32 @@ public class SubscriptionConfigAdminController extends BaseController {
                 SubscriptionConfig.SYSTEM_VERSION
         );
 
-        Boolean result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(),subscriptionConfigEntity
-                .getAppId(),SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE,subscriptionConfigEntity.getSystemUpdateUserId(),subscriptionConfigEntity.getSystemVersion());
-//        Boolean result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemRequestUserId(), subscriptionConfigEntity.getSystemVersion());
+        SubscriptionConfig result = subscriptionConfigService.delete(subscriptionConfigEntity.getSubscriptionConfigId(), subscriptionConfigEntity.getSystemUpdateUserId(), subscriptionConfigEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "订阅配置同步")
+    @RequestMapping(value = "/subscription/config/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<SubscriptionConfig> subscriptionList = subscriptionConfigService.listByMysql();
+
+        for(SubscriptionConfig subscriptionConfig : subscriptionList) {
+            SubscriptionConfigView subscriptionConfigView = new SubscriptionConfigView();
+            subscriptionConfigView.putAll(subscriptionConfig);
+
+            subscriptionConfigService.update(subscriptionConfigView);
+        }
+
+        return renderJson(true);
     }
 
 }

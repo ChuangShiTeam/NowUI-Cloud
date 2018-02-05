@@ -45,9 +45,7 @@ public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, Us
         );
         if (userWechatList != null && userWechatList.size() > 0) {
             for (UserWechat userWechat : userWechatList) {
-                delete(userWechat.getUserWechatId(),userWechat.getAppId(), UserWechatRouter.USER_WECHAT_V1_DELETE,systemUpdateUserId,
-                        userWechat.getSystemVersion());
-//                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
+                delete(userWechat.getUserWechatId(), systemUpdateUserId, userWechat.getSystemVersion());
             }
         }
     }

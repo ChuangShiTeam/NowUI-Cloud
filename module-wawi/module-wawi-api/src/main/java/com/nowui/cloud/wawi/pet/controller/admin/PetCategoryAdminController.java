@@ -175,9 +175,17 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.PET_CATEGORY_SORT
         );
 
-        Boolean result = petCategoryService.save(petCategoryEntity, Util.getRandomUUID(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getSystemRequestUserId());
+        PetCategory result = petCategoryService.save(petCategoryEntity, Util.getRandomUUID(), petCategoryEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改宠物分类")
@@ -198,9 +206,17 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.SYSTEM_VERSION
         );
 
-        Boolean result = petCategoryService.update(petCategoryEntity, petCategoryEntity.getPetCategoryId(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
+        PetCategory result = petCategoryService.update(petCategoryEntity, petCategoryEntity.getPetCategoryId(), petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除宠物分类")
@@ -215,9 +231,32 @@ public class PetCategoryAdminController extends BaseController {
                 PetCategory.SYSTEM_VERSION
         );
 
-        Boolean result = petCategoryService.delete(petCategoryEntity.getPetCategoryId(), petCategoryEntity.getAppId(), PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
+        PetCategory result = petCategoryService.delete(petCategoryEntity.getPetCategoryId(), petCategoryEntity.getSystemRequestUserId(), petCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "宠物分类数据同步")
+    @RequestMapping(value = "/pet/category/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<PetCategory> petCategoryList = petCategoryService.listByMysql();
+
+        for (PetCategory petCategory : petCategoryList) {
+            PetCategoryView petCategoryView = new PetCategoryView();
+            petCategoryView.putAll(petCategory);
+
+            petCategoryService.update(petCategoryView);
+        }
+
+        return renderJson(true);
     }
 
 }

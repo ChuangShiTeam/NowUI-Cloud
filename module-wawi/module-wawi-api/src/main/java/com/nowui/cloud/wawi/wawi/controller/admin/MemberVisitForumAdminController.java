@@ -35,9 +35,11 @@ public class MemberVisitForumAdminController extends BaseController {
 
     @ApiOperation(value = "会员访问圈子列表")
     @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> listV1() {
+        MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
+
         validateRequest(
-                body,
+                memberVisitForumEntity,
                 MemberVisitForum.APP_ID,
                 MemberVisitForum.MEMBER_ID,
                 MemberVisitForum.USER_ID,
@@ -45,8 +47,8 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.PAGE_SIZE
         );
 
-        Integer resultTotal = memberVisitForumService.countForAdmin(body.getAppId() , body.getMemberId(), body.getUserId());
-        List<MemberVisitForum> resultList = memberVisitForumService.listForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = memberVisitForumService.countForAdmin(memberVisitForumEntity.getAppId() , memberVisitForumEntity.getMemberId(), memberVisitForumEntity.getUserId());
+        List<MemberVisitForum> resultList = memberVisitForumService.listForAdmin(memberVisitForumEntity.getAppId(), memberVisitForumEntity.getMemberId(), memberVisitForumEntity.getUserId(), memberVisitForumEntity.getPageIndex(), memberVisitForumEntity.getPageSize());
 
         validateResponse(
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID,
@@ -59,14 +61,16 @@ public class MemberVisitForumAdminController extends BaseController {
 
     @ApiOperation(value = "会员访问圈子信息")
     @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> findV1() {
+        MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
+
         validateRequest(
-                body,
+                memberVisitForumEntity,
                 MemberVisitForum.APP_ID,
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID
         );
 
-        MemberVisitForumView result = memberVisitForumService.find(body.getMemberVisitForumId());
+        MemberVisitForumView result = memberVisitForumService.find(memberVisitForumEntity.getMemberVisitForumId());
 
         validateResponse(
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID,
@@ -79,24 +83,38 @@ public class MemberVisitForumAdminController extends BaseController {
 
     @ApiOperation(value = "新增会员访问圈子")
     @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> saveV1() {
+        MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
+
         validateRequest(
-                body,
+                memberVisitForumEntity,
                 MemberVisitForum.APP_ID,
                 MemberVisitForum.MEMBER_ID,
                 MemberVisitForum.USER_ID
         );
 
-        Boolean result = memberVisitForumService.save(body, Util.getRandomUUID(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, body.getSystemRequestUserId());
+        String memberVisitForumId = Util.getRandomUUID();
 
-        return renderJson(result);
+        MemberVisitForum result = memberVisitForumService.save(memberVisitForumEntity, memberVisitForumId, memberVisitForumEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员访问圈子")
     @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> updateV1() {
+        MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
+
         validateRequest(
-                body,
+                memberVisitForumEntity,
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID,
                 MemberVisitForum.APP_ID,
                 MemberVisitForum.MEMBER_ID,
@@ -104,24 +122,57 @@ public class MemberVisitForumAdminController extends BaseController {
                 MemberVisitForum.SYSTEM_VERSION
         );
 
-        Boolean result = memberVisitForumService.update(body, body.getMemberVisitForumId(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberVisitForum result = memberVisitForumService.update(memberVisitForumEntity, memberVisitForumEntity.getMemberVisitForumId(), memberVisitForumEntity.getSystemRequestUserId(), memberVisitForumEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_UPDATE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员访问圈子")
     @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody MemberVisitForum body) {
+    public Map<String, Object> deleteV1() {
+        MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
+
         validateRequest(
-                body,
+                memberVisitForumEntity,
                 MemberVisitForum.MEMBER_VISIT_FORUM_ID,
                 MemberVisitForum.APP_ID,
                 MemberVisitForum.SYSTEM_VERSION
         );
 
-        Boolean result = memberVisitForumService.delete(body.getMemberVisitForumId(), body.getAppId(), MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberVisitForum result = memberVisitForumService.delete(memberVisitForumEntity.getMemberVisitForumId(), memberVisitForumEntity.getSystemRequestUserId(), memberVisitForumEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_DELETE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "会员访问圈子数据同步")
+    @RequestMapping(value = "/pemberVisitForum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<MemberVisitForum> pemberVisitForumList = memberVisitForumService.listByMysql();
+
+        for (MemberVisitForum pemberVisitForum : pemberVisitForumList) {
+            MemberVisitForumView pemberVisitForumView = new MemberVisitForumView();
+            pemberVisitForumView.putAll(pemberVisitForum);
+
+            memberVisitForumService.update(pemberVisitForumView);
+        }
+
+        return renderJson(true);
     }
 
 }
