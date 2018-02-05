@@ -156,13 +156,13 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 
 	@Override
 	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-		delete(
-    			new BaseWrapper<TopicForum>()
-    				.eq(TopicForum.APP_ID, appId)
-    				.eq(TopicForum.FORUM_ID, forumId)
-    				.eq(TopicForum.SYSTEM_STATUS, true),
-    			systemUpdateUserId
-    	);
+        delete(
+                new BaseWrapper<ForumUserFollow>()
+                        .eq(ForumUserFollow.APP_ID, appId)
+                        .eq(ForumUserFollow.FORUM_ID, forumId)
+                        .eq(ForumUserFollow.SYSTEM_STATUS, true),
+                systemUpdateUserId
+        );
 		
 		return false;
 	}
