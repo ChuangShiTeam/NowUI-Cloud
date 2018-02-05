@@ -6,14 +6,12 @@ import com.nowui.cloud.base.file.router.FileRouter;
 import com.nowui.cloud.base.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.service.FileService;
 import com.nowui.cloud.constant.Constant;
@@ -108,12 +106,17 @@ public class FileAdminController extends BaseController {
                 File.SYSTEM_VERSION
         );
 
-        Boolean result = fileService.delete(fileEntity.getFileId(),fileEntity.getAppId(), FileRouter.FILE_V1_DELETE,
-                fileEntity.getSystemUpdateUserId(),fileEntity.getSystemVersion());
+        File result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemUpdateUserId(),fileEntity.getSystemVersion());
 
-        //        Boolean result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemRequestUserId(), fileEntity.getSystemVersion());
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+            sendMessage(result, FileRouter.FILE_V1_DELETE, fileEntity.getAppId(), fileEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
     
     @ApiOperation(value = "图片上传")
@@ -153,6 +156,21 @@ public class FileAdminController extends BaseController {
                 File.FILE_PATH
             );
         return renderJson(file);
+    }
+
+    @ApiOperation(value = "图片数据同步")
+    @RequestMapping(value = "/file/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<File> fileList = fileService.listByMysql();
+
+        for (File file : fileList) {
+            FileView fileView = new FileView();
+            fileView.putAll(file);
+
+            fileService.update(fileView);
+        }
+
+        return renderJson(true);
     }
 
 }

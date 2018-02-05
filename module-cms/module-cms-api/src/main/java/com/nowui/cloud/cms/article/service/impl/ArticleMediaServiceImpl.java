@@ -16,7 +16,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 文章多媒体业务实现
  *
  * @author xupengfei
- *
+ * <p>
  * 2018-01-03
  */
 @Service
@@ -24,27 +24,25 @@ public class ArticleMediaServiceImpl extends SuperServiceImpl<ArticleMediaMapper
 
     @Override
     public List<ArticleMedia> listByArticleId(String articleId) {
-        
+
         List<ArticleMedia> articleMediaList = list(
                 new BaseWrapper<ArticleMedia>()
                         .eq(ArticleMedia.ARTICLE_ID, articleId)
                         .eq(ArticleMedia.SYSTEM_STATUS, true)
         );
-        
+
         return articleMediaList;
     }
 
     @Override
     public void deleteByArticleId(String articleId, String systemRequestUserId) {
-        
-        List<ArticleMedia> articleMediaList = listByArticleId(articleId);
-        
-        if (articleMediaList != null && articleMediaList.size() > 0) {
-            for (ArticleMedia articleMedia : articleMediaList) {
-                delete(articleMedia.getArticleMediaId(), systemRequestUserId, articleMedia.getSystemVersion());
-            }
-        }
-        
+        delete(
+                new BaseWrapper<ArticleMedia>()
+                        .eq(ArticleMedia.ARTICLE_ID, articleId)
+                        .eq(ArticleMedia.SYSTEM_STATUS, true),
+                systemRequestUserId
+        );
+
     }
 
 

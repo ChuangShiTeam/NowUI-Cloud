@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.menu.controller.admin;
+
 import com.nowui.cloud.base.menu.router.MenuRouter;
 import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.controller.BaseController;
@@ -21,7 +22,7 @@ import java.util.Map;
  * 菜单管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-01
  */
 @Api(value = "菜单", description = "菜单管理端接口管理")
@@ -44,23 +45,23 @@ public class MenuAdminController extends BaseController {
                 Menu.PAGE_SIZE
         );
 
-        Integer resultTotal = menuService.countForAdmin(menuEntity.getAppId() , menuEntity.getMenuName());
-        
-        if (Util.isNullOrEmpty(menuEntity.getMenuName())) {
-			
-        	List<Map<String, Object>> resultList = menuService.treeListForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
-        	
-        	validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
-        	
-        	return renderJson(resultTotal, resultList);
+        Integer resultTotal = menuService.countForAdmin(menuEntity.getAppId(), menuEntity.getMenuName());
 
-		}else {
-			List<Menu> resultList = menuService.listForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
-			
-			validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
-			
-			return renderJson(resultTotal, resultList);
-		}
+        if (Util.isNullOrEmpty(menuEntity.getMenuName())) {
+
+            List<Map<String, Object>> resultList = menuService.treeListForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
+
+            validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
+
+            return renderJson(resultTotal, resultList);
+
+        } else {
+            List<Menu> resultList = menuService.listForAdmin(menuEntity.getAppId(), menuEntity.getMenuName(), menuEntity.getPageIndex(), menuEntity.getPageSize());
+
+            validateResponse(Menu.MENU_ID, Menu.MENU_NAME, Menu.MENU_URL, Menu.MENU_SORT, Constant.CHILDREN);
+
+            return renderJson(resultTotal, resultList);
+        }
     }
 
     @ApiOperation(value = "菜单信息")
@@ -102,7 +103,7 @@ public class MenuAdminController extends BaseController {
                 Menu.MENU_URL,
                 Menu.MENU_SORT
         );
-        
+
         String menuParentPath = "";
 
         if (Util.isNullOrEmpty(menuEntity.getMenuParentId())) {
@@ -127,11 +128,17 @@ public class MenuAdminController extends BaseController {
 
         menuEntity.setMenuParentPath(menuParentPath);
 
-        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(),menuEntity.getAppId(), MenuRouter.MENU_V1_SAVE,
-                menuEntity.getSystemCreateUserId());
-//        Boolean result = menuService.save(menuEntity, Util.getRandomUUID(), menuEntity.getSystemRequestUserId());
+        Menu result = menuService.save(menuEntity, Util.getRandomUUID(), menuEntity.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MenuRouter.MENU_V1_SAVE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改菜单")
@@ -151,11 +158,17 @@ public class MenuAdminController extends BaseController {
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(),MenuRouter.MENU_V1_UPDATE,
-                menuEntity.getSystemUpdateUserId(),menuEntity.getSystemVersion());
-//        Boolean result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemRequestUserId(), menuEntity.getSystemVersion());
+        Menu result = menuService.update(menuEntity, menuEntity.getMenuId(), menuEntity.getSystemUpdateUserId(), menuEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MenuRouter.MENU_V1_UPDATE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除菜单")
@@ -170,20 +183,30 @@ public class MenuAdminController extends BaseController {
                 Menu.SYSTEM_VERSION
         );
 
-        Boolean result = menuService.delete(menuEntity.getMenuId(),menuEntity.getAppId(),MenuRouter.MENU_V1_DELETE,menuEntity.getSystemUpdateUserId(),
-                menuEntity.getSystemVersion());
+        Menu result = menuService.delete(menuEntity.getMenuId(), menuEntity.getSystemUpdateUserId(), menuEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, MenuRouter.MENU_V1_DELETE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "菜单重建缓存")
-    @RequestMapping(value = "/menu/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "菜单数据同步")
+    @RequestMapping(value = "/menu/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
-        Menu menuEntity = getEntry(Menu.class);
+        List<Menu> menuList = menuService.listByMysql();
 
-        validateRequest(menuEntity, Menu.MENU_ID);
+        for (Menu menu : menuList) {
+            MenuView menuView = new MenuView();
+            menuView.putAll(menu);
 
-        menuService.replace(menuEntity.getMenuId());
+            menuService.update(menuView);
+        }
 
         return renderJson(true);
     }

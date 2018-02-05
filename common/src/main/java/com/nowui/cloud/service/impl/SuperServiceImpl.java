@@ -434,6 +434,24 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
+    public E delete(Wrapper<E> var1, String systemUpdateUserId) {
+        entity.setSystemUpdateUserId(systemUpdateUserId);
+        entity.setSystemUpdateTime(new Date());
+        entity.setSystemStatus(false);
+
+        Boolean success = mapper.update(
+                entity,
+                var1
+        ) != 0;
+
+        if(success) {
+            return entity;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void replace(String id) {
         redisTemplate.delete(getItemCacheName(id));
 
