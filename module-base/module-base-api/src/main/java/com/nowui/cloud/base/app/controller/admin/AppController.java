@@ -70,11 +70,20 @@ public class AppController extends BaseController {
         if (appService.checkName(appEntity.getAppName())) {
             throw new BusinessException("应用名称重复");
         }
-        
-        appEntity.setAppId(Util.getRandomUUID());
-        Boolean result = appService.save(appEntity, Util.getRandomUUID(), appEntity.getAppId(), AppRouter.APP_V1_SAVE, appEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        String appId = Util.getRandomUUID();
+
+        App result = appService.save(appEntity, appId, appEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppRouter.APP_V1_SAVE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用修改")
@@ -87,10 +96,18 @@ public class AppController extends BaseController {
         if (appService.checkName(appEntity.getAppId(), appEntity.getAppName())) {
             throw new BusinessException("应用名称重复");
         }
-        
-        Boolean result = appService.update(appEntity, appEntity.getAppId(), appEntity.getAppId(), AppRouter.APP_V1_UPDATE, appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
-        return renderJson(result);
+        App result = appService.update(appEntity, appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppRouter.APP_V1_UPDATE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用删除")
@@ -100,10 +117,32 @@ public class AppController extends BaseController {
 
         validateRequest(appEntity, App.APP_ID, App.APP_NAME);
 
-        Boolean result = appService.delete(appEntity.getAppId(), appEntity.getAppId(), AppRouter.APP_V1_DELETE, appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+        App result = appService.delete(appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppRouter.APP_V1_DELETE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
+    @ApiOperation(value = "应用数据同步")
+    @RequestMapping(value = "/app/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<App> appList = appService.listByMysql();
+
+        for (App app : appList) {
+            AppView appView = new AppView();
+            appView.putAll(app);
+
+            appService.update(appView);
+        }
+
+        return renderJson(true);
+    }
 
 }

@@ -244,6 +244,15 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      */
     E delete(String id, String systemUpdateUserId, Integer systemVersion);
 
+    /**
+     * 实体类删除
+     *
+     * @param var1 条件
+     * @param systemUpdateUserId 更新人编号
+     * @return 是否成功
+     */
+    E delete(@Param("ew") Wrapper<E> var1, String systemUpdateUserId);
+
 
     /**
      * 搜索、缓存更新

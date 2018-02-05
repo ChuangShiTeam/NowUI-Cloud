@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.notify.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
  * 消息管理端控制器
  *
  * @author shawn
- *
+ * <p>
  * 2018-01-28
  */
 @Api(value = "消息", description = "消息管理端接口管理")
@@ -74,8 +75,6 @@ public class NotifyAdminController extends BaseController {
         );
 
         NotifyView result = notifyService.find(notifyEntity.getNotifyId());
-//        Notify result = notifyService.find(notifyEntity.getNotifyId());
-
 
         validateResponse(
                 Notify.NOTIFY_ID,
@@ -105,13 +104,19 @@ public class NotifyAdminController extends BaseController {
                 Notify.NOTIFY_SENDER
         );
 
-        Boolean result = notifyService.save(notifyEntity, Util.getRandomUUID(), notifyEntity.getSystemRequestUserId(),
-                NotifyRouter.NOTIFY_V1_SAVE,notifyEntity.getSystemCreateUserId());
+        String notifyId = Util.getRandomUUID();
 
-//        Boolean result = notifyService.save(notifyEntity, Util.getRandomUUID(), notifyEntity.getSystemRequestUserId());
+        Notify result = notifyService.save(notifyEntity, notifyId, notifyEntity.getSystemCreateUserId());
 
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+            sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改消息")
@@ -131,11 +136,17 @@ public class NotifyAdminController extends BaseController {
                 Notify.SYSTEM_VERSION
         );
 
-        Boolean result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(),
-                NotifyRouter.NOTIFY_V1_UPDATE,notifyEntity.getSystemUpdateUserId(),notifyEntity.getSystemVersion());
-//        Boolean result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
+        Notify result = notifyService.update(notifyEntity, notifyEntity.getNotifyId(), notifyEntity.getSystemUpdateUserId(), notifyEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, NotifyRouter.NOTIFY_V1_UPDATE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除消息")
@@ -150,11 +161,32 @@ public class NotifyAdminController extends BaseController {
                 Notify.SYSTEM_VERSION
         );
 
-        Boolean result = notifyService.delete(notifyEntity.getNotifyId(),notifyEntity.getAppId(),NotifyRouter
-        .NOTIFY_V1_DELETE,notifyEntity.getSystemUpdateUserId(),notifyEntity.getSystemVersion());
-//        Boolean result = notifyService.delete(notifyEntity.getNotifyId(), notifyEntity.getSystemRequestUserId(), notifyEntity.getSystemVersion());
+        Notify result = notifyService.delete(notifyEntity.getNotifyId(), notifyEntity.getSystemUpdateUserId(), notifyEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, NotifyRouter.NOTIFY_V1_DELETE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "消息数据同步")
+    @RequestMapping(value = "/notify/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Notify> notifyList = notifyService.listByMysql();
+
+        for (Notify notify : notifyList) {
+            NotifyView notifyView = new NotifyView();
+            notifyView.putAll(notify);
+
+            notifyService.update(notifyView);
+        }
+
+        return renderJson(true);
     }
 
 }

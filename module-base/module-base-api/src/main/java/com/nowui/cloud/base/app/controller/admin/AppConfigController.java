@@ -101,9 +101,19 @@ public class AppConfigController extends BaseController {
                 AppConfig.CONFIG_DESCRIPTION
         );
 
-        Boolean result = appConfigService.save(appConfigEntity, Util.getRandomUUID(), appConfigEntity.getAppId(), AppConfigRouter.APP_CONFIG_V1_SAVE, appConfigEntity.getSystemRequestUserId());
+        String configId = Util.getRandomUUID();
 
-        return renderJson(result);
+        AppConfig result = appConfigService.save(appConfigEntity, configId, appConfigEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_SAVE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用配置修改")
@@ -122,9 +132,17 @@ public class AppConfigController extends BaseController {
                 AppConfig.SYSTEM_VERSION
         );
 
-        Boolean result = appConfigService.update(appConfigEntity, appConfigEntity.getConfigId(), appConfigEntity.getAppId(), AppConfigRouter.APP_CONFIG_V1_UPDATE, appConfigEntity.getSystemRequestUserId(), appConfigEntity.getSystemVersion());
+        AppConfig result = appConfigService.update(appConfigEntity, appConfigEntity.getConfigId(), appConfigEntity.getSystemRequestUserId(), appConfigEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_UPDATE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用配置删除")
@@ -138,9 +156,32 @@ public class AppConfigController extends BaseController {
                 AppConfig.SYSTEM_VERSION
         );
 
-        Boolean result = appConfigService.delete(appConfigEntity.getConfigId(), appConfigEntity.getSystemRequestUserId(), appConfigEntity.getAppId(), AppConfigRouter.APP_CONFIG_V1_DELETE, appConfigEntity.getSystemVersion());
+        AppConfig result = appConfigService.delete(appConfigEntity.getConfigId(), appConfigEntity.getSystemRequestUserId(), appConfigEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_DELETE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "应用配置数据同步")
+    @RequestMapping(value = "/app/config/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<AppConfig> appConfigList = appConfigService.listByMysql();
+
+        for (AppConfig appConfig : appConfigList) {
+            AppConfigView appConfigView = new AppConfigView();
+            appConfigView.putAll(appConfig);
+
+            appConfigService.update(appConfigView);
+        }
+
+        return renderJson(true);
     }
 
 }

@@ -80,10 +80,10 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         return renderJson(result);
     }
 
-    @ApiOperation(value = "新增${tableComment}")
+    @ApiOperation(value = "${tableComment}新增")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
-        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         String ${firstLowerWithoutUnderlineEntityName}Id = Util.getRandomUUID();
 
@@ -95,12 +95,20 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%}%>
         );
 
-        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "修改${tableComment}")
+    @ApiOperation(value = "${tableComment}修改")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
@@ -115,12 +123,20 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "删除${tableComment}")
+    @ApiOperation(value = "${tableComment}删除")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
@@ -132,7 +148,30 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        Boolean result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_DELETE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "${tableComment}数据同步")
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<${firstUpperWithoutUnderlineEntityName}> notifyList = notifyService.listByMysql();
+
+        for (${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName} : ${firstLowerWithoutUnderlineEntityName}List) {
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
+            ${firstLowerWithoutUnderlineEntityName}View.putAll(${firstLowerWithoutUnderlineEntityName});
+
+            ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
+        }
 
         return renderJson(result);
     }

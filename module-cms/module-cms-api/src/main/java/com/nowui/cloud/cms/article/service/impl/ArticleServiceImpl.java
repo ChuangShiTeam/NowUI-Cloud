@@ -46,39 +46,19 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
     
     @Override
     public Integer countForAdmin(String appId, String articleTitle) {
-        
-        Integer count = count(
-                new BaseWrapper<Article>()
-                        .eq(Article.APP_ID, appId)
-                        .likeAllowEmpty(Article.ARTICLE_TITLE, articleTitle)
-                        .eq(Article.SYSTEM_STATUS, true)
-        );
+        Criteria criteria = Criteria.where(ArticleView.APP_ID).is(appId)
+                .and(ArticleView.ARTICLE_TITLE).regex(".*?" + articleTitle + ".*")
+                .and(ArticleView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
         
         return count;
     }
 
     @Override
     public List<ArticleView> listForAdmin(String appId, String articleTitle, Integer pageIndex, Integer pageSize) {
-//
-//        List<Article> articleList = list(
-//                new BaseWrapper<Article>()
-//                        .eq(Article.APP_ID, appId)
-//                        .likeAllowEmpty(Article.ARTICLE_TITLE, articleTitle)
-//                        .eq(Article.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(Article.ARTICLE_IS_TOP))
-//                        .orderAsc(Arrays.asList(Article.ARTICLE_TOP_LEVEL, Article.ARTICLE_SORT))
-//                        .orderDesc(Arrays.asList(Article.SYSTEM_CREATE_TIME)),
-//                pageIndex,
-//                pageSize
-//        );
-//
-//        for (Article article : articleList) {
-//            ArticleArticleCategory articleArticleCategory = articleArticleCategoryService.findPrimaryByArticleId(article.getArticleId());
-//            if (articleArticleCategory != null) {
-//                article.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryService.find(articleArticleCategory.getArticleCategoryId()).getArticleCategoryName());
-//            }
-//        }
-
         Criteria criteria = Criteria.where(ArticleView.APP_ID).is(appId)
                 .and(ArticleView.ARTICLE_TITLE).regex(".*?" + articleTitle + ".*")
                 .and(ArticleView.SYSTEM_STATUS).is(true);
@@ -112,7 +92,7 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
                 articleMedia.setArticleId(articleId);
                 articleMediaService.save(articleMedia, articleMediaId, systemRequestUserId);
             }
-            
+
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
                 String articleArticleCategoryId = Util.getRandomUUID();

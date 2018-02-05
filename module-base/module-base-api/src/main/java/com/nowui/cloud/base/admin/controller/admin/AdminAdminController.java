@@ -1,4 +1,5 @@
 package com.nowui.cloud.base.admin.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.router.AdminRouter;
 import com.nowui.cloud.base.admin.service.AdminService;
@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
  * 管理员管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-01
  */
 @Api(value = "管理员", description = "管理员管理端接口管理")
@@ -57,7 +57,7 @@ public class AdminAdminController extends BaseController {
 
         validateResponse(
                 AdminView.ADMIN_ID,
-        		User.USER_ID,
+                User.USER_ID,
                 User.USER_TYPE,
                 User.USER_ACCOUNT,
                 User.USER_NICK_NAME,
@@ -105,52 +105,56 @@ public class AdminAdminController extends BaseController {
                 userEntity,
                 User.APP_ID
         );
+
         //验证用户账号
         UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
         validateRequest(
                 userAccountEntity,
                 UserAccount.USER_ACCOUNT
         );
+
         //验证用户昵称
         UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
         validateRequest(
                 userNickNameEntity,
                 UserNickName.USER_NICK_NAME
         );
+
         //验证用户姓名
         UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
         validateRequest(
                 userIdcardEntity,
                 UserIdcard.USER_NAME
         );
+
         //验证用户邮箱
         UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
         validateRequest(
                 userEmailEntity,
                 UserEmail.USER_EMAIL
         );
+
         //验证用户手机
         UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
         validateRequest(
                 userMobileEntity,
                 UserMobile.USER_MOBILE
         );
+
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
 
         userEntity.setUserId(userId);
         userEntity.setUserType(UserType.ADMIN.getKey());
         userEntity.setObjectId(adminId);
-        
+
         Admin admin = new Admin();
         admin.setUserId(userId);
         admin.setAppId(userEntity.getAppId());
-        
-        Boolean result = true;
-        if (result) {
-		}
-        
-        return renderJson(result);
+
+        Boolean success = true;
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改管理员")
@@ -164,26 +168,29 @@ public class AdminAdminController extends BaseController {
                 User.USER_ID,
                 User.SYSTEM_VERSION
         );
-        Admin admin = JSONObject.parseObject(userEntity.toJSONString(), Admin.class);
+
+        Admin adminEntity = getEntry(Admin.class);
         validateRequest(
-                admin,
+                adminEntity,
                 Admin.ADMIN_ID,
                 Admin.APP_ID,
                 Admin.SYSTEM_VERSION
         );
-        
+
         //验证用户账号
         UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
         validateRequest(
                 userAccountEntity,
                 UserAccount.USER_ACCOUNT
         );
+
         //验证用户昵称
         UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
         validateRequest(
                 userNickNameEntity,
                 UserNickName.USER_NICK_NAME
         );
+
         //验证用户姓名
         UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
         userIdcardEntity.setUserIdcardNumber("");
@@ -191,25 +198,32 @@ public class AdminAdminController extends BaseController {
                 userIdcardEntity,
                 UserIdcard.USER_NAME
         );
+
         //验证用户邮箱
         UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
         validateRequest(
                 userEmailEntity,
                 UserEmail.USER_EMAIL
         );
+
         //验证用户手机
         UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
         validateRequest(
                 userMobileEntity,
                 UserMobile.USER_MOBILE
         );
-        
-        Boolean result = adminService.update(admin, admin.getAdminId(), admin.getAppId(), AdminRouter.ADMIN_V1_UPDATE, admin.getSystemRequestUserId(), admin.getSystemVersion());
 
-        if (result) {
+        Admin result = adminService.update(adminEntity, adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AdminRouter.ADMIN_V1_UPDATE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
+
+            success = true;
         }
-        
-        return renderJson(result);
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除管理员")
@@ -224,12 +238,32 @@ public class AdminAdminController extends BaseController {
                 Admin.SYSTEM_VERSION
         );
 
-        Boolean result = adminService.delete(adminEntity.getAdminId(), adminEntity.getAppId(), AdminRouter.ADMIN_V1_DELETE, adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
+        Admin result = adminService.delete(adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
 
-        if (result) {
-            
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AdminRouter.ADMIN_V1_DELETE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
+
+            success = true;
         }
-        return renderJson(result);
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "管理员数据同步")
+    @RequestMapping(value = "/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Admin> adminList = adminService.listByMysql();
+
+        for (Admin admin : adminList) {
+            AdminView adminView = new AdminView();
+            adminView.putAll(admin);
+
+            adminService.update(adminView);
+        }
+
+        return renderJson(true);
     }
 
 }

@@ -107,9 +107,19 @@ public class AppConfigCategoryController extends BaseController {
                 AppConfigCategory.CONFIG_CATEGORY_DESCRIPTION
         );
 
-        Boolean result = appConfigCategoryService.save(appConfigCategoryEntity, Util.getRandomUUID(), appConfigCategoryEntity.getAppId(), AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_SAVE, appConfigCategoryEntity.getSystemRequestUserId());
+        String configCategoryId = Util.getRandomUUID();
 
-        return renderJson(result);
+        AppConfigCategory result = appConfigCategoryService.save(appConfigCategoryEntity, configCategoryId, appConfigCategoryEntity.getSystemRequestUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_SAVE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用配置分类修改")
@@ -127,9 +137,17 @@ public class AppConfigCategoryController extends BaseController {
                 AppConfigCategory.SYSTEM_VERSION
         );
 
-        Boolean result = appConfigCategoryService.update(appConfigCategoryEntity, appConfigCategoryEntity.getConfigCategoryId(), appConfigCategoryEntity.getAppId(), AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_UPDATE, appConfigCategoryEntity.getSystemRequestUserId(), appConfigCategoryEntity.getSystemVersion());
+        AppConfigCategory result = appConfigCategoryService.update(appConfigCategoryEntity, appConfigCategoryEntity.getConfigCategoryId(), appConfigCategoryEntity.getSystemRequestUserId(), appConfigCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_UPDATE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "应用配置分类删除")
@@ -143,9 +161,32 @@ public class AppConfigCategoryController extends BaseController {
                 AppConfigCategory.SYSTEM_VERSION
         );
 
-        Boolean result = appConfigCategoryService.delete(appConfigCategoryEntity.getConfigCategoryId(), appConfigCategoryEntity.getAppId(), AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_DELETE, appConfigCategoryEntity.getSystemRequestUserId(), appConfigCategoryEntity.getSystemVersion());
+        AppConfigCategory result = appConfigCategoryService.delete(appConfigCategoryEntity.getConfigCategoryId(), appConfigCategoryEntity.getSystemRequestUserId(), appConfigCategoryEntity.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_DELETE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
+    }
+
+    @ApiOperation(value = "应用配置分类数据同步")
+    @RequestMapping(value = "/app/config/category/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<AppConfigCategory> appConfigCategoryList = appConfigCategoryService.listByMysql();
+
+        for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
+            AppConfigCategoryView appConfigCategoryView = new AppConfigCategoryView();
+            appConfigCategoryView.putAll(appConfigCategory);
+
+            appConfigCategoryService.update(appConfigCategoryView);
+        }
+
+        return renderJson(true);
     }
 
 }
