@@ -9,6 +9,7 @@ import com.nowui.cloud.sns.forum.repository.ForumUserFollowRepository;
 import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 
 import org.springframework.stereotype.Service;
 
@@ -155,17 +156,13 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 
 	@Override
 	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-		List<ForumUserFollow> forumUserFollowList = list( 
-				new BaseWrapper<ForumUserFollow>()
-                        .eq(ForumUserFollow.APP_ID, appId)
-                        .eq(ForumUserFollow.FORUM_ID, forumId)
-                        .eq(ForumUserFollow.SYSTEM_STATUS, true)
-		);
-
-		//得到全部用户关注list,遍历
-		for (ForumUserFollow forumUserFollow : forumUserFollowList) {
-			delete(forumUserFollow.getForumUserFollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, systemUpdateUserId, forumUserFollow.getSystemVersion());
-		}
+		delete(
+    			new BaseWrapper<TopicForum>()
+    				.eq(TopicForum.APP_ID, appId)
+    				.eq(TopicForum.FORUM_ID, forumId)
+    				.eq(TopicForum.SYSTEM_STATUS, true),
+    			systemUpdateUserId
+    	);
 		
 		return false;
 	}

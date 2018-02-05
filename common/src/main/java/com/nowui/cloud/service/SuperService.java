@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.view.BaseView;
 
 /**

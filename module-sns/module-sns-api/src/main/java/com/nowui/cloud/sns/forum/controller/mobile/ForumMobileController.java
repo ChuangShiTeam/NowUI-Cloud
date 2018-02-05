@@ -403,27 +403,20 @@ public class ForumMobileController extends BaseController {
 //        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
         Forum result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
         
-        if (result == null) {
-    		return renderJson(false);
+        if (result != null) {
+        	//再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
+        	topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	
+        	//从论坛关注表中删除有forumId的记录
+        	forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	
+        	//从论坛取消关注表删除有forumId的记录
+        	forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
 		}
         
         //TODO 先删除主业务逻辑的,后面处理消息
         
-        //再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
-    	topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
-    	
-    	//从论坛关注表中删除有forumId的记录
-    	boolean delUserFollow = forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
-    	if (delUserFollow == false) {
-    		return renderJson(delUserFollow);
-		}
-    	
-    	
-    	//从论坛取消关注表删除有forumId的记录
-    	boolean delUnFollowResult = forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
-    	if (delUnFollowResult == false) {
-    		return renderJson(delUnFollowResult);
-		}
+        
     	
     	 
         return renderJson(result);

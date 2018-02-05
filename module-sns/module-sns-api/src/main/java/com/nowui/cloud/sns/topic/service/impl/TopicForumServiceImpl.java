@@ -71,32 +71,13 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
     
     @Override
     public void deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-//    	List<TopicForum> topicForumList = list(
-//                new BaseWrapper<TopicForum>()
-//                        .eq(TopicForum.APP_ID, appId)
-//                        .eq(TopicForum.FORUM_ID, forumId)
-//                        .eq(TopicForum.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME))
-//        );
-    	Criteria criteria = Criteria.where(TopicForum.APP_ID).is(appId)
-                .and(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
-                .and(TopicForumView.SYSTEM_STATUS).is(true);
-
-        Query query = new Query(criteria);
-
-        List<TopicForumView> topicForumViewList = list(query);
-    	
-    	//遍历删除
-    	if (!Util.isNullOrEmpty(topicForumViewList)) {
-    		topicForumViewList.stream().forEach(topicForum -> {
-    	    	redisTemplate.delete(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicForum.TOPIC_ID);
-//    	        delete(topicForum.getTopicForumId(), appId, TopicForumRouter.TOPIC_FORUM_V1_DELETE, systemUpdateUserId, topicForum.getSystemVersion());
-    	    	
-    	    	delete(topicForum.getTopicForumId(), systemUpdateUserId, topicForum.getSystemVersion());
-    	    });
-    	    
-    	    redisTemplate.delete(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
-    	}
+    	delete(
+    			new BaseWrapper<TopicForum>()
+    				.eq(TopicForum.APP_ID, appId)
+    				.eq(TopicForum.FORUM_ID, forumId)
+    				.eq(TopicForum.SYSTEM_STATUS, true),
+    			systemUpdateUserId
+    	);
     }
 
 	@Override
