@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -110,19 +114,35 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
         return forumIdList.stream().map(forumId -> find(forumId)).collect(Collectors.toList());
     }
 
+    //TODO 这个查的mysql,待删除
+//    @Override
+//    public Boolean checkName(String appId, String forumName) {
+//        Integer count = count(
+//                new BaseWrapper<Forum>()
+//                        .eq(Forum.APP_ID, appId)
+//                        .eq(Forum.FORUM_NAME, forumName)
+//                        .eq(Forum.SYSTEM_STATUS, true)
+//                        .andNew()
+//                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
+//                        .or()
+//                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.WAIT_AUDIT.getKey())
+//        );
+//        return count > 0;
+//    }
+    
     @Override
     public Boolean checkName(String appId, String forumName) {
-        Integer count = count(
-                new BaseWrapper<Forum>()
-                        .eq(Forum.APP_ID, appId)
-                        .eq(Forum.FORUM_NAME, forumName)
-                        .eq(Forum.SYSTEM_STATUS, true)
-                        .andNew()
-                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
-                        .or()
-                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.WAIT_AUDIT.getKey())
-        );
+    	
+    	Criteria criteria = Criteria.where(ForumView.APP_ID).is(appId)
+                .and(ForumView.FORUM_NAME).regex(".*?" + forumName + ".*")
+                .and(Forum.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
         return count > 0;
     }
+    
 
 }

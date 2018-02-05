@@ -26,6 +26,7 @@ import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.router.ForumRouter;
+import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
@@ -103,22 +104,37 @@ public class ForumMobileController extends BaseController {
 	     body.setForumAuditContent("");
 	     
 	     String forumId = Util.getRandomUUID();
-	     String userId = body.getSystemRequestUserId();
+	     String CreateUserId = body.getSystemRequestUserId();
+	     String appId = body.getAppId();
+	     String forumUserFollowId = Util.getRandomUUID();
 	     
-	     Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, userId);
+	     //TODO 先存到mysql,发消息放在后面
+//	     Boolean result = forumService.save(body, forumId, appId, ForumRouter.FORUM_V1_SAVE, CreateUserId);
+	     Forum result = forumService.save(body, forumId, CreateUserId);
 	     
-	     if (result) {
+	     Boolean success = false;
+	     
+	     if (result != null) {
 
 	         // 圈主默认关注论坛
 	         ForumUserFollow forumUserFollow = new ForumUserFollow();
-	         forumUserFollow.setAppId(body.getAppId());
+	         forumUserFollow.setAppId(appId);
 	         forumUserFollow.setForumId(forumId);
-	         forumUserFollow.setUserId(userId);
+	         forumUserFollow.setUserId(CreateUserId);
 	         
-	         forumUserFollowService.save(forumUserFollow, Util.getRandomUUID(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, userId);
+	     //TODO 先存到mysql,发消息放在后面
+//	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, CreateUserId);
+	         ForumUserFollow forumUserFollowSave = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
+	         
+	         if (forumUserFollowSave != null) {
+	        	 // TODO 只发主业务逻辑的消息?
+	        	 sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
+	        	 
+	        	 success = true;
+			}
 	     }
         
-	     return renderJson(result);
+	     return renderJson(success);
     }
 	 
 	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
@@ -292,9 +308,18 @@ public class ForumMobileController extends BaseController {
 	   //不清楚是否单独写一个更改背景图片的接口
 	   body.setForumBackgroundMedia(body.getForumMedia());
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
+//       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
+	   Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+	   
+	   Boolean success = false;
 
-       return renderJson(result);
+       if (result != null) {
+           sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+
+           success = true;
+       }
+
+       return renderJson(success);
     }
 
 	@ApiOperation(value = "更新论坛名称")
@@ -310,14 +335,23 @@ public class ForumMobileController extends BaseController {
 	    
        ForumView forum = forumService.find(body.getForumId());
        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
-       	return renderJson(false);
+       		return renderJson(false);
 		}
        
        Integer systemVersion = forum.getSystemVersion();
        
-       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), systemVersion);
+//       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), systemVersion);
+       
+       Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), systemVersion);
+       Boolean success = false;
 
-       return renderJson(result);
+       if (result != null) {
+           sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+
+           success = true;
+       }
+
+       return renderJson(success);
     }
 
 	@ApiOperation(value = "更新论坛简介")
@@ -335,9 +369,18 @@ public class ForumMobileController extends BaseController {
         	return renderJson(false);
 		}
 
-       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
+//       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
+        
+        Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+        Boolean success = false;
 
-       return renderJson(result);
+        if (result != null) {
+            sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 	
 
@@ -357,11 +400,14 @@ public class ForumMobileController extends BaseController {
 		}
         
         //先从论坛信息表删除
-        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
-        if (result == false) {
-    		return renderJson(result);
+//        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
+        Forum result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+        
+        if (result == null) {
+    		return renderJson(false);
 		}
         
+        //TODO 先删除主业务逻辑的,后面处理消息
         
         //再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
     	topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());

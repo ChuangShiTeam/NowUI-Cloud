@@ -61,7 +61,8 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "论坛列表")
     @RequestMapping(value = "/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody Forum body) {
+    public Map<String, Object> listV1() {
+    	Forum body = getEntry(Forum.class);
        validateRequest(
                 body,
                 Forum.APP_ID,
@@ -130,7 +131,8 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "论坛查询")
     @RequestMapping(value = "/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Forum body) {
+    public Map<String, Object> findV1() {
+    	Forum body = getEntry(Forum.class);
         validateRequest(
                 body,
                 Forum.APP_ID,
@@ -179,7 +181,8 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "新增论坛")
     @RequestMapping(value = "/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Forum body) {
+    public Map<String, Object> saveV1() {
+    	Forum body = getEntry(Forum.class);
         validateRequest(
             body,
             Forum.APP_ID,
@@ -204,10 +207,20 @@ public class ForumAdminController extends BaseController {
 
       String forumId = Util.getRandomUUID();
       String systemRequestUserId = body.getSystemRequestUserId();
+      String appId = body.getAppId();
 
-      Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, systemRequestUserId);
+//      Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, systemRequestUserId);
+      Forum result = forumService.save(body, forumId, systemRequestUserId);
+      
+      Boolean success = false;
 
-      return renderJson(result);
+      if (result != null) {
+          sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, systemRequestUserId);
+
+          success = true;
+      }
+
+      return renderJson(success);
   }
 
     @ApiOperation(value = "修改论坛信息")
@@ -233,10 +246,23 @@ public class ForumAdminController extends BaseController {
                 Forum.FORUM_IS_RECOMAND,
                 Forum.SYSTEM_VERSION
         );
+        String forumId = body.getForumId();
+        String appId = body.getAppId();
+        String systemRequestUserId = body.getSystemRequestUserId();
+        Integer systemVersion = body.getSystemVersion();
 
-        Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = forumService.update(body, forumId, appId, ForumRouter.FORUM_V1_SAVE, systemRequestUserId, body.getSystemVersion());
+        Forum result = forumService.update(body, forumId, systemRequestUserId, systemVersion);
+        
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+            sendMessage(result, ForumRouter.FORUM_V1_UPDATE, appId, systemRequestUserId);
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除论坛信息")
@@ -248,10 +274,23 @@ public class ForumAdminController extends BaseController {
                 Forum.APP_ID,
                 Forum.SYSTEM_VERSION
         );
+        
+        String forumId = body.getForumId();
+        String appId = body.getAppId();
+        String systemRequestUserId = body.getSystemRequestUserId();
+        Integer systemVersion = body.getSystemVersion();
 
-        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = forumService.delete(forumId, appId, ForumRouter.FORUM_V1_SAVE, systemRequestUserId, systemVersion);
+        Forum result = forumService.delete(forumId, systemRequestUserId, systemVersion);
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+            sendMessage(result, ForumRouter.FORUM_V1_DELETE, appId, systemRequestUserId);
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
     
     @ApiOperation(value = "论坛重建缓存")

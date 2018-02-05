@@ -45,6 +45,7 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
     * @param appId 应用编号
     * @param forumId 论坛编号
     * @param systemRequestUserId 请求用户编号
+    * @return 
     */
     void deleteByForumId(String appId, String forumId, String systemRequestUserId);
     
