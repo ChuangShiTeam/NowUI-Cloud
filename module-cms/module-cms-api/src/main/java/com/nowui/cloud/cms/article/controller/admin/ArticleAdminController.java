@@ -1,29 +1,25 @@
 package com.nowui.cloud.cms.article.controller.admin;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.router.ArticleRouter;
-import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
-import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -43,15 +39,6 @@ public class ArticleAdminController extends BaseController {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private ArticleArticleCategoryService articleArticleCategoryService;
-
-    @Autowired
-    private ArticleMediaService articleMediaService;
-
-    @Autowired
-    private FileRpc fileRpc;
-
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
@@ -67,11 +54,6 @@ public class ArticleAdminController extends BaseController {
 
         Integer resultTotal = articleService.countForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle());
         List<ArticleView> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
-
-//        String fileIds = Util.beanToFieldString(resultList, Article.ARTICLE_MEDIA_ID);
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//
-//        resultList = Util.beanAddField(resultList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_PATH);
 
         validateResponse(
                 Article.ARTICLE_ID,
@@ -92,65 +74,43 @@ public class ArticleAdminController extends BaseController {
     @ApiOperation(value = "根据编号查询文章信息")
     @RequestMapping(value = "/article/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        Article articleEntity = getEntry(Article.class);
+        ArticleView articleView = getEntry(ArticleView.class);
 
-        validateRequest(articleEntity, Article.ARTICLE_ID);
+        validateRequest(articleView, Article.ARTICLE_ID);
 
-        ArticleView result = articleService.find(articleEntity.getArticleId());
-//        //查询文章分类
-//        List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listByArticleId(articleEntity.getArticleId());
-//        for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-//            articleArticleCategory.keep(ArticleArticleCategory.ARTICLE_CATEGORY_ID, ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY);
-//        }
-//        result.put(Article.ARTICLE_ARTICLE_CATEGORY_LIST, articleArticleCategoryList);
-//        //查询文章主媒体
-//        if (!Util.isNullOrEmpty(result.getArticleMediaId())) {
-//            System.out.println(result.toJSONString());
-//            System.out.println(result.getArticleMediaId());
-//            File file = fileRpc.findV1(result.getArticleMediaId());
-//            file.keep(File.FILE_ID, File.FILE_PATH);
-//            result.put(Article.ARTICLE_MEDIA, file);
-//        }
-//        //查询文章副媒体
-//        List<ArticleMedia> articleMeidaList = articleMediaService.listByArticleId(articleEntity.getArticleId());
-//
-//        if (Util.isNullOrEmpty(articleMeidaList)) {
-//            result.put(Article.ARTICLE_MEDIA_LIST, new ArrayList<>());
-//        } else {
-//            String fileIds = Util.beanToFieldString(articleMeidaList, ArticleMedia.FILE_ID);
-//            List<File> fileList = fileRpc.findsV1(fileIds);
-//
-//            articleMeidaList = Util.beanAddField(articleMeidaList, ArticleMedia.FILE_ID, fileList, File.FILE_ID, File.FILE_PATH);
-//            result.put(Article.ARTICLE_MEDIA_LIST, articleMeidaList);
-//        }
-
+        ArticleView result = articleService.find(articleView.getArticleId());
 
         validateResponse(
-                Article.ARTICLE_ID,
-                Article.ARTICLE_TITLE,
-                Article.ARTICLE_AUTHOR,
-                Article.ARTICLE_SUMMARY,
-                Article.ARTICLE_CONTENT,
-                Article.ARTICLE_MEDIA,
-                Article.ARTICLE_MEDIA_TYPE,
-                Article.ARTICLE_IS_ALLOW_COMMENT,
-                Article.ARTICLE_IS_DRAFT,
-                Article.ARTICLE_IS_OUTER_LINK,
-                Article.ARTICLE_IS_TOP,
-                Article.ARTICLE_KEYWORDS,
-                Article.ARTICLE_OUTER_LINK,
-                Article.ARTICLE_PUBLISH_TIME,
-                Article.ARTICLE_TOP_END_TIME,
-                Article.ARTICLE_SORT,
-                Article.ARTICLE_IS_REQUIRE_AUDIT,
-                Article.ARTICLE_IS_RECOMMEND,
-                Article.ARTICLE_TAGS,
-                Article.ARTICLE_SOURCE,
-                Article.ARTICLE_WEIGHT,
-                Article.SYSTEM_VERSION,
-                Article.ARTICLE_ARTICLE_CATEGORY_LIST,
-                Article.ARTICLE_MEDIA_LIST
+                ArticleView.ARTICLE_ID,
+                ArticleView.ARTICLE_TITLE,
+                ArticleView.ARTICLE_AUTHOR,
+                ArticleView.ARTICLE_SUMMARY,
+                ArticleView.ARTICLE_CONTENT,
+                ArticleView.ARTICLE_MEDIA,
+                ArticleView.ARTICLE_MEDIA_TYPE,
+                ArticleView.ARTICLE_IS_ALLOW_COMMENT,
+                ArticleView.ARTICLE_IS_DRAFT,
+                ArticleView.ARTICLE_IS_OUTER_LINK,
+                ArticleView.ARTICLE_IS_TOP,
+                ArticleView.ARTICLE_KEYWORDS,
+                ArticleView.ARTICLE_OUTER_LINK,
+                ArticleView.ARTICLE_PUBLISH_TIME,
+                ArticleView.ARTICLE_TOP_END_TIME,
+                ArticleView.ARTICLE_SORT,
+                ArticleView.ARTICLE_IS_REQUIRE_AUDIT,
+                ArticleView.ARTICLE_IS_RECOMMEND,
+                ArticleView.ARTICLE_TAGS,
+                ArticleView.ARTICLE_SOURCE,
+                ArticleView.ARTICLE_WEIGHT,
+                ArticleView.SYSTEM_VERSION,
+                ArticleView.ARTICLE_MEDIA_LIST,
+                ArticleView.ARTICLE_PRIMARY_ARTICLE_CATEGORY,
+                ArticleView.ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST
         );
+
+        validateSecondResponse(ArticleView.ARTICLE_PRIMARY_ARTICLE_CATEGORY, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
+        validateSecondResponse(ArticleView.ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
+        validateSecondResponse(ArticleView.ARTICLE_MEDIA_LIST, File.FILE_ID, File.FILE_PATH);
 
         return renderJson(result);
     }
@@ -182,22 +142,20 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_IS_RECOMMEND,
                 Article.ARTICLE_TAGS,
                 Article.ARTICLE_SOURCE,
-                Article.ARTICLE_WEIGHT
+                Article.ARTICLE_WEIGHT,
+                Article.ARTICLE_MEDIA_LIST,
+                Article.ARTICLE_PRIMARY_ARTICLE_CATEGORY
         );
 
-        JSONArray articleCategoryJsonArray = articleEntity.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
-        if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new BusinessException("文章没有选择文章主分类");
-        }
-        List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
+        String articleId = Util.getRandomUUID();
 
-        JSONArray articleMediaJsonArray = articleEntity.getJSONArray(Article.ARTICLE_MEDIA_LIST);
-        List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
-        if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
-            mediaList = JSONArray.parseArray(articleMediaJsonArray.toJSONString(), ArticleMedia.class);
-        }
+        ArticleArticleCategory articlePrimaryArticleCategory = JSON.parseObject(articleEntity.getArticlePrimaryArticleCategory().toJSONString(), ArticleArticleCategory.class);
 
-        Article result = articleService.save(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
+        List<ArticleArticleCategory> articleSecondaryArticleCategoryList = JSON.parseArray(articleEntity.getArticleSecondaryArticleCategoryList().toJSONString(), ArticleArticleCategory.class);
+
+        List<ArticleMedia> articleMediaList = articleEntity.getArticleMediaList().toJavaList(ArticleMedia.class);
+
+        Article result = articleService.save(articleEntity, articleId, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
 
         Boolean success = false;
 
@@ -238,27 +196,18 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_TAGS,
                 Article.ARTICLE_SOURCE,
                 Article.ARTICLE_WEIGHT,
-                Article.SYSTEM_VERSION
+                Article.SYSTEM_VERSION,
+                Article.ARTICLE_MEDIA_LIST,
+                Article.ARTICLE_PRIMARY_ARTICLE_CATEGORY
         );
 
-        JSONArray articleCategoryJsonArray = articleEntity.getJSONArray(Article.ARTICLE_ARTICLE_CATEGORY_LIST);
-        if (Util.isNullOrEmpty(articleCategoryJsonArray)) {
-            throw new BusinessException("文章没有选择文章主分类");
-        }
-        List<ArticleArticleCategory> articleArticleCategoryList = JSONArray.parseArray(articleCategoryJsonArray.toJSONString(), ArticleArticleCategory.class);
+        ArticleArticleCategory articlePrimaryArticleCategory = JSON.parseObject(articleEntity.getArticlePrimaryArticleCategory().toJSONString(), ArticleArticleCategory.class);
 
-        JSONArray articleMediaJsonArray = articleEntity.getJSONArray(Article.ARTICLE_MEDIA_LIST);
-        List<ArticleMedia> mediaList = new ArrayList<ArticleMedia>();
-        if (!Util.isNullOrEmpty(articleMediaJsonArray)) {
-            mediaList = JSONArray.parseArray(articleMediaJsonArray.toJSONString(), ArticleMedia.class);
-        }
+        List<ArticleArticleCategory> articleSecondaryArticleCategoryList = JSON.parseArray(articleEntity.getArticleSecondaryArticleCategoryList().toJSONString(), ArticleArticleCategory.class);
 
-        // 文章置顶级别
-        if (Util.isNullOrEmpty(articleEntity.getArticleTopLevel())) {
-            articleEntity.setArticleTopLevel(null);
-        }
+        List<ArticleMedia> articleMediaList = articleEntity.getArticleMediaList().toJavaList(ArticleMedia.class);
 
-        Article result = articleService.update(articleArticleCategoryList, mediaList, articleEntity, articleEntity.getSystemRequestUserId());
+        Article result = articleService.update(articleEntity, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
 
         Boolean success = false;
 

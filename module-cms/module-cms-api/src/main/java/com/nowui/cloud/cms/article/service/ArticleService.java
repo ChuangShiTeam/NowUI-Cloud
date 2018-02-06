@@ -2,7 +2,6 @@ package com.nowui.cloud.cms.article.service;
 
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
@@ -40,25 +39,27 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
     
     /**
      * 文章保存
-     * 
-     * @param articleArticleCategoryList 文章文章分类列表
-     * @param articleMediaList 文章多媒体列表
+     *
      * @param article 文章
+     * @param articlePrimaryArticleCategory 文章主分类
+     * @param articleSecondaryArticleCategoryList 文章副分类列表
+     * @param articleMediaList 文章多媒体列表
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    Article save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
+    Article save(Article article, String articleId, ArticleArticleCategory articlePrimaryArticleCategory, List<ArticleArticleCategory> articleSecondaryArticleCategoryList, List<ArticleMedia> articleMediaList, String systemRequestUserId);
     
     /**
      * 文章更新
-     * 
-     * @param articleArticleCategoryList 文章文章分类列表
-     * @param articleMediaList 文章多媒体列表
+     *
      * @param article 文章
+     * @param articlePrimaryArticleCategory 文章主分类
+     * @param articleSecondaryArticleCategoryList 文章副分类列表
+     * @param articleMediaList 文章多媒体列表
      * @param systemRequestUserId 请求用户编号
      * @return
      */
-    Article update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId);
+    Article update(Article article, ArticleArticleCategory articlePrimaryArticleCategory, List<ArticleArticleCategory> articleSecondaryArticleCategoryList, List<ArticleMedia> articleMediaList, String systemRequestUserId);
     
     /**
      * 根据文章主分类编码查询文章列表

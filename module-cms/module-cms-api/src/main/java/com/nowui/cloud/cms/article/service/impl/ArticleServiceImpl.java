@@ -76,22 +76,16 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
     }
 
     @Override
-    public Article save(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
+    public Article save(Article article, String articleId, ArticleArticleCategory articlePrimaryArticleCategory, List<ArticleArticleCategory> articleSecondaryArticleCategoryList, List<ArticleMedia> articleMediaList, String systemRequestUserId) {
         
         //保存文章
-        String articleId = Util.getRandomUUID();
         String appId = article.getAppId();
         Article result = save(article, articleId, systemRequestUserId);
         
         if (result != null) {
-            //保存文章多媒体
-            for (ArticleMedia articleMedia : articleMediaList) {
-                String articleMediaId = Util.getRandomUUID();
-
-                articleMedia.setAppId(appId);
-                articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, articleMediaId, systemRequestUserId);
-            }
+            List<ArticleArticleCategory> articleArticleCategoryList = new ArrayList<ArticleArticleCategory>();
+            articleArticleCategoryList.add(articlePrimaryArticleCategory);
+            articleArticleCategoryList.addAll(articleSecondaryArticleCategoryList);
 
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
@@ -101,34 +95,49 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
                 articleArticleCategory.setArticleId(articleId);
                 articleArticleCategoryService.save(articleArticleCategory, articleArticleCategoryId, systemRequestUserId);
             }
+
+            //保存文章多媒体
+            for (ArticleMedia articleMedia : articleMediaList) {
+                String articleMediaId = Util.getRandomUUID();
+
+                articleMedia.setAppId(appId);
+                articleMedia.setArticleId(articleId);
+                articleMediaService.save(articleMedia, articleMediaId, systemRequestUserId);
+            }
         }
 
         return result;
     }
 
     @Override
-    public Article update(List<ArticleArticleCategory> articleArticleCategoryList, List<ArticleMedia> articleMediaList, Article article, String systemRequestUserId) {
+    public Article update(Article article, ArticleArticleCategory articlePrimaryArticleCategory, List<ArticleArticleCategory> articleSecondaryArticleCategoryList, List<ArticleMedia> articleMediaList, String systemRequestUserId) {
         String appId = article.getAppId();
         String articleId = article.getArticleId();
         Article result = update(article, articleId, systemRequestUserId, article.getSystemVersion());
 
         if (result != null) {
+            List<ArticleArticleCategory> articleArticleCategoryList = new ArrayList<ArticleArticleCategory>();
+            articleArticleCategoryList.add(articlePrimaryArticleCategory);
+            articleArticleCategoryList.addAll(articleSecondaryArticleCategoryList);
+
             //删除旧的文章文章分类
             articleArticleCategoryService.deleteByArticleId(articleId, systemRequestUserId);
-            //删除旧的文章多媒体
-            articleMediaService.deleteByArticleId(articleId, systemRequestUserId);
-            //保存文章多媒体
-            for (ArticleMedia articleMedia : articleMediaList) {
-                articleMedia.setAppId(appId);
-                articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
-            }
-            
+
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
                 articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
+            }
+
+            //删除旧的文章多媒体
+            articleMediaService.deleteByArticleId(articleId, systemRequestUserId);
+
+            //保存文章多媒体
+            for (ArticleMedia articleMedia : articleMediaList) {
+                articleMedia.setAppId(appId);
+                articleMedia.setArticleId(articleId);
+                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
             }
 
             rabbitSender.send(appId, ArticleRouter.ARTICLE_V1_UPDATE, article, systemRequestUserId);

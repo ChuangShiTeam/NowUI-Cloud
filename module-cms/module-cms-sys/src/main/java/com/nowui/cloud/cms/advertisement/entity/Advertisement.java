@@ -68,14 +68,6 @@ public class Advertisement extends BaseEntity {
     @Length(max = 200, message = "广告标题长度超出限制")
     private String advertisementTitle;
     public static final String ADVERTISEMENT_TITLE = "advertisementTitle";
-
-    /**
-     * 广告图片
-     */
-    @TableField(exist = false)
-    @NotNull(message = "广告图片不能为空")
-    private JSONObject advertisementImage;
-    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
     
     /**
      * 广告图片
@@ -128,6 +120,14 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告排序不能为空")
     private Boolean advertisementSort;
     public static final String ADVERTISEMENT_SORT = "advertisementSort";
+
+    /**
+     * 广告图片
+     */
+    @TableField(exist = false)
+    @NotNull(message = "广告图片不能为空")
+    private JSONObject advertisementImage;
+    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
     
     public String getAdvertisementId() {
         return getString(ADVERTISEMENT_ID);
@@ -167,14 +167,6 @@ public class Advertisement extends BaseEntity {
     
     public void setAdvertisementTitle(String advertisementTitle) {
         put(ADVERTISEMENT_TITLE, advertisementTitle);
-    }
-
-    public JSONObject getAdvertisementImage() {
-        return getJSONObject(ADVERTISEMENT_IMAGE);
-    }
-
-    public void setAdvertisementImage(JSONObject advertisementImage) {
-        put(ADVERTISEMENT_IMAGE, advertisementImage);
     }
     
     public String getAdvertisementImageId() {
@@ -223,6 +215,14 @@ public class Advertisement extends BaseEntity {
     
     public void setAdvertisementSort(Boolean advertisementSort) {
         put(ADVERTISEMENT_SORT, advertisementSort);
+    }
+
+    public JSONObject getAdvertisementImage() {
+        return getJSONObject(ADVERTISEMENT_IMAGE);
+    }
+
+    public void setAdvertisementImage(JSONObject advertisementImage) {
+        put(ADVERTISEMENT_IMAGE, advertisementImage);
     }
 
 }
