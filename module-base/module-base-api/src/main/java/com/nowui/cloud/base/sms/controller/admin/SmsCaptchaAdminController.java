@@ -103,7 +103,7 @@ public class SmsCaptchaAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+            //sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_SAVE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -132,7 +132,7 @@ public class SmsCaptchaAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_UPDATE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+            //sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_UPDATE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -157,7 +157,7 @@ public class SmsCaptchaAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_DELETE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
+            //sendMessage(result, SmsCaptchaRouter.SMS_CAPTCHA_V1_DELETE, smsCaptchaEntity.getAppId(), smsCaptchaEntity.getSystemRequestUserId());
 
             success = true;
         }

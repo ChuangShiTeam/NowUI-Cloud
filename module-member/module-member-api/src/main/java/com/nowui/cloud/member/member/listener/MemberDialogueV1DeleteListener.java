@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-03
  */
-@Configuration
+//@Configuration
 public class MemberDialogueV1DeleteListener {
 
     private final String queueName = "member_dialogue_v1_delete";

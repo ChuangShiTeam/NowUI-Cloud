@@ -100,7 +100,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
             success = true;
         }
@@ -128,7 +128,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
             success = true;
         }
@@ -153,7 +153,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_DELETE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_DELETE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
             success = true;
         }

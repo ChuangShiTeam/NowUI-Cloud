@@ -96,7 +96,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_SAVE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_SAVE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -123,7 +123,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_UPDATE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_UPDATE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -148,7 +148,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_DELETE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_DELETE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
 
             success = true;
         }

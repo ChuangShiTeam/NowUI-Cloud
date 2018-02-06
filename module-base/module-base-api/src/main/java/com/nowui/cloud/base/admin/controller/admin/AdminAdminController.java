@@ -218,7 +218,7 @@ public class AdminAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AdminRouter.ADMIN_V1_UPDATE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
+            //sendMessage(result, AdminRouter.ADMIN_V1_UPDATE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -243,7 +243,7 @@ public class AdminAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AdminRouter.ADMIN_V1_DELETE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
+            //sendMessage(result, AdminRouter.ADMIN_V1_DELETE, adminEntity.getAppId(), adminEntity.getSystemRequestUserId());
 
             success = true;
         }

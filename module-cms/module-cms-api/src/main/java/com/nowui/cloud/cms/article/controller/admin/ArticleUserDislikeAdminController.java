@@ -96,7 +96,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_SAVE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_SAVE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -123,7 +123,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_UPDATE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_UPDATE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -148,7 +148,7 @@ public class ArticleUserDislikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_DELETE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserDislikeRouter.ARTICLE_USER_DISLIKE_V1_DELETE, articleUserDislikeEntity.getAppId(), articleUserDislikeEntity.getSystemRequestUserId());
 
             success = true;
         }

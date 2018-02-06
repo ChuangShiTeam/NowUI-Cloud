@@ -100,7 +100,7 @@ public class MemberVisitForumAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_SAVE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -127,7 +127,7 @@ public class MemberVisitForumAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_UPDATE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_UPDATE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -152,7 +152,7 @@ public class MemberVisitForumAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_DELETE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberVisitForumRouter.MEMBER_VISIT_FORUM_V1_DELETE, memberVisitForumEntity.getAppId(), memberVisitForumEntity.getSystemRequestUserId());
 
             success = true;
         }

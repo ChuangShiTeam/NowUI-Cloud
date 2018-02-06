@@ -2,14 +2,13 @@ package com.nowui.cloud.service;
 
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.service.IService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.entity.BaseEntity;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.view.BaseView;
 
 /**
@@ -19,7 +18,7 @@ import com.nowui.cloud.view.BaseView;
  *
  * 2018-01-29
  */
-public interface SuperService<E extends BaseEntity, V extends BaseView> {
+public interface SuperService<E extends BaseEntity, V extends BaseView> extends IService<E> {
 
     /**
      * 统计查询
@@ -160,17 +159,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      */
     E save(E entity, String id, String systemCreateUserId);
 
-//    /**
-//     * 实体类新增
-//     *
-//     * @param entity 实体类
-//     * @param id 实体类编号
-//     * @param appId 应用编号
-//     * @param routing 路由
-//     * @param systemCreateUserId 创建人编号
-//     * @return Boolean 是否成功
-//     */
-//    Boolean save(E entity, String id, String appId, String routing, String systemCreateUserId);
+    /**
+     * 实体类新增
+     *
+     * @param list 实体类列表
+     * @param systemCreateUserId 创建人编号
+     * @return Boolean 是否成功
+     */
+    List<E> save(List<E> list, String systemCreateUserId);
 
     /**
      * 实体类修改
@@ -205,9 +201,8 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> {
      * 实体类修改
      *
      * @param entity 实体类
-     * @param id 实体类编号
+     * @param var1 更新条件
      * @param systemUpdateUserId 更新人编号
-     * @param systemVersion 版本号
      * @return 是否成功
      */
     E update(E entity, @Param("ew") Wrapper<E> var1, String systemUpdateUserId);

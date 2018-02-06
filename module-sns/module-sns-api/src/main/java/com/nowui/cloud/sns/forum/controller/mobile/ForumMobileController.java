@@ -131,7 +131,7 @@ public class ForumMobileController extends BaseController {
 
         	 // TODO 只发主业务逻辑的消息?
 	         result.put(ForumView.FORUM_USER_FOLLOW_VIEW, forumUserFollowResult);
-        	 sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
+        	 //sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
 
         	 success = true;
 	     }
@@ -320,7 +320,7 @@ public class ForumMobileController extends BaseController {
 	   Boolean success = false;
 
        if (result != null) {
-           sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+           //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
        }
@@ -352,7 +352,7 @@ public class ForumMobileController extends BaseController {
        Boolean success = false;
 
        if (result != null) {
-           sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+           //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
        }
@@ -381,7 +381,7 @@ public class ForumMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
             success = true;
         }
@@ -422,7 +422,7 @@ public class ForumMobileController extends BaseController {
         	forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
         	
         	//TODO 只发送一个消息?
-        	sendMessage(result, ForumRouter.FORUM_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
+        	//sendMessage(result, ForumRouter.FORUM_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
 
         	success = true;
 		}

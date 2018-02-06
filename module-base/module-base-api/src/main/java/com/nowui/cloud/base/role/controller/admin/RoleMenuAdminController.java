@@ -94,7 +94,7 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_SAVE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_SAVE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -121,7 +121,7 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_UPDATE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_UPDATE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -146,7 +146,7 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_DELETE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_DELETE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
 
             success = true;
         }

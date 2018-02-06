@@ -111,7 +111,7 @@ public class FileAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, FileRouter.FILE_V1_DELETE, fileEntity.getAppId(), fileEntity.getSystemRequestUserId());
+            //sendMessage(result, FileRouter.FILE_V1_DELETE, fileEntity.getAppId(), fileEntity.getSystemRequestUserId());
 
             success = true;
         }

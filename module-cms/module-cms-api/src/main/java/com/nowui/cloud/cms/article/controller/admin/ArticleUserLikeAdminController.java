@@ -96,7 +96,7 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_SAVE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_SAVE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -123,7 +123,7 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_UPDATE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_UPDATE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -148,7 +148,7 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_DELETE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_DELETE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }

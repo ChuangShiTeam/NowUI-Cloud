@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-03
  */
-@Configuration
+//@Configuration
 public class ArticleUserDislikeV1UpdateListener {
 
     private final String queueName = "article_user_dislike_v1_update";

@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-03
  */
-@Configuration
+//@Configuration
 public class MemberPerferenceLanguageV1DeleteListener {
 
     private final String queueName = "member_perference_language_v1_delete";

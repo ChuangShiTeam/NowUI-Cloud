@@ -114,7 +114,7 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_SAVE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_SAVE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -142,7 +142,7 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_UPDATE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_UPDATE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -166,7 +166,7 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_DELETE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_DELETE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }

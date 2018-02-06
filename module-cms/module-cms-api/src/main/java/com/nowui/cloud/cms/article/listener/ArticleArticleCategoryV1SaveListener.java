@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-03
  */
-@Configuration
+//@Configuration
 public class ArticleArticleCategoryV1SaveListener {
 
     private final String queueName = "article_article_category_v1_save";

@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class AppConfigCategoryV1DeleteListener {
 
     private final String queueName = "app_config_category_v1_delete";

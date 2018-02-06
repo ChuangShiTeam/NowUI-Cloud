@@ -158,7 +158,7 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -188,7 +188,7 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -203,7 +203,7 @@ public class ArticleCategoryAdminController extends BaseController {
 
         validateRequest(
             articleCategoryEntity, 
-            ArticleCategory.ARTICLE_CATEGORY_ID, 
+            ArticleCategory.ARTICLE_CATEGORY_ID,
             ArticleCategory.SYSTEM_VERSION
         );
 
@@ -212,7 +212,7 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }

@@ -77,7 +77,7 @@ public class NotifyMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
+            //sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -107,7 +107,7 @@ public class NotifyMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
+            //sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
 
             success = true;
         }

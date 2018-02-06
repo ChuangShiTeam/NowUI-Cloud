@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class TopicTipV1DeleteListener {
 
     private final String queueName = "topic_tip_v1_delete";

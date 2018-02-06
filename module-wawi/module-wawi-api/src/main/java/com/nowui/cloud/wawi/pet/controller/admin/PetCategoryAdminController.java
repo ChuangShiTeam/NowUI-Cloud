@@ -180,7 +180,7 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -211,7 +211,7 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -236,7 +236,7 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
+            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
 
             success = true;
         }

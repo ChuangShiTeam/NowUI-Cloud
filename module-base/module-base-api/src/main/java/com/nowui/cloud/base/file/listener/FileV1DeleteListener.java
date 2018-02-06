@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class FileV1DeleteListener {
 
     private final String queueName = "file_v1_delete";

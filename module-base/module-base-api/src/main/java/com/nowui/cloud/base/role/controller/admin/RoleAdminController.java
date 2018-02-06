@@ -101,7 +101,7 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleRouter.ROLE_V1_SAVE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleRouter.ROLE_V1_SAVE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -130,7 +130,7 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleRouter.ROLE_V1_UPDATE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleRouter.ROLE_V1_UPDATE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -155,7 +155,7 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, RoleRouter.ROLE_V1_DELETE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
+            //sendMessage(result, RoleRouter.ROLE_V1_DELETE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
 
             success = true;
         }

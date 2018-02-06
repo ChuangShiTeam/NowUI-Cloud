@@ -129,7 +129,7 @@ public class TopicUserLikeMobileController extends BaseController {
         if (result != null) {
             topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
             
-            sendMessage(result, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, appId, userId);
+            //sendMessage(result, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, appId, userId);
             success = true;
         }
 

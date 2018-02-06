@@ -21,7 +21,6 @@ import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
@@ -89,21 +88,20 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
 
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
-                String articleArticleCategoryId = Util.getRandomUUID();
-
+                articleArticleCategory.setArticleArticleCategoryId(Util.getRandomUUID());
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory, articleArticleCategoryId, systemRequestUserId);
             }
+            articleArticleCategoryService.save(articleArticleCategoryList, systemRequestUserId);
 
             //保存文章多媒体
             for (ArticleMedia articleMedia : articleMediaList) {
-                String articleMediaId = Util.getRandomUUID();
-
+                articleMedia.setArticleMediaId(Util.getRandomUUID());
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, articleMediaId, systemRequestUserId);
             }
+            articleMediaService.save(articleMediaList, systemRequestUserId);
+
         }
 
         return result;
@@ -125,22 +123,22 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
 
             //保存文章文章分类关联
             for (ArticleArticleCategory articleArticleCategory : articleArticleCategoryList) {
+                articleArticleCategory.setArticleArticleCategoryId(Util.getRandomUUID());
                 articleArticleCategory.setAppId(appId);
                 articleArticleCategory.setArticleId(articleId);
-                articleArticleCategoryService.save(articleArticleCategory,  Util.getRandomUUID(), systemRequestUserId);
             }
+            articleArticleCategoryService.save(articleArticleCategoryList, systemRequestUserId);
 
             //删除旧的文章多媒体
             articleMediaService.deleteByArticleId(articleId, systemRequestUserId);
 
             //保存文章多媒体
             for (ArticleMedia articleMedia : articleMediaList) {
+                articleMedia.setArticleMediaId(Util.getRandomUUID());
                 articleMedia.setAppId(appId);
                 articleMedia.setArticleId(articleId);
-                articleMediaService.save(articleMedia, Util.getRandomUUID(), systemRequestUserId);
             }
-
-            rabbitSender.send(appId, ArticleRouter.ARTICLE_V1_UPDATE, article, systemRequestUserId);
+            articleMediaService.save(articleMediaList, systemRequestUserId);
         }
 
         return result;

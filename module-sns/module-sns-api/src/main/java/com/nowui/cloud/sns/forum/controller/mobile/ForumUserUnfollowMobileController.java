@@ -75,7 +75,7 @@ public class ForumUserUnfollowMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-        	sendMessage(result, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, appId, userId);
+        	//sendMessage(result, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, appId, userId);
             
             success = true;
         }

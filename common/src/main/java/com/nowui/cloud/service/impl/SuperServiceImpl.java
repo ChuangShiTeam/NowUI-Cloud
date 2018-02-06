@@ -1,9 +1,9 @@
 package com.nowui.cloud.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.mongodb.client.result.UpdateResult;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
@@ -32,7 +32,7 @@ import java.util.*;
  *
  * 2018-01-29
  */
-public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R extends BaseRepository<V>, V extends BaseView> implements SuperService<E, V> {
+public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R extends BaseRepository<V>, V extends BaseView> extends ServiceImpl<M, E> implements SuperService<E, V> {
 
     @Autowired
     private E entity;
@@ -222,6 +222,8 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean save(V view) {
+        view.removeSystemValue();
+
         mongoTemplate.save(view);
 
         return true;
@@ -247,7 +249,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //    }
 
     @Override
-    public E save(E baseEntity, String id, String systemCreateUserId) {
+    public final E save(E baseEntity, String id, String systemCreateUserId) {
         baseEntity.put(entity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
@@ -260,6 +262,30 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         if(success) {
             return baseEntity;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<E> save(List<E> list, String systemCreateUserId) {
+        if (list.size() == 0) {
+            return null;
+        }
+
+        for (E baseEntity : list) {
+            baseEntity.setSystemCreateUserId(systemCreateUserId);
+            baseEntity.setSystemCreateTime(new Date());
+            baseEntity.setSystemUpdateUserId(systemCreateUserId);
+            baseEntity.setSystemUpdateTime(new Date());
+            baseEntity.setSystemVersion(0);
+            baseEntity.setSystemStatus(true);
+        }
+
+        Boolean success = insertBatch(list);
+
+        if(success) {
+            return list;
         } else {
             return null;
         }

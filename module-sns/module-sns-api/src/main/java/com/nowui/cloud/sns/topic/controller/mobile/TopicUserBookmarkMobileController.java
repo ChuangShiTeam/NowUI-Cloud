@@ -66,7 +66,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         	//去取消收藏表删除记录
             topicUserUnbookmarkService.deleteByTopicIdAndUserId(topicId, theBookMarkUserId, appId, requestUserId);
             
-            sendMessage(result, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, appId, requestUserId);
+            //sendMessage(result, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, appId, requestUserId);
             
             success = true;
         }

@@ -215,7 +215,7 @@ public class ForumAdminController extends BaseController {
       Boolean success = false;
 
       if (result != null) {
-          sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, systemRequestUserId);
+          //sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, systemRequestUserId);
 
           success = true;
       }
@@ -257,7 +257,7 @@ public class ForumAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ForumRouter.FORUM_V1_UPDATE, appId, systemRequestUserId);
+            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, appId, systemRequestUserId);
 
             success = true;
         }
@@ -285,7 +285,7 @@ public class ForumAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ForumRouter.FORUM_V1_DELETE, appId, systemRequestUserId);
+            //sendMessage(result, ForumRouter.FORUM_V1_DELETE, appId, systemRequestUserId);
 
             success = true;
         }

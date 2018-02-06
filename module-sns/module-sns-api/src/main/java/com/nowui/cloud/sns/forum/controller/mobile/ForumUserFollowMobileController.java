@@ -109,7 +109,7 @@ public class ForumUserFollowMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-        	sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
+        	//sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
             
             success = true;
         }

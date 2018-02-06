@@ -109,7 +109,7 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetRouter.PET_V1_SAVE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+            //sendMessage(result, PetRouter.PET_V1_SAVE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -141,7 +141,7 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetRouter.PET_V1_UPDATE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+            //sendMessage(result, PetRouter.PET_V1_UPDATE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -166,7 +166,7 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, PetRouter.PET_V1_DELETE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
+            //sendMessage(result, PetRouter.PET_V1_DELETE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
 
             success = true;
         }

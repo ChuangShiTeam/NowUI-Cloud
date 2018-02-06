@@ -103,7 +103,7 @@ public class UserNotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_SAVE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+            //sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_SAVE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -131,7 +131,7 @@ public class UserNotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_UPDATE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+            //sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_UPDATE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -156,7 +156,7 @@ public class UserNotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_DELETE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
+            //sendMessage(result, UserNotifyRouter.USER_NOTIFY_V1_DELETE, userNotifyEntity.getAppId(), userNotifyEntity.getSystemRequestUserId());
 
             success = true;
         }

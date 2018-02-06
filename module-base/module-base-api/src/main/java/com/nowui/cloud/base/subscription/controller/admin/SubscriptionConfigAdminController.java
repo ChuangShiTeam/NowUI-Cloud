@@ -103,7 +103,7 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -130,7 +130,7 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -155,7 +155,7 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
 
             success = true;
         }

@@ -109,7 +109,7 @@ public class SubscriptionAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -138,7 +138,7 @@ public class SubscriptionAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_UPDATE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_UPDATE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -163,7 +163,7 @@ public class SubscriptionAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_DELETE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
+            //sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_DELETE, subscriptionEntity.getAppId(), subscriptionEntity.getSystemRequestUserId());
 
             success = true;
         }

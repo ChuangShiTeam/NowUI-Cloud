@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class PetV1UpdateListener {
 
     private final String queueName = "pet_v1_update";

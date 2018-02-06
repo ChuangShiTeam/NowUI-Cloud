@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class UserPasswordV1DeleteListener {
 
     private final String queueName = "user_password_v1_delete";

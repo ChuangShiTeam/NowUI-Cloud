@@ -807,7 +807,7 @@ public class TopicMobileController extends BaseController {
         
         if (result != null) {
 			
-        	sendMessage(result, TopicRouter.TOPIC_V1_DELETE, body.getAppId(), systemRequestUserId);
+        	//sendMessage(result, TopicRouter.TOPIC_V1_DELETE, body.getAppId(), systemRequestUserId);
         	success = true;
 		}
         

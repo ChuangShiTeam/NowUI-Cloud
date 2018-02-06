@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-04
  */
-@Configuration
+//@Configuration
 public class TopicUserUnbookmarkV1UpdateListener {
 
     private final String queueName = "topic_user_unbookmark_v1_update";

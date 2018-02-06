@@ -73,7 +73,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         	
         	topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
     		
-            sendMessage(result, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, appId, userId);
+            //sendMessage(result, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, appId, userId);
 
             success = true;
         }

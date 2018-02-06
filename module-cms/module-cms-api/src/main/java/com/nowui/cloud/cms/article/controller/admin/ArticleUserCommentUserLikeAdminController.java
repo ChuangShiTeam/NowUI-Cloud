@@ -97,7 +97,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -124,7 +124,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -149,7 +149,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_DELETE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_DELETE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
 
             success = true;
         }

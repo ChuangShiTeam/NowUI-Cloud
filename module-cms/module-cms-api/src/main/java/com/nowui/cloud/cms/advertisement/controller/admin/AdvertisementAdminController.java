@@ -131,7 +131,7 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -167,7 +167,7 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -191,7 +191,7 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
+            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
 
             success = true;
         }

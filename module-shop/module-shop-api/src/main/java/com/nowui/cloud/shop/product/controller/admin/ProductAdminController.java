@@ -77,7 +77,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ProductRouter.PRODUCT_V1_SAVE, product.getAppId(), product.getSystemRequestUserId());
+            //sendMessage(result, ProductRouter.PRODUCT_V1_SAVE, product.getAppId(), product.getSystemRequestUserId());
 
             success = true;
         }
@@ -97,7 +97,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ProductRouter.PRODUCT_V1_UPDATE, product.getAppId(), product.getSystemRequestUserId());
+            //sendMessage(result, ProductRouter.PRODUCT_V1_UPDATE, product.getAppId(), product.getSystemRequestUserId());
 
             success = true;
         }
@@ -117,7 +117,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ProductRouter.PRODUCT_V1_DELETE, product.getAppId(), product.getSystemRequestUserId());
+            //sendMessage(result, ProductRouter.PRODUCT_V1_DELETE, product.getAppId(), product.getSystemRequestUserId());
 
             success = true;
         }

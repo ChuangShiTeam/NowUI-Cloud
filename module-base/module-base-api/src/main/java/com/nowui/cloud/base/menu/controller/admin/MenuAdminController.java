@@ -133,7 +133,7 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MenuRouter.MENU_V1_SAVE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+            //sendMessage(result, MenuRouter.MENU_V1_SAVE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -163,7 +163,7 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MenuRouter.MENU_V1_UPDATE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+            //sendMessage(result, MenuRouter.MENU_V1_UPDATE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -188,7 +188,7 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MenuRouter.MENU_V1_DELETE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
+            //sendMessage(result, MenuRouter.MENU_V1_DELETE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
 
             success = true;
         }

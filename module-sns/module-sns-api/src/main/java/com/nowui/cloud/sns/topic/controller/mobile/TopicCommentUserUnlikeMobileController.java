@@ -75,7 +75,7 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         	// 去点赞表删除点赞记录
         	topicCommentUserLikeService.deleteByCommentIdAndUserIdWithRedis(commentId, appId,userId, userId);
         	
-        	sendMessage(result, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, appId, userId);
+        	//sendMessage(result, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, appId, userId);
 
         	success = true;
 		}

@@ -1,6 +1,5 @@
 package com.nowui.cloud.cms.article.controller.admin;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
-import com.nowui.cloud.cms.article.router.ArticleRouter;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.controller.BaseController;
@@ -92,6 +90,7 @@ public class ArticleAdminController extends BaseController {
                 ArticleView.ARTICLE_IS_DRAFT,
                 ArticleView.ARTICLE_IS_OUTER_LINK,
                 ArticleView.ARTICLE_IS_TOP,
+                ArticleView.ARTICLE_TOP_LEVEL,
                 ArticleView.ARTICLE_KEYWORDS,
                 ArticleView.ARTICLE_OUTER_LINK,
                 ArticleView.ARTICLE_PUBLISH_TIME,
@@ -110,7 +109,7 @@ public class ArticleAdminController extends BaseController {
 
         validateSecondResponse(ArticleView.ARTICLE_PRIMARY_ARTICLE_CATEGORY, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
         validateSecondResponse(ArticleView.ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
-        validateSecondResponse(ArticleView.ARTICLE_MEDIA_LIST, File.FILE_ID, File.FILE_PATH);
+        validateSecondResponse(ArticleView.ARTICLE_MEDIA, File.FILE_ID, File.FILE_PATH);
 
         return renderJson(result);
     }
@@ -160,7 +159,7 @@ public class ArticleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleRouter.ARTICLE_V1_SAVE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleRouter.ARTICLE_V1_SAVE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -212,7 +211,8 @@ public class ArticleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleRouter.ARTICLE_V1_UPDATE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+            ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
+            articleService.save(articleView);
 
             success = true;
         }
@@ -236,7 +236,7 @@ public class ArticleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
 
             success = true;
         }

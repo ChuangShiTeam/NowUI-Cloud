@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-02-03
  */
-@Configuration
+//@Configuration
 public class ToolbarV1DeleteListener {
 
     private final String queueName = "toolbar_v1_delete";

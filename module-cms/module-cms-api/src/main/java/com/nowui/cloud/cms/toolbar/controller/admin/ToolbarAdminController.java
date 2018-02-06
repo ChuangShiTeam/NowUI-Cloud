@@ -129,7 +129,7 @@ public class ToolbarAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ToolbarRouter.TOOLBAR_V1_SAVE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
+            //sendMessage(result, ToolbarRouter.TOOLBAR_V1_SAVE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -157,7 +157,7 @@ public class ToolbarAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ToolbarRouter.TOOLBAR_V1_UPDATE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
+            //sendMessage(result, ToolbarRouter.TOOLBAR_V1_UPDATE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -180,7 +180,7 @@ public class ToolbarAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ToolbarRouter.TOOLBAR_V1_DELETE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
+            //sendMessage(result, ToolbarRouter.TOOLBAR_V1_DELETE, toolbarEntity.getAppId(), toolbarEntity.getSystemRequestUserId());
 
             success = true;
         }

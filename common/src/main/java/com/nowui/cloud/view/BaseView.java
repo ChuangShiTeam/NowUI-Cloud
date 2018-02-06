@@ -11,6 +11,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.constant.Constant;
+import com.nowui.cloud.entity.BaseEntity;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
@@ -168,6 +170,29 @@ public class BaseView extends JSONObject implements Serializable {
 
     public void setPageSize(Integer pageSize) {
         put(PAGE_SIZE, pageSize);
+    }
+
+    public <V extends BaseView> V removeSystemValue() {
+        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            if (Constant.TOKEN.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SIGN.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.TIMESTAMP.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.PLATFORM.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.VERSION.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SYSTEM_REQUEST_USER_ID.equals(entry.getKey())) {
+                iterator.remove();
+            } else if (Constant.SYSTEM_REQUEST_IP_ADDRESS.equals(entry.getKey())) {
+                iterator.remove();
+            }
+        }
+        return (V) this;
     }
 
     /**

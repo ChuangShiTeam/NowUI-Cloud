@@ -108,7 +108,7 @@ public class AppConfigController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_SAVE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigRouter.APP_CONFIG_V1_SAVE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -137,7 +137,7 @@ public class AppConfigController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_UPDATE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigRouter.APP_CONFIG_V1_UPDATE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -161,7 +161,7 @@ public class AppConfigController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppConfigRouter.APP_CONFIG_V1_DELETE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
+            //sendMessage(result, AppConfigRouter.APP_CONFIG_V1_DELETE, appConfigEntity.getAppId(), appConfigEntity.getSystemRequestUserId());
 
             success = true;
         }

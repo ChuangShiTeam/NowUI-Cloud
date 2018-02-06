@@ -102,7 +102,7 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -132,7 +132,7 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -157,7 +157,7 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
+            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
 
             success = true;
         }

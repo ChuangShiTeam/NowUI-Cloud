@@ -185,7 +185,7 @@ public class TopicCommentMobileController extends BaseController {
             	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
     		}
 
-            sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, appId, systemRequestUserId);
+            //sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, appId, systemRequestUserId);
 
             success = true;
         }
@@ -211,7 +211,7 @@ public class TopicCommentMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
+            //sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
 
             success = true;
         }

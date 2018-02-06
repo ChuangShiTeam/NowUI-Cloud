@@ -78,7 +78,7 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppRouter.APP_V1_SAVE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+            //sendMessage(result, AppRouter.APP_V1_SAVE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -102,7 +102,7 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppRouter.APP_V1_UPDATE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+            //sendMessage(result, AppRouter.APP_V1_UPDATE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -122,7 +122,7 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, AppRouter.APP_V1_DELETE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
+            //sendMessage(result, AppRouter.APP_V1_DELETE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
 
             success = true;
         }

@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * ${date}
  */
-@Configuration
+//@Configuration
 public class ${firstUpperWithoutUnderlineEntityName}V1UpdateListener {
 
     private final String queueName = "${firstLowerEntityName}_v1_update";

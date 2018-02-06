@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 2018-01-29
  */
-@Configuration
+//@Configuration
 @AutoConfigureAfter(RabbitConfig.class)
 public class OrderV1ProductUpdateListener {
 

@@ -104,7 +104,7 @@ public class MemberAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberRouter.MEMBER_V1_SAVE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberRouter.MEMBER_V1_SAVE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -134,7 +134,7 @@ public class MemberAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberRouter.MEMBER_V1_UPDATE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberRouter.MEMBER_V1_UPDATE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
 
             success = true;
         }
@@ -159,7 +159,7 @@ public class MemberAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            sendMessage(result, MemberRouter.MEMBER_V1_DELETE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
+            //sendMessage(result, MemberRouter.MEMBER_V1_DELETE, memberEntity.getAppId(), memberEntity.getSystemRequestUserId());
 
             success = true;
         }
