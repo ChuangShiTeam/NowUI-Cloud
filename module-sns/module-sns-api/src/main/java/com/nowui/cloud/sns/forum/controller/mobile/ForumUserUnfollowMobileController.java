@@ -51,24 +51,35 @@ public class ForumUserUnfollowMobileController extends BaseController {
                 ForumUserUnfollow.FORUM_ID
         );
         
+        String userId = body.getSystemRequestUserId();
         body.setUserId(body.getSystemRequestUserId());
+        String appId = body.getAppId();
         
         //先去关注表查询
-        ForumUserFollowView followBody = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        ForumUserFollowView followBody = forumUserFollowService.findByUserIdAndForumId(appId, userId, body.getForumId());
         //有: 删除
         if (followBody != null) {
 //  TODO  后面处理消息      	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, body.getSystemRequestUserId(), followBody.getSystemVersion());
-        	forumUserFollowService.delete(followBody.getForumUserFollowId(),  body.getSystemRequestUserId(), followBody.getSystemVersion());
+        	forumUserFollowService.delete(followBody.getForumUserFollowId(),  userId, followBody.getSystemVersion());
 		}
         //没有: 就去取消关注表查询
-        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByUserIdAndForumId(appId, userId, body.getForumId());
         //有: 返回true
         if (unfollow != null) {
 			return renderJson(true);
 		}
+        
         //没有: 新增取消关注记录
-//        boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, body.getSystemRequestUserId());
-//   TODO 明天来了改     forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
-        return renderJson(result);
+//      boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, body.getSystemRequestUserId());
+        ForumUserUnfollow result = forumUserUnfollowService.save(body, Util.getRandomUUID(), userId);
+        Boolean success = false;
+
+        if (result != null) {
+        	sendMessage(result, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, appId, userId);
+            
+            success = true;
+        }
+        
+        return renderJson(success);
     }
 }

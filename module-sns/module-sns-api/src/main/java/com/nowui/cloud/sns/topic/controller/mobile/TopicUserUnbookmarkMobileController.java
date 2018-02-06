@@ -15,6 +15,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -51,17 +52,25 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         String userId = body.getSystemRequestUserId();
         String appId = body.getAppId();
 
-        TopicUserUnbookmark topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
+        TopicUserUnbookmarkView topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
         if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
         	throw new BusinessException("你已经取消收藏过了");
 		}
 
         body.setUserId(userId);
-        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
-
-        if (result) {
+//        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
+        TopicUserUnbookmark result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), userId);
+        
+        boolean success = false;
+        
+        if (result != null) {
+        	
             topicUserBookmarkService.deleteByTopicIdAndUserId(topicId, userId, body.getAppId(), userId);
+            
+            sendMessage(result, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, appId, userId);
+            
+            success = true;
         }
-        return renderJson(result);
+        return renderJson(success);
     }
 }

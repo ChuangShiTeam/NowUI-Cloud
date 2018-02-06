@@ -83,9 +83,10 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.TOPIC_ID
         );
 
-        Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicUserLikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改点赞话题关联")
@@ -100,9 +101,10 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.update(body, body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserLikeService.update(body, body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除点赞话题关联")
@@ -115,9 +117,10 @@ public class TopicUserLikeAdminController extends BaseController {
                 TopicUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserLikeService.delete(body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserLikeService.delete(body.getTopicUserLikeId(), body.getAppId(), TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

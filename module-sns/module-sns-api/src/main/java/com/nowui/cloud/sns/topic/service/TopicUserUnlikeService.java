@@ -44,7 +44,7 @@ public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, To
      * @param topicId 话题编号
      * @return TopicUserUnlike 
      */
-    TopicUserUnlike findByTopciIdAndUserId(String topicId, String userId);
+    TopicUserUnlikeView findByTopciIdAndUserId(String topicId, String userId);
     
     /**
      * 根据话题编号逻辑删除用户取消点赞记录

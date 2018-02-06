@@ -76,14 +76,9 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
                 .and(TopicUserLikeView.USER_ID).regex(".*?" + userId + ".*")
                 .and(TopicUserLikeView.SYSTEM_STATUS).is(true);
 
-        List<Order> orders = new ArrayList<Order>();
-        orders.add(new Order(Sort.Direction.DESC, TopicUserLikeView.SYSTEM_CREATE_TIME));
-        Sort sort = Sort.by(orders);
-
         Query query = new Query(criteria);
-        query.with(sort);
 
-        List<TopicUserLikeView> topicUserLikeList = list(query, sort);
+        List<TopicUserLikeView> topicUserLikeList = list(query);
         
         if (Util.isNullOrEmpty(topicUserLikeList)) {
 			return null;
@@ -131,17 +126,32 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
 	}
 	
 	@Override
-	public List<TopicUserLike> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize) {
-		List<TopicUserLike> topicUserLikeList = list(
-                new BaseWrapper<TopicUserLike>()
-                        .eq(TopicUserLike.TOPIC_ID, topicId)
-                        .eq(TopicUserLike.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+	public List<TopicUserLikeView> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize) {
+//		List<TopicUserLike> topicUserLikeList = list(
+//                new BaseWrapper<TopicUserLike>()
+//                        .eq(TopicUserLike.TOPIC_ID, topicId)
+//                        .eq(TopicUserLike.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return topicUserLikeList;
+		
+		Criteria criteria = Criteria.where(TopicUserLikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserLikeView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicUserLikeView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicUserLikeView> topicUserLikeList = list(query, sort, pageIndex, pageSize);
 
         return topicUserLikeList;
+		
 	}
 
     @Override
@@ -149,31 +159,34 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
         List<TopicUserLike> topicUserLikeList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserLikeList)) {
-            topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion()));
+//            topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion()));
+        	 topicUserLikeList.stream().forEach(topicUserLike -> delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion()));
+        	  
         }
-        redisTemplate.delete(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
+//        redisTemplate.delete(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
-    public Boolean save(String appId, String topicId, String userId, String systemRequestUserId) {
+    public TopicUserLike save(String appId, String topicId, String userId, String systemRequestUserId) {
         TopicUserLike topicUserLike = new TopicUserLike();
         topicUserLike.setAppId(appId);
         topicUserLike.setTopicId(topicId);
         topicUserLike.setUserId(userId);
         
-        Boolean result = save(topicUserLike, Util.getRandomUUID(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, systemRequestUserId);
+//        Boolean result = save(topicUserLike, Util.getRandomUUID(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, systemRequestUserId);
+        TopicUserLike result = save(topicUserLike, Util.getRandomUUID(), systemRequestUserId);
         
-        if (result) {
+//        if (result != null) {
             // 更新话题点赞数缓存
-            Integer count = countByTopicId(topicId);
-            redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count + 1));
-        }
+//            Integer count = countByTopicId(topicId);
+//            redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count + 1));
+//        }
         return result;
     }
 
     @Override
     public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserLike topicUserLike = findByTopicIdAndUserId(topicId, userId);
+        TopicUserLikeView topicUserLike = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserLike)) {
             return true;
@@ -181,16 +194,17 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
         
         Integer count = countByTopicId(topicId);
         
-        Boolean result = delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion());
+//        Boolean result = delete(topicUserLike.getTopicUserLikeId(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_DELETE, systemRequestUserId, topicUserLike.getSystemVersion());
         
-        if (result) {
+        TopicUserLike result = delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
+        
+        if (result != null) {
             // 更新话题点赞数缓存
-        	redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count - 1));
+//        	redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count - 1));
+        	
+        	return true;
         }
         
-        return result;
+        return false;
     }
-
-	
-
 }

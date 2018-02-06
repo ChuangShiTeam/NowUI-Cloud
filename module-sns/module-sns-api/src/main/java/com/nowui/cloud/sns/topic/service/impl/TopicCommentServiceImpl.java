@@ -13,10 +13,13 @@ import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -95,44 +98,90 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     }
     
 	@Override
-	public List<TopicComment> listByTopicId(String topicId) {
-		List<TopicComment> topicCommentList = list(
-                new BaseWrapper<TopicComment>()
-                        .eq(TopicComment.TOPIC_ID, topicId)
-                        .eq(TopicComment.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME))
-        );
+	public List<TopicCommentView> listByTopicId(String topicId) {
+//		List<TopicComment> topicCommentList = list(
+//                new BaseWrapper<TopicComment>()
+//                        .eq(TopicComment.TOPIC_ID, topicId)
+//                        .eq(TopicComment.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME))
+//        );
+//
+//        return topicCommentList;
+		
+		Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicCommentView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicCommentView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicCommentView> topicCommentList = list(query, sort);
 
         return topicCommentList;
 	}
 
     @Override
-    public List<TopicComment> listByTopicId(String topicId, Integer pageIndex, Integer pageSize) {
-        List<TopicComment> topicCommentList = list(
-                new BaseWrapper<TopicComment>()
-                        .eq(TopicComment.TOPIC_ID, topicId)
-                        .eq(TopicComment.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<TopicCommentView> listByTopicId(String topicId, Integer pageIndex, Integer pageSize) {
+//        List<TopicComment> topicCommentList = list(
+//                new BaseWrapper<TopicComment>()
+//                        .eq(TopicComment.TOPIC_ID, topicId)
+//                        .eq(TopicComment.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return topicCommentList;
+    	
+    	
+    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicCommentView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicCommentView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicCommentView> topicCommentList = list(query, sort, pageIndex, pageSize);
 
         return topicCommentList;
     }
     
     @Override
-	public List<TopicComment> listByTopicId(String topicId, List<String> excludeCommentIdList, Date systemCreateTime,
+	public List<TopicCommentView> listByTopicId(String appId, String topicId, List<String> excludeCommentIdList, Date systemCreateTime,
 			Integer pageIndex, Integer pageSize) {
-    	List<TopicComment> topicCommentList = list(
-                new BaseWrapper<TopicComment>()
-                        .eq(TopicComment.TOPIC_ID, topicId)
-                        .notIn(TopicComment.TOPIC_COMMENT_ID, excludeCommentIdList)
-                        .eq(TopicComment.SYSTEM_STATUS, true)
-                        .le(TopicComment.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
-                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+//    	List<TopicComment> topicCommentList = list(
+//                new BaseWrapper<TopicComment>()
+//                        .eq(TopicComment.TOPIC_ID, topicId)
+//                        .notIn(TopicComment.TOPIC_COMMENT_ID, excludeCommentIdList)
+//                        .eq(TopicComment.SYSTEM_STATUS, true)
+//                        .le(TopicComment.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
+//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return topicCommentList;
+    	
+    	Criteria criteria = Criteria.where(TopicCommentView.APP_ID).is(appId)
+                .and(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicCommentView.TOPIC_COMMENT_ID).nin(excludeCommentIdList)
+                .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+                .and(TopicCommentView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicCommentView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicCommentView> topicCommentList = list(query, sort, pageIndex, pageSize);
 
         return topicCommentList;
 	}
@@ -140,29 +189,31 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
 
     @Override
     public void deleteByTopicId(String topicId, String appId, String systemRequestUserId) {
-        List<TopicComment> topicCommentList = listByTopicId(topicId);
+        List<TopicCommentView> topicCommentList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicCommentList)) {
-            topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), appId, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, systemRequestUserId, topicComment.getSystemVersion()));
+//            topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), appId, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, systemRequestUserId, topicComment.getSystemVersion()));
+        	topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), systemRequestUserId, topicComment.getSystemVersion()));
         }
-        redisTemplate.delete(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId);
+//        redisTemplate.delete(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
     public Boolean save(String appId, String topicId, String userId, TopicComment topicComment, String systemRequestUserId) {
-        
-        topicComment.setAppId(appId);
-        topicComment.setUserId(userId);
-        topicComment.setTopicId(topicId);
-        
-        Boolean result = save(topicComment, appId, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
-        
-        if (result) {
-            // 更新话题评论数缓存
-            Integer count = countByTopicId(topicId);
-            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
-        }
-        return result;
+        //TODO 不用缓存,所以不用这个方法 
+//        topicComment.setAppId(appId);
+//        topicComment.setUserId(userId);
+//        topicComment.setTopicId(topicId);
+//        
+//        Boolean result = save(topicComment, appId, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
+//        
+//        if (result) {
+//            // 更新话题评论数缓存
+//            Integer count = countByTopicId(topicId);
+//            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
+//        }
+//        return result;
+    	return null;
     }
 
 

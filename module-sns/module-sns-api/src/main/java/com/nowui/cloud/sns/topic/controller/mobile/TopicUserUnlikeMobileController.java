@@ -15,6 +15,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -51,18 +52,24 @@ public class TopicUserUnlikeMobileController extends BaseController {
         String topicId = body.getTopicId();
         String appId = body.getAppId();
         
-        TopicUserUnlike unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
+        TopicUserUnlikeView unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
         
         if (!Util.isNullOrEmpty(unlike)) {
         	throw new BusinessException("已经取消点赞过了");
 		}
         
         body.setUserId(userId);
-        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
+        TopicUserUnlike result = topicUserUnlikeService.save(body, Util.getRandomUUID(), userId);
 
-        if (result) {
+        boolean success = false;
+        
+        if (result != null) {
             topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            
+            sendMessage(result, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, appId, userId);
+            success = true;
         }
-        return renderJson(result);
+        return renderJson(success);
     }
 }

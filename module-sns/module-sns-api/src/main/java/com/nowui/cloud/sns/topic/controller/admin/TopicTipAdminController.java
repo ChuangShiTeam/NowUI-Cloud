@@ -83,9 +83,10 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.USER_ID
         );
 
-        Boolean result = topicTipService.save(body, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicTipService.save(body, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题提醒")
@@ -100,9 +101,10 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.SYSTEM_VERSION
         );
 
-        Boolean result = topicTipService.update(body, body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicTipService.update(body, body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题提醒")
@@ -115,9 +117,10 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.SYSTEM_VERSION
         );
 
-        Boolean result = topicTipService.delete(body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicTipService.delete(body.getTopicTipId(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

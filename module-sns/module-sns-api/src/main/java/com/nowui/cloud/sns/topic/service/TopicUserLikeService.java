@@ -68,7 +68,7 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * @param topicId 话题编号
      * @return List<TopicUserLike> 话题点赞列表
      */
-    List<TopicUserLike> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicUserLikeView> listByTopicIdHavePage(String topicId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据话题编号逻辑删除话题点赞
@@ -97,6 +97,6 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * @param systemRequestUserId 请求用户编号
      * @return  Boolean true 成功   false 失败
      */
-    Boolean save(String appId, String topicId, String userId, String systemRequestUserId);
+    TopicUserLike save(String appId, String topicId, String userId, String systemRequestUserId);
 
 }

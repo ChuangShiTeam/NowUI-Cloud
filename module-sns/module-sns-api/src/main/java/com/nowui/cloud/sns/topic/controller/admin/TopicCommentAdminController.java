@@ -95,9 +95,9 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
-        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
+// TODO admin先注释掉       Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题评论")
@@ -115,9 +115,9 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentService.update(body, body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//  TODO admin先注释掉      Boolean result = topicCommentService.update(body, body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题评论")
@@ -130,9 +130,9 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//  TODO admin先注释掉      Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
 }

@@ -42,6 +42,7 @@ public interface TopicCommentUserUnlikeService extends SuperService<TopicComment
      * 删除话题评论的取消点赞记录
      * 
      * @param commentId 被取消点赞的话题评论编号
+     * @param appId 应用编号
      * @param userId 取消点赞的用户编号
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
@@ -55,6 +56,6 @@ public interface TopicCommentUserUnlikeService extends SuperService<TopicComment
      * @param userId 取消点赞的用户编号
      * @return TopicCommentUserUnlike 评论点赞记录
      */
-    TopicCommentUserUnlike findTheCommentUserUnlike(String commentId, String userId);
+    TopicCommentUserUnlikeView findTheCommentUserUnlike(String appId, String commentId, String userId);
     
 }

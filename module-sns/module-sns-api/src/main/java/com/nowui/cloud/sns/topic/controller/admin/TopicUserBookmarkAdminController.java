@@ -83,9 +83,10 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.USER_ID
         );
 
-        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题收藏")
@@ -100,9 +101,10 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.update(body, body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserBookmarkService.update(body, body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题收藏")
@@ -115,9 +117,10 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserBookmarkService.delete(body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserBookmarkService.delete(body.getTopicUserBookmarkId(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

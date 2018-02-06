@@ -18,7 +18,6 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.topic.entity.Topic;
@@ -106,7 +105,7 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 	}
 	
 	@Override
-    public Integer countByForumId(String forumId) {
+    public Integer countByForumId(String appId, String forumId) {
 //        Integer forumTopicCount = (Integer) redisTemplate.opsForValue().get(TOPIC_FORUM_COUNT_BY_FORUM_ID + forumId);
 //        
 //        if (forumTopicCount == null) {
@@ -121,7 +120,8 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 //        
 //        return forumTopicCount;
 		
-		Criteria criteria = Criteria.where(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
+		Criteria criteria = Criteria.where(TopicForumView.APP_ID).is(appId)
+                .and(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
                 .and(TopicForumView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -132,17 +132,33 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
     }
 
     @Override
-    public List<TopicForum> listByForumId(String forumId, Integer pageIndex, Integer pageSize) {
-        List<TopicForum> topicForumList = list(
-                new BaseWrapper<TopicForum>()
-                        .eq(TopicForum.FORUM_ID, forumId)
-                        .eq(TopicForum.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<TopicForumView> listByForumId(String appId, String forumId, Integer pageIndex, Integer pageSize) {
+//        List<TopicForum> topicForumList = list(
+//                new BaseWrapper<TopicForum>()
+//                        .eq(TopicForum.FORUM_ID, forumId)
+//                        .eq(TopicForum.SYSTEM_STATUS, true)
+//                        .orderDesc(Arrays.asList(TopicForum.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//        );
+//
+//        return topicForumList;
+    	
+    	
+    	Criteria criteria = Criteria.where(TopicForumView.APP_ID).is(appId)
+                .and(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(TopicForumView.SYSTEM_STATUS).is(true);
 
-        return topicForumList;
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicForumView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicForumView> productViewList = list(query, sort, pageIndex, pageSize);
+
+        return productViewList;
     }
     
     @Override
@@ -237,27 +253,29 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
                 topicForum.setAppId(appId);
                 String topicForumId = Util.getRandomUUID();
                 
-                Boolean flag = save(topicForum, topicForumId, appId, TopicForumRouter.TOPIC_FORUM_V1_SAVE, systemRequestUserId);
+//TODO 在外面处理消息         Boolean flag = save(topicForum, topicForumId, appId, TopicForumRouter.TOPIC_FORUM_V1_SAVE, systemRequestUserId);
+                TopicForum result = save(topicForum, topicForumId, systemRequestUserId);
                 
-                if (!flag) {
+                if (result == null) {
                     throw new BusinessException("保存失败");
                 }
                                 
                 topicForumIdList.add(topicForumId);
             }
             
-            topicForumIdList.forEach(topicForumId -> {
-            	TopicForumView topicForum = find(topicForumId);
-            	
-            	// 论坛话题数缓存加一
-                Integer forumTopicCount = countByForumId(topicForum.getForumId());
-                
-                redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
-
-            });
+// TODO 不用缓存了
+//            topicForumIdList.forEach(topicForumId -> {
+//            	TopicForumView topicForum = find(topicForumId);
+//            	
+//            	// 论坛话题数缓存加一
+//                Integer forumTopicCount = countByForumId(topicForum.getForumId());
+//                
+//                redisTemplate.opsForValue().set(TOPIC_FORUM_COUNT_BY_FORUM_ID + topicForum.getForumId(), forumTopicCount + 1);
+//
+//            });
         }
         // 缓存话题论坛编号列表
-        redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
+//        redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
     }
 
 	

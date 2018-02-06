@@ -83,9 +83,10 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.USER_ID
         );
 
-        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题用户取消收藏关联")
@@ -100,9 +101,10 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.update(body, body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserUnbookmarkService.update(body, body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题用户取消收藏关联")
@@ -115,9 +117,10 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnbookmarkService.delete(body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserUnbookmarkService.delete(body.getTopicUserUnbookmarkId(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

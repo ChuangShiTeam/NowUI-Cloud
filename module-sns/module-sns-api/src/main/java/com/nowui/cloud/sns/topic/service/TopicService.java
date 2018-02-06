@@ -64,7 +64,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param pageSize 每页个数
      * @return List<Topic> 话题信息列表
      */
-    List<TopicView> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize);
+    List<TopicView> listByForumId(String appId, String forumId, String userId, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号查找所有topic记录
@@ -82,7 +82,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
 	 * 
 	 * @param userId 用户编号
 	 */
-	Integer countTopicByUserIdWithRedis(String userId);
+	Integer countTopicByUserIdWithRedis(String appId, String userId);
 	
 	/**
 	 * 根据用户id查找动态数量
@@ -129,7 +129,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicView> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据userId的list集合查询所有话题相关
@@ -143,7 +143,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param pageSize 取多少条
      * @return topic列表
      */
-    List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicView> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据topicId的list集合查询所有话题信息
@@ -198,7 +198,7 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * @param systemVersion 版本号
      * @return
      */
-    Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion);
+    Topic deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion);
     
     /**
      * 新增topic记录,并往redis中增加动态数

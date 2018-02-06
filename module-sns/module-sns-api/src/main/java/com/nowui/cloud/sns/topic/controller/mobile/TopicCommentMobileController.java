@@ -14,6 +14,7 @@ import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.Util;
 
@@ -69,21 +70,22 @@ public class TopicCommentMobileController extends BaseController {
         );
 
         String requestUserId = body.getSystemRequestUserId();
-        
+        String appId = body.getAppId();
         String topicId = body.getTopicId();
+        
         Integer resultTotal = topicCommentService.countByTopicId(topicId);
-        List<TopicComment> topicCommentList = topicCommentService.listByTopicId(topicId, (List<String>) body.get(TopicComment.EXCLUDE_COMMENT_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        List<TopicCommentView> topicCommentList = topicCommentService.listByTopicId(appId, topicId, (List<String>) body.get(TopicComment.EXCLUDE_COMMENT_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         if (Util.isNullOrEmpty(topicCommentList)) {
             return renderJson(resultTotal, topicCommentList);
         }
         
         //处理评论是否自己发的
-        for (TopicComment topicComment : topicCommentList) {
+        for (TopicCommentView topicComment : topicCommentList) {
         	// 验证评论是否是自己的
             topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getUserId().equals(requestUserId));
             
             // 处理用户是否点赞
-            TopicCommentUserLike theCommentUserLike = topicCommentUserLikeService.findTheCommentUserLike(topicComment.getTopicCommentId(), requestUserId);
+            TopicCommentUserLikeView theCommentUserLike = topicCommentUserLikeService.findTheCommentUserLike(appId, topicComment.getTopicCommentId(), requestUserId);
             if (theCommentUserLike != null) {
             	topicComment.put(TopicComment.TOPIC_COMMENT_IS_LIKE, true);
 			}else {
@@ -91,38 +93,38 @@ public class TopicCommentMobileController extends BaseController {
 			}
             
             // 获取评论点赞数
-            Integer likeCount = topicCommentUserLikeService.countByCommentIdWithRedis(topicComment.getTopicCommentId());
+            Integer likeCount = topicCommentUserLikeService.countByCommentIdWithRedis(appId, topicComment.getTopicCommentId());
             topicComment.put(TopicComment.TOPIC_COMMENT_LIKE_COUNT, likeCount);
 		}
         
-        //处理用户信息(昵称,头像)
-        String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
-        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-        topicCommentList = Util.beanAddField(
-        		topicCommentList, 
-        		TopicComment.USER_ID, 
-        		User.USER_ID, 
-        		memberList, 
-        		User.USER_ID,
-        		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME
-        	);
+        // TODO 处理用户信息(昵称,头像)
+//        String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
+//        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
+//        topicCommentList = Util.beanAddField(
+//        		topicCommentList, 
+//        		TopicComment.USER_ID, 
+//        		User.USER_ID, 
+//        		memberList, 
+//        		User.USER_ID,
+//        		UserAvatar.USER_AVATAR,
+//        		UserNickName.USER_NICK_NAME
+//        	);
         
         
-        // 处理回复用户信息(头像,昵称)
-        String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
-        
-        List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
-    
-        if (!Util.isNullOrEmpty(respondMemberList)) {
-            for (TopicComment topicComment : topicCommentList) {
-                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
-                    continue;
-                }
-                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-            }
-        }
+        // TODO 处理回复用户信息(头像,昵称)
+//        String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
+//        
+//        List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
+//    
+//        if (!Util.isNullOrEmpty(respondMemberList)) {
+//            for (TopicComment topicComment : topicCommentList) {
+//                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
+//                    continue;
+//                }
+//                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
+//                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
+//            }
+//        }
         
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
@@ -159,20 +161,33 @@ public class TopicCommentMobileController extends BaseController {
         body.setUserId(body.getSystemRequestUserId());
         String systemRequestUserId = body.getSystemRequestUserId();
         String topicReplayUserId = body.getTopicReplayUserId();
+        String appId = body.getAppId();
         
-        Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
-        //提醒被回复人
-        if (!Util.isNullOrEmpty(topicReplayUserId)) {
-        	System.out.println("=="+topicReplayUserId);
-			//把被回复人添加到回复表
-        	TopicTip topicTip = new TopicTip();
-        	topicTip.setAppId(body.getAppId());
-        	topicTip.setTopicId(body.getTopicId());
-        	topicTip.setUserId(body.getTopicReplayUserId());
-        	topicTipService.save(topicTip, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
-		}
+// TODO 后面处理消息    Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
+        TopicComment result = topicCommentService.save(body, Util.getRandomUUID(), systemRequestUserId);
+        
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+        	
+        	//提醒被回复人
+            if (!Util.isNullOrEmpty(topicReplayUserId)) {
+    			//把被回复人添加到回复表
+            	TopicTip topicTip = new TopicTip();
+            	topicTip.setAppId(body.getAppId());
+            	topicTip.setTopicId(body.getTopicId());
+            	topicTip.setUserId(body.getTopicReplayUserId());
+            	
+//  TODO 消息后面处理       topicTipService.save(topicTip, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
+            	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
+    		}
+
+            sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, appId, systemRequestUserId);
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
     
     
@@ -184,9 +199,19 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.APP_ID
         );
-        TopicCommentView TopicComment = topicCommentService.find(body.getTopicCommentId());
-        Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), TopicComment.getSystemVersion());
+        
+//        Boolean result = topicCommentService.delete(topicCommentId, body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), TopicComment.getSystemVersion());
+        
+        TopicComment result = topicCommentService.delete(body.getTopicCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        
+        Boolean success = false;
 
-        return renderJson(result);
+        if (result != null) {
+            sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 }

@@ -1,8 +1,13 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -54,15 +59,27 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
     }
 
 	@Override
-	public TopicUserUnbookmark findByTopicIdAndUserId(String topicId, String userId) {
-		TopicUserUnbookmark topicUserUnbookmark = find(
-                new BaseWrapper<TopicUserUnbookmark>()
-                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
-                        .eq(TopicUserUnbookmark.USER_ID, userId)
-                        .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
-        );
+	public TopicUserUnbookmarkView findByTopicIdAndUserId(String topicId, String userId) {
+//		TopicUserUnbookmark topicUserUnbookmark = find(
+//                new BaseWrapper<TopicUserUnbookmark>()
+//                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
+//                        .eq(TopicUserUnbookmark.USER_ID, userId)
+//                        .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
+//        );
+//
+//        return topicUserUnbookmark;
+		
+		Criteria criteria = Criteria.where(TopicUserUnbookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserUnbookmarkView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserUnbookmarkView.SYSTEM_STATUS).is(true);
 
-        return topicUserUnbookmark;
+        Query query = new Query(criteria);
+
+        List<TopicUserUnbookmarkView> topicUserUnbookmarkList = list(query);
+        if (Util.isNullOrEmpty(topicUserUnbookmarkList)) {
+			return null;
+		}
+        return topicUserUnbookmarkList.get(0);
 	}
 
 	@Override
@@ -84,22 +101,26 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
         if (Util.isNullOrEmpty(topicUserUnbookmarkList)) {
             return;
         }
-        
-        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
+//        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
+        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
         
     }
 
     @Override
     public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserUnbookmark topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
+        TopicUserUnbookmarkView topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserUnbookmark)) {
             return true;
         }
         
-        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+//        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion());
+        TopicUserUnbookmark result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         
-        return result;
+        if (result != null) {
+			return true;
+		}else {
+	        return false;
+		}
     }
-
 }

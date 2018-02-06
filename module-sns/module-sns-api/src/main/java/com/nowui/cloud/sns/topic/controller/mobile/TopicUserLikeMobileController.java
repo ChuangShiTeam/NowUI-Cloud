@@ -19,8 +19,10 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -59,25 +61,25 @@ public class TopicUserLikeMobileController extends BaseController {
         );
         //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countByTopicId(body.getTopicId());
-        List<TopicUserLike> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
+        List<TopicUserLikeView> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
        
         //处理列表中用户的头像,昵称,是否关注
-        String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
-        
-        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-        
-        resultList = Util.beanAddField(
-        		resultList,
-        		TopicUserLike.USER_ID,
-        		User.USER_ID,
-        		nickAndAvatarAndIsFollowList,
-        		User.USER_ID,
-        		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME,
-        		MemberFollow.MEMBER_IS_FOLLOW
-        	);
+//        String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
+//        
+//        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+//        
+//        resultList = Util.beanAddField(
+//        		resultList,
+//        		TopicUserLike.USER_ID,
+//        		User.USER_ID,
+//        		nickAndAvatarAndIsFollowList,
+//        		User.USER_ID,
+//        		UserAvatar.USER_AVATAR,
+//        		UserNickName.USER_NICK_NAME,
+//        		MemberFollow.MEMBER_IS_FOLLOW
+//        	);
 
-        for (TopicUserLike topicUserLike : resultList) {
+        for (TopicUserLikeView topicUserLike : resultList) {
         	topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, body.getSystemRequestUserId().equals(topicUserLike.getUserId()));
         }
         
@@ -110,7 +112,7 @@ public class TopicUserLikeMobileController extends BaseController {
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
 
-        TopicUserLike userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
+        TopicUserLikeView userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
         
         if (userLike != null) {
             throw new BusinessException("已经点过赞了");
@@ -118,12 +120,16 @@ public class TopicUserLikeMobileController extends BaseController {
 
         body.setUserId(userId);
 
-        Boolean result = topicUserLikeService.save(appId, topicId, userId, userId);
-                
-        if (result) {
+        TopicUserLike result = topicUserLikeService.save(appId, topicId, userId, userId);
+        boolean success = false;
+        
+        if (result != null) {
             topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            
+            sendMessage(result, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, appId, userId);
+            success = true;
         }
 
-        return renderJson(result);
+        return renderJson(success);
     }
 }

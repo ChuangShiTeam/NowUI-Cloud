@@ -546,10 +546,11 @@ public class ForumMobileController extends BaseController {
         Integer pageIndex = body.getPageIndex();
         Integer pageSize = body.getPageSize();
         String userId = body.getSystemRequestUserId();
+        String appId = body.getAppId();
         
         
         // 1,统计所有topic数量  根据forumId
-        Integer countResult = topicForumService.countByForumId(forumId);
+        Integer countResult = topicForumService.countByForumId(appId, forumId);
         
         // 2,获得topic的分页列表
         List<TopicForumView> topicForumList = topicForumService.listByForumId(forumId, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), pageIndex, pageSize);

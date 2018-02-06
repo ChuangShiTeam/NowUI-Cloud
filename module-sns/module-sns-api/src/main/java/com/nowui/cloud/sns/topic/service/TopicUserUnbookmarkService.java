@@ -44,7 +44,7 @@ public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbook
      * @param userId 用户编号
      * @return TopicUserUnbookmark 用户取消收藏单条记录
      */
-    TopicUserUnbookmark findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserUnbookmarkView findByTopicIdAndUserId(String topicId, String userId);
     
     /**
      * 根据话题编号查询取消收藏记录

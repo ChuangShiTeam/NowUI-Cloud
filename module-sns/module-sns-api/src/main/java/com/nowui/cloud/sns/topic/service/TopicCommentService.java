@@ -58,7 +58,7 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String topicId);
+    List<TopicCommentView> listByTopicId(String topicId);
     
     /**
      * 根据话题编号查询话题评论分页列表
@@ -66,7 +66,7 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicCommentView> listByTopicId(String topicId, Integer pageIndex, Integer pageSize);
     
     
     /**
@@ -78,7 +78,7 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * @param topicId 话题编号
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listByTopicId(String topicId,  List<String> excludeCommentIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicCommentView> listByTopicId(String appId, String topicId,  List<String> excludeCommentIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     
     /**

@@ -44,7 +44,7 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * @param userId 点赞的用户编号
      * @return TopicCommentUserLike 评论点赞记录
      */
-    TopicCommentUserLike findTheCommentUserLike(String commentId, String userId);
+    TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String userId);
     
     /**
      * 删除话题评论的点赞记录
@@ -70,7 +70,7 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * @param commentId 被点赞的话题编号
      * @return List<TopicCommentUserLike> 评论点赞记录列表
      */
-    List<TopicCommentUserLike> listByCommentIdWithoutPage(String commentId);
+    List<TopicCommentUserLikeView> listByCommentIdWithoutPage(String commentId);
     
     /**
      * 保存记录时使用缓存记录评论被点赞数量
@@ -81,13 +81,13 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * @param systemRequestUserId 操作的用户编号
      * @return boolean 操作结果
      */
-    boolean saveWithRedis(String appId, String commentId, String userId, String systemRequestUserId );
+    TopicCommentUserLike saveWithRedis(String appId, String commentId, String userId, String systemRequestUserId );
     
     /**
      * 根据评论id查询相应评论的点赞数(使用redis)
      * @param commentId 被点赞的话题评论编号
      * @return Integer 被点赞的数量
      */
-    Integer countByCommentIdWithRedis(String commentId);
+    Integer countByCommentIdWithRedis(String appId, String commentId);
   
 }
