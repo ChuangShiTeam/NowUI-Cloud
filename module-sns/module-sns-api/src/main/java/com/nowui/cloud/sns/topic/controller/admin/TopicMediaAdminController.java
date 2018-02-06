@@ -87,9 +87,10 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
-        Boolean result = topicMediaService.save(body, Util.getRandomUUID(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicMediaService.save(body, Util.getRandomUUID(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题多媒体")
@@ -105,9 +106,10 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.update(body, body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicMediaService.update(body, body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题多媒体")
@@ -120,9 +122,10 @@ public class TopicMediaAdminController extends BaseController {
                 TopicMedia.SYSTEM_VERSION
         );
 
-        Boolean result = topicMediaService.delete(body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicMediaService.delete(body.getTopicMediaId(), body.getAppId(), TopicMediaRouter.TOPIC_MEDIA_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

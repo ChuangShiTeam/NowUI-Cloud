@@ -1,8 +1,13 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -54,15 +59,28 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
     }
 
 	@Override
-	public TopicUserUnlike findByTopciIdAndUserId(String topicId, String userId) {
-		TopicUserUnlike topicUserUnlike = find(
-                new BaseWrapper<TopicUserUnlike>()
-                        .eq(TopicUserUnlike.USER_ID, userId)
-                        .eq(TopicUserUnlike.TOPIC_ID, topicId)
-                        .eq(TopicUserUnlike.SYSTEM_STATUS, true)
-        );
+	public TopicUserUnlikeView findByTopciIdAndUserId(String topicId, String userId) {
+//		TopicUserUnlike topicUserUnlike = find(
+//                new BaseWrapper<TopicUserUnlike>()
+//                        .eq(TopicUserUnlike.USER_ID, userId)
+//                        .eq(TopicUserUnlike.TOPIC_ID, topicId)
+//                        .eq(TopicUserUnlike.SYSTEM_STATUS, true)
+//        );
+//
+//        return topicUserUnlike;
+		
+		Criteria criteria = Criteria.where(TopicUserUnlikeView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserUnlikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserUnlikeView.SYSTEM_STATUS).is(true);
 
-        return topicUserUnlike;
+        Query query = new Query(criteria);
+
+        List<TopicUserUnlikeView> topicUserUnlikeList = list(query);
+        if (Util.isNullOrEmpty(topicUserUnlikeList)) {
+			return null;
+		}
+
+        return topicUserUnlikeList.get(0);
 	}
 
 	@Override
@@ -82,21 +100,27 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
         List<TopicUserUnlike> topicUserUnlikeList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserUnlikeList)) {
-            topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion()));
+//            topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion()));
+            topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion()));
+            
         }
     }
 
     @Override
     public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserUnlike topicUserUnlike = findByTopciIdAndUserId(topicId, userId);
+        TopicUserUnlikeView topicUserUnlike = findByTopciIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserUnlike)) {
             return true;
         }
         
-        Boolean result = delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion());
-        
-        return result;
+//        Boolean result = delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion());
+        TopicUserUnlike result = delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
+       
+        if (result != null) {
+			return true;
+		}else {
+			return false;
+		}
     }
-
 }

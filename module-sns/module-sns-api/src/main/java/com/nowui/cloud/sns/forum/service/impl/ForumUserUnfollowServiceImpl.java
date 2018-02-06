@@ -3,8 +3,6 @@ package com.nowui.cloud.sns.forum.service.impl;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.mapper.ForumUserUnfollowMapper;
 import com.nowui.cloud.sns.forum.repository.ForumUserUnfollowRepository;

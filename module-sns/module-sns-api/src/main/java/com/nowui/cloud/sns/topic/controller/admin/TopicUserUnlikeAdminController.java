@@ -83,9 +83,10 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.TOPIC_ID
         );
 
-        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题用户取消点赞关联")
@@ -100,9 +101,10 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.update(body, body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserUnlikeService.update(body, body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题用户取消点赞关联")
@@ -115,9 +117,10 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 TopicUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicUserUnlikeService.delete(body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicUserUnlikeService.delete(body.getTopicUserUnlikeId(), body.getAppId(), TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

@@ -83,9 +83,9 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.FORUM_ID
         );
 
-        Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, body.getSystemRequestUserId());
+//   TODO admin中的,先注释     Boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改论坛用户取关关联")
@@ -100,9 +100,9 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//  admin中的,先注释      Boolean result = forumUserUnfollowService.update(body, body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除论坛用户取关关联")
@@ -115,9 +115,9 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 ForumUserUnfollow.SYSTEM_VERSION
         );
 
-        Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//  admin中的,先注释      Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
 }

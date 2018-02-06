@@ -61,7 +61,7 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * @param topicId 话题编号
      * @return List<TopicUserBookmark> 话题收藏列表
      */
-    List<TopicUserBookmark> listByTopicId(String topicId);
+    List<TopicUserBookmarkView> listByTopicId(String topicId);
     
     /**
      * 根据话题编号逻辑删除话题收藏
@@ -89,6 +89,6 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * @param systemRequestUserId 请求用户编号
      * @return  Boolean true 成功   false 失败
      */
-    Boolean save(String appId, String topicId, String userId, String systemRequestUserId);
+    TopicUserBookmark save(String appId, String topicId, String userId, String systemRequestUserId);
     
 }

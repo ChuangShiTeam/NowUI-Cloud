@@ -51,11 +51,11 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
     
     /**
      * 论坛话题数量
-     * 
+     * @param appId 应用编号
      * @param forumId 论坛编号
      * @return Integer 话题数量统计
      */
-    Integer countByForumId(String forumId);
+    Integer countByForumId(String appId, String forumId);
     
     /**
      * 当日论坛话题数量
@@ -73,7 +73,7 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
      * @param pageSize 每页个数
      * @return List<TopicForum> 话题论坛列表
      */
-    List<TopicForum> listByForumId(String forumId, Integer pageIndex, Integer pageSize);
+    List<TopicForumView> listByForumId(String appId, String forumId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据论坛编号查询话题论坛列表(根据上次查询排除)

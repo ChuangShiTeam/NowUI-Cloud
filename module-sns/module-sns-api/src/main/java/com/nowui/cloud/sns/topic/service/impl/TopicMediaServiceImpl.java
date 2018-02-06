@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.mapper.TopicMediaMapper;
 import com.nowui.cloud.sns.topic.repository.TopicMediaRepository;
@@ -107,11 +105,12 @@ public class TopicMediaServiceImpl extends SuperServiceImpl<TopicMediaMapper, To
         List<TopicMediaView> topicMediaList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicMediaList)) {
-            topicMediaList.stream().forEach(topicMedia -> delete(topicMedia.getTopicMediaId(), appId, TopicMediaRouter.TOPIC_MEDIA_V1_DELETE, systemRequestUserId, topicMedia.getSystemVersion()));
+//            topicMediaList.stream().forEach(topicMedia -> delete(topicMedia.getTopicMediaId(), appId, TopicMediaRouter.TOPIC_MEDIA_V1_DELETE, systemRequestUserId, topicMedia.getSystemVersion()));
+            topicMediaList.stream().forEach(topicMedia -> delete(topicMedia.getTopicMediaId(), systemRequestUserId, topicMedia.getSystemVersion()));
         }
         
         // 清空缓存
-        redisTemplate.delete(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId);
+//        redisTemplate.delete(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -125,13 +124,14 @@ public class TopicMediaServiceImpl extends SuperServiceImpl<TopicMediaMapper, To
                 topicMedia.setAppId(appId);
                 String topicMediaId = Util.getRandomUUID();
                 
-                save(topicMedia, appId, TopicMediaRouter.TOPIC_MEDIA_V1_SAVE, topicMediaId, systemRequestUserId);
+//    TODO 放外面处理消息          save(topicMedia, appId, TopicMediaRouter.TOPIC_MEDIA_V1_SAVE, topicMediaId, systemRequestUserId);
+                save(topicMedia, topicMediaId, systemRequestUserId);
                 
                 topicMediaIdList.add(topicMediaId);
             }
         }
         // 缓存话题多媒体编号列表
-        redisTemplate.opsForValue().set(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId, topicMediaIdList);
+//   TODO 不用缓存了     redisTemplate.opsForValue().set(TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID + topicId, topicMediaIdList);
     }
 
 }

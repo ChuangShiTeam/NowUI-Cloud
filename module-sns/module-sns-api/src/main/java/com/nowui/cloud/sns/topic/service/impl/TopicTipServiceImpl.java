@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
@@ -59,7 +63,7 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
     @Override
     public List<TopicTipView> listByTopicId(String topicId) {
         // 查询缓存
-        List<String> topicTipIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
+//        List<String> topicTipIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
         
         //TODO 先注释掉,回来再调试,默认返回null
 //        if (topicTipIdList == null) {
@@ -78,7 +82,20 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
 //        } 
         
 //        return topicTipIdList.stream().map(topicTipId -> find(topicTipId)).collect(Collectors.toList());
-        return null;
+    	
+    	Criteria criteria = Criteria.where(TopicTipView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicTipView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicTipView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicTipView> topicTipList = list(query, sort);
+
+        return topicTipList;
     }
 
     @Override
@@ -86,11 +103,13 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
         List<TopicTipView> topicTipList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicTipList)) {
-            topicTipList.stream().forEach(topicTip -> delete(topicTip.getTopicTipId(), appId, TopicTipRouter.TOPIC_TIP_V1_DELETE, systemRequestUserId, topicTip.getSystemVersion()));
+//            topicTipList.stream().forEach(topicTip -> delete(topicTip.getTopicTipId(), appId, TopicTipRouter.TOPIC_TIP_V1_DELETE, systemRequestUserId, topicTip.getSystemVersion()));
+            topicTipList.stream().forEach(topicTip -> delete(topicTip.getTopicTipId(), systemRequestUserId, topicTip.getSystemVersion()));
+            
         }
         
         // 清空缓存
-        redisTemplate.delete(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
+//        redisTemplate.delete(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -103,13 +122,15 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
                 topicTip.setAppId(appId);
                 String topicTipId = Util.getRandomUUID();
                 
-                save(topicTip, topicTipId, appId, TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
+//TODO 消息放在 topicMobileController的保存提醒谁看
+//                save(topicTip, topicTipId, appId, TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
+                save(topicTip, topicTipId, systemRequestUserId);
                 
                 topicTipIdList.add(topicTipId);
             }
         }
         // 缓存话题提醒编号列表
-        redisTemplate.opsForValue().set(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId, topicTipIdList);
+//        redisTemplate.opsForValue().set(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId, topicTipIdList);
         
     }
 

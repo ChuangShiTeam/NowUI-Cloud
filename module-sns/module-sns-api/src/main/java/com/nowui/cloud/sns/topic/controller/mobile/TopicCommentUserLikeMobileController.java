@@ -4,14 +4,17 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
+import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,18 +56,29 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         String appId = body.getAppId();
         
         // 先去评论点赞表查询有没有记录
-        TopicCommentUserLike userLike = topicCommentUserLikeService.findTheCommentUserLike(commentId, userId);
+        TopicCommentUserLikeView userLike = topicCommentUserLikeService.findTheCommentUserLike(appId, commentId, userId);
         // 有: 就不做操作,并返回提示
         if (userLike != null) {
         	throw new BusinessException("已经点过赞了");
 		}
         
-        // 没有: 就去评论点赞表插入一条记录,并且删除取消点赞表的记录
-        Boolean result = topicCommentUserLikeService.saveWithRedis(appId, commentId, userId, userId);
-        if (result) {
+        // 没有: 就去评论点赞表插入一条记录
+     // TODO 没有处理点赞数
+        TopicCommentUserLike result = topicCommentUserLikeService.saveWithRedis(appId, commentId, userId, userId);
+        
+        //并且删除取消点赞表的记录
+        Boolean success = false;
+
+        if (result != null) {
+        	
         	topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
-		}
-        return renderJson(result);
+    		
+            sendMessage(result, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, appId, userId);
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
         
 }

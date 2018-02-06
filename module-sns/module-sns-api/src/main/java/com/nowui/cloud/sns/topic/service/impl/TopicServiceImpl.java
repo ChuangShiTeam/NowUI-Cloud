@@ -138,9 +138,9 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<TopicView> listByForumId(String forumId, String userId, Integer pageIndex, Integer pageSize) {
+	public List<TopicView> listByForumId(String appId, String forumId, String userId, Integer pageIndex, Integer pageSize) {
 	    
-		List<TopicForum> topicForumList = topicForumService.listByForumId(forumId, pageIndex, pageSize);
+		List<TopicForumView> topicForumList = topicForumService.listByForumId(appId, forumId, pageIndex, pageSize);
 		
 		List<TopicView> topicList = topicForumList.stream().map(topicForum -> findDetailByTopicIdAndUserId(topicForum.getTopicId(), userId)).collect(Collectors.toList());
 
@@ -205,13 +205,13 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         	
         	
         	//是否被用户收藏,根据requestUserId和topicId去查询用户收藏关联表有没有记录,有就设置一个常量字段
-        	TopicUserBookmark findTopicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
+        	TopicUserBookmarkView findTopicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
         	if (findTopicUserBookmark != null) {
         		topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, true);
 			}
         	
         	//是否被用户点赞
-        	TopicUserLike findLike = topicUserLikeService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
+        	TopicUserLikeView findLike = topicUserLikeService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
@@ -285,42 +285,69 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public Integer countByUserIdList(String appId, List<String> userIdList) {
-		Integer count = count(
-                new BaseWrapper<Topic>()
-                        .eq(Topic.APP_ID, appId)
-                        .in(Topic.USER_ID, userIdList)
-                        .eq(Topic.SYSTEM_STATUS, true)
-        );
+//		Integer count = count(
+//                new BaseWrapper<Topic>()
+//                        .eq(Topic.APP_ID, appId)
+//                        .in(Topic.USER_ID, userIdList)
+//                        .eq(Topic.SYSTEM_STATUS, true)
+//        );
+//
+//		return count;
+		
+		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
+                .and(TopicView.USER_ID).in(userIdList)
+                .and(TopicView.SYSTEM_STATUS).is(true);
 
-		return count;
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
+        return count;
 	}
 
 	@Override
-	public List<Topic> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-	    List<Topic> topicList = list(
-                new BaseWrapper<Topic>()
-                        .eq(Topic.APP_ID, appId)
-                        .in(Topic.USER_ID, userIdList)
-                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
-                        .eq(Topic.SYSTEM_STATUS, true)
-                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
-                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-            );
+	public List<TopicView> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+//	    List<Topic> topicList = list(
+//                new BaseWrapper<Topic>()
+//                        .eq(Topic.APP_ID, appId)
+//                        .in(Topic.USER_ID, userIdList)
+//                        .notIn(Topic.TOPIC_ID, excludeTopicIdList)
+//                        .eq(Topic.SYSTEM_STATUS, true)
+//                        .le(Topic.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
+//                        .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
+//                pageIndex,
+//                pageSize
+//            );
+//
+//		return topicList;
+		
+		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
+                .and(TopicView.USER_ID).in(userIdList)
+                .and(TopicView.TOPIC_ID).nin(excludeTopicIdList)
+                .and(TopicView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+                .and(TopicView.SYSTEM_STATUS).is(true);
 
-		return topicList;
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicView> productViewList = list(query, sort, pageIndex, pageSize);
+
+        return productViewList;
 	}
 	
 	@Override
-    public List<Topic> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-        List<Topic> topicList = listByUserIdList(appId, userIdList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
+    public List<TopicView> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+        List<TopicView> topicList = listByUserIdList(appId, userIdList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
             return topicList;
         }
         
-        for (Topic topic : topicList) {
+        for (TopicView topic : topicList) {
             topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
         }
 
@@ -328,10 +355,12 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
     }
 	
     @Override
-    public Boolean deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion) {
-        Boolean result = topicService.delete(topicId, appId, TopicRouter.TOPIC_V1_DELETE, systemRequestUserId, systemVersion);
-
-        if (result) {
+    public Topic deleteByTopicId(String appId, String topicId, String systemRequestUserId, Integer systemVersion) {
+//  TODO 消息在 topicMobileController的删除话题接口 中处理     
+    	//Boolean result = topicService.delete(topicId, appId, TopicRouter.TOPIC_V1_DELETE, systemRequestUserId, systemVersion);
+    	Topic result = topicService.delete(topicId, systemRequestUserId, systemVersion);
+    	boolean success = false; 
+        if (result != null) {
             //删除话题论坛关联
             topicForumService.deleteByTopicId(topicId, appId, systemRequestUserId);
 
@@ -352,9 +381,15 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
             //删除话题取消点赞
             topicUserUnlikeService.deleteByTopicId(topicId, appId, systemRequestUserId);
+            
+            success = true;
         }
         
-        return result;
+        if (success) {
+			return result;
+		}else {
+			return null;
+		}
     }
 
 	@Override
@@ -400,41 +435,53 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public Integer countTopicByUserIdWithRedis(String userId) {
-		Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
-		if (num == null) {
-			Integer count = count(
-	                new BaseWrapper<Topic>()
-	                        .eq(Topic.USER_ID, userId)
-	                        .eq(Topic.SYSTEM_STATUS, true)
-	        );
-			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
-			return count;
-		}
+	public Integer countTopicByUserIdWithRedis(String appId, String userId) {
+//		Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
+//		if (num == null) {
+//			Integer count = count(
+//	                new BaseWrapper<Topic>()
+//	                        .eq(Topic.USER_ID, userId)
+//	                        .eq(Topic.SYSTEM_STATUS, true)
+//	        );
+//			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + userId, count);
+//			return count;
+//		}
+//		
+//		return num;
 		
-		return num;
+		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
+                .and(TopicView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
+        return count;
 	}
 
 	@Override
 	public Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId) {
 		// 保存话题
-        Boolean result = topicService.save(entity, id, entity.getAppId(), TopicRouter.TOPIC_V1_SAVE, systemCreateUserId);
-        
-        if (result) {
-        	Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
-        	if (num == null) {
-    			Integer count = count(
-    	                new BaseWrapper<Topic>()
-    	                        .eq(Topic.USER_ID, systemCreateUserId)
-    	                        .eq(Topic.SYSTEM_STATUS, true)
-    	        );
-    			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
-    		}
-        	
-        	redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
-		}
+//  TODO topicMobileController的新增话题接口 不调用这个方法了     Boolean result = topicService.save(entity, id, entity.getAppId(), TopicRouter.TOPIC_V1_SAVE, systemCreateUserId);
 		
-		return result;
+        
+        
+//        if (result) {
+//        	Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
+//        	if (num == null) {
+//    			Integer count = count(
+//    	                new BaseWrapper<Topic>()
+//    	                        .eq(Topic.USER_ID, systemCreateUserId)
+//    	                        .eq(Topic.SYSTEM_STATUS, true)
+//    	        );
+//    			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
+//    		}
+//        	
+//        	redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
+//		}
+		
+		return null;
 	}
 
 	@Override
@@ -475,5 +522,4 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
         return topicList;
 	}
-
 }

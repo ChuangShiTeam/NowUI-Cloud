@@ -111,9 +111,10 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_TOP_LEVEL
         );
 
-        Boolean result = topicService.save(body, Util.getRandomUUID(), body.getAppId(), TopicRouter.TOPIC_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicService.save(body, Util.getRandomUUID(), body.getAppId(), TopicRouter.TOPIC_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题信息")
@@ -135,9 +136,10 @@ public class TopicAdminController extends BaseController {
                 Topic.SYSTEM_VERSION
         );
 
-        Boolean result = topicService.update(body, body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicService.update(body, body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题信息")
@@ -150,9 +152,11 @@ public class TopicAdminController extends BaseController {
                 Topic.SYSTEM_VERSION
         );
 
-        Boolean result = topicService.delete(body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicService.delete(body.getTopicId(), body.getAppId(), TopicRouter.TOPIC_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        
+        return renderJson(null);
     }
 
 }

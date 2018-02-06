@@ -89,9 +89,9 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.USER_ID
         );
 
-        Boolean result = topicCommentUserLikeService.save(topicCommentUserLikeEntity, Util.getRandomUUID(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, topicCommentUserLikeEntity.getSystemRequestUserId());
+//        Boolean result = topicCommentUserLikeService.save(topicCommentUserLikeEntity, Util.getRandomUUID(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, topicCommentUserLikeEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题的评论用户点赞")
@@ -108,9 +108,9 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserLikeService.update(topicCommentUserLikeEntity, topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_UPDATE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
+//        Boolean result = topicCommentUserLikeService.update(topicCommentUserLikeEntity, topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_UPDATE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
 
-        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题的评论用户点赞")
@@ -125,9 +125,10 @@ public class TopicCommentUserLikeAdminController extends BaseController {
                 TopicCommentUserLike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserLikeService.delete(topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_DELETE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
+//        Boolean result = topicCommentUserLikeService.delete(topicCommentUserLikeEntity.getCommentUserLikeId(), topicCommentUserLikeEntity.getAppId(), TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_DELETE, topicCommentUserLikeEntity.getSystemRequestUserId(), topicCommentUserLikeEntity.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

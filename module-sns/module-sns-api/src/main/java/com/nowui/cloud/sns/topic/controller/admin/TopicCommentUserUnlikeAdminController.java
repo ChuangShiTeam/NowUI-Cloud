@@ -89,9 +89,10 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 TopicCommentUserUnlike.USER_ID
         );
 
-        Boolean result = topicCommentUserUnlikeService.save(topicCommentUserUnlikeEntity, Util.getRandomUUID(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, topicCommentUserUnlikeEntity.getSystemRequestUserId());
+//        Boolean result = topicCommentUserUnlikeService.save(topicCommentUserUnlikeEntity, Util.getRandomUUID(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, topicCommentUserUnlikeEntity.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题评论的取消点赞")
@@ -108,9 +109,10 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 TopicCommentUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserUnlikeService.update(topicCommentUserUnlikeEntity, topicCommentUserUnlikeEntity.getCommentUserUnlikeId(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_UPDATE, topicCommentUserUnlikeEntity.getSystemRequestUserId(), topicCommentUserUnlikeEntity.getSystemVersion());
+//        Boolean result = topicCommentUserUnlikeService.update(topicCommentUserUnlikeEntity, topicCommentUserUnlikeEntity.getCommentUserUnlikeId(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_UPDATE, topicCommentUserUnlikeEntity.getSystemRequestUserId(), topicCommentUserUnlikeEntity.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题评论的取消点赞")
@@ -125,9 +127,10 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 TopicCommentUserUnlike.SYSTEM_VERSION
         );
 
-        Boolean result = topicCommentUserUnlikeService.delete(topicCommentUserUnlikeEntity.getCommentUserUnlikeId(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, topicCommentUserUnlikeEntity.getSystemRequestUserId(), topicCommentUserUnlikeEntity.getSystemVersion());
+//        Boolean result = topicCommentUserUnlikeService.delete(topicCommentUserUnlikeEntity.getCommentUserUnlikeId(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, topicCommentUserUnlikeEntity.getSystemRequestUserId(), topicCommentUserUnlikeEntity.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }

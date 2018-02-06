@@ -87,9 +87,10 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.TOPIC_ID
         );
 
-        Boolean result = topicForumService.save(body, Util.getRandomUUID(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_SAVE, body.getSystemRequestUserId());
+//        Boolean result = topicForumService.save(body, Util.getRandomUUID(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_SAVE, body.getSystemRequestUserId());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "修改话题论坛关联")
@@ -104,9 +105,10 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.update(body, body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicForumService.update(body, body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
     @ApiOperation(value = "删除话题论坛关联")
@@ -119,9 +121,10 @@ public class TopicForumAdminController extends BaseController {
                 TopicForum.SYSTEM_VERSION
         );
 
-        Boolean result = topicForumService.delete(body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
+//        Boolean result = topicForumService.delete(body.getTopicForumId(), body.getAppId(), TopicForumRouter.TOPIC_FORUM_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+//        return renderJson(result);
+        return renderJson(null);
     }
 
 }
