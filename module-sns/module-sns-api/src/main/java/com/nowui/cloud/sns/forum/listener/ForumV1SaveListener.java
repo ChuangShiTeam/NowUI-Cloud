@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.rabbit.RabbitListener;
 import com.nowui.cloud.sns.forum.service.ForumService;
+import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.router.ForumRouter;
+import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -29,6 +31,9 @@ public class ForumV1SaveListener {
 
     @Autowired
     private ForumService forumService;
+
+    @Autowired
+    private ForumUserFollowService forumUserFollowService;
 
     @Bean
     Queue ForumV1SaveQueue(RabbitAdmin rabbitAdmin) {
@@ -62,8 +67,10 @@ public class ForumV1SaveListener {
             @Override
             public void receive(String message) {
                 ForumView forumView = JSON.parseObject(message, ForumView.class);
-
                 forumService.save(forumView);
+                
+                ForumUserFollowView forumUserFollowView = JSON.parseObject(forumView.getForumUserFollowView().toJSONString(), ForumUserFollowView.class);
+                forumUserFollowService.save(forumUserFollowView);
             }
 
         };

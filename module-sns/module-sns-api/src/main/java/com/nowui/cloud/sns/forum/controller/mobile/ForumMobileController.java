@@ -124,14 +124,15 @@ public class ForumMobileController extends BaseController {
 	         forumUserFollow.setAppId(appId);
 	         forumUserFollow.setForumId(forumId);
 	         forumUserFollow.setUserId(CreateUserId);
-	         
+
 	     //TODO 先存到mysql,发消息放在后面
 //	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, CreateUserId);
-	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
-	         
+	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
+
         	 // TODO 只发主业务逻辑的消息?
+	         result.put(ForumView.FORUM_USER_FOLLOW_VIEW, forumUserFollowResult);
         	 sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
-        	 
+
         	 success = true;
 	     }
         
@@ -526,8 +527,8 @@ public class ForumMobileController extends BaseController {
 
         return renderJson(forum);
     }
-    
-    
+
+
     @ApiOperation(value = "论坛详情的主页的动态列表")
     @RequestMapping(value = "/forum/mobile/v1/home/topic/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeTopicV1() {
@@ -575,12 +576,12 @@ public class ForumMobileController extends BaseController {
 //	        		UserNickName.USER_NICK_NAME,
 //	        		MemberFollow.MEMBER_IS_FOLLOW
 //	    	);
-        
-        
+
+
 	        // 图片多媒体
 	        for (TopicView topic : topicList) {
 	            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
-	
+
 //	            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
 //	            List<File> fileList = fileRpc.findsV1(fileIds);
 //	

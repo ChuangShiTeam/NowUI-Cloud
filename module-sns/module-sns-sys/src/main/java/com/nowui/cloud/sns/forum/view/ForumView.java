@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.view;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
@@ -166,6 +167,14 @@ public class ForumView extends BaseView {
     private Integer forumSort;
     public static final String FORUM_SORT = "forumSort";
 
+    /**
+     * 论坛用户关注表
+     */
+    @Field
+    @NotNull(message = "论坛排序不能为空")
+    private JSONObject forumUserFollowView;
+    public static final String FORUM_USER_FOLLOW_VIEW = "forumUserFollowView";
+
 
     public String getForumId() {
         return getString(FORUM_ID);
@@ -310,6 +319,14 @@ public class ForumView extends BaseView {
     public void setForumSort(Integer forumSort) {
         put(FORUM_SORT, forumSort);
     }
+
+	public JSONObject getForumUserFollowView() {
+        return getJSONObject(FORUM_USER_FOLLOW_VIEW);
+	}
+
+	public void setForumUserFollowView(JSONObject forumUserFollowView) {
+        put(FORUM_USER_FOLLOW_VIEW, forumUserFollowView);
+	}
 
 
 }
