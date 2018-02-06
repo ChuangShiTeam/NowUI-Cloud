@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -70,14 +71,6 @@ public class Article extends BaseEntity {
     @Length(max = 200, message = "文章来源长度超出限制")
     private String articleSource;
     public static final String ARTICLE_SOURCE = "articleSource";
-
-    /**
-     * 文章媒体
-     */
-    @TableField(exist = false)
-    @NotNull(message = "文章媒体不能为空")
-    private JSONObject articleMedia;
-    public static final String ARTICLE_MEDIA = "articleMedia";
     
     /**
      * 文章媒体
@@ -226,10 +219,38 @@ public class Article extends BaseEntity {
     @NotNull(message = "文章排序不能为空")
     private Integer articleSort;
     public static final String ARTICLE_SORT = "articleSort";
-    
+
+    /**
+     * 文章媒体
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文章媒体不能为空")
+    private JSONObject articleMedia;
+    public static final String ARTICLE_MEDIA = "articleMedia";
+
+    /**
+     * 文章分类列表
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文章分类列表不能为空")
+    private JSONArray articleMediaList;
     public static final String ARTICLE_MEDIA_LIST = "articleMediaList";
-    
-    public static final String ARTICLE_ARTICLE_CATEGORY_LIST = "articleArticleCategoryList";
+
+    /**
+     * 文章主分类
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文章主分类不能为空")
+    private JSONObject articlePrimaryArticleCategory;
+    public static final String ARTICLE_PRIMARY_ARTICLE_CATEGORY = "articlePrimaryArticleCategory";
+
+    /**
+     * 文章副分类
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文章副分类不能为空")
+    private JSONArray articleSecondaryArticleCategoryList;
+    public static final String ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST = "articleSecondaryArticleCategoryList";
     
     public String getArticleId() {
         return getString(ARTICLE_ID);
@@ -261,14 +282,6 @@ public class Article extends BaseEntity {
     
     public void setArticleAuthor(String articleAuthor) {
         put(ARTICLE_AUTHOR, articleAuthor);
-    }
-
-    public JSONObject getArticleMedia() {
-        return getJSONObject(ARTICLE_MEDIA);
-    }
-
-    public void setArticleMedia(JSONObject articleMedia) {
-        put(ARTICLE_MEDIA, articleMedia);
     }
 
     public String getArticleMediaId() {
@@ -415,12 +428,44 @@ public class Article extends BaseEntity {
         put(ARTICLE_IS_REQUIRE_AUDIT, articleIsRequireAudit);
     }
     
-    public Boolean getArticleIsarticleIsRecommend() {
+    public Boolean getArticleIsRecommend() {
         return getBoolean(ARTICLE_IS_RECOMMEND);
     }
     
-    public void articleIsRecommend(Boolean articleIsRecommend) {
+    public void setArticleIsRecommend(Boolean articleIsRecommend) {
         put(ARTICLE_IS_RECOMMEND, articleIsRecommend);
+    }
+
+    public JSONObject getArticleMedia() {
+        return getJSONObject(ARTICLE_MEDIA);
+    }
+
+    public void setArticleMedia(JSONObject articleMedia) {
+        put(ARTICLE_MEDIA, articleMedia);
+    }
+
+    public JSONArray getArticleMediaList() {
+        return getJSONArray(ARTICLE_MEDIA_LIST);
+    }
+
+    public void setArticleMediaList(JSONArray articleMediaList) {
+        put(ARTICLE_MEDIA_LIST, articleMediaList);
+    }
+
+    public JSONObject getArticlePrimaryArticleCategory() {
+        return getJSONObject(ARTICLE_PRIMARY_ARTICLE_CATEGORY);
+    }
+
+    public void setArticlePrimaryArticleCategory(JSONObject articlePrimaryArticleCategory) {
+        put(ARTICLE_PRIMARY_ARTICLE_CATEGORY, articlePrimaryArticleCategory);
+    }
+
+    public JSONArray getArticleSecondaryArticleCategoryList() {
+        return getJSONArray(ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST);
+    }
+
+    public void setArticleSecondaryArticleCategoryList(JSONArray articleSecondaryArticleCategoryList) {
+        put(ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST, articleSecondaryArticleCategoryList);
     }
 
 }

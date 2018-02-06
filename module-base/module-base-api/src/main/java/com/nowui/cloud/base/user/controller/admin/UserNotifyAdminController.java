@@ -165,7 +165,7 @@ public class UserNotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "管理员数据同步")
-    @RequestMapping(value = "/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/notify/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<UserNotify> userNotifyList = userNotifyService.listByMysql();
 

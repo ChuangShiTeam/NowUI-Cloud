@@ -3,6 +3,7 @@ server:
 eureka:
   instance:
     hostname: localhost
+    leaseRenewalIntervalInSeconds: 5
   server:
     # 开发环境设为false，关闭自我保护机制，服务器不推荐使用
     enable-self-preservation: false

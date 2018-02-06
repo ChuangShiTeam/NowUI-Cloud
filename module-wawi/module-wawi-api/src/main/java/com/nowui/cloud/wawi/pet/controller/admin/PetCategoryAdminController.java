@@ -90,7 +90,7 @@ public class PetCategoryAdminController extends BaseController {
     }
     
     @ApiOperation(value = "宠物分类树形列表")
-    @RequestMapping(value = "/article/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> allTreeListV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 

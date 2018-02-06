@@ -3,7 +3,6 @@ package com.nowui.cloud.cms.advertisement.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.file.view.FileView;

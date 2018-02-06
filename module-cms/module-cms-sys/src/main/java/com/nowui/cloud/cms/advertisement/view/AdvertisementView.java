@@ -3,6 +3,7 @@ package com.nowui.cloud.cms.advertisement.view;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Component;
 /**
  * 广告视图
  *
- * @author xupengfei
+ * @author ZhongYongQiang
  *
- * 2018-02-03
+ * 2018-02-06
  */
 @Component
 @Document(collection = "advertisement_info")
@@ -23,6 +24,7 @@ public class AdvertisementView extends BaseView {
      */
     @KeyId
     @Field
+    @NotNull(message = "广告编号不能为空")
     private String advertisementId;
     public static final String ADVERTISEMENT_ID = "advertisementId";
 
@@ -30,6 +32,7 @@ public class AdvertisementView extends BaseView {
      * 应用编号
      */
     @Field
+    @NotNull(message = "应用编号不能为空")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -37,6 +40,7 @@ public class AdvertisementView extends BaseView {
      * 分类编码
      */
     @Field
+    @NotNull(message = "分类编码不能为空")
     private String advertisementCategoryCode;
     public static final String ADVERTISEMENT_CATEGORY_CODE = "advertisementCategoryCode";
 
@@ -44,6 +48,7 @@ public class AdvertisementView extends BaseView {
      * 编码
      */
     @Field
+    @NotNull(message = "编码不能为空")
     private String advertisementCode;
     public static final String ADVERTISEMENT_CODE = "advertisementCode";
 
@@ -51,6 +56,7 @@ public class AdvertisementView extends BaseView {
      * 标题
      */
     @Field
+    @NotNull(message = "标题不能为空")
     private String advertisementTitle;
     public static final String ADVERTISEMENT_TITLE = "advertisementTitle";
 
@@ -58,20 +64,15 @@ public class AdvertisementView extends BaseView {
      * 图片
      */
     @Field
+    @NotNull(message = "图片不能为空")
     private String advertisementImageId;
-    public static final String ADEVERTISEMENT_IMAGE_ID = "advertisementImageId";
-
-    /**
-     * 图片
-     */
-    @Field
-    private JSONObject advertisementImage;
-    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
+    public static final String ADVERTISEMENT_IMAGE_ID = "advertisementImageId";
 
     /**
      * 内容
      */
     @Field
+    @NotNull(message = "内容不能为空")
     private String advertisementContent;
     public static final String ADVERTISEMENT_CONTENT = "advertisementContent";
 
@@ -79,6 +80,7 @@ public class AdvertisementView extends BaseView {
      * 位置
      */
     @Field
+    @NotNull(message = "位置不能为空")
     private String advertisementPosition;
     public static final String ADVERTISEMENT_POSITION = "advertisementPosition";
 
@@ -86,6 +88,7 @@ public class AdvertisementView extends BaseView {
      * 超链接
      */
     @Field
+    @NotNull(message = "超链接不能为空")
     private String advertisementLink;
     public static final String ADVERTISEMENT_LINK = "advertisementLink";
 
@@ -93,6 +96,7 @@ public class AdvertisementView extends BaseView {
      * 是否生效
      */
     @Field
+    @NotNull(message = "是否生效不能为空")
     private Boolean advertisementIsEfficient;
     public static final String ADVERTISEMENT_IS_EFFICIENT = "advertisementIsEfficient";
 
@@ -100,8 +104,16 @@ public class AdvertisementView extends BaseView {
      * 排序
      */
     @Field
+    @NotNull(message = "排序不能为空")
     private Integer advertisementSort;
     public static final String ADVERTISEMENT_SORT = "advertisementSort";
+
+    /**
+     * 广告图片
+     */
+    @NotNull(message = "广告图片不能为空")
+    private JSONObject advertisementImage;
+    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
 
 
     public String getAdvertisementId() {
@@ -145,19 +157,11 @@ public class AdvertisementView extends BaseView {
     }
 
     public String getAdvertisementImageId() {
-        return getString(ADEVERTISEMENT_IMAGE_ID);
+        return getString(ADVERTISEMENT_IMAGE_ID);
     }
 
     public void setAdvertisementImageId(String advertisementImageId) {
-        put(ADEVERTISEMENT_IMAGE_ID, advertisementImageId);
-    }
-
-    public JSONObject getAdvertisementImage() {
-        return getJSONObject(ADVERTISEMENT_IMAGE);
-    }
-
-    public void setAdvertisementImage(JSONObject advertisementImage) {
-        put(ADVERTISEMENT_IMAGE, advertisementImage);
+        put(ADVERTISEMENT_IMAGE_ID, advertisementImageId);
     }
 
     public String getAdvertisementContent() {
@@ -200,5 +204,12 @@ public class AdvertisementView extends BaseView {
         put(ADVERTISEMENT_SORT, advertisementSort);
     }
 
+    public JSONObject getAdvertisementImage() {
+        return getJSONObject(ADVERTISEMENT_IMAGE);
+    }
+
+    public void setAdvertisementImage(JSONObject advertisementImage) {
+        put(ADVERTISEMENT_IMAGE, advertisementImage);
+    }
 
 }

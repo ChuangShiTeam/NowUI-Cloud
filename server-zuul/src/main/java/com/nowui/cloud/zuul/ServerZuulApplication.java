@@ -35,7 +35,7 @@ import org.springframework.context.annotation.FilterType;
 public class ServerZuulApplication {
 
     public static void main(String[] args) {
-///    	try {
+//    	try {
 //    		SpringApplication.run(ServerZuulApplication.class, args);
 //    	} catch (Exception e) {
 //    		e.printStackTrace();

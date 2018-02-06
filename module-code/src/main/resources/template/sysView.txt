@@ -96,7 +96,6 @@ public class ${firstUpperWithoutUnderlineEntityName}View extends BaseView {
         put(${column.upperWithUnderlineColumnName}, ${column.columnName});
     }
     <%}%>
-
     <%}%>
 
 }
