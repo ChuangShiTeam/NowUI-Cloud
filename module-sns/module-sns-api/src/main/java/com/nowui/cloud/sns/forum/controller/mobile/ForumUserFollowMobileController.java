@@ -228,27 +228,27 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.PAGE_SIZE,
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID
         );
-        
+
         String appId = body.getAppId();
         String userId = body.getSystemRequestUserId();
-        
+
         Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
-        
+
         List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
 
         List<ForumView> forumList = new ArrayList<>();
 
         for (ForumUserFollowView forumUserFollow : forumUserFollowList) {
-            
+
         	ForumView forum = forumService.find(forumUserFollow.getForumId());
-        	
+
             // 论坛当日话题最新数量
             Integer count = topicForumService.countTodayByForumId(forumUserFollow.getForumId());
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
 
             forumList.add(forum);
         }
-        
+
         // TODO 处理论坛多媒体
 //        String fileIds = Util.beanToFieldString(forumList, Forum.FORUM_MEDIA);
 //        List<File> fileList = fileRpc.findsV1(fileIds);
@@ -257,7 +257,11 @@ public class ForumUserFollowMobileController extends BaseController {
 //        String userIds = Util.beanToFieldString(forumList, Forum.FORUM_MODERATOR);
 //        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
 //        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
-                
+        
+        
+        
+        
+        
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
@@ -315,11 +319,11 @@ public class ForumUserFollowMobileController extends BaseController {
         Boolean success = false;
         
         if (result != null) {
-        	sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
+        	forumUserFollowEntry.setForumUserFollowIsTop(true);
+        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
 
             success = true;
 		}
         return renderJson(success);
     }
-
 }

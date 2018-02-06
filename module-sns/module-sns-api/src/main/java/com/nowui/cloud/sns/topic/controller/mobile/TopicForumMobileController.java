@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 
@@ -33,7 +34,8 @@ public class TopicForumMobileController extends BaseController {
 
     @ApiOperation(value = "话题论坛关联列表")
     @RequestMapping(value = "/topic/forum/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody TopicForum body) {
+    public Map<String, Object> listV1() {
+    	TopicForum body = getEntry(TopicForum.class);
         validateRequest(
                 body,
                 TopicForum.APP_ID,

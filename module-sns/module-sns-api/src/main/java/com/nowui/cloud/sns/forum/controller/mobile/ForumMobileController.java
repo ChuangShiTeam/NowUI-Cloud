@@ -127,14 +127,12 @@ public class ForumMobileController extends BaseController {
 	         
 	     //TODO 先存到mysql,发消息放在后面
 //	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, CreateUserId);
-	         ForumUserFollow forumUserFollowSave = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
+	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
 	         
-	         if (forumUserFollowSave != null) {
-	        	 // TODO 只发主业务逻辑的消息?
-	        	 sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
-	        	 
-	        	 success = true;
-			}
+        	 // TODO 只发主业务逻辑的消息?
+        	 sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
+        	 
+        	 success = true;
 	     }
         
 	     return renderJson(success);

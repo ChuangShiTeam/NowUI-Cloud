@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
@@ -40,7 +41,8 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 
 	@ApiOperation(value = "新增话题用户取消收藏关联")
     @RequestMapping(value = "/topic/user/unbookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody TopicUserUnbookmark body) {
+    public Map<String, Object> saveV1() {
+		TopicUserUnbookmark body = getEntry(TopicUserUnbookmark.class);
         validateRequest(
                 body,
                 TopicUserUnbookmark.APP_ID,

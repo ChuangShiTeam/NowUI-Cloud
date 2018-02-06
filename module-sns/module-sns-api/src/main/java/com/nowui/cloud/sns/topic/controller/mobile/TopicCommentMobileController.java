@@ -6,6 +6,7 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
@@ -59,7 +60,8 @@ public class TopicCommentMobileController extends BaseController {
 
     @ApiOperation(value = "话题详情页评论列表")
     @RequestMapping(value = "/topic/comment/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody TopicComment body) {
+    public Map<String, Object> listV1() {
+    	TopicComment body = getEntry(TopicComment.class);
         validateRequest(
                 body,
                 TopicComment.APP_ID,
@@ -148,7 +150,8 @@ public class TopicCommentMobileController extends BaseController {
 
     @ApiOperation(value = "新增话题评论")
     @RequestMapping(value = "/topic/comment/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody TopicComment body) {
+    public Map<String, Object> saveV1() {
+    	TopicComment body = getEntry(TopicComment.class);
         validateRequest(
                 body,
                 TopicComment.APP_ID,
@@ -193,7 +196,8 @@ public class TopicCommentMobileController extends BaseController {
     
     @ApiOperation(value = "删除话题评论")
     @RequestMapping(value = "/topic/comment/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody TopicComment body) {
+    public Map<String, Object> deleteV1() {
+    	TopicComment body = getEntry(TopicComment.class);
         validateRequest(
                 body,
                 TopicComment.TOPIC_COMMENT_ID,

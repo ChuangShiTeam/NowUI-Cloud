@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
@@ -40,7 +41,8 @@ public class TopicUserUnlikeMobileController extends BaseController {
 	
 	@ApiOperation(value = "新增话题用户取消点赞关联")
     @RequestMapping(value = "/topic/user/unlike/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody TopicUserUnlike body) {
+    public Map<String, Object> saveV1() {
+		TopicUserUnlike body = getEntry(TopicUserUnlike.class);
         validateRequest(
                 body,
                 TopicUserUnlike.APP_ID,

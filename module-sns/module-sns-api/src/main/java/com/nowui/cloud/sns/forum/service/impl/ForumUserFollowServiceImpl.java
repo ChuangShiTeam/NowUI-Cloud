@@ -123,12 +123,12 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 
         List<Order> orders = new ArrayList<Order>();
         orders.add(new Order(Sort.Direction.DESC, ForumUserFollow.FORUM_USER_FOLLOW_IS_TOP));
-        orders.add(new Order(Sort.Direction.DESC, ForumUserFollowView.SYSTEM_CREATE_TIME));
+        orders.add(new Order(Sort.Direction.DESC, ForumUserFollowView.SYSTEM_UPDATE_TIME));
         Sort sort = Sort.by(orders);
 
         Query query = new Query(criteria);
         query.with(sort);
-
+        
         List<ForumUserFollowView> forumUserFollowList = list(query, sort, pageIndex, pageSize);
 
         return forumUserFollowList;

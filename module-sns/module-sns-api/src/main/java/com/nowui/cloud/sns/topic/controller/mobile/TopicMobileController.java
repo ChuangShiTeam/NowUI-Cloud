@@ -95,7 +95,8 @@ public class TopicMobileController extends BaseController {
 
     @ApiOperation(value = "论坛中的话题信息列表")
     @RequestMapping(value = "/topic/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody TopicForum body) {
+    public Map<String, Object> listV1() {
+    	TopicForum body = getEntry(TopicForum.class);
         validateRequest(
                 body,
                 TopicForum.APP_ID,
@@ -171,7 +172,8 @@ public class TopicMobileController extends BaseController {
     
     @ApiOperation(value = "别人的主页的用户信息(头像,关注数,粉丝数是否关注这个用户等)")
     @RequestMapping(value = "/topic/mobile/v1/home/user/info", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> homeUserInfoV1(@RequestBody Topic body) {
+    public Map<String, Object> homeUserInfoV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -218,7 +220,8 @@ public class TopicMobileController extends BaseController {
     
     @ApiOperation(value = "别人的主页的动态列表")
     @RequestMapping(value = "/topic/mobile/v1/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> homeTopicV1(@RequestBody Topic body) {
+    public Map<String, Object> homeTopicV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -338,7 +341,8 @@ public class TopicMobileController extends BaseController {
     
     @ApiOperation(value = "自己的主页的用户信息(头像,关注数,粉丝数是否关注这个用户等)")
     @RequestMapping(value = "/topic/mobile/v1/home/self/info", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> homeSelfInfoV1(@RequestBody Topic body) {
+    public Map<String, Object> homeSelfInfoV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -377,7 +381,8 @@ public class TopicMobileController extends BaseController {
     }
     @ApiOperation(value = "自己的主页的动态列表")
     @RequestMapping(value = "/topic/mobile/v1/self/home/topic", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> selfHomeTopicV1(@RequestBody Topic body) {
+    public Map<String, Object> selfHomeTopicV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -497,7 +502,8 @@ public class TopicMobileController extends BaseController {
     
     @ApiOperation(value = "话题详情页")
     @RequestMapping(value = "/topic/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1(@RequestBody Topic body) {
+    public Map<String, Object> findV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -585,7 +591,8 @@ public class TopicMobileController extends BaseController {
     
     @ApiOperation(value = "动态主页列表")
     @RequestMapping(value = "/topic/mobile/v1/home/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> followListV1(@RequestBody Topic body) {
+    public Map<String, Object> followListV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -699,7 +706,8 @@ public class TopicMobileController extends BaseController {
 
     @ApiOperation(value = "新增话题信息")
     @RequestMapping(value = "/topic/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody Topic body) {
+    public Map<String, Object> saveV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.APP_ID,
@@ -781,7 +789,8 @@ public class TopicMobileController extends BaseController {
 
     @ApiOperation(value = "删除话题信息")
     @RequestMapping(value = "/topic/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Topic body) {
+    public Map<String, Object> deleteV1() {
+    	Topic body = getEntry(Topic.class);
         validateRequest(
                 body,
                 Topic.TOPIC_ID,

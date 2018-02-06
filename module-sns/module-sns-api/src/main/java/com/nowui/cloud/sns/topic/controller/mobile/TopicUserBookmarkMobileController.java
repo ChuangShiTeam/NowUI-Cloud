@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
@@ -39,7 +40,8 @@ public class TopicUserBookmarkMobileController extends BaseController {
 	
 	@ApiOperation(value = "新增话题收藏")
     @RequestMapping(value = "/topic/user/bookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody TopicUserBookmark body) {
+    public Map<String, Object> saveV1() {
+		TopicUserBookmark body = getEntry(TopicUserBookmark.class);
         validateRequest(
                 body,
                 TopicUserBookmark.APP_ID,

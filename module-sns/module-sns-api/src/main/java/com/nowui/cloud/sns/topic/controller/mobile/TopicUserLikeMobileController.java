@@ -18,6 +18,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
@@ -50,7 +51,8 @@ public class TopicUserLikeMobileController extends BaseController {
 
     @ApiOperation(value = "给话题点赞的用户列表")
     @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@RequestBody TopicUserLike body) {
+    public Map<String, Object> listV1() {
+    	TopicUserLike body = getEntry(TopicUserLike.class);
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
@@ -100,7 +102,8 @@ public class TopicUserLikeMobileController extends BaseController {
 
     @ApiOperation(value = "新增点赞话题关联")
     @RequestMapping(value = "/topic/user/like/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody TopicUserLike body) {
+    public Map<String, Object> saveV1() {
+    	TopicUserLike body = getEntry(TopicUserLike.class);
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
