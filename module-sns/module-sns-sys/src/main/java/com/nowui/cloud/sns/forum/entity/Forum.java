@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -60,7 +61,7 @@ public class Forum extends BaseEntity {
     @Length(max = 32, message = "版主(用户编号)长度超出限制")
     private String forumModerator;
     public static final String FORUM_MODERATOR = "forumModerator";
-
+    
     /**
      * 论坛多媒体
      */

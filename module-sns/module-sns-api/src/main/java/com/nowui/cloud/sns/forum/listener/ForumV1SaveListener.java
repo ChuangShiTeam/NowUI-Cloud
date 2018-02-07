@@ -69,8 +69,6 @@ public class ForumV1SaveListener {
                 ForumView forumView = JSON.parseObject(message, ForumView.class);
                 forumService.save(forumView);
                 
-                ForumUserFollowView forumUserFollowView = JSON.parseObject(forumView.getForumUserFollowView().toJSONString(), ForumUserFollowView.class);
-                forumUserFollowService.save(forumUserFollowView);
             }
 
         };

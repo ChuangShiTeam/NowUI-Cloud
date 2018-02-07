@@ -73,14 +73,16 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
     }
     
     @Override
-    public void deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-    	delete(
+    public TopicForum deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
+    	TopicForum delete = delete(
     			new BaseWrapper<TopicForum>()
     				.eq(TopicForum.APP_ID, appId)
     				.eq(TopicForum.FORUM_ID, forumId)
     				.eq(TopicForum.SYSTEM_STATUS, true),
     			systemUpdateUserId
     	);
+    	
+    	return delete;
     }
 
 	@Override

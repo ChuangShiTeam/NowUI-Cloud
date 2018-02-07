@@ -264,8 +264,8 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 	}
 
 	@Override
-	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-        delete(
+	public ForumUserFollow deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
+        ForumUserFollow delete = delete(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
                         .eq(ForumUserFollow.FORUM_ID, forumId)
@@ -273,7 +273,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
                 systemUpdateUserId
         );
 
-		return true;
+		return delete;
 	}
 
 	@Override

@@ -142,5 +142,5 @@ public interface ForumUserFollowService extends SuperService<ForumUserFollow, Fo
      * @param systemUpdateUserId 操作者Id
      * @return boolean 返回删除结果
      */
-    boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId);
+    ForumUserFollow deleteByForumId(String appId, String forumId, String systemUpdateUserId);
 }

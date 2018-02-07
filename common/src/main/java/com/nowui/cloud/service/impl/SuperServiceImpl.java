@@ -248,7 +248,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E save(E baseEntity, String id, String systemCreateUserId) {
-        baseEntity.put(entity.getTableId(), id);
+        baseEntity.put(baseEntity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);

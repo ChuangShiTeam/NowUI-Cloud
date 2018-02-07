@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
@@ -109,6 +110,9 @@ public class ForumUserFollowMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
+        	
+        	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
+        	forumUserFollowService.save(forumUserFollowView);
         	//sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
             
             success = true;
@@ -204,12 +208,16 @@ public class ForumUserFollowMobileController extends BaseController {
                 if (Util.isNullOrEmpty(result)) {
                 	success = false;
                     throw new BusinessException("加入失败");
-                }
+                }else {
+                	// TODO 这里逻辑有问题,回滚是回滚一次的循环的数据,还是全部已经存到数据库的数据
+                	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
+                	forumUserFollowService.save(forumUserFollowView);
+				}
             }
         }
         
         	// TODO 怎么发送message       
-        	sendMessage(body, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
+//        	sendMessage(body, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
             
             success = true;
             
@@ -257,9 +265,6 @@ public class ForumUserFollowMobileController extends BaseController {
 //        String userIds = Util.beanToFieldString(forumList, Forum.FORUM_MODERATOR);
 //        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
 //        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
-        
-        
-        
         
         
         validateResponse(
@@ -320,7 +325,11 @@ public class ForumUserFollowMobileController extends BaseController {
         
         if (result != null) {
         	forumUserFollowEntry.setForumUserFollowIsTop(true);
-        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
+        	
+        	ForumUserFollowView articleView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
+        	forumUserFollowService.save(articleView);
+
+//        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
 
             success = true;
 		}
