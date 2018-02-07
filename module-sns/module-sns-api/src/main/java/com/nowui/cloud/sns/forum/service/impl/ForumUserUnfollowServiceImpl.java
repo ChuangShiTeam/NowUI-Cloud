@@ -95,7 +95,7 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 	}
 
 	@Override
-	public boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
+	public ForumUserUnfollow deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
 //		List<ForumUserUnfollow> forumUserUnfollowList = list(
 //                new BaseWrapper<ForumUserUnfollow>()
 //                        .eq(ForumUserUnfollow.APP_ID, appId)
@@ -116,7 +116,7 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 //			}
 //		}
 		
-		delete(
+		ForumUserUnfollow userUnfollow = delete(
 				new BaseWrapper<ForumUserUnfollow>()
 			      .eq(ForumUserUnfollow.APP_ID, appId)
 			      .eq(ForumUserUnfollow.FORUM_ID, forumId)
@@ -124,6 +124,6 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 				  , systemUpdateUserId
 			);
 		
-		return true;
+		return userUnfollow;
 	}
 }

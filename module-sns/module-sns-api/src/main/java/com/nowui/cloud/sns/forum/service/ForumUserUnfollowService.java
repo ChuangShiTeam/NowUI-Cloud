@@ -54,5 +54,5 @@ public interface ForumUserUnfollowService extends SuperService<ForumUserUnfollow
      * @param systemUpdateUserId 更新着编号
      * @return boolean 返回删除结果
      */
-    boolean deleteByForumId(String appId, String forumId, String systemUpdateUserId);
+    ForumUserUnfollow deleteByForumId(String appId, String forumId, String systemUpdateUserId);
 }

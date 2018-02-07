@@ -171,7 +171,7 @@ public class ForumView extends BaseView {
      * 论坛用户关注表
      */
     @Field
-    @NotNull(message = "论坛排序不能为空")
+    @NotNull(message = "论坛用户关注不能为空")
     private JSONObject forumUserFollowView;
     public static final String FORUM_USER_FOLLOW_VIEW = "forumUserFollowView";
 

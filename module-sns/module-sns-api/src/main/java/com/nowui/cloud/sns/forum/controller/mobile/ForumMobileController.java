@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
@@ -24,6 +25,7 @@ import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
+import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.router.ForumRouter;
 import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
@@ -111,8 +113,6 @@ public class ForumMobileController extends BaseController {
 	     String appId = body.getAppId();
 	     String forumUserFollowId = Util.getRandomUUID();
 	     
-	     //TODO 先存到mysql,发消息放在后面
-//	     Boolean result = forumService.save(body, forumId, appId, ForumRouter.FORUM_V1_SAVE, CreateUserId);
 	     Forum result = forumService.save(body, forumId, CreateUserId);
 	     
 	     Boolean success = false;
@@ -125,13 +125,17 @@ public class ForumMobileController extends BaseController {
 	         forumUserFollow.setForumId(forumId);
 	         forumUserFollow.setUserId(CreateUserId);
 
-	     //TODO 先存到mysql,发消息放在后面
-//	         forumUserFollowService.save(forumUserFollow, forumUserFollowId, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, CreateUserId);
+	         //TODO 先存到mysql,发消息放在后面
 	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
-
-        	 // TODO 只发主业务逻辑的消息?
-	         result.put(ForumView.FORUM_USER_FOLLOW_VIEW, forumUserFollowResult);
-        	 //sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
+        	
+	         //保存到MongoDB
+	         ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+             forumService.save(forumView);
+             
+             ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
+             forumUserFollowService.save(forumUserFollowView);
+	         
+//	         sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
 
         	 success = true;
 	     }
@@ -346,12 +350,14 @@ public class ForumMobileController extends BaseController {
        
        Integer systemVersion = forum.getSystemVersion();
        
-//     Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), systemVersion);
-       
        Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), systemVersion);
        Boolean success = false;
 
        if (result != null) {
+    	   
+    	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+    	   forumService.update(forumView);
+	       
            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
@@ -381,6 +387,10 @@ public class ForumMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
+        	
+        	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+     	   forumService.update(forumView);
+        	
             //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
             success = true;
@@ -413,13 +423,29 @@ public class ForumMobileController extends BaseController {
         
         if (result != null) {
         	//再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
-        	topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	TopicForum topicForum = topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
         	
         	//从论坛关注表中删除有forumId的记录
-        	forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	ForumUserFollow forumUserFollow = forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
         	
         	//从论坛取消关注表删除有forumId的记录
-        	forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	
+        	//TODO 这里逻辑有问题
+        	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+        	
+        	
+        	
+        	
+        	
+      	    //TODO 这里要有删除MongoDB主业务的删除方法,Mark
+        	
+        	
+        	
+        	
+        	
+        	
+        	
         	
         	//TODO 只发送一个消息?
         	//sendMessage(result, ForumRouter.FORUM_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
@@ -561,7 +587,7 @@ public class ForumMobileController extends BaseController {
         // 4,根据topicIdList查找topicList
         if (!Util.isNullOrEmpty(topicIdList)) {
         	topicList = topicService.listDetailByTopicIdList(userId, topicIdList);
-        
+
 	        // TODO 查询不用接口了  在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //	        String userIds = Util.viewBeanToFieldString(topicList, Topic.USER_ID);
 //	        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
