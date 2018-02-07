@@ -5,7 +5,7 @@
     <parent>
         <artifactId>module-base</artifactId>
         <groupId>com.nowui.cloud</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,6 +15,9 @@
         <repository>
             <id>nexus-releases</id>
             <url>http://121.40.44.121:8081/repository/3rd-part/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
     
@@ -22,19 +25,19 @@
         <dependency>
             <groupId>com.nowui.cloud</groupId>
             <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.nowui.cloud</groupId>
             <artifactId>module-base-sys</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.nowui.cloud</groupId>
             <artifactId>module-shop-sys</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         
         <dependency>
@@ -56,7 +59,7 @@
         <dependency>
             <groupId>com.nowui.cloud</groupId>
             <artifactId>module-member-sys</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
