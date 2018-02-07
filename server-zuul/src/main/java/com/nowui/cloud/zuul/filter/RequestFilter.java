@@ -131,14 +131,15 @@ public class RequestFilter extends ZuulFilter {
             });
 
         } else if (contentType.contains(formDataType)) {
-            MultipartHttpServletRequest multipartRequest =
-                    WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+            MultipartHttpServletRequest multipartRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
             String token = multipartRequest.getParameter(Constant.TOKEN);
             String systemRequestUserId = decipherToken(token, context);
             List<String> params = new ArrayList<String>();
             params.add(systemRequestUserId);
             Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
             map.put(Constant.SYSTEM_REQUEST_USER_ID, params);
+            map.put(Constant.SYSTEM_CREATE_USER_ID, params);
+            map.put(Constant.SYSTEM_UPDATE_USER_ID, params);
             context.setRequestQueryParams(map);
         }
 

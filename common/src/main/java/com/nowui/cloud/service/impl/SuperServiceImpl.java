@@ -222,8 +222,6 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean save(V view) {
-        view.removeSystemValue();
-
         mongoTemplate.save(view);
 
         return true;
@@ -249,7 +247,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //    }
 
     @Override
-    public final E save(E baseEntity, String id, String systemCreateUserId) {
+    public E save(E baseEntity, String id, String systemCreateUserId) {
         baseEntity.put(entity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());

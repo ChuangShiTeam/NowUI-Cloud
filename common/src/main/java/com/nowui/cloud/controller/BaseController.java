@@ -58,7 +58,35 @@ public class BaseController {
 
     public <T> T getEntry(Class<T> clazz) {
         if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
-            getRequest().setAttribute(Constant.REQUEST_BODY, Util.readData(getRequest()));
+            String body = Util.readData(getRequest());
+
+            JSONObject jsonObject = JSONObject.parseObject(body);
+
+            String token = jsonObject.getString(Constant.TOKEN);
+            getRequest().setAttribute(Constant.TOKEN, token);
+            jsonObject.remove(Constant.TOKEN);
+
+            String sign = jsonObject.getString(Constant.SIGN);
+            getRequest().setAttribute(Constant.SIGN, sign);
+            jsonObject.remove(Constant.SIGN);
+
+            String timestamp = jsonObject.getString(Constant.TIMESTAMP);
+            getRequest().setAttribute(Constant.TIMESTAMP, timestamp);
+            jsonObject.remove(Constant.TIMESTAMP);
+
+            String platform = jsonObject.getString(Constant.PLATFORM);
+            getRequest().setAttribute(Constant.PLATFORM, platform);
+            jsonObject.remove(Constant.PLATFORM);
+
+            String version = jsonObject.getString(Constant.VERSION);
+            getRequest().setAttribute(Constant.VERSION, version);
+            jsonObject.remove(Constant.VERSION);
+
+            String systemRequestIpAddress = jsonObject.getString(Constant.SYSTEM_REQUEST_IP_ADDRESS);
+            getRequest().setAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS, systemRequestIpAddress);
+            jsonObject.remove(Constant.SYSTEM_REQUEST_IP_ADDRESS);
+
+            getRequest().setAttribute(Constant.REQUEST_BODY, jsonObject.toJSONString());
         }
         return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }

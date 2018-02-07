@@ -212,7 +212,7 @@ public class ArticleAdminController extends BaseController {
 
         if (result != null) {
             ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
-            articleService.save(articleView);
+            articleService.update(articleView);
 
             success = true;
         }
