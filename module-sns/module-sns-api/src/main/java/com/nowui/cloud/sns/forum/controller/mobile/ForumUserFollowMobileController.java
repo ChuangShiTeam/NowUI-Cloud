@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
@@ -36,6 +38,7 @@ import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
+import com.sun.jersey.api.representation.Form;
 
 import feign.Body;
 import io.swagger.annotations.Api;
@@ -241,7 +244,7 @@ public class ForumUserFollowMobileController extends BaseController {
         String userId = body.getSystemRequestUserId();
 
         Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
-
+        
         List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
 
         List<ForumView> forumList = new ArrayList<>();
@@ -253,20 +256,10 @@ public class ForumUserFollowMobileController extends BaseController {
             // 论坛当日话题最新数量
             Integer count = topicForumService.countTodayByForumId(forumUserFollow.getForumId());
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
-
+            
             forumList.add(forum);
         }
 
-        // TODO 处理论坛多媒体
-//        String fileIds = Util.beanToFieldString(forumList, Forum.FORUM_MEDIA);
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
-//        
-//        String userIds = Util.beanToFieldString(forumList, Forum.FORUM_MODERATOR);
-//        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-//        forumList = Util.beanReplaceField(forumList, Forum.FORUM_MODERATOR, Member.USER_ID, memberList, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
-        
-        
         validateResponse(
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA,
@@ -274,8 +267,11 @@ public class ForumUserFollowMobileController extends BaseController {
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_TODAY_TOPIC_COUNT,
-                Forum.FORUM_MODERATOR
+                Forum.FORUM_MODERATOR,
+                Forum.FORUM_MODERATOR_INFO
         );
+        
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
 
         return renderJson(resultTotal, forumList);
     }
@@ -326,8 +322,8 @@ public class ForumUserFollowMobileController extends BaseController {
         if (result != null) {
         	forumUserFollowEntry.setForumUserFollowIsTop(true);
         	
-        	ForumUserFollowView articleView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
-        	forumUserFollowService.save(articleView);
+        	ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
+        	forumUserFollowService.save(forumUserFollowView);
 
 //        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
 

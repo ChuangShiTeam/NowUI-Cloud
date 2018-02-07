@@ -1,11 +1,13 @@
 package com.nowui.cloud.sns.topic.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -131,12 +133,33 @@ public class Topic extends BaseEntity {
     /**
      * 话题媒体list
      */
+    @TableField(exist = false)
+    private JSONObject topicMediaList;
     public static final String TOPIC_MEDIA_LIST = "topicMediaList";
+    
+    /**
+     * 话题提醒谁看列表
+     */
+    @TableField(exist = false)
+    private JSONObject topicTipUserList;
+    public static final String TOPIC_TIP_USER_LIST = "topicTipUserList";
     
     /**
      * 话题所在论坛列表
      */
+    @TableField(exist = false)
+    private JSONObject topicForumList;
     public static final String TOPIC_FORUM_LIST = "topicForumList";
+    
+    /**
+     * 发布动态相关信息
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态相关信息不能为空")
+    private JSONObject theSendInfo;
+    public static final String THE_SEND_INFO = "theSendInfo";
+    
+    
     /**
      * 话题被收藏数
      */
@@ -153,10 +176,7 @@ public class Topic extends BaseEntity {
      * 话题被评论数
      */
     public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
-    /**
-     * 话题提醒谁看列表
-     */
-    public static final String TOPIC_TIP_USER_LIST = "topicTipUserList";
+    
     /**
      * 话题评论列表
      */
@@ -197,6 +217,8 @@ public class Topic extends BaseEntity {
      * 话题评论查询多少条
      */
     public static final String COMMENT_PAGE_SIZE = "commentPageSize";
+    
+    
     
     public String getTopicId() {
         return getString(TOPIC_ID);
@@ -293,6 +315,42 @@ public class Topic extends BaseEntity {
     public void setTopicTopEndTime(Date topicTopEndTime) {
         put(TOPIC_TOP_END_TIME, topicTopEndTime);
     }
+
+	public JSONObject getTopicMediaList() {
+        return getJSONObject(TOPIC_MEDIA_LIST);
+	}
+
+	public void setTopicMediaList(JSONObject topicMediaList) {
+        put(TOPIC_MEDIA_LIST, topicMediaList);
+	}
+
+	public JSONObject getTopicTipUserList() {
+        return getJSONObject(TOPIC_TIP_USER_LIST);
+	}
+
+	public void setTopicTipUserList(JSONObject topicTipUserList) {
+        put(TOPIC_TIP_USER_LIST, topicTipUserList);
+	}
+
+	public JSONObject getTopicForumList() {
+        return getJSONObject(TOPIC_FORUM_LIST);
+	}
+
+	public void setTopicForumList(JSONObject topicForumList) {
+        put(TOPIC_FORUM_LIST, topicForumList);
+	}
+	
+	public JSONObject getTheSendInfo() {
+        return getJSONObject(THE_SEND_INFO);
+	}
+
+	public void setTheSendInfo(JSONObject theSendInfo) {
+        put(THE_SEND_INFO, theSendInfo);
+	}
+	
+	
+    
+    
 
 
 }

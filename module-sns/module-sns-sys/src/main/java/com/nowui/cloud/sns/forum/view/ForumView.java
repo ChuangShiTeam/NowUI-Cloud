@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.forum.view;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
@@ -64,21 +65,13 @@ public class ForumView extends BaseView {
     public static final String FORUM_MODERATOR = "forumModerator";
     
     /**
-     * 版主头像路径
+     * 版主头像路径和昵称
      */
     @Field
-    @NotNull(message = "版主头像路径不能为空")
-    private String forumModeratorAvatar;
-    public static final String FORUM_MODERATOR_AVATAR = "forumModeratorAvatar";
+    @NotNull(message = "版主头像路径和昵称不能为空")
+    private JSONObject forumModeratorInfo;
+    public static final String FORUM_MODERATOR_INFO = "forumModeratorInfo";
     
-    /**
-     * 版主昵称
-     */
-    @Field
-    @NotNull(message = "版主昵称不能为空")
-    private String forumModeratorNickName;
-    public static final String FORUM_MODERATOR_NICK_NAME = "forumModeratorNickName";
-
     /**
      * 论坛多媒体类型
      */
@@ -223,22 +216,14 @@ public class ForumView extends BaseView {
         put(FORUM_MODERATOR, forumModerator);
     }
 
-    public String getForumModeratorAvatar() {
-        return getString(FORUM_MODERATOR_AVATAR);
+    public JSONObject getForumModeratorInfo() {
+        return getJSONObject(FORUM_MODERATOR_INFO);
 	}
 
-	public void setForumModeratorAvatar(String forumModeratorAvatar) {
-        put(FORUM_MODERATOR_AVATAR, forumModeratorAvatar);
+	public void setForumModeratorInfo(JSONObject forumModeratorInfo) {
+        put(FORUM_MODERATOR_INFO, forumModeratorInfo);
 	}
-
-	public String getForumModeratorNickName() {
-        return getString(FORUM_MODERATOR_NICK_NAME);
-	}
-
-	public void setForumModeratorNickName(String forumModeratorNickName) {
-        put(FORUM_MODERATOR_NICK_NAME, forumModeratorNickName);
-	}
-
+	
 	public String getForumMediaType() {
         return getString(FORUM_MEDIA_TYPE);
     }

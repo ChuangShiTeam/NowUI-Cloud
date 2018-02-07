@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.view;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
@@ -42,6 +43,14 @@ public class ForumUserFollowView extends BaseView {
     @NotNull(message = "用户编号不能为空")
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 关注用户的头像路径和昵称,签名
+     */
+    @Field
+    @NotNull(message = "关注用户的头像路径和昵称,签名不能为空")
+    private JSONObject userInfo;
+    public static final String USER_INFO = "userInfo";
 
     /**
      * 论坛编号
@@ -84,7 +93,15 @@ public class ForumUserFollowView extends BaseView {
         put(USER_ID, userId);
     }
 
-    public String getForumId() {
+    public JSONObject getUserInfo() {
+        return getJSONObject(USER_INFO);
+	}
+
+	public void setUserInfo(JSONObject userInfo) {
+        put(USER_INFO, userInfo);
+	}
+
+	public String getForumId() {
         return getString(FORUM_ID);
     }
 

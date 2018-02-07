@@ -210,4 +210,19 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      */
     Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId);
     
+    /**
+     * 全部人的动态
+     * 
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 全部人的动态数量
+     * 
+     */
+    Integer countAllUserTopic();
+    
 }

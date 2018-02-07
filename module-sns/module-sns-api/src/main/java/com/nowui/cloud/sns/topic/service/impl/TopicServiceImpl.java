@@ -334,9 +334,9 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         Query query = new Query(criteria);
         query.with(sort);
 
-        List<TopicView> productViewList = list(query, sort, pageIndex, pageSize);
+        List<TopicView> topicList = list(query, sort, pageIndex, pageSize);
 
-        return productViewList;
+        return topicList;
 	}
 	
 	@Override
@@ -521,5 +521,34 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         List<TopicView> topicList = list(query, sort);
 
         return topicList;
+	}
+
+	@Override
+	public List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+        
+        Criteria criteria = Criteria.where(TopicView.TOPIC_ID).nin(excludeTopicIdList)
+                .and(TopicView.SYSTEM_STATUS).is(true);
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<TopicView> topicList = list(query, sort, pageIndex, pageSize);
+
+        return topicList;
+	}
+
+	@Override
+	public Integer countAllUserTopic() {
+		Criteria criteria = Criteria.where(TopicView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+
+        return count;
 	}
 }

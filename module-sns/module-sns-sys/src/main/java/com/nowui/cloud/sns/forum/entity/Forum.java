@@ -1,8 +1,10 @@
 package com.nowui.cloud.sns.forum.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.google.gson.JsonObject;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -63,11 +65,18 @@ public class Forum extends BaseEntity {
     public static final String FORUM_MODERATOR = "forumModerator";
     
     /**
+     * 版主头像路径和昵称和签名
+     */
+    @TableField(exist = false)
+    @NotNull(message = "版主头像路径和昵称和签名不能为空")
+    private JSONObject forumModeratorInfo;
+    public static final String FORUM_MODERATOR_INFO = "forumModeratorInfo";
+    
+    /**
      * 论坛多媒体
      */
     @TableField
     @NotNull(message = "论坛多媒体不能为空")
-    @Length(max = 32, message = "论坛多媒体长度超出限制")
     private String forumMedia;
     public static final String FORUM_MEDIA = "forumMedia";
 
@@ -288,7 +297,15 @@ public class Forum extends BaseEntity {
         put(FORUM_MODERATOR, forumModerator);
     }
 
-    public String getForumLocation() {
+    public JSONObject getForumModeratorInfo() {
+        return getJSONObject(FORUM_MODERATOR_INFO);
+	}
+
+	public void setForumModeratorInfo(JSONObject forumModeratorInfo) {
+        put(FORUM_MODERATOR_INFO, forumModeratorInfo);
+	}
+
+	public String getForumLocation() {
         return getString(FORUM_LOCATION);
     }
     

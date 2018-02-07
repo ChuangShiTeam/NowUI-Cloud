@@ -1,5 +1,7 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.view.BaseView;
 
 import java.util.Date;
@@ -115,6 +117,34 @@ public class TopicView extends BaseView {
     @NotNull(message = "是否推荐不能为空")
     private Boolean topicIsRecommend;
     public static final String TOPIC_IS_RECOMMEND = "topicIsRecommend";
+    
+    /**
+     * 话题媒体list
+     */
+    @Field
+    private JSONObject topicMediaList;
+    public static final String TOPIC_MEDIA_LIST = "topicMediaList";
+    
+    /**
+     * 话题提醒谁看列表
+     */
+    @Field
+    private JSONObject topicTipUserList;
+    public static final String TOPIC_TIP_USER_LIST = "topicTipUserList";
+    
+    /**
+     * 话题所在论坛列表
+     */
+    @Field
+    private JSONObject topicForumList;
+    public static final String TOPIC_FORUM_LIST = "topicForumList";
+    
+    /**
+     * 发布动态相关信息
+     */
+    @Field
+    private JSONObject theSendInfo;
+    public static final String THE_SEND_INFO = "theSendInfo";
 
 
     public String getTopicId() {
@@ -212,6 +242,40 @@ public class TopicView extends BaseView {
     public void setTopicIsRecommend(Boolean topicIsRecommend) {
         put(TOPIC_IS_RECOMMEND, topicIsRecommend);
     }
+    
+    public JSONObject getTopicMediaList() {
+        return getJSONObject(TOPIC_MEDIA_LIST);
+	}
+
+	public void setTopicMediaList(JSONObject topicMediaList) {
+        put(TOPIC_MEDIA_LIST, topicMediaList);
+	}
+
+	public JSONObject getTopicTipUserList() {
+        return getJSONObject(TOPIC_TIP_USER_LIST);
+	}
+
+	public void setTopicTipUserList(JSONObject topicTipUserList) {
+        put(TOPIC_TIP_USER_LIST, topicTipUserList);
+	}
+
+	public JSONObject getTopicForumList() {
+        return getJSONObject(TOPIC_FORUM_LIST);
+	}
+
+	public void setTopicForumList(JSONObject topicForumList) {
+        put(TOPIC_FORUM_LIST, topicForumList);
+	}
+
+	public JSONObject getTheSendInfo() {
+        return getJSONObject(THE_SEND_INFO);
+	}
+
+	public void setTheSendInfo(JSONObject theSendInfo) {
+        put(THE_SEND_INFO, theSendInfo);
+	}
+	
+	
 
 
 }

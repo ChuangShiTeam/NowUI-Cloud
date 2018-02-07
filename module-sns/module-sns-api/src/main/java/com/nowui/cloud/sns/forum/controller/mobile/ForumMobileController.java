@@ -89,7 +89,8 @@ public class ForumMobileController extends BaseController {
 	             Forum.FORUM_MEDIA_TYPE,
 	             Forum.FORUM_NAME,
 	             Forum.FORUM_DESCRIPTION,
-	             Forum.SYSTEM_REQUEST_USER_ID
+	             Forum.SYSTEM_REQUEST_USER_ID,
+	             Forum.FORUM_MODERATOR_INFO
          );
 	     
 	     // 验证论坛名称的唯一性
@@ -117,8 +118,6 @@ public class ForumMobileController extends BaseController {
 	     
 	     Boolean success = false;
 	     
-	     
-	     
 	     if (result != null) {
 
 	         // 圈主默认关注论坛
@@ -131,10 +130,10 @@ public class ForumMobileController extends BaseController {
         	
 	         //保存到MongoDB
 	         ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
-//	         forumView.setForumModeratorAvatar(forumModeratorAvatar);
              forumService.save(forumView);
              
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
+             forumUserFollowView.setUserInfo(forumView.getForumModeratorInfo());
              forumUserFollowService.save(forumUserFollowView);
 	         
 //	         sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
@@ -162,15 +161,8 @@ public class ForumMobileController extends BaseController {
         
         // forum包含了论坛简介,论坛名称,论坛头像
         ForumView forum = forumService.find(body.getForumId());
-        // TODO 不用接口处理论坛头像
-//        File file = fileRpc.findV1(forum.getForumMedia());
-//    	file.keep(File.FILE_ID, File.FILE_PATH);
-//    	forum.put(Forum.FORUM_MEDIA, file);
         
         String userId = forum.getForumModerator();
-        // TODO 不用接口  根据forumModerator(userId)查询版主信息:去会员表查找--昵称,个人签名,头像,
-//        Member moderator = memberRpc.nickNameAndAvatarAndSignatureFind(userId);
-//        forum.put(Forum.FORUM_MODERATOR, moderator);
 
         //判断请求用户是否是版主
         if (body.getSystemRequestUserId().equals(userId)) {
@@ -207,7 +199,7 @@ public class ForumMobileController extends BaseController {
 //        for (Member member : nickNameAndAvatarList) {
 //			member.put(Member.MEMBER_IS_SELF, member.getUserId().equals(requestUserId));
 //		}
-//        forum.put(Forum.FORUM_USER_FOLLOW_LIST, nickNameAndAvatarList);
+        forum.put(Forum.FORUM_USER_FOLLOW_LIST, forumUserFollows);
         
         validateResponse(
                 Forum.FORUM_ID,
@@ -219,9 +211,12 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
                 Forum.FORUM_USER_FOLLOW_LIST,
-                Member.MEMBER_IS_SELF
+                Member.MEMBER_IS_SELF,
+                Forum.FORUM_MODERATOR_INFO
         );
 
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        
         return renderJson(forum);
     }
 	
@@ -550,9 +545,12 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR,
                 Forum.MEMBER_IS_FOLLOW_FORUM,
-                Forum.FORUM_USER_FOLLOW_COUNT
+                Forum.FORUM_USER_FOLLOW_COUNT,
+                Forum.FORUM_MODERATOR_INFO
         );
-
+        
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        
         return renderJson(forum);
     }
 

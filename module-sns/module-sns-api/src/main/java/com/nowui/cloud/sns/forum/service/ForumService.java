@@ -91,5 +91,5 @@ public interface ForumService extends SuperService<Forum, ForumView> {
      * @return true 重复 false 不重复
      */
     Boolean checkName(String appId, String forumName);
-    
+
 }

@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -51,6 +52,15 @@ public class ForumUserFollow extends BaseEntity {
     public static final String USER_ID = "userId";
 
     /**
+     * 关注用户的头像路径和昵称,签名
+     */
+    @TableField(exist = false)
+    @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
+    private JSONObject userInfo;
+    public static final String USER_INFO = "userInfo";
+    
+    /**
      * 论坛编号
      */
     @TableField
@@ -96,6 +106,14 @@ public class ForumUserFollow extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
+    public JSONObject getUserInfo() {
+        return getJSONObject(USER_INFO);
+	}
+
+	public void setUserInfo(JSONObject userInfo) {
+        put(USER_INFO, userInfo);
+	}
 
     public String getForumId() {
         return getString(FORUM_ID);

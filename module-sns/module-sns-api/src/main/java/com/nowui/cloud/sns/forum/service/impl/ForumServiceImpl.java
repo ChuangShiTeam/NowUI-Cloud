@@ -11,14 +11,17 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import com.nowui.cloud.base.user.view.UserAvatarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.mapper.ForumMapper;
 import com.nowui.cloud.sns.forum.repository.ForumRepository;
 import com.nowui.cloud.sns.forum.service.ForumService;
+import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.util.Util;
 
@@ -143,6 +146,5 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
 
         return count > 0;
     }
-    
 
 }

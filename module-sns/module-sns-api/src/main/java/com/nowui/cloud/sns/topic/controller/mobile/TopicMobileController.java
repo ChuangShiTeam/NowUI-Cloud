@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
@@ -523,6 +524,7 @@ public class TopicMobileController extends BaseController {
 //        Member nickNameAndAvatar = memberRpc.nickNameAndAvatarFindV1(userId);
 //        topic.put(Topic.REQUEST_USER, nickNameAndAvatar);
         
+        
         if (userId.equals(topic.getUserId())) {
             // 验证话题发布者是否自己
             topic.put(Topic.TOPIC_IS_SELF, true);
@@ -674,6 +676,18 @@ public class TopicMobileController extends BaseController {
 //            
 //        }
         
+        
+        
+        
+        // TODO 先取全部人的动态
+        
+        Integer count = topicService.countAllUserTopic();
+        
+        List<TopicView> allUserTopic = topicService.allUserTopic((List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        
+//        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        
+        
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
@@ -697,11 +711,18 @@ public class TopicMobileController extends BaseController {
                 UserAvatar.USER_AVATAR,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
-                Topic.SYSTEM_CREATE_TIME
+                Topic.SYSTEM_CREATE_TIME,
+                
+                TopicView.TOPIC_MEDIA_LIST,
+                TopicView.TOPIC_TIP_USER_LIST,
+                TopicView.TOPIC_FORUM_LIST,
+                TopicView.THE_SEND_INFO
         );
-
-//        return renderJson(countResult, resultList);
-        return renderJson(null);
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        return renderJson(count, allUserTopic);
     }
 
     @ApiOperation(value = "新增话题信息")
@@ -781,7 +802,21 @@ public class TopicMobileController extends BaseController {
             }
             
             
-            sendMessage(body, TopicRouter.TOPIC_V1_SAVE, appId, userId);
+            
+            // TODO 保存到MongoDB
+            /**
+             * 话题
+             * 多媒体列表
+             * 论坛列表
+             * 提醒谁的列表
+             * 
+             * 都保存到话题表
+             */
+            TopicView topicView = JSON.parseObject(result.toJSONString(), TopicView.class);
+            
+            topicService.save(topicView);
+            
+//            sendMessage(body, TopicRouter.TOPIC_V1_SAVE, appId, userId);
             success = true;
         }
         return renderJson(success);
