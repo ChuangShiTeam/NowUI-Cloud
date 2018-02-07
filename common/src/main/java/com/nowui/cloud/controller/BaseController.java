@@ -58,9 +58,9 @@ public class BaseController {
 
     public <T> T getEntry(Class<T> clazz) {
         if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
-            String body = Util.readData(getRequest());
+            String requestBody = Util.readData(getRequest());
 
-            JSONObject jsonObject = JSONObject.parseObject(body);
+            JSONObject jsonObject = JSONObject.parseObject(requestBody);
 
             String token = jsonObject.getString(Constant.TOKEN);
             getRequest().setAttribute(Constant.TOKEN, token);
@@ -82,13 +82,14 @@ public class BaseController {
             getRequest().setAttribute(Constant.VERSION, version);
             jsonObject.remove(Constant.VERSION);
 
-            String systemRequestIpAddress = jsonObject.getString(Constant.SYSTEM_REQUEST_IP_ADDRESS);
-            getRequest().setAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS, systemRequestIpAddress);
-            jsonObject.remove(Constant.SYSTEM_REQUEST_IP_ADDRESS);
+            requestBody = jsonObject.toJSONString();
 
-            getRequest().setAttribute(Constant.REQUEST_BODY, jsonObject.toJSONString());
+            getRequest().setAttribute(Constant.REQUEST_BODY, requestBody);
+
+            return JSONObject.parseObject(requestBody, clazz);
+        } else {
+            return JSONObject.parseObject(getRequest().getAttribute(Constant.REQUEST_BODY).toString(), clazz);
         }
-        return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }
 
     private JSONObject checkFirstMap(Object data) {
