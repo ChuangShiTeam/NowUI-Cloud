@@ -108,8 +108,6 @@ public class RequestFilter extends ZuulFilter {
             String systemRequestUserId = decipherToken(token, context);
 
             parameterJSONObject.put(Constant.SYSTEM_REQUEST_USER_ID, systemRequestUserId);
-            parameterJSONObject.put(Constant.SYSTEM_CREATE_USER_ID, systemRequestUserId);
-            parameterJSONObject.put(Constant.SYSTEM_UPDATE_USER_ID, systemRequestUserId);
             parameterJSONObject.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Util.getIpAddress(request));
 
             final byte[] reqBodyBytes = parameterJSONObject.toJSONString().getBytes();
@@ -131,8 +129,7 @@ public class RequestFilter extends ZuulFilter {
             });
 
         } else if (contentType.contains(formDataType)) {
-            MultipartHttpServletRequest multipartRequest =
-                    WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+            MultipartHttpServletRequest multipartRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
             String token = multipartRequest.getParameter(Constant.TOKEN);
             String systemRequestUserId = decipherToken(token, context);
             List<String> params = new ArrayList<String>();

@@ -117,6 +117,8 @@ public class ForumMobileController extends BaseController {
 	     
 	     Boolean success = false;
 	     
+	     
+	     
 	     if (result != null) {
 
 	         // 圈主默认关注论坛
@@ -125,11 +127,11 @@ public class ForumMobileController extends BaseController {
 	         forumUserFollow.setForumId(forumId);
 	         forumUserFollow.setUserId(CreateUserId);
 
-	         //TODO 先存到mysql,发消息放在后面
 	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
         	
 	         //保存到MongoDB
 	         ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+//	         forumView.setForumModeratorAvatar(forumModeratorAvatar);
              forumService.save(forumView);
              
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);

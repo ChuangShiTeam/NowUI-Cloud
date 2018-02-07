@@ -222,8 +222,6 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean save(V view) {
-        view.removeSystemValue();
-
         mongoTemplate.save(view);
 
         return true;

@@ -1,5 +1,10 @@
 server:
   port: 8070
+
+logging:
+  level:
+    root: info
+
 eureka:
   instance:
     hostname: localhost

@@ -58,9 +58,38 @@ public class BaseController {
 
     public <T> T getEntry(Class<T> clazz) {
         if (getRequest().getAttribute(Constant.REQUEST_BODY) == null) {
-            getRequest().setAttribute(Constant.REQUEST_BODY, Util.readData(getRequest()));
+            String requestBody = Util.readData(getRequest());
+
+            JSONObject jsonObject = JSONObject.parseObject(requestBody);
+
+            String token = jsonObject.getString(Constant.TOKEN);
+            getRequest().setAttribute(Constant.TOKEN, token);
+            jsonObject.remove(Constant.TOKEN);
+
+            String sign = jsonObject.getString(Constant.SIGN);
+            getRequest().setAttribute(Constant.SIGN, sign);
+            jsonObject.remove(Constant.SIGN);
+
+            String timestamp = jsonObject.getString(Constant.TIMESTAMP);
+            getRequest().setAttribute(Constant.TIMESTAMP, timestamp);
+            jsonObject.remove(Constant.TIMESTAMP);
+
+            String platform = jsonObject.getString(Constant.PLATFORM);
+            getRequest().setAttribute(Constant.PLATFORM, platform);
+            jsonObject.remove(Constant.PLATFORM);
+
+            String version = jsonObject.getString(Constant.VERSION);
+            getRequest().setAttribute(Constant.VERSION, version);
+            jsonObject.remove(Constant.VERSION);
+
+            requestBody = jsonObject.toJSONString();
+
+            getRequest().setAttribute(Constant.REQUEST_BODY, requestBody);
+
+            return JSONObject.parseObject(requestBody, clazz);
+        } else {
+            return JSONObject.parseObject(getRequest().getAttribute(Constant.REQUEST_BODY).toString(), clazz);
         }
-        return JSONObject.parseObject(Util.readData(getRequest()), clazz);
     }
 
     private JSONObject checkFirstMap(Object data) {

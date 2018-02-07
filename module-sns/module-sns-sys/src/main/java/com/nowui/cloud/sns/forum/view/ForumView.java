@@ -62,6 +62,22 @@ public class ForumView extends BaseView {
     @NotNull(message = "版主(用户编号)不能为空")
     private String forumModerator;
     public static final String FORUM_MODERATOR = "forumModerator";
+    
+    /**
+     * 版主头像路径
+     */
+    @Field
+    @NotNull(message = "版主头像路径不能为空")
+    private String forumModeratorAvatar;
+    public static final String FORUM_MODERATOR_AVATAR = "forumModeratorAvatar";
+    
+    /**
+     * 版主昵称
+     */
+    @Field
+    @NotNull(message = "版主昵称不能为空")
+    private String forumModeratorNickName;
+    public static final String FORUM_MODERATOR_NICK_NAME = "forumModeratorNickName";
 
     /**
      * 论坛多媒体类型
@@ -167,15 +183,6 @@ public class ForumView extends BaseView {
     private Integer forumSort;
     public static final String FORUM_SORT = "forumSort";
 
-    /**
-     * 论坛用户关注表
-     */
-    @Field
-    @NotNull(message = "论坛用户关注不能为空")
-    private JSONObject forumUserFollowView;
-    public static final String FORUM_USER_FOLLOW_VIEW = "forumUserFollowView";
-
-
     public String getForumId() {
         return getString(FORUM_ID);
     }
@@ -216,7 +223,23 @@ public class ForumView extends BaseView {
         put(FORUM_MODERATOR, forumModerator);
     }
 
-    public String getForumMediaType() {
+    public String getForumModeratorAvatar() {
+        return getString(FORUM_MODERATOR_AVATAR);
+	}
+
+	public void setForumModeratorAvatar(String forumModeratorAvatar) {
+        put(FORUM_MODERATOR_AVATAR, forumModeratorAvatar);
+	}
+
+	public String getForumModeratorNickName() {
+        return getString(FORUM_MODERATOR_NICK_NAME);
+	}
+
+	public void setForumModeratorNickName(String forumModeratorNickName) {
+        put(FORUM_MODERATOR_NICK_NAME, forumModeratorNickName);
+	}
+
+	public String getForumMediaType() {
         return getString(FORUM_MEDIA_TYPE);
     }
 
@@ -319,14 +342,5 @@ public class ForumView extends BaseView {
     public void setForumSort(Integer forumSort) {
         put(FORUM_SORT, forumSort);
     }
-
-	public JSONObject getForumUserFollowView() {
-        return getJSONObject(FORUM_USER_FOLLOW_VIEW);
-	}
-
-	public void setForumUserFollowView(JSONObject forumUserFollowView) {
-        put(FORUM_USER_FOLLOW_VIEW, forumUserFollowView);
-	}
-
 
 }
