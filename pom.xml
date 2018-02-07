@@ -7,7 +7,7 @@
     <groupId>com.nowui.cloud</groupId>
     <artifactId>nowui-cloud</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>NowUI-Cloud</name>
     <description></description>
@@ -206,7 +206,7 @@
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
@@ -225,7 +225,7 @@
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
         <pluginRepository>
