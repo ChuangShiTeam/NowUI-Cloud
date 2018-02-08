@@ -1,7 +1,11 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -20,6 +24,7 @@ public class TopicUserLikeView extends BaseView {
     /**
      * 话题点赞编号
      */
+    @KeyId
     @Field
     @NotNull(message = "话题点赞编号不能为空")
     private String topicUserLikeId;
@@ -40,6 +45,22 @@ public class TopicUserLikeView extends BaseView {
     @NotNull(message = "用户编号不能为空")
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 点赞人昵称
+     */
+    @Field
+    @NotNull(message = "昵称不能为空")
+    private String userNickName;
+    public static final String USER_NICK_NAME = "userNickName";
+    
+    /**
+     * 点赞人头像
+     */
+    @Field
+    @NotNull(message = "头像不能为空")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
 
     /**
      * 话题编号
@@ -73,6 +94,22 @@ public class TopicUserLikeView extends BaseView {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
+    public String getUserNickName() {
+        return getString(USER_NICK_NAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+        put(USER_NICK_NAME, userNickName);
+	}
+
+	public String getUserAvatar() {
+        return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+        put(USER_AVATAR, userAvatar);
+	}
 
     public String getTopicId() {
         return getString(TOPIC_ID);

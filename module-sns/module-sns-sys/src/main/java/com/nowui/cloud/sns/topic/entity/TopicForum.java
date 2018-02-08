@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -58,6 +59,16 @@ public class TopicForum extends BaseEntity {
     @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
+    
+    
+    /**
+     * 话题相关信息
+     */
+    @TableField(exist = false)
+    @NotNull(message = "话题相关信息不能为空")
+    private JSONObject topicInfo;
+    public static final String TOPIC_INFO = "topicInfo";
+    
 
     public String getTopicForumId() {
         return getString(TOPIC_FORUM_ID);
@@ -90,5 +101,13 @@ public class TopicForum extends BaseEntity {
     public void setTopicId(String topicId) {
         put(TOPIC_ID, topicId);
     }
+
+	public JSONObject getTopicInfo() {
+        return getJSONObject(TOPIC_INFO);
+	}
+
+	public void setTopicInfo(JSONObject topicInfo) {
+        put(TOPIC_INFO, topicInfo);
+	}
 
 }

@@ -2,6 +2,7 @@ package com.nowui.cloud.sns.topic.view;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
 import java.util.Date;
@@ -25,6 +26,7 @@ public class TopicView extends BaseView {
     /**
      * 话题编号
      */
+    @KeyId
     @Field
     @NotNull(message = "话题编号不能为空")
     private String topicId;
@@ -33,6 +35,7 @@ public class TopicView extends BaseView {
     /**
      * 应用编号
      */
+    @KeyId
     @Field
     @NotNull(message = "应用编号不能为空")
     private String appId;

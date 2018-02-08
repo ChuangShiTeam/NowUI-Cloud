@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,6 +21,7 @@ public class TopicUserBookmarkView extends BaseView {
     /**
      * 用户收藏id
      */
+    @KeyId
     @Field
     @NotNull(message = "用户收藏id不能为空")
     private String topicUserBookMarkId;

@@ -180,9 +180,14 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 //        return topicForumList;
 			
         
-		Criteria criteria = Criteria.where(TopicForum.FORUM_ID).regex(".*?" + forumId + ".*")
+//		Criteria criteria = Criteria.where(TopicForum.FORUM_ID).regex(".*?" + forumId + ".*")
+//				.and(TopicForumView.TOPIC_ID).nin(excludeTopicIdList)
+//				.and(Topic.SYSTEM_CREATE_TIME).lt(DateUtil.getDateTimeString(systemCreateTime))
+//				.and(TopicForumView.SYSTEM_STATUS).is(true);
+    	long time = systemCreateTime.getTime();
+    	Criteria criteria = Criteria.where(TopicForum.FORUM_ID).regex(".*?" + forumId + ".*")
 				.and(TopicForumView.TOPIC_ID).nin(excludeTopicIdList)
-				.and(Topic.SYSTEM_CREATE_TIME).lt(DateUtil.getDateTimeString(systemCreateTime))
+				.and(Topic.SYSTEM_CREATE_TIME).lte(time)
 				.and(TopicForumView.SYSTEM_STATUS).is(true);
 	
 	    List<Order> orders = new ArrayList<Order>();

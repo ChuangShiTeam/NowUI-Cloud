@@ -42,13 +42,31 @@ public class TopicUserLike extends BaseEntity {
     public static final String APP_ID = "appId";
 
     /**
-     * 关注人
+     * 点赞人编号
      */
     @TableField
-    @NotNull(message = "关注人不能为空")
-    @Length(max = 32, message = "关注人长度超出限制")
+    @NotNull(message = "点赞人编号不能为空")
+    @Length(max = 32, message = "关注人编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 点赞人昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "昵称不能为空")
+    @Length(max = 32, message = "昵称长度超出限制")
+    private String userNickName;
+    public static final String USER_NICK_NAME = "userNickName";
+    
+    /**
+     * 点赞人头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "头像不能为空")
+    @Length(max = 200, message = "头像长度超出限制")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
 
     /**
      * 话题编号
@@ -84,8 +102,25 @@ public class TopicUserLike extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
 
-    public String getTopicId() {
+    public String getUserNickName() {
+        return getString(USER_NICK_NAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+        put(USER_NICK_NAME, userNickName);
+	}
+
+	public String getUserAvatar() {
+        return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+        put(USER_AVATAR, userAvatar);
+	}
+
+	public String getTopicId() {
         return getString(TOPIC_ID);
     }
     

@@ -123,7 +123,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         return renderJson(success);
     }
-	
+
 
 	@ApiOperation(value = "邀请用户加入论坛")
     @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

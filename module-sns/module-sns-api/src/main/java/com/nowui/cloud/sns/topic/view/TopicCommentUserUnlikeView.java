@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,6 +21,7 @@ public class TopicCommentUserUnlikeView extends BaseView {
     /**
      * 话题评论的取消点赞编号
      */
+    @KeyId
     @Field
     @NotNull(message = "话题评论的取消点赞编号不能为空")
     private String commentUserUnlikeId;

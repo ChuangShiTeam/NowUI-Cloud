@@ -238,22 +238,22 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 //		}
 		
 		// 话题多媒体列表
-        List<TopicMediaView> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
-        topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
+//        List<TopicMediaView> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
+//        topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
         //TODO 暂时注释掉,回来在调试
 //        for (TopicMediaView topicMedia : topicMediaList) {
 //            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
 //        }
 
         // 论坛列表
-        List<TopicForumView> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
-        ArrayList<ForumView> forumList = new ArrayList<>();
-        for (TopicForumView topicForum : topicForumList) {
-            ForumView forum = forumService.find(topicForum.getForumId());
-//TODO      forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
-            forumList.add(forum);
-        }
-        topic.put(Topic.TOPIC_FORUM_LIST, forumList);
+//        List<TopicForumView> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
+//        ArrayList<ForumView> forumList = new ArrayList<>();
+//        for (TopicForumView topicForum : topicForumList) {
+//            ForumView forum = forumService.find(topicForum.getForumId());
+////TODO      forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
+//            forumList.add(forum);
+//        }
+//        topic.put(Topic.TOPIC_FORUM_LIST, forumList);
 
         // 话题最新3条评论
 //        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
@@ -321,12 +321,18 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 //
 //		return topicList;
 		
+//		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
+//                .and(TopicView.USER_ID).in(userIdList)
+//                .and(TopicView.TOPIC_ID).nin(excludeTopicIdList)
+//  TODO              .and(TopicView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+//                .and(TopicView.SYSTEM_STATUS).is(true);
+		long time = systemCreateTime.getTime();
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
                 .and(TopicView.USER_ID).in(userIdList)
                 .and(TopicView.TOPIC_ID).nin(excludeTopicIdList)
-                .and(TopicView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+                .and(TopicView.SYSTEM_CREATE_TIME).lte(time)
                 .and(TopicView.SYSTEM_STATUS).is(true);
-
+		
         List<Order> orders = new ArrayList<Order>();
         orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
         Sort sort = Sort.by(orders);
@@ -525,8 +531,9 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-        
+		long time = systemCreateTime.getTime();
         Criteria criteria = Criteria.where(TopicView.TOPIC_ID).nin(excludeTopicIdList)
+        		.and(Topic.SYSTEM_CREATE_TIME).lte(time)
                 .and(TopicView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();

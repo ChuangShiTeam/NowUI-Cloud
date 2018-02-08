@@ -1,5 +1,8 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,6 +23,7 @@ public class TopicForumView extends BaseView {
     /**
      * 话题论坛编号
      */
+    @KeyId
     @Field
     @NotNull(message = "话题论坛编号不能为空")
     private String topicForumId;
@@ -48,6 +52,15 @@ public class TopicForumView extends BaseView {
     @NotNull(message = "话题编号不能为空")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
+    
+    
+    /**
+     * 话题相关信息
+     */
+    @Field
+    @NotNull(message = "话题相关信息不能为空")
+    private JSONObject topicInfo;
+    public static final String TOPIC_INFO = "topicInfo";
 
 
     public String getTopicForumId() {
@@ -81,6 +94,14 @@ public class TopicForumView extends BaseView {
     public void setTopicId(String topicId) {
         put(TOPIC_ID, topicId);
     }
+    
+    public JSONObject getTopicInfo() {
+        return getJSONObject(TOPIC_INFO);
+	}
+
+	public void setTopicInfo(JSONObject topicInfo) {
+        put(TOPIC_INFO, topicInfo);
+	}
 
 
 }

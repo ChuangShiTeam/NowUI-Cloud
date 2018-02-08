@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -24,6 +25,7 @@ import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -114,6 +116,8 @@ public class TopicUserLikeMobileController extends BaseController {
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         String userId = body.getSystemRequestUserId();
+        String userNickName = body.getUserNickName();
+        String userAvatar = body.getUserAvatar();
 
         TopicUserLikeView userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
         
@@ -125,9 +129,21 @@ public class TopicUserLikeMobileController extends BaseController {
 
         TopicUserLike result = topicUserLikeService.save(appId, topicId, userId, userId);
         boolean success = false;
-        
+
         if (result != null) {
             topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            
+            
+            //把数据存到MongoDB中
+            /**
+             * 用户头像,
+             * 用户昵称,
+             * 
+             */
+            TopicUserLikeView topicView = JSON.parseObject(result.toJSONString(), TopicUserLikeView.class);
+            topicView.setUserNickName(userNickName);
+            topicView.setUserAvatar(userAvatar);
+            topicUserLikeService.save(topicView);
             
             //sendMessage(result, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, appId, userId);
             success = true;

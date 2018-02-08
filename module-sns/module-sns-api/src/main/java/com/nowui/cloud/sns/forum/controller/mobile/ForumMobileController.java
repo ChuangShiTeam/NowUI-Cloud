@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
@@ -579,7 +580,14 @@ public class ForumMobileController extends BaseController {
         
         // 2,获得topic的分页列表
         List<TopicForumView> topicForumList = topicForumService.listByForumId(forumId, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), pageIndex, pageSize);
+//        List<TopicView> topicListFromtopicForumList = new ArrayList<>();
+//        for (TopicForumView topicForumView : topicForumList) {
+//			JSONObject topicInfo = topicForumView.getTopicInfo();
+//			TopicView topicView = JSONObject.parseObject(topicInfo.toString(), TopicView.class);
+//			topicListFromtopicForumList.add(topicView);
+//		}
         
+       
         // 3,从TopicForum获取topicIdList, 
         List<String> topicIdList = Util.viewBeanToField(topicForumList, TopicForum.TOPIC_ID);
 
@@ -645,8 +653,19 @@ public class ForumMobileController extends BaseController {
         		UserAvatar.USER_AVATAR,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
-        		BaseEntity.SYSTEM_CREATE_TIME
+        		BaseEntity.SYSTEM_CREATE_TIME,
+        		
+        		TopicView.TOPIC_MEDIA_LIST,
+                TopicView.TOPIC_TIP_USER_LIST,
+                TopicView.TOPIC_FORUM_LIST,
+                TopicView.THE_SEND_INFO
         );
+        
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        
 
         return renderJson(countResult, topicList);
     }

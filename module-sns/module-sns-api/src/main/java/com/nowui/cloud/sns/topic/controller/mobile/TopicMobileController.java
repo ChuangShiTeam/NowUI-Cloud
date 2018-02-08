@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
@@ -46,6 +48,7 @@ import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
@@ -392,20 +395,20 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
-        
+
         String requestUserId = body.getSystemRequestUserId();
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
-        
+
         ArrayList<String> userIdToSearchList = new ArrayList<>();
         userIdToSearchList.add(body.getSystemRequestUserId());
         Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
         List<TopicView> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
-        
+
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
 //        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-        
+
 //        resultList = Util.beanAddField(
 //                resultList, 
 //                Topic.USER_ID, 
@@ -416,11 +419,11 @@ public class TopicMobileController extends BaseController {
 //                UserNickName.USER_NICK_NAME,
 //                MemberFollow.MEMBER_IS_FOLLOW
 //        );
-        
-        
+
+
         // 图片多媒体
         for (TopicView topic : resultList) {
-            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+//            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
 //            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
 //            List<File> fileList = fileRpc.findsV1(fileIds);
@@ -495,8 +498,14 @@ public class TopicMobileController extends BaseController {
                 UserAvatar.USER_AVATAR,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
-                BaseEntity.SYSTEM_CREATE_TIME
-        );
+                BaseEntity.SYSTEM_CREATE_TIME,
+                
+                TopicView.THE_SEND_INFO
+        	);
+                validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+                validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+                validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+                validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
         return renderJson(countResult, resultList);
     }
@@ -585,8 +594,18 @@ public class TopicMobileController extends BaseController {
                 BaseEntity.SYSTEM_CREATE_TIME,
                 Topic.TOPIC_IS_SELF,
                 Topic.TOPIC_USER,
-                Topic.REQUEST_USER
+                Topic.REQUEST_USER,
+                
+                User.USER_ID,
+                TopicView.TOPIC_MEDIA_LIST,
+                TopicView.TOPIC_TIP_USER_LIST,
+                TopicView.TOPIC_FORUM_LIST,
+                TopicView.THE_SEND_INFO
         );
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
         return renderJson(topic);
     }
@@ -679,11 +698,28 @@ public class TopicMobileController extends BaseController {
         
         
         
-        // TODO 先取全部人的动态
+        // TODO 先获取全部人的动态
         
         Integer count = topicService.countAllUserTopic();
         
         List<TopicView> allUserTopic = topicService.allUserTopic((List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        
+        for (TopicView topicView : allUserTopic) {
+        	topicView.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topicView.getUserId()));
+        	
+        	// 获取点赞信息
+        	//数量,
+            Integer countByTopicId = topicUserLikeService.countByTopicId(topicView.getTopicId());
+            topicView.put(Topic.TOPIC_COUNT_LIKE, countByTopicId);
+            //请求用户是否点赞
+            TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndUserId(topicView.getTopicId(), body.getSystemRequestUserId());
+            topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
+            
+		}
+        
+        
+        
+        
         
 //        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
@@ -736,7 +772,8 @@ public class TopicMobileController extends BaseController {
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
-                Topic.TOPIC_IS_LOCATION
+                Topic.TOPIC_IS_LOCATION,
+                Topic.SYSTEM_REQUEST_USER_ID
         );
         
         JSONArray topicMediaJsonArray = body.getJSONArray(Topic.TOPIC_MEDIA_LIST);
@@ -744,7 +781,7 @@ public class TopicMobileController extends BaseController {
             throw new BusinessException("图片不能为空");
         }
         
-        JSONArray forumIdJSONArray = body.getJSONArray(Topic.TOPIC_FORUM_LIST);
+        JSONArray topicForumJSONArray = body.getJSONArray(Topic.TOPIC_FORUM_LIST);
         JSONArray tipUserIdJSONArray = body.getJSONArray(Topic.TOPIC_TIP_USER_LIST);
         
         String topicId = Util.getRandomUUID();
@@ -761,27 +798,27 @@ public class TopicMobileController extends BaseController {
         
         boolean success = false;
         
+        
+        
         if (result != null) {
             
             // 保存话题多媒体
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
             topicMediaService.batchSave(appId, topicId, topicMediaList, userId);
             
+            List<TopicForum> topicForumList = new ArrayList<>();
+            
             // 保存话题论坛
-            if (!Util.isNullOrEmpty(forumIdJSONArray)) {
-                List<String> forumIdList = forumIdJSONArray.toJavaList(String.class);
-                
-                List<TopicForum> topicForumList = new ArrayList<TopicForum>();
-                
-                for (String forumId : forumIdList) {
+            if (!Util.isNullOrEmpty(topicForumJSONArray)) {
+            	for (Object object : topicForumJSONArray) {
+            		JSONObject topicForumJson = (JSONObject)object;
+            		TopicForum topicForum = JSONObject.parseObject(topicForumJson.toString(), TopicForum.class);
+            		
                 	// 如果保存话题时,所同步到的话题为null,那么跳过,不然报错
-                    ForumView forum = forumService.find(forumId);
+                    ForumView forum = forumService.find(topicForum.getForumId());
                     if (Util.isNullOrEmpty(forum)) {
                         continue;
                     }
-                    TopicForum topicForum = new TopicForum();
-                    topicForum.setForumId(forumId);
-                    
                     topicForumList.add(topicForum);
                 }
                 
@@ -815,6 +852,27 @@ public class TopicMobileController extends BaseController {
             TopicView topicView = JSON.parseObject(result.toJSONString(), TopicView.class);
             
             topicService.save(topicView);
+            
+            
+            
+            /**
+             * 在话题论坛表中根据论坛id保存topic
+             */
+            for (TopicForum topicForum : topicForumList) {
+//	TODO 这个方式太耗空间,注释掉			topicForum.setTopicInfo(result);
+				topicForum.setAppId(appId);
+				topicForum.setSystemCreateTime(new Date());
+				topicForum.setSystemCreateUserId(userId);
+				topicForum.setSystemRequestUserId(userId);
+				topicForum.setSystemStatus(true);
+				topicForum.setSystemUpdateTime(new Date());
+				topicForum.setSystemUpdateUserId(userId);
+				topicForum.setSystemVersion(0);
+				
+				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);
+				topicForumService.save(topicForumView);
+			}
+            
             
 //            sendMessage(body, TopicRouter.TOPIC_V1_SAVE, appId, userId);
             success = true;
