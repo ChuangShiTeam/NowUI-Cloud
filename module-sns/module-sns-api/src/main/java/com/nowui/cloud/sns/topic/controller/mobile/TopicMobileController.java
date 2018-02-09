@@ -611,6 +611,7 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(Topic.TOPIC_USER_LIKE_LIST, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
         return renderJson(topic);
     }

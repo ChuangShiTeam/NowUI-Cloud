@@ -22,9 +22,11 @@ import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
+import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
@@ -133,11 +135,13 @@ public class TopicUserLikeMobileController extends BaseController {
         boolean success = false;
 
         if (result != null) {
-            topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            TopicUserUnlike userUnlike = topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
             
-            //删除取消点赞记录
-
-            
+            if (userUnlike != null) {
+            	//删除取消点赞记录
+            	TopicUserUnlikeView userUnlikeView = JSON.parseObject(userUnlike.toJSONString(), TopicUserUnlikeView.class);
+            	topicUserUnlikeService.delete(userUnlikeView);
+			}
             
             //把点赞记录存到MongoDB中
             /**

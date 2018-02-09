@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
@@ -70,9 +71,14 @@ public class TopicUserUnlikeMobileController extends BaseController {
         boolean success = false;
 
         if (result != null) {
-            TopicUserLikeView userLikeView = topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            TopicUserLike userLike = topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
             
-            // TODO 把MongoDB中的点赞记录逻辑删除
+            
+            if (userLike != null) {
+            	// TODO 把MongoDB中的点赞记录逻辑删除
+              	TopicUserLikeView userLikeView = JSON.parseObject(userLike.toJSONString(), TopicUserLikeView.class);
+              	topicUserLikeService.delete(userLikeView);
+			}
             
             
             // 将取消点赞记录 保存到MongoDB中

@@ -107,20 +107,20 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
     }
 
     @Override
-    public boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
+    public TopicUserUnlike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserUnlikeView topicUserUnlike = findByTopciIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserUnlike)) {
-            return true;
+            return null;
         }
         
 //        Boolean result = delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion());
         TopicUserUnlike result = delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
        
         if (result != null) {
-			return true;
+			return result;
 		}else {
-			return false;
+			return null;
 		}
     }
 }

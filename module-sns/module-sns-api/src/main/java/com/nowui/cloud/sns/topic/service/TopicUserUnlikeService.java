@@ -63,7 +63,7 @@ public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, To
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true  成功      false  失败
      */
-    boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserUnlike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号查询话题用户取消点赞记录
