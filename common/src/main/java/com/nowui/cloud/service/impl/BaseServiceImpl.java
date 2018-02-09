@@ -142,7 +142,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
     @Override
     public Boolean save(T baseEntity, String id, String systemCreateUserId) {
-        baseEntity.put(entity.getTableId(), id);
+        baseEntity.put(baseEntity.getTableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -161,6 +161,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
     @Override
     public Boolean update(T baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
+        baseEntity.put(baseEntity.getTableId(), id);
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
@@ -188,6 +189,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
     @Override
     public Boolean delete(String id, String systemUpdateUserId, Integer systemVersion) {
+        entity.put(entity.getTableId(), id);
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
         entity.setSystemVersion(systemVersion + 1);
