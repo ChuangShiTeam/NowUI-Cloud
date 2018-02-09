@@ -185,11 +185,11 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
+    public TopicUserLikeView deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserLikeView topicUserLike = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserLike)) {
-            return true;
+            return topicUserLike;
         }
         
         Integer count = countByTopicId(topicId);
@@ -202,9 +202,9 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
             // 更新话题点赞数缓存
 //        	redisTemplate.opsForValue().set(TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID + topicId, (count - 1));
         	
-        	return true;
-        }
-        
-        return false;
+        	return topicUserLike;
+        }else {
+			return null;
+		}
     }
 }

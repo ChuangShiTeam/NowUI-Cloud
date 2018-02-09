@@ -46,9 +46,11 @@ import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
@@ -93,6 +95,9 @@ public class TopicMobileController extends BaseController {
     
     @Autowired
     private TopicUserLikeService topicUserLikeService;
+    
+    @Autowired
+    private TopicUserBookmarkService topicUserBookmarkService;
     
     @Autowired
     private TopicCommentService topicCommentService;
@@ -707,13 +712,32 @@ public class TopicMobileController extends BaseController {
         for (TopicView topicView : allUserTopic) {
         	topicView.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topicView.getUserId()));
         	
-        	// 获取点赞信息
-        	//数量,
-            Integer countByTopicId = topicUserLikeService.countByTopicId(topicView.getTopicId());
-            topicView.put(Topic.TOPIC_COUNT_LIKE, countByTopicId);
+        	/**
+        	 * 获取点赞信息
+        	 */
+        	//点赞数量,
+            Integer likeCount = topicUserLikeService.countByTopicId(topicView.getTopicId());
+            topicView.put(Topic.TOPIC_COUNT_LIKE, likeCount);
             //请求用户是否点赞
             TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndUserId(topicView.getTopicId(), body.getSystemRequestUserId());
             topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
+            
+            /**
+             * 获取收藏信息
+             */
+            //收藏数量
+            Integer bookMarkCount = topicUserBookmarkService.countByTopicId(topicView.getTopicId());
+            topicView.put(Topic.TOPIC_COUNT_BOOKMARK, bookMarkCount);
+            //请求用户是否收藏
+            TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndUserId(topicView.getTopicId(), body.getSystemRequestUserId());
+            topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
+            
+            /**
+             * 评论信息
+             */
+            // 话题评论数
+            Integer countComment = topicCommentService.countByTopicId(topicView.getTopicId());
+            topicView.put(Topic.TOPIC_COUNT_COMMENT, countComment);
             
 		}
         

@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
@@ -16,6 +18,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.util.Util;
 
@@ -65,9 +68,17 @@ public class TopicUserUnlikeMobileController extends BaseController {
         TopicUserUnlike result = topicUserUnlikeService.save(body, Util.getRandomUUID(), userId);
 
         boolean success = false;
-        
+
         if (result != null) {
-            topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            TopicUserLikeView userLikeView = topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            
+            // TODO 把MongoDB中的点赞记录逻辑删除
+            
+            
+            // 将取消点赞记录 保存到MongoDB中
+            TopicUserUnlikeView unlikeView = JSON.parseObject(result.toJSONString(), TopicUserUnlikeView.class);
+            topicUserUnlikeService.save(unlikeView);
+            
             
             //sendMessage(result, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, appId, userId);
             success = true;

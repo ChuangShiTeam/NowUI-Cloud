@@ -86,7 +86,7 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserLikeView deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题点赞

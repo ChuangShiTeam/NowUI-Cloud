@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
@@ -16,6 +17,7 @@ import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.util.Util;
 
@@ -68,6 +70,14 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         if (result != null) {
         	
             topicUserBookmarkService.deleteByTopicIdAndUserId(topicId, userId, body.getAppId(), userId);
+            
+            
+            //TODO 删除收藏记录
+            
+            
+            // 新增取消收藏记录
+            TopicUserUnbookmarkView unBookmarkView = JSON.parseObject(result.toJSONString(), TopicUserUnbookmarkView.class);
+            topicUserUnbookmarkService.save(unBookmarkView);
             
             //sendMessage(result, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, appId, userId);
             

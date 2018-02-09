@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
+import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
@@ -133,12 +135,13 @@ public class TopicUserLikeMobileController extends BaseController {
         if (result != null) {
             topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
             
+            //删除取消点赞记录
+
             
-            //把数据存到MongoDB中
+            
+            //把点赞记录存到MongoDB中
             /**
-             * 用户头像,
-             * 用户昵称,
-             * 
+             * 用户头像,用户昵称,
              */
             TopicUserLikeView topicView = JSON.parseObject(result.toJSONString(), TopicUserLikeView.class);
             topicView.setUserNickName(userNickName);
