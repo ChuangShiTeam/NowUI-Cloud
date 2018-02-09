@@ -95,10 +95,16 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.FOLLOW_USER_ID
         );
 
-        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_SAVE, body.getSystemCreateUserId());
-//        Boolean result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberFollow result = memberFollowService.save(body, Util.getRandomUUID(), body.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员关注")
@@ -115,10 +121,16 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        Boolean result = memberFollowService.update(body, body.getMemberFollowId(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
-//        Boolean result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberFollow result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员关注")
@@ -131,9 +143,16 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        Boolean result = memberFollowService.delete(body.getMemberFollowId(), body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
-//        Boolean result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
-        return renderJson(result);
+        MemberFollow result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

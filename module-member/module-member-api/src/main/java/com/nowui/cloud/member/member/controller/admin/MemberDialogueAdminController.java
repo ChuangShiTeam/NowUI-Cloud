@@ -95,10 +95,16 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.RESPOND_USER_ID
         );
 
-        Boolean result = memberDialogueService.save(body,Util.getRandomUUID(),body.getAppId(),MemberDialogueRouter.MEMBER_DIALOGUE_V1_SAVE,body.getSystemCreateUserId());
-//        Boolean result = memberDialogueService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberDialogue result = memberDialogueService.save(body,Util.getRandomUUID(),body.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员对话")
@@ -115,10 +121,16 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.SYSTEM_VERSION
         );
 
-        Boolean result = memberDialogueService.update(body,body.getMemberDialogueId(),body.getAppId(), MemberDialogueRouter.MEMBER_DIALOGUE_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
-//        Boolean result = memberDialogueService.update(body, body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberDialogue result = memberDialogueService.update(body,body.getMemberDialogueId(),body.getSystemUpdateUserId(),body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员对话")
@@ -131,10 +143,16 @@ public class MemberDialogueAdminController extends BaseController {
                 MemberDialogue.SYSTEM_VERSION
         );
 
-        Boolean result = memberDialogueService.delete(body.getMemberDialogueId(),body.getAppId(),MemberDialogueRouter.MEMBER_DIALOGUE_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
-//        Boolean result = memberDialogueService.delete(body.getMemberDialogueId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberDialogue result = memberDialogueService.delete(body.getMemberDialogueId(),body.getSystemUpdateUserId(),body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

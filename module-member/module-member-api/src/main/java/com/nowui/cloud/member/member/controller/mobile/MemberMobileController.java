@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.nowui.cloud.member.member.router.MemberRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,14 +108,18 @@ public class MemberMobileController extends BaseController {
         member.setMemberIsTop(false);
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
-        
-        Boolean result = memberService.save(member,memberId,member.getAppId(), MemberRouter.MEMBER_V1_SAVE,body.getSystemCreateUserId());
-//        member, memberId, userId
-        if (result) {
+
+        Member result = memberService.save(member,memberId ,body.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
             userRpc.registerUserMobileV1(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
+
+            success = true;
         }
-        
-        return renderJson(result);
+
+        return renderJson(success);
     }
     
     @ApiOperation(value = "会员邮箱注册")
@@ -155,15 +158,18 @@ public class MemberMobileController extends BaseController {
         member.setMemberIsTop(false);
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
-        
-        Boolean result = memberService.save(member,memberId,body.getAppId(),MemberRouter.MEMBER_V1_SAVE,member.getSystemCreateUserId());
-//        member, memberId, userId
-        
-        if (result) {
+
+        Member result = memberService.save(member,memberId,member.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
             userRpc.registerUserEmailV1(body.getAppId(), userId, memberId, UserType.MEMBER.getKey(), body.getUserAccount(), userPassword.getUserPassword(), body.getSystemRequestUserId());
+
+            success = true;
         }
-        
-        return renderJson(result);
+
+        return renderJson(success);
     }
     
     @ApiOperation(value = "会员手机登录验证码发送")

@@ -7,7 +7,6 @@ import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -60,7 +59,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean saveMemberAddress(String appId, String memberId, String userId, MemberAddress memberAddress, String memberAddressId, String systemRequestUserId);
+    MemberAddress saveMemberAddress(String appId, String memberId, String userId, MemberAddress memberAddress, String memberAddressId, String systemRequestUserId);
     
     /**
      * 根据会员编号删除会员地址信息
@@ -82,7 +81,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean saveMemberSignature(String appId, String memberId, String userId, MemberSignature memberSignature, String memberSignatureId, String systemRequestUserId);
+    MemberSignature saveMemberSignature(String appId, String memberId, String userId, MemberSignature memberSignature, String memberSignatureId, String systemRequestUserId);
     
     /**
      * 根据会员编号删除会员签名信息
@@ -104,7 +103,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean saveMemberPerferenceLanguage(String appId, String memberId, String userId, MemberPerferenceLanguage memberPerferenceLanguage, String memberPerferenceLanguageId, String systemRequestUserId);
+    MemberPerferenceLanguage saveMemberPerferenceLanguage(String appId, String memberId, String userId, MemberPerferenceLanguage memberPerferenceLanguage, String memberPerferenceLanguageId, String systemRequestUserId);
     
     /**
      * 根据会员编号删除会员偏好语言信息
@@ -126,7 +125,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean saveMemberBackground(String appId, String memberId, String userId, MemberBackground memberBackground, String memberBackgroundId, String systemRequestUserId);
+    MemberBackground saveMemberBackground(String appId, String memberId, String userId, MemberBackground memberBackground, String memberBackgroundId, String systemRequestUserId);
     
     /**
      * 根据会员编号删除会员背景信息

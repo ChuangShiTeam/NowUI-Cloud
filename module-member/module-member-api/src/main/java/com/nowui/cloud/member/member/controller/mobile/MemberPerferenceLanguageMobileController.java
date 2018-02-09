@@ -51,8 +51,15 @@ public class MemberPerferenceLanguageMobileController extends BaseController {
         memberService.deleteMemberPerferenceLanguageByMemberId(user.getObjectId(), user.getUserId(), body.getSystemRequestUserId());
         
         //保存新的会员偏好语言
-        Boolean result = memberService.saveMemberPerferenceLanguage(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberPerferenceLanguage result = memberService.saveMemberPerferenceLanguage(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 }

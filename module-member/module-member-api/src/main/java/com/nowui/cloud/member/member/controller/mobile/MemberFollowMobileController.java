@@ -289,10 +289,17 @@ public class MemberFollowMobileController extends BaseController {
         body.setUserId(user.getUserId());
         body.setMemberId(user.getObjectId());
         body.setFollowMemberId(followUser.getObjectId());
-        
-        Boolean result = memberFollowService.save(body,Util.getRandomUUID(),body.getAppId(), MemberFollowRouter.MEMBER_FOLLOW_V1_SAVE,body.getSystemCreateUserId());
-//, Util.getRandomUUID(), body.getSystemRequestUserId()
-        return renderJson(result);
+
+        MemberFollow result = memberFollowService.save(body,Util.getRandomUUID(),body.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "取消会员关注")
@@ -310,9 +317,16 @@ public class MemberFollowMobileController extends BaseController {
         if (memberFollow == null) {
             throw new BusinessException("没有关注该会员");
         }
-        Boolean result = memberFollowService.delete(memberFollow.getMemberFollowId(),memberFollow.getAppId(),MemberFollowRouter.MEMBER_FOLLOW_V1_DELETE,memberFollow.getSystemUpdateUserId(),memberFollow.getSystemVersion());
-//        memberFollow.getMemberFollowId(), body.getSystemRequestUserId(), memberFollow.getSystemVersion()
-        return renderJson(result);
+        MemberFollow result = memberFollowService.delete(memberFollow.getMemberFollowId(),memberFollow.getSystemUpdateUserId(),memberFollow.getSystemVersion());
+
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }
