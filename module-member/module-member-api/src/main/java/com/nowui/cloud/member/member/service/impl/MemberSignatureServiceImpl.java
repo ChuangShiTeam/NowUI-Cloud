@@ -18,21 +18,21 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 会员签名业务实现
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-14
  */
 @Service
-public class MemberSignatureServiceImpl extends SuperServiceImpl<MemberSignatureMapper, MemberSignature,MemberSignatureRepository,MemberSignatureView> implements MemberSignatureService {
+public class MemberSignatureServiceImpl extends SuperServiceImpl<MemberSignatureMapper, MemberSignature, MemberSignatureRepository, MemberSignatureView> implements MemberSignatureService {
 
     @Override
     public MemberSignature findByMemberId(String memberId) {
-        
+
         MemberSignature memberSignature = find(
                 new BaseWrapper<MemberSignature>()
                         .eq(MemberSignature.MEMBER_ID, memberId)
                         .eq(MemberSignature.SYSTEM_STATUS, true)
         );
-        
+
         return memberSignature;
     }
 
@@ -43,10 +43,10 @@ public class MemberSignatureServiceImpl extends SuperServiceImpl<MemberSignature
                         .eq(MemberSignature.MEMBER_ID, memberId)
                         .eq(MemberSignature.SYSTEM_STATUS, true)
         );
-        
+
         if (memberSignatureList != null && memberSignatureList.size() > 0) {
             memberSignatureList.stream()
-                                .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(),memberSignature.getAppId(), MemberSignatureRouter.MEMBER_SIGNATURE_V1_DELETE, systemRequestUserId, memberSignature.getSystemVersion()));
+                    .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(), systemRequestUserId, memberSignature.getSystemVersion()));
         }
     }
 

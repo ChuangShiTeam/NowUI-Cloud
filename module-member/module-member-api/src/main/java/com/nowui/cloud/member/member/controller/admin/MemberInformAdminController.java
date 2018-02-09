@@ -1,4 +1,5 @@
 package com.nowui.cloud.member.member.controller.admin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
  * 会员举报管理端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-09
  */
 @Api(value = "会员举报", description = "会员举报管理端接口管理")
@@ -47,7 +48,7 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.PAGE_SIZE
         );
 
-        Integer resultTotal = memberInformService.countForAdmin(body.getAppId() , body.getMemberId(), body.getUserId(), body.getInformUserId(), body.getInformMemberId());
+        Integer resultTotal = memberInformService.countForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getInformUserId(), body.getInformMemberId());
         List<MemberInform> resultList = memberInformService.listForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getInformUserId(), body.getInformMemberId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
@@ -96,10 +97,16 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.INFORM_MEMBER_ID
         );
 
-        Boolean result = memberInformService.save(body, Util.getRandomUUID(),body.getAppId(),MemberInformRouter.MEMBER_INFORM_V1_SAVE,body.getSystemCreateUserId());
-//        Boolean result = memberInformService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberInform result = memberInformService.save(body, Util.getRandomUUID(), body.getSystemCreateUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员举报")
@@ -116,10 +123,16 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.SYSTEM_VERSION
         );
 
-        Boolean result = memberInformService.update(body,body.getMemberInformId(),body.getAppId(), MemberInformRouter.MEMBER_INFORM_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
-//        Boolean result = memberInformService.update(body, body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberInform result = memberInformService.update(body, body.getMemberInformId(), body.getSystemUpdateUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员举报")
@@ -132,10 +145,16 @@ public class MemberInformAdminController extends BaseController {
                 MemberInform.SYSTEM_VERSION
         );
 
-        Boolean result = memberInformService.delete(body.getMemberInformId(),body.getAppId(),MemberInformRouter.MEMBER_INFORM_V1_DELETE,body.getSystemUpdateUserId(), body.getSystemVersion());
-//        Boolean result = memberInformService.delete(body.getMemberInformId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberInform result = memberInformService.delete(body.getMemberInformId(), body.getSystemUpdateUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

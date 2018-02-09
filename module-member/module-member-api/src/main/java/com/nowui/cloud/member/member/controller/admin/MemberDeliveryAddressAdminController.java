@@ -1,6 +1,6 @@
 package com.nowui.cloud.member.member.controller.admin;
+
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.router.MemberDeliveryAddressRouter;
 import com.nowui.cloud.member.member.view.MemberDeliveryAddressView;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.member.member.entity.MemberDeliveryAddress;
@@ -18,7 +18,7 @@ import java.util.Map;
  * 会员收货地址管理端控制器
  *
  * @author xinqing
- *
+ * <p>
  * 2018-01-14
  */
 @Api(value = "会员收货地址", description = "会员收货地址管理端接口管理")
@@ -40,7 +40,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.PAGE_SIZE
         );
 
-        Integer resultTotal = memberDeliveryAddressService.countForAdmin(body.getAppId() , body.getMemberDeliveryAddressName(), body.getMemberDeliveryAddressPhone());
+        Integer resultTotal = memberDeliveryAddressService.countForAdmin(body.getAppId(), body.getMemberDeliveryAddressName(), body.getMemberDeliveryAddressPhone());
         List<MemberDeliveryAddress> resultList = memberDeliveryAddressService.listForAdmin(body.getAppId(), body.getMemberDeliveryAddressName(), body.getMemberDeliveryAddressPhone(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
@@ -103,9 +103,16 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.MEMBER_DELIVERY_ADDRESS_IS_DEFAULT
         );
 
-        Boolean result = memberDeliveryAddressService.save(body,Util.getRandomUUID(),body.getAppId(), MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_SAVE,body.getSystemCreateUserId());
-// body, Util.getRandomUUID(), body.getSystemRequestUserId()
-        return renderJson(result);
+        MemberDeliveryAddress result = memberDeliveryAddressService.save(body, Util.getRandomUUID(), body.getSystemCreateUserId());
+
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改会员收货地址")
@@ -127,10 +134,16 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.SYSTEM_VERSION
         );
 
-        Boolean result = memberDeliveryAddressService.update(body,body.getMemberDeliveryAddressId(),body.getAppId(),MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_UPDATE,body.getSystemUpdateUserId(),body.getSystemVersion());
+        MemberDeliveryAddress result = memberDeliveryAddressService.update(body, body.getMemberDeliveryAddressId(), body.getSystemUpdateUserId(), body.getSystemVersion());
 
-        // body, body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion()
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除会员收货地址")
@@ -143,10 +156,17 @@ public class MemberDeliveryAddressAdminController extends BaseController {
                 MemberDeliveryAddress.SYSTEM_VERSION
         );
 
-        Boolean result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(),body.getAppId(),MemberDeliveryAddressRouter.MEMBER_DELIVERY_ADDRESS_V1_DELETE,body.getSystemUpdateUserId(),body.getSystemVersion());
+        MemberDeliveryAddress result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(), body.getSystemUpdateUserId(), body.getSystemVersion());
 //        Boolean result = memberDeliveryAddressService.delete(body.getMemberDeliveryAddressId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

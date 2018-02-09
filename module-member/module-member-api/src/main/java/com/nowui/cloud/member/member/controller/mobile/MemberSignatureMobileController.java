@@ -51,9 +51,16 @@ public class MemberSignatureMobileController extends BaseController {
         memberService.deleteMemberSignatureByMemberId(user.getObjectId(), user.getUserId(), body.getSystemRequestUserId());
         
         // 保存新的会员签名
-        Boolean result = memberService.saveMemberSignature(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberSignature result = memberService.saveMemberSignature(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

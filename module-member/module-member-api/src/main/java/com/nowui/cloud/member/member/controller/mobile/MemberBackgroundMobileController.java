@@ -51,9 +51,16 @@ public class MemberBackgroundMobileController extends BaseController {
         memberService.deleteMemberBackgroundByMemberId(user.getObjectId(), user.getUserId(), body.getSystemRequestUserId());
         
         //保存新的会员背景
-        Boolean result = memberService.saveMemberBackground(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        MemberBackground result = memberService.saveMemberBackground(body.getAppId(), user.getObjectId(), user.getUserId(), body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+
+        if (result != null) {
+
+            success = true;
+        }
+
+        return renderJson(success);
     }
 
 }

@@ -38,36 +38,36 @@ import io.swagger.annotations.Api;
  * 会员系统端控制器
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-08
  */
 @Api(value = "会员", description = "会员系统端接口管理")
 @RestController
 public class MemberSystemController implements MemberRpc {
-    
+
     @Autowired
     private MemberService memberService;
-    
+
     @Autowired
     private UserRpc userRpc;
-    
+
     @Autowired
     private FileRpc fileRpc;
-    
+
     @Autowired
     private MemberFollowService memberFollowService;
-    
+
     @Override
     public String wechatLoginV1(String appId, UserWechat userWechat, String systemRequestUserId) {
-        
+
         String userId = "";
-        
+
         User user = userRpc.findByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
-                
+
         if (user == null) {
             String memberId = Util.getRandomUUID();
             userId = Util.getRandomUUID();
-            
+
             Member bean = new Member();
             bean.setAppId(appId);
             bean.setMemberId(memberId);
@@ -77,36 +77,36 @@ public class MemberSystemController implements MemberRpc {
             bean.setMemberTopEndTime(new Date());
             bean.setMemberTopLevel(0);
 
-            Boolean isSave = memberService.save(bean,memberId,bean.getAppId(), MemberRouter.MEMBER_V1_SAVE,bean.getSystemCreateUserId());
+            Member result = memberService.save(bean, memberId, bean.getSystemCreateUserId());
 //            bean, memberId, systemRequestUserId
 
-            if (!isSave) {
+            if (result != null) {
                 throw new BusinessException("保存不成功");
             }
-            
+
             String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
             userWechat.setWechatHeadImgFileId(fileId);
-            isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
-            
-            if (!isSave) {
-                throw new BusinessException("保存不成功");
-            }
+//            isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
+//
+//            if (!isSave) {
+//                throw new BusinessException("保存不成功");
+//            }
         } else {
             userId = user.getUserId();
-            
+
             UserWechat bean = (UserWechat) user.get(User.USER_WECHAT);
-            
+
             if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
                 String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
 
                 userWechat.setWechatHeadImgFileId(fileId);
                 Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
-                
+
                 if (!isUpdate) {
                     throw new BusinessException("更新不成功");
                 }
             }
-            
+
         }
 
         try {
@@ -129,32 +129,32 @@ public class MemberSystemController implements MemberRpc {
     @Override
     public Member findByUserIdV1(String userId) {
         Member member = memberService.findByUserId(userId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         User user = (User) member.get(Member.MEMBER_USER);
-        
+
         if (user == null) {
             user = userRpc.findV1(userId);
         }
-        
+
         user.removeBaseTableField();
-        
+
         member.putAll(user);
-        
+
         return member;
     }
-    
+
     @Override
     public Member findDetailByUserIdV1(String userId) {
         Member member = findByUserIdV1(userId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         // 处理用户头像
         String userAvatar = (String) member.get(UserAvatar.USER_AVATAR);
         if (!Util.isNullOrEmpty(userAvatar)) {
@@ -164,7 +164,7 @@ public class MemberSystemController implements MemberRpc {
 //            }
 //            member.put(UserAvatar.USER_AVATAR, file == null ? "" : file);
         }
-        
+
         // 处理会员背景
         String memberBackground = (String) member.get(Member.MEMBER_BACKGROUND);
         if (!Util.isNullOrEmpty(memberBackground)) {
@@ -174,7 +174,7 @@ public class MemberSystemController implements MemberRpc {
 //            }
 //            member.put(Member.MEMBER_BACKGROUND, file == null ? "" : file);
         }
-        
+
         return member;
     }
 
@@ -184,34 +184,34 @@ public class MemberSystemController implements MemberRpc {
             return null;
         }
         List<String> userIdList = JSONArray.parseArray(userIds, String.class);
-        
+
         List<Member> memberList = userIdList.stream().map(userId -> findByUserIdV1(userId)).collect(Collectors.toList());
-        
+
         return memberList;
     }
-    
+
     @Override
     public List<Member> nickNameAndAvatarAndIsFollowListV1(String userIds, String userId) {
         if (Util.isNullOrEmpty(userIds) || Util.isNullOrEmpty(userId)) {
             return null;
         }
-        
+
         List<Member> memberList = listByUserIdsV1(userIds);
-        
-        if(memberList == null || memberList.size() == 0) {
+
+        if (memberList == null || memberList.size() == 0) {
             return null;
         }
-        
+
         String fileIds = Util.beanToFieldString(memberList, User.USER_AVATAR);
         List<File> fileList = fileRpc.findsV1(fileIds);
         if (!Util.isNullOrEmpty(fileList)) {
-            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH); 
+            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH);
         }
-        
+
         for (Member member : memberList) {
             member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
         }
-        
+
         // 查询我的关注列表
         List<MemberFollow> myFollowList = memberFollowService.listByUserId(userId);
         // 处理用户关注
@@ -219,140 +219,141 @@ public class MemberSystemController implements MemberRpc {
             List<String> myFollowUserIdList = myFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());
             memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, myFollowUserIdList.contains(member.getUserId())));
         } else {
-            memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, false)); 
+            memberList.stream().forEach(member -> member.put(MemberFollow.MEMBER_IS_FOLLOW, false));
         }
-        
+
         return memberList;
     }
-    
+
     @Override
     public Member nickNameAndAvatarAndIsFollowFindV1(String followUserId, String userId) {
         Member member = findDetailByUserIdV1(followUserId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         // 处理用户是否关注
         Boolean memberIsFollow = memberFollowService.checkIsFollow(userId, followUserId);
-        
+
         member.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
-        
+
         member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR, MemberFollow.MEMBER_IS_FOLLOW);
-        
+
         return member;
     }
 
     @Override
     public List<Member> nickNameAndAvatarListV1(String userIds) {
         List<Member> memberList = listByUserIdsV1(userIds);
-        
-        if(memberList == null || memberList.size() == 0) {
+
+        if (memberList == null || memberList.size() == 0) {
             return null;
         }
-        
+
         String fileIds = Util.beanToFieldString(memberList, User.USER_AVATAR);
         List<File> fileList = fileRpc.findsV1(fileIds);
         if (!Util.isNullOrEmpty(fileList)) {
-            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH); 
+            memberList = Util.beanReplaceField(memberList, User.USER_AVATAR, fileList, File.FILE_ID, File.FILE_PATH);
         }
-        
+
         for (Member member : memberList) {
             member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
         }
-        
+
         return memberList;
     }
 
     @Override
     public Member nickNameAndAvatarFindV1(String userId) {
-        
+
         Member member = findDetailByUserIdV1(userId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         member.keep(User.USER_ID, UserNickName.USER_NICK_NAME, UserAvatar.USER_AVATAR);
-        
+
         return member;
     }
 
     @Override
     public Member nickNameAndAvatarAndBackgroundAndSignatureFind(String userId) {
         Member member = findDetailByUserIdV1(userId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         member.keep(
-                User.USER_ID, 
-                UserNickName.USER_NICK_NAME, 
-                UserAvatar.USER_AVATAR, 
-                MemberSignature.MEMBER_SIGNATURE, 
+                User.USER_ID,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR,
+                MemberSignature.MEMBER_SIGNATURE,
                 MemberBackground.MEMBER_BACKGROUND
         );
-        
+
         return member;
     }
 
     @Override
     public Member nickNameAndAvatarAndSignatureFind(String userId) {
         Member member = findDetailByUserIdV1(userId);
-        
+
         if (member == null) {
             return null;
         }
-        
+
         member.keep(
-                User.USER_ID, 
-                UserNickName.USER_NICK_NAME, 
-                UserAvatar.USER_AVATAR, 
+                User.USER_ID,
+                UserNickName.USER_NICK_NAME,
+                UserAvatar.USER_AVATAR,
                 MemberSignature.MEMBER_SIGNATURE
         );
-        
+
         return member;
     }
 
     @Override
     public Boolean update(String userId, String userAvatar, String userNickName, String userSex, String memberSignature,
-            String memberAddressCity, String systemRequestUserId) {
+                          String memberAddressCity, String systemRequestUserId) {
         Member member = memberService.findByUserId(userId);
-        
+
         if (member == null) {
             return false;
         }
-        
+
         if (!memberAddressCity.equals(member.getString(Member.MEMBER_ADDRESS_CITY))) {
             // 刪除旧的会员地址信息
             memberService.deleteMemberAddressByMemberId(member.getMemberId(), userId, systemRequestUserId);
-            
+
             MemberAddress memberAddress = new MemberAddress();
             memberAddress.setMemberAddressProvince(member.getString(Member.MEMBER_ADDRESS_PROVINCE));
             memberAddress.setMemberAddressArea(member.getString(Member.MEMBER_ADDRESS_AREA));
             memberAddress.setMemberAddressCity(memberAddressCity);
             memberAddress.setMemberAddressAddress(member.getString(Member.MEMBER_ADDRESS_ADDRESS));
-            
+
             memberService.saveMemberAddress(member.getAppId(), member.getMemberId(), userId, memberAddress, Util.getRandomUUID(), systemRequestUserId);
 
-        };
-        
+        }
+        ;
+
         if (!memberSignature.equals(member.getString(Member.MEMBER_SIGNATURE))) {
             // 删除旧的会员签名
             memberService.deleteMemberSignatureByMemberId(member.getMemberId(), userId, systemRequestUserId);
-            
+
             MemberSignature memberSignatureBean = new MemberSignature();
             memberSignatureBean.setMemberSignature(memberSignature);
-            
+
             memberService.saveMemberSignature(member.getAppId(), member.getMemberId(), userId, memberSignatureBean, Util.getRandomUUID(), systemRequestUserId);
 
         }
-        
+
         userRpc.updateUserNickNameV1(member.getAppId(), userId, userNickName, systemRequestUserId);
         userRpc.updateUserAvatarV1(member.getAppId(), userId, userAvatar, systemRequestUserId);
         userRpc.updateUserSexV1(member.getAppId(), userId, userSex, systemRequestUserId);
-        
+
         return true;
     }
 

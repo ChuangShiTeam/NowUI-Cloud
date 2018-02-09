@@ -12,17 +12,16 @@ import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
 import com.nowui.cloud.member.member.mapper.MemberPerferenceLanguageMapper;
 import com.nowui.cloud.member.member.service.MemberPerferenceLanguageService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 会员偏好语言业务实现
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-29
  */
 @Service
-public class MemberPerferenceLanguageServiceImpl extends SuperServiceImpl<MemberPerferenceLanguageMapper, MemberPerferenceLanguage,MemberPerferenceLanguageRepository,MemberPerferenceLanguageView> implements MemberPerferenceLanguageService {
+public class MemberPerferenceLanguageServiceImpl extends SuperServiceImpl<MemberPerferenceLanguageMapper, MemberPerferenceLanguage, MemberPerferenceLanguageRepository, MemberPerferenceLanguageView> implements MemberPerferenceLanguageService {
 
     @Override
     public MemberPerferenceLanguage findByMemberId(String memberId) {
@@ -41,12 +40,12 @@ public class MemberPerferenceLanguageServiceImpl extends SuperServiceImpl<Member
                         .eq(MemberPerferenceLanguage.MEMBER_ID, memberId)
                         .eq(MemberPerferenceLanguage.SYSTEM_STATUS, true)
         );
-        
+
         if (memberPerferenceLanguageList != null && memberPerferenceLanguageList.size() > 0) {
             memberPerferenceLanguageList.stream()
-                                .forEach(memberPerferenceLanguage -> delete(memberPerferenceLanguage.getMemberPreferenceLanguageId(),memberPerferenceLanguage.getAppId(), MemberPerferenceLanguageRouter.MEMBER_PERFERENCE_LANGUAGE_V1_DELETE, systemRequestUserId, memberPerferenceLanguage.getSystemVersion()));
+                    .forEach(memberPerferenceLanguage -> delete(memberPerferenceLanguage.getMemberPreferenceLanguageId(), systemRequestUserId, memberPerferenceLanguage.getSystemVersion()));
         }
-        
+
     }
 
 
