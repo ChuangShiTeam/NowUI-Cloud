@@ -73,6 +73,6 @@ public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbook
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功    false 失败
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserUnbookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
 }

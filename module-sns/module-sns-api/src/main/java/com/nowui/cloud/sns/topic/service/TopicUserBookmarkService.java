@@ -78,7 +78,7 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * @param userId
      * @param systemRequestUserId
      */
-    Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserBookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题收藏

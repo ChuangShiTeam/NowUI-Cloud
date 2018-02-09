@@ -107,20 +107,20 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
+    public TopicUserUnbookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserUnbookmarkView topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserUnbookmark)) {
-            return true;
+            return null;
         }
         
 //        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         TopicUserUnbookmark result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         
         if (result != null) {
-			return true;
+			return result;
 		}else {
-	        return false;
+	        return null;
 		}
     }
 }

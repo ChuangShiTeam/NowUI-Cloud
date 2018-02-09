@@ -147,7 +147,7 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
         
         if (!Util.isNullOrEmpty(topicUserBookmarkList)) {
 //            topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, systemRequestUserId, topicUserBookmark.getSystemVersion()));
-       	 topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookMarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion()));
+       	 topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion()));
         }
 //        redisTemplate.delete(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
     }
@@ -173,24 +173,25 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     }
 
     @Override
-    public Boolean deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
+    public TopicUserBookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
         TopicUserBookmarkView topicUserBookmark = findByTopicIdAndUserId(topicId, userId);
         
         if (Util.isNullOrEmpty(topicUserBookmark)) {
-            return true;
+            return null;
         }
         // 查询缓存收藏数
 //        Integer count = countByTopicId(topicId);  
         
 //        Boolean result = delete(topicUserBookmark.getTopicUserBookMarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE,systemRequestUserId, topicUserBookmark.getSystemVersion());
-        TopicUserBookmark result = delete(topicUserBookmark.getTopicUserBookMarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
+        String topicUserBookMarkId = topicUserBookmark.getTopicUserBookmarkId();
+        TopicUserBookmark result = delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
         
         if (result != null) {
             // 更新话题收藏数缓存
 //        	redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count - 1));
-        	return true;
+        	return result;
         }else {
-        	return false;
+        	return null;
 		}
     }
 }

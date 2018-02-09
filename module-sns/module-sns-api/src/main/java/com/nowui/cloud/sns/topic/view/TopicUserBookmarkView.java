@@ -24,8 +24,8 @@ public class TopicUserBookmarkView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "用户收藏id不能为空")
-    private String topicUserBookMarkId;
-    public static final String TOPIC_USER_BOOK_MARK_ID = "topicUserBookMarkId";
+    private String topicUserBookmarkId;
+    public static final String TOPIC_USER_BOOKMARK_ID = "topicUserBookmarkId";
 
     /**
      * 应用Id
@@ -52,12 +52,12 @@ public class TopicUserBookmarkView extends BaseView {
     public static final String USER_ID = "userId";
 
 
-    public String getTopicUserBookMarkId() {
-        return getString(TOPIC_USER_BOOK_MARK_ID);
+    public String getTopicUserBookmarkId() {
+        return getString(TOPIC_USER_BOOKMARK_ID);
     }
 
-    public void setTopicUserBookMarkId(String topicUserBookMarkId) {
-        put(TOPIC_USER_BOOK_MARK_ID, topicUserBookMarkId);
+    public void setTopicUserBookmarkId(String topicUserBookmarkId) {
+        put(TOPIC_USER_BOOKMARK_ID, topicUserBookmarkId);
     }
 
     public String getAppId() {
