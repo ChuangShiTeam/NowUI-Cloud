@@ -328,6 +328,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean update(E baseEntity, String id, String systemUpdateUserId) {
+        baseEntity.put(baseEntity.getTableId(), id);
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
 
@@ -347,6 +348,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
+        baseEntity.put(baseEntity.getTableId(), id);
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
@@ -472,6 +474,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E delete(String id, String systemUpdateUserId, Integer systemVersion) {
+        entity.put(entity.getTableId(), id);
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
         entity.setSystemVersion(systemVersion + 1);
