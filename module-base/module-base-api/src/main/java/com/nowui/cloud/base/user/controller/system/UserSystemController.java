@@ -1,12 +1,8 @@
 package com.nowui.cloud.base.user.controller.system;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.nowui.cloud.base.user.router.UserRouter;
 import com.nowui.cloud.base.user.view.UserView;
-import com.nowui.cloud.base.user.view.UserWechatView;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +11,6 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
