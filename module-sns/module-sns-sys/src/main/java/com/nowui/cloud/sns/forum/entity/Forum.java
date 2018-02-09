@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.google.gson.JsonObject;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

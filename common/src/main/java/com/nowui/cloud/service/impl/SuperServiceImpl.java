@@ -383,6 +383,24 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         }
 	}
 
+    @Override
+    public Boolean delete(V view) {
+        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
+        Query query = new Query(criteria);
+        Update update = new Update();
+
+        Iterator<Map.Entry<String, Object>> iterator = view.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+
+            update.set(entry.getKey(), entry.getValue());
+        }
+
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, view.getClass());
+
+        return updateResult.isModifiedCountAvailable();
+    }
+
 //    @Override
 //    public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
 //        baseEntity.setSystemUpdateUserId(systemUpdateUserId);

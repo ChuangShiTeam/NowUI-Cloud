@@ -1,9 +1,6 @@
 package com.nowui.cloud.sns.forum.controller.admin;
-import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
-import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 
