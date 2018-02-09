@@ -54,7 +54,7 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
      */
-    boolean deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId);
+    TopicCommentUserLike deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId);
     
     /**
      * 根据评论id删除所有 话题评论的点赞记录(redis中的点赞数也删除)

@@ -270,7 +270,7 @@ public class TopicMobileController extends BaseController {
         
         // 图片多媒体
         for (TopicView topic : resultList) {
-            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+//            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
 //            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
 //            List<File> fileList = fileRpc.findsV1(fileIds);
@@ -341,8 +341,14 @@ public class TopicMobileController extends BaseController {
                 UserAvatar.USER_AVATAR,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
-                BaseEntity.SYSTEM_CREATE_TIME
-        );
+                BaseEntity.SYSTEM_CREATE_TIME,
+                TopicView.THE_SEND_INFO
+            	);
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(Topic.TOPIC_COMMENT_LIST, TopicComment.USER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_USER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
 
         return renderJson(countResult, resultList);
     }
@@ -507,10 +513,10 @@ public class TopicMobileController extends BaseController {
                 
                 TopicView.THE_SEND_INFO
         	);
-                validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-                validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
-                validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-                validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
         return renderJson(countResult, resultList);
     }

@@ -65,28 +65,31 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
     }
 
 	@Override
-	public boolean deleteByCommentIdAndUserId(String commentId, String appId, String userId, String systemRequestUserId) {
+	public TopicCommentUserUnlike deleteByCommentIdAndUserId(String commentId, String appId, String userId, String systemRequestUserId) {
 		// 先根据commentId 和 userId 找记录的id
-//		TopicCommentUserUnlike userUnlike = findTheCommentUserUnlike(commentId , userId);
-//		if (Util.isNullOrEmpty(userUnlike)) {
-//			return true;
-//		}
-//		Boolean delete = delete(userUnlike.getCommentUserUnlikeId(), appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, systemRequestUserId, userUnlike.getSystemVersion());
+		TopicCommentUserUnlikeView userUnlike = findTheCommentUserUnlike(appId, commentId , systemRequestUserId);
 		
-		TopicCommentUserUnlike delete = delete(
-				new BaseWrapper<TopicCommentUserUnlike>()
-                .eq(TopicCommentUserUnlike.APP_ID, appId)
-                .eq(TopicCommentUserUnlike.COMMENT_ID, commentId)
-                .eq(TopicCommentUserUnlike.USER_ID, userId)
-                .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
-				, systemRequestUserId
-			);
-		boolean success = false;
-		
-		if (delete != null) {
-			success = true;
+		if (Util.isNullOrEmpty(userUnlike)) {
+			return null;
 		}
-		return success;
+//		Boolean delete = delete(userUnlike.getCommentUserUnlikeId(), appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, systemRequestUserId, userUnlike.getSystemVersion());
+		TopicCommentUserUnlike result = delete(userUnlike.getCommentUserUnlikeId(), systemRequestUserId, userUnlike.getSystemVersion());
+		
+		// TODO 因为不能返回实体id,所以不用这个方法
+//		TopicCommentUserUnlike deleteresult = delete(
+//				new BaseWrapper<TopicCommentUserUnlike>()
+//                .eq(TopicCommentUserUnlike.APP_ID, appId)
+//                .eq(TopicCommentUserUnlike.COMMENT_ID, commentId)
+//                .eq(TopicCommentUserUnlike.USER_ID, userId)
+//                .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
+//				, systemRequestUserId
+//			);
+		
+		if (result != null) {
+			return result;
+		}else {
+			return null;
+		}
 	}
 
 	@Override

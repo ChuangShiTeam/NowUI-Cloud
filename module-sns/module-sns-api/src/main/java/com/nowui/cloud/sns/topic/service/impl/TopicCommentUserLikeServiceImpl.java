@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
+import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentUserLikeMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentUserLikeRepository;
 import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
@@ -98,12 +99,12 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 	}
 
 	@Override
-	public boolean deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId) {
+	public TopicCommentUserLike deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId) {
 		// 先查询点赞表查询记录
 		TopicCommentUserLikeView userLike = findTheCommentUserLike(appId, commentId, systemRequestUserId);
-		// 没有: 返回true
+//		// 没有: 返回true
 		if (Util.isNullOrEmpty(userLike)) {
-			return true;
+			return null;
 		}
 		// 有: 删除
 //TODO 后面处理消息  	Boolean delete = delete(userLike.getCommentUserLikeId(), appId, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_DELETE, userId, userLike.getSystemVersion());
@@ -114,11 +115,23 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 //			redisTemplate.opsForValue().set(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId, (count - 1));
 //		}
 		
+		
+		// TODO 返回不了实体类id,所以不用这个方法删除
+//		TopicCommentUserLike deleteresult = delete(
+//				new BaseWrapper<TopicCommentUserLike>()
+//                .eq(TopicCommentUserUnlike.APP_ID, appId)
+//                .eq(TopicCommentUserUnlike.COMMENT_ID, commentId)
+//                .eq(TopicCommentUserUnlike.USER_ID, userId)
+//                .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
+//				, systemRequestUserId
+//			);
+		
 		if (result != null) {
-			return true;
+			return result;
 		}else {
-			return false;
+			return null;
 		}
+		
 	}
 
 	@Override

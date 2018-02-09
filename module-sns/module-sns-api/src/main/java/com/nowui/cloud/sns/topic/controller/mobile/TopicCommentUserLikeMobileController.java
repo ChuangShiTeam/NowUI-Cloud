@@ -1,14 +1,18 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
+import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
+import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -63,7 +67,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
 		}
         
         // 没有: 就去评论点赞表插入一条记录
-     // TODO 没有处理点赞数
+        // TODO 没有处理点赞数
         TopicCommentUserLike result = topicCommentUserLikeService.saveWithRedis(appId, commentId, userId, userId);
         
         //并且删除取消点赞表的记录
@@ -71,8 +75,21 @@ public class TopicCommentUserLikeMobileController extends BaseController {
 
         if (result != null) {
         	
-        	topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
+        	TopicCommentUserUnlike commentUserUnlike = topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
     		
+        	/**
+        	 * 向MongoDB中保存数据
+        	 */
+        	if (commentUserUnlike != null) {
+				// 删除MongoDB中的取消点赞记录
+        		TopicCommentUserUnlikeView userUnlikeView = JSON.parseObject(commentUserUnlike.toJSONString(), TopicCommentUserUnlikeView.class);
+        		topicCommentUserUnlikeService.delete(userUnlikeView);
+			}
+        	
+        	// 向MongoDB中新增点赞记录
+        	TopicCommentUserLikeView userlikeView = JSON.parseObject(result.toJSONString(), TopicCommentUserLikeView.class);
+    		topicCommentUserLikeService.save(userlikeView);
+        	
             //sendMessage(result, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, appId, userId);
 
             success = true;

@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -17,6 +18,8 @@ import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
+import com.nowui.cloud.sns.topic.view.TopicTipView;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -166,7 +169,6 @@ public class TopicCommentMobileController extends BaseController {
         String topicReplayUserId = body.getTopicReplayUserId();
         String appId = body.getAppId();
         
-// TODO 后面处理消息    Boolean result = topicCommentService.save(body, Util.getRandomUUID(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, body.getSystemRequestUserId());
         TopicComment result = topicCommentService.save(body, Util.getRandomUUID(), systemRequestUserId);
         
         Boolean success = false;
@@ -174,17 +176,32 @@ public class TopicCommentMobileController extends BaseController {
         if (result != null) {
         	
         	//提醒被回复人
+        	TopicTip topicTip = new TopicTip();
             if (!Util.isNullOrEmpty(topicReplayUserId)) {
     			//把被回复人添加到回复表
-            	TopicTip topicTip = new TopicTip();
+            	
             	topicTip.setAppId(body.getAppId());
             	topicTip.setTopicId(body.getTopicId());
             	topicTip.setUserId(body.getTopicReplayUserId());
             	
-//  TODO 消息后面处理       topicTipService.save(topicTip, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
-            	topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
+            	topicTip = topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
     		}
-
+            
+            
+            /**
+             * 向MongoDB中保存
+             * 动态评论(1:发评论的用户头像, 2:发评论的用户Id(这个不用), 3:发评论的用户昵称, 4:被回复的评论的id(这个前端自动带过来了), 5:被回复的用户的头像(这个不用), 6:被回复的用户的id(前端带过来) 7:被回复的用户昵称)
+             * 提醒谁看
+             */
+            // 保存动态评论
+            TopicCommentView topicCommentView = JSON.parseObject(result.toJSONString(), TopicCommentView.class);
+            topicCommentService.save(topicCommentView);
+            
+            // 保存提醒谁看
+            TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
+            topicTipService.save(topicTipView);
+            
+            
             //sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, appId, systemRequestUserId);
 
             success = true;

@@ -102,7 +102,6 @@ public class TopicUserLike extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
-    
 
     public String getUserNickName() {
         return getString(USER_NICK_NAME);

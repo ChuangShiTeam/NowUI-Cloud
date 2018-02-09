@@ -1,8 +1,11 @@
 package com.nowui.cloud.sns.topic.view;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -50,6 +53,22 @@ public class TopicCommentView extends BaseView {
     @NotNull(message = "用户id不能为空")
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 发评论的用户昵称
+     */
+    @Field
+    @NotNull(message = "发评论的用户昵称不能为空")
+    private String userNickName;
+    public static final String USER_NICK_NAME = "userNickName";
+    
+    /**
+     * 发评论的用户头像
+     */
+    @Field
+    @NotNull(message = "发评论的用户头像不能为空")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
 
     /**
      * 被回复的评论的id
@@ -60,10 +79,10 @@ public class TopicCommentView extends BaseView {
     public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
 
     /**
-     * 回复人
+     * 被回复人
      */
     @Field
-    @NotNull(message = "回复人不能为空")
+    @NotNull(message = "被回复人不能为空")
     private String topicReplayUserId;
     public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
 
@@ -107,6 +126,22 @@ public class TopicCommentView extends BaseView {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
+    public String getUserNickName() {
+        return getString(USER_NICK_NAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+        put(USER_NICK_NAME, userNickName);
+	}
+
+	public String getUserAvatar() {
+        return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+        put(USER_AVATAR, userAvatar);
+	}
 
     public String getTopicReplyCommentId() {
         return getString(TOPIC_REPLY_COMMENT_ID);

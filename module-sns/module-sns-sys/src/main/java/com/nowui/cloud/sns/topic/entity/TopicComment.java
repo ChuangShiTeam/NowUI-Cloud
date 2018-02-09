@@ -49,9 +49,27 @@ public class TopicComment extends BaseEntity {
     @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 发评论的用户昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发评论的用户昵称不能为空")
+    @Length(max = 32, message = "发评论的用户昵称长度超出限制")
+    private String userNickName;
+    public static final String USER_NICK_NAME = "userNickName";
+    
+    /**
+     * 发评论的用户头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发评论的用户头像不能为空")
+    @Length(max = 200, message = "发评论的用户头像长度超出限制")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
 
     /**
-     * 用户编号
+     * 话题编号
      */
     @TableField
     @NotNull(message = "话题编号不能为空")
@@ -69,11 +87,11 @@ public class TopicComment extends BaseEntity {
     public static final String TOPIC_COMMENT_CONTENT = "topicCommentContent";
 
     /**
-     * 回复人
+     * 被回复人
      */
     @TableField
-    @NotNull(message = "回复人不能为空")
-    @Length(max = 32, message = "回复人长度超出限制")
+    @NotNull(message = "被回复人不能为空")
+    @Length(max = 32, message = "被回复人长度超出限制")
     private String topicReplayUserId;
     public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
     
@@ -133,6 +151,22 @@ public class TopicComment extends BaseEntity {
     public void setUserId(String userId) {
         put(USER_ID, userId);
     }
+    
+    public String getUserNickName() {
+        return getString(USER_NICK_NAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+        put(USER_NICK_NAME, userNickName);
+	}
+
+	public String getUserAvatar() {
+        return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+        put(USER_AVATAR, userAvatar);
+	}
     
     public String getTopicId() {
         return getString(TOPIC_ID);

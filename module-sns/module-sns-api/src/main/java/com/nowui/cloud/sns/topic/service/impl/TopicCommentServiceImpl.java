@@ -168,10 +168,16 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
 //
 //        return topicCommentList;
     	
+//    	Criteria criteria = Criteria.where(TopicCommentView.APP_ID).is(appId)
+//                .and(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+//                .and(TopicCommentView.TOPIC_COMMENT_ID).nin(excludeCommentIdList)
+//                .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+//                .and(TopicCommentView.SYSTEM_STATUS).is(true);
+    	
     	Criteria criteria = Criteria.where(TopicCommentView.APP_ID).is(appId)
                 .and(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
                 .and(TopicCommentView.TOPIC_COMMENT_ID).nin(excludeCommentIdList)
-                .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
+                .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(systemCreateTime.getTime())
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
