@@ -242,6 +242,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
 //    Boolean delete(String id, String appId, String routing, String systemUpdateUserId);
 
     /**
+     * 实体类修改
+     *
+     * @param view 视图类
+     * @return 是否成功
+     */
+    Boolean delete(V view);
+
+    /**
      * 实体类删除
      *
      * @param id 实体类编号
