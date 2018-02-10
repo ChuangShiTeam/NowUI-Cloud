@@ -3,6 +3,8 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
@@ -45,6 +47,9 @@ public class TopicCommentUserLikeMobileController extends BaseController {
 	@Autowired
     private TopicCommentUserUnlikeService topicCommentUserUnlikeService;
 	
+	@Autowired
+	private MemberRpc memberRpc;
+	
 	@ApiOperation(value = "新增话题的评论用户点赞")
     @RequestMapping(value = "/topic/comment/user/like/mubile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
@@ -56,11 +61,14 @@ public class TopicCommentUserLikeMobileController extends BaseController {
                 TopicCommentUserLike.COMMENT_ID
         );
         String commentId = body.getCommentId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        
         String appId = body.getAppId();
         
         // 先去评论点赞表查询有没有记录
-        TopicCommentUserLikeView userLike = topicCommentUserLikeService.findTheCommentUserLike(appId, commentId, userId);
+        TopicCommentUserLikeView userLike = topicCommentUserLikeService.findTheCommentUserLike(appId, commentId, memberId);
         // 有: 就不做操作,并返回提示
         if (userLike != null) {
         	throw new BusinessException("已经点过赞了");
@@ -68,14 +76,14 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         
         // 没有: 就去评论点赞表插入一条记录
         // TODO 没有处理点赞数
-        TopicCommentUserLike result = topicCommentUserLikeService.saveWithRedis(appId, commentId, userId, userId);
+        TopicCommentUserLike result = topicCommentUserLikeService.saveWithRedis(appId, commentId, memberId, requestUserId);
         
         //并且删除取消点赞表的记录
         Boolean success = false;
 
         if (result != null) {
         	
-        	TopicCommentUserUnlike commentUserUnlike = topicCommentUserUnlikeService.deleteByCommentIdAndUserId(commentId, appId, userId, userId);
+        	TopicCommentUserUnlike commentUserUnlike = topicCommentUserUnlikeService.deleteByCommentIdAndMemberId(commentId, appId, memberId, requestUserId);
     		
         	/**
         	 * 向MongoDB中保存数据

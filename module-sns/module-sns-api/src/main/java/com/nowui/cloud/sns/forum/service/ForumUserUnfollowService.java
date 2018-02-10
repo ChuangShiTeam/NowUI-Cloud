@@ -19,32 +19,32 @@ public interface ForumUserUnfollowService extends SuperService<ForumUserUnfollow
      * 论坛用户取关关联统计
      *
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param forumId 论坛编号
      * @return Integer 论坛用户取关关联统计
      */
-    Integer countForAdmin(String appId, String userId, String forumId);
+    Integer countForAdmin(String appId, String memberId, String forumId);
 
     /**
      * 论坛用户取关关联列表
      *
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 用户编号
      * @param forumId 论坛编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<ForumUserUnfollow> 论坛用户取关关联列表
      */
-    List<ForumUserUnfollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize);
+    List<ForumUserUnfollow> listForAdmin(String appId, String memberId, String forumId, Integer pageIndex, Integer pageSize);
     
     /**
-     * 根据userId和forumId查询ForumUserUnfollow单个记录
+     * 根据memberId和forumId查询ForumUserUnfollow单个记录
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 会员编号编号
      * @param forumId 论坛编号
      * @return ForumUserUnfollow 论坛用户取关记录
      */
-    ForumUserUnfollowView findByUserIdAndForumId(String appId, String userId, String forumId);
+    ForumUserUnfollowView findByMemberIdAndForumId(String appId, String memberId, String forumId);
     
     /**
      * 根据forumId删除全部取消关注表的记录

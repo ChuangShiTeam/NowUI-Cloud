@@ -24,10 +24,10 @@ public interface ForumMapper extends BaseMapper<Forum> {
      * @param n 个数
      * @return List<String> 论坛编号列表
      */
-   List<String> getRandomRecommendAndNotFollowListByUserId(
+   List<String> getRandomRecommendAndNotFollowListByMemberId(
            @Param("appId") String appId, 
-           @Param("userId") String userId, 
-           @Param("n") int n
+           @Param("memberId") String memberId, 
+           @Param("n") Integer n
    ); 
    
    /**
@@ -38,9 +38,9 @@ public interface ForumMapper extends BaseMapper<Forum> {
     * @param n 个数
     * @return List<String> 论坛编号列表
     */
-   List<String> getLatestAndNotFollowListByUserId(
+   List<String> getLatestAndNotFollowListByMemberId(
            @Param("appId") String appId, 
-           @Param("userId") String userId, 
+           @Param("memberId") String memberId, 
            @Param("m") int m, 
            @Param("n") int n
    ); 

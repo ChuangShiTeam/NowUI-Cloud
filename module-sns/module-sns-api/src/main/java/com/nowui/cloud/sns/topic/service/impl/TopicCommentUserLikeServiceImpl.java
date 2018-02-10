@@ -36,24 +36,24 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 	public static final String TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID = "topic_comment_user_like_count_by_comment_id_";
 
     @Override
-    public Integer countForAdmin(String appId, String commentId, String userId) {
+    public Integer countForAdmin(String appId, String commentId, String memberId) {
         Integer count = count(
                 new BaseWrapper<TopicCommentUserLike>()
                         .eq(TopicCommentUserLike.APP_ID, appId)
                         .likeAllowEmpty(TopicCommentUserLike.COMMENT_ID, commentId)
-                        .likeAllowEmpty(TopicCommentUserLike.USER_ID, userId)
+                        .likeAllowEmpty(TopicCommentUserLike.MEMBER_ID, memberId)
                         .eq(TopicCommentUserLike.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<TopicCommentUserLike> listForAdmin(String appId, String commentId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicCommentUserLike> listForAdmin(String appId, String commentId, String memberId, Integer pageIndex, Integer pageSize) {
         List<TopicCommentUserLike> topicCommentUserLikeList = list(
                 new BaseWrapper<TopicCommentUserLike>()
                         .eq(TopicCommentUserLike.APP_ID, appId)
                         .likeAllowEmpty(TopicCommentUserLike.COMMENT_ID, commentId)
-                        .likeAllowEmpty(TopicCommentUserLike.USER_ID, userId)
+                        .likeAllowEmpty(TopicCommentUserLike.MEMBER_ID, memberId)
                         .eq(TopicCommentUserLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicCommentUserLike.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -64,7 +64,7 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
     }
 
 	@Override
-	public TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String userId) {
+	public TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String memberId) {
 //		List<TopicCommentUserLike> topicCommentUserLikeList = list(
 //                new BaseWrapper<TopicCommentUserLike>()
 //                        .likeAllowEmpty(TopicCommentUserLike.COMMENT_ID, commentId)
@@ -79,7 +79,7 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 		
 		Criteria criteria = Criteria.where(TopicCommentUserLikeView.APP_ID).is(appId)
                 .and(TopicCommentUserLikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
-                .and(TopicCommentUserLikeView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicCommentUserLikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicCommentUserLikeView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -99,9 +99,9 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 	}
 
 	@Override
-	public TopicCommentUserLike deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId) {
+	public TopicCommentUserLike deleteByCommentIdAndMemberIdWithRedis(String commentId, String appId, String memberId, String systemRequestUserId) {
 		// 先查询点赞表查询记录
-		TopicCommentUserLikeView userLike = findTheCommentUserLike(appId, commentId, systemRequestUserId);
+		TopicCommentUserLikeView userLike = findTheCommentUserLike(appId, commentId, memberId);
 //		// 没有: 返回true
 		if (Util.isNullOrEmpty(userLike)) {
 			return null;
@@ -135,11 +135,11 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 	}
 
 	@Override
-	public TopicCommentUserLike saveWithRedis(String appId, String commentId, String userId, String systemRequestUserId) {
+	public TopicCommentUserLike saveWithRedis(String appId, String commentId, String memberId, String systemRequestUserId) {
 		TopicCommentUserLike body = new TopicCommentUserLike();
 		body.setAppId(appId);
 		body.setCommentId(commentId);
-		body.setUserId(userId);
+		body.setMemberId(memberId);
 		
 //		Boolean result = save(body, appId, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
 //		

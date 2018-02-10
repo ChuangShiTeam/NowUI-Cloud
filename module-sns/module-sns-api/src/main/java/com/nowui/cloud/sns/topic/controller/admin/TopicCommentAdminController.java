@@ -35,24 +35,24 @@ public class TopicCommentAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID,
                 TopicComment.PAGE_INDEX,
                 TopicComment.PAGE_SIZE
         );
 
-        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , body.getUserId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyCommentId());
-        List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayUserId(), body.getTopicReplyCommentId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayMemberId(), body.getTopicReplyCommentId());
+        List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayMemberId(), body.getTopicReplyCommentId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -72,10 +72,10 @@ public class TopicCommentAdminController extends BaseController {
 
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -88,10 +88,10 @@ public class TopicCommentAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicComment.APP_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -107,10 +107,10 @@ public class TopicCommentAdminController extends BaseController {
                 body,
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.APP_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID,
                 TopicComment.SYSTEM_VERSION
         );

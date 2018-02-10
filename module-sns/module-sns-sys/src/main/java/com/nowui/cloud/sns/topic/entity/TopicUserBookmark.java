@@ -51,13 +51,13 @@ public class TopicUserBookmark extends BaseEntity {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 用户编号
+     * 会员编号
      */
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
-    private String userId;
-    public static final String USER_ID = "userId";
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
 
 
     public String getTopicUserBookmarkId() {
@@ -84,12 +84,12 @@ public class TopicUserBookmark extends BaseEntity {
         put(TOPIC_ID, topicId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
     
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
 
 

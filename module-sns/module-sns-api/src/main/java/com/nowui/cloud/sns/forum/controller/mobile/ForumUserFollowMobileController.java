@@ -85,18 +85,21 @@ public class ForumUserFollowMobileController extends BaseController {
         );
         
         String appId = body.getAppId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        
         String forumId = body.getForumId();
         
         //先查询取消关注表有没有记录
-        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByUserIdAndForumId(appId, userId, forumId);
+        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByMemberIdAndForumId(appId, memberId, forumId);
         //有: 删除
         if (!Util.isNullOrEmpty(unfollow)) {
 //  TODO 后面处理消息 	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, userId, unfollow.getSystemVersion());
-        	forumUserUnfollowService.deleteByForumId(appId, forumId, userId);
+        	forumUserUnfollowService.deleteByForumId(appId, forumId, requestUserId);
 		}
         //没有: 去关注表看有没有记录
-        ForumUserFollowView forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
+        ForumUserFollowView forumUserFollow = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, forumId);
         //有: 返回true
         if (!Util.isNullOrEmpty(forumUserFollow)) {
         	return renderJson(true); 
@@ -105,11 +108,11 @@ public class ForumUserFollowMobileController extends BaseController {
         ForumUserFollow bean = new ForumUserFollow();
         bean.setAppId(appId);
         bean.setForumId(forumId);
-        bean.setUserId(userId);
+        bean.setMemberId(memberId);
         bean.setForumUserFollowIsTop(false);
         
 //  TODO 后面处理消息    Boolean result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
-        ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+        ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
         Boolean success = false;
 
         if (result != null) {
@@ -133,14 +136,14 @@ public class ForumUserFollowMobileController extends BaseController {
                 body,
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID
         );
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
         String forumId = body.getForumId();
-        String beInvitedUserId = body.getUserId();
+        String beInvitedMemberId = body.getMemberId();
 //        TODO 暂时不做这个接口
 //        
 //        //TODO 不管传来的用户标识是什么,都会使用userId进行save操作
@@ -181,6 +184,10 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID
         );
+        String appId = body.getAppId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
         
         JSONArray jsonArray = body.getJSONArray(ForumUserFollow.FORUM_ID_LSIT);
         
@@ -190,23 +197,21 @@ public class ForumUserFollowMobileController extends BaseController {
         
         List<String> forumIdList = jsonArray.toJavaList(String.class);
         Boolean success = true;
-        String appId = body.getAppId();
-        String userId = body.getSystemRequestUserId();
         
         for (String forumId : forumIdList) {
-            ForumUserFollowView forumUserFollow = forumUserFollowService.findByUserIdAndForumId(appId, userId, forumId);
+            ForumUserFollowView forumUserFollow = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, forumId);
             
             if (Util.isNullOrEmpty(forumUserFollow)) {
                 ForumUserFollow bean = new ForumUserFollow();
                 
                 bean.setAppId(appId);
                 bean.setForumId(forumId);
-                bean.setUserId(userId);
+                bean.setMemberId(memberId);
                 bean.setForumUserFollowIsTop(false);
                 
 // TODO 后面处理消息       result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
                 
-                ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), userId);
+                ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
                 
                 if (Util.isNullOrEmpty(result)) {
                 	success = false;
@@ -241,11 +246,13 @@ public class ForumUserFollowMobileController extends BaseController {
         );
 
         String appId = body.getAppId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
 
-        Integer resultTotal = forumUserFollowService.countByUserId(body.getAppId(), body.getSystemRequestUserId());
+        Integer resultTotal = forumUserFollowService.countByMemberId(body.getAppId(), requestMemberId);
         
-        List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByUserId(appId, userId, body.getPageIndex(), body.getPageSize());
+        List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByMemberId(appId, requestMemberId, body.getPageIndex(), body.getPageSize());
 
         List<ForumView> forumList = new ArrayList<>();
 
@@ -287,9 +294,11 @@ public class ForumUserFollowMobileController extends BaseController {
         );
         
         String appId = body.getAppId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
         
-        List<ForumUserFollowView> resultList = forumUserFollowService.listByUserId(appId, userId);
+        List<ForumUserFollowView> resultList = forumUserFollowService.listByMemberId(appId, memberId);
 
         List<ForumView> forumList = new ArrayList<>();
 
@@ -315,8 +324,12 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_ID,
                 ForumUserFollow.APP_ID
         );
+        
+        String requestUserId = forumUserFollowEntry.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
 		
-		ForumUserFollow result = forumUserFollowService.updateTopForum(forumUserFollowEntry.getAppId(), forumUserFollowEntry.getForumId(), forumUserFollowEntry.getSystemRequestUserId());
+		ForumUserFollow result = forumUserFollowService.updateTopForum(forumUserFollowEntry.getAppId(), forumUserFollowEntry.getForumId(), memberId, requestUserId);
         Boolean success = false;
         
         if (result != null) {

@@ -32,11 +32,11 @@ import java.util.List;
 public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfollowMapper, ForumUserUnfollow, ForumUserUnfollowRepository, ForumUserUnfollowView> implements ForumUserUnfollowService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String forumId) {
+    public Integer countForAdmin(String appId, String memberId, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumUserUnfollow>()
                         .eq(ForumUserUnfollow.APP_ID, appId)
-                        .eqAllowEmpty(ForumUserUnfollow.USER_ID, userId)
+                        .eqAllowEmpty(ForumUserUnfollow.MEMBER_ID, memberId)
                         .likeAllowEmpty(ForumUserUnfollow.FORUM_ID, forumId)
                         .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
         );
@@ -44,11 +44,11 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
     }
 
     @Override
-    public List<ForumUserUnfollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserUnfollow> listForAdmin(String appId, String memberId, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumUserUnfollow> forumUserUnfollowList = list(
                 new BaseWrapper<ForumUserUnfollow>()
                         .eq(ForumUserUnfollow.APP_ID, appId)
-                        .eqAllowEmpty(ForumUserUnfollow.USER_ID, userId)
+                        .eqAllowEmpty(ForumUserUnfollow.MEMBER_ID, memberId)
                         .likeAllowEmpty(ForumUserUnfollow.FORUM_ID, forumId)
                         .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ForumUserUnfollow.SYSTEM_CREATE_TIME)),
@@ -60,7 +60,7 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
     }
 
 	@Override
-	public ForumUserUnfollowView findByUserIdAndForumId(String appId, String userId, String forumId) {
+	public ForumUserUnfollowView findByMemberIdAndForumId(String appId, String memberId, String forumId) {
 //		List<ForumUserUnfollow> forumUserUnfollowList = list(
 //                new BaseWrapper<ForumUserUnfollow>()
 //                        .eqAllowEmpty(ForumUserUnfollow.APP_ID, appId)
@@ -75,7 +75,7 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 //		return forumUserUnfollowList.get(0);
 		
 		Criteria criteria = Criteria.where(ForumUserUnfollowView.APP_ID).is(appId)
-                .and(ForumUserUnfollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserUnfollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserUnfollowView.FORUM_ID).regex(".*?" + forumId + ".*")
                 .and(ForumUserUnfollowView.SYSTEM_STATUS).is(true);
 

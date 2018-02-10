@@ -94,6 +94,10 @@ public class ForumMobileController extends BaseController {
 	             Forum.FORUM_MODERATOR_INFO
          );
 	     
+	     String requestUserId = body.getSystemRequestUserId();
+	     Member member = memberRpc.findByUserIdV1(requestUserId);
+	     String memberId = member.getMemberId();
+	     
 	     // 验证论坛名称的唯一性
 	     Boolean isRepeat = forumService.checkName(body.getAppId(), body.getForumName());
 	     if (isRepeat) {
@@ -101,7 +105,7 @@ public class ForumMobileController extends BaseController {
 	     }
 	     body.setForumBackgroundMedia(body.getForumMedia());
 	     body.setForumBackgroundMediaType(body.getForumMediaType());
-	     body.setForumModerator(body.getSystemRequestUserId());
+	     body.setForumModerator(memberId);
 	     body.setForumSort(0);
 	     body.setForumIsTop(false);
 	     body.setForumIsActive(true);
@@ -111,11 +115,10 @@ public class ForumMobileController extends BaseController {
 	     body.setForumAuditContent("");
 	     
 	     String forumId = Util.getRandomUUID();
-	     String CreateUserId = body.getSystemRequestUserId();
 	     String appId = body.getAppId();
 	     String forumUserFollowId = Util.getRandomUUID();
 	     
-	     Forum result = forumService.save(body, forumId, CreateUserId);
+	     Forum result = forumService.save(body, forumId, requestUserId);
 	     
 	     Boolean success = false;
 	     
@@ -125,9 +128,9 @@ public class ForumMobileController extends BaseController {
 	         ForumUserFollow forumUserFollow = new ForumUserFollow();
 	         forumUserFollow.setAppId(appId);
 	         forumUserFollow.setForumId(forumId);
-	         forumUserFollow.setUserId(CreateUserId);
+	         forumUserFollow.setMemberId(memberId);
 
-	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, CreateUserId);
+	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, requestUserId);
         	
 	         //保存到MongoDB
 	         ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
@@ -158,22 +161,25 @@ public class ForumMobileController extends BaseController {
                 Forum.SYSTEM_REQUEST_USER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
+        
         String appId = body.getAppId();
         
         // forum包含了论坛简介,论坛名称,论坛头像
         ForumView forum = forumService.find(body.getForumId());
         
-        String userId = forum.getForumModerator();
+        String memberId = forum.getForumModerator();
 
         //判断请求用户是否是版主
-        if (body.getSystemRequestUserId().equals(userId)) {
+        if (requestMemberId.equals(memberId)) {
         	forum.put(Forum.FORUM_USER_IS_MODERATOR, true);
 		}else {
 			forum.put(Forum.FORUM_USER_IS_MODERATOR, false);
 		}
         
         //判断请求用户是否加入这个圈子
-        List<ForumUserFollowView> requestUserFollows = forumUserFollowService.listByUserId(requestUserId);
+        List<ForumUserFollowView> requestUserFollows = forumUserFollowService.listByMemberId(requestMemberId);
         //判断请求传来的 论坛id 有没有在 requestUserFollows 中
         if (!Util.isNullOrEmpty(requestUserFollows)) {
         	for (ForumUserFollowView forumUserFollow : requestUserFollows) {
@@ -192,9 +198,9 @@ public class ForumMobileController extends BaseController {
     		forumUserFollowService.listByforumId(appId, body.getForumId(), body.getPageIndex(), body.getPageSize());
         
         
-        //处理关注论坛列表的昵称,头像
-        String userIds = Util.viewBeanToFieldString(forumUserFollows, ForumUserFollow.USER_ID);
-//  TODO      List<Member> nickNameAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
+        //TODO 处理关注论坛列表的昵称,头像
+//        String memberIds = Util.viewBeanToFieldString(forumUserFollows, ForumUserFollow.MEMBER_ID);
+//        List<Member> nickNameAndAvatarList = memberRpc.nickNameAndAvatarListV1(userIds);
         
         // TODO 判断会员是不是请求本人
 //        for (Member member : nickNameAndAvatarList) {
@@ -271,19 +277,23 @@ public class ForumMobileController extends BaseController {
                 Forum.SYSTEM_REQUEST_USER_ID
         );
         
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        
         // TODO 这个查的mysql 查询编辑推荐的且用户没有关注过的论坛
-        List<ForumView> recommendList = forumService.getRandomRecommendAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), body.getPageSize());
+        List<ForumView> recommendList = forumService.getRandomRecommendAndNotFollowListByMemberId(body.getAppId(), memberId, body.getPageSize());
 
         if (recommendList.size() < body.getPageSize()) {
             // 推荐的数量不满足则从最新的圈子里面增加推荐
             int pageSize = body.getPageSize() - recommendList.size();
             
             // 查询用户没有关注过的最新论坛
-            List<ForumView> latestList = forumService.getLatestAndNotFollowListByUserId(body.getAppId(), body.getSystemRequestUserId(), 0, pageSize);
+            List<ForumView> latestList = forumService.getLatestAndNotFollowListByMemberId(body.getAppId(), memberId, 0, pageSize);
             recommendList.addAll(latestList);
         }
         
-        //处理论坛头像    =======这里的逻辑 以后不用rpc了
+        // TODO 处理论坛头像    =======这里的逻辑 以后不用rpc了
 //        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
 //        List<File> fileList = fileRpc.findsV1(fileIds);
 //        
@@ -309,8 +319,12 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_ID,
           Forum.FORUM_MEDIA
        );
+	   String requestUserId = body.getSystemRequestUserId();
+	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   String memberId = member.getMemberId();
+	   
 	    ForumView forum = forumService.find(body.getForumId());
-	    if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+	    if (!forum.getForumModerator().equals(memberId)) {
 	    return renderJson(false);
 		}
 	    
@@ -342,8 +356,12 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_NAME
        );
 	   
+	   String requestUserId = body.getSystemRequestUserId();
+	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   String memberId = member.getMemberId();
+	    
        ForumView forum = forumService.find(body.getForumId());
-       if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
+       if (!memberId.equals(forum.getForumModerator())) {
        		return renderJson(false);
 		}
        
@@ -375,9 +393,14 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_ID,
           Forum.FORUM_DESCRIPTION
        );
-	    ForumView forum = forumService.find(body.getForumId());
-        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
-        	return renderJson(false);
+	    
+	   String requestUserId = body.getSystemRequestUserId();
+	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   String memberId = member.getMemberId();
+	    
+       ForumView forum = forumService.find(body.getForumId());
+       if (!memberId.equals(forum.getForumModerator())) {
+       		return renderJson(false);
 		}
 
 //       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
@@ -409,10 +432,14 @@ public class ForumMobileController extends BaseController {
                 Forum.APP_ID
         );
         
+        String requestUserId = body.getSystemRequestUserId();
+ 	    Member member = memberRpc.findByUserIdV1(requestUserId);
+ 	    String memberId = member.getMemberId();
+ 	    
         ForumView forum = forumService.find(body.getForumId());
-        if (!body.getSystemRequestUserId().equals(forum.getForumModerator())) {
-        	return renderJson(false);
-		}
+        if (!memberId.equals(forum.getForumModerator())) {
+        		return renderJson(false);
+        }
         
         //先从论坛信息表删除
 //        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
@@ -513,6 +540,8 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_ID
         );
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
         
         ForumView forum = forumService.find(body.getForumId());
         
@@ -534,7 +563,7 @@ public class ForumMobileController extends BaseController {
 //        forum.put(Forum.FORUM_MODERATOR, forumModerator);
 
         // 根据systemRequestUserId查询是否加入了这个论坛
-        ForumUserFollowView forumUserFollow = forumUserFollowService.findByUserIdAndForumId(body.getAppId(), body.getSystemRequestUserId(), body.getForumId());
+        ForumUserFollowView forumUserFollow = forumUserFollowService.findByMemberIdAndForumId(body.getAppId(), requestMemberId, body.getForumId());
         forum.put(Forum.MEMBER_IS_FOLLOW_FORUM, forumUserFollow != null);
         
         // 统计加入论坛人数
@@ -576,7 +605,9 @@ public class ForumMobileController extends BaseController {
         String forumId = body.getForumId();
         Integer pageIndex = body.getPageIndex();
         Integer pageSize = body.getPageSize();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
         String appId = body.getAppId();
         
         
@@ -599,7 +630,7 @@ public class ForumMobileController extends BaseController {
         List<TopicView> topicList = new ArrayList<>();
         // 4,根据topicIdList查找topicList
         if (!Util.isNullOrEmpty(topicIdList)) {
-        	topicList = topicService.listDetailByTopicIdList(userId, topicIdList);
+        	topicList = topicService.listDetailByTopicIdList(memberId, topicIdList);
 
 	        // TODO 查询不用接口了  在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //	        String userIds = Util.viewBeanToFieldString(topicList, Topic.USER_ID);
@@ -628,7 +659,7 @@ public class ForumMobileController extends BaseController {
 //	            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
 	            
 	            // 处理评论是否自己发布
-	            topic.put(Topic.TOPIC_IS_SELF, userId.equals(topic.getUserId()));
+	            topic.put(Topic.TOPIC_IS_SELF, memberId.equals(topic.getMemberId()));
 	        }
         }
         
@@ -636,7 +667,7 @@ public class ForumMobileController extends BaseController {
         validateResponse(
         		Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -667,7 +698,7 @@ public class ForumMobileController extends BaseController {
         );
         
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
         

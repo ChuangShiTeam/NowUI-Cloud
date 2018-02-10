@@ -75,6 +75,9 @@ public class TopicCommentMobileController extends BaseController {
         );
 
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
+        
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         
@@ -87,10 +90,10 @@ public class TopicCommentMobileController extends BaseController {
         //处理评论是否自己发的
         for (TopicCommentView topicComment : topicCommentList) {
         	// 验证评论是否是自己的
-            topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getUserId().equals(requestUserId));
+            topicComment.put(TopicComment.TOPIC_COMMENT_IS_SELF, topicComment.getMemberId().equals(requestMemberId));
             
             // 处理用户是否点赞
-            TopicCommentUserLikeView theCommentUserLike = topicCommentUserLikeService.findTheCommentUserLike(appId, topicComment.getTopicCommentId(), requestUserId);
+            TopicCommentUserLikeView theCommentUserLike = topicCommentUserLikeService.findTheCommentUserLike(appId, topicComment.getTopicCommentId(), requestMemberId);
             if (theCommentUserLike != null) {
             	topicComment.put(TopicComment.TOPIC_COMMENT_IS_LIKE, true);
 			}else {
@@ -133,10 +136,10 @@ public class TopicCommentMobileController extends BaseController {
         
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
-                TopicComment.USER_ID,
+                TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID,
                 TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
                 User.USER_ID,
@@ -161,12 +164,15 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.SYSTEM_REQUEST_USER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_USER_ID,
+                TopicComment.TOPIC_REPLAY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
-        body.setUserId(body.getSystemRequestUserId());
         String systemRequestUserId = body.getSystemRequestUserId();
-        String topicReplayUserId = body.getTopicReplayUserId();
+        Member member = memberRpc.findByUserIdV1(systemRequestUserId);
+        String memberId = member.getMemberId();
+        body.setMemberId(memberId);
+        
+        String topicReplayMemberId = body.getTopicReplayMemberId();
         String appId = body.getAppId();
         
         TopicComment result = topicCommentService.save(body, Util.getRandomUUID(), systemRequestUserId);
@@ -177,12 +183,12 @@ public class TopicCommentMobileController extends BaseController {
         	
         	//提醒被回复人
         	TopicTip topicTip = new TopicTip();
-            if (!Util.isNullOrEmpty(topicReplayUserId)) {
+            if (!Util.isNullOrEmpty(topicReplayMemberId)) {
     			//把被回复人添加到回复表
             	
             	topicTip.setAppId(body.getAppId());
             	topicTip.setTopicId(body.getTopicId());
-            	topicTip.setUserId(body.getTopicReplayUserId());
+            	topicTip.setMemberId(topicReplayMemberId);
             	
             	topicTip = topicTipService.save(topicTip, Util.getRandomUUID(), systemRequestUserId);
     		}
@@ -220,7 +226,7 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.APP_ID
         );
-        
+     //TODO 删除话题评论的接口,没有这功能,也没完善接口  
 //        Boolean result = topicCommentService.delete(topicCommentId, body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), TopicComment.getSystemVersion());
         
         TopicComment result = topicCommentService.delete(body.getTopicCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());

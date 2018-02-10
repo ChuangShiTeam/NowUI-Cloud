@@ -36,18 +36,18 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 body,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.USER_ID,
+                TopicUserUnbookmark.MEMBER_ID,
                 TopicUserUnbookmark.PAGE_INDEX,
                 TopicUserUnbookmark.PAGE_SIZE
         );
 
-        Integer resultTotal = topicUserUnbookmarkService.countForAdmin(body.getAppId() , body.getTopicId(), body.getUserId());
-        List<TopicUserUnbookmark> resultList = topicUserUnbookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicUserUnbookmarkService.countForAdmin(body.getAppId() , body.getTopicId(), body.getMemberId());
+        List<TopicUserUnbookmark> resultList = topicUserUnbookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getMemberId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicUserUnbookmark.TOPIC_USER_UNBOOKMARK_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.USER_ID
+                TopicUserUnbookmark.MEMBER_ID
         );
 
         return renderJson(resultTotal, resultList);
@@ -67,7 +67,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
         validateResponse(
                 TopicUserUnbookmark.TOPIC_USER_UNBOOKMARK_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.USER_ID
+                TopicUserUnbookmark.MEMBER_ID
         );
 
         return renderJson(result);
@@ -80,7 +80,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 body,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.USER_ID
+                TopicUserUnbookmark.MEMBER_ID
         );
 
 //        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, body.getSystemRequestUserId());
@@ -97,7 +97,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
                 TopicUserUnbookmark.TOPIC_USER_UNBOOKMARK_ID,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.USER_ID,
+                TopicUserUnbookmark.MEMBER_ID,
                 TopicUserUnbookmark.SYSTEM_VERSION
         );
 

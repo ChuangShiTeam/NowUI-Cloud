@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
@@ -43,6 +45,9 @@ public class TopicUserUnlikeMobileController extends BaseController {
 	@Autowired
 	private TopicUserLikeService topicUserLikeService;
 	
+	@Autowired
+	private MemberRpc memberRpc;
+	
 	@ApiOperation(value = "新增话题用户取消点赞关联")
     @RequestMapping(value = "/topic/user/unlike/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
@@ -54,24 +59,27 @@ public class TopicUserUnlikeMobileController extends BaseController {
                 TopicUserUnlike.SYSTEM_REQUEST_USER_ID
         );
         
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        
         String topicId = body.getTopicId();
         String appId = body.getAppId();
         
-        TopicUserUnlikeView unlike = topicUserUnlikeService.findByTopciIdAndUserId(topicId, userId);
+        TopicUserUnlikeView unlike = topicUserUnlikeService.findByTopciIdAndMemberId(topicId, memberId);
         
         if (!Util.isNullOrEmpty(unlike)) {
         	throw new BusinessException("已经取消点赞过了");
 		}
         
-        body.setUserId(userId);
+        body.setMemberId(memberId);
 //        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
-        TopicUserUnlike result = topicUserUnlikeService.save(body, Util.getRandomUUID(), userId);
+        TopicUserUnlike result = topicUserUnlikeService.save(body, Util.getRandomUUID(), requestUserId);
 
         boolean success = false;
 
         if (result != null) {
-            TopicUserLike userLike = topicUserLikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            TopicUserLike userLike = topicUserLikeService.deleteByTopicIdAndMemberId(topicId, memberId, appId, requestUserId);
             
             
             if (userLike != null) {

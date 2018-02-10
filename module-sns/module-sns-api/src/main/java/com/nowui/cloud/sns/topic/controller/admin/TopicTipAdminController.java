@@ -36,18 +36,18 @@ public class TopicTipAdminController extends BaseController {
                 body,
                 TopicTip.APP_ID,
                 TopicTip.TOPIC_ID,
-                TopicTip.USER_ID,
+                TopicTip.MEMBER_ID,
                 TopicTip.PAGE_INDEX,
                 TopicTip.PAGE_SIZE
         );
 
-        Integer resultTotal = topicTipService.countForAdmin(body.getAppId() , body.getTopicId(), body.getUserId());
-        List<TopicTip> resultList = topicTipService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicTipService.countForAdmin(body.getAppId() , body.getTopicId(), body.getMemberId());
+        List<TopicTip> resultList = topicTipService.listForAdmin(body.getAppId(), body.getTopicId(), body.getMemberId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicTip.TOPIC_TIP_ID,
                 TopicTip.TOPIC_ID,
-                TopicTip.USER_ID
+                TopicTip.MEMBER_ID
         );
 
         return renderJson(resultTotal, resultList);
@@ -67,7 +67,7 @@ public class TopicTipAdminController extends BaseController {
         validateResponse(
                 TopicTip.TOPIC_TIP_ID,
                 TopicTip.TOPIC_ID,
-                TopicTip.USER_ID
+                TopicTip.MEMBER_ID
         );
 
         return renderJson(result);
@@ -80,7 +80,7 @@ public class TopicTipAdminController extends BaseController {
                 body,
                 TopicTip.APP_ID,
                 TopicTip.TOPIC_ID,
-                TopicTip.USER_ID
+                TopicTip.MEMBER_ID
         );
 
 //        Boolean result = topicTipService.save(body, Util.getRandomUUID(), body.getAppId(), TopicTipRouter.TOPIC_TIP_V1_SAVE, body.getSystemRequestUserId());
@@ -97,7 +97,7 @@ public class TopicTipAdminController extends BaseController {
                 TopicTip.TOPIC_TIP_ID,
                 TopicTip.APP_ID,
                 TopicTip.TOPIC_ID,
-                TopicTip.USER_ID,
+                TopicTip.MEMBER_ID,
                 TopicTip.SYSTEM_VERSION
         );
 

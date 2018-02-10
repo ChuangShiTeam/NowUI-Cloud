@@ -20,19 +20,19 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * 话题评论统计
      *
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param topicCommentContent 话题内容
      * @param topicReplayUserId 回复人
      * @param topicReplyCommentId 被回复评论id
      * @return Integer 话题评论统计
      */
-    Integer countForAdmin(String appId, String userId, String topicId, String topicCommentContent, String topicReplayUserId, String topicReplyCommentId);
+    Integer countForAdmin(String appId, String memberId, String topicId, String topicCommentContent, String topicReplayMemberId, String topicReplyCommentId);
 
     /**
      * 话题评论列表
      *
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param topicCommentContent 话题内容
      * @param topicReplayUserId 回复人
      * @param topicReplyCommentId 被回复评论id
@@ -40,7 +40,7 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * @param pageSize 每页个数
      * @return List<TopicComment> 话题评论列表
      */
-    List<TopicComment> listForAdmin(String appId, String userId, String topicId, String topicCommentContent, String topicReplayUserId, String topicReplyCommentId, Integer pageIndex, Integer pageSize);
+    List<TopicComment> listForAdmin(String appId, String memberId, String topicId, String topicCommentContent, String topicReplayMemberId, String topicReplyCommentId, Integer pageIndex, Integer pageSize);
     
     
     /**
@@ -95,11 +95,11 @@ public interface TopicCommentService extends SuperService<TopicComment, TopicCom
      * 
      * @param appId 应用编号
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param member 用户编号
      * @param topicComment 话题评论对象信息
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    Boolean save(String appId, String topicId, String userId, TopicComment topicComment, String systemRequestUserId);
+    Boolean save(String appId, String topicId, String memberId, TopicComment topicComment, String systemRequestUserId);
 
 }

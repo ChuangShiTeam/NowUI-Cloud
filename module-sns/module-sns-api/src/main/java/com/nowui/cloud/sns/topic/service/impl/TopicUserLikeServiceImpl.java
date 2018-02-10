@@ -34,11 +34,11 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     public static final String TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID = "topic_user_like_count_by_topic_id_";
     
     @Override
-    public Integer countForAdmin(String appId, String userId, String topicId) {
+    public Integer countForAdmin(String appId, String memberId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicUserLike>()
                         .eq(TopicUserLike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserLike.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserLike.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicUserLike.TOPIC_ID, topicId)
                         .eq(TopicUserLike.SYSTEM_STATUS, true)
         );
@@ -46,11 +46,11 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
     @Override
-    public List<TopicUserLike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserLike> listForAdmin(String appId, String memberId, String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicUserLike> topicUserLikeList = list(
                 new BaseWrapper<TopicUserLike>()
                         .eq(TopicUserLike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserLike.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserLike.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicUserLike.TOPIC_ID, topicId)
                         .eq(TopicUserLike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserLike.SYSTEM_CREATE_TIME)),
@@ -62,7 +62,7 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
 	@Override
-	public TopicUserLikeView findByTopicIdAndUserId(String topicId, String userId) {
+	public TopicUserLikeView findByTopicIdAndMemberId(String topicId, String memberId) {
 //		TopicUserLike topicUserLike = find(
 //                new BaseWrapper<TopicUserLike>()
 //                        .eq(TopicUserLike.USER_ID, userId)
@@ -73,7 +73,7 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
 //        return topicUserLike;
 		
 		Criteria criteria = Criteria.where(TopicUserLikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserLikeView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserLikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicUserLikeView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -167,11 +167,11 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
     @Override
-    public TopicUserLike save(String appId, String topicId, String userId, String systemRequestUserId) {
+    public TopicUserLike save(String appId, String topicId, String memberId, String systemRequestUserId) {
         TopicUserLike topicUserLike = new TopicUserLike();
         topicUserLike.setAppId(appId);
         topicUserLike.setTopicId(topicId);
-        topicUserLike.setUserId(userId);
+        topicUserLike.setMemberId(memberId);
         
 //        Boolean result = save(topicUserLike, Util.getRandomUUID(), appId, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, systemRequestUserId);
         TopicUserLike result = save(topicUserLike, Util.getRandomUUID(), systemRequestUserId);
@@ -185,8 +185,8 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
     }
 
     @Override
-    public TopicUserLike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserLikeView topicUserLike = findByTopicIdAndUserId(topicId, userId);
+    public TopicUserLike deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId) {
+        TopicUserLikeView topicUserLike = findByTopicIdAndMemberId(topicId, memberId);
         
         if (Util.isNullOrEmpty(topicUserLike)) {
             return null;

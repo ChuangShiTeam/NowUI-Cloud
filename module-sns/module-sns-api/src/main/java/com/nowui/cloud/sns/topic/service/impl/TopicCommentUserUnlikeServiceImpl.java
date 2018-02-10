@@ -37,24 +37,24 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
 	
 
     @Override
-    public Integer countForAdmin(String appId, String commentId, String userId) {
+    public Integer countForAdmin(String appId, String commentId, String memberId) {
         Integer count = count(
                 new BaseWrapper<TopicCommentUserUnlike>()
                         .eq(TopicCommentUserUnlike.APP_ID, appId)
                         .likeAllowEmpty(TopicCommentUserUnlike.COMMENT_ID, commentId)
-                        .likeAllowEmpty(TopicCommentUserUnlike.USER_ID, userId)
+                        .likeAllowEmpty(TopicCommentUserUnlike.MEMBER_ID, memberId)
                         .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<TopicCommentUserUnlike> listForAdmin(String appId, String commentId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicCommentUserUnlike> listForAdmin(String appId, String commentId, String memberId, Integer pageIndex, Integer pageSize) {
         List<TopicCommentUserUnlike> topicCommentUserUnlikeList = list(
                 new BaseWrapper<TopicCommentUserUnlike>()
                         .eq(TopicCommentUserUnlike.APP_ID, appId)
                         .likeAllowEmpty(TopicCommentUserUnlike.COMMENT_ID, commentId)
-                        .likeAllowEmpty(TopicCommentUserUnlike.USER_ID, userId)
+                        .likeAllowEmpty(TopicCommentUserUnlike.MEMBER_ID, memberId)
                         .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicCommentUserUnlike.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -65,9 +65,9 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
     }
 
 	@Override
-	public TopicCommentUserUnlike deleteByCommentIdAndUserId(String commentId, String appId, String userId, String systemRequestUserId) {
+	public TopicCommentUserUnlike deleteByCommentIdAndMemberId(String commentId, String appId, String memberId, String systemRequestUserId) {
 		// 先根据commentId 和 userId 找记录的id
-		TopicCommentUserUnlikeView userUnlike = findTheCommentUserUnlike(appId, commentId , systemRequestUserId);
+		TopicCommentUserUnlikeView userUnlike = findTheCommentUserUnlike(appId, commentId , memberId);
 		
 		if (Util.isNullOrEmpty(userUnlike)) {
 			return null;
@@ -93,7 +93,7 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
 	}
 
 	@Override
-	public TopicCommentUserUnlikeView findTheCommentUserUnlike(String appId, String commentId, String userId) {
+	public TopicCommentUserUnlikeView findTheCommentUserUnlike(String appId, String commentId, String memberId) {
 //		List<TopicCommentUserUnlike> topicCommentUserUnlikeList = list(
 //                new BaseWrapper<TopicCommentUserUnlike>()
 //                        .likeAllowEmpty(TopicCommentUserUnlike.COMMENT_ID, commentId)
@@ -109,7 +109,7 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
 		
 		Criteria criteria = Criteria.where(TopicCommentUserUnlikeView.APP_ID).is(appId)
                 .and(TopicCommentUserUnlikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
-                .and(TopicCommentUserUnlikeView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicCommentUserUnlikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicCommentUserUnlikeView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);

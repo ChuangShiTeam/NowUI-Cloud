@@ -47,12 +47,12 @@ public class TopicCommentView extends BaseView {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 用户id
+     * 会员id
      */
     @Field
-    @NotNull(message = "用户id不能为空")
-    private String userId;
-    public static final String USER_ID = "userId";
+    @NotNull(message = "会员id不能为空")
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
     
     /**
      * 发评论的用户昵称
@@ -83,8 +83,8 @@ public class TopicCommentView extends BaseView {
      */
     @Field
     @NotNull(message = "被回复人不能为空")
-    private String topicReplayUserId;
-    public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
+    private String topicReplayMemberId;
+    public static final String TOPIC_REPLAY_MEMBER_ID = "topicReplayMemberId";
 
     /**
      * 话题评论内容
@@ -119,12 +119,12 @@ public class TopicCommentView extends BaseView {
         put(TOPIC_ID, topicId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
 
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
     
     public String getUserNickName() {
@@ -151,12 +151,12 @@ public class TopicCommentView extends BaseView {
         put(TOPIC_REPLY_COMMENT_ID, topicReplyCommentId);
     }
 
-    public String getTopicReplayUserId() {
-        return getString(TOPIC_REPLAY_USER_ID);
+    public String getTopicReplayMemberId() {
+        return getString(TOPIC_REPLAY_MEMBER_ID);
     }
 
-    public void setTopicReplayUserId(String topicReplayUserId) {
-        put(TOPIC_REPLAY_USER_ID, topicReplayUserId);
+    public void setTopicReplayMemberId(String topicReplayMemberId) {
+        put(TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId);
     }
 
     public String getTopicCommentContent() {

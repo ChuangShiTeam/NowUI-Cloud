@@ -31,11 +31,11 @@ import com.nowui.cloud.util.Util;
 public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlikeMapper, TopicUserUnlike, TopicUserUnlikeRepository, TopicUserUnlikeView> implements TopicUserUnlikeService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String topicId) {
+    public Integer countForAdmin(String appId, String memberId, String topicId) {
         Integer count = count(
                 new BaseWrapper<TopicUserUnlike>()
                         .eq(TopicUserUnlike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnlike.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserUnlike.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
                         .eq(TopicUserUnlike.SYSTEM_STATUS, true)
         );
@@ -43,11 +43,11 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
     }
 
     @Override
-    public List<TopicUserUnlike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserUnlike> listForAdmin(String appId, String memberId, String topicId, Integer pageIndex, Integer pageSize) {
         List<TopicUserUnlike> topicUserUnlikeList = list(
                 new BaseWrapper<TopicUserUnlike>()
                         .eq(TopicUserUnlike.APP_ID, appId)
-                        .likeAllowEmpty(TopicUserUnlike.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserUnlike.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicUserUnlike.TOPIC_ID, topicId)
                         .eq(TopicUserUnlike.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserUnlike.SYSTEM_CREATE_TIME)),
@@ -59,7 +59,7 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
     }
 
 	@Override
-	public TopicUserUnlikeView findByTopciIdAndUserId(String topicId, String userId) {
+	public TopicUserUnlikeView findByTopciIdAndMemberId(String topicId, String memberId) {
 //		TopicUserUnlike topicUserUnlike = find(
 //                new BaseWrapper<TopicUserUnlike>()
 //                        .eq(TopicUserUnlike.USER_ID, userId)
@@ -69,7 +69,7 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
 //
 //        return topicUserUnlike;
 		
-		Criteria criteria = Criteria.where(TopicUserUnlikeView.USER_ID).regex(".*?" + userId + ".*")
+		Criteria criteria = Criteria.where(TopicUserUnlikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicUserUnlikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
                 .and(TopicUserUnlikeView.SYSTEM_STATUS).is(true);
 
@@ -107,8 +107,8 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
     }
 
     @Override
-    public TopicUserUnlike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserUnlikeView topicUserUnlike = findByTopciIdAndUserId(topicId, userId);
+    public TopicUserUnlike deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId) {
+        TopicUserUnlikeView topicUserUnlike = findByTopciIdAndMemberId(topicId, memberId);
         
         if (Util.isNullOrEmpty(topicUserUnlike)) {
             return null;

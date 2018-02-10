@@ -54,11 +54,11 @@ public class Forum extends BaseEntity {
     public static final String FORUM_NAME = "forumName";
     
     /**
-     * 版主(用户编号)
+     * 版主(会员编号)
      */
     @TableField
-    @NotNull(message = "版主(用户编号)不能为空")
-    @Length(max = 32, message = "版主(用户编号)长度超出限制")
+    @NotNull(message = "版主(会员编号)不能为空")
+    @Length(max = 32, message = "版主(会员编号)长度超出限制")
     private String forumModerator;
     public static final String FORUM_MODERATOR = "forumModerator";
     

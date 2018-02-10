@@ -44,12 +44,12 @@ public class TopicCommentUserUnlikeView extends BaseView {
     public static final String COMMENT_ID = "commentId";
 
     /**
-     * 用户编号
+     * 会员编号
      */
     @Field
-    @NotNull(message = "用户编号不能为空")
-    private String userId;
-    public static final String USER_ID = "userId";
+    @NotNull(message = "会员编号不能为空")
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
 
 
     public String getCommentUserUnlikeId() {
@@ -76,12 +76,12 @@ public class TopicCommentUserUnlikeView extends BaseView {
         put(COMMENT_ID, commentId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
-
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
 
 

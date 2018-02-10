@@ -46,17 +46,16 @@ public class ForumUserFollow extends BaseEntity {
      * 用户编号
      */
     @TableField
-    @NotNull(message = "用户编号不能为空")
-    @Length(max = 32, message = "用户编号长度超出限制")
-    private String userId;
-    public static final String USER_ID = "userId";
+    @NotNull(message = "会员编号不能为空")
+    @Length(max = 32, message = "会员编号长度超出限制")
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
 
     /**
      * 关注用户的头像路径和昵称,签名
      */
     @TableField(exist = false)
-    @NotNull(message = "用户编号不能为空")
-    @Length(max = 32, message = "用户编号长度超出限制")
+    @NotNull(message = "用户信息不能为空")
     private JSONObject userInfo;
     public static final String USER_INFO = "userInfo";
     
@@ -99,12 +98,12 @@ public class ForumUserFollow extends BaseEntity {
         put(APP_ID, appId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
-    
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
     
     public JSONObject getUserInfo() {

@@ -19,11 +19,11 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * 点赞话题统计
      *
      * @param appId 应用编号
-     * @param userId 关注人
+     * @param memberId 关注会员
      * @param topicId 话题编号
      * @return Integer 点赞话题统计
      */
-    Integer countForAdmin(String appId, String userId, String topicId);
+    Integer countForAdmin(String appId, String memberId, String topicId);
 
     /**
      * 点赞话题列表
@@ -35,16 +35,16 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * @param pageSize 每页个数
      * @return List<TopicUserLike> 点赞话题列表
      */
-    List<TopicUserLike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicUserLike> listForAdmin(String appId, String memberId, String topicId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据话题编号和用户编号查找单条点赞记录
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 用户编号
      * @return TopicUserLike 单调点赞记录
      */
-    TopicUserLikeView findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserLikeView findByTopicIdAndMemberId(String topicId, String memberId);
     
     /**
      * 点赞话题统计
@@ -82,21 +82,21 @@ public interface TopicUserLikeService extends SuperService<TopicUserLike, TopicU
      * 根据话题编号和用户编号删除话题点赞
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功   false 失败
      */
-    TopicUserLike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserLike deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题点赞
      * 
      * @param appId 应用编号
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param systemRequestUserId 请求用户编号
      * @return  Boolean true 成功   false 失败
      */
-    TopicUserLike save(String appId, String topicId, String userId, String systemRequestUserId);
+    TopicUserLike save(String appId, String topicId, String memberId, String systemRequestUserId);
 
 }

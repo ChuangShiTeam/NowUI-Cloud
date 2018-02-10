@@ -115,11 +115,13 @@ public class TopicMobileController extends BaseController {
                 TopicForum.SYSTEM_REQUEST_USER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
         String appId = body.getAppId();
 
         Integer resultTotal = topicForumService.countByForumId(appId, body.getForumId());
 
-        List<TopicView> resultList = topicService.listByForumId(appId, body.getForumId(), body.getSystemRequestUserId(), body.getPageIndex(), body.getPageSize());
+        List<TopicView> resultList = topicService.listByForumId(appId, body.getForumId(), requestMemberId, body.getPageIndex(), body.getPageSize());
 
         //TODO 先注释掉,新架构不用再调用rpc来处理头像
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -150,9 +152,9 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
             //验证话题发布人是否自己
-            String theSendUserId = topic.getUserId();
+            String theSendMemberId = topic.getMemberId();
             
-            topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
+            topic.put(Topic.TOPIC_IS_SELF, theSendMemberId.equals(requestMemberId));
             
             
         }
@@ -160,7 +162,7 @@ public class TopicMobileController extends BaseController {
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -186,10 +188,10 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.USER_ID
+                Topic.MEMBER_ID
         );
         
-        String userId = body.getUserId();
+        String otherMemberId = body.getMemberId();
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
         
@@ -234,7 +236,7 @@ public class TopicMobileController extends BaseController {
         validateRequest(
                 body,
                 Topic.APP_ID,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.SYSTEM_CREATE_TIME,
                 Topic.SYSTEM_REQUEST_USER_ID,
                 Topic.PAGE_INDEX,
@@ -243,12 +245,14 @@ public class TopicMobileController extends BaseController {
         
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
-        
+        String otherMemberId = body.getMemberId();
+        Member member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
+        String memberId = member.getMemberId();
 
-        ArrayList<String> userIdToSearchList = new ArrayList<>();
-        userIdToSearchList.add(body.getUserId());
-        Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        ArrayList<String> memberIdToSearchList = new ArrayList<>();
+        memberIdToSearchList.add(otherMemberId);
+        Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         //复制start
         
@@ -320,7 +324,7 @@ public class TopicMobileController extends BaseController {
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -345,10 +349,10 @@ public class TopicMobileController extends BaseController {
                 TopicView.THE_SEND_INFO
             	);
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
-        validateSecondResponse(Topic.TOPIC_COMMENT_LIST, TopicComment.USER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_USER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
+        validateSecondResponse(Topic.TOPIC_COMMENT_LIST, TopicComment.MEMBER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_MEMBER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
 
         return renderJson(countResult, resultList);
     }
@@ -364,7 +368,7 @@ public class TopicMobileController extends BaseController {
                 Topic.SYSTEM_REQUEST_USER_ID
         );
         
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
         
         // 获取用户头像,昵称,签名,背景
 //        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
@@ -408,13 +412,15 @@ public class TopicMobileController extends BaseController {
         );
 
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
 
-        ArrayList<String> userIdToSearchList = new ArrayList<>();
-        userIdToSearchList.add(body.getSystemRequestUserId());
-        Integer countResult = topicService.countByUserIdList(body.getAppId(), userIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), userIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        ArrayList<String> memberIdToSearchList = new ArrayList<>();
+        memberIdToSearchList.add(memberId);
+        Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), requestUserId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
 
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -443,9 +449,9 @@ public class TopicMobileController extends BaseController {
 //            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
             
             //验证话题发布人是否自己
-            String theSendUserId = topic.getUserId();
+            String theSendMemberId = topic.getMemberId();
             
-            topic.put(Topic.TOPIC_IS_SELF, theSendUserId.equals(requestUserId));
+            topic.put(Topic.TOPIC_IS_SELF, theSendMemberId.equals(memberId));
             
             //取话题前3条评论
             if (Util.isNullOrEmpty(commentPageIndex) || Util.isNullOrEmpty(commentPageSize)) {
@@ -488,7 +494,7 @@ public class TopicMobileController extends BaseController {
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -514,7 +520,7 @@ public class TopicMobileController extends BaseController {
                 TopicView.THE_SEND_INFO
         	);
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
@@ -533,9 +539,11 @@ public class TopicMobileController extends BaseController {
         );
 
         String topicId = body.getTopicId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
         
-        TopicView topic = topicService.findDetailByTopicIdAndUserId(topicId, userId);
+        TopicView topic = topicService.findDetailByTopicIdAndMemberId(topicId, memberId);
         
         //处理用户信息(昵称,头像,是否关注)
 //        Member nickNameAndAvatarAndIsFollow = memberRpc.nickNameAndAvatarAndIsFollowFindV1(topic.getUserId(), userId);
@@ -545,7 +553,7 @@ public class TopicMobileController extends BaseController {
 //        topic.put(Topic.REQUEST_USER, nickNameAndAvatar);
         
         
-        if (userId.equals(topic.getUserId())) {
+        if (memberId.equals(topic.getMemberId())) {
             // 验证话题发布者是否自己
             topic.put(Topic.TOPIC_IS_SELF, true);
         } 
@@ -609,12 +617,10 @@ public class TopicMobileController extends BaseController {
                 
                 User.USER_ID,
                 TopicView.TOPIC_MEDIA_LIST,
-                TopicView.TOPIC_TIP_USER_LIST,
                 TopicView.TOPIC_FORUM_LIST,
                 TopicView.THE_SEND_INFO
         );
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
         validateSecondResponse(Topic.TOPIC_USER_LIKE_LIST, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
@@ -635,6 +641,8 @@ public class TopicMobileController extends BaseController {
                 Topic.SYSTEM_CREATE_TIME
         );
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
         
         // 用户关注的人的编号列表
 // TODO 需要获取用户的关注列表       List<String> followUserIdList = memberFollowRpc.followUserIdList(body.getSystemRequestUserId());
@@ -717,7 +725,7 @@ public class TopicMobileController extends BaseController {
         List<TopicView> allUserTopic = topicService.allUserTopic((List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         for (TopicView topicView : allUserTopic) {
-        	topicView.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topicView.getUserId()));
+        	topicView.put(Topic.TOPIC_IS_SELF, requestMemberId.equals(topicView.getMemberId()));
         	
         	/**
         	 * 获取点赞信息
@@ -726,7 +734,7 @@ public class TopicMobileController extends BaseController {
             Integer likeCount = topicUserLikeService.countByTopicId(topicView.getTopicId());
             topicView.put(Topic.TOPIC_COUNT_LIKE, likeCount);
             //请求用户是否点赞
-            TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndUserId(topicView.getTopicId(), body.getSystemRequestUserId());
+            TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
             topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
             
             /**
@@ -736,7 +744,7 @@ public class TopicMobileController extends BaseController {
             Integer bookMarkCount = topicUserBookmarkService.countByTopicId(topicView.getTopicId());
             topicView.put(Topic.TOPIC_COUNT_BOOKMARK, bookMarkCount);
             //请求用户是否收藏
-            TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndUserId(topicView.getTopicId(), body.getSystemRequestUserId());
+            TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
             topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
             
             /**
@@ -758,7 +766,7 @@ public class TopicMobileController extends BaseController {
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -786,7 +794,7 @@ public class TopicMobileController extends BaseController {
                 TopicView.THE_SEND_INFO
         );
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
-        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.USER_ID);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
         return renderJson(count, allUserTopic);
@@ -813,19 +821,20 @@ public class TopicMobileController extends BaseController {
         }
         
         JSONArray topicForumJSONArray = body.getJSONArray(Topic.TOPIC_FORUM_LIST);
-        JSONArray tipUserIdJSONArray = body.getJSONArray(Topic.TOPIC_TIP_USER_LIST);
+        JSONArray tipMemberIdJSONArray = body.getJSONArray(Topic.TOPIC_TIP_USER_LIST);
         
         String topicId = Util.getRandomUUID();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
         String appId = body.getAppId();
+        Member requestMember = memberRpc.findByUserIdV1(requestUserId);
         
-        body.setUserId(userId);
+        body.setMemberId(requestMember.getMemberId());
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
         // 保存话题
 // TODO 没有缓存动态数量的话,就不调用这个方法了,直接保存 
 //        Boolean result = topicService.saveWithRedis(body, topicId, userId);
-        Topic result = topicService.save(body, topicId, userId);
+        Topic result = topicService.save(body, topicId, requestUserId);
         
         boolean success = false;
         
@@ -835,7 +844,7 @@ public class TopicMobileController extends BaseController {
             
             // 保存话题多媒体
             List<TopicMedia> topicMediaList = JSONArray.parseArray(topicMediaJsonArray.toJSONString(), TopicMedia.class);
-            topicMediaService.batchSave(appId, topicId, topicMediaList, userId);
+            topicMediaService.batchSave(appId, topicId, topicMediaList, requestUserId);
             
             List<TopicForum> topicForumList = new ArrayList<>();
             
@@ -853,20 +862,20 @@ public class TopicMobileController extends BaseController {
                     topicForumList.add(topicForum);
                 }
                 
-                topicForumService.batchSave(appId, topicId, topicForumList, userId);
+                topicForumService.batchSave(appId, topicId, topicForumList, requestUserId);
             }
             
             // 保存提醒谁看
-            if (!Util.isNullOrEmpty(tipUserIdJSONArray)) {
-                List<String> tipUserIdList = tipUserIdJSONArray.toJavaList(String.class);
+            if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
+                List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
                 
-                List<TopicTip> topicTipList = tipUserIdList.stream().map(tipUserId -> {
+                List<TopicTip> topicTipList = tipMemberIdList.stream().map(tipMemberId -> {
                     TopicTip topicTip = new TopicTip();
-                    topicTip.setUserId(tipUserId);
+                    topicTip.setMemberId(tipMemberId);
                     return topicTip;
                 }).collect(Collectors.toList());
 
-                topicTipService.batchSave(appId, topicId, topicTipList, userId);
+                topicTipService.batchSave(appId, topicId, topicTipList, requestUserId);
             }
             
             
@@ -893,11 +902,11 @@ public class TopicMobileController extends BaseController {
 //	TODO 这个方式太耗空间,注释掉			topicForum.setTopicInfo(result);
 				topicForum.setAppId(appId);
 				topicForum.setSystemCreateTime(new Date());
-				topicForum.setSystemCreateUserId(userId);
-				topicForum.setSystemRequestUserId(userId);
+				topicForum.setSystemCreateUserId(requestUserId);
+				topicForum.setSystemRequestUserId(requestUserId);
 				topicForum.setSystemStatus(true);
 				topicForum.setSystemUpdateTime(new Date());
-				topicForum.setSystemUpdateUserId(userId);
+				topicForum.setSystemUpdateUserId(requestUserId);
 				topicForum.setSystemVersion(0);
 				
 				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);

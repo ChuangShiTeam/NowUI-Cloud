@@ -70,6 +70,10 @@ public class TopicUserLikeMobileController extends BaseController {
         //统计话题点赞数 和 得到话题点赞列表
         Integer resultTotal = topicUserLikeService.countByTopicId(body.getTopicId());
         List<TopicUserLikeView> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
+        
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
        
         //处理列表中用户的头像,昵称,是否关注
 //        String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
@@ -88,12 +92,12 @@ public class TopicUserLikeMobileController extends BaseController {
 //        	);
 
         for (TopicUserLikeView topicUserLike : resultList) {
-        	topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, body.getSystemRequestUserId().equals(topicUserLike.getUserId()));
+        	topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, requestMemberId.equals(topicUserLike.getMemberId()));
         }
         
         validateResponse(
                 TopicUserLike.TOPIC_USER_LIKE_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR,
@@ -119,23 +123,26 @@ public class TopicUserLikeMobileController extends BaseController {
         
         String appId = body.getAppId();
         String topicId = body.getTopicId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String requestMemberId = member.getMemberId();
+        
         String userNickName = body.getUserNickName();
         String userAvatar = body.getUserAvatar();
 
-        TopicUserLikeView userLike = topicUserLikeService.findByTopicIdAndUserId(topicId, userId);
+        TopicUserLikeView userLike = topicUserLikeService.findByTopicIdAndMemberId(topicId, requestMemberId);
         
         if (userLike != null) {
             throw new BusinessException("已经点过赞了");
 		}
 
-        body.setUserId(userId);
+        body.setMemberId(requestMemberId);
 
-        TopicUserLike result = topicUserLikeService.save(appId, topicId, userId, userId);
+        TopicUserLike result = topicUserLikeService.save(appId, topicId, requestMemberId, requestUserId);
         boolean success = false;
 
         if (result != null) {
-            TopicUserUnlike userUnlike = topicUserUnlikeService.deleteByTopicIdAndUserId(topicId, userId, appId, userId);
+            TopicUserUnlike userUnlike = topicUserUnlikeService.deleteByTopicIdAndMemberId(topicId, requestMemberId, appId, requestUserId);
             
             if (userUnlike != null) {
             	//删除取消点赞记录

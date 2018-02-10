@@ -29,22 +29,22 @@ public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, To
      * 话题用户取消点赞关联列表
      *
      * @param appId 应用编号
-     * @param userId 关注人
+     * @param memberId 取消点赞会员编号
      * @param topicId 话题编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<TopicUserUnlike> 话题用户取消点赞关联列表
      */
-    List<TopicUserUnlike> listForAdmin(String appId, String userId, String topicId, Integer pageIndex, Integer pageSize);
+    List<TopicUserUnlike> listForAdmin(String appId, String memberId, String topicId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据话题编号和用户编号查询话题用户取消点赞记录
      * 
-     * @param userId 关注人
+     * @param memberId 取消点赞会员编号
      * @param topicId 话题编号
      * @return TopicUserUnlike 
      */
-    TopicUserUnlikeView findByTopciIdAndUserId(String topicId, String userId);
+    TopicUserUnlikeView findByTopciIdAndMemberId(String topicId, String memberId);
     
     /**
      * 根据话题编号逻辑删除用户取消点赞记录
@@ -59,11 +59,11 @@ public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, To
      * 根据话题编号和用户编号
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true  成功      false  失败
      */
-    TopicUserUnlike deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserUnlike deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId);
     
     /**
      * 根据话题编号查询话题用户取消点赞记录
