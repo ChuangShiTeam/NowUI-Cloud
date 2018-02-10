@@ -217,6 +217,7 @@ public class ForumMobileController extends BaseController {
         );
 
         validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        validateSecondResponse(Forum.FORUM_USER_FOLLOW_LIST, ForumUserFollowView.USER_INFO);
         
         return renderJson(forum);
     }
@@ -429,6 +430,10 @@ public class ForumMobileController extends BaseController {
         	//从论坛取消关注表删除有forumId的记录
         	ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
         	
+        	
+        	/**
+        	 * 操作MongoDB
+        	 */
         	//TODO 这里逻辑有问题
         	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
         	
