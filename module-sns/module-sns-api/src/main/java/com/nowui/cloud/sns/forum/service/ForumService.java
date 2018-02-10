@@ -71,7 +71,7 @@ public interface ForumService extends SuperService<Forum, ForumView> {
      * @param n 个数
      * @return List<Forum> 论坛列表
      */
-    List<ForumView> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n);
+    List<ForumView> getRandomRecommendAndNotFollowListByMemberId(String appId, String memberId, Integer n);
     
     /**
      * 获取用户没有关注的最新论坛列表
@@ -82,7 +82,7 @@ public interface ForumService extends SuperService<Forum, ForumView> {
      * @param n 结束数
      * @return List<Forum> 论坛列表
      */
-    List<ForumView> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n);
+    List<ForumView> getLatestAndNotFollowListByMemberId(String appId, String memberId, int m, int n);
     
     /**
      * 验证论坛名称唯一性

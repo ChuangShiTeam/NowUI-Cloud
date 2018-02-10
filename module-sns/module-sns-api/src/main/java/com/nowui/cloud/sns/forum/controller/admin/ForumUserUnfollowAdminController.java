@@ -35,18 +35,18 @@ public class ForumUserUnfollowAdminController extends BaseController {
         validateRequest(
                 body,
                 ForumUserUnfollow.APP_ID,
-                ForumUserUnfollow.USER_ID,
+                ForumUserUnfollow.MEMBER_ID,
                 ForumUserUnfollow.FORUM_ID,
                 ForumUserUnfollow.PAGE_INDEX,
                 ForumUserUnfollow.PAGE_SIZE
         );
 
-        Integer resultTotal = forumUserUnfollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
-        List<ForumUserUnfollow> resultList = forumUserUnfollowService.listForAdmin(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumUserUnfollowService.countForAdmin(body.getAppId() , body.getMemberId(), body.getForumId());
+        List<ForumUserUnfollow> resultList = forumUserUnfollowService.listForAdmin(body.getAppId(), body.getMemberId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
-                ForumUserUnfollow.USER_ID,
+                ForumUserUnfollow.MEMBER_ID,
                 ForumUserUnfollow.FORUM_ID
         );
 
@@ -66,7 +66,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
 
         validateResponse(
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
-                ForumUserUnfollow.USER_ID,
+                ForumUserUnfollow.MEMBER_ID,
                 ForumUserUnfollow.FORUM_ID
         );
 
@@ -79,7 +79,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
         validateRequest(
                 body,
                 ForumUserUnfollow.APP_ID,
-                ForumUserUnfollow.USER_ID,
+                ForumUserUnfollow.MEMBER_ID,
                 ForumUserUnfollow.FORUM_ID
         );
 
@@ -95,7 +95,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
                 body,
                 ForumUserUnfollow.FORUM_USER_UNFOLLOW_ID,
                 ForumUserUnfollow.APP_ID,
-                ForumUserUnfollow.USER_ID,
+                ForumUserUnfollow.MEMBER_ID,
                 ForumUserUnfollow.FORUM_ID,
                 ForumUserUnfollow.SYSTEM_VERSION
         );

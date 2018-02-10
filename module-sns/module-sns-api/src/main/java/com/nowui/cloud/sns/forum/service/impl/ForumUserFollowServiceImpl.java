@@ -33,11 +33,11 @@ import java.util.List;
 public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollowMapper, ForumUserFollow, ForumUserFollowRepository, ForumUserFollowView> implements ForumUserFollowService {
 
     @Override
-    public Integer countForAdmin(String appId, String userId, String forumId) {
+    public Integer countForAdmin(String appId, String memberId, String forumId) {
         Integer count = count(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
-                        .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
+                        .likeAllowEmpty(ForumUserFollow.MEMBER_ID, memberId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
         );
@@ -45,11 +45,11 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
 
     @Override
-    public List<ForumUserFollow> listForAdmin(String appId, String userId, String forumId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserFollow> listForAdmin(String appId, String memberId, String forumId, Integer pageIndex, Integer pageSize) {
         List<ForumUserFollow> forumUserFollowList = list(
                 new BaseWrapper<ForumUserFollow>()
                         .eq(ForumUserFollow.APP_ID, appId)
-                        .likeAllowEmpty(ForumUserFollow.USER_ID, userId)
+                        .likeAllowEmpty(ForumUserFollow.MEMBER_ID, memberId)
                         .likeAllowEmpty(ForumUserFollow.FORUM_ID, forumId)
                         .eq(ForumUserFollow.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(ForumUserFollow.SYSTEM_UPDATE_TIME)),
@@ -61,7 +61,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
     
     @Override
-    public Integer countByUserId(String appId, String userId) {
+    public Integer countByMemberId(String appId, String memberId) {
 //        Integer count = count(
 //                new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.APP_ID, appId)
@@ -71,7 +71,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 //        return count;
 
     	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
-                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -103,7 +103,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
     
     @Override
-    public List<ForumUserFollowView> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<ForumUserFollowView> listByMemberId(String appId, String memberId, Integer pageIndex, Integer pageSize) {
 //        List<ForumUserFollow> forumUserFollowList = list(
 //                new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.APP_ID, appId)
@@ -118,7 +118,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 //        return forumUserFollowList;
     	
     	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
-                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -135,7 +135,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
     
     @Override
-    public List<ForumUserFollowView> listByUserId(String appId, String userId) {
+    public List<ForumUserFollowView> listByMemberId(String appId, String memberId) {
 //        List<ForumUserFollow> forumUserFollowList = list(
 //                new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.APP_ID, appId)
@@ -148,7 +148,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 //        return forumUserFollowList;
     	
     	Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).regex(".*?" + appId + ".*")
-    			.and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+    			.and(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -159,7 +159,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
     
     @Override
-    public List<ForumUserFollowView> listByUserId(String userId) {
+    public List<ForumUserFollowView> listByMemberId(String memberId) {
 //        List<ForumUserFollow> forumUserFollowList = list(
 //                new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.USER_ID, userId)
@@ -168,7 +168,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 //
 //        return forumUserFollowList;
     	
-    	Criteria criteria = Criteria.where(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+    	Criteria criteria = Criteria.where(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -179,7 +179,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
     }
 
 	@Override
-	public ForumUserFollowView findByUserIdAndForumId(String appId, String userId, String forumId) {
+	public ForumUserFollowView findByMemberIdAndForumId(String appId, String memberId, String forumId) {
 //		ForumUserFollow forumUserFollow = find( 
 //				new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.APP_ID, appId)
@@ -191,7 +191,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 		
 		Criteria criteria = Criteria.where(ForumUserFollowView.APP_ID).is(appId)
                 .and(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
-                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -206,7 +206,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 	}
 	
 	@Override
-	public ForumUserFollowView findByUserIdAndForumId(String userId, String forumId) {
+	public ForumUserFollowView findByMemberIdAndForumId(String memberId, String forumId) {
 //	    ForumUserFollow forumUserFollow = find( 
 //				new BaseWrapper<ForumUserFollow>()
 //                        .eq(ForumUserFollow.USER_ID, userId)
@@ -218,7 +218,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 		
 		
 		Criteria criteria = Criteria.where(ForumUserFollowView.FORUM_ID).regex(".*?" + forumId + ".*")
-                .and(ForumUserFollowView.USER_ID).regex(".*?" + userId + ".*")
+                .and(ForumUserFollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -246,7 +246,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 	}
 
 	@Override
-	public ForumUserFollow updateTopForum(String appId, String forumId, String systemRequestUserId) {
+	public ForumUserFollow updateTopForum(String appId, String forumId, String memberId, String systemRequestUserId) {
 		ForumUserFollow forumUserFollow = new ForumUserFollow();
 		forumUserFollow.setForumUserFollowIsTop(true);
 
@@ -255,7 +255,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
 				new BaseWrapper<ForumUserFollow>()
 	                .eq(ForumUserFollow.APP_ID, appId)
 	                .eq(ForumUserFollow.FORUM_ID, forumId)
-	                .eq(ForumUserFollow.USER_ID, systemRequestUserId)
+	                .eq(ForumUserFollow.MEMBER_ID, memberId)
 	                .eq(ForumUserFollow.SYSTEM_STATUS, true),
 	            systemRequestUserId
 		);

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
@@ -42,6 +44,9 @@ public class TopicUserBookmarkMobileController extends BaseController {
 	@Autowired
 	private TopicUserUnbookmarkService topicUserUnbookmarkService;
 	
+	@Autowired
+	private MemberRpc memberRpc;
+	
 	@ApiOperation(value = "新增话题收藏")
     @RequestMapping(value = "/topic/user/bookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
@@ -55,20 +60,22 @@ public class TopicUserBookmarkMobileController extends BaseController {
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         String theBookMarkUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(theBookMarkUserId);
+        String theBookMarkMemberId = member.getMemberId();
         String requestUserId = body.getSystemRequestUserId();
         
-        TopicUserBookmarkView bookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, theBookMarkUserId);
+        TopicUserBookmarkView bookmark = topicUserBookmarkService.findByTopicIdAndMemberId(topicId, theBookMarkMemberId);
         
         if (bookmark != null) {
 			throw new BusinessException("已经收藏过了");
 		}
         // 如果没有收藏过,新增
-        TopicUserBookmark result = topicUserBookmarkService.save(appId, topicId, theBookMarkUserId, requestUserId);
+        TopicUserBookmark result = topicUserBookmarkService.save(appId, topicId, theBookMarkMemberId, requestUserId);
         
         boolean success = false;
         if (result != null) {
         	//去取消收藏表删除记录
-            TopicUserUnbookmark unbookmark = topicUserUnbookmarkService.deleteByTopicIdAndUserId(topicId, theBookMarkUserId, appId, requestUserId);
+            TopicUserUnbookmark unbookmark = topicUserUnbookmarkService.deleteByTopicIdAndMemberId(topicId, theBookMarkMemberId, appId, requestUserId);
             
             if (unbookmark != null) {
             	//TODO 删除取消收藏记录(MongoDB)

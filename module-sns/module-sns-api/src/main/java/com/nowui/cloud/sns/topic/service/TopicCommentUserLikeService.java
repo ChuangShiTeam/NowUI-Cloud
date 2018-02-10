@@ -20,41 +20,41 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      *
      * @param appId 应用编号
      * @param commentId 被点赞的评论编号
-     * @param userId 点赞的用户编号
+     * @param memberId 点赞的用户编号
      * @return Integer 话题的评论用户点赞统计
      */
-    Integer countForAdmin(String appId, String commentId, String userId);
+    Integer countForAdmin(String appId, String commentId, String memberId);
 
     /**
      * 话题的评论用户点赞列表
      *
      * @param appId 应用编号
      * @param commentId 被点赞的评论编号
-     * @param userId 点赞的用户编号
+     * @param memberId 点赞的用户编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<TopicCommentUserLike> 话题的评论用户点赞列表
      */
-    List<TopicCommentUserLike> listForAdmin(String appId, String commentId, String userId, Integer pageIndex, Integer pageSize);
+    List<TopicCommentUserLike> listForAdmin(String appId, String commentId, String memberId, Integer pageIndex, Integer pageSize);
     
     /**
      * 根据评论id和点赞用户id查找用户评论点赞记录
      * @param appId 应用编号
      * @param commentId 被点赞的评论编号
-     * @param userId 点赞的用户编号
+     * @param memberId 点赞的用户编号
      * @return TopicCommentUserLike 评论点赞记录
      */
-    TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String userId);
+    TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String memberId);
     
     /**
      * 删除话题评论的点赞记录
      * 
      * @param commentId 被点赞的话题评论编号
-     * @param userId 点赞的用户编号
+     * @param memberId 点赞的用户编号
      * @param systemRequestUserId 操作用户编号
      * @return boolean 操作结果
      */
-    TopicCommentUserLike deleteByCommentIdAndUserIdWithRedis(String commentId, String appId, String userId, String systemRequestUserId);
+    TopicCommentUserLike deleteByCommentIdAndMemberIdWithRedis(String commentId, String appId, String memberId, String systemRequestUserId);
     
     /**
      * 根据评论id删除所有 话题评论的点赞记录(redis中的点赞数也删除)
@@ -77,11 +77,11 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * 
      * @param appId 应用编号
      * @param commentId 被点赞的话题评论编号
-     * @param userId 点赞的用户编号
+     * @param memberId 点赞的用户编号
      * @param systemRequestUserId 操作的用户编号
      * @return boolean 操作结果
      */
-    TopicCommentUserLike saveWithRedis(String appId, String commentId, String userId, String systemRequestUserId );
+    TopicCommentUserLike saveWithRedis(String appId, String commentId, String memberId, String systemRequestUserId );
     
     /**
      * 根据评论id查询相应评论的点赞数(使用redis)

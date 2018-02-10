@@ -37,14 +37,14 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     public static final String TOPIC_COMMENT_COUNT_BY_TOPIC_ID = "topic_comment_count_by_topic_id_";
     
     @Override
-    public Integer countForAdmin(String appId, String userId, String topicId, String topicCommentContent, String topicReplayUserId, String topicReplyCommentId) {
+    public Integer countForAdmin(String appId, String memberId, String topicId, String topicCommentContent, String topicReplayMemberId, String topicReplyCommentId) {
         Integer count = count(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.APP_ID, appId)
-                        .likeAllowEmpty(TopicComment.USER_ID, userId)
+                        .likeAllowEmpty(TopicComment.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicComment.TOPIC_ID, topicId)
                         .likeAllowEmpty(TopicComment.TOPIC_COMMENT_CONTENT, topicCommentContent)
-                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_USER_ID, topicReplayUserId)
+                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId)
                         .likeAllowEmpty(TopicComment.TOPIC_REPLY_COMMENT_ID, topicReplyCommentId)
                         .eq(TopicComment.SYSTEM_STATUS, true)
         );
@@ -52,14 +52,14 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     }
 
     @Override
-    public List<TopicComment> listForAdmin(String appId, String userId, String topicId, String topicCommentContent, String topicReplayUserId, String topicReplyCommentId, Integer pageIndex, Integer pageSize) {
+    public List<TopicComment> listForAdmin(String appId, String memberId, String topicId, String topicCommentContent, String topicReplayMemberId, String topicReplyCommentId, Integer pageIndex, Integer pageSize) {
         List<TopicComment> topicCommentList = list(
                 new BaseWrapper<TopicComment>()
                         .eq(TopicComment.APP_ID, appId)
-                        .likeAllowEmpty(TopicComment.USER_ID, userId)
+                        .likeAllowEmpty(TopicComment.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicComment.TOPIC_ID, topicId)
                         .likeAllowEmpty(TopicComment.TOPIC_COMMENT_CONTENT, topicCommentContent)
-                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_USER_ID, topicReplayUserId)
+                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId)
                         .likeAllowEmpty(TopicComment.TOPIC_REPLY_COMMENT_ID, topicReplyCommentId)
                         .eq(TopicComment.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
@@ -205,7 +205,7 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     }
 
     @Override
-    public Boolean save(String appId, String topicId, String userId, TopicComment topicComment, String systemRequestUserId) {
+    public Boolean save(String appId, String topicId, String memberId, TopicComment topicComment, String systemRequestUserId) {
         //TODO 不用缓存,所以不用这个方法 
 //        topicComment.setAppId(appId);
 //        topicComment.setUserId(userId);

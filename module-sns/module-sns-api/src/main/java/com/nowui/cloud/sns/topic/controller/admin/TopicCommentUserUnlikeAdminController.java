@@ -38,18 +38,18 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 topicCommentUserUnlikeEntity,
                 TopicCommentUserUnlike.APP_ID,
                 TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID,
+                TopicCommentUserUnlike.MEMBER_ID,
                 TopicCommentUserUnlike.PAGE_INDEX,
                 TopicCommentUserUnlike.PAGE_SIZE
         );
 
-        Integer resultTotal = topicCommentUserUnlikeService.countForAdmin(topicCommentUserUnlikeEntity.getAppId() , topicCommentUserUnlikeEntity.getCommentId(), topicCommentUserUnlikeEntity.getUserId());
-        List<TopicCommentUserUnlike> resultList = topicCommentUserUnlikeService.listForAdmin(topicCommentUserUnlikeEntity.getAppId(), topicCommentUserUnlikeEntity.getCommentId(), topicCommentUserUnlikeEntity.getUserId(), topicCommentUserUnlikeEntity.getPageIndex(), topicCommentUserUnlikeEntity.getPageSize());
+        Integer resultTotal = topicCommentUserUnlikeService.countForAdmin(topicCommentUserUnlikeEntity.getAppId() , topicCommentUserUnlikeEntity.getCommentId(), topicCommentUserUnlikeEntity.getMemberId());
+        List<TopicCommentUserUnlike> resultList = topicCommentUserUnlikeService.listForAdmin(topicCommentUserUnlikeEntity.getAppId(), topicCommentUserUnlikeEntity.getCommentId(), topicCommentUserUnlikeEntity.getMemberId(), topicCommentUserUnlikeEntity.getPageIndex(), topicCommentUserUnlikeEntity.getPageSize());
 
         validateResponse(
                 TopicCommentUserUnlike.COMMENT_USER_UNLIKE_ID,
                 TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID
+                TopicCommentUserUnlike.MEMBER_ID
         );
 
         return renderJson(resultTotal, resultList);
@@ -71,7 +71,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
         validateResponse(
                 TopicCommentUserUnlike.COMMENT_USER_UNLIKE_ID,
                 TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID
+                TopicCommentUserUnlike.MEMBER_ID
         );
 
         return renderJson(result);
@@ -86,7 +86,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 topicCommentUserUnlikeEntity,
                 TopicCommentUserUnlike.APP_ID,
                 TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID
+                TopicCommentUserUnlike.MEMBER_ID
         );
 
 //        Boolean result = topicCommentUserUnlikeService.save(topicCommentUserUnlikeEntity, Util.getRandomUUID(), topicCommentUserUnlikeEntity.getAppId(), TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, topicCommentUserUnlikeEntity.getSystemRequestUserId());
@@ -105,7 +105,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
                 TopicCommentUserUnlike.COMMENT_USER_UNLIKE_ID,
                 TopicCommentUserUnlike.APP_ID,
                 TopicCommentUserUnlike.COMMENT_ID,
-                TopicCommentUserUnlike.USER_ID,
+                TopicCommentUserUnlike.MEMBER_ID,
                 TopicCommentUserUnlike.SYSTEM_VERSION
         );
 

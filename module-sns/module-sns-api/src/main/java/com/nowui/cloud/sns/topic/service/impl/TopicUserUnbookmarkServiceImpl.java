@@ -31,24 +31,24 @@ import com.nowui.cloud.util.Util;
 public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark, TopicUserUnbookmarkRepository, TopicUserUnbookmarkView> implements TopicUserUnbookmarkService {
 
     @Override
-    public Integer countForAdmin(String appId, String topicId, String userId) {
+    public Integer countForAdmin(String appId, String topicId, String memberId) {
         Integer count = count(
                 new BaseWrapper<TopicUserUnbookmark>()
                         .eq(TopicUserUnbookmark.APP_ID, appId)
                         .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicUserUnbookmark.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserUnbookmark.MEMBER_ID, memberId)
                         .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<TopicUserUnbookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserUnbookmark> listForAdmin(String appId, String topicId, String memberId, Integer pageIndex, Integer pageSize) {
         List<TopicUserUnbookmark> topicUserUnbookmarkList = list(
                 new BaseWrapper<TopicUserUnbookmark>()
                         .eq(TopicUserUnbookmark.APP_ID, appId)
                         .likeAllowEmpty(TopicUserUnbookmark.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicUserUnbookmark.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserUnbookmark.MEMBER_ID, memberId)
                         .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserUnbookmark.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -59,7 +59,7 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
     }
 
 	@Override
-	public TopicUserUnbookmarkView findByTopicIdAndUserId(String topicId, String userId) {
+	public TopicUserUnbookmarkView findByTopicIdAndMemberId(String topicId, String mmeberId) {
 //		TopicUserUnbookmark topicUserUnbookmark = find(
 //                new BaseWrapper<TopicUserUnbookmark>()
 //                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
@@ -70,7 +70,7 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
 //        return topicUserUnbookmark;
 		
 		Criteria criteria = Criteria.where(TopicUserUnbookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserUnbookmarkView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicUserUnbookmarkView.MEMBER_ID).regex(".*?" + mmeberId + ".*")
                 .and(TopicUserUnbookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -107,8 +107,8 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
     }
 
     @Override
-    public TopicUserUnbookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserUnbookmarkView topicUserUnbookmark = findByTopicIdAndUserId(topicId, userId);
+    public TopicUserUnbookmark deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId) {
+        TopicUserUnbookmarkView topicUserUnbookmark = findByTopicIdAndMemberId(topicId, memberId);
         
         if (Util.isNullOrEmpty(topicUserUnbookmark)) {
             return null;

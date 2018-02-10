@@ -35,18 +35,18 @@ public class TopicUserUnlikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserUnlike.APP_ID,
-                TopicUserUnlike.USER_ID,
+                TopicUserUnlike.MEMBER_ID,
                 TopicUserUnlike.TOPIC_ID,
                 TopicUserUnlike.PAGE_INDEX,
                 TopicUserUnlike.PAGE_SIZE
         );
 
-        Integer resultTotal = topicUserUnlikeService.countForAdmin(body.getAppId() , body.getUserId(), body.getTopicId());
-        List<TopicUserUnlike> resultList = topicUserUnlikeService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicUserUnlikeService.countForAdmin(body.getAppId() , body.getMemberId(), body.getTopicId());
+        List<TopicUserUnlike> resultList = topicUserUnlikeService.listForAdmin(body.getAppId(), body.getMemberId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
-                TopicUserUnlike.USER_ID,
+                TopicUserUnlike.MEMBER_ID,
                 TopicUserUnlike.TOPIC_ID
         );
 
@@ -66,7 +66,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
 
         validateResponse(
                 TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
-                TopicUserUnlike.USER_ID,
+                TopicUserUnlike.MEMBER_ID,
                 TopicUserUnlike.TOPIC_ID
         );
 
@@ -79,7 +79,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserUnlike.APP_ID,
-                TopicUserUnlike.USER_ID,
+                TopicUserUnlike.MEMBER_ID,
                 TopicUserUnlike.TOPIC_ID
         );
 
@@ -96,7 +96,7 @@ public class TopicUserUnlikeAdminController extends BaseController {
                 body,
                 TopicUserUnlike.TOPIC_USER_UNLIKE_ID,
                 TopicUserUnlike.APP_ID,
-                TopicUserUnlike.USER_ID,
+                TopicUserUnlike.MEMBER_ID,
                 TopicUserUnlike.TOPIC_ID,
                 TopicUserUnlike.SYSTEM_VERSION
         );

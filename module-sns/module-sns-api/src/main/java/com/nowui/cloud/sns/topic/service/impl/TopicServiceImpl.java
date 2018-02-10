@@ -85,12 +85,12 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	
     @Override
-    public Integer countForAdmin(String appId, String topicSummary, String userId,  String topicLocation, Boolean topicIsLocation) {
+    public Integer countForAdmin(String appId, String topicSummary, String memberId,  String topicLocation, Boolean topicIsLocation) {
         Integer count = count(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
-                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.MEMBER_ID, memberId)
                         .likeAllowEmpty(Topic.TOPIC_LOCATION, topicLocation)
                         .eqAllowEmpty(Topic.TOPIC_IS_LOCATION, topicIsLocation)
                         .eq(Topic.SYSTEM_STATUS, true)
@@ -100,12 +100,12 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
     }
 
     @Override
-    public List<Topic> listForAdmin(String appId, String topicSummary, String userId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize) {
+    public List<Topic> listForAdmin(String appId, String topicSummary, String memberId, String latitude, String longtitude, String topicLocation, Boolean topicIsLocation, Boolean topicIsTop, Boolean topicIsRecommend, Integer topicTopLevel, Integer pageIndex, Integer pageSize) {
         List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
                         .likeAllowEmpty(Topic.TOPIC_SUMMARY, topicSummary)
-                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.MEMBER_ID, memberId)
                         .likeAllowEmpty(Topic.LATITUDE, latitude)
                         .likeAllowEmpty(Topic.LONGTITUDE, longtitude)
                         .likeAllowEmpty(Topic.TOPIC_LOCATION, topicLocation)
@@ -123,11 +123,11 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
     }
     
     @Override
-	public List<Topic> listByUserId(String appId, String userId, Integer pageIndex, Integer pageSize) {
+	public List<Topic> listByMemberId(String appId, String memberId, Integer pageIndex, Integer pageSize) {
     	List<Topic> topicList = list(
                 new BaseWrapper<Topic>()
                         .eq(Topic.APP_ID, appId)
-                        .likeAllowEmpty(Topic.USER_ID, userId)
+                        .likeAllowEmpty(Topic.MEMBER_ID, memberId)
                         .eq(Topic.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(Topic.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -138,19 +138,19 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<TopicView> listByForumId(String appId, String forumId, String userId, Integer pageIndex, Integer pageSize) {
+	public List<TopicView> listByForumId(String appId, String forumId, String memberId, Integer pageIndex, Integer pageSize) {
 	    
 		List<TopicForumView> topicForumList = topicForumService.listByForumId(appId, forumId, pageIndex, pageSize);
 		
-		List<TopicView> topicList = topicForumList.stream().map(topicForum -> findDetailByTopicIdAndUserId(topicForum.getTopicId(), userId)).collect(Collectors.toList());
+		List<TopicView> topicList = topicForumList.stream().map(topicForum -> findDetailByTopicIdAndMemberId(topicForum.getTopicId(), memberId)).collect(Collectors.toList());
 
 		return topicList;
 	}
 
 	@Override
-	public List<Topic> allTopicListByUserId(Topic body) {
+	public List<Topic> allTopicListByMemberId(Topic body) {
 		//先从topic表中根据userId找到所有发过的topic
-		List<Topic> topicList = listByUserId(body.getAppId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+		List<Topic> topicList = listByMemberId(body.getAppId(), body.getMemberId(), body.getPageIndex(), body.getPageSize());
 
         for (Topic topic : topicList) {
         	String topicId = topic.getTopicId();
@@ -205,13 +205,13 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         	
         	
         	//是否被用户收藏,根据requestUserId和topicId去查询用户收藏关联表有没有记录,有就设置一个常量字段
-        	TopicUserBookmarkView findTopicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
+        	TopicUserBookmarkView findTopicUserBookmark = topicUserBookmarkService.findByTopicIdAndMemberId(topicId, body.getMemberId());
         	if (findTopicUserBookmark != null) {
         		topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, true);
 			}
         	
         	//是否被用户点赞
-        	TopicUserLikeView findLike = topicUserLikeService.findByTopicIdAndUserId(topicId, body.getSystemRequestUserId());
+        	TopicUserLikeView findLike = topicUserLikeService.findByTopicIdAndMemberId(topicId, body.getMemberId());
         	if (findLike != null) {
         		topic.put(Topic.TOPIC_USER_IS_LIKE, true);
 			}
@@ -227,7 +227,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public TopicView findDetailByTopicIdAndUserId(String topicId, String userId) {
+	public TopicView findDetailByTopicIdAndMemberId(String topicId, String memberId) {
 		
 		//根据topicId查询topic
 		TopicView topic = find(topicId);
@@ -272,11 +272,11 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         topic.put(Topic.TOPIC_COUNT_COMMENT, countComment);
         
         // 是否被用户收藏
-        TopicUserBookmarkView topicUserBookmark = topicUserBookmarkService.findByTopicIdAndUserId(topic.getTopicId(), userId);
+        TopicUserBookmarkView topicUserBookmark = topicUserBookmarkService.findByTopicIdAndMemberId(topic.getTopicId(), memberId);
         topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(topicUserBookmark));
         
         // 是否被用户点赞
-        TopicUserLikeView topicUserLike = topicUserLikeService.findByTopicIdAndUserId(topic.getTopicId(), userId);
+        TopicUserLikeView topicUserLike = topicUserLikeService.findByTopicIdAndMemberId(topic.getTopicId(), memberId);
         topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(topicUserLike));
         
 		return topic;
@@ -284,7 +284,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 
 	@Override
-	public Integer countByUserIdList(String appId, List<String> userIdList) {
+	public Integer countByMemberIdList(String appId, List<String> memberIdList) {
 //		Integer count = count(
 //                new BaseWrapper<Topic>()
 //                        .eq(Topic.APP_ID, appId)
@@ -295,7 +295,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 //		return count;
 		
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
-                .and(TopicView.USER_ID).in(userIdList)
+                .and(TopicView.MEMBER_ID).in(memberIdList)
                 .and(TopicView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -306,7 +306,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<TopicView> listByUserIdList(String appId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+	public List<TopicView> listByMemberIdList(String appId, List<String> memberIdToSearchList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
 //	    List<Topic> topicList = list(
 //                new BaseWrapper<Topic>()
 //                        .eq(Topic.APP_ID, appId)
@@ -328,7 +328,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 //                .and(TopicView.SYSTEM_STATUS).is(true);
 		long time = systemCreateTime.getTime();
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
-                .and(TopicView.USER_ID).in(userIdList)
+                .and(TopicView.MEMBER_ID).in(memberIdToSearchList)
                 .and(TopicView.TOPIC_ID).nin(excludeTopicIdList)
                 .and(TopicView.SYSTEM_CREATE_TIME).lte(time)
                 .and(TopicView.SYSTEM_STATUS).is(true);
@@ -346,15 +346,15 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 	
 	@Override
-    public List<TopicView> listDetailByUserIdList(String appId, String userId, List<String> userIdList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-        List<TopicView> topicList = listByUserIdList(appId, userIdList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
+    public List<TopicView> listDetailByMemberIdList(String appId, String requestMemberId, List<String> memberIdToSearchList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
+        List<TopicView> topicList = listByMemberIdList(appId, memberIdToSearchList, excludeTopicIdList, systemCreateTime, pageIndex, pageSize);
         
         if (Util.isNullOrEmpty(topicList)) {
             return topicList;
         }
         
         for (TopicView topic : topicList) {
-            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+            topic.putAll(findDetailByTopicIdAndMemberId(topic.getTopicId(), requestMemberId));
         }
 
         return topicList;
@@ -413,7 +413,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<Topic> listDetailByTopicIdList(String userId, List<String> topicIdList, Integer pageIndex,
+	public List<Topic> listDetailByTopicIdList(String memberId, List<String> topicIdList, Integer pageIndex,
 			Integer pageSize) {
 		List<Topic> topicList = listByTopicIdList(topicIdList, pageIndex, pageSize);
 		
@@ -422,7 +422,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         }
         
         for (Topic topic : topicList) {
-            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+            topic.putAll(findDetailByTopicIdAndMemberId(topic.getTopicId(), memberId));
         }
 
         return topicList;
@@ -430,18 +430,18 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public Integer countTopicByUserId(String userId) {
+	public Integer countTopicByMemberId(String memberId) {
 		
 		Integer count = count(
                 new BaseWrapper<Topic>()
-                        .eq(Topic.USER_ID, userId)
+                        .eq(Topic.MEMBER_ID, memberId)
                         .eq(Topic.SYSTEM_STATUS, true)
         );
 		return count;
 	}
 
 	@Override
-	public Integer countTopicByUserIdWithRedis(String appId, String userId) {
+	public Integer countTopicByMemberIdWithRedis(String appId, String memberId) {
 //		Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + userId);
 //		if (num == null) {
 //			Integer count = count(
@@ -456,7 +456,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 //		return num;
 		
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
-                .and(TopicView.USER_ID).regex(".*?" + userId + ".*")
+                .and(TopicView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -491,7 +491,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<TopicView> listDetailByTopicIdList(String userId, List<String> topicIdList) {
+	public List<TopicView> listDetailByTopicIdList(String memberId, List<String> topicIdList) {
 		List<TopicView> topicList = listByTopicIdList(topicIdList);
 		
 		if (Util.isNullOrEmpty(topicList)) {
@@ -499,7 +499,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         }
         
         for (TopicView topic : topicList) {
-            topic.putAll(findDetailByTopicIdAndUserId(topic.getTopicId(), userId));
+            topic.putAll(findDetailByTopicIdAndMemberId(topic.getTopicId(), memberId));
         }
 
         return topicList;

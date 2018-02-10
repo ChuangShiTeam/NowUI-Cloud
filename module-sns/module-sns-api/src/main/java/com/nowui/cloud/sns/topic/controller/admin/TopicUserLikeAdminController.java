@@ -35,18 +35,18 @@ public class TopicUserLikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.PAGE_INDEX,
                 TopicUserLike.PAGE_SIZE
         );
 
-        Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , body.getUserId(), body.getTopicId());
-        List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), body.getUserId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicUserLikeService.countForAdmin(body.getAppId() , body.getMemberId(), body.getTopicId());
+        List<TopicUserLike> resultList = topicUserLikeService.listForAdmin(body.getAppId(), body.getMemberId(), body.getTopicId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicUserLike.TOPIC_USER_LIKE_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID
         );
 
@@ -66,7 +66,7 @@ public class TopicUserLikeAdminController extends BaseController {
 
         validateResponse(
                 TopicUserLike.TOPIC_USER_LIKE_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID
         );
 
@@ -79,7 +79,7 @@ public class TopicUserLikeAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicUserLike.APP_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID
         );
 
@@ -96,7 +96,7 @@ public class TopicUserLikeAdminController extends BaseController {
                 body,
                 TopicUserLike.TOPIC_USER_LIKE_ID,
                 TopicUserLike.APP_ID,
-                TopicUserLike.USER_ID,
+                TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID,
                 TopicUserLike.SYSTEM_VERSION
         );

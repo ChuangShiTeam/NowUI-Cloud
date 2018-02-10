@@ -33,18 +33,18 @@ public class ForumUserFollowAdminController extends BaseController {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID,
                 ForumUserFollow.PAGE_INDEX,
                 ForumUserFollow.PAGE_SIZE
         );
 
-        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getUserId(), body.getForumId());
-        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getUserId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = forumUserFollowService.countForAdmin(body.getAppId() , body.getMemberId(), body.getForumId());
+        List<ForumUserFollow> resultList = forumUserFollowService.listForAdmin(body.getAppId(), body.getMemberId(), body.getForumId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID
         );
 
@@ -64,7 +64,7 @@ public class ForumUserFollowAdminController extends BaseController {
 
         validateResponse(
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID
         );
 
@@ -77,7 +77,7 @@ public class ForumUserFollowAdminController extends BaseController {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID
         );
 
@@ -93,7 +93,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 body,
                 ForumUserFollow.FORUM_USER_FOLLOW_ID,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.FORUM_ID,
                 ForumUserFollow.SYSTEM_VERSION
         );

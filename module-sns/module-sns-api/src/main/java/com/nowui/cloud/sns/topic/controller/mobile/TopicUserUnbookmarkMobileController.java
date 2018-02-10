@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.member.member.entity.Member;
+import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
@@ -41,6 +43,9 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 	
 	@Autowired
 	private TopicUserBookmarkService topicUserBookmarkService;
+	
+	@Autowired
+	private MemberRpc memberRpc;
 
 	@ApiOperation(value = "新增话题用户取消收藏关联")
     @RequestMapping(value = "/topic/user/unbookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,23 +59,26 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         );
         
         String topicId = body.getTopicId();
-        String userId = body.getSystemRequestUserId();
+        String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        
         String appId = body.getAppId();
 
-        TopicUserUnbookmarkView topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndUserId(topicId, userId);
+        TopicUserUnbookmarkView topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndMemberId(topicId, memberId);
         if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
         	throw new BusinessException("你已经取消收藏过了");
 		}
 
-        body.setUserId(userId);
+        body.setMemberId(memberId);
 //        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
-        TopicUserUnbookmark result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), userId);
+        TopicUserUnbookmark result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), requestUserId);
         
         boolean success = false;
         
         if (result != null) {
         	
-            TopicUserBookmark userBookmark = topicUserBookmarkService.deleteByTopicIdAndUserId(topicId, userId, body.getAppId(), userId);
+            TopicUserBookmark userBookmark = topicUserBookmarkService.deleteByTopicIdAndMemberId(topicId, memberId, body.getAppId(), requestUserId);
             
             
             if (userBookmark != null) {

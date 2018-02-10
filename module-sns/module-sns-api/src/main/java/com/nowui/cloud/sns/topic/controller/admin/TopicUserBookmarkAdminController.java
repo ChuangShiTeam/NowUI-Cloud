@@ -36,18 +36,18 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 body,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.TOPIC_ID,
-                TopicUserBookmark.USER_ID,
+                TopicUserBookmark.MEMBER_ID,
                 TopicUserBookmark.PAGE_INDEX,
                 TopicUserBookmark.PAGE_SIZE
         );
 
-        Integer resultTotal = topicUserBookmarkService.countForAdmin(body.getAppId() , body.getTopicId(), body.getUserId());
-        List<TopicUserBookmark> resultList = topicUserBookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicUserBookmarkService.countForAdmin(body.getAppId() , body.getTopicId(), body.getMemberId());
+        List<TopicUserBookmark> resultList = topicUserBookmarkService.listForAdmin(body.getAppId(), body.getTopicId(), body.getMemberId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.TOPIC_ID,
-                TopicUserBookmark.USER_ID
+                TopicUserBookmark.MEMBER_ID
         );
 
         return renderJson(resultTotal, resultList);
@@ -67,7 +67,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
         validateResponse(
                 TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.TOPIC_ID,
-                TopicUserBookmark.USER_ID
+                TopicUserBookmark.MEMBER_ID
         );
 
         return renderJson(result);
@@ -80,7 +80,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 body,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.TOPIC_ID,
-                TopicUserBookmark.USER_ID
+                TopicUserBookmark.MEMBER_ID
         );
 
 //        Boolean result = topicUserBookmarkService.save(body, Util.getRandomUUID(), body.getAppId(), TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, body.getSystemRequestUserId());
@@ -97,7 +97,7 @@ public class TopicUserBookmarkAdminController extends BaseController {
                 TopicUserBookmark.TOPIC_USER_BOOKMARK_ID,
                 TopicUserBookmark.APP_ID,
                 TopicUserBookmark.TOPIC_ID,
-                TopicUserBookmark.USER_ID,
+                TopicUserBookmark.MEMBER_ID,
                 TopicUserBookmark.SYSTEM_VERSION
         );
 

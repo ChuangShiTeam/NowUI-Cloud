@@ -100,8 +100,8 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
 	}
 
     @Override
-    public List<ForumView> getRandomRecommendAndNotFollowListByUserId(String appId, String userId, int n) {
-        List<String> forumIdList = mapper.getRandomRecommendAndNotFollowListByUserId(appId, userId, n);
+    public List<ForumView> getRandomRecommendAndNotFollowListByMemberId(String appId, String memberId, Integer n) {
+        List<String> forumIdList = mapper.getRandomRecommendAndNotFollowListByMemberId(appId, memberId, n);
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();
         }
@@ -109,8 +109,8 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
     }
 
     @Override
-    public List<ForumView> getLatestAndNotFollowListByUserId(String appId, String userId, int m, int n) {
-        List<String> forumIdList = mapper.getLatestAndNotFollowListByUserId(appId, userId, m, n);
+    public List<ForumView> getLatestAndNotFollowListByMemberId(String appId, String memberId, int m, int n) {
+        List<String> forumIdList = mapper.getLatestAndNotFollowListByMemberId(appId, memberId, m, n);
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();
         }

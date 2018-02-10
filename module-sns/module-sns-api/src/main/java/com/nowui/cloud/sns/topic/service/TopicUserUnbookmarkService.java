@@ -41,10 +41,10 @@ public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbook
      * 根据话题编号和用户编号查询单条取消收藏记录
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @return TopicUserUnbookmark 用户取消收藏单条记录
      */
-    TopicUserUnbookmarkView findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserUnbookmarkView findByTopicIdAndMemberId(String topicId, String memberId);
     
     /**
      * 根据话题编号查询取消收藏记录
@@ -65,14 +65,14 @@ public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbook
     void deleteByTopicId(String topicId, String appId, String systemRequestUserId);
     
     /**
-     * 根据话题编号和用户编号逻辑删除用户取消收藏记录
+     * 根据话题编号和会员编号逻辑删除用户取消收藏记录
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @param appId 应用编号
      * @param systemRequestUserId 请求用户编号
      * @return Boolean true 成功    false 失败
      */
-    TopicUserUnbookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserUnbookmark deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId);
     
 }

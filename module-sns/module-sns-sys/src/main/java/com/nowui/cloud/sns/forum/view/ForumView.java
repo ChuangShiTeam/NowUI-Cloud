@@ -57,10 +57,10 @@ public class ForumView extends BaseView {
     public static final String FORUM_MEDIA = "forumMedia";
 
     /**
-     * 版主(用户编号)
+     * 版主(会员编号)
      */
     @Field
-    @NotNull(message = "版主(用户编号)不能为空")
+    @NotNull(message = "版主(会员编号)不能为空")
     private String forumModerator;
     public static final String FORUM_MODERATOR = "forumModerator";
     

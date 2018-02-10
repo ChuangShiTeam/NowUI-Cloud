@@ -35,24 +35,24 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     public static final String TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID = "topic_user_bookmark_count_by_topic_id_";
 
     @Override
-    public Integer countForAdmin(String appId, String topicId, String userId) {
+    public Integer countForAdmin(String appId, String topicId, String memberId) {
         Integer count = count(
                 new BaseWrapper<TopicUserBookmark>()
                         .eq(TopicUserBookmark.APP_ID, appId)
                         .likeAllowEmpty(TopicUserBookmark.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicUserBookmark.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserBookmark.MEMBER_ID, memberId)
                         .eq(TopicUserBookmark.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<TopicUserBookmark> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicUserBookmark> listForAdmin(String appId, String topicId, String memberId, Integer pageIndex, Integer pageSize) {
         List<TopicUserBookmark> topicUserBookmarkList = list(
                 new BaseWrapper<TopicUserBookmark>()
                         .eq(TopicUserBookmark.APP_ID, appId)
                         .likeAllowEmpty(TopicUserBookmark.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicUserBookmark.USER_ID, userId)
+                        .likeAllowEmpty(TopicUserBookmark.MEMBER_ID, memberId)
                         .eq(TopicUserBookmark.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicUserBookmark.SYSTEM_CREATE_TIME)),
                 pageIndex,
@@ -63,7 +63,7 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     }
 
 	@Override
-	public TopicUserBookmarkView findByTopicIdAndUserId(String topicId, String userId) {
+	public TopicUserBookmarkView findByTopicIdAndMemberId(String topicId, String memberId) {
 //		TopicUserBookmark topicUserBookmark = find(
 //                new BaseWrapper<TopicUserBookmark>()
 //                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
@@ -73,8 +73,8 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 //
 //        return topicUserBookmark;
 		
-		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserBookmarkView.USER_ID).regex(".*?" + userId + ".*")
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + memberId + ".*")
+                .and(TopicUserBookmarkView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -153,11 +153,11 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     }
 
     @Override
-    public TopicUserBookmark save(String appId, String topicId, String userId, String systemRequestUserId) {
+    public TopicUserBookmark save(String appId, String topicId, String memberId, String systemRequestUserId) {
         TopicUserBookmark topicUserBookmark = new TopicUserBookmark();
         topicUserBookmark.setAppId(appId);
         topicUserBookmark.setTopicId(topicId);
-        topicUserBookmark.setUserId(userId);
+        topicUserBookmark.setMemberId(memberId);
         
 //        Boolean result = save(topicUserBookmark, Util.getRandomUUID(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE,systemRequestUserId);
         TopicUserBookmark result = save(topicUserBookmark, Util.getRandomUUID(), systemRequestUserId);
@@ -173,8 +173,8 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
     }
 
     @Override
-    public TopicUserBookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId) {
-        TopicUserBookmarkView topicUserBookmark = findByTopicIdAndUserId(topicId, userId);
+    public TopicUserBookmark deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId) {
+        TopicUserBookmarkView topicUserBookmark = findByTopicIdAndMemberId(topicId, memberId);
         
         if (Util.isNullOrEmpty(topicUserBookmark)) {
             return null;

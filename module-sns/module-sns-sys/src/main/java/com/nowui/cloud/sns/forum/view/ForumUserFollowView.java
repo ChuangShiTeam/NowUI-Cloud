@@ -40,9 +40,9 @@ public class ForumUserFollowView extends BaseView {
      * 用户编号
      */
     @Field
-    @NotNull(message = "用户编号不能为空")
-    private String userId;
-    public static final String USER_ID = "userId";
+    @NotNull(message = "会员编号不能为空")
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
     
     /**
      * 关注用户的头像路径和昵称,签名
@@ -85,12 +85,12 @@ public class ForumUserFollowView extends BaseView {
         put(APP_ID, appId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
 
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
 
     public JSONObject getUserInfo() {

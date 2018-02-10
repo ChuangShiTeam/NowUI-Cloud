@@ -33,24 +33,24 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
     public static final String TOPIC_TIP_ID_LIST_BY_TOPIC_ID = "topic_tip_id_list_by_topic_id_";
 
     @Override
-    public Integer countForAdmin(String appId, String topicId, String userId) {
+    public Integer countForAdmin(String appId, String topicId, String memberId) {
         Integer count = count(
                 new BaseWrapper<TopicTip>()
                         .eq(TopicTip.APP_ID, appId)
                         .likeAllowEmpty(TopicTip.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicTip.USER_ID, userId)
+                        .likeAllowEmpty(TopicTip.MEMBER_ID, memberId)
                         .eq(TopicTip.SYSTEM_STATUS, true)
         );
         return count;
     }
 
     @Override
-    public List<TopicTip> listForAdmin(String appId, String topicId, String userId, Integer pageIndex, Integer pageSize) {
+    public List<TopicTip> listForAdmin(String appId, String topicId, String memberId, Integer pageIndex, Integer pageSize) {
         List<TopicTip> topicTipList = list(
                 new BaseWrapper<TopicTip>()
                         .eq(TopicTip.APP_ID, appId)
                         .likeAllowEmpty(TopicTip.TOPIC_ID, topicId)
-                        .likeAllowEmpty(TopicTip.USER_ID, userId)
+                        .likeAllowEmpty(TopicTip.MEMBER_ID, memberId)
                         .eq(TopicTip.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicTip.SYSTEM_CREATE_TIME)),
                 pageIndex,

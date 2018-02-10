@@ -41,10 +41,10 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * 根据话题编号和用户编号查询单条话题收藏记录
      * 
      * @param topicId 话题编号
-     * @param userId 用户编号
+     * @param memberId 会员编号
      * @return TopicUserBookmark 单条话题收藏记录
      */
-    TopicUserBookmarkView findByTopicIdAndUserId(String topicId, String userId);
+    TopicUserBookmarkView findByTopicIdAndMemberId(String topicId, String memberId);
     
     /**
      * 话题收藏统计
@@ -75,10 +75,10 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * 根据话题编号和用户编号逻辑删除话题收藏
      * 
      * @param topicId
-     * @param userId
+     * @param memberId
      * @param systemRequestUserId
      */
-    TopicUserBookmark deleteByTopicIdAndUserId(String topicId, String userId, String appId, String systemRequestUserId);
+    TopicUserBookmark deleteByTopicIdAndMemberId(String topicId, String memberId, String appId, String systemRequestUserId);
     
     /**
      * 保存话题收藏
@@ -89,6 +89,6 @@ public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark
      * @param systemRequestUserId 请求用户编号
      * @return  Boolean true 成功   false 失败
      */
-    TopicUserBookmark save(String appId, String topicId, String userId, String systemRequestUserId);
+    TopicUserBookmark save(String appId, String topicId, String memberId, String systemRequestUserId);
     
 }

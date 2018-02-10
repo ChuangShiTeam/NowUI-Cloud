@@ -48,8 +48,8 @@ public class TopicCommentUserLikeView extends BaseView {
      */
     @Field
     @NotNull(message = "点赞的用户编号不能为空")
-    private String userId;
-    public static final String USER_ID = "userId";
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
 
 
     public String getCommentUserLikeId() {
@@ -76,12 +76,12 @@ public class TopicCommentUserLikeView extends BaseView {
         put(COMMENT_ID, commentId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
 
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
 
 

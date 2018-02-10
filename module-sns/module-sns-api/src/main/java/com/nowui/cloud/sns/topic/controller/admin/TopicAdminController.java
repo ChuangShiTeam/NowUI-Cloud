@@ -36,7 +36,7 @@ public class TopicAdminController extends BaseController {
                 body,
                 Topic.APP_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -48,13 +48,13 @@ public class TopicAdminController extends BaseController {
                 Topic.PAGE_SIZE
         );
 
-        Integer resultTotal = topicService.countForAdmin(body.getAppId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getTopicIsLocation());
-        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicSummary(), body.getUserId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecommend(), body.getTopicTopLevel(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicService.countForAdmin(body.getAppId(), body.getTopicSummary(), body.getMemberId(), body.getLatitude(), body.getTopicIsLocation());
+        List<Topic> resultList = topicService.listForAdmin(body.getAppId(), body.getTopicSummary(), body.getMemberId(), body.getLatitude(), body.getLongtitude(), body.getTopicLocation(), body.getTopicIsLocation(), body.getTopicIsTop(), body.getTopicIsRecommend(), body.getTopicTopLevel(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -81,7 +81,7 @@ public class TopicAdminController extends BaseController {
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -101,7 +101,7 @@ public class TopicAdminController extends BaseController {
                 body,
                 Topic.APP_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,
@@ -125,7 +125,7 @@ public class TopicAdminController extends BaseController {
                 Topic.TOPIC_ID,
                 Topic.APP_ID,
                 Topic.TOPIC_SUMMARY,
-                Topic.USER_ID,
+                Topic.MEMBER_ID,
                 Topic.LATITUDE,
                 Topic.LONGTITUDE,
                 Topic.TOPIC_LOCATION,

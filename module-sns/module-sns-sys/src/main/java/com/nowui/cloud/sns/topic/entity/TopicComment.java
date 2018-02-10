@@ -47,8 +47,8 @@ public class TopicComment extends BaseEntity {
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
-    private String userId;
-    public static final String USER_ID = "userId";
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
     
     /**
      * 发评论的用户昵称
@@ -92,8 +92,8 @@ public class TopicComment extends BaseEntity {
     @TableField
     @NotNull(message = "被回复人不能为空")
     @Length(max = 32, message = "被回复人长度超出限制")
-    private String topicReplayUserId;
-    public static final String TOPIC_REPLAY_USER_ID = "topicReplayUserId";
+    private String topicReplayMemberId;
+    public static final String TOPIC_REPLAY_MEMBER_ID = "topicReplayMemberId";
     
     public static final String TOPIC_REPLAY_USER_NICK_NAME = "topicReplayUserNickName";
 
@@ -144,12 +144,12 @@ public class TopicComment extends BaseEntity {
         put(APP_ID, appId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
-    
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
     
     public String getUserNickName() {
@@ -183,14 +183,15 @@ public class TopicComment extends BaseEntity {
     public void setTopicCommentContent(String topicCommentContent) {
         put(TOPIC_COMMENT_CONTENT, topicCommentContent);
     }
+    
+    public String getTopicReplayMemberId() {
+        return getString(TOPIC_REPLAY_MEMBER_ID);
+    }
 
-    public String getTopicReplayUserId() {
-        return getString(TOPIC_REPLAY_USER_ID);
+    public void setTopicReplayMemberId(String topicReplayMemberId) {
+        put(TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId);
     }
     
-    public void setTopicReplayUserId(String topicReplayUserId) {
-        put(TOPIC_REPLAY_USER_ID, topicReplayUserId);
-    }
 
     public String getTopicReplyCommentId() {
         return getString(TOPIC_REPLY_COMMENT_ID);

@@ -56,8 +56,8 @@ public class TopicTip extends BaseEntity {
     @TableField
     @NotNull(message = "发送用户不能为空")
     @Length(max = 32, message = "发送用户长度超出限制")
-    private String userId;
-    public static final String USER_ID = "userId";
+    private String memberId;
+    public static final String MEMBER_ID = "memberId";
 
     public String getTopicTipId() {
         return getString(TOPIC_TIP_ID);
@@ -83,12 +83,12 @@ public class TopicTip extends BaseEntity {
         put(TOPIC_ID, topicId);
     }
 
-    public String getUserId() {
-        return getString(USER_ID);
+    public String getMemberId() {
+        return getString(MEMBER_ID);
     }
     
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
+    public void setMemberId(String memberId) {
+        put(MEMBER_ID, memberId);
     }
 
 
