@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
+import com.nowui.cloud.sns.topic.view.TopicMediaView;
 import com.nowui.cloud.sns.topic.view.TopicTipView;
 
 import io.swagger.annotations.Api;
@@ -121,6 +123,20 @@ public class TopicTipAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "动态提醒数据同步")
+    @RequestMapping(value = "/topic/tip/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicTip body) {
+    	List<TopicTip> topicTips = topicTipService.listByMysql();
+    	
+    	for (TopicTip topicTip : topicTips) {
+			TopicTipView topicTipView = new TopicTipView();
+			topicTipView.putAll(topicTip);
+			topicTipService.update(topicTipView);
+		}
+
+        return renderJson(true);
     }
 
 }

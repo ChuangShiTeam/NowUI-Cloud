@@ -1,6 +1,8 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.router.TopicRouter;
 import com.nowui.cloud.sns.topic.service.TopicService;
@@ -157,6 +159,20 @@ public class TopicAdminController extends BaseController {
 //        return renderJson(result);
         
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "动态数据同步")
+    @RequestMapping(value = "/topic/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Topic body) {
+    	List<Topic> topicList = topicService.listByMysql();
+    	
+    	for (Topic topic : topicList) {
+			TopicView topicView = new TopicView();
+			topicView.putAll(topic);
+			topicService.update(topicView);
+		}
+
+        return renderJson(true);
     }
 
 }

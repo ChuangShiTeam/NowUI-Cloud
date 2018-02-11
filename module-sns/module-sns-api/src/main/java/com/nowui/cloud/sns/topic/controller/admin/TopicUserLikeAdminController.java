@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 
 import io.swagger.annotations.Api;
@@ -121,6 +123,20 @@ public class TopicUserLikeAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "动态点赞数据同步")
+    @RequestMapping(value = "/topic/user/like/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicUserLike body) {
+    	List<TopicUserLike> topicUserLikes = topicUserLikeService.listByMysql();
+    	
+    	for (TopicUserLike topicUserLike : topicUserLikes) {
+			TopicUserLikeView topicUserLikeView = new TopicUserLikeView();
+			topicUserLikeView.putAll(topicUserLike);
+			topicUserLikeService.update(topicUserLikeView);
+		}
+
+        return renderJson(true);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
+import com.nowui.cloud.sns.forum.view.ForumView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -116,6 +118,21 @@ public class ForumUserFollowAdminController extends BaseController {
 // TODO       Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "论坛关注数据同步")
+    @RequestMapping(value = "/forum/user/follow/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody ForumUserFollow body) {
+    	
+    	List<ForumUserFollow> forumUserFollowlist = forumUserFollowService.listByMysql();
+    	
+    	for (ForumUserFollow forumUserFollow : forumUserFollowlist) {
+			ForumUserFollowView forumUserFollowView = new ForumUserFollowView();
+			forumUserFollowView.putAll(forumUserFollow);
+			forumUserFollowService.update(forumUserFollowView);
+		}
+
+        return renderJson(true);
     }
 
 }

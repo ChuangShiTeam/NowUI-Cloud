@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.router.TopicForumRouter;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.util.Util;
 
@@ -125,6 +127,20 @@ public class TopicForumAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "圈子动态数据同步")
+    @RequestMapping(value = "/topic/forum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicForum body) {
+    	List<TopicForum> topicForums = topicForumService.listByMysql();
+    	
+    	for (TopicForum topicForum : topicForums) {
+			TopicForumView topicForumView = new TopicForumView();
+			topicForumView.putAll(topicForum);
+			topicForumService.update(topicForumView);
+		}
+
+        return renderJson(true);
     }
 
 }

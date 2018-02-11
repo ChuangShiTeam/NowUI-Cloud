@@ -1,10 +1,12 @@
 package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.router.ForumUserUnfollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
+import com.nowui.cloud.sns.forum.view.ForumView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -118,6 +120,21 @@ public class ForumUserUnfollowAdminController extends BaseController {
 //  admin中的,先注释      Boolean result = forumUserUnfollowService.delete(body.getForumUserUnfollowId(), body.getAppId(), ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "论坛用户取消关注数据同步")
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody ForumUserUnfollow body) {
+    	
+    	List<ForumUserUnfollow> forumUserUnfollows= forumUserUnfollowService.listByMysql();
+    	
+    	for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollows) {
+			ForumUserUnfollowView forumUserUnfollowView = new ForumUserUnfollowView();
+			forumUserUnfollowView.putAll(forumUserUnfollow);
+			forumUserUnfollowService.update(forumUserUnfollowView);
+		}
+
+        return renderJson(true);
     }
 
 }

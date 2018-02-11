@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 
 import io.swagger.annotations.Api;
@@ -121,6 +123,21 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    
+    @ApiOperation(value = "动态取消收藏数据同步")
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicUserUnbookmark body) {
+    	List<TopicUserUnbookmark> unbookmarks = topicUserUnbookmarkService.listByMysql();
+    	
+    	for (TopicUserUnbookmark unbookmark : unbookmarks) {
+			TopicUserUnbookmarkView unbookmarkView = new TopicUserUnbookmarkView();
+			unbookmarkView.putAll(unbookmark);
+			topicUserUnbookmarkService.update(unbookmarkView);
+		}
+
+        return renderJson(true);
     }
 
 }

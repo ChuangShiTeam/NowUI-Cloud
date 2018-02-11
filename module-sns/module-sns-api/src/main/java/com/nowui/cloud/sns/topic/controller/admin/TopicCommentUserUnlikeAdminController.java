@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicCommentUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
+import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
 
 import io.swagger.annotations.Api;
@@ -131,6 +133,20 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "动态评论取消点赞数据同步")
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicCommentUserUnlike body) {
+    	List<TopicCommentUserUnlike> topicCommentUserUnlikeList = topicCommentUserUnlikeService.listByMysql();
+    	
+    	for (TopicCommentUserUnlike topicCommentUserUnlike : topicCommentUserUnlikeList) {
+			TopicCommentUserUnlikeView topicCommentUserUnlikeView = new TopicCommentUserUnlikeView();
+			topicCommentUserUnlikeView.putAll(topicCommentUserUnlike);
+			topicCommentUserUnlikeService.update(topicCommentUserUnlikeView);
+		}
+
+        return renderJson(true);
     }
 
 }

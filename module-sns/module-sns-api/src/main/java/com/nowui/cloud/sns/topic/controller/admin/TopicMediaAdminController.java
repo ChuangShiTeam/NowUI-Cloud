@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.router.TopicMediaRouter;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
+import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.sns.topic.view.TopicMediaView;
 
 import io.swagger.annotations.Api;
@@ -127,5 +129,21 @@ public class TopicMediaAdminController extends BaseController {
 //        return renderJson(result);
         return renderJson(null);
     }
+    
+    @ApiOperation(value = "动态图片数据同步")
+    @RequestMapping(value = "/topic/media/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicMedia body) {
+    	List<TopicMedia> topicMedias = topicMediaService.listByMysql();
+    	
+    	for (TopicMedia topicMedia : topicMedias) {
+			TopicMediaView topicMediaView = new TopicMediaView();
+			topicMediaView.putAll(topicMedia);
+			topicMediaService.update(topicMediaView);
+		}
+
+        return renderJson(true);
+    }
+    
+    
 
 }

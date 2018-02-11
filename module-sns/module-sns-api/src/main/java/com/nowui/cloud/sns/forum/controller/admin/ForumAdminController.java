@@ -297,9 +297,9 @@ public class ForumAdminController extends BaseController {
     @RequestMapping(value = "/forum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody Forum body) {
     	
-    	List<Forum> Forumlist = forumService.listByMysql();
+    	List<Forum> forumlist = forumService.listByMysql();
     	
-    	for (Forum forum : Forumlist) {
+    	for (Forum forum : forumlist) {
 			ForumView forumView = new ForumView();
 			forumView.putAll(forum);
 			forumService.update(forumView);

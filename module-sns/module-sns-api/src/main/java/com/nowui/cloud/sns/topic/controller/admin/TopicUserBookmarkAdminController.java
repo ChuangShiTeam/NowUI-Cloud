@@ -1,9 +1,11 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
+import com.nowui.cloud.sns.topic.view.TopicTipView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 
 import io.swagger.annotations.Api;
@@ -121,6 +123,20 @@ public class TopicUserBookmarkAdminController extends BaseController {
 
 //        return renderJson(result);
         return renderJson(null);
+    }
+    
+    @ApiOperation(value = "动态收藏数据同步")
+    @RequestMapping(value = "/topic/user/bookmark/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody TopicUserBookmark body) {
+    	List<TopicUserBookmark> topicUserBookmarks = topicUserBookmarkService.listByMysql();
+    	
+    	for (TopicUserBookmark topicUserBookmark : topicUserBookmarks) {
+			TopicUserBookmarkView userBookmarkView = new TopicUserBookmarkView();
+			userBookmarkView.putAll(topicUserBookmark);
+			topicUserBookmarkService.update(userBookmarkView);
+		}
+
+        return renderJson(true);
     }
 
 }

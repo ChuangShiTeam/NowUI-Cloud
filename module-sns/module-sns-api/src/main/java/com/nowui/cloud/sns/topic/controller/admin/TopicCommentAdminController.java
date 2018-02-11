@@ -1,10 +1,12 @@
 package com.nowui.cloud.sns.topic.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -133,6 +135,21 @@ public class TopicCommentAdminController extends BaseController {
 //  TODO admin先注释掉      Boolean result = topicCommentService.delete(body.getTopicCommentId(), body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
+    }
+    
+    
+    @ApiOperation(value = "动态评论数据同步")
+    @RequestMapping(value = "/topic/comment/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1(@RequestBody Topic body) {
+    	List<TopicComment> topicCommentList = topicCommentService.listByMysql();
+    	
+    	for (TopicComment topicComment : topicCommentList) {
+			TopicCommentView topicCommentView = new TopicCommentView();
+			topicCommentView.putAll(topicComment);
+			topicCommentService.update(topicCommentView);
+		}
+
+        return renderJson(true);
     }
 
 }
