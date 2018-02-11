@@ -854,7 +854,7 @@ public class TopicMobileController extends BaseController {
             		JSONObject topicForumJson = (JSONObject)object;
             		TopicForum topicForum = JSONObject.parseObject(topicForumJson.toString(), TopicForum.class);
             		
-                	// 如果保存话题时,所同步到的话题为null,那么跳过,不然报错
+                	// 如果保存话题时,所同步到的论坛没有找到,那么跳过
                     ForumView forum = forumService.find(topicForum.getForumId());
                     if (Util.isNullOrEmpty(forum)) {
                         continue;
@@ -887,7 +887,7 @@ public class TopicMobileController extends BaseController {
              * 论坛列表
              * 提醒谁的列表
              * 
-             * 都保存到话题表
+             * 保存到话题表
              */
             TopicView topicView = JSON.parseObject(result.toJSONString(), TopicView.class);
             
@@ -912,6 +912,11 @@ public class TopicMobileController extends BaseController {
 				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);
 				topicForumService.save(topicForumView);
 			}
+            
+            /**
+             * 保存话题提醒表
+             */
+            
             
             
 //            sendMessage(body, TopicRouter.TOPIC_V1_SAVE, appId, userId);
@@ -940,6 +945,23 @@ public class TopicMobileController extends BaseController {
         
         if (result != null) {
 			
+        	
+        	//删除话题论坛关联
+
+            //删除话题多媒体
+
+            //删除话题评论
+
+            //删除话题收藏
+
+            //删除话题点赞 
+
+            //删除取消收藏 
+
+            //删除话题取消点赞
+        	
+        	
+        	
         	//sendMessage(result, TopicRouter.TOPIC_V1_DELETE, body.getAppId(), systemRequestUserId);
         	success = true;
 		}
