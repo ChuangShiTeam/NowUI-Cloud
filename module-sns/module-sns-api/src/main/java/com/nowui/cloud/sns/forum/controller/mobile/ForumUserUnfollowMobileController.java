@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
@@ -63,12 +64,14 @@ public class ForumUserUnfollowMobileController extends BaseController {
         
         body.setMemberId(memberId);
         
+        ForumUserFollow delResult = new ForumUserFollow();
+        
         //先去关注表查询
         ForumUserFollowView followBody = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, body.getForumId());
         //有: 删除
         if (followBody != null) {
 //  TODO  后面处理消息      	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, body.getSystemRequestUserId(), followBody.getSystemVersion());
-        	forumUserFollowService.delete(followBody.getForumUserFollowId(), requestUserId, followBody.getSystemVersion());
+        	delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), requestUserId, followBody.getSystemVersion());
 		}
         //没有: 就去取消关注表查询
         ForumUserUnfollowView unfollow = forumUserUnfollowService.findByMemberIdAndForumId(appId, memberId, body.getForumId());
@@ -83,6 +86,14 @@ public class ForumUserUnfollowMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
+        	
+        	//删除关注记录
+    		ForumUserFollowView userFollowView = JSON.parseObject(delResult.toJSONString(), ForumUserFollowView.class);
+    		forumUserFollowService.delete(userFollowView);
+        	
+        	//新增取关记录
+    		ForumUserUnfollowView userUnfollowView = JSON.parseObject(result.toJSONString(), ForumUserUnfollowView.class);
+    		forumUserUnfollowService.delete(userUnfollowView);
         	
         	//sendMessage(result, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_SAVE, appId, userId);
             

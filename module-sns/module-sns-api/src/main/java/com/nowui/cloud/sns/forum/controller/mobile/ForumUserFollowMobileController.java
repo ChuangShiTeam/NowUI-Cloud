@@ -91,14 +91,9 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String forumId = body.getForumId();
         
-        //先查询取消关注表有没有记录
-        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByMemberIdAndForumId(appId, memberId, forumId);
-        //有: 删除
-        if (!Util.isNullOrEmpty(unfollow)) {
-//  TODO 后面处理消息 	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, userId, unfollow.getSystemVersion());
-        	forumUserUnfollowService.deleteByForumId(appId, forumId, requestUserId);
-		}
-        //没有: 去关注表看有没有记录
+        
+        
+       //去关注表看有没有记录
         ForumUserFollowView forumUserFollow = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, forumId);
         //有: 返回true
         if (!Util.isNullOrEmpty(forumUserFollow)) {
@@ -116,6 +111,22 @@ public class ForumUserFollowMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
+        	//查询取消关注表有没有记录
+            ForumUserUnfollowView unfollow = forumUserUnfollowService.findByMemberIdAndForumId(appId, memberId, forumId);
+            //有: 删除
+            if (!Util.isNullOrEmpty(unfollow)) {
+//  TODO 后面处理消息 	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, userId, unfollow.getSystemVersion());
+            	ForumUserUnfollow delResult = forumUserUnfollowService.deleteByForumId(appId, forumId, requestUserId);
+            	
+            	if (delResult != null) {
+            		// 处理删除取消关注记录
+            		delResult.setForumId(forumId);
+            		ForumUserUnfollowView userUnfollowView = JSON.parseObject(delResult.toJSONString(), ForumUserUnfollowView.class);
+            		forumUserUnfollowService.delete(userUnfollowView);
+                	
+				}
+    		}
+        	
         	
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
         	forumUserFollowService.save(forumUserFollowView);
@@ -224,13 +235,13 @@ public class ForumUserFollowMobileController extends BaseController {
             }
         }
         
-        	// TODO 怎么发送message       
-//        	sendMessage(body, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
-            
-            success = true;
-            
-            return renderJson(success);
-        }
+//		TODO 怎么发送message       
+//    	sendMessage(body, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
+        
+        success = true;
+        
+        return renderJson(success);
+    }
         
 
     @ApiOperation(value = "用户关注论坛列表")
@@ -251,7 +262,7 @@ public class ForumUserFollowMobileController extends BaseController {
         String requestMemberId = member.getMemberId();
 
         Integer resultTotal = forumUserFollowService.countByMemberId(body.getAppId(), requestMemberId);
-        
+
         List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByMemberId(appId, requestMemberId, body.getPageIndex(), body.getPageSize());
 
         List<ForumView> forumList = new ArrayList<>();
@@ -263,7 +274,7 @@ public class ForumUserFollowMobileController extends BaseController {
             // 论坛当日话题最新数量
             Integer count = topicForumService.countTodayByForumId(forumUserFollow.getForumId());
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
-            
+
             forumList.add(forum);
         }
 
@@ -333,10 +344,10 @@ public class ForumUserFollowMobileController extends BaseController {
         Boolean success = false;
         
         if (result != null) {
-        	forumUserFollowEntry.setForumUserFollowIsTop(true);
         	
+        	forumUserFollowEntry.setForumUserFollowIsTop(true);
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
-        	forumUserFollowService.save(forumUserFollowView);
+        	forumUserFollowService.update(forumUserFollowView);
 
 //        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
 

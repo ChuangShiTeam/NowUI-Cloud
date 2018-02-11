@@ -62,8 +62,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
         Member member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
-        
-        String appId = body.getAppId();
+
 
         TopicUserUnbookmarkView topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndMemberId(topicId, memberId);
         if (!Util.isNullOrEmpty(topicUserUnbookmark)) {
@@ -71,7 +70,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 		}
 
         body.setMemberId(memberId);
-//        Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
+//      Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
         TopicUserUnbookmark result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), requestUserId);
         
         boolean success = false;
@@ -79,7 +78,6 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
         if (result != null) {
         	
             TopicUserBookmark userBookmark = topicUserBookmarkService.deleteByTopicIdAndMemberId(topicId, memberId, body.getAppId(), requestUserId);
-            
             
             if (userBookmark != null) {
             	//TODO 删除收藏记录

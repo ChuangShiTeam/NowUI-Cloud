@@ -284,7 +284,7 @@ public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollow
                 .and(ForumUserFollowView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
-        orders.add(new Order(Sort.Direction.DESC, ForumUserFollowView.SYSTEM_CREATE_TIME));
+        orders.add(new Order(Sort.Direction.ASC, ForumUserFollowView.SYSTEM_CREATE_TIME));
         Sort sort = Sort.by(orders);
 
         Query query = new Query(criteria);

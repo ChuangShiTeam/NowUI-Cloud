@@ -459,7 +459,7 @@ public class ForumMobileController extends BaseController {
         	
         	
         	/**
-        	 * 操作MongoDB
+        	 * TODO 操作MongoDB,这个后期查询,增加没问题了去看文档里有哪些存有论坛信息的,再来删除
         	 */
         	//TODO 这里逻辑有问题
         	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);

@@ -135,20 +135,20 @@ public class TopicCommentMobileController extends BaseController {
 //        }
         
         validateResponse(
-                TopicComment.TOPIC_COMMENT_ID,
-                TopicComment.MEMBER_ID,
-                TopicComment.TOPIC_ID,
-                TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
-                TopicComment.TOPIC_REPLY_COMMENT_ID,
-                TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
-                User.USER_ID,
-        		UserAvatar.USER_AVATAR,
-        		UserNickName.USER_NICK_NAME,
-        		TopicComment.SYSTEM_CREATE_TIME,
-        		TopicComment.TOPIC_COMMENT_IS_SELF,
-        		TopicComment.TOPIC_COMMENT_IS_LIKE,
-        		TopicComment.TOPIC_COMMENT_LIKE_COUNT
+            TopicComment.TOPIC_COMMENT_ID,
+            TopicComment.MEMBER_ID,
+            TopicComment.TOPIC_ID,
+            TopicComment.TOPIC_COMMENT_CONTENT,
+            TopicComment.TOPIC_REPLAY_MEMBER_ID,
+            TopicComment.TOPIC_REPLY_COMMENT_ID,
+            TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
+            User.USER_ID,
+    		UserAvatar.USER_AVATAR,
+    		UserNickName.USER_NICK_NAME,
+    		TopicComment.SYSTEM_CREATE_TIME,
+    		TopicComment.TOPIC_COMMENT_IS_SELF,
+    		TopicComment.TOPIC_COMMENT_IS_LIKE,
+    		TopicComment.TOPIC_COMMENT_LIKE_COUNT
         );
 
         return renderJson(resultTotal, topicCommentList);

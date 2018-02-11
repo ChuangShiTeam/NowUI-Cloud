@@ -50,6 +50,7 @@ import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
+import com.nowui.cloud.sns.topic.view.TopicTipView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
@@ -124,20 +125,20 @@ public class TopicMobileController extends BaseController {
         List<TopicView> resultList = topicService.listByForumId(appId, body.getForumId(), requestMemberId, body.getPageIndex(), body.getPageSize());
 
         //TODO 先注释掉,新架构不用再调用rpc来处理头像
-//        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
-//        
-//        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-//        
-//        resultList = Util.beanAddField(
-//                resultList, 
-//                Topic.USER_ID, 
-//                User.USER_ID, 
-//                nickAndAvatarAndIsFollowList, 
-//                User.USER_ID,
-//                UserAvatar.USER_AVATAR,
-//                UserNickName.USER_NICK_NAME,
-//                MemberFollow.MEMBER_IS_FOLLOW
-//            );
+//      String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
+//      
+//      List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
+//      
+//      resultList = Util.beanAddField(
+//              resultList, 
+//              Topic.USER_ID, 
+//              User.USER_ID, 
+//              nickAndAvatarAndIsFollowList, 
+//              User.USER_ID,
+//              UserAvatar.USER_AVATAR,
+//              UserNickName.USER_NICK_NAME,
+//              MemberFollow.MEMBER_IS_FOLLOW
+//          );
         
         
         // 处理话题
@@ -155,10 +156,8 @@ public class TopicMobileController extends BaseController {
             String theSendMemberId = topic.getMemberId();
             
             topic.put(Topic.TOPIC_IS_SELF, theSendMemberId.equals(requestMemberId));
-            
-            
         }
-        
+
         validateResponse(
                 Topic.TOPIC_ID,
                 Topic.TOPIC_SUMMARY,
@@ -254,7 +253,6 @@ public class TopicMobileController extends BaseController {
         Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
         List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
-        //复制start
         
         // TODO 处理会员信息不用借口了  在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -272,8 +270,8 @@ public class TopicMobileController extends BaseController {
 //        );
         
         
-        // 图片多媒体
         for (TopicView topic : resultList) {
+        	  // 图片多媒体
 //            List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
 
 //            String fileIds = Util.beanToFieldString(topicMediaList, TopicMedia.TOPIC_MEDIA);
@@ -319,7 +317,6 @@ public class TopicMobileController extends BaseController {
             topic.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
         }
         
-        //复制end
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -723,45 +720,41 @@ public class TopicMobileController extends BaseController {
         Integer count = topicService.countAllUserTopic();
         
         List<TopicView> allUserTopic = topicService.allUserTopic((List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
-        
-        for (TopicView topicView : allUserTopic) {
-        	topicView.put(Topic.TOPIC_IS_SELF, requestMemberId.equals(topicView.getMemberId()));
-        	
-        	/**
-        	 * 获取点赞信息
-        	 */
-        	//点赞数量,
-            Integer likeCount = topicUserLikeService.countByTopicId(topicView.getTopicId());
-            topicView.put(Topic.TOPIC_COUNT_LIKE, likeCount);
-            //请求用户是否点赞
-            TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
-            topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
-            
-            /**
-             * 获取收藏信息
-             */
-            //收藏数量
-            Integer bookMarkCount = topicUserBookmarkService.countByTopicId(topicView.getTopicId());
-            topicView.put(Topic.TOPIC_COUNT_BOOKMARK, bookMarkCount);
-            //请求用户是否收藏
-            TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
-            topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
-            
-            /**
-             * 评论信息
-             */
-            // 话题评论数
-            Integer countComment = topicCommentService.countByTopicId(topicView.getTopicId());
-            topicView.put(Topic.TOPIC_COUNT_COMMENT, countComment);
-            
+        if (!Util.isNullOrEmpty(allUserTopic)) {
+        	for (TopicView topicView : allUserTopic) {
+            	topicView.put(Topic.TOPIC_IS_SELF, requestMemberId.equals(topicView.getMemberId()));
+            	
+            	/**
+            	 * 获取点赞信息
+            	 */
+            	//点赞数量,
+                Integer likeCount = topicUserLikeService.countByTopicId(topicView.getTopicId());
+                topicView.put(Topic.TOPIC_COUNT_LIKE, likeCount);
+                //请求用户是否点赞
+                TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
+                topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
+                
+                /**
+                 * 获取收藏信息
+                 */
+                //收藏数量
+                Integer bookMarkCount = topicUserBookmarkService.countByTopicId(topicView.getTopicId());
+                topicView.put(Topic.TOPIC_COUNT_BOOKMARK, bookMarkCount);
+                //请求用户是否收藏
+                TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
+                topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
+                
+                /**
+                 * 评论信息
+                 */
+                // 话题评论数
+                Integer countComment = topicCommentService.countByTopicId(topicView.getTopicId());
+                topicView.put(Topic.TOPIC_COUNT_COMMENT, countComment);
+    		}
 		}
         
         
-        
-        
-        
 //        List<Topic> resultList = topicService.listDetailByUserIdList(body.getAppId(), body.getSystemRequestUserId(), followUserIdList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
-        
         
         validateResponse(
                 Topic.TOPIC_ID,
@@ -832,13 +825,9 @@ public class TopicMobileController extends BaseController {
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
         // 保存话题
-// TODO 没有缓存动态数量的话,就不调用这个方法了,直接保存 
-//        Boolean result = topicService.saveWithRedis(body, topicId, userId);
         Topic result = topicService.save(body, topicId, requestUserId);
         
         boolean success = false;
-        
-        
         
         if (result != null) {
             
@@ -882,17 +871,11 @@ public class TopicMobileController extends BaseController {
             
             // TODO 保存到MongoDB
             /**
-             * 话题
-             * 多媒体列表
-             * 论坛列表
-             * 提醒谁的列表
-             * 
+             * 话题,多媒体列表,论坛列表,提醒谁的列表
              * 保存到话题表
              */
             TopicView topicView = JSON.parseObject(result.toJSONString(), TopicView.class);
-            
             topicService.save(topicView);
-            
             
             
             /**
@@ -916,8 +899,17 @@ public class TopicMobileController extends BaseController {
             /**
              * 保存话题提醒表
              */
-            
-            
+            if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
+                 List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
+                 
+                 for (String tipMemberId : tipMemberIdList) {
+                	 TopicTip topicTip = new TopicTip();
+                     topicTip.setMemberId(tipMemberId);
+                     
+                     TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
+                     topicTipService.save(topicTipView);
+				}
+             }
             
 //            sendMessage(body, TopicRouter.TOPIC_V1_SAVE, appId, userId);
             success = true;
