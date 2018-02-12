@@ -337,6 +337,11 @@ public class ForumMobileController extends BaseController {
 	   Boolean success = false;
 
        if (result != null) {
+    	   
+    	   
+    	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+    	   forumService.update(forumView);
+	      
            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
@@ -371,6 +376,12 @@ public class ForumMobileController extends BaseController {
        Boolean success = false;
 
        if (result != null) {
+    	   
+    	   // TODO 在topic表中的topicforumlist中用到了forumName
+    	   // 有两个修改方案:
+    	   //   1,查询topic时,遍历topicforumlist,得到forumName,并返回(可以对论坛信息表使用缓存)
+    	   //  	2,使用消息,查找话题论坛表,找到关联到的话题列表,遍历修改论坛名称(可以对话题论坛表使用缓存)
+       
     	   
     	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
     	   forumService.update(forumView);
@@ -409,9 +420,9 @@ public class ForumMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-        	
-        	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
-     	   forumService.update(forumView);
+            
+            ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+     	    forumService.update(forumView);
         	
             //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
@@ -472,8 +483,11 @@ public class ForumMobileController extends BaseController {
         	
         	
         	
-        	
-        	
+        	// TODO 在topic表中的topicforumlist中用到了forumName
+     	   // 有两个删除方案:
+     	   //   1,查询topic时,遍历topicforumlist,没有在话题论坛表中找到论坛就删除(可以对论坛信息表使用缓存)
+     	   //  	2,使用消息,查找话题论坛表,找到关联到的话题列表(这时可能论坛已经被删除了,所以可以查找status为false),遍历删除同步到的论坛(可以对话题论坛表使用缓存)
+        
         	
         	
         	
