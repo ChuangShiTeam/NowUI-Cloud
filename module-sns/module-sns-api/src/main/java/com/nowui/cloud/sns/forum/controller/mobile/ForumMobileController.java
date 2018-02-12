@@ -364,8 +364,12 @@ public class ForumMobileController extends BaseController {
 	   String requestUserId = body.getSystemRequestUserId();
 	   Member member = memberRpc.findByUserIdV1(requestUserId);
 	   String memberId = member.getMemberId();
-	    
-       ForumView forum = forumService.find(body.getForumId());
+	   String appId = body.getAppId();
+	   String forumId = body.getForumId();
+       ForumView forum = forumService.find(forumId);
+       String forumName = forum.getForumName();
+       
+       
        if (!memberId.equals(forum.getForumModerator())) {
        		return renderJson(false);
 		}
@@ -382,6 +386,23 @@ public class ForumMobileController extends BaseController {
     	   //   1,查询topic时,遍历topicforumlist,得到forumName,并返回(可以对论坛信息表使用缓存)
     	   //  	2,使用消息,查找话题论坛表,找到关联到的话题列表,遍历修改论坛名称(可以对话题论坛表使用缓存)
        
+    	   
+    	   List<TopicForumView> topicForumViews = topicForumService.listByForumId(appId, forumId);
+           for (TopicForumView topicForumView : topicForumViews) {
+				JSONObject topicInfo = topicForumView.getTopicInfo();
+				// 从topicInfo中取出topicMediaList 数组
+				List<JSONObject> topicForumList = (List<JSONObject>) topicInfo.get(Topic.TOPIC_FORUM_LIST);
+				for (JSONObject theTopicForum : topicForumList) {
+					// 取到每个对象的论坛名称
+					String theForumName = (String) theTopicForum.get(Forum.FORUM_NAME);
+					if (forumName.equals(theForumName)) {
+						theTopicForum.put(Forum.FORUM_NAME, forumName);
+						break;
+					}
+				}
+	            topicForumService.update(topicForumView);
+			}
+    	   
     	   
     	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
     	   forumService.update(forumView);
@@ -446,52 +467,66 @@ public class ForumMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
  	    Member member = memberRpc.findByUserIdV1(requestUserId);
  	    String memberId = member.getMemberId();
+ 	    String appId = body.getAppId();
+ 	    String forumId = body.getForumId();
  	    
-        ForumView forum = forumService.find(body.getForumId());
+        ForumView forum = forumService.find(forumId);
+        String forumName = forum.getForumName();
         if (!memberId.equals(forum.getForumModerator())) {
         		return renderJson(false);
         }
         
         //先从论坛信息表删除
 //        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
-        Forum result = forumService.delete(body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
+        Forum result = forumService.delete(forumId, requestUserId, forum.getSystemVersion());
         
         Boolean success = false;
         
         if (result != null) {
         	//再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
-        	TopicForum topicForum = topicForumService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	TopicForum topicForum = topicForumService.deleteByForumId(appId, forumId, requestUserId);
         	
         	//从论坛关注表中删除有forumId的记录
-        	ForumUserFollow forumUserFollow = forumUserFollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	ForumUserFollow forumUserFollow = forumUserFollowService.deleteByForumId(appId, forumId, requestUserId);
         	
         	//从论坛取消关注表删除有forumId的记录
-        	ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.deleteByForumId(body.getAppId(), body.getForumId(), body.getSystemRequestUserId());
+        	ForumUserUnfollow forumUserUnfollow = forumUserUnfollowService.deleteByForumId(appId, forumId, requestUserId);
         	
         	
         	/**
-        	 * TODO 操作MongoDB,这个后期查询,增加没问题了去看文档里有哪些存有论坛信息的,再来删除
+        	 * TODO 操作MongoDB,去看mongodb文档里有哪些存有论坛信息的,在这里删除掉
         	 */
-        	//TODO 这里逻辑有问题
-        	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
-        	
-        	
-        	
-        	
-        	
-      	    //TODO 这里要有删除MongoDB主业务的删除方法,Mark
-        	
         	
         	
         	// TODO 在topic表中的topicforumlist中用到了forumName
-     	   // 有两个删除方案:
-     	   //   1,查询topic时,遍历topicforumlist,没有在话题论坛表中找到论坛就删除(可以对论坛信息表使用缓存)
-     	   //  	2,使用消息,查找话题论坛表,找到关联到的话题列表(这时可能论坛已经被删除了,所以可以查找status为false),遍历删除同步到的论坛(可以对话题论坛表使用缓存)
-        
+      	   // 有两个删除方案:
+      	   //   1,查询topic时,遍历topicforumlist,没有在话题论坛表中找到论坛就删除(可以对论坛信息表使用缓存)
+      	   //  	2,使用消息(或者不用),查找话题论坛表,找到关联到的话题列表(这个要放到主业务删除逻辑的前面,是有原因的),遍历删除同步到的论坛(可以对话题论坛表使用缓存)
+        	// 用第2个
+            List<TopicForumView> topicForumViews = topicForumService.listByForumId(appId, forumId);
+            for (TopicForumView topicForumView : topicForumViews) {
+				JSONObject topicInfo = topicForumView.getTopicInfo();
+				// 从topicInfo中取出topicMediaList 数组
+				List<JSONObject> topicForumList = (List<JSONObject>) topicInfo.get(Topic.TOPIC_FORUM_LIST);
+				for (JSONObject theTopicForum : topicForumList) {
+					// 取到每个对象的论坛名称
+					String theForumName = (String) theTopicForum.get(Forum.FORUM_NAME);
+					if (forumName.equals(theForumName)) {
+						topicForumList.remove(theTopicForum);
+						break;
+					}
+				}
+	            topicForumService.update(topicForumView);
+			}
+        	
+        	
+        	//TODO 这里逻辑有问题
+        	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+      	    //TODO 这里要有删除MongoDB主业务的删除方法,Mark
+        	forumService.delete(forumView);
         	
         	
         	
-        	//TODO 只发送一个消息?
         	//sendMessage(result, ForumRouter.FORUM_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
 
         	success = true;

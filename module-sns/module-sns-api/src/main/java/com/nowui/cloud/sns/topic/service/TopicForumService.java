@@ -76,6 +76,15 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
     List<TopicForumView> listByForumId(String appId, String forumId, Integer pageIndex, Integer pageSize);
     
     /**
+     * 根据论坛编号查询话题论坛列表
+     * 
+     * @param forumId 论坛编号
+     * @return List<TopicForum> 话题论坛列表
+     */
+    List<TopicForumView> listByForumId(String appId, String forumId);
+    
+    
+    /**
      * 根据论坛编号查询话题论坛列表(根据上次查询排除)
      * 
      * @param forumId 论坛编号
