@@ -226,15 +226,12 @@ public class ArticleAdminController extends BaseController {
 
         Article result = articleService.delete(articleEntity.getArticleId(), articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            //sendMessage(result, ArticleRouter.ARTICLE_V1_DELETE, articleEntity.getAppId(), articleEntity.getSystemRequestUserId());
-
-            success = true;
+            ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
+            articleService.update(articleView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "文章数据同步")
