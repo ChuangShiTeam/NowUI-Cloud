@@ -99,8 +99,8 @@ hystrix:
           strategy: THREAD
 
 ribbon:
-  ReadTimeout: 3000 # 处理时间
-  ConnectTimeout: 3000 # 连接时间
+  ReadTimeout: 10000 # 处理时间
+  ConnectTimeout: 10000 # 连接时间
   MaxAutoRetries: 0 #最大自动重试次数
   OkToRetryOnAllOperations: true #对所有操作请求都进行重试
   MaxAutoRetries: 10 #对当前实例的重试次数
