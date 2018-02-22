@@ -21,6 +21,8 @@ spring:
     static-path-pattern: /upload/**
   resources:
     static-locations: file:D:/static/upload/
+config:
+  uploadFilePath: D:/static
   datasource:
       url: jdbc:mysql://118.31.229.16:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
@@ -103,8 +105,6 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-config:
-  uploadFilePath: D:/static
 
 hystrix:
   command:

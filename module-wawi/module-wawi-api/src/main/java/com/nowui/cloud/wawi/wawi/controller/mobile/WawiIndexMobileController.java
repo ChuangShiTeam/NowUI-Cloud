@@ -53,7 +53,7 @@ public class WawiIndexMobileController extends BaseController {
     
     @Autowired
     private ArticleRpc articleRpc;
-    
+
     @Autowired
     private FileRpc fileRpc;
     

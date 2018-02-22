@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
@@ -57,7 +56,6 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_ID,
                 ArticleCategory.ARTICLE_CATEGORY_NAME,
                 Article.ARTICLE_TITLE,
-                File.FILE_PATH,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_AUTHOR,
                 Article.ARTICLE_PUBLISH_TIME,
@@ -109,7 +107,6 @@ public class ArticleAdminController extends BaseController {
 
         validateSecondResponse(ArticleView.ARTICLE_PRIMARY_ARTICLE_CATEGORY, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
         validateSecondResponse(ArticleView.ARTICLE_SECONDARY_ARTICLE_CATEGORY_LIST, ArticleArticleCategory.ARTICLE_CATEGORY_ID);
-        validateSecondResponse(ArticleView.ARTICLE_MEDIA, File.FILE_ID, File.FILE_PATH);
 
         return renderJson(result);
     }

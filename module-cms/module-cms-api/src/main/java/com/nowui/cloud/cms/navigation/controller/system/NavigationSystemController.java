@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.rpc.NavigationRpc;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
@@ -28,9 +26,6 @@ public class NavigationSystemController implements NavigationRpc {
     
     @Autowired
     private NavigationService navigationService;
-    
-    @Autowired
-    private FileRpc fileRpc;
 
     @Override
     public List<Navigation> listByCategoryCodeV1(String appId, String navigationCategoryCode) {
@@ -43,9 +38,9 @@ public class NavigationSystemController implements NavigationRpc {
         
         String fileIds = Util.beanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE);
         
-        List<File> fileList = fileRpc.findsV1(fileIds);
+//        List<File> fileList = fileRpc.findsV1(fileIds);
         
-        navigationList = Util.beanAddField(navigationList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
+//        navigationList = Util.beanAddField(navigationList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
         
         return navigationList;
     }
