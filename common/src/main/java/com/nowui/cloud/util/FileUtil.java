@@ -21,12 +21,31 @@ import java.nio.channels.FileChannel;
 
 import javax.imageio.ImageIO;
 
+import com.nowui.cloud.constant.Constant;
 import org.springframework.util.FileCopyUtils;
 
 /**
+ * 文件业务实现
+ *
  * @author ZhongYongQiang
+ *
+ * 2018-01-01
  */
 public class FileUtil {
+
+    public static String webRootPath;
+
+    public static String uploadPath;
+
+    static {
+        try {
+            webRootPath = FileUtil.class.getResource("/").toURI().getPath();
+            uploadPath = webRootPath + "/" + Constant.UPLOAD;
+            createPath(uploadPath);
+        } catch (Exception var1) {
+            throw new RuntimeException(var1);
+        }
+    }
 
     /**
      * 创建文件路径
@@ -215,7 +234,7 @@ public class FileUtil {
     /**
      * 根据文件url获取文件输入流
      * 
-     * @param 下载文件url
+     * @param url 下载文件
      * @throws Exception
      */
     private static InputStream getInputStream(String url) throws Exception {
@@ -243,8 +262,8 @@ public class FileUtil {
     /**
      * 下载文件到本地
      * 
-     * @param url 文件url
-     * @param fileName 文件名称
+     * @param sourceUrl 文件url
+     * @param destinationUrl 文件名称
      * @throws Exception
      */
     public static void saveFileToDisk(String sourceUrl, String destinationUrl) throws Exception {
