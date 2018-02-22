@@ -118,7 +118,7 @@ public class FileAdminController extends BaseController {
 
         return renderJson(success);
     }
-    
+
     @ApiOperation(value = "图片上传")
     @RequestMapping(value = "/file/admin/v1/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, Object> uploadImageV1(
@@ -129,16 +129,16 @@ public class FileAdminController extends BaseController {
             throw new BusinessException("上传文件为空");
         }
         List<File> fileList = fileService.uploadImage(appId, systemRequestUserId, multipartFiles);
-        
+
         validateResponse(
             File.FILE_ID,
             File.FILE_NAME,
             File.FILE_PATH
         );
-        
+
         return renderJson(fileList);
     }
-    
+
     @ApiOperation(value = "base64图片上传")
     @RequestMapping(value = "/file/admin/image/base64/upload", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> imageBase64Upload() {
@@ -147,9 +147,9 @@ public class FileAdminController extends BaseController {
         String appId = fileEntity.getString(File.APP_ID);
         String userId = fileEntity.getString(File.SYSTEM_REQUEST_USER_ID);
         String base64Data = fileEntity.getString(Constant.DATA);
-        
+
         File file = fileService.uploadBase64(appId, userId, base64Data);
-        
+
         validateResponse(
                 File.FILE_ID,
                 File.FILE_NAME,

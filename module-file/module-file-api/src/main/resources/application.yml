@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8081
 
 logging:
   level:
@@ -16,13 +16,11 @@ feign:
 
 spring:
   application:
-    name: module-file
+    name: module-base
   mvc:
     static-path-pattern: /upload/**
   resources:
     static-locations: file:D:/static/upload/
-config:
-  uploadFilePath: D:/static
   datasource:
       url: jdbc:mysql://118.31.229.16:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
@@ -81,7 +79,7 @@ mybatis-plus:
   mapper-locations: classpath:/com/nowui/cloud/file/**/sql/*.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.nowui.cloud.file.**.entity
-  #typeEnumsPackage: com.nowui.cloud.file.**.entity.enum
+  #typeEnumsPackage: com.nowui.cloud.base.**.entity.enum
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
     id-type: 3
@@ -105,6 +103,8 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
+config:
+  uploadFilePath: D:/static
 
 hystrix:
   command:
