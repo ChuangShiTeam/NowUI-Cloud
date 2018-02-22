@@ -139,6 +139,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      */
     Boolean save(V view);
 
+    /**
+     * 实体类新增
+     *
+     * @param viewList 视图类列表
+     * @return 是否成功
+     */
+    Boolean save(List<V> viewList);
+
 //    /**
 //     * 实体类新增
 //     *

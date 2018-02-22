@@ -2,7 +2,7 @@ package com.nowui.cloud.file.file.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.file.file.router.FileRouter;
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.file.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -130,6 +130,11 @@ public class FileAdminController extends BaseController {
         }
         List<File> fileList = fileService.uploadImage(appId, systemRequestUserId, multipartFiles);
 
+        for(File file : fileList) {
+            FileView fileView = JSON.parseObject(file.toJSONString(), FileView.class);
+            fileService.save(fileView);
+        }
+
         validateResponse(
             File.FILE_ID,
             File.FILE_NAME,
@@ -149,6 +154,9 @@ public class FileAdminController extends BaseController {
         String base64Data = fileEntity.getString(Constant.DATA);
 
         File file = fileService.uploadBase64(appId, userId, base64Data);
+
+        FileView fileView = JSON.parseObject(file.toJSONString(), FileView.class);
+        fileService.save(fileView);
 
         validateResponse(
                 File.FILE_ID,

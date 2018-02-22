@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  *
  * 2018-01-01
  */
-@Configuration
+//@Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override

@@ -32,7 +32,7 @@ import com.nowui.cloud.util.Util;
  * 文件业务实现
  *
  * @author marcus
- *
+ * <p>
  * 2018-01-01
  */
 @Service
@@ -76,9 +76,11 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File, FileRepo
 
     @Override
     public List<File> uploadImage(String appId, String userId, MultipartFile[] multipartFiles) {
-        String path = Util.createPath(FileUtil.uploadPath, appId, userId);
-        String thumbnailPath = Util.createPath(FileUtil.uploadPath, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(FileUtil.uploadPath, appId, userId, Constant.ORIGINAL);
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
+
+        System.out.println(path);
 
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
@@ -151,9 +153,9 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File, FileRepo
 
     @Override
     public File uploadBase64(String appId, String userId, String base64Data) {
-        String path = Util.createPath(FileUtil.uploadPath, appId, userId);
-        String thumbnailPath = Util.createPath(FileUtil.uploadPath, appId, userId, Constant.THUMBNAIL);
-        String originalPath = Util.createPath(FileUtil.uploadPath, appId, userId, Constant.ORIGINAL);
+        String path = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
+        String thumbnailPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.THUMBNAIL);
+        String originalPath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId, Constant.ORIGINAL);
 
         FileUtil.createPath(path);
         FileUtil.createPath(thumbnailPath);
@@ -229,7 +231,7 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File, FileRepo
     public File downloadWechatHeadImgToNative(String appId, String userId, String wechatHeadImgUrl) {
         String fileId = Util.getRandomUUID();
         String fileName = fileId + ".jpg";
-        String filePath = Util.createPath(FileUtil.uploadPath, appId, userId);
+        String filePath = Util.createPath(config.getUploadFilePath(), Constant.UPLOAD, appId, userId);
 
         FileUtil.createPath(filePath);
 

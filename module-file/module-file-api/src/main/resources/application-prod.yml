@@ -15,13 +15,17 @@ feign:
     enabled: false
 
 config:
-  uploadFilePath: D:/static
+  uploadFilePath: /usr/local/www
 
 spring:
   application:
     name: module-file
+  mvc:
+    static-path-pattern: /upload/**
+  resources:
+    static-locations: file:/usr/local/www/upload/
   datasource:
-      url: jdbc:mysql://118.31.229.16:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://118.31.229.16:3306/nowui_file?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
       password: Chuangshi123!
       driver-class-name: com.mysql.cj.jdbc.Driver
