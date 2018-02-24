@@ -3,9 +3,9 @@ package com.nowui.cloud.cms.advertisement.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.base.file.view.FileView;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

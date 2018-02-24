@@ -267,7 +267,7 @@ public class MemberMobileController extends BaseController {
             calendar2.add(Calendar.YEAR, 1);
 
             JSONObject jsonObject = new JSONObject();
-//            jsonObject.put(User.USER_ID, user.getUserId());
+            jsonObject.put(User.USER_ID, user.getUserId());
             jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
             
             result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));

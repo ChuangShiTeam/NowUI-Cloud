@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.router.ToolbarRouter;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
@@ -36,9 +34,6 @@ public class ToolbarAdminController extends BaseController {
     @Autowired
     private ToolbarService toolbarService;
 
-    @Autowired
-    private FileRpc fileRpc;
-
     @ApiOperation(value = "工具栏分页列表")
     @RequestMapping(value = "/toolbar/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
@@ -55,15 +50,15 @@ public class ToolbarAdminController extends BaseController {
         List<Toolbar> resultList = toolbarService.listForAdmin(toolbarEntity.getAppId(), toolbarEntity.getToolbarName(), toolbarEntity.getM(), toolbarEntity.getN());
         //处理工具栏未激活图片
         String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
-        List<File> fileList = fileRpc.findsV1(fileIds);
+//        List<File> fileList = fileRpc.findsV1(fileIds);
 
-        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
+//        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
 
         //处理工具栏激活图片
         String activeFileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
-        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
+//        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
 
-        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
+//        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
 
         validateResponse(
                 Toolbar.TOOLBAR_ID,

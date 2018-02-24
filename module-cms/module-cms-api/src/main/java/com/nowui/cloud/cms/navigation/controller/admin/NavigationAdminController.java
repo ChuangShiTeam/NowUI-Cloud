@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
@@ -33,9 +31,6 @@ public class NavigationAdminController extends BaseController {
 
     @Autowired
     private NavigationService navigationService;
-
-    @Autowired
-    private FileRpc fileRpc;
     
     @ApiOperation(value = "导航栏列表")
     @RequestMapping(value = "/navigation/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,16 +49,16 @@ public class NavigationAdminController extends BaseController {
         List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
         String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE);
-        List<File> fileList = fileRpc.findsV1(fileIds);
+//        List<File> fileList = fileRpc.findsV1(fileIds);
         
-        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
+//        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
         
         validateResponse(
                 Navigation.NAVIGATION_ID,
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-                File.FILE_PATH,
+//                File.FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT

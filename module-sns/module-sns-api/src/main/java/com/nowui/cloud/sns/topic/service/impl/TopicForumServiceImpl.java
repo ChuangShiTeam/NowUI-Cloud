@@ -158,10 +158,24 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
         Query query = new Query(criteria);
         query.with(sort);
 
-        List<TopicForumView> productViewList = list(query, sort, pageIndex, pageSize);
+        List<TopicForumView> topicForumList = list(query, sort, pageIndex, pageSize);
 
-        return productViewList;
+        return topicForumList;
     }
+    
+    
+    @Override
+	public List<TopicForumView> listByForumId(String appId, String forumId) {
+    	Criteria criteria = Criteria.where(TopicForumView.APP_ID).is(appId)
+                .and(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(TopicForumView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        List<TopicForumView> topicForumList = list(query);
+
+        return topicForumList;
+	}
     
     @Override
 	public List<TopicForumView> listByForumId(String forumId, List<String> excludeTopicIdList, Date systemCreateTime,
@@ -284,6 +298,8 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
         // 缓存话题论坛编号列表
 //        redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
     }
+
+	
 
 	
 

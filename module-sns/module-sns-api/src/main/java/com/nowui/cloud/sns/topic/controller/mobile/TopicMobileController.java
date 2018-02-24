@@ -50,6 +50,7 @@ import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
+import com.nowui.cloud.sns.topic.view.TopicMediaView;
 import com.nowui.cloud.sns.topic.view.TopicTipView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
@@ -195,21 +196,21 @@ public class TopicMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
         
         // 获取用户头像,昵称,签名,背景
-//  TODO 不用接口      Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
+        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
         // 获取用户头像,昵称,是否关注
-//        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, userId);
+// TODO 缺少方法        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, beSearchUserId);
 //        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
         // TODO 我的宠物
         
         
         // 粉丝数
-//        Integer countBeFollowed = memberFollowRpc.countBeFollowed(userId);
+//        Integer countBeFollowed = memberFollowRpc.countBeFollowed();
 //        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
         // 关注数
-//        Integer countFollow = memberFollowRpc.countFollow(userId);
+//        Integer countFollow = memberFollowRpc.countFollow();
 //        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
         // 动态数
-//        Integer countTopic = topicService.countTopicByUserIdWithRedis(appId, userId);
+//        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, otherMemberId);
 //        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
@@ -366,21 +367,27 @@ public class TopicMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
+        Member member = memberRpc.findByUserIdV1(requestUserId);
+        String memberId = member.getMemberId();
+        String appId = body.getAppId();
         
         // 获取用户头像,昵称,签名,背景
-//        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(userId);
+        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
         
+        if (memberInfo == null) {
+        	throw new BusinessException("对不起,未找到您的信息...");
+		}
         // TODO 我的宠物
         
         // 粉丝数
-//        Integer countBeFollowed = memberFollowRpc.countBeFollowed(userId);
-//        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
-        // 关注数
-//        Integer countFollow = memberFollowRpc.countFollow(userId);
-//        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
-        // 动态数
-//        Integer countTopic = topicService.countTopicByUserIdWithRedis(userId);
-//        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
+        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
+         //关注数
+        Integer countFollow = memberFollowRpc.countFollow(requestUserId);
+        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
+         //动态数
+        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, memberId);
+        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
         validateResponse(
                 Member.MEMBER_SEND_TOPIC_COUNT,
@@ -391,8 +398,8 @@ public class TopicMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME,
                 UserAvatar.USER_AVATAR
         );
-//        return renderJson(memberInfo);
-        return renderJson(null);
+        return renderJson(memberInfo);
+//        return renderJson(null);
 
     }
     @ApiOperation(value = "自己的主页的动态列表")
@@ -936,23 +943,26 @@ public class TopicMobileController extends BaseController {
         boolean success = false;
         
         if (result != null) {
-			
         	
         	//删除话题论坛关联
-
-            //删除话题多媒体
-
-            //删除话题评论
-
-            //删除话题收藏
-
-            //删除话题点赞 
-
-            //删除取消收藏 
-
-            //删除话题取消点赞
+        	List<TopicForumView> topicForumViews = topicForumService.listByTopicId(topicId);
+        	for (TopicForumView topicForumView : topicForumViews) {
+        		topicForumService.delete(topicForumView);
+			}
         	
+            //删除话题多媒体,其实这个按理说也不用删除
+        	List<TopicMediaView> topicMediaViews = topicMediaService.listByTopicId(topicId);
+        	for (TopicMediaView topicMediaView : topicMediaViews) {
+        		topicMediaService.delete(topicMediaView);
+			}
+            //删除话题评论,其实这个话题删掉了,就不会有评论会显示了,所以就不用删了
+            //删除话题收藏,这个也不用删
+            //删除话题点赞 ,这个也不用删
+            //删除取消收藏 ,这个也不用删
+            //删除话题取消点赞,这个也不用删
         	
+        	//最后删除主业务,
+        	topicService.delete(topic);
         	
         	//sendMessage(result, TopicRouter.TOPIC_V1_DELETE, body.getAppId(), systemRequestUserId);
         	success = true;

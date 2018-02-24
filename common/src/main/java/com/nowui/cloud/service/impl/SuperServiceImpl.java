@@ -222,7 +222,15 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean save(V view) {
+//        mongoTemplate.insert(view);
         mongoTemplate.save(view);
+
+        return true;
+    }
+
+    @Override
+    public Boolean save(List<V> viewList) {
+        mongoTemplate.insertAll(viewList);
 
         return true;
     }

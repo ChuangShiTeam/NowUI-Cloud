@@ -26,6 +26,7 @@
         <module>module-sns</module>
         <module>module-wawi</module>
         <module>module-code</module>
+        <module>module-file</module>
     </modules>
 
     <parent>
