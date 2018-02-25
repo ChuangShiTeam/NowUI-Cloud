@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -424,7 +423,7 @@ public class TopicMobileController extends BaseController {
         ArrayList<String> memberIdToSearchList = new ArrayList<>();
         memberIdToSearchList.add(memberId);
         Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), requestUserId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
 
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -858,20 +857,21 @@ public class TopicMobileController extends BaseController {
                     topicForumList.add(topicForum);
                 }
                 
-                topicForumService.batchSave(appId, topicId, topicForumList, requestUserId);
+                topicForumList = topicForumService.batchSave(appId, topicId, topicForumList, requestUserId);
+                
             }
             
             // 保存提醒谁看
+            List<TopicTip> topicTipList = new ArrayList<>();
             if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
-                List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
-                
-                List<TopicTip> topicTipList = tipMemberIdList.stream().map(tipMemberId -> {
+            	List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
+                topicTipList = tipMemberIdList.stream().map(tipMemberId -> {
                     TopicTip topicTip = new TopicTip();
                     topicTip.setMemberId(tipMemberId);
                     return topicTip;
                 }).collect(Collectors.toList());
 
-                topicTipService.batchSave(appId, topicId, topicTipList, requestUserId);
+                topicTipList = topicTipService.batchSave(appId, topicId, topicTipList, requestUserId);
             }
             
             
@@ -889,15 +889,7 @@ public class TopicMobileController extends BaseController {
              * 在话题论坛表中根据论坛id保存topic
              */
             for (TopicForum topicForum : topicForumList) {
-//	TODO 这个方式太耗空间,注释掉			topicForum.setTopicInfo(result);
-				topicForum.setAppId(appId);
-				topicForum.setSystemCreateTime(new Date());
-				topicForum.setSystemCreateUserId(requestUserId);
-				topicForum.setSystemRequestUserId(requestUserId);
-				topicForum.setSystemStatus(true);
-				topicForum.setSystemUpdateTime(new Date());
-				topicForum.setSystemUpdateUserId(requestUserId);
-				topicForum.setSystemVersion(0);
+//				topicForum.setSystemRequestUserId(requestUserId);
 				
 				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);
 				topicForumService.save(topicForumView);
@@ -906,13 +898,8 @@ public class TopicMobileController extends BaseController {
             /**
              * 保存话题提醒表
              */
-            if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
-                 List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
-                 
-                 for (String tipMemberId : tipMemberIdList) {
-                	 TopicTip topicTip = new TopicTip();
-                     topicTip.setMemberId(tipMemberId);
-                     
+            if (!Util.isNullOrEmpty(topicTipList)) {
+                 for (TopicTip topicTip : topicTipList) {
                      TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
                      topicTipService.save(topicTipView);
 				}

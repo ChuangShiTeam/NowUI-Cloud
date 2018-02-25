@@ -1,8 +1,11 @@
 package com.nowui.cloud.sns.forum.view;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -50,6 +53,14 @@ public class ForumUserUnfollowView extends BaseView {
     @NotNull(message = "论坛编号不能为空")
     private String forumId;
     public static final String FORUM_ID = "forumId";
+    
+    /**
+     * 用户论坛是否置顶
+     */
+    @Field
+    @NotNull(message = "论坛是否置顶不能为空")
+    private Boolean forumUserFollowIsTop;
+    public static final String FORUM_USER_FOLLOW_IS_TOP = "forumUserFollowIsTop";
 
 
     public String getForumUserUnfollowId() {
@@ -82,6 +93,14 @@ public class ForumUserUnfollowView extends BaseView {
 
     public void setForumId(String forumId) {
         put(FORUM_ID, forumId);
+    }
+    
+    public Boolean getForumUserFollowIsTop() {
+        return getBoolean(FORUM_USER_FOLLOW_IS_TOP);
+    }
+    
+    public void setForumUserFollowIsTop(Boolean forumUserFollowIsTop) {
+        put(FORUM_USER_FOLLOW_IS_TOP, forumUserFollowIsTop);
     }
 
 
