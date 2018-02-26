@@ -94,9 +94,10 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 //                        .eq(TopicForum.SYSTEM_STATUS, true)
 //        );
 //        return count;
-
+		Date todayStartDateTime = DateUtil.getTodayStartDateTime();
+		long todayStartTime = todayStartDateTime.getTime();
 		Criteria criteria = Criteria.where(TopicForumView.FORUM_ID).regex(".*?" + forumId + ".*")
-			    .and(TopicForumView.SYSTEM_CREATE_TIME).gte(DateUtil.getTodayStartDateTime())
+			    .and(TopicForumView.SYSTEM_CREATE_TIME).gte(todayStartTime)
                 .and(TopicForumView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -265,8 +266,9 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
     }
 
     @Override
-    public void batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId) {
+    public List<TopicForum> batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId) {
         List<String> topicForumIdList = new ArrayList<String>();
+        List<TopicForum> theReturnTopicForumList = new ArrayList<>();
         
         if (!Util.isNullOrEmpty(topicForumList)) {
             for (TopicForum topicForum : topicForumList) {
@@ -280,7 +282,7 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
                 if (result == null) {
                     throw new BusinessException("保存失败");
                 }
-                                
+                theReturnTopicForumList.add(result);                
                 topicForumIdList.add(topicForumId);
             }
             
@@ -297,10 +299,9 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
         }
         // 缓存话题论坛编号列表
 //        redisTemplate.opsForValue().set(TOPIC_FORUM_ID_LIST_BY_TOPIC_ID + topicId, topicForumIdList);
+        
+        return theReturnTopicForumList;
     }
 
-	
-
-	
 
 }

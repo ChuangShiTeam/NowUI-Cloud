@@ -113,8 +113,9 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
     }
 
     @Override
-    public void batchSave(String appId, String topicId, List<TopicTip> topicTipList, String systemRequestUserId) {
+    public List<TopicTip> batchSave(String appId, String topicId, List<TopicTip> topicTipList, String systemRequestUserId) {
         List<String> topicTipIdList = new ArrayList<String>();
+        ArrayList<TopicTip> theReturnTopicTipList = new ArrayList<>();
         
         if (!Util.isNullOrEmpty(topicTipList)) {
             for (TopicTip topicTip : topicTipList) {
@@ -124,13 +125,14 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
                 
 //TODO 消息放在 topicMobileController的保存提醒谁看
 //                save(topicTip, topicTipId, appId, TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
-                save(topicTip, topicTipId, systemRequestUserId);
-                
+                TopicTip result = save(topicTip, topicTipId, systemRequestUserId);
+                theReturnTopicTipList.add(result);
                 topicTipIdList.add(topicTipId);
             }
         }
         // 缓存话题提醒编号列表
 //        redisTemplate.opsForValue().set(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId, topicTipIdList);
+        return theReturnTopicTipList;
         
     }
 

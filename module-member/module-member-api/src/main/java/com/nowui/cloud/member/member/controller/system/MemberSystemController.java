@@ -1,26 +1,20 @@
 package com.nowui.cloud.member.member.controller.system;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberAddress;
-import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.service.MemberAddressService;
 import com.nowui.cloud.member.member.service.MemberBackgroundService;
-import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
-import com.nowui.cloud.member.member.view.MemberAddressView;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.util.Util;
 

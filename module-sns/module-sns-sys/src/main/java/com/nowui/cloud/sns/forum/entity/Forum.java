@@ -92,7 +92,6 @@ public class Forum extends BaseEntity {
      */
     @TableField
     @NotNull(message = "论坛背景不能为空")
-    @Length(max = 32, message = "论坛多媒体背景长度超出限制")
     private String forumBackgroundMedia;
     public static final String FORUM_BACKGROUND_MEDIA = "forumBackgroundMedia";
 

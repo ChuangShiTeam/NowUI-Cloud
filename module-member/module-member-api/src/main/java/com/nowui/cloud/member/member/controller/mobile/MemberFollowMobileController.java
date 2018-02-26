@@ -2,9 +2,7 @@ package com.nowui.cloud.member.member.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import com.nowui.cloud.member.member.router.MemberFollowRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.MemberFollow;

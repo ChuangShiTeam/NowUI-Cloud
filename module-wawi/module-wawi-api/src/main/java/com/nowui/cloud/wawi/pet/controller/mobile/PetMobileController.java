@@ -1,7 +1,7 @@
 package com.nowui.cloud.wawi.pet.controller.mobile;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.Pet;

@@ -120,7 +120,8 @@ public interface TopicForumService extends SuperService<TopicForum, TopicForumVi
      * @param topicId 话题编号
      * @param topicForumList 话题多论坛列表
      * @param systemRequestUserId 请求用户编号
+     * @return 
      */
-    void batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId);
+    List<TopicForum> batchSave(String appId, String topicId, List<TopicForum> topicForumList, String systemRequestUserId);
     
 }

@@ -59,7 +59,7 @@ public class ForumUserFollowView extends BaseView {
     @NotNull(message = "论坛编号不能为空")
     private String forumId;
     public static final String FORUM_ID = "forumId";
-
+    
     /**
      * 是否置顶
      */
@@ -108,7 +108,7 @@ public class ForumUserFollowView extends BaseView {
     public void setForumId(String forumId) {
         put(FORUM_ID, forumId);
     }
-
+    
     public Boolean getForumUserFollowIsTop() {
         return getBoolean(FORUM_USER_FOLLOW_IS_TOP);
     }

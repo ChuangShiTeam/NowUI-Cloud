@@ -1,30 +1,14 @@
 package com.nowui.cloud.member.member.controller.mobile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.MemberDialogue;
-import com.nowui.cloud.member.member.entity.MemberDialogueRecord;
 import com.nowui.cloud.member.member.service.MemberDialogueRecordService;
 import com.nowui.cloud.member.member.service.MemberDialogueService;
-import com.nowui.cloud.member.member.view.MemberDialogueView;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * 会员对话移动端控制器
