@@ -341,7 +341,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
         query.with(sort);
 
         List<TopicView> topicList = list(query, sort, pageIndex, pageSize);
-
+        
         return topicList;
 	}
 	

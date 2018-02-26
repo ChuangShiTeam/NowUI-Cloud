@@ -196,6 +196,10 @@ public class TopicMobileController extends BaseController {
         
         // 获取用户头像,昵称,签名,背景
         Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
+        
+        if (memberInfo == null) {
+        	throw new BusinessException("对不起,未找到您的信息...");
+		}
         // 获取用户头像,昵称,是否关注
 // TODO 缺少方法        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, beSearchUserId);
 //        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
@@ -212,6 +216,19 @@ public class TopicMobileController extends BaseController {
 //        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, otherMemberId);
 //        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
+        
+        // TODO 我的宠物
+        
+        // 粉丝数
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
+        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
+         //关注数
+        Integer countFollow = memberFollowRpc.countFollow(requestUserId);
+        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
+         //动态数
+        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, otherMemberId);
+        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
+        
         validateResponse(
                 Member.MEMBER_SEND_TOPIC_COUNT,
                 Member.MEMBER_FOLLOW_COUNT,
@@ -220,11 +237,10 @@ public class TopicMobileController extends BaseController {
                 MemberSignature.MEMBER_SIGNATURE,
                 MemberBackground.MEMBER_BACKGROUND,
                 UserNickName.USER_NICK_NAME,
-                UserAvatar.USER_AVATAR,
-                Member.USER_ID
+                UserAvatar.USER_AVATAR
         );
-//        return renderJson(memberInfo);
-        return renderJson(null);
+        return renderJson(memberInfo);
+//        return renderJson(null);
 
     }
     
@@ -241,6 +257,7 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
+        String appId = body.getAppId();
         
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
@@ -250,8 +267,8 @@ public class TopicMobileController extends BaseController {
 
         ArrayList<String> memberIdToSearchList = new ArrayList<>();
         memberIdToSearchList.add(otherMemberId);
-        Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        Integer countResult = topicService.countByMemberIdList(appId, memberIdToSearchList);
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(appId, memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         
         // TODO 处理会员信息不用借口了  在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
