@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserAvatarServiceImpl extends SuperServiceImpl<UserAvatarMapper, UserAvatar,UserAvatarRepository,UserAvatarView> implements UserAvatarService {
+public class UserAvatarServiceImpl extends SuperServiceImpl<UserAvatarMapper, UserAvatar, UserAvatarRepository, UserAvatarView> implements UserAvatarService {
 
     @Override
     public UserAvatar findByUserId(String userId) {

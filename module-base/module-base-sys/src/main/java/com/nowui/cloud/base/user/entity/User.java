@@ -65,10 +65,6 @@ public class User extends BaseEntity {
 
     public static final String USER_NICK_NAME = "userNickName";
 
-    public static final String USER_IDCARD_NUMBER = "userIdcardNumber";
-
-    public static final String USER_NAME = "userName";
-
     public static final String USER_SEX = "userSex";
 
     public static final String USER_MOBILE = "userMobile";
@@ -145,22 +141,6 @@ public class User extends BaseEntity {
 
     public void setUserPassword(String userPassword) {
         put(USER_PASSWORD, userPassword);
-    }
-
-    public String getUserIdcardNumber() {
-        return getString(USER_IDCARD_NUMBER);
-    }
-
-    public void setUserIdcardNumber(String userIdcardNumber) {
-        put(USER_IDCARD_NUMBER, userIdcardNumber);
-    }
-
-    public String getUserName() {
-        return getString(USER_NAME);
-    }
-
-    public void setUserName(String userName) {
-        put(USER_NAME, userName);
     }
 
     public String getUserSex() {

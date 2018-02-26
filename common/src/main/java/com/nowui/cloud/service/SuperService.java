@@ -95,6 +95,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @return
      */
     E find(@Param("ew") Wrapper<E> var1);
+    
+    /**
+     * 单个实体类查询
+     * 
+     * @param query
+     * @return
+     */
+    V find(Query query);
 
     /**
      * 单个实体类查询

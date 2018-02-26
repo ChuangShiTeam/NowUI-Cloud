@@ -14,6 +14,7 @@ import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
+import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
@@ -58,8 +59,8 @@ public class AdminServiceImpl extends SuperServiceImpl<AdminMapper, Admin, Admin
         AdminView adminView = super.find(adminId);
         
         if (!Util.isNullOrEmpty(adminView)) {
-            User user = userRpc.findV1(adminView.getUserId());
-            adminView.putAll(user);
+            UserView userView = userRpc.findV1(adminView.getUserId());
+            adminView.putAll(userView);
         }
         
         return adminView;

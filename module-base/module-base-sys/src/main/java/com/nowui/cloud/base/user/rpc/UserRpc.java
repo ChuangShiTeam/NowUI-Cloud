@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.view.UserView;
 
 /**
  * 用户服务调用
@@ -63,7 +64,7 @@ public interface UserRpc {
      * @return User 用户信息
      */
     @RequestMapping(value = "/user/system/v1/find", method = RequestMethod.POST)
-    User findV1(@RequestParam(value = "userId", required = true) String userId);
+    UserView findV1(@RequestParam(value = "userId", required = true) String userId);
     
     /**
      * 根据用户编号集合查询用户信息列表
@@ -75,14 +76,30 @@ public interface UserRpc {
     List<User> findsV1(@RequestParam(value = "userIds", required = true) String userIds);
     
     /**
-     * 根据用户账号查询用户信息
+     * 根据用户类型和账号查询用户信息
      * 
      * @param appId 应用编号
+     * @param userType 用户类型
      * @param userAccount 用户账号
-     * @return User 用户信息
+     * @return UserView 用户视图信息
      */
-    @RequestMapping(value = "/user/system/v1/find/by/user/account", method = RequestMethod.POST)
-    User findByUserAccountV1(
+    @RequestMapping(value = "/user/system/v1/find/by/user/type/and/account", method = RequestMethod.POST)
+    UserView findByUserTypeAndAccountV1(
+            @RequestParam(value = "appId", required = true) String appId,
+            @RequestParam(value = "userType", required = true) String userType,
+            @RequestParam(value = "userAccount", required = true) String userAccount
+    );
+    
+    /**
+     * 验证用户账号
+     * 
+     * @param appId 应用编号
+     * @param userType 用户类型
+     * @param userAccount 用户账号
+     * @return true 存在   false 不存在
+     */
+    @RequestMapping(value = "/user/system/v1/check/user/account", method = RequestMethod.POST)
+    Boolean checkUserAccountV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
             @RequestParam(value = "userAccount", required = true) String userAccount
@@ -146,27 +163,12 @@ public interface UserRpc {
     );
     
     /**
-     * 用户密码更新
-     * 
-     * @param appId 应用编号
-     * @param userId 用户编号
-     * @param userPassword 用户密码
-     * @param systemRequestUserId 请求用户编号
-     * @return
-     */
-    @RequestMapping(value = "/user/system/v1/update/user/password", method = RequestMethod.POST)
-    Boolean updateUserPasswordV1(
-            @RequestParam(value = "appId", required = true) String appId,
-            @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userPassword", required = true) String userPassword,
-            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
-    
-    /**
      * 用户头像更新
      * 
      * @param appId 应用编号
      * @param userId 用户编号
      * @param userAvatar 用户头像
+     * @param userAvatarPath 用户头像路径
      * @param systemRequestUserId 请求用户编号
      * @return
      */
@@ -175,7 +177,9 @@ public interface UserRpc {
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "userAvatar", required = true) String userAvatar,
-            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId);
+            @RequestParam(value = "userAvatarPath", required = true) String userAvatarPath,
+            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
+    );
     
     /**
      * 用户昵称更新

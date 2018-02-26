@@ -2,13 +2,12 @@ package com.nowui.cloud.member.member.view;
 
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 /**
- * 会员对话记录	视图
+ * 会员对话记录视图
  *
  * @author shawn
  *

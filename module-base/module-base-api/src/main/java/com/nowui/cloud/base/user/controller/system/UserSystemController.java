@@ -2,10 +2,10 @@ package com.nowui.cloud.base.user.controller.system;
 
 import java.util.List;
 
-import com.nowui.cloud.base.user.view.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
@@ -14,9 +14,24 @@ import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
+import com.nowui.cloud.base.user.entity.UserSex;
 import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.router.UserAvatarRouter;
+import com.nowui.cloud.base.user.router.UserNickNameRouter;
+import com.nowui.cloud.base.user.router.UserSexRouter;
 import com.nowui.cloud.base.user.rpc.UserRpc;
+import com.nowui.cloud.base.user.service.UserAccountService;
+import com.nowui.cloud.base.user.service.UserAvatarService;
+import com.nowui.cloud.base.user.service.UserEmailService;
+import com.nowui.cloud.base.user.service.UserMobileService;
+import com.nowui.cloud.base.user.service.UserNickNameService;
+import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.base.user.service.UserSexService;
+import com.nowui.cloud.base.user.service.UserWechatService;
+import com.nowui.cloud.base.user.view.UserAvatarView;
+import com.nowui.cloud.base.user.view.UserView;
+import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -30,11 +45,35 @@ import io.swagger.annotations.Api;
  */
 @Api(value = "用户", description = "用户系统端接口管理")
 @RestController
-public class UserSystemController implements UserRpc {
+public class UserSystemController extends BaseController implements UserRpc {
 	
 	@Autowired
 	private UserService userService;
-
+	
+	@Autowired
+	private UserAccountService userAccountService;
+	
+	@Autowired
+	private UserAvatarService userAvatarService;
+	
+	@Autowired
+    private UserEmailService userEmailService;
+	
+	@Autowired
+    private UserSexService userSexService;
+	
+	@Autowired
+    private UserMobileService userMobileService;
+	
+	@Autowired
+    private UserNickNameService userNickNameService;
+	
+	@Autowired
+    private UserPasswordService userPasswordService;
+	
+	@Autowired
+    private UserWechatService userWechatService;
+	
 	@Override
 	public Integer countV1(String appId, String userType) {
 		return userService.count(appId, userType);
@@ -46,47 +85,31 @@ public class UserSystemController implements UserRpc {
 	}
 
     @Override
-    public User findV1(String userId) {
-        return null;
-//        return userService.findById(userId);
+    public UserView findV1(String userId) {
+        return userService.find(userId);
 	}
 
-
     @Override
-    public User findByUserAccountV1(String appId, String userType, String userAccount) {
-
-        return null;
-//        if (Util.isNullOrEmpty(userType) || Util.isNullOrEmpty(userAccount)) {
-//            return null;
-//        }
-//        UserAccount bean = userService.findByUserAccount(appId, userAccount);
-//
-//        if (bean == null || Util.isNullOrEmpty(bean.getUserId())) {
-//            return null;
-//        }
-//        UserView user = userService.findById(bean.getUserId());
-//        if (!userType.equals(user.getUserType())) {
-//            return null;
-//        }
-//        return user;
+    public UserView findByUserTypeAndAccountV1(String appId, String userType, String userAccount) {
+        return userService.findByUserTypeAndAccount(appId, userType, userAccount);
     }
 
     @Override
     public Boolean checkUserPasswordV1(String userId, String userPassword) {
-
-        // TODO: UserView 中没有 getUserPassword 方法.
         if (Util.isNullOrEmpty(userId) || Util.isNullOrEmpty(userPassword)) {
             return false;
         }
-        UserView user = userService.findById(userId);
         
-        if (user == null) {
+        UserView userView = userService.find(userId);
+        
+        if (userView == null) {
             return false;
         }
-//        String encryptPassword = Util.generatePassword(userPassword);
-//        if (encryptPassword.equals(user.getUserPassword())) {
-//            return true;
-//        }
+        
+        String encryptPassword = Util.generatePassword(userPassword);
+        if (encryptPassword.equals(userView.getUserPassword())) {
+            return true;
+        }
         return false;
     }
 
@@ -113,44 +136,45 @@ public class UserSystemController implements UserRpc {
 
     @Override
     public Boolean saveUserWechatV1(String appId, String userId, String objectId, String userType, UserWechat userWechat, String systemRequestUserId) {
-        User user = new User();
-        user.setAppId(appId);
-        user.setUserId(userId);
-        user.setObjectId(objectId);
-        user.setUserType(userType);
-
-        User result = userService.save(user, userId, systemRequestUserId);
-        if (result != null) {
-            userWechat.setAppId(appId);
-            userWechat.setUserId(userId);
-            
-            if (!Util.isNullOrEmpty(userWechat.getWechatHeadImgUrl()) && !Util.isNullOrEmpty(userWechat.getWechatHeadImgFileId())) {
-                // 保存用户头像
-                UserAvatar userAvatar = new UserAvatar();
-                userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
-                userService.saveUserAvatar(appId, userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
-            }
-            
-            if (!Util.isNullOrEmpty(userWechat.getWechatNickName())) {
-                // 保存用户昵称
-                UserNickName userNickName = new UserNickName();
-                userNickName.setUserNickName(userWechat.getWechatNickName());
-                
-                userService.saveUserNickName(appId, userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
-            }
-            // 保存用户微信头像
-            userService.saveUserWechat(appId, userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
-
-            return true;
-        } else {
-            return false;
-        }
+//        User user = new User();
+//        user.setAppId(appId);
+//        user.setUserId(userId);
+//        user.setObjectId(objectId);
+//        user.setUserType(userType);
+//
+//        User result = userService.save(user, userId, systemRequestUserId);
+//        if (result != null) {
+//            userWechat.setAppId(appId);
+//            userWechat.setUserId(userId);
+//            
+//            if (!Util.isNullOrEmpty(userWechat.getWechatHeadImgUrl()) && !Util.isNullOrEmpty(userWechat.getWechatHeadImgFileId())) {
+////                // 保存用户头像
+////                UserAvatar userAvatar = new UserAvatar();
+////                userAvatar.setUserAvatar(userWechat.getWechatHeadImgFileId());
+////                userService.saveUserAvatar(appId, userId, userAvatar, Util.getRandomUUID(), systemRequestUserId);
+//            }
+//            
+//            if (!Util.isNullOrEmpty(userWechat.getWechatNickName())) {
+//                // 保存用户昵称
+////                UserNickName userNickName = new UserNickName();
+////                userNickName.setUserNickName(userWechat.getWechatNickName());
+////                
+////                userService.saveUserNickName(appId, userId, userNickName, Util.getRandomUUID(), systemRequestUserId);
+//            }
+//            // 保存用户微信头像
+//            userService.saveUserWechat(appId, userId, userWechat, Util.getRandomUUID(), systemRequestUserId);
+//
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
     }
 
     @Override
     public Boolean updateUserWechatV1(String userId, UserWechat userWechat, String systemRequestUserId) {
         
-        UserView user = userService.findById(userId);
+        UserView user = userService.find(userId);
 
         // TODO: USERSERVICE 中没有getUserWechat 方法
 //        UserWechatView bean = user.getUserWechat();
@@ -232,84 +256,21 @@ public class UserSystemController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserPasswordV1(String appId, String userId, String userPassword, String systemRequestUserId) {
-        //删除旧的密码信息
-        userService.deleteUserPasswordByUserId(userId, systemRequestUserId);
-        //保存新的密码信息
-        UserPassword userPasswordBean = new UserPassword();
-        userPasswordBean.setUserPassword(userPassword);
-        
-        Boolean result = userService.saveUserPassword(appId, userId, userPasswordBean, Util.getRandomUUID(), systemRequestUserId);
-        
-        return result;
-    }
-
-    @Override
-    public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String systemRequestUserId) {
-
-	    // TODO: UserView 中没有 getUserAvatar 方法.
-        UserView user = userService.findById(userId);
-//
-//        if (userAvatar.equals(user.getUserAvatar())) {
-//            return true;
-//        }
-        //删除旧的头像信息
-        userService.deleteUserAvatarByUserId(userId, systemRequestUserId);
-        if (Util.isNullOrEmpty(userAvatar)) {
-            return true;
-        }
-        //保存新的头像信息
-        UserAvatar userAvatarBean = new UserAvatar();
-        userAvatarBean.setUserAvatar(userAvatar);
-        
-        Boolean result = userService.saveUserAvatar(appId, userId, userAvatarBean, Util.getRandomUUID(), systemRequestUserId);
-        
-        return result;
-    }
-
-    @Override
-    public Boolean updateUserNickNameV1(String appId, String userId, String userNickName, String systemRequestUserId) {
-
-	    // TODO: userService 中没有 getUserNickName 方法.
-        UserView user = userService.findById(userId);
-        
-//        if (userNickName.equals(user.getUserNickName())) {
-//            return true;
-//        }
-        //删除旧的用户昵称信息
-        userService.deleteUserNickNameByUserId(userId, systemRequestUserId);
-        if (Util.isNullOrEmpty(userNickName)) {
-            return true;
-        }
-        
-        //保存新的用户昵称信息
-        UserNickName userNickNameBean = new UserNickName();
-        userNickNameBean.setUserNickName(userNickName);
-        
-        Boolean result = userService.saveUserNickName(appId, userId, userNickNameBean, Util.getRandomUUID(), systemRequestUserId);
-        return result;
-    }
-    
-    @Override
     public Boolean updateUserSexV1(String appId, String userId, String userSex, String systemRequestUserId) {
 
-        // TODO: userService 中没有 getUserSex 方法.
-        UserView user = userService.findById(userId);
-        
-//        if (userSex.equals(user.getUserSex())) {
-//            return true;
-//        }
-//        //删除旧的用户身份证信息
-//        userService.deleteUserIdcardByUserId(userId, systemRequestUserId);
-//
-//        UserIdcard userIdcard = new UserIdcard();
-//        userIdcard.setUserSex(userSex);
-//        userIdcard.setUserName(user.getUserName());
-//        userIdcard.setUserIdcardNumber(user.getUserIdcardNumber());
-//
-//        return userService.saveUserIdcard(appId, systemRequestUserId, userIdcard, Util.getRandomUUID(), systemRequestUserId);
+        Boolean result = userService.updateUserSex(appId, userId, userSex, systemRequestUserId);
 
-        return false;
+        if (result) {
+            UserSex userSexBean = new UserSex();
+            userSexBean.setAppId(appId);
+            userSexBean.setUserId(userId);
+            userSexBean.setUserSex(userSex);
+            // 发送用户身份更新消息
+            sendMessage(userSexBean, UserSexRouter.USER_SEX_V1_UPDATE, appId, systemRequestUserId);
+
+        }   
+        
+        return result;
     }
 
     @Override
@@ -321,26 +282,43 @@ public class UserSystemController implements UserRpc {
         user.setUserType(userType);
         user.setObjectId(objectId);
         
-        User result = userService.save(user, userId,systemRequestUserId);
+        User result = userService.save(user, userId, systemRequestUserId);
+        
+        Boolean flag = false;
         
         if (result != null) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
+            userAccountBean.setAppId(appId);
+            userAccountBean.setUserId(userId);
             userAccountBean.setUserAccount(userAccount);
-            userService.saveUserAccount(appId, userId, userAccountBean, Util.getRandomUUID(), userId);
+            userAccountService.save(userAccountBean, Util.getRandomUUID(), userId);
             // 保存用户密码
             UserPassword userPasswordbean = new UserPassword();
+            userPasswordbean.setAppId(appId);
+            userPasswordbean.setUserId(userId);
             userPasswordbean.setUserPassword(userPassword);
-            userService.saveUserPassword(appId, userId, userPasswordbean, Util.getRandomUUID(), userId);
+            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户手机号码
             UserMobile userMobile = new UserMobile();
+            userMobile.setAppId(appId);
+            userMobile.setUserId(userId);
             userMobile.setUserMobile(userAccount);
-            userService.saveUserMobile(appId, userId, userMobile, Util.getRandomUUID(), userId);
+            userMobileService.save(userMobile, Util.getRandomUUID(), userId);
 
-            return true;
-        } else {
-            return false;
-        }
+            // 保存用户视图信息到mongodb
+            
+            UserView userView = JSON.parseObject(result.toJSONString(), UserView.class);
+            userView.setUserAccount(userAccount);
+            userView.setUserPassword(userPassword);
+            userView.setUserMobile(userAccount);
+            
+            userService.save(userView);
+            
+            flag = true;
+        } 
+        
+        return flag;
     }
 
     @Override
@@ -353,24 +331,40 @@ public class UserSystemController implements UserRpc {
         
         User result = userService.save(user, userId,systemRequestUserId);
         
+        Boolean flag = false;
+        
         if (result != null) {
             // 保存用户账号
             UserAccount userAccountBean = new UserAccount();
+            userAccountBean.setAppId(appId);
+            userAccountBean.setUserId(userId);
             userAccountBean.setUserAccount(userAccount);
-            userService.saveUserAccount(appId, userId, userAccountBean, Util.getRandomUUID(), systemRequestUserId);
+            userAccountService.save(userAccountBean, Util.getRandomUUID(), systemRequestUserId);
             // 保存用户密码
             UserPassword userPasswordbean = new UserPassword();
+            userPasswordbean.setAppId(appId);
+            userPasswordbean.setUserId(userId);
             userPasswordbean.setUserPassword(userPassword);
-            userService.saveUserPassword(appId, userId, userPasswordbean, Util.getRandomUUID(), userId);
+            userPasswordService.save(userPasswordbean, Util.getRandomUUID(), userId);
             // 保存用户邮箱
             UserEmail userEmail = new UserEmail();
+            userEmail.setAppId(appId);
+            userEmail.setUserId(userId);
             userEmail.setUserEmail(userAccount);
-            userService.saveUserEmail(appId, userId, userEmail, Util.getRandomUUID(), userId);
+            userEmailService.save(userEmail, Util.getRandomUUID(), userId);
 
-            return true;
-        } else {
-            return false;
-        }
+            // 保存用户视图到MongoDB
+            UserView userView = JSON.parseObject(result.toJSONString(), UserView.class);
+            userView.setUserAccount(userAccount);
+            userView.setUserPassword(userPassword);
+            userView.setUserEmail(userAccount);
+            
+            userService.save(userView);
+            
+            flag = true;
+        } 
+        
+        return flag;
     }
 
     @Override
@@ -384,6 +378,45 @@ public class UserSystemController implements UserRpc {
 //        return userIdList.stream().map(userId -> findV1(userId)).collect(Collectors.toList());
         // TODO： 查询用户列表异常
         return null;
+    }
+
+    @Override
+    public Boolean checkUserAccountV1(String appId, String userType, String userAccount) {
+        return userService.checkUserAccount(appId, userType, userAccount);
+    }
+
+    @Override
+    public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String userAvatarPath,
+            String systemRequestUserId) {
+        Boolean result = userService.updateUserAvatar(appId, userId, userAvatar, userAvatarPath, systemRequestUserId);
+
+        if (result) {
+            // 发送用户头像更新消息
+            UserAvatar userAvatarBean = new UserAvatar();
+            userAvatarBean.setAppId(appId);
+            userAvatarBean.setUserId(userId);
+            userAvatarBean.setUserAvatar(userAvatar);
+            userAvatarBean.setUserAvatarPath(userAvatarPath);
+            sendMessage(userAvatarBean, UserAvatarRouter.USER_AVATAR_V1_UPDATE, appId, systemRequestUserId);
+        }                
+        
+        return result;
+    }
+
+    @Override
+    public Boolean updateUserNickNameV1(String appId, String userId, String userNickName, String systemRequestUserId) {
+        Boolean result = userService.updateUserNickName(appId, userId, userNickName, systemRequestUserId);
+
+        if (result) {
+            // 发送用户昵称更新消息
+            UserNickName userNickNameBean = new UserNickName();
+            userNickNameBean.setAppId(appId);
+            userNickNameBean.setUserId(userId);
+            userNickNameBean.setUserNickName(userNickName);
+            sendMessage(userNickNameBean, UserNickNameRouter.USER_NICK_NAME_V1_UPDATE, appId, systemRequestUserId);
+        }  
+        
+        return result;
     }
 
 }

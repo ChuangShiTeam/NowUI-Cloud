@@ -30,7 +30,7 @@ public interface SmsCaptchaRpc extends BaseRpc {
      * @param systemRequestUserId 请求用户编号
      */
     @RequestMapping(value = "/sms/captcha/system/v1/aliyun/send", method = RequestMethod.POST)
-    public void aliyunSend(
+    public void aliyunSendV1(
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "smsCaptchaType", required = true) String smsCaptchaType, 
             @RequestParam(value = "smsCaptchaMobile", required = true) String smsCaptchaMobile, 
@@ -48,7 +48,7 @@ public interface SmsCaptchaRpc extends BaseRpc {
      * @return true 正确  false 不正确
      */
     @RequestMapping(value = "/sms/captcha/system/v1/check/captcha/code", method = RequestMethod.POST)
-    public Boolean checkCaptchaCode(
+    public Boolean checkCaptchaCodeV1(
             @RequestParam(value = "appId", required = true) String appId, 
             @RequestParam(value = "smsCaptchaMobile", required = true) String smsCaptchaMobile, 
             @RequestParam(value = "smsCaptchaCode", required = true) String smsCaptchaCode, 

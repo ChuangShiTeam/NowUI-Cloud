@@ -4,7 +4,7 @@ import java.util.List;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.entity.MemberBackground;
-import com.nowui.cloud.member.member.entity.MemberPerferenceLanguage;
+import com.nowui.cloud.member.member.entity.MemberPreferenceLanguage;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.service.SuperService;
@@ -44,96 +44,61 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * 根据用户编号查询会员信息
      * 
      * @param userId 用户编号
-     * @return Member 会员信息
+     * @return MemberView 会员视图信息
      */
-    Member findByUserId(String userId);
+    MemberView findByUserId(String userId);
     
     /**
-     * 保存会员地址信息
+     * 批量查询会员信息
+     * 
+     * @param userIds 用户编号集合
+     * @return List<MemberView> 会员视图列表信息
+     */
+    List<MemberView> listByUserIds(List<String> userIds);
+    
+    /**
+     * 更新会员签名
      * 
      * @param appId 应用编号
      * @param memberId 会员编号
-     * @param userId 用户编号
-     * @param memberAddress 会员地址
-     * @param memberAddressId 会员地址编号
-     * @param systemRequestUserId 请求用户编号
-     * @return Boolean true 成功   false 失败
-     */
-    MemberAddress saveMemberAddress(String appId, String memberId, String userId, MemberAddress memberAddress, String memberAddressId, String systemRequestUserId);
-    
-    /**
-     * 根据会员编号删除会员地址信息
-     * 
-     * @param memberId 会员编号
-     * @param userId 用户编号
-     * @param systemRequestUserId 请求用户编号
-     */
-    void deleteMemberAddressByMemberId(String memberId, String userId, String systemRequestUserId);
-    
-    /**
-     * 保存会员签名信息
-     * 
-     * @param appId 应用编号
-     * @param memberId 会员编号
-     * @param userId 用户编号
      * @param memberSignature 会员签名
-     * @param memberSignatureId 会员签名编号
      * @param systemRequestUserId 请求用户编号
-     * @return Boolean true 成功   false 失败
+     * @return true 成功    false 不成功
      */
-    MemberSignature saveMemberSignature(String appId, String memberId, String userId, MemberSignature memberSignature, String memberSignatureId, String systemRequestUserId);
+    Boolean updateMemberSignature(String appId, String memberId, String memberSignature, String systemRequestUserId);
     
     /**
-     * 根据会员编号删除会员签名信息
-     * 
-     * @param memberId 会员编号
-     * @param userId 用户编号
-     * @param systemRequestUserId 请求用户编号
-     */
-    void deleteMemberSignatureByMemberId(String memberId, String userId, String systemRequestUserId);
-    
-    /**
-     * 保存会员偏好语言信息
+     * 更新会员背景
      * 
      * @param appId 应用编号
      * @param memberId 会员编号
-     * @param userId 用户编号
-     * @param memberPerferenceLanguage 会员偏好语言
-     * @param memberPerferenceLanguageId 会员偏好语言编号
-     * @param systemRequestUserId 请求用户编号
-     * @return Boolean true 成功   false 失败
-     */
-    MemberPerferenceLanguage saveMemberPerferenceLanguage(String appId, String memberId, String userId, MemberPerferenceLanguage memberPerferenceLanguage, String memberPerferenceLanguageId, String systemRequestUserId);
-    
-    /**
-     * 根据会员编号删除会员偏好语言信息
-     * 
-     * @param memberId 会员编号
-     * @param userId 用户编号
-     * @param systemRequestUserId 请求用户编号
-     */
-    void deleteMemberPerferenceLanguageByMemberId(String memberId, String userId, String systemRequestUserId);
-    
-    /**
-     * 保存会员背景信息
-     * 
-     * @param appId 应用编号
-     * @param memberId 会员编号
-     * @param userId 用户编号
      * @param memberBackground 会员背景
-     * @param memberBackgroundId 会员背景编号
+     * @param memberBackgroundPath 会员背景路径
      * @param systemRequestUserId 请求用户编号
-     * @return Boolean true 成功   false 失败
+     * @return true 成功    false 不成功
      */
-    MemberBackground saveMemberBackground(String appId, String memberId, String userId, MemberBackground memberBackground, String memberBackgroundId, String systemRequestUserId);
+    Boolean updateMemberBackground(String appId, String memberId, String memberBackground, String memberBackgroundPath, String systemRequestUserId);
     
     /**
-     * 根据会员编号删除会员背景信息
+     * 更新会员偏好语言
      * 
+     * @param appId 应用编号
      * @param memberId 会员编号
-     * @param userId 用户编号
+     * @param memberPreferenceLanguage 会员偏好语言
      * @param systemRequestUserId 请求用户编号
+     * @return true 成功    false 不成功
      */
-    void deleteMemberBackgroundByMemberId(String memberId, String userId, String systemRequestUserId);
+    Boolean updateMemberPreferenceLanguage(String appId, String memberId, String memberPreferenceLanguage, String systemRequestUserId);
+
+    /**
+     * 更新会员地址
+     * 
+     * @param appId 应用编号
+     * @param memberId 会员编号
+     * @param memberAddress 会员地址
+     * @param systemRequestUserId 请求用户编号
+     * @return true 成功    false 不成功
+     */
+    Boolean updateMemberAddress(String appId, String memberId, MemberAddress memberAddress, String systemRequestUserId);
     
 }

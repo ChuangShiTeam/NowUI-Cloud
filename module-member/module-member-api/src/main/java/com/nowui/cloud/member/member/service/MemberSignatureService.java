@@ -1,7 +1,6 @@
 package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.view.MemberSignatureView;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.service.SuperService;
 
 /**

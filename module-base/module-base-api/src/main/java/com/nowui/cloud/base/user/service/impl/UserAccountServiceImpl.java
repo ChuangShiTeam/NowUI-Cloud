@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, UserAccount,UserAcRepository,UserAccountView> implements UserAccountService {
+public class UserAccountServiceImpl extends SuperServiceImpl<UserAccountMapper, UserAccount, UserAcRepository, UserAccountView> implements UserAccountService {
 
     @Override
     public UserAccount findByUserId(String userId) {

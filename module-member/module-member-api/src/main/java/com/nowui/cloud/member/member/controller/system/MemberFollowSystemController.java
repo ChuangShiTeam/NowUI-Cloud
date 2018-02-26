@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.service.MemberFollowService;
+import com.nowui.cloud.member.member.view.MemberFollowView;
 
 import io.swagger.annotations.Api;
 
@@ -45,13 +45,13 @@ public class MemberFollowSystemController implements MemberFollowRpc {
     @Override
     public List<String> followUserIdList(String userId) {
         
-        List<MemberFollow> memberFollowList = memberFollowService.listByUserId(userId);
+        List<MemberFollowView> memberFollowViewList = memberFollowService.listByUserId(userId);
         
-        if (memberFollowList == null || memberFollowList.size() == 0) {
+        if (memberFollowViewList == null || memberFollowViewList.size() == 0) {
             return new ArrayList<>();
         }
         
-        return memberFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());
+        return memberFollowViewList.stream().map(memberFollowView -> memberFollowView.getFollowUserId()).collect(Collectors.toList());
     }
 
 }   

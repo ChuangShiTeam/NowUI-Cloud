@@ -25,6 +25,7 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户头像编号
      */
+    @Id
     @TableId
     @NotNull(message = "用户头像编号不能为空")
     @Length(max = 32, message = "用户头像编号长度超出限制")
@@ -43,7 +44,6 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户编号
      */
-    @Id
     @TableField
     @NotNull(message = "用户编号不能为空")
     @Length(max = 32, message = "用户编号长度超出限制")
@@ -59,6 +59,10 @@ public class UserAvatar extends BaseEntity {
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
 
+    /**
+     * 用户头像路径
+     */
+    public static final String USER_AVATAR_PATH = "userAvatarPath";
 
     public String getUserAvatarId() {
         return getString(USER_AVATAR_ID);
@@ -92,5 +96,12 @@ public class UserAvatar extends BaseEntity {
         put(USER_AVATAR, userAvatar);
     }
 
+    public String getUserAvatarPath() {
+        return getString(USER_AVATAR_PATH);
+    }
+    
+    public void setUserAvatarPath(String userAvatarPath) {
+        put(USER_AVATAR_PATH, userAvatarPath);
+    }
 
 }
