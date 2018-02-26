@@ -6,6 +6,8 @@ logging:
     root: info
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
