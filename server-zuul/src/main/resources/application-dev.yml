@@ -4,6 +4,8 @@ spring:
   application:
     name: server-zuul
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
