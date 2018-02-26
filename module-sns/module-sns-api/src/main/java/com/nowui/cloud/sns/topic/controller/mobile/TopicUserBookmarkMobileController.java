@@ -14,6 +14,7 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
@@ -60,7 +61,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         String theBookMarkUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(theBookMarkUserId);
+        MemberView member = memberRpc.findByUserIdV1(theBookMarkUserId);
         String theBookMarkMemberId = member.getMemberId();
         String requestUserId = body.getSystemRequestUserId();
         

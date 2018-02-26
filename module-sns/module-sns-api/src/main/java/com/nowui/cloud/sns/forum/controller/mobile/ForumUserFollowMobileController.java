@@ -21,6 +21,7 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
@@ -84,7 +85,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         String forumId = body.getForumId();
@@ -192,7 +193,7 @@ public class ForumUserFollowMobileController extends BaseController {
         );
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         JSONArray jsonArray = body.getJSONArray(ForumUserFollow.FORUM_ID_LSIT);
@@ -253,7 +254,7 @@ public class ForumUserFollowMobileController extends BaseController {
 
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
 
         Integer resultTotal = forumUserFollowService.countByMemberId(appId, requestMemberId);
@@ -283,6 +284,10 @@ public class ForumUserFollowMobileController extends BaseController {
                 Forum.FORUM_TODAY_TOPIC_COUNT,
                 Forum.FORUM_MODERATOR,
                 Forum.FORUM_MODERATOR_INFO,
+                Forum.USER_AVATAR, 
+                Forum.USER_NICKNAME, 
+                Forum.MEMBER_SIGNATURE,
+
                 ForumUserFollow.FORUM_USER_FOLLOW_ID
         );
         
@@ -303,7 +308,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         List<ForumUserFollowView> resultList = forumUserFollowService.listByMemberId(appId, memberId);
@@ -335,7 +340,7 @@ public class ForumUserFollowMobileController extends BaseController {
         );
         
         String requestUserId = forumUserFollowEntry.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
 		
 		ForumUserFollow result = forumUserFollowService.updateTopForum(forumUserFollowEntry.getAppId(), forumUserFollowEntry.getForumId(), memberId, requestUserId);

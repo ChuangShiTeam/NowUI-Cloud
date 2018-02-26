@@ -130,14 +130,14 @@ public class MemberView extends BaseView {
      * 用户头像文件编号
      */
     @Field
-    private String userAvatar;
+    private String userAvatarFileId;
     public static final String USER_AVATAR = "userAvatar";
     
     /**
      * 用户头像文件路径
      */
     @Field
-    private String userAvatarPath;
+    private String userAvatarFilePath;
     public static final String USER_AVATAR_PATH = "userAvatarPath";
     
     /**

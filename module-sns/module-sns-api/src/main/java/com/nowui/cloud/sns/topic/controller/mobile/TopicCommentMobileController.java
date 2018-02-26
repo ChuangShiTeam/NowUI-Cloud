@@ -7,6 +7,7 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
@@ -75,7 +76,7 @@ public class TopicCommentMobileController extends BaseController {
         );
 
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         
         String appId = body.getAppId();
@@ -168,7 +169,7 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
         String systemRequestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(systemRequestUserId);
+        MemberView member = memberRpc.findByUserIdV1(systemRequestUserId);
         String memberId = member.getMemberId();
         body.setMemberId(memberId);
         

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -63,12 +64,37 @@ public class Forum extends BaseEntity {
     public static final String FORUM_MODERATOR = "forumModerator";
     
     /**
+     * TODO 由头像路径和昵称的字段全部替换完成后要删除掉
      * 版主头像路径和昵称和签名
      */
     @TableField(exist = false)
     @NotNull(message = "版主头像路径和昵称和签名不能为空")
     private JSONObject forumModeratorInfo;
     public static final String FORUM_MODERATOR_INFO = "forumModeratorInfo";
+    
+    /**
+     * 版主头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "版主头像")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
+    
+    /**
+     * 版主昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "版主昵称")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 版主会员签名
+     */
+    @TableField(exist = false)
+    @NotNull(message = "版主的会员签名")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
     
     /**
      * 论坛多媒体
@@ -300,6 +326,30 @@ public class Forum extends BaseEntity {
 
 	public void setForumModeratorInfo(JSONObject forumModeratorInfo) {
         put(FORUM_MODERATOR_INFO, forumModeratorInfo);
+	}
+	
+	public String getUserAvatar() {
+		return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		put(USER_AVATAR, userAvatar);
+	}
+
+	public String getUserNickName() {
+		return getString(USER_NICKNAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+		put(USER_NICKNAME, userNickName);
+	}
+
+	public String getMemberSignature() {
+		return getString(MEMBER_SIGNATURE);
+	}
+
+	public void setMemberSignature(String memberSignature) {
+		put(MEMBER_SIGNATURE, memberSignature);
 	}
 
 	public String getForumLocation() {

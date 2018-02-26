@@ -5,6 +5,7 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
@@ -59,7 +60,7 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         String appId = body.getAppId();
         String commentId = body.getCommentId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         // 先去取消评论点赞表查询有没有记录
