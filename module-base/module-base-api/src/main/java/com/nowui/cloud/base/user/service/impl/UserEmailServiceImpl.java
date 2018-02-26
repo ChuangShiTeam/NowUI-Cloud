@@ -3,14 +3,13 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.base.user.repository.UserEmailRepository;
-import com.nowui.cloud.base.user.router.UserEmailRouter;
-import com.nowui.cloud.base.user.view.UserEmailView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.mapper.UserEmailMapper;
+import com.nowui.cloud.base.user.repository.UserEmailRepository;
 import com.nowui.cloud.base.user.service.UserEmailService;
+import com.nowui.cloud.base.user.view.UserEmailView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
@@ -22,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail,UserEmailRepository,UserEmailView> implements UserEmailService {
+public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail, UserEmailRepository, UserEmailView> implements UserEmailService {
 
     @Override
     public UserEmail findByUserId(String userId) {

@@ -50,8 +50,7 @@ public class UserAvatarView extends BaseView {
     @NotNull(message = "头像文件编号不能为空")
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
-
-
+    
     public String getUserAvatarId() {
         return getString(USER_AVATAR_ID);
     }
@@ -83,6 +82,5 @@ public class UserAvatarView extends BaseView {
     public void setUserAvatar(String userAvatar) {
         put(USER_AVATAR, userAvatar);
     }
-
-
+    
 }

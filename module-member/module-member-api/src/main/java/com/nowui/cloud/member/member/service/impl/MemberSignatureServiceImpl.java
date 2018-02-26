@@ -2,17 +2,15 @@ package com.nowui.cloud.member.member.service.impl;
 
 import java.util.List;
 
-import com.nowui.cloud.member.member.repository.MemberSignatureRepository;
-import com.nowui.cloud.member.member.router.MemberSignatureRouter;
-import com.nowui.cloud.member.member.view.MemberSignatureView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.mapper.MemberSignatureMapper;
+import com.nowui.cloud.member.member.repository.MemberSignatureRepository;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
+import com.nowui.cloud.member.member.view.MemberSignatureView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 会员签名业务实现

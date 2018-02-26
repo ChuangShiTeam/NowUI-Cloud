@@ -23,13 +23,13 @@ public class SmsCaptchaSystemController implements SmsCaptchaRpc {
     private SmsCaptchaService smsCaptchaService;
 
     @Override
-    public void aliyunSend(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress,
+    public void aliyunSendV1(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress,
             int captchaMinute, String systemRequestUserId) {
         smsCaptchaService.aliyunSend(appId, smsCaptchaType, smsCaptchaMobile, smsCaptchaIpAddress, captchaMinute, systemRequestUserId);
     }
 
     @Override
-    public Boolean checkCaptchaCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate) {
+    public Boolean checkCaptchaCodeV1(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate) {
         Integer count = smsCaptchaService.countByMobileAndCode(appId, smsCaptchaMobile, smsCaptchaCode, startDate);
         return count > 0;
     }

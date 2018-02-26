@@ -3,32 +3,31 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.base.user.repository.UserRepository;
-import com.nowui.cloud.base.user.router.*;
-import com.nowui.cloud.base.user.view.UserIdcardView;
-import com.nowui.cloud.base.user.view.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserIdcard;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
-import com.nowui.cloud.base.user.entity.UserWechat;
+import com.nowui.cloud.base.user.entity.UserSex;
 import com.nowui.cloud.base.user.mapper.UserMapper;
+import com.nowui.cloud.base.user.repository.UserRepository;
 import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.base.user.service.UserAvatarService;
 import com.nowui.cloud.base.user.service.UserEmailService;
-import com.nowui.cloud.base.user.service.UserIdcardService;
 import com.nowui.cloud.base.user.service.UserMobileService;
 import com.nowui.cloud.base.user.service.UserNickNameService;
 import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.service.UserService;
+import com.nowui.cloud.base.user.service.UserSexService;
 import com.nowui.cloud.base.user.service.UserWechatService;
+import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
@@ -41,7 +40,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-02
  */
 @Service
-public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepository,UserView> implements UserService {
+public class UserServiceImpl extends SuperServiceImpl<UserMapper, User, UserRepository, UserView> implements UserService {
 	
 	@Autowired
 	private UserAccountService userAccountService;
@@ -56,7 +55,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
 	private UserMobileService userMobileService;
 	
 	@Autowired
-	private UserIdcardService userIdcardService;
+	private UserSexService userSexService;
 	
 	@Autowired
 	private UserNickNameService userNickNameService;
@@ -90,392 +89,272 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User,UserRepos
                 pageSize
         );
         
-        //查询用户相关信息
-        for (User user : userList) {
-            user.putAll(findById(user.getUserId()));
-        }
         return userList;
     }
     
     @Override
-    public User findByObjectIdAndUserType(String objectId, String userType) {
-        List<User> userList = list(
-                new BaseWrapper<User>()
-                        .eq(User.OBJECT_ID, objectId)
-                        .eq(User.USER_TYPE, userType)
-                        .eq(User.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(User.SYSTEM_CREATE_TIME))
-        );
-        if (userList == null || userList.size() == 0) {
-            return null;
-        }
-        return userList.get(0);
-    }
-
-    @Override
-    public Boolean deleteByObjectIdAndUserType(String objectId, String userType, String systemRequestUserId) {
-        User user = findByObjectIdAndUserType(objectId, userType);
-        if (user == null) {
-            return false;
-        }
-
-        User result = delete(user.getUserId(), systemRequestUserId, user.getSystemVersion());
-
-        if (result == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    public UserView findById(String userId) {
-        UserView user = (UserView) redisTemplate.opsForValue().get(getItemCacheName(userId));
+    public Boolean updateUserAccount(String appId, String userId, String userAccount, String systemRequestUserId) {
+        UserView userView = find(userId);
         
-        if (user == null) {
-            user = find(userId);
-            
-            // 查询用户账号
-            UserAccount userAccount = userAccountService.findByUserId(userId);
-            user.put(User.USER_ACCOUNT, userAccount == null ? "" : userAccount.getUserAccount());
-            
-            // 查询用户密码
-            UserPassword userPassword = userPasswordService.findByUserId(userId);
-            user.put(User.USER_PASSWORD, userPassword == null ? "" : userPassword.getUserPassword());
-            
-            // 查询用户头像
-            UserAvatar userAvatar = userAvatarService.findByUserId(userId);
-            user.put(User.USER_AVATAR, userAvatar == null ? "" : userAvatar.getUserAvatar());
-            
-            // 查询用户身份证
-            UserIdcard userIdcard = userIdcardService.findByUserId(userId);
-            user.put(User.USER_NAME, userIdcard == null ? "" : userIdcard.getUserName());
-            user.put(User.USER_IDCARD_NUMBER, userIdcard == null ? "" : userIdcard.getUserIdcardNumber());
-            user.put(User.USER_SEX, userIdcard == null ? "" : userIdcard.getUserSex());
-            
-            // 查询用户手机号码
-            UserMobile userMobile = userMobileService.findByUserId(userId);
-            user.put(User.USER_MOBILE, userMobile == null ? "" : userMobile.getUserMobile());
-            
-            // 查询用户邮箱
-            UserEmail userEmail = userEmailService.findByUserId(userId);
-            user.put(User.USER_EMAIL, userEmail == null ? "" : userEmail.getUserEmail());
-            
-            // 查询用户昵称
-            UserNickName userNickName = userNickNameService.findByUserId(userId);
-            user.put(User.USER_NICK_NAME, userNickName == null ? "" : userNickName.getUserNickName());
-           
-            // 查询用户微信
-            user.put(User.USER_WECHAT, userWechatService.findByUserId(userId));
-
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
         }
         
-        return user;
-    }
-
-    @Override
-    public Boolean saveUserAccount(String appId, String userId, UserAccount userAccount, String userAccountId,
-            String systemRequestUserId) {
-        userAccount.setAppId(appId);
-        userAccount.setUserId(userId);
-
-        UserAccount result = userAccountService.save(userAccount, userAccountId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_ACCOUNT, userAccountService.find(userAccountId).getUserAccount());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
+        if (userAccount.equals(userView.getUserAccount())) {
             return true;
-        } else {
-            return false;
         }
-    }
-
-    @Override
-    public void deleteUserAccountByUserId(String userId, String systemRequestUserId) {
+        
+        // 删除旧的用户账号信息
         userAccountService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_ACCOUNT, "");
+        // 保存新的用户账号信息
+        UserAccount userAccountBean = new UserAccount();
+        userAccountBean.setAppId(appId);
+        userAccountBean.setUserId(userId);
+        userAccountBean.setUserAccount(userAccount);
+        UserAccount bean = userAccountService.save(userAccountBean, Util.getRandomUUID(), systemRequestUserId);
+        
+        Boolean result = false;
+        
+        if (bean != null) {
+            // 更新用户视图信息到MongoDB
+            userView.setUserAccount(userAccount);
             
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-        }
-    }
-
-    @Override
-    public Boolean saveUserPassword(String appId, String userId, UserPassword userPassword, String userPasswordId,
-            String systemRequestUserId) {
-        userPassword.setAppId(appId);
-        userPassword.setUserId(userId);
-        
-        userPassword.setUserPassword(Util.generatePassword(userPassword.getUserPassword()));
-
-        UserPassword result = userPasswordService.save(userPassword, userPasswordId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_PASSWORD, userPasswordService.find(userPasswordId).getUserPassword());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void deleteUserPasswordByUserId(String userId, String systemRequestUserId) {
-        userPasswordService.deleteByUserId(userId, systemRequestUserId);
-        
-        // 更新用户缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_PASSWORD, "");
+            update(userView);
             
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
+            result = true;
         }
-    }
-
-    @Override
-    public Boolean saveUserEmail(String appId, String userId, UserEmail userEmail, String userEmailId,
-            String systemRequestUserId) {
-        userEmail.setAppId(appId);
-        userEmail.setUserId(userId);
-
-        UserEmail result = userEmailService.save(userEmail, userEmailId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户邮箱缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_EMAIL, userEmailService.find(userEmailId).getUserEmail());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void deleteUserEmailByUserId(String userId, String systemRequestUserId) {
-        userEmailService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户邮箱缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_EMAIL, "");
-            
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-        }
+        return result;
+    }
+
+     @Override
+    public Boolean updateUserEmail(String appId, String userId, String userEmail, String systemRequestUserId) {
+         UserView userView = find(userId);
+         
+         if (userView == null) {
+             throw new RuntimeException("用户不存在");
+         }
+         
+         if (userEmail.equals(userView.getUserEmail())) {
+             return true;
+         }
+         
+         // 删除旧的用户邮箱信息
+         userEmailService.deleteByUserId(userId, systemRequestUserId);
+         
+         // 保存新的用户邮箱信息
+         UserEmail userEmailBean = new UserEmail();
+         userEmailBean.setAppId(appId);
+         userEmailBean.setUserId(userId);
+         userEmailBean.setUserEmail(userEmail);
+         UserEmail bean = userEmailService.save(userEmailBean, Util.getRandomUUID(), systemRequestUserId);
+         
+         Boolean result = false;
+         
+         if (bean != null) {
+             // 更新用户视图信息到MongoDB
+             userView.setUserEmail(userEmail);
+             
+             update(userView);
+             
+             result = true;
+         }
+         
+         return result;
     }
 
     @Override
-    public Boolean saveUserAvatar(String appId, String userId, UserAvatar userAvatar, String userAvatarId,
-            String systemRequestUserId) {
-        userAvatar.setAppId(appId);
-        userAvatar.setUserId(userId);
+    public Boolean updateUserMobile(String appId, String userId, String userMobile, String systemRequestUserId) {
+        UserView userView = find(userId);
         
-        UserAvatar result = userAvatarService.save(userAvatar, userAvatarId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户头像缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_AVATAR, userAvatarService.find(userAvatarId).getUserAvatar());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
         }
-    }
-
-    @Override
-    public void deleteUserAvatarByUserId(String userId, String systemRequestUserId) {
-        userAvatarService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户头像缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_AVATAR, "");
-            
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-        }
-    }
-
-    @Override
-    public Boolean saveUserMobile(String appId, String userId, UserMobile userMobile, String userMobileId,
-            String systemRequestUserId) {
-        userMobile.setAppId(appId);
-        userMobile.setUserId(userId);
-
-        UserMobile result = userMobileService.save(userMobile, userMobileId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户手机号码缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_MOBILE, userMobileService.find(userMobileId).getUserMobile());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
+        if (userMobile.equals(userView.getUserMobile())) {
             return true;
-        } else {
-            return false;
         }
-    }
-
-    @Override
-    public void deleteUserMobileByUserId(String userId, String systemRequestUserId) {
+        
+        // 删除旧的用户手机号码信息
         userMobileService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户手机号码缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_MOBILE, "");
-            
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-        }
-    }
-
-    @Override
-    public Boolean saveUserIdcard(String appId, String userId, UserIdcard userIdcard, String userIdcardId,
-            String systemRequestUserId) {
-        userIdcard.setAppId(appId);
-        userIdcard.setUserId(userId);
-
-        UserIdcard result = userIdcardService.save(userIdcard, userIdcardId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户身份证缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                UserIdcardView bean = userIdcardService.find(userIdcardId);
-//                UserIdcard bean = userIdcardService.find(userIdcardId);
-                user.put(User.USER_IDCARD_NUMBER, bean.getUserIdcardNumber());
-                user.put(User.USER_SEX, bean.getUserSex());
-                user.put(User.USER_NAME, bean.getUserName());
-                
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void deleteUserIdcardByUserId(String userId, String systemRequestUserId) {
-        userIdcardService.deleteByUserId(userId, systemRequestUserId);
+        // 保存新的用户手机号码信息
+        UserMobile userMobileBean = new UserMobile();
+        userMobileBean.setAppId(appId);
+        userMobileBean.setUserId(userId);
+        userMobileBean.setUserMobile(userMobile);
+        UserMobile bean = userMobileService.save(userMobileBean, Util.getRandomUUID(), systemRequestUserId);
         
-        // 更新用户身份证缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_IDCARD_NUMBER, "");
-            user.put(User.USER_NAME, "");
-            user.put(User.USER_SEX, "");
+        Boolean result = false;
+        
+        if (bean != null) {
+            // 更新用户视图信息到MongoDB
+            userView.setUserMobile(userMobile);
             
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
+            update(userView);
+            
+            result = true;
         }
         
+        return result;
     }
 
     @Override
-    public Boolean saveUserNickName(String appId, String userId, UserNickName userNickName, String userNickNameId,
-            String systemRequestUserId) {
-        userNickName.setAppId(appId);
-        userNickName.setUserId(userId);
-
-        UserNickName result = userNickNameService.save(userNickName, userNickNameId, systemRequestUserId);
-
-
-        if (result != null) {
-            // 更新用户昵称缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_NICK_NAME, userNickNameService.find(userNickNameId).getUserNickName());
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
+    public Boolean updateUserSex(String appId, String userId, String userSex, String systemRequestUserId) {
+        UserView userView = find(userId);
+        
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
         }
+        
+        if (userSex.equals(userView.getUserSex())) {
+            return true;
+        }
+        
+        // 删除旧的用户性别信息
+        userSexService.deleteByUserId(userId, systemRequestUserId);
+        
+        // 保存新的用户性别信息
+        UserSex userSexBean = new UserSex();
+        userSexBean.setAppId(appId);
+        userSexBean.setUserId(userId);
+        userSexBean.setUserSex(userSex);
+        UserSex bean = userSexService.save(userSexBean, Util.getRandomUUID(), systemRequestUserId);
+        
+        Boolean result = false;
+        
+        if (bean != null) {
+            // 更新用户视图信息到MongoDB
+            userView.setUserSex(userSex);
+            
+            update(userView);
+            
+            result = true;
+        }
+        
+        return result;
     }
 
     @Override
-    public void deleteUserNickNameByUserId(String userId, String systemRequestUserId) {
+    public UserView findByUserTypeAndAccount(String appId, String userType, String userAccount) {
+        Criteria criteria = Criteria.where(UserView.APP_ID).is(appId)
+                .and(UserView.USER_TYPE).is(userType)
+                .and(UserView.USER_ACCOUNT).is(userAccount)
+                .and(UserView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return find(query);
+    }
+
+    @Override
+    public Boolean checkUserAccount(String appId, String userType, String userAccount) {
+        UserView userView = findByUserTypeAndAccount(appId, userType, userAccount);
+        
+        return userView != null;
+    }
+
+    @Override
+    public Boolean updateUserPassword(String appId, String userId, String userPassword, String systemRequestUserId) {
+        UserView userView = find(userId);
+        
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        
+        if (Util.generatePassword(userPassword).equals(userView.getUserPassword())) {
+            return true;
+        }
+        // 删除旧的用户密码信息
+        userPasswordService.deleteByUserId(userId, systemRequestUserId);
+        
+        // 保存新的用户密码信息
+        UserPassword userPasswordBean = new UserPassword();
+        userPasswordBean.setAppId(appId);
+        userPasswordBean.setUserId(userId);
+        userPasswordBean.setUserPassword(Util.generatePassword(userPassword));
+        UserPassword bean = userPasswordService.save(userPasswordBean, Util.getRandomUUID(), systemRequestUserId);
+        
+        Boolean result = false;
+        if (bean != null) {
+            userView.setUserPassword(Util.generatePassword(userPassword));
+            
+            update(userView);
+            
+            result = true;
+        }
+        
+        return result;
+    }
+
+    @Override
+    public Boolean updateUserNickName(String appId, String userId, String userNickName,
+            String systemRequestUserId) {
+        UserView userView = find(userId);
+        
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        
+        if (userNickName.equals(userView.getUserNickName())) {
+            return true;
+        }
+        // 删除旧的用户昵称信息
         userNickNameService.deleteByUserId(userId, systemRequestUserId);
         
-        // 更新用户昵称缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_NICK_NAME, "");
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-        }
-    }
-
-    @Override
-    public Boolean saveUserWechat(String appId, String userId, UserWechat userWechat, String userWechatId,
-            String systemRequestUserId) {
-        userWechat.setAppId(appId);
-        userWechat.setUserId(userId);
-
-        UserWechat result = userWechatService.save(userWechat, userWechatId, systemRequestUserId);
-
-        if (result != null) {
-            // 更新用户微信缓存
-            User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-            if (user != null) {
-                user.put(User.USER_WECHAT, userWechatService.find(userWechatId));
-                redisTemplate.opsForValue().set(getItemCacheName(userId), user);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void deleteUserWechatByUserId(String userId, String systemRequestUserId) {
-        userWechatService.deleteByUserId(userId, systemRequestUserId);
+        // 保存新的用户昵称信息
+        UserNickName userNickNameBean = new UserNickName();
+        userNickNameBean.setAppId(appId);
+        userNickNameBean.setUserId(userId);
+        userNickNameBean.setUserNickName(userNickName);
+        UserNickName bean = userNickNameService.save(userNickNameBean, Util.getRandomUUID(), systemRequestUserId);
         
-        // 更新用户微信缓存
-        User user = (User) redisTemplate.opsForValue().get(getItemCacheName(userId));
-        if (user != null) {
-            user.put(User.USER_WECHAT, null);
-            redisTemplate.opsForValue().set(getItemCacheName(userId), user);
+        Boolean result = false;
+        if (bean != null) {
+            userView.setUserNickName(userNickName);
+            
+            update(userView);
+            
+            result = true;
         }
-    }
-    
-    @Override
-    public UserAccount findByUserAccount(String appId, String userAccount) {
-        return userAccountService.findByUserAccount(appId, userAccount);
+        
+        return result;
     }
 
     @Override
-    public UserWechat findByOpenIdAndUnionId(String appId, String wechatOpenId, String wechatUnionId) {
-        return userWechatService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
+    public Boolean updateUserAvatar(String appId, String userId, String userAvatar, String userAvatarPath, String systemRequestUserId) {
+        UserView userView = find(userId);
+        
+        if (userView == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        
+        if (userAvatar.equals(userView.getUserAvatar())) {
+            return true;
+        }
+        
+        // 删除旧的用户头像信息
+        userAvatarService.deleteByUserId(userId, systemRequestUserId);
+        
+        // 保存新的用户头像信息
+        UserAvatar userAvatarBean = new UserAvatar();
+        userAvatarBean.setAppId(appId);
+        userAvatarBean.setUserId(userId);
+        userAvatarBean.setUserAvatar(userAvatar);
+        UserAvatar bean = userAvatarService.save(userAvatarBean, Util.getRandomUUID(), systemRequestUserId);
+        
+        Boolean result = false;
+        if (bean != null) {
+            userView.setUserAvatar(userAvatar);
+            userView.setUserAvatarPath(userAvatarPath);
+            
+            update(userView);
+            
+            result = true;
+        }
+        
+        return result;
     }
 
 }

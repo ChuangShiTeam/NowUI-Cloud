@@ -73,7 +73,7 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 //
 //        return topicUserBookmark;
 		
-		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + memberId + ".*")
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
                 .and(TopicUserBookmarkView.MEMBER_ID).regex(".*?" + memberId + ".*")
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
@@ -86,6 +86,32 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 		}
 
         return topicUserBookmarkList.get(0);
+	}
+	
+	@Override
+	public List<TopicUserBookmarkView> listByTopicIdAndMemberId(String topicId, String memberId) {
+//		TopicUserBookmark topicUserBookmark = find(
+//                new BaseWrapper<TopicUserBookmark>()
+//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
+//                        .eq(TopicUserBookmark.USER_ID, userId)
+//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
+//        );
+//
+//        return topicUserBookmark;
+		
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicUserBookmarkView.MEMBER_ID).regex(".*?" + memberId + ".*")
+                .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        List<TopicUserBookmarkView> topicUserBookmarkList = list(query);
+        
+        if (Util.isNullOrEmpty(topicUserBookmarkList)) {
+			return null;
+		}
+
+        return topicUserBookmarkList;
 	}
 
     @Override

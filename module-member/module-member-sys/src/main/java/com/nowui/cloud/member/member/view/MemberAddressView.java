@@ -124,5 +124,4 @@ public class MemberAddressView extends BaseView{
         put(MEMBER_ADDRESS_ADDRESS, memberAddressAddress);
     }
 
-
 }

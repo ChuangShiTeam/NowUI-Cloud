@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.forum.controller.mobile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
@@ -91,9 +89,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String forumId = body.getForumId();
         
-        
-        
-       //去关注表看有没有记录
+        //去关注表看有没有记录
         ForumUserFollowView forumUserFollow = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, forumId);
         //有: 返回true
         if (!Util.isNullOrEmpty(forumUserFollow)) {
@@ -126,8 +122,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 	
 				}
     		}
-        	
-        	
+            
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
         	forumUserFollowService.save(forumUserFollowView);
         	//sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
@@ -261,7 +256,7 @@ public class ForumUserFollowMobileController extends BaseController {
         Member member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
 
-        Integer resultTotal = forumUserFollowService.countByMemberId(body.getAppId(), requestMemberId);
+        Integer resultTotal = forumUserFollowService.countByMemberId(appId, requestMemberId);
 
         List<ForumUserFollowView> forumUserFollowList = forumUserFollowService.listByMemberId(appId, requestMemberId, body.getPageIndex(), body.getPageSize());
 
@@ -274,6 +269,7 @@ public class ForumUserFollowMobileController extends BaseController {
             // 论坛当日话题最新数量
             Integer count = topicForumService.countTodayByForumId(forumUserFollow.getForumId());
             forum.put(Forum.FORUM_TODAY_TOPIC_COUNT, count);
+            forum.put(ForumUserFollow.FORUM_USER_FOLLOW_ID, forumUserFollow.getForumUserFollowId());
 
             forumList.add(forum);
         }
@@ -286,7 +282,8 @@ public class ForumUserFollowMobileController extends BaseController {
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_TODAY_TOPIC_COUNT,
                 Forum.FORUM_MODERATOR,
-                Forum.FORUM_MODERATOR_INFO
+                Forum.FORUM_MODERATOR_INFO,
+                ForumUserFollow.FORUM_USER_FOLLOW_ID
         );
         
         validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
@@ -333,7 +330,8 @@ public class ForumUserFollowMobileController extends BaseController {
         validateRequest(
         		forumUserFollowEntry,
                 ForumUserFollow.FORUM_ID,
-                ForumUserFollow.APP_ID
+                ForumUserFollow.APP_ID,
+                ForumUserFollow.FORUM_USER_FOLLOW_ID
         );
         
         String requestUserId = forumUserFollowEntry.getSystemRequestUserId();
@@ -346,6 +344,7 @@ public class ForumUserFollowMobileController extends BaseController {
         if (result != null) {
         	
         	forumUserFollowEntry.setForumUserFollowIsTop(true);
+        	forumUserFollowEntry.setSystemUpdateTime(new Date());
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
         	forumUserFollowService.update(forumUserFollowView);
 

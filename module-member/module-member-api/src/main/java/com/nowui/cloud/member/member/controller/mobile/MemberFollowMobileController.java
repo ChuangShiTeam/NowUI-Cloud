@@ -2,9 +2,7 @@ package com.nowui.cloud.member.member.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import com.nowui.cloud.member.member.router.MemberFollowRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,15 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.rpc.UserRpc;
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
+import com.nowui.cloud.member.member.service.MemberService;
+import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -41,58 +38,24 @@ public class MemberFollowMobileController extends BaseController {
     private MemberFollowService memberFollowService;
     
     @Autowired
-    private UserRpc userRpc;
-    
-    @Autowired
-    private FileRpc fileRpc;
+    private MemberService memberService;
 
     @ApiOperation(value = "我的关注列表")
     @RequestMapping(value = "/member/follow/mobile/v1/my/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> myFollowlistV1(@RequestBody MemberFollow body) {
+    public Map<String, Object> myFollowlistV1() {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
+                memberFollow,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
 
-        List<MemberFollow> resultList = memberFollowService.listByUserId(body.getSystemRequestUserId());
+        List<MemberFollowView> resultList = memberFollowService.listByUserId(memberFollow.getSystemRequestUserId());
         
-        // 处理requestUser是否关注了列表中的粉丝
-        for (MemberFollow memberFollow : resultList) {
-			
-        	MemberFollow myFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getFollowUserId());
-        	
-        	if (!Util.isNullOrEmpty(myFollow)) {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
-			}
-        	else {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
-			}
-		}
-        
-        
-        //处理会员头像和昵称
-        String userIds = Util.beanToFieldString(resultList, MemberFollow.FOLLOW_USER_ID);
-        
-        List<User> userList = userRpc.findsV1(userIds);
-        
-        if (!Util.isNullOrEmpty(userList)) {
-            
-            String fileIds = Util.beanToFieldString(userList, UserAvatar.USER_AVATAR);
-            
-            List<File> fileList = fileRpc.findsV1(fileIds);
-            
-            userList = Util.beanAddField(userList, UserAvatar.USER_AVATAR, fileList, File.FILE_PATH);
-            
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
-        }
-               
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
-                MemberFollow.FOLLOW_MEMBER_ID,
-                MemberFollow.FOLLOW_USER_ID,
-                File.FILE_PATH,
-                User.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW
+                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.FOLLOW_MEMBER_ID,
+                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_NICK_NAME
         );
 
         return renderJson(resultList);
@@ -100,50 +63,27 @@ public class MemberFollowMobileController extends BaseController {
     
     @ApiOperation(value = "关注我的列表")
     @RequestMapping(value = "/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> followMelistV1(@RequestBody MemberFollow body) {
+    public Map<String, Object> followMelistV1() {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
+                memberFollow,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
         
-        List<MemberFollow> resultList = memberFollowService.listByFollowUserId(body.getSystemRequestUserId());
+        List<MemberFollowView> resultList = memberFollowService.listByFollowUserId(memberFollow.getSystemRequestUserId());
         
-        // 处理requestUser是否关注了列表中的粉丝
-        for (MemberFollow memberFollow : resultList) {
-			
-        	MemberFollow FollowHim = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getUserId());
-        	
-        	if (!Util.isNullOrEmpty(FollowHim)) {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
-			}
-        	else {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
-			}
+        List<MemberFollowView> myFollowList = memberFollowService.listByUserId(memberFollow.getSystemRequestUserId());
+
+        for (MemberFollowView result : resultList) {
+            result.put(MemberFollowView.MEMBER_IS_FOLLOW, Util.isNullOrEmpty(myFollowList) ? false : myFollowList.stream().anyMatch(myFollow -> myFollow.getFollowUserId().equals(result.getUserId())));
 		}
         
-        //处理会员头像和昵称
-        String userIds = Util.beanToFieldString(resultList, MemberFollow.USER_ID);
-        
-        List<User> userList = userRpc.findsV1(userIds);
-        
-        if (!Util.isNullOrEmpty(userList)) {
-            
-            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
-            
-            List<File> fileList = fileRpc.findsV1(fileIds);
-            
-            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
-            
-            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
-        }
-               
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
-                MemberFollow.MEMBER_ID,
-                MemberFollow.USER_ID,
-                File.FILE_PATH,
-                User.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW
+                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.FOLLOW_MEMBER_ID,
+                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_NICK_NAME,
+                MemberFollowView.MEMBER_IS_FOLLOW
         );
 
         return renderJson(resultList);
@@ -151,151 +91,110 @@ public class MemberFollowMobileController extends BaseController {
     
     @ApiOperation(value = "他的关注列表")
     @RequestMapping(value = "/member/follow/mobile/v1/follow/him/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> followHimlistV1(@RequestBody MemberFollow body) {
+    public Map<String, Object> followHimlistV1() {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
-                MemberFollow.USER_ID,
+                memberFollow,
+                MemberFollow.MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
 
-        List<MemberFollow> resultList = memberFollowService.listByUserId(body.getUserId());
+        List<MemberFollowView> resultList = memberFollowService.listByMemberId(memberFollow.getMemberId());
         
-        for (MemberFollow memberFollow2 : resultList) {
-        	// 处理关注他的人是否是自己
-        	memberFollow2.put(MemberFollow.MEMBER_IS_SELF, memberFollow2.getFollowUserId().equals(body.getSystemRequestUserId()));
-        	
+        List<MemberFollowView> myFollowList = memberFollowService.listByUserId(memberFollow.getSystemRequestUserId());
+        
+        for (MemberFollowView result : resultList) {
+            result.put(MemberFollowView.MEMBER_IS_FOLLOW, Util.isNullOrEmpty(myFollowList) ? false : myFollowList.stream().anyMatch(myFollow -> myFollow.getFollowUserId().equals(result.getFollowUserId())));
+            result.put(MemberFollowView.MEMBER_IS_SELF, result.getFollowUserId().equals(memberFollow.getSystemRequestUserId()));
 		}
         
-        //处理会员头像和昵称
-        String userIds = Util.beanToFieldString(resultList, MemberFollow.FOLLOW_USER_ID);
-        
-        List<User> userList = userRpc.findsV1(userIds);
-        
-        if (!Util.isNullOrEmpty(userList)) {
-            
-            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
-            
-            List<File> fileList = fileRpc.findsV1(fileIds);
-            
-            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
-            
-            resultList = Util.beanAddField(resultList, MemberFollow.FOLLOW_USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
-        }
-        
-        // 判断我是否关注过
-        // 查询我的关注的列表
-        List<MemberFollow> myFollowList = memberFollowService.listByUserId(body.getSystemRequestUserId());
-        if (!Util.isNullOrEmpty(myFollowList)) {
-            List<String> myFollowUserIdList = myFollowList.stream().map(memberFollow -> memberFollow.getFollowUserId()).collect(Collectors.toList());
-            resultList.stream().forEach(result -> result.put(MemberFollow.MEMBER_IS_FOLLOW, myFollowUserIdList.contains(result.getFollowUserId())));
-        }
-               
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
-                MemberFollow.FOLLOW_MEMBER_ID,
-                MemberFollow.FOLLOW_USER_ID,
-                File.FILE_PATH,
-                User.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW,
-                MemberFollow.MEMBER_IS_SELF
+                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.FOLLOW_MEMBER_ID,
+                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_NICK_NAME,
+                MemberFollowView.MEMBER_IS_FOLLOW,
+                MemberFollowView.MEMBER_IS_SELF
         );
 
         return renderJson(resultList);
     }
-    
-    
     
     @ApiOperation(value = "关注他的列表")
     @RequestMapping(value = "/member/follow/mobile/v1/him/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> himFollowListV1(@RequestBody MemberFollow body) {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
-                MemberFollow.USER_ID,
+                memberFollow,
+                MemberFollow.MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
         
-        List<MemberFollow> resultList = memberFollowService.listByFollowUserId(body.getUserId());
+        List<MemberFollowView> resultList = memberFollowService.listByFollowMemberId(memberFollow.getMemberId());
         
-        // 处理requestUser是否关注了列表中的粉丝
-        for (MemberFollow memberFollow : resultList) {
-			
-        	MemberFollow FollowHim = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), memberFollow.getUserId());
-        	
-        	if (!Util.isNullOrEmpty(FollowHim)) {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, true);
-			}
-        	else {
-        		memberFollow.put(MemberFollow.MEMBER_IS_FOLLOW, false);
-			}
-        	
-        	// 处理关注他的人是否是自己
-        	memberFollow.put(MemberFollow.MEMBER_IS_SELF, memberFollow.getUserId().equals(body.getSystemRequestUserId()));
-        	
-		}
+        List<MemberFollowView> myFollowList = memberFollowService.listByUserId(memberFollow.getSystemRequestUserId());
         
-        
-        
-        
-        //处理会员头像和昵称
-        String userIds = Util.beanToFieldString(resultList, MemberFollow.USER_ID);
-        
-        List<User> userList = userRpc.findsV1(userIds);
-        
-        if (!Util.isNullOrEmpty(userList)) {
-            
-            String fileIds = Util.beanToFieldString(userList, User.USER_AVATAR);;
-            
-            List<File> fileList = fileRpc.findsV1(fileIds);
-            
-            userList = Util.beanAddField(userList, User.USER_AVATAR, fileList, File.FILE_PATH);
-            
-            resultList = Util.beanAddField(resultList, MemberFollow.USER_ID, User.USER_ID, userList, File.FILE_PATH, User.USER_NICK_NAME);
+        for (MemberFollowView result : resultList) {
+            result.put(MemberFollowView.MEMBER_IS_FOLLOW, Util.isNullOrEmpty(myFollowList) ? false : myFollowList.stream().anyMatch(myFollow -> myFollow.getFollowUserId().equals(result.getUserId())));
+            result.put(MemberFollowView.MEMBER_IS_SELF, result.getFollowUserId().equals(memberFollow.getSystemRequestUserId()));
         }
-               
+        
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
-                MemberFollow.MEMBER_ID,
-                MemberFollow.USER_ID,
-                File.FILE_PATH,
-                User.USER_NICK_NAME,
-                MemberFollow.MEMBER_IS_FOLLOW,
-                MemberFollow.MEMBER_IS_SELF
+                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.FOLLOW_MEMBER_ID,
+                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_NICK_NAME,
+                MemberFollowView.MEMBER_IS_FOLLOW,
+                MemberFollowView.MEMBER_IS_SELF
         );
 
         return renderJson(resultList);
     }
     
-    
-    
-    
     @ApiOperation(value = "新增会员关注")
     @RequestMapping(value = "/member/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@RequestBody MemberFollow body) {
+    public Map<String, Object> saveV1() {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
+                memberFollow,
                 MemberFollow.APP_ID,
-                MemberFollow.FOLLOW_USER_ID,
+                MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
         
-        if (body.getSystemRequestUserId().equals(body.getFollowUserId())) {
+        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
+        if (followMemberView == null) {
+            throw new RuntimeException("会员不存在");
+        }
+        
+        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
+        
+        if (memberView == null) {
+            throw new RuntimeException("会员不存在");
+        }
+        
+        if (memberFollow.getSystemRequestUserId().equals(followMemberView.getUserId())) {
             throw new BusinessException("不能关注自己");
         }
 
-        User user = userRpc.findV1(body.getSystemRequestUserId());
-        
-        User followUser = userRpc.findV1(body.getFollowUserId());
-        
-        body.setUserId(user.getUserId());
-        body.setMemberId(user.getObjectId());
-        body.setFollowMemberId(followUser.getObjectId());
+        memberFollow.setUserId(memberView.getUserId());
+        memberFollow.setMemberId(memberView.getMemberId());
+        memberFollow.setFollowUserId(followMemberView.getUserId());
 
-        MemberFollow result = memberFollowService.save(body,Util.getRandomUUID(),body.getSystemCreateUserId());
+        MemberFollow result = memberFollowService.save(memberFollow, Util.getRandomUUID(), memberFollow.getSystemCreateUserId());
 
         Boolean success = false;
 
         if (result != null) {
-
+            // 保存会员关注视图到MongoDB
+            MemberFollowView memberFollowView = JSON.parseObject(result.toJSONString(), MemberFollowView.class);
+            memberFollowView.setUserAvatarPath(memberView.getUserAvatarPath());
+            memberFollowView.setUserNickName(memberView.getUserNickName());
+            memberFollowView.setFollowUserAvatarPath(followMemberView.getUserAvatarPath());
+            memberFollowView.setFollowUserNickName(followMemberView.getUserNickName());
+            
+            memberFollowService.save(memberFollowView);
+            
             success = true;
         }
 
@@ -305,24 +204,40 @@ public class MemberFollowMobileController extends BaseController {
     @ApiOperation(value = "取消会员关注")
     @RequestMapping(value = "/member/follow/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
+        MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
-                body,
+                memberFollow,
                 MemberFollow.APP_ID,
-                MemberFollow.FOLLOW_USER_ID,
+                MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
         
-        MemberFollow memberFollow = memberFollowService.findByUserIdAndFollowUserId(body.getSystemRequestUserId(), body.getFollowUserId());
+        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
+        if (followMemberView == null) {
+            throw new RuntimeException("会员不存在");
+        }
+        
+        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
+        
+        if (memberView == null) {
+            throw new RuntimeException("会员不存在");
+        }
+        
+        Boolean memberIsFollow = memberFollowService.checkIsFollow(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
 
-        if (memberFollow == null) {
+        if (memberIsFollow) {
             throw new BusinessException("没有关注该会员");
         }
-        MemberFollow result = memberFollowService.delete(memberFollow.getMemberFollowId(),memberFollow.getSystemUpdateUserId(),memberFollow.getSystemVersion());
+        
+        MemberFollow result = memberFollowService.delete(memberFollow.getMemberFollowId(), memberFollow.getSystemUpdateUserId(), memberFollow.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
-
+            // 删除会员关注视图
+            MemberFollowView memberFollowView = JSON.parseObject(result.toJSONString(), MemberFollowView.class);
+            memberFollowService.delete(memberFollowView);
+            
             success = true;
         }
 

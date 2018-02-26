@@ -16,7 +16,7 @@ import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserIdcard;
+import com.nowui.cloud.base.user.entity.UserSex;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.enums.UserType;
@@ -120,13 +120,6 @@ public class AdminAdminController extends BaseController {
                 UserNickName.USER_NICK_NAME
         );
 
-        //验证用户姓名
-        UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
-        validateRequest(
-                userIdcardEntity,
-                UserIdcard.USER_NAME
-        );
-
         //验证用户邮箱
         UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
         validateRequest(
@@ -189,14 +182,6 @@ public class AdminAdminController extends BaseController {
         validateRequest(
                 userNickNameEntity,
                 UserNickName.USER_NICK_NAME
-        );
-
-        //验证用户姓名
-        UserIdcard userIdcardEntity = getEntry(UserIdcard.class).keepTableFieldValue();
-        userIdcardEntity.setUserIdcardNumber("");
-        validateRequest(
-                userIdcardEntity,
-                UserIdcard.USER_NAME
         );
 
         //验证用户邮箱

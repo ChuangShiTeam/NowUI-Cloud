@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -93,13 +93,16 @@ public class ForumMobileController extends BaseController {
 	             Forum.SYSTEM_REQUEST_USER_ID,
 	             Forum.FORUM_MODERATOR_INFO
          );
-	     
+	     String appId = body.getAppId();
 	     String requestUserId = body.getSystemRequestUserId();
 	     Member member = memberRpc.findByUserIdV1(requestUserId);
 	     String memberId = member.getMemberId();
 	     
+	     String forumId = Util.getRandomUUID();
+	     String forumUserFollowId = Util.getRandomUUID();
+	     
 	     // 验证论坛名称的唯一性
-	     Boolean isRepeat = forumService.checkName(body.getAppId(), body.getForumName());
+	     Boolean isRepeat = forumService.checkName(appId, body.getForumName());
 	     if (isRepeat) {
 	         throw new BusinessException("论坛名称已注册");
 	     }
@@ -113,10 +116,6 @@ public class ForumMobileController extends BaseController {
 	     body.setForumAuditStatus(ForumAuditStatus.AUDIT_PASS.getKey());
 	     body.setForumLocation("");
 	     body.setForumAuditContent("");
-	     
-	     String forumId = Util.getRandomUUID();
-	     String appId = body.getAppId();
-	     String forumUserFollowId = Util.getRandomUUID();
 	     
 	     Forum result = forumService.save(body, forumId, requestUserId);
 	     
@@ -138,6 +137,7 @@ public class ForumMobileController extends BaseController {
              
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
              forumUserFollowView.setUserInfo(forumView.getForumModeratorInfo());
+             forumUserFollowView.setForumUserFollowIsTop(false);
              forumUserFollowService.save(forumUserFollowView);
 	         
 //	         sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);

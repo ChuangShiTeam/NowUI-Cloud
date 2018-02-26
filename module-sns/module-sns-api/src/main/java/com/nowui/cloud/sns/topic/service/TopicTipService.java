@@ -60,6 +60,7 @@ public interface TopicTipService extends SuperService<TopicTip, TopicTipView> {
      * @param topicId 话题编号
      * @param topicTipList 话题多提醒列表
      * @param systemRequestUserId 请求用户编号
+     * @return 
      */
-    void batchSave(String appId, String topicId, List<TopicTip> topicTipList, String systemRequestUserId);
+    List<TopicTip> batchSave(String appId, String topicId, List<TopicTip> topicTipList, String systemRequestUserId);
 }

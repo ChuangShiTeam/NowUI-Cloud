@@ -3,14 +3,13 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.base.user.repository.UserPasswordRepository;
-import com.nowui.cloud.base.user.router.UserPasswordRouter;
-import com.nowui.cloud.base.user.view.UserPasswordView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.mapper.UserPasswordMapper;
+import com.nowui.cloud.base.user.repository.UserPasswordRepository;
 import com.nowui.cloud.base.user.service.UserPasswordService;
+import com.nowui.cloud.base.user.view.UserPasswordView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
@@ -22,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-11
  */
 @Service
-public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword,UserPasswordRepository,UserPasswordView> implements UserPasswordService {
+public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword, UserPasswordRepository, UserPasswordView> implements UserPasswordService {
 
     @Override
     public UserPassword findByUserId(String userId) {

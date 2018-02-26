@@ -3,7 +3,6 @@ import java.util.List;
 
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.view.MemberFollowView;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.service.SuperService;
 
 /**
@@ -66,24 +65,40 @@ public interface MemberFollowService extends SuperService<MemberFollow,MemberFol
      * 会员关注列表
      *
      * @param userId 用户编号
-     * @return List<MemberFollow> 会员关注列表
+     * @return List<MemberFollowView> 会员关注视图列表
      */
-    List<MemberFollow> listByUserId(String userId);
+    List<MemberFollowView> listByUserId(String userId);
+    
+    /**
+     * 会员关注列表
+     *
+     * @param memberId 会员编号
+     * @return List<MemberFollowView> 会员关注视图列表
+     */
+    List<MemberFollowView> listByMemberId(String memberId);
     
     /**
      * 会员被关注列表
      *
      * @param followUserId 被关注用户编号
-     * @return List<MemberFollow> 会员关注列表
+     * @return List<MemberFollowView> 会员关注视图列表
      */
-    List<MemberFollow> listByFollowUserId(String followUserId);
+    List<MemberFollowView> listByFollowUserId(String followUserId);
+    
+    /**
+     * 会员被关注列表
+     *
+     * @param followMemberId 被关注会员编号
+     * @return List<MemberFollowView> 会员关注视图列表
+     */
+    List<MemberFollowView> listByFollowMemberId(String followMemberId);
     
     /**
      * 根据用户编号和被关注用户编号查询会员关注
      * 
      * @param userId
-     * @return
+     * @return MemberFollowView 会员关注视图信息
      */
-    MemberFollow findByUserIdAndFollowUserId(String userId, String followUserId);
+    MemberFollowView findByUserIdAndFollowUserId(String userId, String followUserId);
 
 }

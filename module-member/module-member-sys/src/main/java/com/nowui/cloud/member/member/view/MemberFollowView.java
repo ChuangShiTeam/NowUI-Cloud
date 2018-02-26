@@ -1,11 +1,11 @@
 package com.nowui.cloud.member.member.view;
 
-import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
 
 /**
  * 关注会员信息视图
@@ -46,9 +46,23 @@ public class MemberFollowView extends BaseView {
     @Field
     private String userId;
     public static final String USER_ID = "userId";
+    
+    /**
+     * 用户头像图片路径
+     */
+    @Field
+    private String userAvatarPath;
+    public static final String USER_AVATAR_PATH = "userAvatarPath";
+    
+    /**
+     * 用户昵称
+     */
+    @Field
+    private String userNickName;
+    public static final String USER_NICK_NAME = "userNickName";
 
     /**
-     * 关注会员编号
+     * 被关注会员编号
      */
     @Field
     private String followMemberId;
@@ -61,6 +75,29 @@ public class MemberFollowView extends BaseView {
     private String followUserId;
     public static final String FOLLOW_USER_ID = "followUserId";
 
+    /**
+     * 被关注用户头像图片路径
+     */
+    @Field
+    private String followUserAvatarPath;
+    public static final String FOLLOW_USER_AVATAR_PATH = "followUserAvatarPath";
+    
+    /**
+     * 被关注用户昵称
+     */
+    @Field
+    private String followUserNickName;
+    public static final String FOLLOW_USER_NICK_NAME= "followUserNickName";
+    
+    /**
+     * 会员是否关注
+     */
+    public static final String MEMBER_IS_FOLLOW = "memberIsFollow";
+    
+    /**
+     * 是否会员自己
+     */
+    public static final String MEMBER_IS_SELF = "memberIsSelf";
 
     public String getMemberFollowId() {
         return getString(MEMBER_FOLLOW_ID);
@@ -110,5 +147,35 @@ public class MemberFollowView extends BaseView {
         put(FOLLOW_USER_ID, followUserId);
     }
 
+    public String getUserAvatarPath() {
+        return getString(USER_AVATAR_PATH);
+    }
 
+    public void setUserAvatarPath(String userAvatarPath) {
+        put(USER_AVATAR_PATH, userAvatarPath);
+    }
+
+    public String getUserNickName() {
+        return getString(USER_NICK_NAME);
+    }
+
+    public void setUserNickName(String userNickName) {
+        put(USER_NICK_NAME, userNickName);
+    }
+
+    public String getFollowUserAvatarPath() {
+        return getString(FOLLOW_USER_AVATAR_PATH);
+    }
+
+    public void setFollowUserAvatarPath(String followUserAvatarPath) {
+        put(FOLLOW_USER_AVATAR_PATH, followUserAvatarPath);
+    }
+
+    public String getFollowUserNickName() {
+        return getString(FOLLOW_USER_NICK_NAME);
+    }
+
+    public void setFollowUserNickName(String followUserNickName) {
+        put(FOLLOW_USER_NICK_NAME, followUserNickName);
+    }
 }

@@ -36,6 +36,12 @@
             <version>1.0.0</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.nowui.cloud</groupId>
+            <artifactId>module-file-sys</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
     </dependencies>
 
     <build>

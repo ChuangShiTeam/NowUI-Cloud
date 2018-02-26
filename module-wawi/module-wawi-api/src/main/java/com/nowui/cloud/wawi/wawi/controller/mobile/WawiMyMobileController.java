@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserIdcard;
+import com.nowui.cloud.base.user.entity.UserSex;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
@@ -103,10 +103,10 @@ public class WawiMyMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME
         );
         
-        UserIdcard userIdcard = getEntry(UserIdcard.class);
+        UserSex userIdcard = getEntry(UserSex.class);
         validateRequest(
                 userIdcard,
-                UserIdcard.USER_SEX
+                UserSex.USER_SEX
         );
 
         MemberSignature memberSignature = getEntry(MemberSignature.class);

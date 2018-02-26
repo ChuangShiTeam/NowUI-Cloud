@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.file.entity.File;
-import com.nowui.cloud.base.file.rpc.FileRpc;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -197,6 +196,10 @@ public class TopicMobileController extends BaseController {
         
         // 获取用户头像,昵称,签名,背景
         Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
+        
+        if (memberInfo == null) {
+        	throw new BusinessException("对不起,未找到您的信息...");
+		}
         // 获取用户头像,昵称,是否关注
 // TODO 缺少方法        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, beSearchUserId);
 //        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
@@ -213,6 +216,19 @@ public class TopicMobileController extends BaseController {
 //        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, otherMemberId);
 //        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
         
+        
+        // TODO 我的宠物
+        
+        // 粉丝数
+        Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
+        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
+         //关注数
+        Integer countFollow = memberFollowRpc.countFollow(requestUserId);
+        memberInfo.put(Member.MEMBER_FOLLOW_COUNT, countFollow);
+         //动态数
+        Integer countTopic = topicService.countTopicByMemberIdWithRedis(appId, otherMemberId);
+        memberInfo.put(Member.MEMBER_SEND_TOPIC_COUNT, countTopic);
+        
         validateResponse(
                 Member.MEMBER_SEND_TOPIC_COUNT,
                 Member.MEMBER_FOLLOW_COUNT,
@@ -221,11 +237,10 @@ public class TopicMobileController extends BaseController {
                 MemberSignature.MEMBER_SIGNATURE,
                 MemberBackground.MEMBER_BACKGROUND,
                 UserNickName.USER_NICK_NAME,
-                UserAvatar.USER_AVATAR,
-                Member.USER_ID
+                UserAvatar.USER_AVATAR
         );
-//        return renderJson(memberInfo);
-        return renderJson(null);
+        return renderJson(memberInfo);
+//        return renderJson(null);
 
     }
     
@@ -242,6 +257,7 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE
         );
+        String appId = body.getAppId();
         
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
@@ -251,8 +267,8 @@ public class TopicMobileController extends BaseController {
 
         ArrayList<String> memberIdToSearchList = new ArrayList<>();
         memberIdToSearchList.add(otherMemberId);
-        Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        Integer countResult = topicService.countByMemberIdList(appId, memberIdToSearchList);
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(appId, memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
         
         
         // TODO 处理会员信息不用借口了  在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
@@ -424,7 +440,7 @@ public class TopicMobileController extends BaseController {
         ArrayList<String> memberIdToSearchList = new ArrayList<>();
         memberIdToSearchList.add(memberId);
         Integer countResult = topicService.countByMemberIdList(body.getAppId(), memberIdToSearchList);
-        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), requestUserId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        List<TopicView> resultList = topicService.listDetailByMemberIdList(body.getAppId(), memberId, memberIdToSearchList, (List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
 
         // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
 //        String userIds = Util.beanToFieldString(resultList, Topic.USER_ID);
@@ -858,20 +874,21 @@ public class TopicMobileController extends BaseController {
                     topicForumList.add(topicForum);
                 }
                 
-                topicForumService.batchSave(appId, topicId, topicForumList, requestUserId);
+                topicForumList = topicForumService.batchSave(appId, topicId, topicForumList, requestUserId);
+                
             }
             
             // 保存提醒谁看
+            List<TopicTip> topicTipList = new ArrayList<>();
             if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
-                List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
-                
-                List<TopicTip> topicTipList = tipMemberIdList.stream().map(tipMemberId -> {
+            	List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
+                topicTipList = tipMemberIdList.stream().map(tipMemberId -> {
                     TopicTip topicTip = new TopicTip();
                     topicTip.setMemberId(tipMemberId);
                     return topicTip;
                 }).collect(Collectors.toList());
 
-                topicTipService.batchSave(appId, topicId, topicTipList, requestUserId);
+                topicTipList = topicTipService.batchSave(appId, topicId, topicTipList, requestUserId);
             }
             
             
@@ -889,15 +906,7 @@ public class TopicMobileController extends BaseController {
              * 在话题论坛表中根据论坛id保存topic
              */
             for (TopicForum topicForum : topicForumList) {
-//	TODO 这个方式太耗空间,注释掉			topicForum.setTopicInfo(result);
-				topicForum.setAppId(appId);
-				topicForum.setSystemCreateTime(new Date());
-				topicForum.setSystemCreateUserId(requestUserId);
-				topicForum.setSystemRequestUserId(requestUserId);
-				topicForum.setSystemStatus(true);
-				topicForum.setSystemUpdateTime(new Date());
-				topicForum.setSystemUpdateUserId(requestUserId);
-				topicForum.setSystemVersion(0);
+//				topicForum.setSystemRequestUserId(requestUserId);
 				
 				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);
 				topicForumService.save(topicForumView);
@@ -906,13 +915,8 @@ public class TopicMobileController extends BaseController {
             /**
              * 保存话题提醒表
              */
-            if (!Util.isNullOrEmpty(tipMemberIdJSONArray)) {
-                 List<String> tipMemberIdList = tipMemberIdJSONArray.toJavaList(String.class);
-                 
-                 for (String tipMemberId : tipMemberIdList) {
-                	 TopicTip topicTip = new TopicTip();
-                     topicTip.setMemberId(tipMemberId);
-                     
+            if (!Util.isNullOrEmpty(topicTipList)) {
+                 for (TopicTip topicTip : topicTipList) {
                      TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
                      topicTipService.save(topicTipView);
 				}

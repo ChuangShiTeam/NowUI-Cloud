@@ -151,6 +151,16 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
+    public V find(Query query) {
+        List<V> resultList = (List<V>) mongoTemplate.find(query, view.getClass());
+
+        if (Util.isNullOrEmpty(resultList)) {
+            return null;
+        }
+        return resultList.get(0);
+    }
+    
+    @Override
     public V find(String id) {
         if (Util.isNullOrEmpty(id)) {
             return null;

@@ -1,11 +1,11 @@
 package com.nowui.cloud.member.member.view;
 
-import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
 
 /**
  * 会员对话视图
@@ -46,6 +46,20 @@ public class MemberDialogueView extends BaseView {
     @Field
     private String initiateUserId;
     public static final String INITIATE_USER_ID = "initiateUserId";
+    
+    /**
+     * 发起用户头像图片路径
+     */
+    @Field
+    private String initiateUserAvatarPath;
+    public static final String INITIATE_USER_AVATAR_PATH = "initiateUserAvatarPath";
+    
+    /**
+     * 发起用户昵称
+     */
+    @Field
+    private String initiateUserNickName;
+    public static final String INITIATE_USER_NICK_NAME = "initiateUserNickName";
 
     /**
      * 响应会员编号
@@ -60,7 +74,20 @@ public class MemberDialogueView extends BaseView {
     @Field
     private String respondUserId;
     public static final String RESPOND_USER_ID = "respondUserId";
-
+    
+    /**
+     * 响应用户头像图片路径
+     */
+    @Field
+    private String respondUserAvatarPath;
+    public static final String RESPOND_USER_AVATAR_PATH = "respondUserAvatarPath";
+    
+    /**
+     * 响应用户昵称
+     */
+    @Field
+    private String respondUserNickName;
+    public static final String RESPOND_USER_NICK_NAME = "respondUserNickName";
 
     public String getMemberDialogueId() {
         return getString(MEMBER_DIALOGUE_ID);
@@ -110,5 +137,36 @@ public class MemberDialogueView extends BaseView {
         put(RESPOND_USER_ID, respondUserId);
     }
 
+    public String getInitiateUserAvatarPath() {
+        return getString(INITIATE_USER_AVATAR_PATH);
+    }
 
+    public void setInitiateUserAvatarPath(String initiateUserAvatarPath) {
+        put(INITIATE_USER_AVATAR_PATH, initiateUserAvatarPath);
+    }
+
+    public String getInitiateUserNickName() {
+        return getString(INITIATE_USER_NICK_NAME);
+    }
+
+    public void setInitiateUserNickName(String initiateUserNickName) {
+        put(INITIATE_USER_NICK_NAME, initiateUserNickName);
+    }
+
+    public String getRespondUserAvatarPath() {
+        return getString(RESPOND_USER_AVATAR_PATH);
+    }
+
+    public void setRespondUserAvatarPath(String respondUserAvatarPath) {
+        put(RESPOND_USER_AVATAR_PATH, respondUserAvatarPath);
+    }
+
+    public String getRespondUserNickName() {
+        return getString(RESPOND_USER_NICK_NAME);
+    }
+
+    public void setRespondUserNickName(String respondUserNickName) {
+        put(RESPOND_USER_NICK_NAME, respondUserNickName);
+    }
+    
 }

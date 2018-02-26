@@ -3,14 +3,13 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.base.user.repository.UserMobileRepository;
-import com.nowui.cloud.base.user.router.UserMobileRouter;
-import com.nowui.cloud.base.user.view.UserMobileView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.mapper.UserMobileMapper;
+import com.nowui.cloud.base.user.repository.UserMobileRepository;
 import com.nowui.cloud.base.user.service.UserMobileService;
+import com.nowui.cloud.base.user.view.UserMobileView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
@@ -22,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile,UserMobileRepository,UserMobileView> implements UserMobileService {
+public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile, UserMobileRepository, UserMobileView> implements UserMobileService {
 
     @Override
     public UserMobile findByUserId(String userId) {
