@@ -3,14 +3,13 @@ package com.nowui.cloud.base.user.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nowui.cloud.base.user.repository.UserAvatarRepository;
-import com.nowui.cloud.base.user.router.UserAvatarRouter;
-import com.nowui.cloud.base.user.view.UserAvatarView;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.mapper.UserAvatarMapper;
+import com.nowui.cloud.base.user.repository.UserAvatarRepository;
 import com.nowui.cloud.base.user.service.UserAvatarService;
+import com.nowui.cloud.base.user.view.UserAvatarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
