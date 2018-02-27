@@ -81,7 +81,7 @@ spring:
       database: nowui
       authentication-database: nowui
       username: user
-      password: 123456
+      password: '123456'
 
 #mybatis
 mybatis-plus:
