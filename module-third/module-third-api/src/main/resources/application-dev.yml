@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://192.168.31.172:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 feign:
   hystrix:
@@ -81,7 +81,7 @@ spring:
       database: nowui
       authentication-database: nowui
       username: user
-      password: 123456
+      password: '123456'
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/com/nowui/cloud/third/**/sql/*.xml
