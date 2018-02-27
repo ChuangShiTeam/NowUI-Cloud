@@ -208,6 +208,7 @@ public class TopicMobileController extends BaseController {
         // TODO 我的宠物
         
         
+        
         // 粉丝数
 //        Integer countBeFollowed = memberFollowRpc.countBeFollowed();
 //        memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
