@@ -3,7 +3,7 @@ package com.nowui.cloud.file.file.rpc;
 import java.util.List;
 
 import com.nowui.cloud.file.file.view.FileView;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
