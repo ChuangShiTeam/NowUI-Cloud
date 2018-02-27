@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
@@ -58,7 +59,7 @@ public class ForumUserUnfollowMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         String appId = body.getAppId();
         

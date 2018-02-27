@@ -20,6 +20,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
@@ -72,7 +73,7 @@ public class TopicUserLikeMobileController extends BaseController {
         List<TopicUserLikeView> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
         
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
        
         //处理列表中用户的头像,昵称,是否关注
@@ -124,7 +125,7 @@ public class TopicUserLikeMobileController extends BaseController {
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         
         String userNickName = body.getUserNickName();
