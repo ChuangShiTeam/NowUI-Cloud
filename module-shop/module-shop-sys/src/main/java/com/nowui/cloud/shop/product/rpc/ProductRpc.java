@@ -1,6 +1,6 @@
 package com.nowui.cloud.shop.product.rpc;
 
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
