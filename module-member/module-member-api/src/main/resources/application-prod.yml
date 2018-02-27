@@ -1,22 +1,27 @@
 server:
-  port: 8088
+  port: 8084
+
 logging:
   level:
     root: info
+
 eureka:
   instance:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://192.168.31.172:8070/eureka/
+      defaultZone: http://118.31.229.16:8070/eureka/
+
+
 feign:
   hystrix:
     enabled: false
+
 spring:
   application:
-    name: module-wechat
+    name: module-member
   datasource:
-      url: jdbc:mysql://118.31.229.16:3306/nowui_wechat?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://118.31.229.16:3306/nowui_member?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
       password: Chuangshi123!
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -56,13 +61,25 @@ spring:
     port: 5672
     username: guest
     password: guest
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 118.31.229.16:9300
+    mongodb:
+      uri: mongodb://118.31.229.16/nowui
+      host: 118.31.229.16
+      port: 27017
+      database: nowui
+      authentication-database: nowui
+      username: user
+      password: 123456
 
 #mybatis
 mybatis-plus:
-  mapper-locations: classpath:/com/nowui/cloud/wechat/**/sql/*.xml
+  mapper-locations: classpath:/com/nowui/cloud/member/**/sql/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.nowui.cloud.wechat.**.entity
-  #typeEnumsPackage: com.nowui.cloud.wechat.**.entity.enum
+  typeAliasesPackage: com.nowui.cloud.member.**.entity
+  #typeEnumsPackage: com.nowui.cloud.member.**.entity.enum
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
     id-type: 3
@@ -100,7 +117,7 @@ hystrix:
 
 ribbon:
   ReadTimeout: 60000 # 处理时间
-  ConnectTimeout: 3000 # 连接时间
+  ConnectTimeout: 10000 # 连接时间
   MaxAutoRetries: 0 #最大自动重试次数
   MaxAutoRetriesNextServer: 1 # 换实例重试次数
   MaxTotalHttpConnections: 2000 # 最大http连接数，越大越好，但到到达一个临界点之后，就不会提高响应速度了
