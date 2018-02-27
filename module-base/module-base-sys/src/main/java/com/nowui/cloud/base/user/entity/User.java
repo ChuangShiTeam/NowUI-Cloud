@@ -59,34 +59,6 @@ public class User extends BaseEntity {
     private String userType;
     public static final String USER_TYPE = "userType";
 
-    public static final String USER_ACCOUNT = "userAccount";
-
-    public static final String USER_PASSWORD = "userPassword";
-
-    public static final String USER_NICK_NAME = "userNickName";
-
-    public static final String USER_SEX = "userSex";
-
-    public static final String USER_MOBILE = "userMobile";
-
-    public static final String USER_EMAIL = "userEmail";
-
-    public static final String USER_AVATAR = "userAvatar";
-
-    public static final String USER_WECHAT = "userWechat";
-
-    public static final String REASON = "reason";
-
-
-
-    public String getReason() {
-        return getString(REASON);
-    }
-
-    public void setReason(String reason) {
-        put(REASON, reason);
-    }
-
     public String getUserId() {
         return getString(USER_ID);
     }
@@ -117,70 +89,6 @@ public class User extends BaseEntity {
 
     public void setUserType(String userType) {
         put(USER_TYPE, userType);
-    }
-
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
-    }
-
-    public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
-    }
-
-    public String getUserAccount() {
-        return getString(USER_ACCOUNT);
-    }
-
-    public void setUserAccount(String userAccount) {
-        put(USER_ACCOUNT, userAccount);
-    }
-
-    public String getUserPassword() {
-        return getString(USER_PASSWORD);
-    }
-
-    public void setUserPassword(String userPassword) {
-        put(USER_PASSWORD, userPassword);
-    }
-
-    public String getUserSex() {
-        return getString(USER_SEX);
-    }
-
-    public void setUserSex(String userSex) {
-        put(USER_SEX, userSex);
-    }
-
-    public String getUserMobile() {
-        return getString(USER_MOBILE);
-    }
-
-    public void setUserMobile(String userMobile) {
-        put(USER_MOBILE, userMobile);
-    }
-
-    public String getUserEmail() {
-        return getString(USER_EMAIL);
-    }
-
-    public void setUserEmail(String userEmail) {
-        put(USER_EMAIL, userEmail);
-    }
-
-    public String getUserAvatar() {
-        return getString(USER_AVATAR);
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
-    }
-
-    public UserWechat getUserWechat() {
-        return (UserWechat) get(USER_WECHAT);
-    }
-
-    public void setUserWechat(String userWechat) {
-        put(USER_WECHAT, userWechat);
     }
 
 }

@@ -99,22 +99,16 @@ public class UserMobileController extends BaseController {
                 userAvatar,
                 UserAvatar.APP_ID,
                 UserAvatar.SYSTEM_REQUEST_USER_ID,
-                UserAvatar.USER_AVATAR
+                UserAvatar.USER_AVATAR_FILE_ID,
+                UserAvatar.USER_AVATAR_FILE_PATH
         );
         
-        File file = getEntry(File.class);
-        validateRequest(
-                file,
-                File.FILE_PATH
-        );
-        
-        Boolean result = userService.updateUserAvatar(userAvatar.getAppId(), userAvatar.getSystemRequestUserId(), userAvatar.getUserAvatar(), file.getFilePath(), userAvatar.getSystemRequestUserId());
+        Boolean result = userService.updateUserAvatar(userAvatar.getAppId(), userAvatar.getSystemRequestUserId(), userAvatar.getUserAvatarFileId(), userAvatar.getUserAvatarFilePath(), userAvatar.getSystemRequestUserId());
 
         if (result) {
             // 发送用户头像更新消息
-            userAvatar.put(UserView.USER_AVATAR_PATH, file.getFilePath());
+            userAvatar.setUserId(userAvatar.getSystemRequestUserId());
             sendMessage(userAvatar, UserAvatarRouter.USER_AVATAR_V1_UPDATE, userAvatar.getAppId(), userAvatar.getSystemRequestUserId());
-
         }                
         return renderJson(result);
     }

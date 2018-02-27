@@ -323,14 +323,14 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User, UserRepo
     }
 
     @Override
-    public Boolean updateUserAvatar(String appId, String userId, String userAvatar, String userAvatarPath, String systemRequestUserId) {
+    public Boolean updateUserAvatar(String appId, String userId, String userAvatarFileId, String userAvatarFilePath, String systemRequestUserId) {
         UserView userView = find(userId);
         
         if (userView == null) {
             throw new RuntimeException("用户不存在");
         }
         
-        if (userAvatar.equals(userView.getUserAvatar())) {
+        if (userAvatarFileId.equals(userView.getUserAvatarFileId())) {
             return true;
         }
         
@@ -341,13 +341,13 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User, UserRepo
         UserAvatar userAvatarBean = new UserAvatar();
         userAvatarBean.setAppId(appId);
         userAvatarBean.setUserId(userId);
-        userAvatarBean.setUserAvatar(userAvatar);
+        userAvatarBean.setUserAvatarFileId(userAvatarFileId);
         UserAvatar bean = userAvatarService.save(userAvatarBean, Util.getRandomUUID(), systemRequestUserId);
         
         Boolean result = false;
         if (bean != null) {
-            userView.setUserAvatar(userAvatar);
-            userView.setUserAvatarPath(userAvatarPath);
+            userView.setUserAvatarFileId(userAvatarFileId);
+            userView.setUserAvatarFilePath(userAvatarFilePath);
             
             update(userView);
             

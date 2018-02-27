@@ -74,7 +74,7 @@ public class MemberFollowV1UserAvatarUpdateListener {
                 
                 List<MemberFollowView> memberFollowViewList = memberFollowService.listByUserId(userAvatar.getUserId());
                 for (MemberFollowView memberFollowView : memberFollowViewList) {
-                    memberFollowView.setUserAvatarPath(userAvatar.getUserAvatarPath());
+                    memberFollowView.setUserAvatarFilePath(userAvatar.getUserAvatarFilePath());
                     
                     memberFollowService.update(memberFollowView);
                 }

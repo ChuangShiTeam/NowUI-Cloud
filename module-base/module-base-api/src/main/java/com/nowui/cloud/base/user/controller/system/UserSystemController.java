@@ -386,17 +386,17 @@ public class UserSystemController extends BaseController implements UserRpc {
     }
 
     @Override
-    public Boolean updateUserAvatarV1(String appId, String userId, String userAvatar, String userAvatarPath,
+    public Boolean updateUserAvatarV1(String appId, String userId, String userAvatarFileId, String userAvatarFilePath,
             String systemRequestUserId) {
-        Boolean result = userService.updateUserAvatar(appId, userId, userAvatar, userAvatarPath, systemRequestUserId);
+        Boolean result = userService.updateUserAvatar(appId, userId, userAvatarFileId, userAvatarFilePath, systemRequestUserId);
 
         if (result) {
             // 发送用户头像更新消息
             UserAvatar userAvatarBean = new UserAvatar();
             userAvatarBean.setAppId(appId);
             userAvatarBean.setUserId(userId);
-            userAvatarBean.setUserAvatar(userAvatar);
-            userAvatarBean.setUserAvatarPath(userAvatarPath);
+            userAvatarBean.setUserAvatarFileId(userAvatarFileId);
+            userAvatarBean.setUserAvatarFilePath(userAvatarFilePath);
             sendMessage(userAvatarBean, UserAvatarRouter.USER_AVATAR_V1_UPDATE, appId, systemRequestUserId);
         }                
         

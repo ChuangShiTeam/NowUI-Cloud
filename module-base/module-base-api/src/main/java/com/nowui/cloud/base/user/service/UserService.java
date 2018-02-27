@@ -115,12 +115,12 @@ public interface UserService extends SuperService<User,UserView> {
      * 
      * @param appId 应用编号
      * @param userId 用户编号
-     * @param userAvatar 用户头像
-     * @param userAvatarPath 用户头像路径
+     * @param userAvatarFileId 用户头像文件编号
+     * @param userAvatarFilePath 用户头像文件路径
      * @param systemRequestUserId 请求用户编号
      * @return true 成功    false 失败
      */
-    Boolean updateUserAvatar(String appId, String userId, String userAvatar, String userAvatarPath, String systemRequestUserId);
+    Boolean updateUserAvatar(String appId, String userId, String userAvatarFileId, String userAvatarFilePath, String systemRequestUserId);
     
     /**
      * 更新用户性别

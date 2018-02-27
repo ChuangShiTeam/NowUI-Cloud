@@ -56,13 +56,16 @@ public class UserAvatar extends BaseEntity {
     @TableField
     @NotNull(message = "头像文件编号不能为空")
     @Length(max = 32, message = "头像文件编号长度超出限制")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    private String userAvatarFileId;
+    public static final String USER_AVATAR_FILE_ID = "userAvatarFileId";
 
     /**
      * 用户头像路径
      */
-    public static final String USER_AVATAR_PATH = "userAvatarPath";
+    @NotNull(message = "用户头像路径不能为空")
+    @Length(max = 200, message = "用户头像路径长度超出限制")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
 
     public String getUserAvatarId() {
         return getString(USER_AVATAR_ID);
@@ -88,20 +91,20 @@ public class UserAvatar extends BaseEntity {
         put(USER_ID, userId);
     }
 
-    public String getUserAvatar() {
-        return getString(USER_AVATAR);
+    public String getUserAvatarFileId() {
+        return getString(USER_AVATAR_FILE_ID);
     }
     
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+    public void setUserAvatarFileId(String userAvatarFileId) {
+        put(USER_AVATAR_FILE_ID, userAvatarFileId);
     }
 
-    public String getUserAvatarPath() {
-        return getString(USER_AVATAR_PATH);
+    public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
     }
     
-    public void setUserAvatarPath(String userAvatarPath) {
-        put(USER_AVATAR_PATH, userAvatarPath);
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
     }
 
 }

@@ -48,8 +48,16 @@ public class UserAvatarView extends BaseView {
      */
     @Field
     @NotNull(message = "头像文件编号不能为空")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    private String userAvatarFileId;
+    public static final String USER_AVATAR_FILE_ID = "userAvatarFileId";
+    
+    /**
+     * 头像文件路径
+     */
+    @Field
+    @NotNull(message = "头像文件路径不能为空")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
     
     public String getUserAvatarId() {
         return getString(USER_AVATAR_ID);
@@ -75,12 +83,20 @@ public class UserAvatarView extends BaseView {
         put(USER_ID, userId);
     }
 
-    public String getUserAvatar() {
-        return getString(USER_AVATAR);
+    public String getUserAvatarFileId() {
+        return getString(USER_AVATAR_FILE_ID);
     }
 
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+    public void setUserAvatarFileId(String userAvatarFileId) {
+        put(USER_AVATAR_FILE_ID, userAvatarFileId);
+    }
+    
+    public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
+    }
+
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
     }
     
 }

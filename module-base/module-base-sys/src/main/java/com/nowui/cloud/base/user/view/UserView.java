@@ -64,15 +64,15 @@ public class UserView extends BaseView {
      * 用户头像文件编号
      */
     @Field
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    private String userAvatarFileId;
+    public static final String USER_AVATAR_FILE_ID = "userAvatarFileId";
     
     /**
      * 用户头像文件路径
      */
     @Field
-    private String userAvatarPath;
-    public static final String USER_AVATAR_PATH = "userAvatarPath";
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
     
     /**
      * 用户邮箱
@@ -219,20 +219,20 @@ public class UserView extends BaseView {
         put(USER_ACCOUNT, userAccount);
     }
 
-    public String getUserAvatar() {
-        return getString(USER_AVATAR);
+    public String getUserAvatarFileId() {
+        return getString(USER_AVATAR_FILE_ID);
     }
 
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+    public void setUserAvatarFileId(String userAvatarFileId) {
+        put(USER_AVATAR_FILE_ID, userAvatarFileId);
     }
     
-    public String getUserAvatarPath() {
-        return getString(USER_AVATAR_PATH);
+    public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
     }
     
-    public void setUserAvatarPath(String userAvatarPath) {
-        put(USER_AVATAR_PATH, userAvatarPath);
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
     }
 
     public String getUserEmail() {

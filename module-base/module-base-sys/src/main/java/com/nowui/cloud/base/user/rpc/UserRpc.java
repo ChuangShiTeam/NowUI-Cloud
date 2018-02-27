@@ -176,8 +176,8 @@ public interface UserRpc {
     Boolean updateUserAvatarV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userId", required = true) String userId,
-            @RequestParam(value = "userAvatar", required = true) String userAvatar,
-            @RequestParam(value = "userAvatarPath", required = true) String userAvatarPath,
+            @RequestParam(value = "userAvatarFileId", required = true) String userAvatarFileId,
+            @RequestParam(value = "userAvatarFilePath", required = true) String userAvatarFilePath,
             @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
     );
     
