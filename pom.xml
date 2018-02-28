@@ -22,7 +22,6 @@
         <module>module-base</module>
 		<module>module-wechat</module>
 		<module>module-member</module>
-        <module>module-third</module>
         <module>module-sns</module>
         <module>module-wawi</module>
         <module>module-code</module>
@@ -41,11 +40,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring.cloud.version>Finchley.BUILD-SNAPSHOT</spring.cloud.version>
-        <spring.tx.version>5.0.2.RELEASE</spring.tx.version>
+        <spring.tx.version>5.0.4.RELEASE</spring.tx.version>
         <springfox.swagger2.version>2.8.0</springfox.swagger2.version>
         <springfox.swagger.ui.version>2.8.0</springfox.swagger.ui.version>
-        <fastjson.version>1.2.45</fastjson.version>
-        <druid.version>1.1.6</druid.version>
+        <fastjson.version>1.2.46</fastjson.version>
+        <druid.version>1.1.8</druid.version>
         <mysql.connector.java.version>6.0.6</mysql.connector.java.version>
         <mybatis.plus.version>2.1.9</mybatis.plus.version>
         <hibernate.validator.version>6.0.7.Final</hibernate.validator.version>
