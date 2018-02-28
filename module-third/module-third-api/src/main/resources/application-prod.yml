@@ -1,0 +1,132 @@
+server:
+  port: 8086
+
+logging:
+  level:
+    root: info
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://118.31.229.16:8070/eureka/
+
+feign:
+  hystrix:
+    enabled: false
+
+spring:
+  application:
+    name: module-third
+  datasource:
+      url: jdbc:mysql://118.31.229.16:3306/nowui_third?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: chuangshi	
+      password: Chuangshi123!
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      platform: mysql
+      type: com.alibaba.druid.pool.DruidDataSource
+      # 下面为连接池的补充设置，应用到上面所有数据源中
+      # 初始化大小，最小，最大
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      #useGlobalDataSourceStat: true
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    password:
+  rabbitmq:
+    host: 118.31.229.16
+    port: 5672
+    username: guest
+    password: guest
+    publisherConfirms: true
+    publisherReturns: true
+    template:
+      retry:
+        enabled: true
+        max-attempts: 10
+    listener:
+      retry:
+        enabled: true
+        max-attempts: 10
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 118.31.229.16:9300
+    mongodb:
+      uri: mongodb://118.31.229.16/nowui
+      host: 118.31.229.16
+      port: 27017
+      database: nowui
+      authentication-database: nowui
+      username: user
+      password: '123456'
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/com/nowui/cloud/third/**/sql/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.nowui.cloud.third.**.entity
+  #typeEnumsPackage: com.nowui.cloud.third.**.entity.enum
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 3
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 1
+    #驼峰下划线转换
+    db-column-underline: false
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #key-generator: com.baomidou.springboot.xxx
+    #逻辑删除配置
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #自定义填充策略接口实现
+    #meta-object-handler: com.nowui.cloud.mybatisplus.handler.CommonMetaObjectHandler
+    #自定义SQL注入器
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 # Hystrix超时时间
+          strategy: THREAD
+
+ribbon:
+  ReadTimeout: 60000 # 处理时间
+  ConnectTimeout: 10000 # 连接时间
+  MaxAutoRetries: 0 #最大自动重试次数
+  MaxAutoRetriesNextServer: 1 # 换实例重试次数
+  MaxTotalHttpConnections: 2000 # 最大http连接数，越大越好，但到到达一个临界点之后，就不会提高响应速度了
+  MaxConnectionsPerHost: 1000 # 每个host连接数

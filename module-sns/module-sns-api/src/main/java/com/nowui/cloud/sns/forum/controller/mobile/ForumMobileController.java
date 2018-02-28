@@ -24,6 +24,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
@@ -91,15 +92,22 @@ public class ForumMobileController extends BaseController {
 	             Forum.FORUM_NAME,
 	             Forum.FORUM_DESCRIPTION,
 	             Forum.SYSTEM_REQUEST_USER_ID,
-	             Forum.FORUM_MODERATOR_INFO
+	             Forum.FORUM_MODERATOR_INFO,
+	             Forum.USER_AVATAR,
+	             Forum.USER_NICKNAME,
+	             Forum.MEMBER_SIGNATURE
          );
 	     String appId = body.getAppId();
 	     String requestUserId = body.getSystemRequestUserId();
-	     Member member = memberRpc.findByUserIdV1(requestUserId);
+	     MemberView member = memberRpc.findByUserIdV1(requestUserId);
 	     String memberId = member.getMemberId();
 	     
 	     String forumId = Util.getRandomUUID();
 	     String forumUserFollowId = Util.getRandomUUID();
+	     
+	     String userAvatar = body.getUserAvatar();
+	     String userNickName = body.getUserNickName();
+	     String memberSignature = body.getMemberSignature();
 	     
 	     // 验证论坛名称的唯一性
 	     Boolean isRepeat = forumService.checkName(appId, body.getForumName());
@@ -136,8 +144,14 @@ public class ForumMobileController extends BaseController {
              forumService.save(forumView);
              
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
+             // TODO 回来要删掉
              forumUserFollowView.setUserInfo(forumView.getForumModeratorInfo());
+             
+             forumUserFollowView.setUserAvatar(userAvatar);
+             forumUserFollowView.setUserNickName(userNickName);
+             forumUserFollowView.setMemberSignature(memberSignature);
              forumUserFollowView.setForumUserFollowIsTop(false);
+             
              forumUserFollowService.save(forumUserFollowView);
 	         
 //	         sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
@@ -161,7 +175,7 @@ public class ForumMobileController extends BaseController {
                 Forum.SYSTEM_REQUEST_USER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         
         String appId = body.getAppId();
@@ -278,7 +292,7 @@ public class ForumMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         // TODO 这个查的mysql 查询编辑推荐的且用户没有关注过的论坛
@@ -320,7 +334,7 @@ public class ForumMobileController extends BaseController {
           Forum.FORUM_MEDIA
        );
 	   String requestUserId = body.getSystemRequestUserId();
-	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   MemberView member = memberRpc.findByUserIdV1(requestUserId);
 	   String memberId = member.getMemberId();
 	   
 	    ForumView forum = forumService.find(body.getForumId());
@@ -362,7 +376,7 @@ public class ForumMobileController extends BaseController {
        );
 	   
 	   String requestUserId = body.getSystemRequestUserId();
-	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   MemberView member = memberRpc.findByUserIdV1(requestUserId);
 	   String memberId = member.getMemberId();
 	   String appId = body.getAppId();
 	   String forumId = body.getForumId();
@@ -427,7 +441,7 @@ public class ForumMobileController extends BaseController {
        );
 	    
 	   String requestUserId = body.getSystemRequestUserId();
-	   Member member = memberRpc.findByUserIdV1(requestUserId);
+	   MemberView member = memberRpc.findByUserIdV1(requestUserId);
 	   String memberId = member.getMemberId();
 	    
        ForumView forum = forumService.find(body.getForumId());
@@ -465,7 +479,7 @@ public class ForumMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
- 	    Member member = memberRpc.findByUserIdV1(requestUserId);
+ 	    MemberView member = memberRpc.findByUserIdV1(requestUserId);
  	    String memberId = member.getMemberId();
  	    String appId = body.getAppId();
  	    String forumId = body.getForumId();
@@ -589,7 +603,7 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_ID
         );
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         
         ForumView forum = forumService.find(body.getForumId());
@@ -630,7 +644,10 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_MODERATOR,
                 Forum.MEMBER_IS_FOLLOW_FORUM,
                 Forum.FORUM_USER_FOLLOW_COUNT,
-                Forum.FORUM_MODERATOR_INFO
+                Forum.FORUM_MODERATOR_INFO,
+                Forum.USER_AVATAR,
+                Forum.USER_NICKNAME,
+                Forum.MEMBER_SIGNATURE
         );
         
         validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
@@ -655,7 +672,7 @@ public class ForumMobileController extends BaseController {
         Integer pageIndex = body.getPageIndex();
         Integer pageSize = body.getPageSize();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         String appId = body.getAppId();
         

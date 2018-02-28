@@ -6,6 +6,8 @@ logging:
     root: info
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
@@ -69,7 +71,7 @@ spring:
       database: nowui
       authentication-database: nowui
       username: user
-      password: 123456
+      password: '123456'
 
 #mybatis
 mybatis-plus:

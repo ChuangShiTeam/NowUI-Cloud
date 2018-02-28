@@ -20,9 +20,7 @@ import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.router.UserAvatarRouter;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.member.member.service.MemberFollowService;
-import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.view.MemberFollowView;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.rabbit.RabbitListener;
 
 /**
@@ -81,7 +79,7 @@ public class MemberFollowV1UserAvatarUpdateListener {
                 
                 List<MemberFollowView> followMemberFollowViewList = memberFollowService.listByFollowUserId(userAvatar.getUserId());
                 for (MemberFollowView memberFollowView : followMemberFollowViewList) {
-                    memberFollowView.setUserAvatarPath(userAvatar.getUserAvatarPath());
+                    memberFollowView.setUserAvatarFilePath(userAvatar.getUserAvatarFilePath());
                     
                     memberFollowService.update(memberFollowView);
                 }

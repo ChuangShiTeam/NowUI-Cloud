@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotations.*;
 
 import com.nowui.cloud.constant.Constant;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSONObject;

@@ -53,6 +53,30 @@ public class ForumUserFollowView extends BaseView {
     public static final String USER_INFO = "userInfo";
 
     /**
+     * 关注用户的头像
+     */
+    @Field
+    @NotNull(message = "关注用户的头像")
+    private String userAvatar;
+    public static final String USER_AVATAR = "userAvatar";
+    
+    /**
+     * 关注用户的昵称
+     */
+    @Field
+    @NotNull(message = "关注用户的昵称")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 关注用户的会员签名
+     */
+    @Field
+    @NotNull(message = "关注用户的会员签名")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
+    
+    /**
      * 论坛编号
      */
     @Field
@@ -99,6 +123,30 @@ public class ForumUserFollowView extends BaseView {
 
 	public void setUserInfo(JSONObject userInfo) {
         put(USER_INFO, userInfo);
+	}
+	
+	public String getUserAvatar() {
+		return getString(USER_AVATAR);
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		put(USER_AVATAR, userAvatar);
+	}
+
+	public String getUserNickName() {
+		return getString(USER_NICKNAME);
+	}
+
+	public void setUserNickName(String userNickName) {
+		put(USER_NICKNAME, userNickName);
+	}
+
+	public String getMemberSignature() {
+		return getString(MEMBER_SIGNATURE);
+	}
+
+	public void setMemberSignature(String memberSignature) {
+		put(MEMBER_SIGNATURE, memberSignature);
 	}
 
 	public String getForumId() {

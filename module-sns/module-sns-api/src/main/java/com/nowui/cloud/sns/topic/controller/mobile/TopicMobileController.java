@@ -30,6 +30,7 @@ import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.view.ForumView;
@@ -116,7 +117,7 @@ public class TopicMobileController extends BaseController {
                 TopicForum.SYSTEM_REQUEST_USER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         String appId = body.getAppId();
 
@@ -195,15 +196,17 @@ public class TopicMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
         
         // 获取用户头像,昵称,签名,背景
-        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
+//        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
+        /**memberRpc.findByMemberIdV1(otherMemberId);
         
         if (memberInfo == null) {
         	throw new BusinessException("对不起,未找到您的信息...");
-		}
+		}*/
         // 获取用户头像,昵称,是否关注
 // TODO 缺少方法        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, beSearchUserId);
 //        memberInfo.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
         // TODO 我的宠物
+        
         
         
         // 粉丝数
@@ -220,7 +223,7 @@ public class TopicMobileController extends BaseController {
         // TODO 我的宠物
         
         // 粉丝数
-        Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
+       /** Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
         memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
          //关注数
         Integer countFollow = memberFollowRpc.countFollow(requestUserId);
@@ -239,8 +242,8 @@ public class TopicMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME,
                 UserAvatar.USER_AVATAR
         );
-        return renderJson(memberInfo);
-//        return renderJson(null);
+        return renderJson(memberInfo);*/
+        return renderJson(null);
 
     }
     
@@ -262,7 +265,7 @@ public class TopicMobileController extends BaseController {
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
         String otherMemberId = body.getMemberId();
-        Member member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
+        MemberView member = memberRpc.findByUserIdV1(body.getSystemRequestUserId());
         String memberId = member.getMemberId();
 
         ArrayList<String> memberIdToSearchList = new ArrayList<>();
@@ -383,20 +386,20 @@ public class TopicMobileController extends BaseController {
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         String appId = body.getAppId();
         
         // 获取用户头像,昵称,签名,背景
-        Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
+        /**Member memberInfo = memberRpc.nickNameAndAvatarAndBackgroundAndSignatureFind(requestUserId);
         
         if (memberInfo == null) {
         	throw new BusinessException("对不起,未找到您的信息...");
-		}
+		}*/
         // TODO 我的宠物
         
         // 粉丝数
-        Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
+        /**Integer countBeFollowed = memberFollowRpc.countBeFollowed(requestUserId);
         memberInfo.put(Member.MEMBER_BE_FOLLOW_COUNT, countBeFollowed);
          //关注数
         Integer countFollow = memberFollowRpc.countFollow(requestUserId);
@@ -414,8 +417,8 @@ public class TopicMobileController extends BaseController {
                 UserNickName.USER_NICK_NAME,
                 UserAvatar.USER_AVATAR
         );
-        return renderJson(memberInfo);
-//        return renderJson(null);
+        return renderJson(memberInfo);*/
+        return renderJson(null);
 
     }
     @ApiOperation(value = "自己的主页的动态列表")
@@ -432,7 +435,7 @@ public class TopicMobileController extends BaseController {
         );
 
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         Integer commentPageIndex = (Integer) body.get(Topic.COMMENT_PAGE_INDEX);
         Integer commentPageSize =(Integer) body.get(Topic.COMMENT_PAGE_SIZE);
@@ -560,7 +563,7 @@ public class TopicMobileController extends BaseController {
 
         String topicId = body.getTopicId();
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String memberId = member.getMemberId();
         
         TopicView topic = topicService.findDetailByTopicIdAndMemberId(topicId, memberId);
@@ -661,7 +664,7 @@ public class TopicMobileController extends BaseController {
                 Topic.SYSTEM_CREATE_TIME
         );
         String requestUserId = body.getSystemRequestUserId();
-        Member member = memberRpc.findByUserIdV1(requestUserId);
+        MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
         
         // 用户关注的人的编号列表
@@ -842,7 +845,7 @@ public class TopicMobileController extends BaseController {
         String topicId = Util.getRandomUUID();
         String requestUserId = body.getSystemRequestUserId();
         String appId = body.getAppId();
-        Member requestMember = memberRpc.findByUserIdV1(requestUserId);
+        MemberView requestMember = memberRpc.findByUserIdV1(requestUserId);
         
         body.setMemberId(requestMember.getMemberId());
         body.setTopicIsTop(false);

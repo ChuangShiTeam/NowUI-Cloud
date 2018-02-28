@@ -1,9 +1,11 @@
 server:
-  port: 8080
+  port: 80
 spring:
   application:
     name: server-zuul
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://118.31.229.16:8070/eureka/
