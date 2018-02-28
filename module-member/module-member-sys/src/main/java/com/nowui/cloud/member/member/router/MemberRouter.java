@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.router;
 
 /**
- * 会员	消息队列路由
+ * 会员消息队列路由
  *
  * @author shawn
  *

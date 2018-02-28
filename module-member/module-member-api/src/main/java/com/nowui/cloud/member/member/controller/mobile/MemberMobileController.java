@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.weixin.sdk.api.AccessTokenApi;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.api.ApiResult;
 import com.jfinal.weixin.sdk.api.SnsAccessToken;
@@ -33,13 +32,13 @@ import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.entity.enums.UserType;
+import com.nowui.cloud.base.user.router.UserRouter;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.file.file.entity.File;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberPreferenceLanguage;
@@ -289,8 +288,17 @@ public class MemberMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            userRpc.registerUserMobileV1(userAccount.getAppId(), userId, memberId, UserType.MEMBER.getKey(), userAccount.getUserAccount(), userPassword.getUserPassword(), userAccount.getSystemRequestUserId());
-
+            // 发送会员手机注册用户消息
+            User user = new User();
+            user.setAppId(userAccount.getAppId());
+            user.setUserId(userId);
+            user.setObjectId(memberId);
+            user.setUserType(UserType.MEMBER.getKey());
+            user.put(UserAccount.USER_ACCOUNT, userAccount.getUserAccount());
+            user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
+            user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
+            sendMessage(user, UserRouter.USER_V1_MOBILE_REGISTER, userAccount.getAppId(), userAccount.getSystemRequestUserId());
+            
             // 保存会员视图到MongoDB
             MemberView memberView = JSON.parseObject(result.toJSONString(), MemberView.class);
             
