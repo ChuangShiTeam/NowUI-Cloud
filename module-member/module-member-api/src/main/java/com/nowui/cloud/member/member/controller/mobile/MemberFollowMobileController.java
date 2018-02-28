@@ -54,7 +54,7 @@ public class MemberFollowMobileController extends BaseController {
         validateResponse(
                 MemberFollowView.MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
-                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME
         );
 
@@ -81,7 +81,7 @@ public class MemberFollowMobileController extends BaseController {
         validateResponse(
                 MemberFollowView.MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
-                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
                 MemberFollowView.MEMBER_IS_FOLLOW
         );
@@ -111,7 +111,7 @@ public class MemberFollowMobileController extends BaseController {
         validateResponse(
                 MemberFollowView.MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
-                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
                 MemberFollowView.MEMBER_IS_FOLLOW,
                 MemberFollowView.MEMBER_IS_SELF
@@ -142,7 +142,7 @@ public class MemberFollowMobileController extends BaseController {
         validateResponse(
                 MemberFollowView.MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
-                MemberFollowView.USER_AVATAR_PATH,
+                MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
                 MemberFollowView.MEMBER_IS_FOLLOW,
                 MemberFollowView.MEMBER_IS_SELF
@@ -188,9 +188,9 @@ public class MemberFollowMobileController extends BaseController {
         if (result != null) {
             // 保存会员关注视图到MongoDB
             MemberFollowView memberFollowView = JSON.parseObject(result.toJSONString(), MemberFollowView.class);
-            memberFollowView.setUserAvatarPath(memberView.getUserAvatarPath());
+            memberFollowView.setUserAvatarFilePath(memberView.getUserAvatarFilePath());
             memberFollowView.setUserNickName(memberView.getUserNickName());
-            memberFollowView.setFollowUserAvatarPath(followMemberView.getUserAvatarPath());
+            memberFollowView.setFollowUserAvatarFilePath(followMemberView.getUserAvatarFilePath());
             memberFollowView.setFollowUserNickName(followMemberView.getUserNickName());
             
             memberFollowService.save(memberFollowView);

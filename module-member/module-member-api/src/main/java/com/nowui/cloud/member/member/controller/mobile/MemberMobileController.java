@@ -411,16 +411,11 @@ public class MemberMobileController extends BaseController {
                 MemberBackground.APP_ID,
                 MemberBackground.MEMBER_ID,
                 MemberBackground.SYSTEM_REQUEST_USER_ID,
-                MemberBackground.MEMBER_BACKGROUND
+                MemberBackground.MEMBER_BACKGROUND_FILE_ID,
+                MemberBackground.MEMBER_BACKGROUND_FILE_PATH
         );
         
-        File file = getEntry(File.class);
-        validateRequest(
-                file,
-                File.FILE_PATH
-        );
-        
-        Boolean result = memberService.updateMemberBackground(memberBackground.getAppId(), memberBackground.getMemberId(), memberBackground.getMemberBackground(), file.getFilePath(), memberBackground.getSystemRequestUserId());
+        Boolean result = memberService.updateMemberBackground(memberBackground.getAppId(), memberBackground.getMemberId(), memberBackground.getMemberBackgroundFileId(), memberBackground.getMemberBackgroundFilePath(), memberBackground.getSystemRequestUserId());
 
         return renderJson(result);
     }

@@ -50,14 +50,21 @@ public class MemberBackground extends BaseEntity {
     public static final String MEMBER_ID = "memberId";
 
     /**
-     * 会员背景
+     * 会员背景文件编号
      */
     @TableField
-    @NotNull(message = "会员背景不能为空")
-    @Length(max = 32, message = "会员背景长度超出限制")
-    private String memberBackground;
-    public static final String MEMBER_BACKGROUND = "memberBackground";
-
+    @NotNull(message = "会员背景文件编号不能为空")
+    @Length(max = 32, message = "会员背景文件编号长度超出限制")
+    private String memberBackgroundFileId;
+    public static final String MEMBER_BACKGROUND_FILE_ID = "memberBackgroundFileId";
+    
+    /**
+     * 会员背景文件路径
+     */
+    @NotNull(message = "会员背景文件路径不能为空")
+    @Length(max = 32, message = "会员背景文件路径长度超出限制")
+    private String memberBackgroundFilePath;
+    public static final String MEMBER_BACKGROUND_FILE_PATH = "memberBackgroundFilePath";
 
     public String getMemberBackgroundId() {
         return getString(MEMBER_BACKGROUND_ID);
@@ -83,13 +90,20 @@ public class MemberBackground extends BaseEntity {
         put(MEMBER_ID, memberId);
     }
 
-    public String getMemberBackground() {
-        return getString(MEMBER_BACKGROUND);
+    public String getMemberBackgroundFileId() {
+        return getString(MEMBER_BACKGROUND_FILE_ID);
     }
     
-    public void setMemberBackground(String memberBackground) {
-        put(MEMBER_BACKGROUND, memberBackground);
+    public void setMemberBackgroundFileId(String memberBackgroundFileId) {
+        put(MEMBER_BACKGROUND_FILE_ID, memberBackgroundFileId);
     }
-
+    
+    public String getMemberBackgroundFilePath() {
+        return getString(MEMBER_BACKGROUND_FILE_PATH);
+    }
+    
+    public void setMemberBackgroundFilePath(String memberBackgroundFilePath) {
+        put(MEMBER_BACKGROUND_FILE_PATH, memberBackgroundFilePath);
+    }
 
 }

@@ -69,8 +69,8 @@ public class MemberV1UserAvatarUpdateListener {
                 UserAvatar userAvatar = JSON.parseObject(message, UserAvatar.class);
                 
                 MemberView memberView = memberService.findByUserId(userAvatar.getUserId());
-                memberView.setUserAvatar(userAvatar.getUserAvatarFileId());
-                memberView.setUserAvatarPath(userAvatar.getUserAvatarFilePath());
+                memberView.setUserAvatarFileId(userAvatar.getUserAvatarFileId());
+                memberView.setUserAvatarFilePath(userAvatar.getUserAvatarFilePath());
                 
                 memberService.update(memberView);
             }

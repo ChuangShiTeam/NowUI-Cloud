@@ -73,11 +73,12 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param appId 应用编号
      * @param memberId 会员编号
      * @param memberBackground 会员背景
-     * @param memberBackgroundPath 会员背景路径
+     * @param memberBackgroundFileId 会员背景文件编号
+     * @param memberBackgroundFilePath 会员背景文件路径
      * @param systemRequestUserId 请求用户编号
      * @return true 成功    false 不成功
      */
-    Boolean updateMemberBackground(String appId, String memberId, String memberBackground, String memberBackgroundPath, String systemRequestUserId);
+    Boolean updateMemberBackground(String appId, String memberId, String memberBackgroundFileId, String memberBackgroundFilePath, String systemRequestUserId);
     
     /**
      * 更新会员偏好语言

@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.admin.entity.Admin;
-import com.nowui.cloud.base.admin.router.AdminRouter;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserSex;
 import com.nowui.cloud.base.user.entity.UserMobile;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.enums.UserType;
+import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -57,13 +56,13 @@ public class AdminAdminController extends BaseController {
 
         validateResponse(
                 AdminView.ADMIN_ID,
-                User.USER_ID,
-                User.USER_TYPE,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_MOBILE,
-                User.USER_EMAIL,
-                User.USER_AVATAR
+                UserView.USER_ID,
+                UserView.USER_TYPE,
+                UserView.USER_ACCOUNT,
+                UserView.USER_NICK_NAME,
+                UserView.USER_MOBILE,
+                UserView.USER_EMAIL,
+                UserView.USER_AVATAR_FILE_PATH
         );
 
         return renderJson(resultTotal, resultList);
@@ -84,12 +83,12 @@ public class AdminAdminController extends BaseController {
 
         validateResponse(
                 AdminView.ADMIN_ID,
-                User.USER_ID,
-                User.USER_ACCOUNT,
-                User.USER_NICK_NAME,
-                User.USER_MOBILE,
-                User.USER_EMAIL,
-                User.USER_AVATAR,
+                UserView.USER_ID,
+                UserView.USER_ACCOUNT,
+                UserView.USER_NICK_NAME,
+                UserView.USER_MOBILE,
+                UserView.USER_EMAIL,
+                UserView.USER_AVATAR_FILE_PATH,
                 AdminView.SYSTEM_VERSION
         );
 

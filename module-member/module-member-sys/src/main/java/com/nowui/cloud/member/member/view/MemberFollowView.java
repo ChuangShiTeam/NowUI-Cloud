@@ -79,8 +79,8 @@ public class MemberFollowView extends BaseView {
      * 被关注用户头像图片路径
      */
     @Field
-    private String followUserAvatarPath;
-    public static final String FOLLOW_USER_AVATAR_PATH = "followUserAvatarPath";
+    private String followUserAvatarFilePath;
+    public static final String FOLLOW_USER_AVATAR_FILE_PATH = "followUserAvatarFilePath";
     
     /**
      * 被关注用户昵称
@@ -163,12 +163,12 @@ public class MemberFollowView extends BaseView {
         put(USER_NICK_NAME, userNickName);
     }
 
-    public String getFollowUserAvatarPath() {
-        return getString(FOLLOW_USER_AVATAR_PATH);
+    public String getFollowUserAvatarFilePath() {
+        return getString(FOLLOW_USER_AVATAR_FILE_PATH);
     }
 
-    public void setFollowUserAvatarPath(String followUserAvatarPath) {
-        put(FOLLOW_USER_AVATAR_PATH, followUserAvatarPath);
+    public void setFollowUserAvatarFilePath(String followUserAvatarFilePath) {
+        put(FOLLOW_USER_AVATAR_FILE_PATH, followUserAvatarFilePath);
     }
 
     public String getFollowUserNickName() {

@@ -102,15 +102,15 @@ public class MemberView extends BaseView {
      * 会员背景
      */
     @Field
-    private String memberBackground;    
-    public static final String MEMBER_BACKGROUND = "memberBackground";
+    private String memberBackgroundFileId;    
+    public static final String MEMBER_BACKGROUND_FILE_ID = "memberBackgroundFileId";
     
     /**
      * 会员背景图片文件路径
      */
     @Field
-    private String memberBackgroundPath;    
-    public static final String MEMBER_BACKGROUND_PATH = "memberBackgroundPath";
+    private String memberBackgroundFilePath;    
+    public static final String MEMBER_BACKGROUND_FILE_PATH = "memberBackgroundFilePath";
     
     /**
      * 会员签名
@@ -137,8 +137,8 @@ public class MemberView extends BaseView {
      * 用户头像文件路径
      */
     @Field
-    private String userAvatarPath;
-    public static final String USER_AVATAR_PATH = "userAvatarFilePath";
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
     
     /**
      * 用户性别
@@ -242,20 +242,20 @@ public class MemberView extends BaseView {
         put(MEMBER_ADDRESS_ADDRESS, memberAddressAddress);
     }
     
-    public String getMemberBackground() {
-        return getString(MEMBER_BACKGROUND);
+    public String getMemberBackgroundFileId() {
+        return getString(MEMBER_BACKGROUND_FILE_ID);
     }
 
-    public void setMemberBackground(String memberBackground) {
-        put(MEMBER_BACKGROUND, memberBackground);
+    public void setMemberBackgroundFileId(String memberBackgroundFileId) {
+        put(MEMBER_BACKGROUND_FILE_ID, memberBackgroundFileId);
     }
     
-    public String getMemberBackgroundPath() {
-        return getString(MEMBER_BACKGROUND_PATH);
+    public String getMemberBackgroundFilePath() {
+        return getString(MEMBER_BACKGROUND_FILE_PATH);
     }
 
-    public void setMemberBackgroundPath(String memberBackgroundPath) {
-        put(MEMBER_BACKGROUND_PATH, memberBackgroundPath);
+    public void setMemberBackgroundFilePath(String memberBackgroundFilePath) {
+        put(MEMBER_BACKGROUND_FILE_PATH, memberBackgroundFilePath);
     }
 
     public String getMemberSignature() {
@@ -274,16 +274,16 @@ public class MemberView extends BaseView {
         put(MEMBER_PREFERENCE_LANGUAGE, memberPreferenceLanguage);
     }
 
-    public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+    public void setUserAvatarFileId(String userAvatarFileId) {
+        put(USER_AVATAR_FILE_ID, userAvatarFileId);
     }
     
-    public String getUserAvatarPath() {
-        return getString(USER_AVATAR_PATH);
+    public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
     }
     
-    public void setUserAvatarPath(String userAvatarPath) {
-        put(USER_AVATAR_PATH, userAvatarPath);
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
     }
 
     public String getUserSex() {

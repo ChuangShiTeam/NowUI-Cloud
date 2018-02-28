@@ -127,7 +127,7 @@ public class MemberServiceImpl extends SuperServiceImpl<MemberMapper, Member, Me
     }
 
     @Override
-    public Boolean updateMemberBackground(String appId, String memberId, String memberBackground, String memberBackgroundPath,
+    public Boolean updateMemberBackground(String appId, String memberId, String memberBackgroundFileId, String memberBackgroundFilePath,
             String systemRequestUserId) {
         MemberView memberView = find(memberId);
         
@@ -141,7 +141,7 @@ public class MemberServiceImpl extends SuperServiceImpl<MemberMapper, Member, Me
         MemberBackground memberBackgroundBean = new MemberBackground();
         memberBackgroundBean.setAppId(appId);
         memberBackgroundBean.setMemberId(memberId);
-        memberBackgroundBean.setMemberBackground(memberBackground);
+        memberBackgroundBean.setMemberBackgroundFileId(memberBackgroundFileId);
         
         MemberBackground result = memberBackgroundService.save(memberBackgroundBean, Util.getRandomUUID(), systemRequestUserId);
         
@@ -149,8 +149,8 @@ public class MemberServiceImpl extends SuperServiceImpl<MemberMapper, Member, Me
         
         if (result != null) {
             // 更新会员视图信息
-            memberView.setMemberBackground(memberBackground);
-            memberView.setMemberBackgroundPath(memberBackgroundPath);
+            memberView.setMemberBackgroundFileId(memberBackgroundFileId);
+            memberView.setMemberBackgroundFilePath(memberBackgroundFilePath);
             
             update(memberView);
             success = true;
