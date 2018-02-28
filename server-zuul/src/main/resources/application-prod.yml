@@ -8,7 +8,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://118.31.229.16:8070/eureka/
+      defaultZone: http://118.31.229.16:3000/eureka/
 zuul:
   routes:
     shop:
