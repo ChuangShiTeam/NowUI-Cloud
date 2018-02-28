@@ -35,7 +35,7 @@ public interface UserService extends SuperService<User,UserView> {
     List<User> list(String appId, String userType, Integer pageIndex, Integer pageSize);
     
     /**
-     * 根据用户类型和用户账号查询用户信息
+     * 根据用户类型和用户账号查询用户视图信息
      * 
      * @param appId 应用编号
      * @param userType 用户类型
@@ -43,6 +43,17 @@ public interface UserService extends SuperService<User,UserView> {
      * @return UserView 用户视图信息
      */
     UserView findByUserTypeAndAccount(String appId, String userType, String userAccount);
+    
+    /**
+     * 根据微信openId和微信unionId查询用户视图信息
+     * 
+     * @param appId 应用编号
+     * @param userType 用户类型
+     * @param wechatOpenId 微信openId
+     * @param wechatUnionId 微信unionId
+     * @return UserView 用户视图信息
+     */
+    UserView findByUserTypeAndOpenIdAndUnionId(String appId, String userType, String wechatOpenId, String wechatUnionId);
 
     /**
      * 更新用户账号信息

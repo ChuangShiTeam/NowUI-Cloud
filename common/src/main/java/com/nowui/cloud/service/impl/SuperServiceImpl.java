@@ -442,7 +442,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //        return success;
 //    }
 
-    private void elasticsearchSaveOrUpdate(E baseEntity, String id) {
+    private void redisSaveOrUpdate(E baseEntity, String id) {
         baseEntity.keepTableFieldValue();
 
         redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
@@ -537,7 +537,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         E baseEntity = mapper.selectById(id);
 
-        elasticsearchSaveOrUpdate(baseEntity, id);
+        redisSaveOrUpdate(baseEntity, id);
     }
 
     /**

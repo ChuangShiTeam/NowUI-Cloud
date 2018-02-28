@@ -49,70 +49,7 @@ public class MemberSystemController extends BaseController implements MemberRpc 
     @Override
     public String wechatLoginV1(String appId, UserWechat userWechat, String systemRequestUserId) {
 
-//        String userId = "";
-//
-//        User user = userRpc.findByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
-//
-//        if (user == null) {
-//            String memberId = Util.getRandomUUID();
-//            userId = Util.getRandomUUID();
-//
-//            Member bean = new Member();
-//            bean.setAppId(appId);
-//            bean.setMemberId(memberId);
-//            bean.setUserId(userId);
-//            bean.setMemberIsRecommed(false);
-//            bean.setMemberIsTop(false);
-//            bean.setMemberTopEndTime(new Date());
-//            bean.setMemberTopLevel(0);
-//
-//            Member result = memberService.save(bean, memberId, bean.getSystemCreateUserId());
-////            bean, memberId, systemRequestUserId
-//
-//            if (result != null) {
-//                throw new BusinessException("保存不成功");
-//            }
-//
-//            String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
-//            userWechat.setWechatHeadImgFileId(fileId);
-////            isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
-////
-////            if (!isSave) {
-////                throw new BusinessException("保存不成功");
-////            }
-//        } else {
-//            userId = user.getUserId();
-//
-//            UserWechat bean = (UserWechat) user.get(User.USER_WECHAT);
-//
-//            if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
-//                String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
-//
-//                userWechat.setWechatHeadImgFileId(fileId);
-//                Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
-//
-//                if (!isUpdate) {
-//                    throw new BusinessException("更新不成功");
-//                }
-//            }
-//
-//        }
-//
-//        try {
-//            Date date = new Date();
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(date);
-//            calendar.add(Calendar.YEAR, 1);
-//
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put(User.USER_ID, userId);
-//            jsonObject.put(Constant.EXPIRE_TIME, calendar.getTime());
-//
-//            return AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new BusinessException("登录不成功");
-//        }
+
         return null;
     }
 

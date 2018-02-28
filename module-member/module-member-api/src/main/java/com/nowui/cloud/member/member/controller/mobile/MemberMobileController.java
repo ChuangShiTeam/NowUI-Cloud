@@ -1,24 +1,37 @@
 package com.nowui.cloud.member.member.controller.mobile;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.weixin.sdk.api.AccessTokenApi;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
+import com.jfinal.weixin.sdk.api.ApiResult;
+import com.jfinal.weixin.sdk.api.SnsAccessToken;
+import com.jfinal.weixin.sdk.api.SnsAccessTokenApi;
+import com.jfinal.weixin.sdk.api.SnsApi;
+import com.nowui.cloud.base.app.rpc.AppConfigRpc;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.entity.enums.SmsCaptchaType;
 import com.nowui.cloud.base.sms.rpc.SmsCaptchaRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
 import com.nowui.cloud.base.user.entity.UserPassword;
+import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.view.UserView;
@@ -52,6 +65,9 @@ import io.swagger.annotations.ApiOperation;
 public class MemberMobileController extends BaseController {
     
     @Autowired
+    private AppConfigRpc appConfigRpc;
+    
+    @Autowired
     private MemberService memberService;
     
     @Autowired
@@ -59,6 +75,160 @@ public class MemberMobileController extends BaseController {
     
     @Autowired
     private UserRpc userRpc;
+    
+    @ApiOperation(value = "会员微信授权登录")
+    @GetMapping(value = "/member/mobile/v1/wechat/auth/login")
+    public void wechatAuthLogin(
+            HttpServletResponse response,
+            @RequestParam("code") String code,
+            @RequestParam("url") String url,
+            @RequestParam("appId") String appId,
+            @RequestParam(Constant.PLATFORM) String platform,
+            @RequestParam(Constant.VERSION) String version) throws IOException {
+        if (!Util.isNullOrEmpty(code)) {
+            //读取应用微信配置信息
+            JSONObject jsonObject = appConfigRpc.findByCategoryCode(appId, "WEIXIN");
+            
+            String wechatAppId = ApiConfigKit.getAppId();
+            if (!wechatAppId.equals(jsonObject.getString("WECHAT_APP_ID"))) {
+                ApiConfigKit.setThreadLocalAppId(jsonObject.getString("WECHAT_APP_ID"));
+                // AccessTokenApi.refreshAccessToken();
+            }
+            
+            System.out.println(appId);
+
+            SnsAccessToken snsAccessToken = SnsAccessTokenApi.getSnsAccessToken(jsonObject.getString("WECHAT_APP_ID"), jsonObject.getString("WECHAT_APP_SECRET"), code);
+
+            System.out.println(snsAccessToken.getJson());
+
+            String wechatOpenId = snsAccessToken.getOpenid();
+            String wechatUnionId = snsAccessToken.getUnionid();
+            String systemRequestUserId = "";
+
+            ApiResult apiResult = SnsApi.getUserInfo(snsAccessToken.getAccessToken(), wechatOpenId);
+
+            System.out.println(apiResult.getJson());
+
+            UserWechat userWechat = new UserWechat();
+            userWechat.setAppId(appId);
+            userWechat.setWechatOpenId(wechatOpenId);
+            String wechatNickName = apiResult.getStr("nickname");
+            String wechatHeadImgUrl = apiResult.getStr("headimgurl");
+            String wechatSex = apiResult.getStr("sex");
+            String wechatCountry = apiResult.getStr("country");
+            String wechatProvince = apiResult.getStr("province");
+            String wechatCity = apiResult.getStr("city");
+            String wehchatPrivilege = apiResult.getStr("privilege");
+            
+            if (Util.isNullOrEmpty(wechatUnionId)) {
+                wechatUnionId = "";
+            }
+            userWechat.setWechatUnionId(wechatUnionId);
+            if (Util.isNullOrEmpty(wechatNickName)) {
+                wechatNickName = "";
+            }
+            userWechat.setWechatNickName(wechatNickName);
+            if (Util.isNullOrEmpty(wechatHeadImgUrl)) {
+                wechatHeadImgUrl = "";
+            }
+            userWechat.setWechatHeadImgUrl(wechatHeadImgUrl);
+            if (Util.isNullOrEmpty(wechatSex)) {
+                wechatSex = "" ;
+            }
+            userWechat.setWechatSex(wechatSex);
+            if (Util.isNullOrEmpty(wechatCountry)) {
+                wechatCountry = "";
+            }
+            userWechat.setWechatCountry(wechatCountry);
+            if (Util.isNullOrEmpty(wechatProvince)) {
+                wechatProvince = "";
+            }
+            userWechat.setWechatProvince(wechatProvince);
+            if (Util.isNullOrEmpty(wechatCity)) {
+                wechatCity = "" ;
+            }
+            userWechat.setWechatCity(wechatCity);
+            if (Util.isNullOrEmpty(wehchatPrivilege)) {
+                wehchatPrivilege = "";
+            }
+            userWechat.setWehchatPrivilege(wehchatPrivilege);
+
+            String userId = "";
+            
+            UserView userView = userRpc.findByUserWechatV1(appId, UserType.MEMBER.getKey(), userWechat.getWechatOpenId(), userWechat.getWechatUnionId());
+    
+            if (userView == null) {
+                String memberId = Util.getRandomUUID();
+                userId = Util.getRandomUUID();
+    
+                Member bean = new Member();
+                bean.setAppId(appId);
+                bean.setMemberId(memberId);
+                bean.setUserId(userId);
+                bean.setMemberIsRecommed(false);
+                bean.setMemberIsTop(false);
+                bean.setMemberTopEndTime(new Date());
+                bean.setMemberTopLevel(0);
+    
+                Member result = memberService.save(bean, memberId, bean.getSystemCreateUserId());
+//                        bean, memberId, systemRequestUserId
+    
+                if (result != null) {
+                    throw new RuntimeException("保存不成功");
+                }
+//    
+//                String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
+//                userWechat.setWechatHeadImgFileId(fileId);
+////                        isSave = userRpc.saveUserWechatV1(appId, userId, memberId, UserType.MEMBER.getKey(), userWechat, systemRequestUserId);
+//    //
+////                        if (!isSave) {
+////                            throw new BusinessException("保存不成功");
+////                        }
+//            } else {
+//                userId = user.getUserId();
+//    
+//                String userWechatHeadImgUrl = (String) user.get;
+//    
+//                if (bean == null || userWechat.getWechatHeadImgUrl().equals(bean.getWechatHeadImgUrl())) {
+//                    String fileId = fileRpc.downloadWechatHeadImgToNativeV1(appId, userId, userWechat.getWechatHeadImgUrl());
+//    
+//                    userWechat.setWechatHeadImgFileId(fileId);
+//                    Boolean isUpdate = userRpc.updateUserWechatV1(userId, userWechat, systemRequestUserId);
+//    
+//                    if (!isUpdate) {
+//                        throw new BusinessException("更新不成功");
+//                    }
+//                }
+//    
+//            }
+            }
+            String token = "";
+            try {
+                Date date = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.YEAR, 1);
+    
+                JSONObject result1 = new JSONObject();
+                result1.put(User.USER_ID, userId);
+                result1.put(Constant.EXPIRE_TIME, calendar.getTime());
+    
+                token = AesUtil.aesEncrypt(result1.toJSONString(), Constant.PRIVATE_KEY);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BusinessException("登录不成功");
+            }
+
+            System.out.println("openId:" + wechatOpenId);
+            System.out.println("token:" + token);
+            System.out.println("userNickName:" + wechatNickName);
+            System.out.println("userAvatar:" + wechatHeadImgUrl);
+
+            response.sendRedirect(url + "?&openId=" + wechatOpenId + "&token=" + token + "&userNickame=" + wechatNickName + "&userAvatar=" + wechatHeadImgUrl);
+
+        }
+                
+    }
     
     @ApiOperation(value = "会员手机号码注册")
     @RequestMapping(value = "/member/mobile/v1/mobile/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

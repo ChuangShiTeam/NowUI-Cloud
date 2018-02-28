@@ -153,7 +153,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         Boolean success = mapper.insert(baseEntity) != 0;
 
         if (success) {
-            elasticsearchSaveOrUpdate(baseEntity, id);
+            redisSaveOrUpdate(baseEntity, id);
         }
 
         return success;
@@ -181,7 +181,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
         return success;
     }
 
-    private void elasticsearchSaveOrUpdate(T baseEntity, String id) {
+    private void redisSaveOrUpdate(T baseEntity, String id) {
         baseEntity.keepTableFieldValue();
 
         redis.opsForValue().set(getItemCacheName(id), baseEntity);
@@ -216,7 +216,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> impl
 
         T baseEntity = mapper.selectById(id);
 
-        elasticsearchSaveOrUpdate(baseEntity, id);
+        redisSaveOrUpdate(baseEntity, id);
     }
 
     /**

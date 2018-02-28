@@ -247,6 +247,19 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User, UserRepo
         
         return find(query);
     }
+    
+    @Override
+    public UserView findByUserTypeAndOpenIdAndUnionId(String appId, String userType, String wechatOpenId, String wechatUnionId) {
+        Criteria criteria = Criteria.where(UserView.APP_ID).is(appId)
+                .and(UserView.USER_TYPE).is(userType)
+                .and(UserView.WECHAT_OPEN_ID).is(wechatOpenId)
+                .and(UserView.WECHAT_UNION_ID).is(wechatUnionId)
+                .and(UserView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return find(query);
+    }
 
     @Override
     public Boolean checkUserAccount(String appId, String userType, String userAccount) {

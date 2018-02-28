@@ -74,16 +74,6 @@ public class UserSystemController extends BaseController implements UserRpc {
 	@Autowired
     private UserWechatService userWechatService;
 	
-	@Override
-	public Integer countV1(String appId, String userType) {
-		return userService.count(appId, userType);
-	}
-
-	@Override
-	public List<User> listV1(String appId, String userType, Integer pageIndex, Integer pageSize) {
-		return userService.list(appId, userType, pageIndex, pageSize);
-	}
-
     @Override
     public UserView findV1(String userId) {
         return userService.find(userId);
@@ -114,24 +104,11 @@ public class UserSystemController extends BaseController implements UserRpc {
     }
 
     @Override
-    public User findByUserWechatV1(String appId, String userType, String wechatOpenId, String wechatUnionId) {
+    public UserView findByUserWechatV1(String appId, String userType, String wechatOpenId, String wechatUnionId) {
 
-	    // TODO:  findByUserWechatV1
-//        UserWechatView userWechat = userService.findByOpenIdAndUnionId(appId, wechatOpenId, wechatUnionId);
-        
-//        if (userWechat == null || Util.isNullOrEmpty(userWechat.getUserId())) {
-//            return null;
-//        }
-//
-//        User user = userService.findById(userWechat.getUserId());
-//
-//        if (user == null) {
-//            return null;
-//        }
-//        if (user.getUserType().equals(userType)) {
-//            return user;
-//        }
-        return null;
+        UserView userView = userService.findByUserTypeAndOpenIdAndUnionId(appId, userType, wechatOpenId, wechatUnionId);
+	    
+        return userView;
     }
 
     @Override

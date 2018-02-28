@@ -24,40 +24,6 @@ import com.nowui.cloud.base.user.view.UserView;
 public interface UserRpc {
 
     /**
-     * 用户统计
-     *
-     * @param appId 应用编号
-     * @param userType 用户类型
-     * @return Integer 用户数量
-     */
-    @RequestMapping(value = "/user/system/v1/count", method = RequestMethod.POST)
-    Integer countV1(
-            @RequestParam(value = "appId", required = true) String appId, 
-            @RequestParam(value = "userType", required = true) String userType
-    );
-
-    /**
-     * 用户查询
-     *
-     * @param appId 应用编号
-     * @param userType 用户类型
-     * @param userAccount 用户账号
-     * @param userNickName 用户昵称
-     * @param userName 用户姓名
-     * @param userMobile 用户手机号码
-     * @param pageIndex 页码
-     * @param pageSize	每页个数
-     * @return List<User> 用户列表
-     */
-    @RequestMapping(value = "/user/system/v1/list", method = RequestMethod.POST)
-    List<User> listV1(
-            @RequestParam(value = "appId", required = true) String appId, 
-            @RequestParam(value = "userType", required = true) String userType, 
-            @RequestParam(value = "pageIndex", required = true) Integer pageIndex, 
-            @RequestParam(value = "pageSize", required = true) Integer pageSize
-    );
-
-    /**
      * 根据用户编号查询用户信息
      * 
      * @param userId 用户编号
@@ -119,7 +85,7 @@ public interface UserRpc {
     );
     
     @RequestMapping(value = "/user/system/v1/find/by/user/wechat", method = RequestMethod.POST)
-    User findByUserWechatV1(
+    UserView findByUserWechatV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "userType", required = true) String userType,
             @RequestParam(value = "wechatOpenId", required = true) String wechatOpenId,
