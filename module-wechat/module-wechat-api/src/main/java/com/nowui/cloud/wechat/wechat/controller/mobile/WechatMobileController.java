@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.weixin.sdk.api.AccessTokenApi;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.api.ApiResult;
 import com.jfinal.weixin.sdk.api.SnsAccessToken;
@@ -58,7 +59,7 @@ public class WechatMobileController extends BaseController {
             String wechatAppId = ApiConfigKit.getAppId();
             if (!wechatAppId.equals(jsonObject.getString("WECHAT_APP_ID"))) {
                 ApiConfigKit.setThreadLocalAppId(jsonObject.getString("WECHAT_APP_ID"));
-                // AccessTokenApi.refreshAccessToken();
+                AccessTokenApi.refreshAccessToken();
             }
             
             System.out.println(appId);

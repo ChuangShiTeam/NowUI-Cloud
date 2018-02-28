@@ -35,6 +35,12 @@
             <artifactId>module-file-sys</artifactId>
             <version>1.0.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal-weixin</artifactId>
+            <version>1.9</version>
+        </dependency>
     </dependencies>
 
     <build>

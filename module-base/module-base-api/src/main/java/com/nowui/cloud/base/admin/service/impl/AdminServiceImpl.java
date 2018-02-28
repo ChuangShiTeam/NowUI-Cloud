@@ -33,25 +33,25 @@ public class AdminServiceImpl extends SuperServiceImpl<AdminMapper, Admin, Admin
 
     @Override
     public Integer countForAdmin(String appId) {
-        return userRpc.countV1(appId, UserType.ADMIN.getKey());
+        return 0;
     }
 
     @Override
     public List<AdminView> listForAdmin(String appId, Integer pageIndex, Integer pageSize) {
-        List<AdminView> listForAdmin = new ArrayList<>();
+//        List<AdminView> listForAdmin = new ArrayList<>();
+//        
+//        List<User> userList = userRpc.listV1(appId, UserType.ADMIN.getKey(), pageIndex, pageSize);
+//        
+//        for (User user : userList) {
+//            
+//            AdminView adminView = new AdminView();
+//            adminView.setAdminId(user.getObjectId());
+//            adminView.putAll(user);
+//            
+//            listForAdmin.add(adminView);
+//        }
         
-        List<User> userList = userRpc.listV1(appId, UserType.ADMIN.getKey(), pageIndex, pageSize);
-        
-        for (User user : userList) {
-            
-            AdminView adminView = new AdminView();
-            adminView.setAdminId(user.getObjectId());
-            adminView.putAll(user);
-            
-            listForAdmin.add(adminView);
-        }
-        
-        return listForAdmin;
+        return null;
     }
     
     @Override

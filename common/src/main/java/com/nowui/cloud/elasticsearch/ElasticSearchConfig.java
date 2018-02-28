@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  * @author ZhongYongQiang
  */
 //@Configuration
-@EnableElasticsearchRepositories(basePackages = {"com.nowui.cloud"})
+//@EnableElasticsearchRepositories(basePackages = {"com.nowui.cloud"})
 public class ElasticSearchConfig {
 
     static {
