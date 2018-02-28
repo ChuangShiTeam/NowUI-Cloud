@@ -236,7 +236,7 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_MODERATOR_INFO
         );
 
-        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
         validateSecondResponse(Forum.FORUM_USER_FOLLOW_LIST, ForumUserFollowView.USER_INFO);
         
         return renderJson(forum);
@@ -650,7 +650,7 @@ public class ForumMobileController extends BaseController {
                 Forum.MEMBER_SIGNATURE
         );
         
-        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
         
         return renderJson(forum);
     }
@@ -752,7 +752,7 @@ public class ForumMobileController extends BaseController {
 	            Topic.TOPIC_IS_SELF,
 	            
                 User.USER_ID,
-        		UserAvatar.USER_AVATAR,
+        		UserAvatar.USER_AVATAR_FILE_PATH,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		BaseEntity.SYSTEM_CREATE_TIME,
@@ -766,7 +766,7 @@ public class ForumMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         
 
         return renderJson(countResult, topicList);

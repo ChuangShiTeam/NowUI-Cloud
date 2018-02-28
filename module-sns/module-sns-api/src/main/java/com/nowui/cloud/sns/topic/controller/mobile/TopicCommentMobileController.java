@@ -144,7 +144,7 @@ public class TopicCommentMobileController extends BaseController {
             TopicComment.TOPIC_REPLY_COMMENT_ID,
             TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
             User.USER_ID,
-    		UserAvatar.USER_AVATAR,
+    		UserAvatar.USER_AVATAR_FILE_PATH,
     		UserNickName.USER_NICK_NAME,
     		TopicComment.SYSTEM_CREATE_TIME,
     		TopicComment.TOPIC_COMMENT_IS_SELF,

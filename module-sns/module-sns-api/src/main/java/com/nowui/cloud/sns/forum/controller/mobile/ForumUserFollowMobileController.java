@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
+import com.nowui.cloud.base.user.entity.UserAvatar;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
@@ -283,7 +285,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_USER_FOLLOW_ID
         );
         
-        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, User.USER_AVATAR, User.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
+        validateSecondResponse(Forum.FORUM_MODERATOR_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME, Member.MEMBER_SIGNATURE);
 
         return renderJson(resultTotal, forumList);
     }

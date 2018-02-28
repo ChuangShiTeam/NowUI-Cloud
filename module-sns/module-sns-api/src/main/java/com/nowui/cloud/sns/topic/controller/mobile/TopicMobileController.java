@@ -171,7 +171,8 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_TOP_LEVEL,
                 Topic.TOPIC_MEDIA_LIST,
                 User.USER_ID,
-                UserAvatar.USER_AVATAR,
+                "userAvatar",
+                UserAvatar.USER_AVATAR_FILE_PATH,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
                 Topic.TOPIC_IS_SELF
@@ -359,7 +360,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_USER_LIKE_LIST,
                 
                 User.USER_ID,
-                UserAvatar.USER_AVATAR,
+                UserAvatar.USER_AVATAR_FILE_PATH,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
                 BaseEntity.SYSTEM_CREATE_TIME,
@@ -368,7 +369,7 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         validateSecondResponse(Topic.TOPIC_COMMENT_LIST, TopicComment.MEMBER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_MEMBER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
 
         return renderJson(countResult, resultList);
@@ -535,7 +536,7 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_USER_LIKE_LIST,
                 Topic.TOPIC_IS_SELF,
                 User.USER_ID,
-                UserAvatar.USER_AVATAR,
+                UserAvatar.USER_AVATAR_FILE_PATH,
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
                 BaseEntity.SYSTEM_CREATE_TIME,
@@ -545,7 +546,7 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
 
         return renderJson(countResult, resultList);
     }
@@ -645,8 +646,8 @@ public class TopicMobileController extends BaseController {
         );
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
-        validateSecondResponse(Topic.TOPIC_USER_LIKE_LIST, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(Topic.TOPIC_USER_LIKE_LIST, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
 
         return renderJson(topic);
     }
@@ -802,7 +803,8 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_USER_IS_LIKE,
                 Topic.TOPIC_USER_LIKE_LIST,
                 Topic.TOPIC_IS_SELF,
-                UserAvatar.USER_AVATAR,
+                UserAvatar.USER_AVATAR_FILE_PATH,
+                "userAvatar",
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
                 Topic.SYSTEM_CREATE_TIME,
@@ -815,7 +817,7 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         return renderJson(count, allUserTopic);
     }
 

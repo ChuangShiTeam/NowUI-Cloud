@@ -101,7 +101,7 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID,
                 User.USER_ID,
-        		UserAvatar.USER_AVATAR,
+        		UserAvatar.USER_AVATAR_FILE_PATH,
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		TopicUserLike.TOPIC_USER_LIKE_IS_SELF
