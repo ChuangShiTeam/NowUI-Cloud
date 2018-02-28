@@ -2,7 +2,6 @@ package com.nowui.cloud.wawi.pet.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.Pet;
-import com.nowui.cloud.wawi.pet.router.PetRouter;
 import com.nowui.cloud.wawi.pet.service.PetService;
 import com.nowui.cloud.wawi.pet.view.PetView;
 
@@ -109,8 +108,6 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetRouter.PET_V1_SAVE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -141,8 +138,6 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetRouter.PET_V1_UPDATE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -166,8 +161,6 @@ public class PetAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetRouter.PET_V1_DELETE, petEntity.getAppId(), petEntity.getSystemRequestUserId());
-
             success = true;
         }
 

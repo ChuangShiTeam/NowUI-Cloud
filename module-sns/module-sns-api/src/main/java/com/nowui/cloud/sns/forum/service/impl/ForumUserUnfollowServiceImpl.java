@@ -1,12 +1,10 @@
 package com.nowui.cloud.sns.forum.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.mapper.ForumUserUnfollowMapper;
 import com.nowui.cloud.sns.forum.repository.ForumUserUnfollowRepository;
-import com.nowui.cloud.sns.forum.router.ForumUserUnfollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserUnfollowView;
 import com.nowui.cloud.util.Util;
@@ -110,7 +108,7 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 //		
 //		//遍历
 //		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
-//			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), appId, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_DELETE, systemUpdateUserId, forumUserUnfollow.getSystemVersion());
+//			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), appId, systemUpdateUserId, forumUserUnfollow.getSystemVersion());
 //			if (delete == false) {
 //				return false;
 //			}

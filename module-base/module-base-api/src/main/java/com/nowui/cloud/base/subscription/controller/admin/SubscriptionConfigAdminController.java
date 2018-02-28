@@ -3,8 +3,6 @@ package com.nowui.cloud.base.subscription.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.base.subscription.router.SubscriptionConfigRouter;
-import com.nowui.cloud.base.subscription.router.SubscriptionRouter;
 import com.nowui.cloud.base.subscription.view.SubscriptionConfigView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -103,8 +101,6 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, SubscriptionRouter.SUBSCRIPTION_V1_SAVE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -130,8 +126,6 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_UPDATE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -155,8 +149,6 @@ public class SubscriptionConfigAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, SubscriptionConfigRouter.SUBSCRIPTION_CONFIG_V1_DELETE, subscriptionConfigEntity.getAppId(), subscriptionConfigEntity.getSystemRequestUserId());
-
             success = true;
         }
 

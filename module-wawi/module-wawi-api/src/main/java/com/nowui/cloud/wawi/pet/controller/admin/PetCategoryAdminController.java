@@ -15,7 +15,6 @@ import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
-import com.nowui.cloud.wawi.pet.router.PetCategoryRouter;
 import com.nowui.cloud.wawi.pet.service.PetCategoryService;
 import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
@@ -180,8 +179,6 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_SAVE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -211,8 +208,6 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_UPDATE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -236,8 +231,6 @@ public class PetCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, PetCategoryRouter.PET_CATEGORY_V1_DELETE, petCategoryEntity.getAppId(), petCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 

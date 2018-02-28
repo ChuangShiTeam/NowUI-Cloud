@@ -256,7 +256,7 @@ public class CodeController extends BaseController {
             write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
             write(templateMap, "sysView.txt", sysviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
-            write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
+//            write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");
             write(templateMap, "detail.txt", viewPackagePath + "/" + "Detail.js");
 

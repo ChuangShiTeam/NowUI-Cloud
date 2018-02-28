@@ -1,7 +1,6 @@
 package com.nowui.cloud.shop.product.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
-import com.nowui.cloud.shop.product.router.ProductRouter;
 import com.nowui.cloud.shop.product.service.ProductService;
 import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.util.Util;

@@ -1,8 +1,6 @@
 package com.nowui.cloud.sns.forum.controller.admin;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
 import com.nowui.cloud.sns.forum.entity.ForumCategory;
-import com.nowui.cloud.sns.forum.router.ForumCategoryRouter;
 import com.nowui.cloud.sns.forum.service.ForumCategoryService;
 import com.nowui.cloud.sns.forum.view.ForumCategoryView;
 
@@ -95,7 +93,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
-//  TODO admin论坛分类      Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_SAVE, body.getSystemRequestUserId());
+//  TODO admin论坛分类      Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), body.getSystemRequestUserId());
 
         return renderJson(null);
     }
@@ -115,7 +113,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-// TODO admin论坛分类       Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO admin论坛分类       Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }
@@ -130,7 +128,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-// TODO admin论坛分类      Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), ForumCategoryRouter.FORUM_CATEGORY_V1_UPDATE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO admin论坛分类      Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }

@@ -29,8 +29,6 @@ import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
-import com.nowui.cloud.sns.forum.router.ForumRouter;
-import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
@@ -153,8 +151,6 @@ public class ForumMobileController extends BaseController {
              forumUserFollowView.setForumUserFollowIsTop(false);
              
              forumUserFollowService.save(forumUserFollowView);
-	         
-//	         sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, CreateUserId);
 
         	 success = true;
 	     }
@@ -345,7 +341,6 @@ public class ForumMobileController extends BaseController {
 	   //不清楚是否单独写一个更改背景图片的接口
 	   body.setForumBackgroundMedia(body.getForumMedia());
 
-//       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
 	   Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
 	   
 	   Boolean success = false;
@@ -355,8 +350,6 @@ public class ForumMobileController extends BaseController {
     	   
     	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
     	   forumService.update(forumView);
-	      
-           //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
        }
@@ -420,8 +413,6 @@ public class ForumMobileController extends BaseController {
     	   
     	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
     	   forumService.update(forumView);
-	       
-           //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
            success = true;
        }
@@ -448,8 +439,6 @@ public class ForumMobileController extends BaseController {
        if (!memberId.equals(forum.getForumModerator())) {
        		return renderJson(false);
 		}
-
-//       Boolean result = forumService.update(body, body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_UPDATE, body.getSystemRequestUserId(), forum.getSystemVersion());
         
         Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
         Boolean success = false;
@@ -458,8 +447,6 @@ public class ForumMobileController extends BaseController {
             
             ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
      	    forumService.update(forumView);
-        	
-            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, result.getAppId(), result.getSystemRequestUserId());
 
             success = true;
         }
@@ -491,7 +478,6 @@ public class ForumMobileController extends BaseController {
         }
         
         //先从论坛信息表删除
-//        Boolean result = forumService.delete(body.getForumId(), body.getAppId(), ForumRouter.FORUM_V1_DELETE, body.getSystemRequestUserId(), forum.getSystemVersion());
         Forum result = forumService.delete(forumId, requestUserId, forum.getSystemVersion());
         
         Boolean success = false;
@@ -538,10 +524,7 @@ public class ForumMobileController extends BaseController {
         	ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
       	    //TODO 这里要有删除MongoDB主业务的删除方法,Mark
         	forumService.delete(forumView);
-        	
-        	
-        	
-        	//sendMessage(result, ForumRouter.FORUM_V1_DELETE, result.getAppId(), result.getSystemRequestUserId());
+
 
         	success = true;
 		}

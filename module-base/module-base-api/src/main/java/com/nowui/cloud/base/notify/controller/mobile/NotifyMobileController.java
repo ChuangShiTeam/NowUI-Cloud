@@ -1,37 +1,20 @@
 package com.nowui.cloud.base.notify.controller.mobile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import com.nowui.cloud.base.notify.router.NotifyRouter;
-import com.nowui.cloud.base.notify.view.NotifyView;
-import com.nowui.cloud.base.subscription.router.SubscriptionRouter;
-import com.nowui.cloud.base.user.router.UserNotifyRouter;
-import com.nowui.cloud.base.user.view.UserNotifyView;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.base.app.entity.AppConfig;
 import com.nowui.cloud.base.app.rpc.AppConfigRpc;
 import com.nowui.cloud.base.notify.entity.Notify;
 import com.nowui.cloud.base.notify.service.NotifyService;
-import com.nowui.cloud.base.subscription.entity.Subscription;
 import com.nowui.cloud.base.subscription.service.SubscriptionService;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserNotify;
 import com.nowui.cloud.base.user.service.UserNotifyService;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -77,8 +60,6 @@ public class NotifyMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -107,8 +88,6 @@ public class NotifyMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -260,7 +239,7 @@ public class NotifyMobileController extends BaseController {
 //                    tSubscription.setSubscriptionAction(json.get(i).toString());
 //                    tSubscription.setSubscriptionTarget(subscription.getSubscriptionTarget());
 //                    tSubscription.setSubscriptionTargetType(subscription.getSubscriptionTargetType());
-//                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_SAVE, body.getSystemCreateUserId());
+//                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getAppId(), body.getSystemCreateUserId());
 ////                    subscriptionService.save(tSubscription, Util.getRandomUUID(), body.getSystemCreateUserId());
 //
 //                }
@@ -283,7 +262,7 @@ public class NotifyMobileController extends BaseController {
 //                Subscription.SUBSCRIPTION_TARGET,
 //                Subscription.SUBSCRIPTION_TARGET_TYPE
 //        );
-//        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), body.getAppId(), SubscriptionRouter.SUBSCRIPTION_V1_DELETE, body.getSystemUpdateUserId(), body.getSystemVersion());
+//        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), body.getAppId(), body.getSystemUpdateUserId(), body.getSystemVersion());
 ////        Boolean result = subscriptionService.delete(subscription.getSubscriptionId(), subscription.getSystemRequestUserId(), subscription.getSystemVersion());
 //        return renderJson(result);
 //    }

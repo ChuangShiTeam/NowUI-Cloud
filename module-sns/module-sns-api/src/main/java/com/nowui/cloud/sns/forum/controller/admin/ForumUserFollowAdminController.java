@@ -83,7 +83,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.FORUM_ID
         );
 
-//  TODO      Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId());
+//  TODO      Boolean result = forumUserFollowService.save(body, Util.getRandomUUID(), body.getAppId(), body.getSystemRequestUserId());
 
         return renderJson(null);
     }
@@ -100,7 +100,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-// TODO       Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO       Boolean result = forumUserFollowService.update(body, body.getForumUserFollowId(), body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }
@@ -115,7 +115,7 @@ public class ForumUserFollowAdminController extends BaseController {
                 ForumUserFollow.SYSTEM_VERSION
         );
 
-// TODO       Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, body.getSystemRequestUserId(), body.getSystemVersion());
+// TODO       Boolean result = forumUserFollowService.delete(body.getForumUserFollowId(), body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }

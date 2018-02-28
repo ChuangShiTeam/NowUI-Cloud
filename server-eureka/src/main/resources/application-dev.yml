@@ -7,7 +7,7 @@ logging:
 
 eureka:
   instance:
-    hostname: 192.168.31.172
+    hostname: localhost
     leaseRenewalIntervalInSeconds: 5
   server:
     # 开发环境设为false，关闭自我保护机制，服务器不推荐使用

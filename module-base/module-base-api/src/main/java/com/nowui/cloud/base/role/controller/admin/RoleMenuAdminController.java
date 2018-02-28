@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.role.controller.admin;
 
-import com.nowui.cloud.base.role.router.RoleMenuRouter;
 import com.nowui.cloud.base.role.view.RoleMenuView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -94,8 +93,6 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_SAVE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -121,8 +118,6 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_UPDATE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -146,8 +141,6 @@ public class RoleMenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleMenuRouter.ROLE_MENU_V1_DELETE, roleMenuEntity.getAppId(), roleMenuEntity.getSystemRequestUserId());
-
             success = true;
         }
 

@@ -2,7 +2,6 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserComment;
-import com.nowui.cloud.cms.article.router.ArticleUserCommentRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserCommentService;
 import com.nowui.cloud.cms.article.view.ArticleUserCommentView;
 
@@ -102,8 +101,6 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_SAVE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -132,8 +129,6 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_UPDATE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -157,8 +152,6 @@ public class ArticleUserCommentAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentRouter.ARTICLE_USER_COMMENT_V1_DELETE, articleUserCommentEntity.getAppId(), articleUserCommentEntity.getSystemRequestUserId());
-
             success = true;
         }
 

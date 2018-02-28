@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
-import com.nowui.cloud.cms.article.router.ArticleCategoryRouter;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.constant.Constant;
@@ -158,8 +157,6 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_SAVE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -188,8 +185,6 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_UPDATE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -212,8 +207,6 @@ public class ArticleCategoryAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleCategoryRouter.ARTICLE_CATEGORY_V1_DELETE, articleCategoryEntity.getAppId(), articleCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 

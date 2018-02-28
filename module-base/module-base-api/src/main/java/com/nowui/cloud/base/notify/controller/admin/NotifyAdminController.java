@@ -3,7 +3,6 @@ package com.nowui.cloud.base.notify.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.base.notify.router.NotifyRouter;
 import com.nowui.cloud.base.notify.view.NotifyView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -111,8 +110,6 @@ public class NotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, NotifyRouter.NOTIFY_V1_SAVE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -141,8 +138,6 @@ public class NotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, NotifyRouter.NOTIFY_V1_UPDATE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -166,8 +161,6 @@ public class NotifyAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, NotifyRouter.NOTIFY_V1_DELETE, notifyEntity.getAppId(), notifyEntity.getSystemRequestUserId());
-
             success = true;
         }
 

@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.role.controller.admin;
 
-import com.nowui.cloud.base.role.router.RoleRouter;
 import com.nowui.cloud.base.role.view.RoleView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -101,8 +100,6 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleRouter.ROLE_V1_SAVE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -130,8 +127,6 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleRouter.ROLE_V1_UPDATE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -155,8 +150,6 @@ public class RoleAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, RoleRouter.ROLE_V1_DELETE, roleEntity.getAppId(), roleEntity.getSystemRequestUserId());
-
             success = true;
         }
 

@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.menu.controller.admin;
 
-import com.nowui.cloud.base.menu.router.MenuRouter;
 import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
@@ -133,8 +132,6 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, MenuRouter.MENU_V1_SAVE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -163,8 +160,6 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, MenuRouter.MENU_V1_UPDATE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -188,8 +183,6 @@ public class MenuAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, MenuRouter.MENU_V1_DELETE, menuEntity.getAppId(), menuEntity.getSystemRequestUserId());
-
             success = true;
         }
 

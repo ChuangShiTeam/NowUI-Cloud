@@ -6,20 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.base.sms.repository.SmsCaptchaRepository;
-import com.nowui.cloud.base.sms.router.SmsCaptchaRouter;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.http.MethodType;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import com.nowui.cloud.base.app.rpc.AppConfigRpc;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.mapper.SmsCaptchaMapper;

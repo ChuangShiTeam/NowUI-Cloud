@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.App;
-import com.nowui.cloud.base.app.router.AppRouter;
 import com.nowui.cloud.base.app.service.AppService;
 import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.controller.BaseController;
@@ -78,8 +77,6 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppRouter.APP_V1_SAVE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -102,8 +99,6 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppRouter.APP_V1_UPDATE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -122,8 +117,6 @@ public class AppController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppRouter.APP_V1_DELETE, appEntity.getAppId(), appEntity.getSystemRequestUserId());
-
             success = true;
         }
 

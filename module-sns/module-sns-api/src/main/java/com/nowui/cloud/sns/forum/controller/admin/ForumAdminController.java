@@ -9,17 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.file.file.entity.File;
 import com.nowui.cloud.file.file.entity.enums.FileType;
 import com.nowui.cloud.file.file.rpc.FileRpc;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
-import com.nowui.cloud.sns.forum.router.ForumRouter;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
@@ -209,14 +204,11 @@ public class ForumAdminController extends BaseController {
       String systemRequestUserId = body.getSystemRequestUserId();
       String appId = body.getAppId();
 
-//      Boolean result = forumService.save(body, forumId, body.getAppId(), ForumRouter.FORUM_V1_SAVE, systemRequestUserId);
       Forum result = forumService.save(body, forumId, systemRequestUserId);
       
       Boolean success = false;
 
       if (result != null) {
-          //sendMessage(result, ForumRouter.FORUM_V1_SAVE, appId, systemRequestUserId);
-
           success = true;
       }
 
@@ -251,14 +243,11 @@ public class ForumAdminController extends BaseController {
         String systemRequestUserId = body.getSystemRequestUserId();
         Integer systemVersion = body.getSystemVersion();
 
-//        Boolean result = forumService.update(body, forumId, appId, ForumRouter.FORUM_V1_SAVE, systemRequestUserId, body.getSystemVersion());
         Forum result = forumService.update(body, forumId, systemRequestUserId, systemVersion);
         
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ForumRouter.FORUM_V1_UPDATE, appId, systemRequestUserId);
-
             success = true;
         }
 
@@ -280,13 +269,10 @@ public class ForumAdminController extends BaseController {
         String systemRequestUserId = body.getSystemRequestUserId();
         Integer systemVersion = body.getSystemVersion();
 
-//        Boolean result = forumService.delete(forumId, appId, ForumRouter.FORUM_V1_SAVE, systemRequestUserId, systemVersion);
         Forum result = forumService.delete(forumId, systemRequestUserId, systemVersion);
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ForumRouter.FORUM_V1_DELETE, appId, systemRequestUserId);
-
             success = true;
         }
 

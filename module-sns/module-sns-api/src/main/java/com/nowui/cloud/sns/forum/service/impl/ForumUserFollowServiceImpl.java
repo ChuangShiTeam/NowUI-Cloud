@@ -1,15 +1,12 @@
 package com.nowui.cloud.sns.forum.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.mapper.ForumUserFollowMapper;
 import com.nowui.cloud.sns.forum.repository.ForumUserFollowRepository;
-import com.nowui.cloud.sns.forum.router.ForumUserFollowRouter;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
-import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.util.Util;
 
 import org.springframework.data.domain.Sort;

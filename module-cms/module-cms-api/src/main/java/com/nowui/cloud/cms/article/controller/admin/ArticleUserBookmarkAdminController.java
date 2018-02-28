@@ -2,7 +2,6 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserBookmark;
-import com.nowui.cloud.cms.article.router.ArticleUserBookmarkRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserBookmarkService;
 import com.nowui.cloud.cms.article.view.ArticleUserBookmarkView;
 
@@ -96,8 +95,6 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_SAVE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -123,8 +120,6 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_UPDATE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -148,8 +143,6 @@ public class ArticleUserBookmarkAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserBookmarkRouter.ARTICLE_USER_BOOKMARK_V1_DELETE, articleUserBookmarkEntity.getAppId(), articleUserBookmarkEntity.getSystemRequestUserId());
-
             success = true;
         }
 

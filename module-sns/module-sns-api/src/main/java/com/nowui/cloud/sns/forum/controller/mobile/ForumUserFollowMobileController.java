@@ -97,7 +97,7 @@ public class ForumUserFollowMobileController extends BaseController {
         bean.setMemberId(memberId);
         bean.setForumUserFollowIsTop(false);
         
-//  TODO 后面处理消息    Boolean result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
+//  TODO 后面处理消息    Boolean result = forumUserFollowService.save(bean, appId, Util.getRandomUUID(), userId);
         ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
         Boolean success = false;
 
@@ -106,7 +106,7 @@ public class ForumUserFollowMobileController extends BaseController {
             ForumUserUnfollowView unfollow = forumUserUnfollowService.findByMemberIdAndForumId(appId, memberId, forumId);
             //有: 删除
             if (!Util.isNullOrEmpty(unfollow)) {
-//  TODO 后面处理消息 	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_DELETE, userId, unfollow.getSystemVersion());
+//  TODO 后面处理消息 	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, userId, unfollow.getSystemVersion());
             	ForumUserUnfollow delResult = forumUserUnfollowService.deleteByForumId(appId, forumId, requestUserId);
             	
             	if (delResult != null) {
@@ -120,7 +120,6 @@ public class ForumUserFollowMobileController extends BaseController {
             
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
         	forumUserFollowService.save(forumUserFollowView);
-        	//sendMessage(result, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
             
             success = true;
         }
@@ -153,7 +152,7 @@ public class ForumUserFollowMobileController extends BaseController {
 //        ForumUserUnfollowView unfollow = forumUserUnfollowService.findByUserIdAndForumId(appId, beInvitedUserId, forumId);
 //        //有: 删除
 //        if (!Util.isNullOrEmpty(unfollow)) {
-////TODO 后面处理消息        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, ForumUserUnfollowRouter.FORUM_USER_UNFOLLOW_V1_DELETE, beInvitedUserId, unfollow.getSystemVersion());
+////TODO 后面处理消息        	Boolean delete = forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), appId, beInvitedUserId, unfollow.getSystemVersion());
 //        	forumUserUnfollowService.delete(unfollow.getForumUserUnfollowId(), requestUserId, unfollow.getSystemVersion());
 //		}
 //        //没有: 去关注表看有没有记录
@@ -170,7 +169,7 @@ public class ForumUserFollowMobileController extends BaseController {
 //        bean.setForumUserFollowIsTop(false);
 //        
 //        //这里的createUserId使用邀请人的
-//        Boolean result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), requestUserId);
+//        Boolean result = forumUserFollowService.save(bean, appId, Util.getRandomUUID(), requestUserId);
         
         return renderJson(null);
         
@@ -210,7 +209,7 @@ public class ForumUserFollowMobileController extends BaseController {
                 bean.setMemberId(memberId);
                 bean.setForumUserFollowIsTop(false);
                 
-// TODO 后面处理消息       result = forumUserFollowService.save(bean, appId, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, Util.getRandomUUID(), userId);
+// TODO 后面处理消息       result = forumUserFollowService.save(bean, appId, Util.getRandomUUID(), userId);
                 
                 ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
                 
@@ -225,8 +224,7 @@ public class ForumUserFollowMobileController extends BaseController {
             }
         }
         
-//		TODO 怎么发送message       
-//    	sendMessage(body, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_SAVE, appId, userId);
+//		TODO 怎么发送message
         
         success = true;
         
@@ -346,8 +344,6 @@ public class ForumUserFollowMobileController extends BaseController {
         	forumUserFollowEntry.setSystemUpdateTime(new Date());
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowEntry.toJSONString(), ForumUserFollowView.class);
         	forumUserFollowService.update(forumUserFollowView);
-
-//        	sendMessage(forumUserFollowEntry, ForumUserFollowRouter.FORUM_USER_FOLLOW_V1_UPDATE, forumUserFollowEntry.getAppId(), forumUserFollowEntry.getSystemRequestUserId());
 
             success = true;
 		}

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
-import com.nowui.cloud.cms.advertisement.router.AdvertisementRouter;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.controller.BaseController;
@@ -131,8 +130,6 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_SAVE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -167,8 +164,6 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_UPDATE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -191,8 +186,6 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AdvertisementRouter.ADVERTISEMENT_V1_DELETE, advertisementEntity.getAppId(), advertisementEntity.getSystemRequestUserId());
-
             success = true;
         }
 

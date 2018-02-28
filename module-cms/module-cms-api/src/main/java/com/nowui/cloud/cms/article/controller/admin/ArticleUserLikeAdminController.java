@@ -2,7 +2,6 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserLike;
-import com.nowui.cloud.cms.article.router.ArticleUserLikeRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserLikeService;
 import com.nowui.cloud.cms.article.view.ArticleUserLikeView;
 
@@ -96,8 +95,6 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_SAVE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -123,8 +120,6 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_UPDATE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -148,8 +143,6 @@ public class ArticleUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserLikeRouter.ARTICLE_USER_LIKE_V1_DELETE, articleUserLikeEntity.getAppId(), articleUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 

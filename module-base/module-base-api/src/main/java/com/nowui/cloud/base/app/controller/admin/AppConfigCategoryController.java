@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
-import com.nowui.cloud.base.app.router.AppConfigCategoryRouter;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.view.AppConfigCategoryView;
 import com.nowui.cloud.controller.BaseController;
@@ -114,8 +113,6 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_SAVE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -142,8 +139,6 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_UPDATE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -166,8 +161,6 @@ public class AppConfigCategoryController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, AppConfigCategoryRouter.APP_CONFIG_CATEGORY_V1_DELETE, appConfigCategoryEntity.getAppId(), appConfigCategoryEntity.getSystemRequestUserId());
-
             success = true;
         }
 

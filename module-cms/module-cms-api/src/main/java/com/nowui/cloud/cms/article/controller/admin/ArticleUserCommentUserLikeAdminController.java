@@ -3,7 +3,6 @@ package com.nowui.cloud.cms.article.controller.admin;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.cms.article.entity.ArticleUserCommentUserLike;
-import com.nowui.cloud.cms.article.router.ArticleUserCommentUserLikeRouter;
 import com.nowui.cloud.cms.article.service.ArticleUserCommentUserLikeService;
 import com.nowui.cloud.cms.article.view.ArticleUserCommentUserLikeView;
 
@@ -97,8 +96,6 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_SAVE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -124,8 +121,6 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_UPDATE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 
@@ -149,8 +144,6 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ArticleUserCommentUserLikeRouter.ARTICLE_USER_COMMENT_USER_LIKE_V1_DELETE, articleUserCommentUserLikeEntity.getAppId(), articleUserCommentUserLikeEntity.getSystemRequestUserId());
-
             success = true;
         }
 
