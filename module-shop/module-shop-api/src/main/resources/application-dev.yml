@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 2040
 
 logging:
   level:
@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+      defaultZone: http://localhost:3000/eureka/
 
 feign:
   hystrix:
