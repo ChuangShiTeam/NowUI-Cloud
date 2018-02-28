@@ -111,7 +111,7 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
-            String listenerPath = apiPackagePath + "/listener";
+            // String listenerPath = apiPackagePath + "/listener";
             String repositoryPath = apiPackagePath + "/repository";
             String sysviewPath = sysPackagePath + "/view";
             String storePath = webPackagePath + "/store";
@@ -127,7 +127,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
             FileUtil.createPath(apiRouterPath);
-            FileUtil.createPath(listenerPath);
+            // FileUtil.createPath(listenerPath);
             FileUtil.createPath(repositoryPath);
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(sqlPath);
@@ -250,9 +250,9 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
-            write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
-            write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
-            write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
+            //write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
+            //write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
+            //write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
             write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
             write(templateMap, "sysView.txt", sysviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
