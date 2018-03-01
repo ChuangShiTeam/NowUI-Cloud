@@ -71,157 +71,169 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
 
     @Override
     public List<PetCategory> adminTreeList(String appId, Integer pageIndex, Integer pageSize) {
-        List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, pageIndex, pageSize);
+//        List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, pageIndex, pageSize);
+//
+//        if (Util.isNullOrEmpty(list)) {
+//            List<PetCategory> topList = topList(appId, pageIndex, pageSize);
+//
+//            List<PetCategory> childrenList = childrenList(appId);
+//
+//            for (PetCategory petCategory : topList) {
+//
+//                petCategory.put(
+//                        Constant.CHILDREN,
+//                        TreeUtil.getTreeChildrenList(
+//                                petCategory.getPetCategoryId(),
+//                                PetCategory.PET_CATEGORY_PARENT_ID,
+//                                childrenList,
+//                                PetCategory.PET_CATEGORY_NAME,
+//                                PetCategory.PET_CATEGORY_IMAGE,
+//                                PetCategory.PET_CATEGORY_SORT,
+//                                PetCategory.PET_CATEGORY_CODE
+//                        )
+//                );
+//
+//                petCategory.keep(
+//                        PetCategory.PET_CATEGORY_ID,
+//                        PetCategory.PET_CATEGORY_NAME,
+//                        PetCategory.PET_CATEGORY_IMAGE,
+//                        PetCategory.PET_CATEGORY_CODE,
+//                        PetCategory.PET_CATEGORY_SORT,
+//                        Constant.CHILDREN
+//                );
+//            }
+//            adminAllTreeList(appId);
+//            return topList;
+//        }
+//
+//        return list;
 
-        if (Util.isNullOrEmpty(list)) {
-            List<PetCategory> topList = topList(appId, pageIndex, pageSize);
-
-            List<PetCategory> childrenList = childrenList(appId);
-
-            for (PetCategory petCategory : topList) {
-
-                petCategory.put(
-                        Constant.CHILDREN,
-                        TreeUtil.getTreeChildrenList(
-                                petCategory.getPetCategoryId(),
-                                PetCategory.PET_CATEGORY_PARENT_ID,
-                                childrenList,
-                                PetCategory.PET_CATEGORY_NAME,
-                                PetCategory.PET_CATEGORY_IMAGE,
-                                PetCategory.PET_CATEGORY_SORT,
-                                PetCategory.PET_CATEGORY_CODE
-                        )
-                );
-
-                petCategory.keep(
-                        PetCategory.PET_CATEGORY_ID,
-                        PetCategory.PET_CATEGORY_NAME,
-                        PetCategory.PET_CATEGORY_IMAGE,
-                        PetCategory.PET_CATEGORY_CODE,
-                        PetCategory.PET_CATEGORY_SORT,
-                        Constant.CHILDREN
-                );
-            }
-            adminAllTreeList(appId);
-            return topList;
-        }
-
-        return list;
+        return null;
     }
 
     @Override
     public List<PetCategory> adminAllTreeList(String appId) {
-        List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
+//        List<PetCategory> list = lrange(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId);
+//
+//        if (Util.isNullOrEmpty(list)) {
+//            List<PetCategory> topList = topList(appId);
+//
+//            List<PetCategory> childrenList = childrenList(appId);
+//
+//            for (PetCategory petCategory : topList) {
+//
+//                petCategory.put(
+//                        Constant.CHILDREN,
+//                        TreeUtil.getTreeChildrenList(
+//                                petCategory.getPetCategoryId(),
+//                                PetCategory.PET_CATEGORY_PARENT_ID,
+//                                childrenList,
+//                                PetCategory.PET_CATEGORY_NAME,
+//                                PetCategory.PET_CATEGORY_IMAGE,
+//                                PetCategory.PET_CATEGORY_SORT,
+//                                PetCategory.PET_CATEGORY_CODE
+//                        )
+//                );
+//
+//                petCategory.keep(
+//                        PetCategory.PET_CATEGORY_ID,
+//                        PetCategory.PET_CATEGORY_NAME,
+//                        PetCategory.PET_CATEGORY_IMAGE,
+//                        PetCategory.PET_CATEGORY_CODE,
+//                        PetCategory.PET_CATEGORY_SORT,
+//                        Constant.CHILDREN
+//                );
+//            }
+//
+//            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
+//
+//            return topList;
+//        }
+//
+//        return list;
 
-        if (Util.isNullOrEmpty(list)) {
-            List<PetCategory> topList = topList(appId);
-
-            List<PetCategory> childrenList = childrenList(appId);
-
-            for (PetCategory petCategory : topList) {
-
-                petCategory.put(
-                        Constant.CHILDREN,
-                        TreeUtil.getTreeChildrenList(
-                                petCategory.getPetCategoryId(),
-                                PetCategory.PET_CATEGORY_PARENT_ID,
-                                childrenList,
-                                PetCategory.PET_CATEGORY_NAME,
-                                PetCategory.PET_CATEGORY_IMAGE,
-                                PetCategory.PET_CATEGORY_SORT,
-                                PetCategory.PET_CATEGORY_CODE
-                        )
-                );
-
-                petCategory.keep(
-                        PetCategory.PET_CATEGORY_ID,
-                        PetCategory.PET_CATEGORY_NAME,
-                        PetCategory.PET_CATEGORY_IMAGE,
-                        PetCategory.PET_CATEGORY_CODE,
-                        PetCategory.PET_CATEGORY_SORT,
-                        Constant.CHILDREN
-                );
-            }
-
-            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TREE_LIST_BY_APP_ID + appId, topList.toArray());
-
-            return topList;
-        }
-
-        return list;
+        return null;
     }
 
     @Override
     public List<PetCategory> topList(String appId) {
-        List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+//        List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+//
+//        if (Util.isNullOrEmpty(topList)) {
+//            topList = list(
+//                    new BaseWrapper<PetCategory>()
+//                            .eq(PetCategory.APP_ID, appId)
+//                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
+//                            .eq(PetCategory.SYSTEM_STATUS, true)
+//                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
+//            );
+//
+//            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
+//        }
+//        return topList;
 
-        if (Util.isNullOrEmpty(topList)) {
-            topList = list(
-                    new BaseWrapper<PetCategory>()
-                            .eq(PetCategory.APP_ID, appId)
-                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
-                            .eq(PetCategory.SYSTEM_STATUS, true)
-                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
-            );
-
-            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, topList.toArray());
-        }
-        return topList;
+        return null;
     }
 
     @Override
     public List<PetCategory> topList(String appId, Integer pageIndex, Integer pageSize) {
-        List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, pageIndex, pageSize);
+//        List<PetCategory> topList = lrange(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId, pageIndex, pageSize);
+//
+//        if (Util.isNullOrEmpty(topList)) {
+//            topList = list(
+//                    new BaseWrapper<PetCategory>()
+//                            .eq(PetCategory.APP_ID, appId)
+//                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
+//                            .eq(PetCategory.SYSTEM_STATUS, true)
+//                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT)),
+//                    pageIndex,
+//                    pageSize
+//            );
+//
+//            topList(appId);
+//        }
+//
+//        return topList;
 
-        if (Util.isNullOrEmpty(topList)) {
-            topList = list(
-                    new BaseWrapper<PetCategory>()
-                            .eq(PetCategory.APP_ID, appId)
-                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
-                            .eq(PetCategory.SYSTEM_STATUS, true)
-                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT)),
-                    pageIndex,
-                    pageSize
-            );
-
-            topList(appId);
-        }
-
-        return topList;
+        return null;
     }
 
     @Override
     public Integer countTop(String appId) {
-        Integer count = lsize(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+//        Integer count = lsize(PET_CATEGORY_TOP_LIST_BY_APP_ID + appId);
+//
+//        if (count == 0) {
+//            count = count(
+//                    new BaseWrapper<PetCategory>()
+//                            .eq(PetCategory.APP_ID, appId)
+//                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
+//                            .eq(PetCategory.SYSTEM_STATUS, true)
+//            );
+//
+//            topList(appId);
+//        }
+//        return count;
 
-        if (count == 0) {
-            count = count(
-                    new BaseWrapper<PetCategory>()
-                            .eq(PetCategory.APP_ID, appId)
-                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, "")
-                            .eq(PetCategory.SYSTEM_STATUS, true)
-            );
-
-            topList(appId);
-        }
-        return count;
+        return null;
     }
 
     @Override
     public List<PetCategory> listByParentId(String parentId) {
-        List<PetCategory> petCategoryList = lrange(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId);
+//        List<PetCategory> petCategoryList = lrange(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId);
+//
+//        if (Util.isNullOrEmpty(petCategoryList)) {
+//            petCategoryList = list(
+//                    new BaseWrapper<PetCategory>()
+//                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, parentId)
+//                            .eq(PetCategory.SYSTEM_STATUS, true)
+//                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
+//            );
+//
+//            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
+//        }
+//        return petCategoryList;
 
-        if (Util.isNullOrEmpty(petCategoryList)) {
-            petCategoryList = list(
-                    new BaseWrapper<PetCategory>()
-                            .eq(PetCategory.PET_CATEGORY_PARENT_ID, parentId)
-                            .eq(PetCategory.SYSTEM_STATUS, true)
-                            .orderAsc(Arrays.asList(PetCategory.PET_CATEGORY_SORT))
-            );
-
-            redisTemplate.opsForList().rightPushAll(PET_CATEGORY_CHILDREN_BY_PARENT_ID + parentId, petCategoryList.toArray());
-        }
-        return petCategoryList;
+        return null;
     }
 
     @Override
@@ -242,9 +254,9 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
 
         if (result != null) {
             // 清空相关缓存
-        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
-        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
-        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
+//        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
+//        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
+//        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
         }
         return result;
     }
@@ -255,9 +267,9 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
 
         if (result != null) {
             // 清空相关缓存
-        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
-        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
-        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
+//        	redisTemplate.delete(PET_CATEGORY_TOP_LIST_BY_APP_ID + entity.getAppId());
+//        	redisTemplate.delete(PET_CATEGORY_TREE_LIST_BY_APP_ID + entity.getAppId());
+//        	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + entity.getPetCategoryParentId());
         }
 
         return result;
@@ -284,7 +296,7 @@ public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, 
 //            redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategoryId);
             // 删除父级缓存
             if (!Util.isNullOrEmpty(petCategory.getPetCategoryParentId())) {
-            	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());
+//            	redisTemplate.delete(PET_CATEGORY_CHILDREN_BY_PARENT_ID + petCategory.getPetCategoryParentId());
             }
         }
 

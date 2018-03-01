@@ -1,7 +1,8 @@
 package com.nowui.cloud.code.code.service;
 
 import com.nowui.cloud.code.code.entity.Code;
-import com.nowui.cloud.service.BaseService;
+import com.nowui.cloud.code.code.view.CodeView;
+import com.nowui.cloud.service.SuperService;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  */
 
-public interface CodeService extends BaseService<Code> {
+public interface CodeService extends SuperService<Code, CodeView> {
     
     /**
      * 查询数据库表列表

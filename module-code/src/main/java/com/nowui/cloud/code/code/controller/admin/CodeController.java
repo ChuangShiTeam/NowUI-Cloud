@@ -43,18 +43,6 @@ public class CodeController extends BaseController {
     @Autowired
     private CodeService codeService;
 
-    @ApiOperation(value = "测试")
-    @RequestMapping(value = "/code/admin/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test() {
-        Code codeEntity = getEntry(Code.class);
-
-///        System.out.println(JSON.toJSONString(productRpc.find("c01e2a21271e433dac70c561d06cfe9c")));
-
-//        productMq.sendBar2Rabbitmq("123456789");
-
-        return "Hello World!";
-    }
-
     @ApiOperation(value = "数据库表列表")
     @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> tableList() {
@@ -100,7 +88,8 @@ public class CodeController extends BaseController {
             String webPath = path + "/web";
             String webPackagePath = webPath + "/" + codeEntity.getPackageName();
             String entityPath = sysPackagePath + "/entity";
-            String apiRouterPath = sysPackagePath + "/router";
+            String sysRouterPath = sysPackagePath + "/router";
+            String listenerPath = apiPackagePath + "/listener";
             String rpcPath = sysPackagePath + "/rpc";
             String sqlPath = apiPackagePath + "/sql";
             String mapperPath = apiPackagePath + "/mapper";
@@ -111,7 +100,6 @@ public class CodeController extends BaseController {
             String controllerDesktopPath = controllerPath + "/desktop";
             String controllerMobilePath = controllerPath + "/mobile";
             String controllerSystemPath = controllerPath + "/system";
-            // String listenerPath = apiPackagePath + "/listener";
             String repositoryPath = apiPackagePath + "/repository";
             String sysviewPath = sysPackagePath + "/view";
             String storePath = webPackagePath + "/store";
@@ -126,8 +114,10 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
-            FileUtil.createPath(apiRouterPath);
-            // FileUtil.createPath(listenerPath);
+            if (codeEntity.getIsMq()) {
+                FileUtil.createPath(sysRouterPath);
+                FileUtil.createPath(listenerPath);
+            }
             FileUtil.createPath(repositoryPath);
             FileUtil.createPath(rpcPath);
             FileUtil.createPath(sqlPath);
@@ -240,7 +230,12 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
-            write(templateMap, "apiRoute.txt", apiRouterPath + "/" + firstUpperWithoutUnderlineEntityName + "Router.java");
+            if (codeEntity.getIsMq()) {
+                write(templateMap, "apiRoute.txt", sysRouterPath + "/" + firstUpperWithoutUnderlineEntityName + "Router.java");
+                write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
+                write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
+                write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
+            }
             write(templateMap, "rpc.txt", rpcPath + "/" + firstUpperWithoutUnderlineEntityName + "Rpc.java");
             write(templateMap, "sql.txt", sqlPath + "/" + firstUpperWithoutUnderlineEntityName + "Sql.xml");
             write(templateMap, "mapper.txt", mapperPath + "/" + firstUpperWithoutUnderlineEntityName + "Mapper.java");
@@ -250,13 +245,10 @@ public class CodeController extends BaseController {
             write(templateMap, "controllerDesktop.txt", controllerDesktopPath + "/" + firstUpperWithoutUnderlineEntityName + "DesktopController.java");
             write(templateMap, "controllerMobile.txt", controllerMobilePath + "/" + firstUpperWithoutUnderlineEntityName + "MobileController.java");
             write(templateMap, "controllerSystem.txt", controllerSystemPath + "/" + firstUpperWithoutUnderlineEntityName + "SystemController.java");
-            //write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
-            //write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");
-            //write(templateMap, "deleteListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1DeleteListener.java");
             write(templateMap, "repository.txt", repositoryPath + "/" + firstUpperWithoutUnderlineEntityName + "Repository.java");
             write(templateMap, "sysView.txt", sysviewPath + "/" + firstUpperWithoutUnderlineEntityName + "View.java");
             write(templateMap, "store.txt", storePath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
-//            write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
+            write(templateMap, "router.txt", routerPath + "/" + firstLowerWithoutUnderlineEntityName + ".js");
             write(templateMap, "index.txt", viewPackagePath + "/" + "Index.js");
             write(templateMap, "detail.txt", viewPackagePath + "/" + "Detail.js");
 
