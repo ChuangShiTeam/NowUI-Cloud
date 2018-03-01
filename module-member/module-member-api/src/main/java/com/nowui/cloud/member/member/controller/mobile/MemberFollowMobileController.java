@@ -181,7 +181,7 @@ public class MemberFollowMobileController extends BaseController {
         memberFollow.setMemberId(memberView.getMemberId());
         memberFollow.setFollowUserId(followMemberView.getUserId());
 
-        MemberFollow result = memberFollowService.save(memberFollow, Util.getRandomUUID(), memberFollow.getSystemCreateUserId());
+        MemberFollow result = memberFollowService.save(memberFollow, Util.getRandomUUID(), memberFollow.getSystemRequestUserId());
 
         Boolean success = false;
 

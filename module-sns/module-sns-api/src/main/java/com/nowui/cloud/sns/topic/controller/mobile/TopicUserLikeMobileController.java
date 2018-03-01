@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -19,6 +20,7 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
@@ -55,6 +57,9 @@ public class TopicUserLikeMobileController extends BaseController {
 	
 	@Autowired
 	private MemberRpc memberRpc;
+	
+	@Autowired
+	private MemberFollowRpc memberFollowRpc;
 
     @ApiOperation(value = "给话题点赞的用户列表")
     @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,27 +78,24 @@ public class TopicUserLikeMobileController extends BaseController {
         List<TopicUserLikeView> resultList = topicUserLikeService.listByTopicIdHavePage(body.getTopicId(), body.getPageIndex(), body.getPageSize());
         
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String requestMemberId = member.getMemberId();
        
         //处理列表中用户的头像,昵称,是否关注
-//        String userIds = Util.beanToFieldString(resultList, TopicUserLike.USER_ID);
-//        
-//        List<Member> nickAndAvatarAndIsFollowList = memberRpc.nickNameAndAvatarAndIsFollowListV1(userIds, body.getSystemRequestUserId());
-//        
-//        resultList = Util.beanAddField(
-//        		resultList,
-//        		TopicUserLike.USER_ID,
-//        		User.USER_ID,
-//        		nickAndAvatarAndIsFollowList,
-//        		User.USER_ID,
-//        		UserAvatar.USER_AVATAR,
-//        		UserNickName.USER_NICK_NAME,
-//        		MemberFollow.MEMBER_IS_FOLLOW
-//        	);
+        List<String> followUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+        String followUserIds = JSONArray.toJSONString(followUserIdList);
 
+        boolean isSelf = false;
         for (TopicUserLikeView topicUserLike : resultList) {
-        	topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, requestMemberId.equals(topicUserLike.getMemberId()));
+        	// 点赞的id 有没有包含在 关注列表中
+        	if (!Util.isNullOrEmpty(followUserIds)) {
+        		boolean haveFollow = followUserIds.contains(topicUserLike.getSystemCreateUserId());
+            	topicUserLike.put(MemberFollow.MEMBER_IS_FOLLOW, haveFollow);
+			}
+        	
+        	// 点赞的人是否是自己
+        	if (!isSelf) {
+        		isSelf = requestUserId.equals(topicUserLike.getSystemCreateUserId());
+        		topicUserLike.put(TopicUserLike.TOPIC_USER_LIKE_IS_SELF, isSelf);
+			}
         }
         
         validateResponse(
@@ -102,6 +104,7 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.TOPIC_ID,
                 User.USER_ID,
         		UserAvatar.USER_AVATAR_FILE_PATH,
+        		"userAvatar",
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		TopicUserLike.TOPIC_USER_LIKE_IS_SELF
