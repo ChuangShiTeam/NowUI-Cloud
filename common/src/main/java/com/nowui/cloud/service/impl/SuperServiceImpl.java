@@ -49,8 +49,8 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     @Autowired
     protected RabbitSender rabbitSender;
 
-    @Autowired
-    protected RedisTemplate<String, Object> redisTemplate;
+//    @Autowired
+//    protected RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     protected MongoTemplate mongoTemplate;
@@ -203,30 +203,16 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
             return null;
         }
 
-        E baseEntity = (E) redisTemplate.opsForValue().get(getItemCacheName(id));
+        List<E> list = mapper.selectList(
+                new EntityWrapper<E>()
+                        .eq(entity.getTableId(), id)
+                        .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
+        );
 
-        if (baseEntity == null) {
-            List<E> list = mapper.selectList(
-                    new EntityWrapper<E>()
-                            .eq(entity.getTableId(), id)
-                            .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
-            );
-
-            if (list.size() == 0) {
-                return null;
-            } else {
-                baseEntity = list.get(0);
-
-                redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
-
-                return baseEntity;
-            }
+        if (list.size() == 0) {
+            return null;
         } else {
-            if (baseEntity.getSystemStatus().equals(systemStatus)) {
-                return baseEntity;
-            } else {
-                return null;
-            }
+            return list.get(0);
         }
     }
 
@@ -445,7 +431,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     private void redisSaveOrUpdate(E baseEntity, String id) {
         baseEntity.keepTableFieldValue();
 
-        redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
+//        redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
     }
 
 //    @Override
@@ -533,7 +519,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public void replace(String id) {
-        redisTemplate.delete(getItemCacheName(id));
+//        redisTemplate.delete(getItemCacheName(id));
 
         E baseEntity = mapper.selectById(id);
 
@@ -546,9 +532,9 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
      * @param key 键值
      * @return List<E> 列表数据
      */
-    public <E> List<E> lrange(String key) {
-        return (List<E>) redisTemplate.opsForList().range(key, 0, -1);
-    }
+//    public <E> List<E> lrange(String key) {
+//        return (List<E>) redisTemplate.opsForList().range(key, 0, -1);
+//    }
 
     /**
      * redis获取key下的所有列表
@@ -556,9 +542,9 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
      * @param key
      * @return List<Map> 列表数据
      */
-    public <Map> List<Map> lrangeToMap(String key) {
-        return (List<Map>) redisTemplate.opsForList().range(key, 0, -1);
-    }
+//    public <Map> List<Map> lrangeToMap(String key) {
+//        return (List<Map>) redisTemplate.opsForList().range(key, 0, -1);
+//    }
 
     /**
      * redis获取key下的分页列表
@@ -566,16 +552,16 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
      * @param key 键值
      * @return List<E> 列表数据
      */
-    public <E> List<E> lrange(String key, Integer pageIndex, Integer pageSize) {
-        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
-            return new ArrayList<E>();
-        }
-
-        int start = pageIndex - 1;
-        int end = (pageIndex * pageSize) - 1;
-
-        return (List<E>) redisTemplate.opsForList().range(key, start, end);
-    }
+//    public <E> List<E> lrange(String key, Integer pageIndex, Integer pageSize) {
+//        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
+//            return new ArrayList<E>();
+//        }
+//
+//        int start = pageIndex - 1;
+//        int end = (pageIndex * pageSize) - 1;
+//
+//        return (List<E>) redisTemplate.opsForList().range(key, start, end);
+//    }
 
     /**
      * redis获取key下的分页列表
@@ -583,16 +569,16 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
      * @param key
      * @return List<Map> 列表数据
      */
-    public <Map> List<Map> lrangeToMap(String key, Integer pageIndex, Integer pageSize) {
-        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
-            return new ArrayList<Map>();
-        }
-
-        int start = pageIndex - 1;
-        int end = (pageIndex * pageSize) - 1;
-
-        return (List<Map>) redisTemplate.opsForList().range(key, start, end);
-    }
+//    public <Map> List<Map> lrangeToMap(String key, Integer pageIndex, Integer pageSize) {
+//        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
+//            return new ArrayList<Map>();
+//        }
+//
+//        int start = pageIndex - 1;
+//        int end = (pageIndex * pageSize) - 1;
+//
+//        return (List<Map>) redisTemplate.opsForList().range(key, start, end);
+//    }
 
     /**
      * redis获取key下列表的大小
@@ -600,9 +586,9 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
      * @param key 键值
      * @return int 列表大小
      */
-    public int lsize(final String key) {
-        long size = redisTemplate.opsForList().size(key);
-        return (int) size;
-    }
+//    public int lsize(final String key) {
+//        long size = redisTemplate.opsForList().size(key);
+//        return (int) size;
+//    }
 
 }
