@@ -223,19 +223,18 @@ public class MemberFollowMobileController extends BaseController {
             throw new RuntimeException("会员不存在");
         }
         
-        Boolean memberIsFollow = memberFollowService.checkIsFollow(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
+        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
 
-        if (memberIsFollow) {
+        if (memberFollowView == null) {
             throw new BusinessException("没有关注该会员");
         }
         
-        MemberFollow result = memberFollowService.delete(memberFollow.getMemberFollowId(), memberFollow.getSystemUpdateUserId(), memberFollow.getSystemVersion());
+        MemberFollow result = memberFollowService.delete(memberFollowView.getMemberFollowId(), memberFollow.getSystemRequestUserId(), memberFollowView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
             // 删除会员关注视图
-            MemberFollowView memberFollowView = JSON.parseObject(result.toJSONString(), MemberFollowView.class);
             memberFollowService.delete(memberFollowView);
             
             success = true;
