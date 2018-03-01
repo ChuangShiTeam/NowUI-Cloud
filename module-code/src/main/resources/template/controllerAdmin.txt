@@ -1,9 +1,10 @@
 package com.nowui.cloud.${moduleName}.${packageName}.controller.admin;
+
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
-import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName}View;
-import com.nowui.cloud.${moduleName}.${packageName}.router.${firstUpperWithoutUnderlineEntityName}Router;
+import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +44,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}View.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}Entity.get${column.firstUpperColumnName}()<%}%>);
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>);
         List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}View.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}View.getPageSize());
 
         validateResponse(
@@ -95,14 +96,13 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%}%>
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
-
-            success = true;
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}View);
         }
 
         return renderJson(success);
@@ -123,17 +123,14 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
-
-        Boolean success = false;
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
 
         if (result != null) {
-            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_UPDATE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
-
-            success = true;
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "${tableComment}删除")
@@ -148,23 +145,22 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getAppId(), ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_SAVE, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, ${firstUpperWithoutUnderlineEntityName}Router.${upperEntityName}_V1_DELETE, ${firstLowerWithoutUnderlineEntityName}Entity.getAppId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
-
-            success = true;
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "${tableComment}数据同步")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
-        List<${firstUpperWithoutUnderlineEntityName}> notifyList = notifyService.listByMysql();
+        List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = ${firstLowerWithoutUnderlineEntityName}Service.listByMysql();
 
         for (${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName} : ${firstLowerWithoutUnderlineEntityName}List) {
             ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
@@ -173,7 +169,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
         }
 
-        return renderJson(result);
+        return renderJson(true);
     }
 
 }
