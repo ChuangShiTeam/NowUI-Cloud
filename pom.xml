@@ -26,6 +26,7 @@
         <module>module-wawi</module>
         <module>module-code</module>
         <module>module-file</module>
+        <module>module-hospital</module>
     </modules>
 
     <parent>
