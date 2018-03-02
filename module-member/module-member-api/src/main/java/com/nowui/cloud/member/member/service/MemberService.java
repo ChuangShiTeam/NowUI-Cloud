@@ -63,7 +63,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param memberId 会员编号
      * @param memberSignature 会员签名
      * @param systemRequestUserId 请求用户编号
-     * @return true 成功    false 不成功
+     * @return MemberSignature
      */
     Boolean updateMemberSignature(String appId, String memberId, String memberSignature, String systemRequestUserId);
     

@@ -43,6 +43,8 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberPreferenceLanguage;
 import com.nowui.cloud.member.member.entity.MemberSignature;
+import com.nowui.cloud.member.member.router.MemberRouter;
+import com.nowui.cloud.member.member.router.MemberSignatureRouter;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.util.AesUtil;
@@ -304,6 +306,9 @@ public class MemberMobileController extends BaseController {
             
             memberService.save(memberView);
             
+            // 发送会员保存信息
+            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemCreateUserId());
+            
             success = true;
         }
 
@@ -355,12 +360,24 @@ public class MemberMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            userRpc.registerUserEmailV1(userAccount.getAppId(), userId, memberId, UserType.MEMBER.getKey(), userAccount.getUserAccount(), userPassword.getUserPassword(), userAccount.getSystemRequestUserId());
+            // 发送会员手机注册用户消息
+            User user = new User();
+            user.setAppId(userAccount.getAppId());
+            user.setUserId(userId);
+            user.setObjectId(memberId);
+            user.setUserType(UserType.MEMBER.getKey());
+            user.put(UserAccount.USER_ACCOUNT, userAccount.getUserAccount());
+            user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
+            user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
+            sendMessage(user, UserRouter.USER_V1_EMAIL_REGISTER, userAccount.getAppId(), userAccount.getSystemRequestUserId());
 
             // 保存会员视图到MongoDB
             MemberView memberView = JSON.parseObject(result.toJSONString(), MemberView.class);
             
             memberService.save(memberView);
+            
+            // 发送会员保存信息
+            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemCreateUserId());
             
             success = true;
         }
@@ -577,6 +594,10 @@ public class MemberMobileController extends BaseController {
         
         Boolean result = memberService.updateMemberSignature(memberSignature.getAppId(), memberSignature.getMemberId(), memberSignature.getMemberSignature(), memberSignature.getSystemRequestUserId());
 
+        if (result) {
+            // 发送会员签名更新消息
+            sendMessage(memberSignature, MemberSignatureRouter.MEMBER_SIGNATURE_V1_UPDATE, memberSignature.getAppId(), memberSignature.getSystemRequestUserId());
+        }
         return renderJson(result);
     }
     
