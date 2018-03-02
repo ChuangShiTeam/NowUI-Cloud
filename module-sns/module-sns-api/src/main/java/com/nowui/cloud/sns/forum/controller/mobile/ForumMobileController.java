@@ -103,9 +103,9 @@ public class ForumMobileController extends BaseController {
 	     String forumId = Util.getRandomUUID();
 	     String forumUserFollowId = Util.getRandomUUID();
 	     
-	     String userAvatar = body.getUserAvatar();
-	     String userNickName = body.getUserNickName();
-	     String memberSignature = body.getMemberSignature();
+	     String forumModeratorUserAvatar = body.getUserAvatar();
+	     String forumModeratorUserNickName = body.getUserNickName();
+	     String forumModeratorMemberSignature = body.getMemberSignature();
 	     
 	     // 验证论坛名称的唯一性
 	     Boolean isRepeat = forumService.checkName(appId, body.getForumName());
@@ -144,10 +144,10 @@ public class ForumMobileController extends BaseController {
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
              // TODO 回来要删掉
              forumUserFollowView.setUserInfo(forumView.getForumModeratorInfo());
-             
-             forumUserFollowView.setUserAvatar(userAvatar);
-             forumUserFollowView.setUserNickName(userNickName);
-             forumUserFollowView.setMemberSignature(memberSignature);
+             forumUserFollowView.setForumModerator(memberId);
+             forumUserFollowView.setUserAvatar(forumModeratorUserAvatar);
+             forumUserFollowView.setUserNickName(forumModeratorUserNickName);
+             forumUserFollowView.setMemberSignature(forumModeratorMemberSignature);
              forumUserFollowView.setForumUserFollowIsTop(false);
              
              forumUserFollowService.save(forumUserFollowView);
@@ -736,6 +736,7 @@ public class ForumMobileController extends BaseController {
 	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR_FILE_PATH,
+        		"userAvatar",
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		BaseEntity.SYSTEM_CREATE_TIME,
@@ -749,7 +750,7 @@ public class ForumMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         
 
         return renderJson(countResult, topicList);
