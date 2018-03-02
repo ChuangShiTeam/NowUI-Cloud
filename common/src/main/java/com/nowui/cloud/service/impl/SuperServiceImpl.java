@@ -401,7 +401,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
             update.set(entry.getKey(), entry.getValue());
         }
-
+        update.set(BaseView.SYSTEM_STATUS, false);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, view.getClass());
 
         return updateResult.isModifiedCountAvailable();

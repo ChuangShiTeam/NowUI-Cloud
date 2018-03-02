@@ -162,8 +162,8 @@ public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper
 
     @Override
     public MemberFollowView findByUserIdAndFollowUserId(String userId, String followUserId) {
-        Criteria criteria = Criteria.where(MemberFollowView.USER_ID).is(followUserId)
-                .and(MemberFollowView.FOLLOW_USER_ID).is(userId)
+        Criteria criteria = Criteria.where(MemberFollowView.USER_ID).is(userId)
+                .and(MemberFollowView.FOLLOW_USER_ID).is(followUserId)
                 .and(MemberFollowView.SYSTEM_STATUS).is(true);
         
         MemberFollowView memberFollowView = find(new Query(criteria));
