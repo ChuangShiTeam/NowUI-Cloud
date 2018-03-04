@@ -3,16 +3,15 @@ package com.nowui.cloud.cms.article.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
-import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
@@ -39,23 +38,24 @@ public class ArticleAdminController extends BaseController {
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        Article articleEntity = getEntry(Article.class);
+        ArticleView articleEntity = getEntry(ArticleView.class);
 
         validateRequest(
                 articleEntity,
-                Article.APP_ID,
-                Article.ARTICLE_TITLE,
-                Article.PAGE_INDEX,
-                Article.PAGE_SIZE
+                ArticleView.APP_ID,
+                ArticleView.ARTICLE_TITLE,
+                ArticleView.PAGE_INDEX,
+                ArticleView.PAGE_SIZE
         );
 
         Integer resultTotal = articleService.countForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle());
         List<ArticleView> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
 
         validateResponse(
-                Article.ARTICLE_ID,
-                ArticleCategory.ARTICLE_CATEGORY_NAME,
-                Article.ARTICLE_TITLE,
+                ArticleView.ARTICLE_ID,
+                ArticleView.ARTICLE_CATEGORY_NAME,
+                ArticleView.ARTICLE_TITLE,
+                Article.ARTICLE_MEDIA_PATH,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_AUTHOR,
                 Article.ARTICLE_PUBLISH_TIME,
@@ -82,7 +82,8 @@ public class ArticleAdminController extends BaseController {
                 ArticleView.ARTICLE_AUTHOR,
                 ArticleView.ARTICLE_SUMMARY,
                 ArticleView.ARTICLE_CONTENT,
-                ArticleView.ARTICLE_MEDIA,
+                ArticleView.ARTICLE_MEDIA_ID,
+                ArticleView.ARTICLE_MEDIA_PATH,
                 ArticleView.ARTICLE_MEDIA_TYPE,
                 ArticleView.ARTICLE_IS_ALLOW_COMMENT,
                 ArticleView.ARTICLE_IS_DRAFT,
@@ -124,6 +125,7 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_SUMMARY,
                 Article.ARTICLE_CONTENT,
                 Article.ARTICLE_MEDIA_ID,
+                Article.ARTICLE_MEDIA_PATH,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_IS_ALLOW_COMMENT,
                 Article.ARTICLE_IS_DRAFT,
@@ -154,7 +156,9 @@ public class ArticleAdminController extends BaseController {
         Article result = articleService.save(articleEntity, articleId, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
 
         if (result != null) {
-            ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
+            ArticleView articleView = new ArticleView();
+            articleView.putAll(result);
+            
             articleService.save(articleView);
         }
 
@@ -174,6 +178,7 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_SUMMARY,
                 Article.ARTICLE_CONTENT,
                 Article.ARTICLE_MEDIA_ID,
+                Article.ARTICLE_MEDIA_PATH,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_IS_ALLOW_COMMENT,
                 Article.ARTICLE_IS_DRAFT,
@@ -203,7 +208,9 @@ public class ArticleAdminController extends BaseController {
         Article result = articleService.update(articleEntity, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
 
         if (result != null) {
-            ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
+            ArticleView articleView = new ArticleView();
+            articleView.putAll(result);
+            
             articleService.update(articleView);
         }
 
@@ -224,8 +231,10 @@ public class ArticleAdminController extends BaseController {
         Article result = articleService.delete(articleEntity.getArticleId(), articleEntity.getSystemRequestUserId(), articleEntity.getSystemVersion());
 
         if (result != null) {
-            ArticleView articleView = JSON.parseObject(result.toJSONString(), ArticleView.class);
-            articleService.update(articleView);
+            ArticleView articleView = new ArticleView();
+            articleView.putAll(result);
+            
+            articleService.delete(articleView);
         }
 
         return renderJson(true);
