@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.elasticsearch.action.main.MainAction;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -232,6 +234,9 @@ public class Util {
         return EncryptUtil.sha512(Constant.PRIVATE_KEY + userPassword);
     }
 
+    public static void main(String[] args) {
+        System.out.println(generatePassword("123456"));
+    }
     /**
      * 生成随机数字
      *

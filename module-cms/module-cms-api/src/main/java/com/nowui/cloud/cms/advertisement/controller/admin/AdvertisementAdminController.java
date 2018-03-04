@@ -3,9 +3,6 @@ package com.nowui.cloud.cms.advertisement.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.file.file.entity.File;
-import com.nowui.cloud.file.file.rpc.FileRpc;
-import com.nowui.cloud.file.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +13,8 @@ import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -60,14 +59,13 @@ public class AdvertisementAdminController extends BaseController {
                 AdvertisementView.ADVERTISEMENT_CATEGORY_CODE,
                 AdvertisementView.ADVERTISEMENT_TITLE,
                 AdvertisementView.ADVERTISEMENT_CODE,
-                AdvertisementView.ADVERTISEMENT_IMAGE,
+                AdvertisementView.ADVERTISEMENT_IMAGE_FILE_ID,
+                AdvertisementView.ADVERTISEMENT_IMAGE_FILE_PATH,
                 AdvertisementView.ADVERTISEMENT_IS_EFFICIENT,
                 AdvertisementView.ADVERTISEMENT_LINK,
                 AdvertisementView.ADVERTISEMENT_POSITION,
                 AdvertisementView.ADVERTISEMENT_SORT
         );
-
-        validateSecondResponse(AdvertisementView.ADVERTISEMENT_IMAGE, FileView.FILE_ID, FileView.FILE_PATH);
 
         return renderJson(resultTotal, resultList);
     }
@@ -88,7 +86,8 @@ public class AdvertisementAdminController extends BaseController {
                 AdvertisementView.ADVERTISEMENT_CATEGORY_CODE,
                 AdvertisementView.ADVERTISEMENT_CODE,
                 AdvertisementView.ADVERTISEMENT_CONTENT,
-                AdvertisementView.ADVERTISEMENT_IMAGE,
+                AdvertisementView.ADVERTISEMENT_IMAGE_FILE_ID,
+                AdvertisementView.ADVERTISEMENT_IMAGE_FILE_PATH,
                 AdvertisementView.ADVERTISEMENT_IS_EFFICIENT,
                 AdvertisementView.ADVERTISEMENT_LINK,
                 AdvertisementView.ADVERTISEMENT_POSITION,
@@ -96,8 +95,6 @@ public class AdvertisementAdminController extends BaseController {
                 AdvertisementView.ADVERTISEMENT_TITLE,
                 AdvertisementView.SYSTEM_VERSION
         );
-
-        validateSecondResponse(AdvertisementView.ADVERTISEMENT_IMAGE, FileView.FILE_ID, FileView.FILE_PATH);
 
         return renderJson(result);
     }
@@ -113,7 +110,8 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.ADVERTISEMENT_CATEGORY_CODE,
                 Advertisement.ADVERTISEMENT_CODE,
                 Advertisement.ADVERTISEMENT_CONTENT,
-                Advertisement.ADVERTISEMENT_IMAGE,
+                Advertisement.ADVERTISEMENT_IMAGE_FILE_ID,
+                Advertisement.ADVERTISEMENT_IMAGE_FILE_PATH,
                 Advertisement.ADVERTISEMENT_IS_EFFICIENT,
                 Advertisement.ADVERTISEMENT_LINK,
                 Advertisement.ADVERTISEMENT_POSITION,
@@ -123,13 +121,18 @@ public class AdvertisementAdminController extends BaseController {
 
         String advertisementId = Util.getRandomUUID();
 
-        advertisementEntity.setAdvertisementImageId(advertisementEntity.getAdvertisementImage().getString(FileView.FILE_ID));
-
         Advertisement result = advertisementService.save(advertisementEntity, advertisementId, advertisementEntity.getSystemRequestUserId());
 
         Boolean success = false;
 
         if (result != null) {
+            // 保存广告视图信息到MongoDB
+            AdvertisementView advertisementView = new AdvertisementView();
+            
+            advertisementView.putAll(result);
+            
+            advertisementService.save(advertisementView);
+            
             success = true;
         }
 
@@ -148,7 +151,8 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.ADVERTISEMENT_CATEGORY_CODE,
                 Advertisement.ADVERTISEMENT_CODE,
                 Advertisement.ADVERTISEMENT_CONTENT,
-                Advertisement.ADVERTISEMENT_IMAGE,
+                Advertisement.ADVERTISEMENT_IMAGE_FILE_ID,
+                Advertisement.ADVERTISEMENT_IMAGE_FILE_PATH,
                 Advertisement.ADVERTISEMENT_IS_EFFICIENT,
                 Advertisement.ADVERTISEMENT_LINK,
                 Advertisement.ADVERTISEMENT_POSITION,
@@ -157,13 +161,18 @@ public class AdvertisementAdminController extends BaseController {
                 Advertisement.SYSTEM_VERSION
         );
 
-        advertisementEntity.setAdvertisementImageId(advertisementEntity.getAdvertisementImage().getString(FileView.FILE_ID));
-
         Advertisement result = advertisementService.update(advertisementEntity, advertisementEntity.getAdvertisementId(), advertisementEntity.getSystemRequestUserId(), advertisementEntity.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
+            // 更新广告视图信息到MongoDB
+            AdvertisementView advertisementView = new AdvertisementView();
+            
+            advertisementView.putAll(result);
+            
+            advertisementService.update(advertisementView);
+            
             success = true;
         }
 
@@ -186,6 +195,13 @@ public class AdvertisementAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
+            // 删除MongoDB广告视图信息
+            AdvertisementView advertisementView = new AdvertisementView();
+            
+            advertisementView.putAll(result);
+            
+            advertisementService.delete(advertisementView);
+            
             success = true;
         }
 
@@ -201,8 +217,8 @@ public class AdvertisementAdminController extends BaseController {
             AdvertisementView advertisementView = new AdvertisementView();
             advertisementView.putAll(advertisement);
 
-            File file = fileRpc.findByMysqlV1(advertisement.getAdvertisementImageId());
-            advertisementView.setAdvertisementImage(file);
+            File file = fileRpc.findByMysqlV1(advertisement.getAdvertisementImageFileId());
+            advertisementView.setAdvertisementImageFilePath(file.getFilePath());
 
             advertisementService.update(advertisementView);
         }
