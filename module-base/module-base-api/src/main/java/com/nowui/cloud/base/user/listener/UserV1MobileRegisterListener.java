@@ -100,7 +100,7 @@ public class UserV1MobileRegisterListener {
                     UserPassword userPasswordbean = new UserPassword();
                     userPasswordbean.setAppId(result.getAppId());
                     userPasswordbean.setUserId(result.getUserId());
-                    userPasswordbean.setUserPassword(userPassword);
+                    userPasswordbean.setUserPassword(Util.generatePassword(userPassword));
                     userPasswordService.save(userPasswordbean, Util.getRandomUUID(), result.getSystemRequestUserId());
                     // 保存用户手机号码
                     UserMobile userMobile = new UserMobile();
@@ -112,7 +112,7 @@ public class UserV1MobileRegisterListener {
                     // 保存用户视图信息到mongodb
                     UserView userView = JSON.parseObject(result.toJSONString(), UserView.class);
                     userView.setUserAccount(userAccount);
-                    userView.setUserPassword(userPassword);
+                    userView.setUserPassword(Util.generatePassword(userPassword));
                     userView.setUserMobile(userAccount);
                     
                     userService.save(userView);

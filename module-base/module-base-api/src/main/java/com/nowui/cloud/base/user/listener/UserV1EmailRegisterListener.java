@@ -100,7 +100,7 @@ public class UserV1EmailRegisterListener {
                     UserPassword userPasswordbean = new UserPassword();
                     userPasswordbean.setAppId(result.getAppId());
                     userPasswordbean.setUserId(result.getUserId());
-                    userPasswordbean.setUserPassword(userPassword);
+                    userPasswordbean.setUserPassword(Util.generatePassword(userPassword));
                     userPasswordService.save(userPasswordbean, Util.getRandomUUID(), result.getSystemRequestUserId());
                     // 保存用户邮箱
                     UserEmail userEmail = new UserEmail();
@@ -112,7 +112,7 @@ public class UserV1EmailRegisterListener {
                     // 保存用户视图信息到mongodb
                     UserView userView = JSON.parseObject(result.toJSONString(), UserView.class);
                     userView.setUserAccount(userAccount);
-                    userView.setUserPassword(userPassword);
+                    userView.setUserPassword(Util.generatePassword(userPassword));
                     userView.setUserEmail(userAccount);
                     
                     userService.save(userView);

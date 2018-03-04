@@ -25,19 +25,7 @@ public class FileSystemController implements FileRpc {
     @Override
     public FileView findV1(String fileId) {
         FileView fileView = fileService.find(fileId);
-
-//        fileView.removeBaseTableField();
-
         return fileView;
-//        if (Util.isNullOrEmpty(fileId)) {
-//            return null;
-//        }
-//        FileView file = fileService.find(fileId);
-//        if (Util.isNullOrEmpty(file)) {
-//            return null;
-//        }
-////        file.removeBaseTableField();
-//        return file;
     }
 
     @Override
