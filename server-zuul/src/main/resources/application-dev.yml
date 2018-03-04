@@ -8,7 +8,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3000/eureka/
+      defaultZone: http://localhost:3030/eureka/
 zuul:
   routes:
     shop:
@@ -88,8 +88,8 @@ zuul:
   semaphore:
     max-semaphores: 500 # 并发处理数，值越大越好，但到到达一个临界点之后，就不会提高响应速度了
   host:
-    socket-timeout-millis: 30000 # socket超时时间，如果使用service-id方式是不用配置的
-    connect-timeout-millis: 30000 # 连接时间semaphores
+    socket-timeout-millis: 30300 # socket超时时间，如果使用service-id方式是不用配置的
+    connect-timeout-millis: 30300 # 连接时间semaphores
     max-total-connections: 5000  # 最大连接数，值越大越好，但到到达一个临界点之后，就不会提高响应速度了
     max-per-route-connections: 5 # 每个router最大连接数，降低请求时间，越小越好，但达到一定层级就没用了
 
