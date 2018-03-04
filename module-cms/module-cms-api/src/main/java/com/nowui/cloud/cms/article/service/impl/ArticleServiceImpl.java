@@ -62,7 +62,7 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
                 .and(ArticleView.SYSTEM_STATUS).is(true);
 
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, ArticleView.SYSTEM_CREATE_TIME));
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleView.ARTICLE_SORT));
         Sort sort = Sort.by(orders);
 
         Query query = new Query(criteria);
@@ -72,6 +72,23 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
         
         return articleViewList;
     }
+    
+    @Override
+	public List<ArticleView> hotList(String appId, Integer pageIndex, Integer pageSize) {
+    	Criteria criteria = Criteria.where(ArticleView.APP_ID).is(appId)
+                .and(ArticleView.SYSTEM_STATUS).is(true);
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleView.ARTICLE_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<ArticleView> articleViewList = list(query, sort, pageIndex, pageSize);
+        
+        return articleViewList;
+	}
 
     @Override
     public Article save(Article article, String articleId, ArticleArticleCategory articlePrimaryArticleCategory, List<ArticleArticleCategory> articleSecondaryArticleCategoryList, List<ArticleMedia> articleMediaList, String systemRequestUserId) {

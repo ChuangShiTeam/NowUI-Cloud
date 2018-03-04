@@ -99,7 +99,7 @@ public class ArticleCategoryAdminController extends BaseController {
 
         validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
 
-        ArticleCategoryView result = articleCategoryService.find(articleCategoryEntity.getArticleCategoryId());
+        ArticleCategory result = articleCategoryService.findByMysql(articleCategoryEntity.getArticleCategoryId());
 
         validateResponse(
                 ArticleCategory.ARTICLE_CATEGORY_ID, 
