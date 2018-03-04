@@ -361,6 +361,7 @@ public class TopicMobileController extends BaseController {
                 
                 User.USER_ID,
                 UserAvatar.USER_AVATAR_FILE_PATH,
+                "userAvatar",
                 UserNickName.USER_NICK_NAME,
                 MemberFollow.MEMBER_IS_FOLLOW,
                 BaseEntity.SYSTEM_CREATE_TIME,
@@ -369,7 +370,7 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         validateSecondResponse(Topic.TOPIC_COMMENT_LIST, TopicComment.MEMBER_ID, UserNickName.USER_NICK_NAME, TopicComment.TOPIC_REPLAY_MEMBER_ID, TopicComment.TOPIC_REPLAY_USER_NICK_NAME, TopicComment.TOPIC_COMMENT_CONTENT);
 
         return renderJson(countResult, resultList);
@@ -580,7 +581,10 @@ public class TopicMobileController extends BaseController {
         if (memberId.equals(topic.getMemberId())) {
             // 验证话题发布者是否自己
             topic.put(Topic.TOPIC_IS_SELF, true);
-        } 
+        }else {
+        	Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+        	topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
+        }
         
         //处理图片
 //        List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
@@ -638,8 +642,9 @@ public class TopicMobileController extends BaseController {
                 Topic.TOPIC_IS_SELF,
                 Topic.TOPIC_USER,
                 Topic.REQUEST_USER,
+                MemberFollow.MEMBER_IS_FOLLOW,
                 
-                User.USER_ID,
+                TopicView.MEMBER_ID,
                 TopicView.TOPIC_MEDIA_LIST,
                 TopicView.TOPIC_FORUM_LIST,
                 TopicView.THE_SEND_INFO
@@ -694,12 +699,15 @@ public class TopicMobileController extends BaseController {
         	List<String> theFollowUserIdList = memberFollowRpc.followUserIdList(requestUserId);
         	String theFollowUserIdJsonList = JSONArray.toJSONString(theFollowUserIdList);
         	for (TopicView topicView : resultList) {
-        		//处理是否关注话题关注者
-        		boolean isFollow = theFollowUserIdJsonList.contains(topicView.getSystemCreateUserId());
-        		topicView.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
 			
         		//话题是否自己发布
-        		topicView.put(Topic.TOPIC_IS_SELF, requestUserId.equals(topicView.getSystemCreateUserId()));
+        		if (requestUserId.equals(topicView.getSystemCreateUserId())) {
+        			topicView.put(Topic.TOPIC_IS_SELF, true);
+				}else {
+					//处理是否关注话题发布者
+	        		boolean isFollow = theFollowUserIdJsonList.contains(topicView.getSystemCreateUserId());
+	        		topicView.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
+				}
               
         		//评论列表: 取3条
         		List<TopicCommentView> topicCommentList = topicCommentService.listByTopicId(topicView.getTopicId(), 1, 3);

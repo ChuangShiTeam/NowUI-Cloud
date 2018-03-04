@@ -23,6 +23,7 @@ import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -77,6 +78,9 @@ public class ForumMobileController extends BaseController {
      
      @Autowired
      private MemberRpc memberRpc;
+     
+     @Autowired
+     private MemberFollowRpc memberFollowRpc;
 
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -708,7 +712,13 @@ public class ForumMobileController extends BaseController {
 //	            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
 	            
 	            // 处理评论是否自己发布
-	            topic.put(Topic.TOPIC_IS_SELF, memberId.equals(topic.getMemberId()));
+	            if (memberId.equals(topic.getMemberId())) {
+	            	topic.put(Topic.TOPIC_IS_SELF, true);
+				}else {
+					Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+					topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
+				}
+	            
 	        }
         }
         
@@ -733,6 +743,7 @@ public class ForumMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
 	            Topic.TOPIC_IS_SELF,
+	            MemberFollow.MEMBER_IS_FOLLOW,
 	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR_FILE_PATH,

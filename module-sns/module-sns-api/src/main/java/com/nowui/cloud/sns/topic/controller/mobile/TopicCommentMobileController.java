@@ -106,18 +106,6 @@ public class TopicCommentMobileController extends BaseController {
             topicComment.put(TopicComment.TOPIC_COMMENT_LIKE_COUNT, likeCount);
 		}
         
-        // TODO 处理用户信息(昵称,头像)
-//        String userIds = Util.beanToFieldString(topicCommentList, TopicComment.USER_ID);
-//        List<Member> memberList = memberRpc.nickNameAndAvatarListV1(userIds);
-//        topicCommentList = Util.beanAddField(
-//        		topicCommentList, 
-//        		TopicComment.USER_ID, 
-//        		User.USER_ID, 
-//        		memberList, 
-//        		User.USER_ID,
-//        		UserAvatar.USER_AVATAR,
-//        		UserNickName.USER_NICK_NAME
-//        	);
         
         
         // TODO 处理回复用户信息(头像,昵称)
