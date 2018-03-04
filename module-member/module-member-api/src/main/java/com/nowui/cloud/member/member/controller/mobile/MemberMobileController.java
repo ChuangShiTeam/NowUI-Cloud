@@ -171,7 +171,7 @@ public class MemberMobileController extends BaseController {
                 bean.setMemberTopEndTime(new Date());
                 bean.setMemberTopLevel(0);
     
-                Member result = memberService.save(bean, memberId, bean.getSystemCreateUserId());
+                Member result = memberService.save(bean, memberId, bean.getSystemRequestUserId());
 //                        bean, memberId, systemRequestUserId
     
                 if (result != null) {
@@ -285,7 +285,7 @@ public class MemberMobileController extends BaseController {
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
 
-        Member result = memberService.save(member, memberId, userAccount.getSystemCreateUserId());
+        Member result = memberService.save(member, memberId, userAccount.getSystemRequestUserId());
 
         Boolean success = false;
 
@@ -307,7 +307,7 @@ public class MemberMobileController extends BaseController {
             memberService.save(memberView);
             
             // 发送会员保存信息
-            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemCreateUserId());
+            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemRequestUserId());
             
             success = true;
         }
@@ -355,7 +355,7 @@ public class MemberMobileController extends BaseController {
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
 
-        Member result = memberService.save(member,memberId,member.getSystemCreateUserId());
+        Member result = memberService.save(member,memberId,member.getSystemRequestUserId());
 
         Boolean success = false;
 
@@ -377,7 +377,7 @@ public class MemberMobileController extends BaseController {
             memberService.save(memberView);
             
             // 发送会员保存信息
-            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemCreateUserId());
+            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemRequestUserId());
             
             success = true;
         }
@@ -423,7 +423,8 @@ public class MemberMobileController extends BaseController {
         if (isRegister) {
             throw new BusinessException("手机号码已注册");
         }
-
+        
+        // TODO 应改成发消息
         smsCaptchaRpc.aliyunSendV1(userAccount.getAppId(), SmsCaptchaType.REGISTER.getKey(), userAccount.getUserAccount(), userAccount.getSystemRequestIpAddress(), 1, userAccount.getSystemRequestUserId());
         
         return renderJson(true);

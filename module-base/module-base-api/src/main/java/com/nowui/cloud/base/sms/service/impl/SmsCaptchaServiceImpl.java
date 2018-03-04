@@ -1,5 +1,6 @@
 package com.nowui.cloud.base.sms.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,11 +8,17 @@ import java.util.List;
 
 import com.nowui.cloud.base.sms.repository.SmsCaptchaRepository;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.app.rpc.AppConfigRpc;
+import com.nowui.cloud.base.app.view.AppConfigCategoryView;
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.mapper.SmsCaptchaMapper;
 import com.nowui.cloud.base.sms.service.SmsCaptchaService;
@@ -64,44 +71,43 @@ public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, Sm
     }
 
     @Override
-    public Integer countByTypeAndMobile(String appId, String smsCaptchaType, String smsCaptchaMobile, Date startDate) {
-        Integer count = count(
-                new BaseWrapper<SmsCaptcha>()
-                .eq(SmsCaptcha.APP_ID, appId)
-                .eq(SmsCaptcha.SMS_CAPTCHA_TYPE, smsCaptchaType)
-                .eq(SmsCaptcha.SMS_CAPTCHA_MOBILE, smsCaptchaMobile)
-                .between(SmsCaptcha.SYSTEM_CREATE_TIME, startDate, new Date())
-                .eq(SmsCaptcha.SYSTEM_STATUS, true) 
-        );
-        return count;
+    public Integer countByTypeAndMobile(String appId, String smsCaptchaType, String smsCaptchaMobile, String startDate) {
+        Criteria criteria = Criteria.where(SmsCaptchaView.APP_ID).is(appId)
+                .and(SmsCaptchaView.SMS_CAPTCHA_TYPE).is(smsCaptchaType)
+                .and(SmsCaptchaView.SMS_CAPTCHA_MOBILE).is(smsCaptchaMobile)
+                .and(SmsCaptchaView.SYSTEM_CREATE_TIME).gte(DateUtil.parseDate(startDate)).lte(new Date())
+                .and(SmsCaptchaView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return count(query);
     }
     
     @Override
     public Integer countByMobileAndCode(String appId, String smsCaptchaMobile, String smsCaptchaCode, String startDate) {
-        Integer count = count(
-                new BaseWrapper<SmsCaptcha>()
-                .eq(SmsCaptcha.APP_ID, appId)
-                .eq(SmsCaptcha.SMS_CAPTCHA_MOBILE, smsCaptchaMobile)
-                .eq(SmsCaptcha.SMS_CAPTCHA_CODE, smsCaptchaCode)
-                .ge(SmsCaptcha.SYSTEM_CREATE_TIME, startDate)
-                .le(SmsCaptcha.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(new Date()))
-                .eq(SmsCaptcha.SYSTEM_STATUS, true) 
-        );
-        return count;
+        Criteria criteria = Criteria.where(SmsCaptchaView.APP_ID).is(appId)
+                .and(SmsCaptchaView.SMS_CAPTCHA_CODE).is(smsCaptchaCode)
+                .and(SmsCaptchaView.SMS_CAPTCHA_MOBILE).is(smsCaptchaMobile)
+                .and(SmsCaptchaView.SYSTEM_CREATE_TIME).gte(DateUtil.parseDate(startDate)).lte(new Date())
+                .and(SmsCaptchaView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return count(query);
     }
 
     @Override
     public Integer countByTypeAndIpAddress(String appId, String smsCaptchaType, String smsCaptchaIpAddress,
-            Date startDate) {
-        Integer count = count(
-                new BaseWrapper<SmsCaptcha>()
-                .eq(SmsCaptcha.APP_ID, appId)
-                .eq(SmsCaptcha.SMS_CAPTCHA_TYPE, smsCaptchaType)
-                .eq(SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS, smsCaptchaIpAddress)
-                .between(SmsCaptcha.SYSTEM_CREATE_TIME, startDate, new Date())
-                .eq(SmsCaptcha.SYSTEM_STATUS, true) 
-        );
-        return count;
+            String startDate) {
+        Criteria criteria = Criteria.where(SmsCaptchaView.APP_ID).is(appId)
+                .and(SmsCaptchaView.SMS_CAPTCHA_TYPE).is(smsCaptchaType)
+                .and(SmsCaptchaView.SMS_CAPTCHA_IP_ADDRESS).is(smsCaptchaIpAddress)
+                .and(SmsCaptchaView.SYSTEM_CREATE_TIME).gte(DateUtil.parseDate(startDate)).lte(new Date())
+                .and(SmsCaptchaView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return count(query);
     }
 
     @Override
@@ -163,7 +169,14 @@ public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, Sm
 
         if (result == null) {
             throw new RuntimeException("验证码发送不成功");
-        }
+        } 
+        
+        // 保存验证码视图信息到MongoDB
+        
+        SmsCaptchaView smsCaptchaView = new SmsCaptchaView();
+        smsCaptchaView.putAll(result);
+        
+        save(smsCaptchaView);
 
         /*//设置超时时间-可自行调整
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
