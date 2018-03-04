@@ -44,7 +44,7 @@ public class NavigationMobileController extends BaseController {
 
 		validateResponse(
 				Navigation.NAVIGATION_NAME,
-				Navigation.NAVIGATION_IMAGE,
+				Navigation.NAVIGATION_IMAGE_FILE_ID,
 				Navigation.NAVIGATION_URL
 			);
 

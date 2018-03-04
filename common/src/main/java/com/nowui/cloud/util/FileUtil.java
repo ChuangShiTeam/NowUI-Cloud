@@ -249,9 +249,9 @@ public class FileUtil {
         http.setDoInput(true);
         
         // 连接超时30秒
-        System.setProperty("sun.net.client.defaultConnectTimeout", "30000");
+        System.setProperty("sun.net.client.defaultConnectTimeout", "30300");
         // 读取超时30秒
-        System.setProperty("sun.net.client.defaultReadTimeout", "30000"); 
+        System.setProperty("sun.net.client.defaultReadTimeout", "30300");
         
         http.connect();
         

@@ -8,7 +8,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3000/eureka/
+      defaultZone: http://localhost:3030/eureka/
 feign:
   hystrix:
     enabled: false
@@ -32,7 +32,7 @@ spring:
       # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
       timeBetweenEvictionRunsMillis: 60000
       # 配置一个连接在池中最小生存的时间，单位是毫秒
-      minEvictableIdleTimeMillis: 30000
+      minEvictableIdleTimeMillis: 30300
       validationQuery: select 'x'
       testWhileIdle: true
       testOnBorrow: false
@@ -100,7 +100,7 @@ hystrix:
 
 ribbon:
   ReadTimeout: 60000 # 处理时间
-  ConnectTimeout: 3000 # 连接时间
+  ConnectTimeout: 3030 # 连接时间
   MaxAutoRetries: 0 #最大自动重试次数
   MaxAutoRetriesNextServer: 1 # 换实例重试次数
   MaxTotalHttpConnections: 2000 # 最大http连接数，越大越好，但到到达一个临界点之后，就不会提高响应速度了

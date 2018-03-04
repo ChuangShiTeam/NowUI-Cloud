@@ -1,8 +1,9 @@
 package com.nowui.cloud.cms.navigation.service;
-import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.cms.navigation.entity.Navigation;
-
 import java.util.List;
+
+import com.nowui.cloud.cms.navigation.entity.Navigation;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
+import com.nowui.cloud.service.SuperService;
 
 /**
  * 导航栏业务接口
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * 2018-01-02
  */
-public interface NavigationService extends BaseService<Navigation> {
+public interface NavigationService extends SuperService<Navigation, NavigationView> {
 
     /**
      * 导航栏统计

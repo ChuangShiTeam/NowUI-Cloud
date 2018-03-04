@@ -36,7 +36,7 @@ public class NavigationSystemController implements NavigationRpc {
             return new ArrayList<>();
         }
         
-        String fileIds = Util.beanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE);
+        String fileIds = Util.beanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE_FILE_ID);
         
 //        List<File> fileList = fileRpc.findsV1(fileIds);
         

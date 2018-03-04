@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.mapper.NavigationMapper;
+import com.nowui.cloud.cms.navigation.repository.NavigationRepository;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
  * 导航栏业务实现
@@ -19,7 +21,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-02
  */
 @Service
-public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Navigation> implements NavigationService {
+public class NavigationServiceImpl extends SuperServiceImpl<NavigationMapper, Navigation, NavigationRepository, NavigationView> implements NavigationService {
 	
     @Override
     public Integer countForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {
