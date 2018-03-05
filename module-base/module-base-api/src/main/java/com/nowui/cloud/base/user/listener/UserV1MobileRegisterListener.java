@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
@@ -40,6 +41,7 @@ import com.nowui.cloud.util.Util;
  * 2018年3月2日
  */
 @Configuration
+@Transactional
 public class UserV1MobileRegisterListener {
     
     private final String queueName = "user_v1_mobile_register";
@@ -123,7 +125,7 @@ public class UserV1MobileRegisterListener {
                     userMobileService.save(userMobile, Util.getRandomUUID(), result.getSystemRequestUserId());
 
                     // 保存用户昵称
-                    if (Util.isNullOrEmpty(userNickName)) {
+                    if (!Util.isNullOrEmpty(userNickName)) {
                         UserNickName userNickNameBean = new UserNickName();
                         userNickNameBean.setAppId(result.getAppId());
                         userNickNameBean.setUserId(result.getUserId());
@@ -131,7 +133,7 @@ public class UserV1MobileRegisterListener {
                         userNickNameService.save(userNickNameBean, Util.getRandomUUID(), result.getSystemRequestUserId());
                     }
                     // 保存用户头像
-                    if (Util.isNullOrEmpty(userAvatarFileId)) {
+                    if (!Util.isNullOrEmpty(userAvatarFileId)) {
                         UserAvatar userAvatar = new UserAvatar();
                         userAvatar.setAppId(result.getAppId());
                         userAvatar.setUserId(result.getUserId());

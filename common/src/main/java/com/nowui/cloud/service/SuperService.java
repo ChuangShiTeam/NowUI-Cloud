@@ -183,6 +183,14 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @return Boolean 是否成功
      */
     List<E> save(List<E> list, String systemCreateUserId);
+    
+    /**
+     * 实体类保存或修改
+     *
+     * @param view 视图类
+     * @return 是否成功
+     */
+    Boolean saveOrUpdate(V view);
 
     /**
      * 实体类修改

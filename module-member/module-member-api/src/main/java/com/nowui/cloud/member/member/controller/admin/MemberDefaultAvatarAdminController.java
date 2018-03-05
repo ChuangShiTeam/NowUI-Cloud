@@ -2,6 +2,8 @@ package com.nowui.cloud.member.member.controller.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.member.member.entity.MemberDefaultAvatar;
 import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
@@ -28,6 +30,9 @@ public class MemberDefaultAvatarAdminController extends BaseController {
 
     @Autowired
     private MemberDefaultAvatarService memberDefaultAvatarService;
+    
+    @Autowired
+    private FileRpc fileRpc;
 
     @ApiOperation(value = "用户默认头像列表")
     @RequestMapping(value = "/member/default/avatar/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -161,8 +166,11 @@ public class MemberDefaultAvatarAdminController extends BaseController {
         for (MemberDefaultAvatar memberDefaultAvatar : memberDefaultAvatarList) {
             MemberDefaultAvatarView memberDefaultAvatarView = new MemberDefaultAvatarView();
             memberDefaultAvatarView.putAll(memberDefaultAvatar);
+            
+            File file = fileRpc.findByMysqlV1(memberDefaultAvatar.getUserAvatarFileId());
 
-            memberDefaultAvatarService.update(memberDefaultAvatarView);
+            memberDefaultAvatarView.setUserAvatarFilePath(file.getFilePath());
+            memberDefaultAvatarService.saveOrUpdate(memberDefaultAvatarView);
         }
 
         return renderJson(true);

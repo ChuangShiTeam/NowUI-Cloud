@@ -220,7 +220,7 @@ public class AdvertisementAdminController extends BaseController {
             File file = fileRpc.findByMysqlV1(advertisement.getAdvertisementImageFileId());
             advertisementView.setAdvertisementImageFilePath(file.getFilePath());
 
-            advertisementService.update(advertisementView);
+            advertisementService.saveOrUpdate(advertisementView);
         }
 
         return renderJson(true);
