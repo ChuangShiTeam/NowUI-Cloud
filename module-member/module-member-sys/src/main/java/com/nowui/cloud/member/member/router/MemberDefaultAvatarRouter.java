@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.router;
 
 /**
- * 用户默认头像消息队列路由
+ * 会员默认头像消息队列路由
  *
  * @author xupengfei
  *

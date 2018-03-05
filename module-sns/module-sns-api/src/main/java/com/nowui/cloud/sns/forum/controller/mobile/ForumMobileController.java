@@ -6,15 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.file.file.entity.File;
-import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -73,9 +70,6 @@ public class ForumMobileController extends BaseController {
 	 @Autowired
 	 private ForumUserUnfollowService forumUserUnfollowService;
 	 
-	 @Autowired
-     private FileRpc fileRpc;
-     
      @Autowired
      private MemberRpc memberRpc;
      
@@ -162,7 +156,7 @@ public class ForumMobileController extends BaseController {
 	     return renderJson(success);
     }
 	 
-	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
+	@ApiOperation(value = "查询论坛信息")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
 		Forum body = getEntry(Forum.class);
@@ -188,7 +182,7 @@ public class ForumMobileController extends BaseController {
         //判断请求用户是否是版主
         if (requestMemberId.equals(memberId)) {
         	forum.put(Forum.FORUM_USER_IS_MODERATOR, true);
-		}else {
+		} else {
 			forum.put(Forum.FORUM_USER_IS_MODERATOR, false);
 		}
         
@@ -205,7 +199,6 @@ public class ForumMobileController extends BaseController {
 				}
     		}
 		}
-        
         
         //根据论坛编号去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollowView> forumUserFollows = 
@@ -306,18 +299,12 @@ public class ForumMobileController extends BaseController {
             List<ForumView> latestList = forumService.getLatestAndNotFollowListByMemberId(body.getAppId(), memberId, 0, pageSize);
             recommendList.addAll(latestList);
         }
-        
-        // TODO 处理论坛头像    =======这里的逻辑 以后不用rpc了
-//        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//        
-//        recommendList = Util.beanReplaceField(recommendList, Forum.FORUM_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
 
         validateResponse(
-                Forum.FORUM_ID,
-                Forum.FORUM_MEDIA,
-                Forum.FORUM_NAME,
-                Forum.FORUM_DESCRIPTION
+                ForumView.FORUM_ID,
+                ForumView.FORUM_MEDIA,
+                ForumView.FORUM_NAME,
+                ForumView.FORUM_DESCRIPTION
         );
         
         return renderJson(recommendList);

@@ -29,6 +29,7 @@ import com.nowui.cloud.base.sms.entity.enums.SmsCaptchaType;
 import com.nowui.cloud.base.sms.rpc.SmsCaptchaRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
+import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
@@ -46,7 +47,9 @@ import com.nowui.cloud.member.member.entity.MemberPreferenceLanguage;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.router.MemberRouter;
 import com.nowui.cloud.member.member.router.MemberSignatureRouter;
+import com.nowui.cloud.member.member.service.MemberDefaultAvatarService;
 import com.nowui.cloud.member.member.service.MemberService;
+import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.util.AesUtil;
 import com.nowui.cloud.util.DateUtil;
@@ -71,6 +74,9 @@ public class MemberMobileController extends BaseController {
     
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private MemberDefaultAvatarService memberDefaultAvatarService;
     
     @Autowired
     private SmsCaptchaRpc smsCaptchaRpc;
@@ -235,9 +241,9 @@ public class MemberMobileController extends BaseController {
     @ApiOperation(value = "会员手机号码注册")
     @RequestMapping(value = "/member/mobile/v1/mobile/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> mobileRegisterV1() {
-        UserAccount userAccount = getEntry(UserAccount.class);
+        UserAccount userAccountBean = getEntry(UserAccount.class);
         validateRequest(
-                userAccount,
+                userAccountBean,
                 UserAccount.APP_ID,
                 UserAccount.USER_ACCOUNT,
                 UserAccount.SYSTEM_REQUEST_USER_ID
@@ -255,11 +261,11 @@ public class MemberMobileController extends BaseController {
                 SmsCaptcha.SMS_CAPTCHA_CODE
         );
         
-        if (!Util.isPhone(userAccount.getUserAccount())) {
+        if (!Util.isPhone(userAccountBean.getUserAccount())) {
             throw new BusinessException("手机号码格式不对");
         }
         
-        Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
+        Boolean isRegister = userRpc.checkUserAccountV1(userAccountBean.getAppId(), UserType.MEMBER.getKey(), userAccountBean.getUserAccount());
         
         if (isRegister) {
             throw new BusinessException("用户已注册");
@@ -268,7 +274,7 @@ public class MemberMobileController extends BaseController {
         // 验证验证码是否正确, 10分钟内有效
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.MINUTE, -10);
-        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCodeV1(userAccount.getAppId(), userAccount.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), DateUtil.getDateTimeString(calendar1.getTime()));
+        Boolean isCorrect = smsCaptchaRpc.checkCaptchaCodeV1(userAccountBean.getAppId(), userAccountBean.getUserAccount(), smsCaptcha.getSmsCaptchaCode(), DateUtil.getDateTimeString(calendar1.getTime()));
         if (!isCorrect) {
             throw new BusinessException("验证码错误");
         }
@@ -278,9 +284,8 @@ public class MemberMobileController extends BaseController {
         String userId = Util.getRandomUUID();
         String memberId = Util.getRandomUUID();
         
-        String theUserAccount = userAccount.getUserAccount();
         
-        member.setAppId(userAccount.getAppId());
+        member.setAppId(userAccountBean.getAppId());
         member.setMemberId(memberId);
         member.setUserId(userId);
         member.setMemberIsRecommed(false);
@@ -288,30 +293,45 @@ public class MemberMobileController extends BaseController {
         member.setMemberTopEndTime(new Date());
         member.setMemberTopLevel(0);
 
-        Member result = memberService.save(member, memberId, userAccount.getSystemRequestUserId());
+        Member result = memberService.save(member, memberId, userAccountBean.getSystemRequestUserId());
 
         Boolean success = false;
 
         if (result != null) {
             // 发送会员手机注册用户消息
+            String userAccount = userAccountBean.getUserAccount();
+            // 默认用户昵称
+            String userNickName = "WAWIPET" + userAccount.substring(userAccount.length() - 4);
+            // 默认会员头像
+            String userAvatarFileId = null;
+            String userAvatarFilePath = null;
+            MemberDefaultAvatarView memberDefaultAvatarView = memberDefaultAvatarService.randomFind(userAccountBean.getAppId());
+            if (memberDefaultAvatarView != null) {
+                userAvatarFileId = memberDefaultAvatarView.getUserAvatarFileId();
+                userAvatarFilePath = memberDefaultAvatarView.getUserAvatarFilePath();
+            }
             User user = new User();
-            user.setAppId(userAccount.getAppId());
+            user.setAppId(userAccountBean.getAppId());
             user.setUserId(userId);
             user.setObjectId(memberId);
             user.setUserType(UserType.MEMBER.getKey());
-            user.put(UserNickName.USER_NICK_NAME, "wawi" + theUserAccount.substring(theUserAccount.length() - 4 ));
-            user.put(UserAccount.USER_ACCOUNT, theUserAccount);
+            user.put(UserNickName.USER_NICK_NAME, userNickName);
+            user.put(UserAccount.USER_ACCOUNT, userAccount);
             user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
-            user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
-            sendMessage(user, UserRouter.USER_V1_MOBILE_REGISTER, userAccount.getAppId(), userAccount.getSystemRequestUserId());
+            user.put(UserAvatar.USER_AVATAR_FILE_ID, userAvatarFileId);
+            user.put(UserAvatar.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            user.setSystemRequestUserId(userAccountBean.getSystemRequestUserId());
+            sendMessage(user, UserRouter.USER_V1_MOBILE_REGISTER, userAccountBean.getAppId(), userAccountBean.getSystemRequestUserId());
             
             // 保存会员视图到MongoDB
             MemberView memberView = JSON.parseObject(result.toJSONString(), MemberView.class);
+            memberView.setUserNickName(userNickName);
+            memberView.setUserAvatarFilePath(userAvatarFilePath);
             
             memberService.save(memberView);
             
             // 发送会员保存信息
-            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccount.getSystemRequestUserId());
+            sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccountBean.getSystemRequestUserId());
             
             success = true;
         }

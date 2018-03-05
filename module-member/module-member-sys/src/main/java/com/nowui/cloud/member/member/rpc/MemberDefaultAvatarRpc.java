@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 用户默认头像服务调用
+ * 会员默认头像服务调用
  *
  * @author xupengfei
  *

@@ -17,10 +17,10 @@ import com.nowui.cloud.sns.forum.entity.Forum;
 public interface ForumMapper extends BaseMapper<Forum> {
     
     /**
-     * 获取随机个数推荐的且用户没有关注的论坛编号列表
+     * 获取随机个数推荐的且会员没有关注的论坛编号列表
      * 
      * @param appId 应用编号
-     * @param userId 用户编号
+     * @param memberId 用户编号
      * @param n 个数
      * @return List<String> 论坛编号列表
      */
@@ -34,7 +34,7 @@ public interface ForumMapper extends BaseMapper<Forum> {
     * 获取用户没有关注的最新论坛编号列表
     * 
     * @param appId 应用编号
-    * @param userId 用户编号
+    * @param memberId 用户编号
     * @param n 个数
     * @return List<String> 论坛编号列表
     */

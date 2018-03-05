@@ -11,24 +11,23 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 用户默认头像
+ * 会员默认头像
  *
  * @author xupengfei
  *
  * 2018-03-05
  */
 @Component
-
 @TableName(value = "member_default_avatar_info")
 public class MemberDefaultAvatar extends BaseEntity {
 
     /**
-     * 用户默认头像编号
+     * 会员默认头像编号
      */
     @Id
     @TableId
-    @NotNull(message = "用户默认头像编号不能为空")
-    @Length(max = 32, message = "用户默认头像编号长度超出限制")
+    @NotNull(message = "会员默认头像编号不能为空")
+    @Length(max = 32, message = "会员默认头像编号长度超出限制")
     private String memberDefaultAvatarId;
     public static final String MEMBER_DEFAULT_AVATAR_ID = "memberDefaultAvatarId";
 

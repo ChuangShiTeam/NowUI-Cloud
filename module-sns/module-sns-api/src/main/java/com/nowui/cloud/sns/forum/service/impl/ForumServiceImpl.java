@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.user.view.UserAvatarView;
+import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
@@ -105,7 +106,11 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();
         }
-        return forumIdList.stream().map(forumId -> find(forumId)).collect(Collectors.toList());
+        Criteria criteria = Criteria.where(ForumView.APP_ID).is(appId)
+                .and(ForumView.FORUM_ID).in(forumIdList)
+                .and(Forum.SYSTEM_STATUS).is(true);
+
+        return list(new Query(criteria));
     }
 
     @Override
@@ -114,24 +119,15 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
         if (Util.isNullOrEmpty(forumIdList)) {
             return new ArrayList<>();
         }
-        return forumIdList.stream().map(forumId -> find(forumId)).collect(Collectors.toList());
-    }
+        Criteria criteria = Criteria.where(ForumView.APP_ID).is(appId)
+                .and(ForumView.FORUM_ID).in(forumIdList)
+                .and(Forum.SYSTEM_STATUS).is(true);
 
-    //TODO 这个查的mysql,待删除
-//    @Override
-//    public Boolean checkName(String appId, String forumName) {
-//        Integer count = count(
-//                new BaseWrapper<Forum>()
-//                        .eq(Forum.APP_ID, appId)
-//                        .eq(Forum.FORUM_NAME, forumName)
-//                        .eq(Forum.SYSTEM_STATUS, true)
-//                        .andNew()
-//                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.AUDIT_PASS.getKey())
-//                        .or()
-//                        .eq(Forum.FORUM_AUDIT_STATUS, ForumAuditStatus.WAIT_AUDIT.getKey())
-//        );
-//        return count > 0;
-//    }
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(new Order(Sort.Direction.DESC, ForumView.SYSTEM_CREATE_TIME));
+        
+        return list(new Query(criteria), Sort.by(orders));
+    }
     
     @Override
     public Boolean checkName(String appId, String forumName) {

@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 /**
- * 用户默认头像视图
+ * 会员默认头像视图
  *
  * @author xupengfei
  *
@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 public class MemberDefaultAvatarView extends BaseView {
 
     /**
-     * 用户默认头像编号
+     * 会员默认头像编号
      */
     @KeyId
     @Field
-    @NotNull(message = "用户默认头像编号不能为空")
+    @NotNull(message = "会员默认头像编号不能为空")
     private String memberDefaultAvatarId;
     public static final String MEMBER_DEFAULT_AVATAR_ID = "memberDefaultAvatarId";
 

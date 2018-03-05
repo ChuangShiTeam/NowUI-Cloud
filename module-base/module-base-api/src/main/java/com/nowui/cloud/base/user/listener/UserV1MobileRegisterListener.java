@@ -16,11 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
+import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserMobile;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.router.UserRouter;
 import com.nowui.cloud.base.user.service.UserAccountService;
+import com.nowui.cloud.base.user.service.UserAvatarService;
 import com.nowui.cloud.base.user.service.UserMobileService;
+import com.nowui.cloud.base.user.service.UserNickNameService;
 import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.service.UserService;
 import com.nowui.cloud.base.user.view.UserView;
@@ -51,6 +55,12 @@ public class UserV1MobileRegisterListener {
     
     @Autowired
     private UserPasswordService userPasswordService;
+    
+    @Autowired
+    private UserNickNameService userNickNameService;
+    
+    @Autowired
+    private UserAvatarService userAvatarService;
 
     @Bean
     Queue UserV1MobileRegisterQueue(RabbitAdmin rabbitAdmin) {
@@ -86,6 +96,9 @@ public class UserV1MobileRegisterListener {
                 
                 String userAccount = user.getString(UserAccount.USER_ACCOUNT);
                 String userPassword = user.getString(UserPassword.USER_PASSWORD);
+                String userNickName = user.getString(UserNickName.USER_NICK_NAME);
+                String userAvatarFileId = user.getString(UserAvatar.USER_AVATAR_FILE_ID);
+                String userAvatarFilePath = user.getString(UserAvatar.USER_AVATAR_FILE_PATH);
                 
                 User result = userService.save(user, user.getUserId(), user.getSystemRequestUserId());
                 
@@ -109,11 +122,32 @@ public class UserV1MobileRegisterListener {
                     userMobile.setUserMobile(userAccount);
                     userMobileService.save(userMobile, Util.getRandomUUID(), result.getSystemRequestUserId());
 
+                    // 保存用户昵称
+                    if (Util.isNullOrEmpty(userNickName)) {
+                        UserNickName userNickNameBean = new UserNickName();
+                        userNickNameBean.setAppId(result.getAppId());
+                        userNickNameBean.setUserId(result.getUserId());
+                        userNickNameBean.setUserNickName(userNickName);
+                        userNickNameService.save(userNickNameBean, Util.getRandomUUID(), result.getSystemRequestUserId());
+                    }
+                    // 保存用户头像
+                    if (Util.isNullOrEmpty(userAvatarFileId)) {
+                        UserAvatar userAvatar = new UserAvatar();
+                        userAvatar.setAppId(result.getAppId());
+                        userAvatar.setUserId(result.getUserId());
+                        userAvatar.setUserAvatarFileId(userAvatarFileId);
+                        userAvatar.setUserAvatarFilePath(userAvatarFilePath);
+                        userAvatarService.save(userAvatar, Util.getRandomUUID(), result.getSystemRequestUserId());
+                    }
+                    
                     // 保存用户视图信息到mongodb
                     UserView userView = JSON.parseObject(result.toJSONString(), UserView.class);
                     userView.setUserAccount(userAccount);
                     userView.setUserPassword(Util.generatePassword(userPassword));
                     userView.setUserMobile(userAccount);
+                    userView.setUserNickName(userNickName);
+                    userView.setUserAvatarFileId(userAvatarFileId);
+                    userView.setUserAvatarFilePath(userAvatarFilePath);
                     
                     userService.save(userView);
                 }
