@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import com.nowui.cloud.cms.navigation.view.NavigationView;
@@ -46,9 +47,9 @@ public class NavigationAdminController extends BaseController {
         );
 
         Integer resultTotal = navigationService.countForAdmin(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
-        List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
+        List<NavigationView> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
-        String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE_FILE_ID);
+//        String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE_FILE_ID);
 //        List<File> fileList = fileRpc.findsV1(fileIds);
         
 //        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
@@ -58,7 +59,8 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-//                File.FILE_PATH,
+                Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT
@@ -88,6 +90,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
                 Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT,
@@ -107,6 +110,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
                 Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT
@@ -118,6 +122,13 @@ public class NavigationAdminController extends BaseController {
         
         if (result != null) {
            
+        	// 保存导航栏视图信息到MongoDB
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.save(navigationView);
+        	
             success = true;
         }
         return renderJson(success);
@@ -134,6 +145,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
                 Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT,
@@ -145,6 +157,13 @@ public class NavigationAdminController extends BaseController {
         Boolean success = false;
         
         if (result != null) {
+        	
+        	// 更新导航栏视图信息到MongoDB
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.update(navigationView);
            
             success = true;
         }
@@ -166,6 +185,13 @@ public class NavigationAdminController extends BaseController {
         Boolean success = false;
         
         if (result != null) {
+        	
+        	// 删除MongoDB导航栏视图信息
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.delete(navigationView);
            
             success = true;
         }

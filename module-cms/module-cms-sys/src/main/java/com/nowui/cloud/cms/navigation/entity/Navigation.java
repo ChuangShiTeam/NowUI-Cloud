@@ -76,6 +76,14 @@ public class Navigation extends BaseEntity {
     @Length(max = 32, message = "导航栏图片文件编号长度超出限制")
     private String navigationImageFileId;
     public static final String NAVIGATION_IMAGE_FILE_ID = "navigationImageFileId";
+    
+    /**
+     * 导航栏图片文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "导航栏图片文件路径不能为空")
+    private String navigationImageFilePath;
+    public static final String NAVIGATION_IMAGE_FILE_PATH = "navigationImageFilePath";
 
     /**
      * 导航栏链接
@@ -150,6 +158,14 @@ public class Navigation extends BaseEntity {
 
     public void setNavigationImage(String navigationImageFileId) {
         put(NAVIGATION_IMAGE_FILE_ID, navigationImageFileId);
+    }
+    
+    public String getNavigationImageFilePath() {
+        return getString(NAVIGATION_IMAGE_FILE_PATH);
+    }
+
+    public void setNavigationImageFilePath(String navigationImageFilePath) {
+        put(NAVIGATION_IMAGE_FILE_PATH, navigationImageFilePath);
     }
     
     public String getNavigationUrl() {

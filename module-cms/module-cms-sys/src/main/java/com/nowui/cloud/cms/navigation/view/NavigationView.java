@@ -66,6 +66,14 @@ public class NavigationView extends BaseView {
     @NotNull(message = "导航栏图片文件编号不能为空")
     private String navigationImageFileId;
     public static final String NAVIGATION_IMAGE_FILE_ID = "navigationImageFileId";
+    
+    /**
+     * 导航栏图片文件路径
+     */
+    @Field
+    @NotNull(message = "导航栏图片文件路径不能为空")
+    private String navigationImageFilePath;
+    public static final String NAVIGATION_IMAGE_FILE_PATH = "navigationImageFilePath";
 
     /**
      * 导航栏链接
@@ -134,6 +142,15 @@ public class NavigationView extends BaseView {
     public void setNavigationImageFileId(String navigationImageFileId) {
         put(NAVIGATION_IMAGE_FILE_ID, navigationImageFileId);
     }
+    
+    public String getNavigationImageFilePath() {
+        return getString(NAVIGATION_IMAGE_FILE_PATH);
+    }
+
+    public void setNavigationImageFilePath(String navigationImageFilePath) {
+        put(NAVIGATION_IMAGE_FILE_PATH, navigationImageFilePath);
+    }
+    
     public String getNavigationUrl() {
         return getString(NAVIGATION_URL);
     }

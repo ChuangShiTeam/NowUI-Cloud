@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nowui.cloud.cms.navigation.entity.Navigation;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
 
 /**
  * 导航栏服务调用
@@ -29,7 +30,7 @@ public interface NavigationRpc {
      * @return List<Navigation> 导航栏信息列表
      */
     @RequestMapping(value = "/navigation/system/v1/list/by/category/code", method = RequestMethod.POST)
-    List<Navigation> listByCategoryCodeV1(
+    List<NavigationView> listByCategoryCodeV1(
             @RequestParam(value = "appId", required = true) String appId,
             @RequestParam(value = "navigationCategoryCode", required = true) String navigationCategoryCode
     );

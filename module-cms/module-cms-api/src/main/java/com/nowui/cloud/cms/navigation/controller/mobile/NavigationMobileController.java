@@ -3,6 +3,7 @@ package com.nowui.cloud.cms.navigation.controller.mobile;
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,12 +41,19 @@ public class NavigationMobileController extends BaseController {
 				Navigation.APP_ID
 			);
 		
-		List<Navigation> resultList = navigationService.mobileList(body.getAppId(), "INDEX");
+		List<NavigationView> resultList = navigationService.mobileList(body.getAppId(), "INDEX");
 
 		validateResponse(
+				Navigation.NAVIGATION_ID,
+				Navigation.NAVIGATION_CATEGORY_CODE,
+				Navigation.NAVIGATION_CODE,
+				Navigation.NAVIGATION_POSITION,
+                Navigation.NAVIGATION_SORT,
+				
 				Navigation.NAVIGATION_NAME,
 				Navigation.NAVIGATION_IMAGE_FILE_ID,
-				Navigation.NAVIGATION_URL
+				Navigation.NAVIGATION_URL,
+				Navigation.NAVIGATION_IMAGE_FILE_PATH
 			);
 
 		return renderJson(resultList);

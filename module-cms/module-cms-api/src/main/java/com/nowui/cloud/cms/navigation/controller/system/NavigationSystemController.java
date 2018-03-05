@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.rpc.NavigationRpc;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -28,15 +29,15 @@ public class NavigationSystemController implements NavigationRpc {
     private NavigationService navigationService;
 
     @Override
-    public List<Navigation> listByCategoryCodeV1(String appId, String navigationCategoryCode) {
+    public List<NavigationView> listByCategoryCodeV1(String appId, String navigationCategoryCode) {
         
-        List<Navigation> navigationList = navigationService.listByCategoryCode(appId, navigationCategoryCode);
+        List<NavigationView> navigationList = navigationService.listByCategoryCode(appId, navigationCategoryCode);
        
         if (Util.isNullOrEmpty(navigationList)) {
             return new ArrayList<>();
         }
         
-        String fileIds = Util.beanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE_FILE_ID);
+        String fileIds = Util.viewBeanToFieldString(navigationList, Navigation.NAVIGATION_IMAGE_FILE_ID);
         
 //        List<File> fileList = fileRpc.findsV1(fileIds);
         
