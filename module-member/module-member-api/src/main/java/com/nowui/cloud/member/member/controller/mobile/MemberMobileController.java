@@ -29,6 +29,7 @@ import com.nowui.cloud.base.sms.entity.enums.SmsCaptchaType;
 import com.nowui.cloud.base.sms.rpc.SmsCaptchaRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
+import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.UserPassword;
 import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.entity.enums.UserType;
@@ -277,6 +278,8 @@ public class MemberMobileController extends BaseController {
         String userId = Util.getRandomUUID();
         String memberId = Util.getRandomUUID();
         
+        String theUserAccount = userAccount.getUserAccount();
+        
         member.setAppId(userAccount.getAppId());
         member.setMemberId(memberId);
         member.setUserId(userId);
@@ -296,7 +299,8 @@ public class MemberMobileController extends BaseController {
             user.setUserId(userId);
             user.setObjectId(memberId);
             user.setUserType(UserType.MEMBER.getKey());
-            user.put(UserAccount.USER_ACCOUNT, userAccount.getUserAccount());
+            user.put(UserNickName.USER_NICK_NAME, "wawi" + theUserAccount.substring(theUserAccount.length() - 4 ));
+            user.put(UserAccount.USER_ACCOUNT, theUserAccount);
             user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
             user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
             sendMessage(user, UserRouter.USER_V1_MOBILE_REGISTER, userAccount.getAppId(), userAccount.getSystemRequestUserId());
@@ -347,6 +351,8 @@ public class MemberMobileController extends BaseController {
         String userId = Util.getRandomUUID();
         String memberId = Util.getRandomUUID();
         
+        String theUserAccount = userAccount.getUserAccount();
+        
         member.setAppId(userAccount.getAppId());
         member.setMemberId(memberId);
         member.setUserId(userId);
@@ -366,7 +372,8 @@ public class MemberMobileController extends BaseController {
             user.setUserId(userId);
             user.setObjectId(memberId);
             user.setUserType(UserType.MEMBER.getKey());
-            user.put(UserAccount.USER_ACCOUNT, userAccount.getUserAccount());
+//            user.put(UserNickName.USER_NICK_NAME, "wawi" + theUserAccount.substring(theUserAccount.length() - 4 ));
+            user.put(UserAccount.USER_ACCOUNT, theUserAccount);
             user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
             user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
             sendMessage(user, UserRouter.USER_V1_EMAIL_REGISTER, userAccount.getAppId(), userAccount.getSystemRequestUserId());
