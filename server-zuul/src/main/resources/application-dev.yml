@@ -83,6 +83,11 @@ zuul:
       path: /doctor/**
       serviceId: module-hospital
       stripPrefix: false
+    patient:
+      path: /patient/**
+      serviceId: module-hospital
+      stripPrefix: false
+
   okhttp:
     enabled: true # 使用okhttp方式请求，正常来说okhttp比较速度快一点
   semaphore:
