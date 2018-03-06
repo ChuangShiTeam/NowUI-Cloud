@@ -210,7 +210,7 @@ public class PatientAdminController extends BaseController {
             PatientView patientView = new PatientView();
             patientView.putAll(patient);
 
-            patientService.update(patientView);
+            patientService.saveOrUpdate(patientView);
         }
 
         return renderJson(true);

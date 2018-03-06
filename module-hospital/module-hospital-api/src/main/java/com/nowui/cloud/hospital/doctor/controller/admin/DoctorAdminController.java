@@ -200,7 +200,7 @@ public class DoctorAdminController extends BaseController {
             DoctorView doctorView = new DoctorView();
             doctorView.putAll(doctor);
 
-            doctorService.update(doctorView);
+            doctorService.saveOrUpdate(doctorView);
         }
 
         return renderJson(true);
