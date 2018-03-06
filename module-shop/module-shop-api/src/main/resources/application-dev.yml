@@ -57,7 +57,7 @@ spring:
     password:
   rabbitmq:
     host: 118.31.229.16
-    port: 5672
+    port: 5673
     username: guest
     password: guest
     publisherConfirms: true
