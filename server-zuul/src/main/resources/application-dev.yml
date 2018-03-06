@@ -15,6 +15,11 @@ zuul:
       path: /product/**
       serviceId: module-shop
       stripPrefix: false
+
+    supplier:
+      path: /supplier/**
+      serviceId: module-shop
+      stripPrefix: false
     app:
       path: /app/**
       serviceId: module-base
