@@ -62,6 +62,7 @@ public class UserAvatar extends BaseEntity {
     /**
      * 用户头像路径
      */
+    @TableField(exist = false)
     @NotNull(message = "用户头像路径不能为空")
     @Length(max = 200, message = "用户头像路径长度超出限制")
     private String userAvatarFilePath;

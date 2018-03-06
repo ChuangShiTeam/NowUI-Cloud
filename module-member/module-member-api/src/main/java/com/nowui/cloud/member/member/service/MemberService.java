@@ -24,7 +24,7 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param appId 应用编号
      * @param memberIsTop 是否置顶
      * @param memberIsRecommed 会员是否推荐
-     * @return Integer 会员统计
+     * @return Integer 会员视图统计
      */
     Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed);
 
@@ -36,9 +36,9 @@ public interface MemberService extends SuperService<Member,MemberView> {
      * @param memberIsRecommed 会员是否推荐
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<Member> 会员列表
+     * @return List<MemberView> 会员视图列表
      */
-    List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
+    List<MemberView> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号查询会员信息
