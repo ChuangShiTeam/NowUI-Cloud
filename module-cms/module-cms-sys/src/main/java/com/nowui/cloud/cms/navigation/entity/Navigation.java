@@ -69,13 +69,21 @@ public class Navigation extends BaseEntity {
     public static final String NAVIGATION_NAME = "navigationName";
 
     /**
-     * 导航栏图片
+     * 导航栏图片文件编号
      */
     @TableField
-    @NotNull(message = "导航栏图片不能为空")
-    @Length(max = 32, message = "导航栏图片长度超出限制")
-    private String navigationImage;
-    public static final String NAVIGATION_IMAGE = "navigationImage";
+    @NotNull(message = "导航栏图片文件编号不能为空")
+    @Length(max = 32, message = "导航栏图片文件编号长度超出限制")
+    private String navigationImageFileId;
+    public static final String NAVIGATION_IMAGE_FILE_ID = "navigationImageFileId";
+    
+    /**
+     * 导航栏图片文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "导航栏图片文件路径不能为空")
+    private String navigationImageFilePath;
+    public static final String NAVIGATION_IMAGE_FILE_PATH = "navigationImageFilePath";
 
     /**
      * 导航栏链接
@@ -144,12 +152,20 @@ public class Navigation extends BaseEntity {
         put(NAVIGATION_NAME, navigationName);
     }
     
-    public String getNavigationImage() {
-        return getString(NAVIGATION_IMAGE);
+    public String getNavigationImageFileId() {
+        return getString(NAVIGATION_IMAGE_FILE_ID);
     }
 
-    public void setNavigationImage(String navigationImage) {
-        put(NAVIGATION_IMAGE, navigationImage);
+    public void setNavigationImage(String navigationImageFileId) {
+        put(NAVIGATION_IMAGE_FILE_ID, navigationImageFileId);
+    }
+    
+    public String getNavigationImageFilePath() {
+        return getString(NAVIGATION_IMAGE_FILE_PATH);
+    }
+
+    public void setNavigationImageFilePath(String navigationImageFilePath) {
+        put(NAVIGATION_IMAGE_FILE_PATH, navigationImageFilePath);
     }
     
     public String getNavigationUrl() {

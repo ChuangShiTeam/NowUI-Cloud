@@ -1,5 +1,6 @@
 package com.nowui.cloud.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,21 @@ public class DateUtil {
 		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return dateTimeFormat.format(dateTime);
 	}
+	
+	public static Date parseDate(String dateTime) {
+        if (Util.isNullOrEmpty(dateTime)) {
+            return null;
+        }
+
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return dateTimeFormat.parse(dateTime);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 	public static String getTodayStartDateTimeString() {
 		return DateFormatUtils.format(new Date(), "yyyy-MM-dd 00:00:00");

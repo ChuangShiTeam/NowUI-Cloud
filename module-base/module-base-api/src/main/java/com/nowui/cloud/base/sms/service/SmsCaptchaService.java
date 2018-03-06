@@ -48,7 +48,7 @@ public interface SmsCaptchaService extends SuperService<SmsCaptcha,SmsCaptchaVie
      * @param startDate 开始时间
      * @return
      */
-    Integer countByTypeAndMobile(String appId, String smsCaptchaType, String smsCaptchaMobile, Date startDate);
+    Integer countByTypeAndMobile(String appId, String smsCaptchaType, String smsCaptchaMobile, String startDate);
     
     /**
      * 统计开始时间到当前时间同一验证码单个手机号码的验证码发送次数
@@ -70,10 +70,10 @@ public interface SmsCaptchaService extends SuperService<SmsCaptcha,SmsCaptchaVie
      * @param startDate 开始时间
      * @return
      */
-    Integer countByTypeAndIpAddress(String appId, String smsCaptchaType, String smsCaptchaIpAddress, Date startDate);
+    Integer countByTypeAndIpAddress(String appId, String smsCaptchaType, String smsCaptchaIpAddress, String startDate);
 
     /**
-     * 
+     * 阿里云发送短信
      * 
      * @param appId 应用编号
      * @param smsCaptchaType 验证码类型

@@ -166,7 +166,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
             ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
             ${firstLowerWithoutUnderlineEntityName}View.putAll(${firstLowerWithoutUnderlineEntityName});
 
-            ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
+            ${firstLowerWithoutUnderlineEntityName}Service.saveOrUpdate(${firstLowerWithoutUnderlineEntityName}View);
         }
 
         return renderJson(true);

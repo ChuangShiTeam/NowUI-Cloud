@@ -13,5 +13,6 @@ public class UserRouter {
     public static final String USER_V1_UPDATE = "user.v1.update";
     public static final String USER_V1_DELETE = "user.v1.delete";
     public static final String USER_V1_MOBILE_REGISTER = "user.v1.mobile.register";
+    public static final String USER_V1_EMAIL_REGISTER = "user.v1.email.register";
 
 }

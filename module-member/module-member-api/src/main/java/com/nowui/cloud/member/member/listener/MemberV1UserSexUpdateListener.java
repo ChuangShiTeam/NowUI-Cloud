@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.UserSex;
@@ -20,6 +21,14 @@ import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.rabbit.RabbitListener;
 
+/**
+ * 会员用户性别更新消息监听
+ * 
+ * @author marcus
+ *
+ * 2018年3月2日
+ */
+@Configuration
 public class MemberV1UserSexUpdateListener {
     
     private final String queueName = "member_v1_user_sex_update";

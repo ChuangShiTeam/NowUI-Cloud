@@ -1,7 +1,6 @@
 package com.nowui.cloud.cms.advertisement.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,6 @@ import com.nowui.cloud.cms.advertisement.mapper.AdvertisementMapper;
 import com.nowui.cloud.cms.advertisement.repository.AdvertisementRepository;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 
 /**
@@ -49,7 +47,7 @@ public class AdvertisementServiceImpl extends SuperServiceImpl<AdvertisementMapp
                 .and(AdvertisementView.SYSTEM_STATUS).is(true);
 
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, AdvertisementView.SYSTEM_CREATE_TIME));
+        orders.add(new Sort.Order(Sort.Direction.ASC, AdvertisementView.ADVERTISEMENT_SORT));
         Sort sort = Sort.by(orders);
 
         Query query = new Query(criteria);
@@ -61,29 +59,22 @@ public class AdvertisementServiceImpl extends SuperServiceImpl<AdvertisementMapp
     }
 
 	@Override
-	public List<Advertisement> mobileList(String appId, String advertisementCategoryCode) {
-		List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
-				.eq(Advertisement.APP_ID, appId)
-				.eq(Advertisement.ADVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-				.eq(Advertisement.ADVERTISEMENT_IS_EFFICIENT, false)
-				.eq(Advertisement.SYSTEM_STATUS, true)
-				.orderAsc(Arrays.asList(Advertisement.ADVERTISEMENT_SORT))
-			);
+	public List<AdvertisementView> listByCategoryCode(String appId, String advertisementCategoryCode) {
+	    Criteria criteria = Criteria.where(AdvertisementView.APP_ID).is(appId)
+                .and(AdvertisementView.ADVERTISEMENT_CATEGORY_CODE).is(advertisementCategoryCode)
+                .and(AdvertisementView.ADVERTISEMENT_IS_EFFICIENT).is(false)
+                .and(AdvertisementView.SYSTEM_STATUS).is(true);
 
-		return bannerList;
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, AdvertisementView.ADVERTISEMENT_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        List<AdvertisementView> advertisementViewList = list(query, sort);
+        
+		return advertisementViewList;
 	}
 
-    @Override
-    public List<Advertisement> listByCategoryCode(String appId, String advertisementCategoryCode) {
-        List<Advertisement> bannerList = list(new BaseWrapper<Advertisement>()
-                .eq(Advertisement.APP_ID, appId)
-                .eq(Advertisement.ADVERTISEMENT_CATEGORY_CODE, advertisementCategoryCode)
-                .eq(Advertisement.ADVERTISEMENT_IS_EFFICIENT, false)
-                .eq(Advertisement.SYSTEM_STATUS, true)
-                .orderAsc(Arrays.asList(Advertisement.ADVERTISEMENT_SORT))
-            );
-
-        return bannerList;
-    }
-    
 }

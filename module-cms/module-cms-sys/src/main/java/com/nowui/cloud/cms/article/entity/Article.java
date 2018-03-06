@@ -225,8 +225,8 @@ public class Article extends BaseEntity {
      */
     @TableField(exist = false)
     @NotNull(message = "文章媒体不能为空")
-    private JSONObject articleMedia;
-    public static final String ARTICLE_MEDIA = "articleMedia";
+    private String articleMediaPath;
+    public static final String ARTICLE_MEDIA_PATH = "articleMediaPath";
 
     /**
      * 文章分类列表
@@ -436,12 +436,12 @@ public class Article extends BaseEntity {
         put(ARTICLE_IS_RECOMMEND, articleIsRecommend);
     }
 
-    public JSONObject getArticleMedia() {
-        return getJSONObject(ARTICLE_MEDIA);
+    public String getArticleMediaPath() {
+        return getString(ARTICLE_MEDIA_PATH);
     }
 
-    public void setArticleMedia(JSONObject articleMedia) {
-        put(ARTICLE_MEDIA, articleMedia);
+    public void setArticleMediaPath(String articleMediaPath) {
+        put(ARTICLE_MEDIA_PATH, articleMediaPath);
     }
 
     public JSONArray getArticleMediaList() {

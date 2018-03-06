@@ -64,10 +64,10 @@ public class ArticleView extends BaseView {
     public static final String ARTICLE_SOURCE = "articleSource";
 
     /**
-     * 文章多媒体
+     * 文章多媒体编号
      */
     @Field
-    @NotNull(message = "文章多媒体不能为空")
+    @NotNull(message = "文章多媒体编号不能为空")
     private String articleMediaId;
     public static final String ARTICLE_MEDIA_ID = "articleMediaId";
 
@@ -206,18 +206,27 @@ public class ArticleView extends BaseView {
     @NotNull(message = "排序不能为空")
     private Integer articleSort;
     public static final String ARTICLE_SORT = "articleSort";
+    
+    /**
+     * 文章分类名称
+     */
+    @Field
+    @NotNull(message = "文章多分类名称不能为空")
+    private String articleCategoryName;
+    public static final String ARTICLE_CATEGORY_NAME = "articleCategoryName";
+    
+    /**
+     * 文章多媒体路径
+     */
+    @Field
+    @NotNull(message = "文章多媒体路径不能为空")
+    private String articleMediaPath;
+    public static final String ARTICLE_MEDIA_PATH = "articleMediaPath";
 
     /**
-     * 文章媒体
+     * 文章媒体列表
      */
-    @NotNull(message = "文章媒体不能为空")
-    private JSONObject articleMedia;
-    public static final String ARTICLE_MEDIA = "articleMedia";
-
-    /**
-     * 文章分类列表
-     */
-    @NotNull(message = "文章分类列表不能为空")
+    @NotNull(message = "文章媒体列表不能为空")
     private JSONArray articleMediaList;
     public static final String ARTICLE_MEDIA_LIST = "articleMediaList";
 
@@ -420,20 +429,28 @@ public class ArticleView extends BaseView {
         put(ARTICLE_SORT, articleSort);
     }
 
-    public JSONObject getArticleMedia() {
-        return getJSONObject(ARTICLE_MEDIA);
+    public String getArticleCategoryName() {
+        return getString(ARTICLE_CATEGORY_NAME);
     }
 
-    public void setArticleMedia(JSONObject articleMedia) {
-        put(ARTICLE_MEDIA, articleMedia);
+    public void setArticleCategoryName(String articleCategoryName) {
+        put(ARTICLE_CATEGORY_NAME, articleCategoryName);
+    }
+    
+    public String getArticleMediaPath() {
+        return getString(ARTICLE_MEDIA_PATH);
+    }
+    
+    public void setArticleMediaPath(String articleMediaPath) {
+        put(ARTICLE_MEDIA_PATH, articleMediaPath);
     }
 
     public JSONArray getArticleMediaList() {
-        return articleMediaList;
+        return getJSONArray(ARTICLE_MEDIA_LIST);
     }
 
     public void setArticleMediaList(JSONArray articleMediaList) {
-        this.articleMediaList = articleMediaList;
+        put(ARTICLE_MEDIA_LIST, articleMediaList);
     }
 
     public JSONObject getArticlePrimaryArticleCategory() {

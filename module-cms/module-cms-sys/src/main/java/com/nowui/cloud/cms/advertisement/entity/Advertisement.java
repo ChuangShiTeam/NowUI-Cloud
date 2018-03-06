@@ -70,13 +70,13 @@ public class Advertisement extends BaseEntity {
     public static final String ADVERTISEMENT_TITLE = "advertisementTitle";
     
     /**
-     * 广告图片
+     * 广告图片文件编号
      */
     @TableField
-    @NotNull(message = "广告图片不能为空")
-    @Length(max = 200, message = "广告图片长度超出限制")
-    private String advertisementImageId;
-    public static final String ADVERTISEMENT_IMAGE_ID = "advertisementImageId";
+    @NotNull(message = "广告图片文件编号不能为空")
+    @Length(max = 32, message = "广告图片文件编号长度超出限制")
+    private String advertisementImageFileId;
+    public static final String ADVERTISEMENT_IMAGE_FILE_ID = "advertisementImageFileId";
     
     /**
      * 广告内容
@@ -120,15 +120,16 @@ public class Advertisement extends BaseEntity {
     @NotNull(message = "广告排序不能为空")
     private Boolean advertisementSort;
     public static final String ADVERTISEMENT_SORT = "advertisementSort";
-
+    
     /**
-     * 广告图片
+     * 广告图片文件路径
      */
     @TableField(exist = false)
-    @NotNull(message = "广告图片不能为空")
-    private JSONObject advertisementImage;
-    public static final String ADVERTISEMENT_IMAGE = "advertisementImage";
-    
+    @NotNull(message = "广告图片文件路径不能为空")
+    @Length(max = 200, message = "广告图片文件路径长度超出限制")
+    private String advertisementImageFilePath;
+    public static final String ADVERTISEMENT_IMAGE_FILE_PATH = "advertisementImageFilePath";
+
     public String getAdvertisementId() {
         return getString(ADVERTISEMENT_ID);
     }
@@ -169,12 +170,20 @@ public class Advertisement extends BaseEntity {
         put(ADVERTISEMENT_TITLE, advertisementTitle);
     }
     
-    public String getAdvertisementImageId() {
-        return getString(ADVERTISEMENT_IMAGE_ID);
+    public String getAdvertisementImageFileId() {
+        return getString(ADVERTISEMENT_IMAGE_FILE_ID);
     }
     
-    public void setAdvertisementImageId(String advertisementImageId) {
-        put(ADVERTISEMENT_IMAGE_ID, advertisementImageId);
+    public void setAdvertisementImageFileId(String advertisementImageFileId) {
+        put(ADVERTISEMENT_IMAGE_FILE_ID, advertisementImageFileId);
+    }
+    
+    public String getAdvertisementImageFilePath() {
+        return getString(ADVERTISEMENT_IMAGE_FILE_PATH);
+    }
+    
+    public void setAdvertisementImageFilePath(String advertisementImageFilePath) {
+        put(ADVERTISEMENT_IMAGE_FILE_PATH, advertisementImageFilePath);
     }
     
     public String getAdvertisementContent() {
@@ -215,14 +224,6 @@ public class Advertisement extends BaseEntity {
     
     public void setAdvertisementSort(Boolean advertisementSort) {
         put(ADVERTISEMENT_SORT, advertisementSort);
-    }
-
-    public JSONObject getAdvertisementImage() {
-        return getJSONObject(ADVERTISEMENT_IMAGE);
-    }
-
-    public void setAdvertisementImage(JSONObject advertisementImage) {
-        put(ADVERTISEMENT_IMAGE, advertisementImage);
     }
 
 }

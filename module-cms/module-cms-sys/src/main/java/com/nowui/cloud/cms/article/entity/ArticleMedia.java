@@ -58,6 +58,15 @@ public class ArticleMedia extends BaseEntity {
     @Length(max = 32, message = "文件编号长度超出限制")
     private String fileId;
     public static final String FILE_ID = "fileId";
+    
+    /**
+     * 文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "文件路径不能为空")
+    @Length(max = 200, message = "文件路径长度超出限制")
+    private String filePath;
+    public static final String FILE_PATH = "filePath";
 
     /**
      * 排序
@@ -72,6 +81,7 @@ public class ArticleMedia extends BaseEntity {
     public String getArticleMediaId() {
         return getString(ARTICLE_MEDIA_ID);
     }
+    
     public void setArticleMediaId(String articleMediaId) {
         put(ARTICLE_MEDIA_ID, articleMediaId);
     }
@@ -79,6 +89,7 @@ public class ArticleMedia extends BaseEntity {
     public String getAppId() {
         return getString(APP_ID);
     }
+    
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
@@ -86,6 +97,7 @@ public class ArticleMedia extends BaseEntity {
     public String getArticleId() {
         return getString(ARTICLE_ID);
     }
+    
     public void setArticleId(String articleId) {
         put(ARTICLE_ID, articleId);
     }
@@ -93,8 +105,17 @@ public class ArticleMedia extends BaseEntity {
     public String getFileId() {
         return getString(FILE_ID);
     }
+    
     public void setFileId(String fileId) {
         put(FILE_ID, fileId);
+    }
+    
+    public String getFilePath() {
+        return getString(FILE_PATH);
+    }
+    
+    public void setFilePath(String filePath) {
+        put(FILE_PATH, filePath);
     }
 
     public Integer getArticleMediaSort() {

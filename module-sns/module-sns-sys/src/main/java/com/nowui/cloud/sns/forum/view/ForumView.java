@@ -1,7 +1,6 @@
 package com.nowui.cloud.sns.forum.view;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
@@ -49,10 +48,10 @@ public class ForumView extends BaseView {
     public static final String FORUM_NAME = "forumName";
 
     /**
-     * 论坛多媒体id
+     * 论坛多媒体编号
      */
     @Field
-    @NotNull(message = "论坛多媒体id不能为空")
+    @NotNull(message = "论坛多媒体编号不能为空")
     private String forumMedia;
     public static final String FORUM_MEDIA = "forumMedia";
 

@@ -1,15 +1,8 @@
 package com.nowui.cloud.cms.advertisement.controller.system;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.rpc.AdvertisementRpc;
-import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -24,21 +17,4 @@ import io.swagger.annotations.Api;
 @RestController
 public class AdvertisementSystemController implements AdvertisementRpc {
     
-    @Autowired
-    private AdvertisementService advertisementService;
-
-    @Override
-    public List<Advertisement> listByCategoryCodeV1(String appId, String advertisementCategoryCode) {
-       
-        List<Advertisement> advertisementList = advertisementService.listByCategoryCode(appId, advertisementCategoryCode);
-        
-        if (Util.isNullOrEmpty(advertisementList)) {
-            return new ArrayList<>();
-        }
-        
-        String fileIds = Util.beanToFieldString(advertisementList, Advertisement.ADVERTISEMENT_IMAGE_ID);
-        
-        return advertisementList;
-    }
-
 }

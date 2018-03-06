@@ -19,7 +19,7 @@ import com.nowui.cloud.file.file.entity.File;
  * 2018-01-01
  */
 @Component(value = "fileRpc")
-@FeignClient(name = "module-base")
+@FeignClient(name = "module-file")
 public interface FileRpc {
     
     /**

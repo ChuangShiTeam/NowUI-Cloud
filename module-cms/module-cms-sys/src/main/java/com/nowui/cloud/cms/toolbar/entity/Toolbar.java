@@ -50,22 +50,22 @@ public class Toolbar extends BaseEntity {
     public static final String TOOLBAR_NAME = "toolbarName";
     
     /**
-     * 工具栏激活图片(选择)
+     * 工具栏激活图片文件编号
      */
     @TableField
-    @NotNull(message = "工具栏激活图片不能为空")
-    @Length(max = 32, message = "工具栏激活图片长度超出限制")
+    @NotNull(message = "工具栏激活图片文件编号不能为空")
+    @Length(max = 32, message = "工具栏激活图片文件编号长度超出限制")
     private String toolbarActiveImage;
-    public static final String TOOLBAR_ACTIVE_IMAGE = "toolbarActiveImage";
+    public static final String TOOLBAR_ACTIVE_IMAGE_FILE_ID = "toolbarActiveImageFileId";
     
     /**
-     * 工具栏图片
+     * 工具栏图片文件编号
      */
     @TableField
-    @NotNull(message = "工具栏图片不能为空")
-    @Length(max = 32, message = "工具栏图片长度超出限制")
-    private String toolbarImage;
-    public static final String TOOLBAR_IMAGE = "toolbarImage";
+    @NotNull(message = "工具栏图片文件编号不能为空")
+    @Length(max = 32, message = "工具栏图片文件编号长度超出限制")
+    private String toolbarImageFileId;
+    public static final String TOOLBAR_IMAGE_FILE_ID = "toolbarImageFileId";
     
     
     /**
@@ -110,20 +110,20 @@ public class Toolbar extends BaseEntity {
         put(TOOLBAR_NAME, toolbarName);
     }
     
-    public String getToolbarActiveImage() {
-        return getString(TOOLBAR_ACTIVE_IMAGE);
+    public String getToolbarActiveImageFileId() {
+        return getString(TOOLBAR_ACTIVE_IMAGE_FILE_ID);
     }
     
-    public void setToolbarActiveImage(String toolbarActiveImage) {
-        put(TOOLBAR_ACTIVE_IMAGE, toolbarActiveImage);
+    public void setToolbarActiveImageFileId(String toolbarActiveImageFileId) {
+        put(TOOLBAR_ACTIVE_IMAGE_FILE_ID, toolbarActiveImageFileId);
     }
     
-    public String getToolbarImage() {
-        return getString(TOOLBAR_IMAGE);
+    public String getToolbarImageFileId() {
+        return getString(TOOLBAR_IMAGE_FILE_ID);
     }
     
-    public void setToolbarImage(String toolbarImage) {
-        put(TOOLBAR_IMAGE, toolbarImage);
+    public void setToolbarImageFileId(String toolbarImageFileId) {
+        put(TOOLBAR_IMAGE_FILE_ID, toolbarImageFileId);
     }
     
     public String getToolbarUrl() {

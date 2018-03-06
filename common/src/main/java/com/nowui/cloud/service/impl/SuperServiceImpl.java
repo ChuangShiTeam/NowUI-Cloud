@@ -122,7 +122,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         List<E> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
 
         for (E baseEntity : list) {
-            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
+            baseEntity.putAll(findByMysql(baseEntity.getString(entity.getTableId())));
         }
 
         return list;
@@ -311,6 +311,24 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //
 //        return success;
 //    }
+    
+    @Override
+    public Boolean saveOrUpdate(V view) {
+        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
+        Query query = new Query(criteria);
+        Update update = new Update();
+
+        Iterator<Map.Entry<String, Object>> iterator = view.getInnerMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+
+            update.set(entry.getKey(), entry.getValue());
+        }
+
+        UpdateResult updateResult = mongoTemplate.upsert(query, update, view.getClass());
+
+        return updateResult.isModifiedCountAvailable();
+    }
 
     @Override
     public Boolean update(V view) {

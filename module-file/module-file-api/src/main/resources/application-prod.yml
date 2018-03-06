@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://118.31.229.16:3000/eureka/
+      defaultZone: http://118.31.229.16:3030/eureka/
 
 feign:
   hystrix:
@@ -43,7 +43,7 @@ spring:
       # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
       timeBetweenEvictionRunsMillis: 60000
       # 配置一个连接在池中最小生存的时间，单位是毫秒
-      minEvictableIdleTimeMillis: 30000
+      minEvictableIdleTimeMillis: 30300
       validationQuery: select 'x'
       testWhileIdle: true
       testOnBorrow: false

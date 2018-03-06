@@ -54,34 +54,42 @@ public class ForumUserFollow extends BaseEntity {
 
     /**
      * TODO 回来要删掉
-     * 关注用户的头像路径和昵称,签名
+     * 版主的头像路径和昵称,签名
      */
     @TableField(exist = false)
-    @NotNull(message = "用户信息不能为空")
+    @NotNull(message = "版主的信息不能为空")
     private JSONObject userInfo;
     public static final String USER_INFO = "userInfo";
     
     /**
-     * 关注用户的头像
+     * 论坛版主(id)
      */
     @TableField(exist = false)
-    @NotNull(message = "关注用户的头像")
+    @NotNull(message = "论坛版主(id)不能为空")
+    private String forumModerator;
+    public static final String FORUM_MODERATOR = "forumModerator";
+    
+    /**
+     * 版主的头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "版主的头像")
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
     
     /**
-     * 关注用户的昵称
+     * 版主的昵称
      */
     @TableField(exist = false)
-    @NotNull(message = "关注用户的昵称")
+    @NotNull(message = "版主的昵称")
     private String userNickName;
     public static final String USER_NICKNAME = "userNickName";
     
     /**
-     * 关注用户的会员签名
+     * 版主的会员签名
      */
     @TableField(exist = false)
-    @NotNull(message = "关注用户的会员签名")
+    @NotNull(message = "版主的会员签名不能为空")
     private String memberSignature;
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
@@ -93,6 +101,7 @@ public class ForumUserFollow extends BaseEntity {
     @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
+    
     
     /**
      * 用户论坛是否置顶
@@ -171,6 +180,14 @@ public class ForumUserFollow extends BaseEntity {
     
     public void setForumId(String forumId) {
         put(FORUM_ID, forumId);
+    }
+    
+    public String getForumModerator() {
+        return getString(FORUM_MODERATOR);
+    }
+    
+    public void setForumModerator(String forumModerator) {
+        put(FORUM_MODERATOR, forumModerator);
     }
 
     public Boolean getForumUserFollowIsTop() {

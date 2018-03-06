@@ -45,18 +45,26 @@ public class ForumUserFollowView extends BaseView {
     public static final String MEMBER_ID = "memberId";
     
     /**
-     * 关注用户的头像路径和昵称,签名
+     * 版主的头像路径和昵称,签名
      */
     @Field
-    @NotNull(message = "关注用户的头像路径和昵称,签名不能为空")
+    @NotNull(message = "版主的头像路径和昵称,签名不能为空")
     private JSONObject userInfo;
     public static final String USER_INFO = "userInfo";
 
     /**
+     * 论坛版主(id)
+     */
+    @Field
+    @NotNull(message = "论坛版主(id)不能为空")
+    private String forumModerator;
+    public static final String FORUM_MODERATOR = "forumModerator";
+    
+    /**
      * 关注用户的头像
      */
     @Field
-    @NotNull(message = "关注用户的头像")
+    @NotNull(message = "版主的头像")
     private String userAvatar;
     public static final String USER_AVATAR = "userAvatar";
     
@@ -64,7 +72,7 @@ public class ForumUserFollowView extends BaseView {
      * 关注用户的昵称
      */
     @Field
-    @NotNull(message = "关注用户的昵称")
+    @NotNull(message = "版主的昵称")
     private String userNickName;
     public static final String USER_NICKNAME = "userNickName";
     
@@ -72,7 +80,7 @@ public class ForumUserFollowView extends BaseView {
      * 关注用户的会员签名
      */
     @Field
-    @NotNull(message = "关注用户的会员签名")
+    @NotNull(message = "版主的会员签名")
     private String memberSignature;
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
@@ -155,6 +163,14 @@ public class ForumUserFollowView extends BaseView {
 
     public void setForumId(String forumId) {
         put(FORUM_ID, forumId);
+    }
+    
+    public String getForumModerator() {
+        return getString(FORUM_MODERATOR);
+    }
+    
+    public void setForumModerator(String forumModerator) {
+        put(FORUM_MODERATOR, forumModerator);
     }
     
     public Boolean getForumUserFollowIsTop() {

@@ -74,7 +74,13 @@ public class ForumUserFollowMobileController extends BaseController {
                 body,
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID,
-                ForumUserFollow.FORUM_ID
+                ForumUserFollow.FORUM_ID,
+                
+                ForumUserFollow.USER_INFO,
+                Forum.FORUM_MODERATOR,
+	            Forum.USER_AVATAR,
+	            Forum.USER_NICKNAME,
+	            Forum.MEMBER_SIGNATURE
         );
         
         String appId = body.getAppId();
@@ -91,14 +97,13 @@ public class ForumUserFollowMobileController extends BaseController {
         	return renderJson(true); 
 		}
         //没有: 新增关注记录
-        ForumUserFollow bean = new ForumUserFollow();
-        bean.setAppId(appId);
-        bean.setForumId(forumId);
-        bean.setMemberId(memberId);
-        bean.setForumUserFollowIsTop(false);
+        body.setAppId(appId);
+        body.setForumId(forumId);
+        body.setMemberId(memberId);
+        body.setForumUserFollowIsTop(false);
         
 //  TODO 后面处理消息    Boolean result = forumUserFollowService.save(bean, appId, Util.getRandomUUID(), userId);
-        ForumUserFollow result = forumUserFollowService.save(bean, Util.getRandomUUID(), requestUserId);
+        ForumUserFollow result = forumUserFollowService.save(body, Util.getRandomUUID(), requestUserId);
         Boolean success = false;
 
         if (result != null) {
@@ -119,6 +124,8 @@ public class ForumUserFollowMobileController extends BaseController {
     		}
             
         	ForumUserFollowView forumUserFollowView = JSON.parseObject(result.toJSONString(), ForumUserFollowView.class);
+        	// 还要添加版主信息::头像,昵称,签名,版主的memberId
+        	
         	forumUserFollowService.save(forumUserFollowView);
             
             success = true;

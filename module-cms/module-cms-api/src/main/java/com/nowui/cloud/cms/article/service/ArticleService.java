@@ -38,6 +38,17 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
     List<ArticleView> listForAdmin(String appId, String articleName, Integer pageIndex, Integer pageSize);
     
     /**
+     * 热门文章列表
+     *
+     * @param appId 应用编号
+     * @param pageIndex 页码
+     * @param pageSize 每页个数
+     * @return List<Article> 文章列表
+     */
+    List<ArticleView> hotList(String appId, Integer pageIndex, Integer pageSize);
+
+    
+    /**
      * 文章保存
      *
      * @param article 文章

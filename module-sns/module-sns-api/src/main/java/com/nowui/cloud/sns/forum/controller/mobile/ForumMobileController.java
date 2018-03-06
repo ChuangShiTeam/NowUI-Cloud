@@ -6,15 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.nowui.cloud.file.file.entity.File;
-import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
 import com.nowui.cloud.base.user.entity.UserNickName;
@@ -23,6 +20,7 @@ import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -72,11 +70,11 @@ public class ForumMobileController extends BaseController {
 	 @Autowired
 	 private ForumUserUnfollowService forumUserUnfollowService;
 	 
-	 @Autowired
-     private FileRpc fileRpc;
-     
      @Autowired
      private MemberRpc memberRpc;
+     
+     @Autowired
+     private MemberFollowRpc memberFollowRpc;
 
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -103,9 +101,9 @@ public class ForumMobileController extends BaseController {
 	     String forumId = Util.getRandomUUID();
 	     String forumUserFollowId = Util.getRandomUUID();
 	     
-	     String userAvatar = body.getUserAvatar();
-	     String userNickName = body.getUserNickName();
-	     String memberSignature = body.getMemberSignature();
+	     String forumModeratorUserAvatar = body.getUserAvatar();
+	     String forumModeratorUserNickName = body.getUserNickName();
+	     String forumModeratorMemberSignature = body.getMemberSignature();
 	     
 	     // 验证论坛名称的唯一性
 	     Boolean isRepeat = forumService.checkName(appId, body.getForumName());
@@ -144,10 +142,10 @@ public class ForumMobileController extends BaseController {
              ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
              // TODO 回来要删掉
              forumUserFollowView.setUserInfo(forumView.getForumModeratorInfo());
-             
-             forumUserFollowView.setUserAvatar(userAvatar);
-             forumUserFollowView.setUserNickName(userNickName);
-             forumUserFollowView.setMemberSignature(memberSignature);
+             forumUserFollowView.setForumModerator(memberId);
+             forumUserFollowView.setUserAvatar(forumModeratorUserAvatar);
+             forumUserFollowView.setUserNickName(forumModeratorUserNickName);
+             forumUserFollowView.setMemberSignature(forumModeratorMemberSignature);
              forumUserFollowView.setForumUserFollowIsTop(false);
              
              forumUserFollowService.save(forumUserFollowView);
@@ -158,7 +156,7 @@ public class ForumMobileController extends BaseController {
 	     return renderJson(success);
     }
 	 
-	@ApiOperation(value = "论坛信息(用于修改论坛信息的页面)")
+	@ApiOperation(value = "查询论坛信息")
     @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
 		Forum body = getEntry(Forum.class);
@@ -184,7 +182,7 @@ public class ForumMobileController extends BaseController {
         //判断请求用户是否是版主
         if (requestMemberId.equals(memberId)) {
         	forum.put(Forum.FORUM_USER_IS_MODERATOR, true);
-		}else {
+		} else {
 			forum.put(Forum.FORUM_USER_IS_MODERATOR, false);
 		}
         
@@ -201,7 +199,6 @@ public class ForumMobileController extends BaseController {
 				}
     		}
 		}
-        
         
         //根据论坛编号去forum_user_follow_map表查找此论坛的userId,然后查找用户头像,昵称,只返回前6个的头像和userId.
         List<ForumUserFollowView> forumUserFollows = 
@@ -302,18 +299,12 @@ public class ForumMobileController extends BaseController {
             List<ForumView> latestList = forumService.getLatestAndNotFollowListByMemberId(body.getAppId(), memberId, 0, pageSize);
             recommendList.addAll(latestList);
         }
-        
-        // TODO 处理论坛头像    =======这里的逻辑 以后不用rpc了
-//        String fileIds = Util.beanToFieldString(recommendList, Forum.FORUM_MEDIA);
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//        
-//        recommendList = Util.beanReplaceField(recommendList, Forum.FORUM_MEDIA, fileList, File.FILE_ID, File.FILE_PATH);
 
         validateResponse(
-                Forum.FORUM_ID,
-                Forum.FORUM_MEDIA,
-                Forum.FORUM_NAME,
-                Forum.FORUM_DESCRIPTION
+                ForumView.FORUM_ID,
+                ForumView.FORUM_MEDIA,
+                ForumView.FORUM_NAME,
+                ForumView.FORUM_DESCRIPTION
         );
         
         return renderJson(recommendList);
@@ -708,7 +699,13 @@ public class ForumMobileController extends BaseController {
 //	            topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
 	            
 	            // 处理评论是否自己发布
-	            topic.put(Topic.TOPIC_IS_SELF, memberId.equals(topic.getMemberId()));
+	            if (memberId.equals(topic.getMemberId())) {
+	            	topic.put(Topic.TOPIC_IS_SELF, true);
+				}else {
+					Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+					topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
+				}
+	            
 	        }
         }
         
@@ -733,9 +730,11 @@ public class ForumMobileController extends BaseController {
 	            Topic.TOPIC_USER_IS_LIKE,
 	            Topic.TOPIC_USER_LIKE_LIST,
 	            Topic.TOPIC_IS_SELF,
+	            MemberFollow.MEMBER_IS_FOLLOW,
 	            
                 User.USER_ID,
         		UserAvatar.USER_AVATAR_FILE_PATH,
+        		"userAvatar",
         		UserNickName.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		BaseEntity.SYSTEM_CREATE_TIME,
@@ -749,7 +748,7 @@ public class ForumMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
         validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
-        validateSecondResponse(TopicView.THE_SEND_INFO, UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
+        validateSecondResponse(TopicView.THE_SEND_INFO, "userAvatar", UserAvatar.USER_AVATAR_FILE_PATH, UserNickName.USER_NICK_NAME);
         
 
         return renderJson(countResult, topicList);

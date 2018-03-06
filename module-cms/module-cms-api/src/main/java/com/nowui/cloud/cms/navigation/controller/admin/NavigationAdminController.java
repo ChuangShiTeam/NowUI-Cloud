@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
-import com.nowui.cloud.cms.toolbar.entity.Toolbar;
+import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -46,9 +47,9 @@ public class NavigationAdminController extends BaseController {
         );
 
         Integer resultTotal = navigationService.countForAdmin(body.getAppId() , body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName());
-        List<Navigation> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
+        List<NavigationView> resultList = navigationService.listForAdmin(body.getAppId(), body.getNavigationCategoryCode(), body.getNavigationCode(), body.getNavigationName(), body.getM(), body.getN());
         
-        String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE);
+//        String fileIds = Util.beanToFieldString(resultList, Navigation.NAVIGATION_IMAGE_FILE_ID);
 //        List<File> fileList = fileRpc.findsV1(fileIds);
         
 //        resultList = Util.beanAddField(resultList, Navigation.NAVIGATION_IMAGE, fileList, File.FILE_PATH);
@@ -58,7 +59,8 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-//                File.FILE_PATH,
+                Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT
@@ -76,7 +78,7 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_ID
         );
 
-        Navigation result = navigationService.find(body.getNavigationId());
+        NavigationView result = navigationService.find(body.getNavigationId());
 
 //        File file = fileRpc.findV1(result.getNavigationImage());
 //        file.keep(File.FILE_ID, File.FILE_PATH);
@@ -87,7 +89,8 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-                Navigation.NAVIGATION_IMAGE,
+                Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT,
@@ -106,15 +109,29 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-                Navigation.NAVIGATION_IMAGE,
+                Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT
         );
 
-        Boolean result = navigationService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
+        Navigation result = navigationService.save(body, Util.getRandomUUID(), body.getSystemRequestUserId());
 
-        return renderJson(result);
+        Boolean success = false;
+        
+        if (result != null) {
+           
+        	// 保存导航栏视图信息到MongoDB
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.save(navigationView);
+        	
+            success = true;
+        }
+        return renderJson(success);
     }
 
     @ApiOperation(value = "修改导航栏")
@@ -127,16 +144,30 @@ public class NavigationAdminController extends BaseController {
                 Navigation.NAVIGATION_CATEGORY_CODE,
                 Navigation.NAVIGATION_CODE,
                 Navigation.NAVIGATION_NAME,
-                Navigation.NAVIGATION_IMAGE,
+                Navigation.NAVIGATION_IMAGE_FILE_ID,
+                Navigation.NAVIGATION_IMAGE_FILE_PATH,
                 Navigation.NAVIGATION_URL,
                 Navigation.NAVIGATION_POSITION,
                 Navigation.NAVIGATION_SORT,
                 Navigation.SYSTEM_VERSION
         );
 
-        Boolean result = navigationService.update(body, body.getNavigationId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Navigation result = navigationService.update(body, body.getNavigationId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
+        Boolean success = false;
+        
+        if (result != null) {
+        	
+        	// 更新导航栏视图信息到MongoDB
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.update(navigationView);
+           
+            success = true;
+        }
+        return renderJson(success);
     }
 
     @ApiOperation(value = "删除导航栏")
@@ -149,19 +180,22 @@ public class NavigationAdminController extends BaseController {
                 Navigation.SYSTEM_VERSION
         );
 
-        Boolean result = navigationService.delete(body.getNavigationId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        Navigation result = navigationService.delete(body.getNavigationId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
-        return renderJson(result);
-    }
-    
-    @ApiOperation(value = "导航栏重建缓存")
-    @RequestMapping(value = "/navigation/admin/v1/replace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody Navigation body) {
-        validateRequest(body, Navigation.NAVIGATION_ID);
-
-        navigationService.replace(body.getNavigationId());
-
-        return renderJson(true);
+        Boolean success = false;
+        
+        if (result != null) {
+        	
+        	// 删除MongoDB导航栏视图信息
+        	NavigationView navigationView = new NavigationView();
+            
+        	navigationView.putAll(result);
+            
+        	navigationService.delete(navigationView);
+           
+            success = true;
+        }
+        return renderJson(success);
     }
 
 }

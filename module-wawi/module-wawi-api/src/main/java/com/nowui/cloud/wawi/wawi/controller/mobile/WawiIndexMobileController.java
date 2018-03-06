@@ -68,18 +68,6 @@ public class WawiIndexMobileController extends BaseController {
             App.APP_ID
         );
         
-        // 获取首页BANNER列表
-        List<Advertisement> indexBannerList = advertisementRpc.listByCategoryCodeV1(body.getAppId(), "INDEX_BANNER");
-        
-        for (Advertisement advertisement : indexBannerList) {
-            advertisement.keep(
-                    Advertisement.ADVERTISEMENT_ID,
-                    File.FILE_PATH,
-                    Advertisement.ADVERTISEMENT_LINK,
-                    Advertisement.ADVERTISEMENT_TITLE
-            );
-        }
-        
         // 获取首页导航栏列表
         List<Navigation> indexNavigationList = navigationRpc.listByCategoryCodeV1(body.getAppId(), "INDEX");
         
@@ -113,7 +101,6 @@ public class WawiIndexMobileController extends BaseController {
         
         Map<String, Object> result = new HashMap<String, Object>();
         
-        result.put("indexBannerList", indexBannerList);
         result.put("indexNavigationList", indexNavigationList);
         result.put("petCategoryList", petCategoryList);
         result.put("recommendArticleList", recommendArticleList);
@@ -121,7 +108,6 @@ public class WawiIndexMobileController extends BaseController {
         result.put("latestArticleList", latestArticleList);
         
         validateResponse(
-                "indexBannerList", 
                 "indexNavigationList",
                 "petCategoryList",
                 "recommendArticleList",
@@ -144,8 +130,8 @@ public class WawiIndexMobileController extends BaseController {
         
         validateResponse(
                 Toolbar.TOOLBAR_ID,
-                Toolbar.TOOLBAR_IMAGE,
-                Toolbar.TOOLBAR_ACTIVE_IMAGE,
+                Toolbar.TOOLBAR_IMAGE_FILE_ID,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
                 Toolbar.TOOLBAR_URL,
                 Toolbar.TOOLBAR_NAME
         );

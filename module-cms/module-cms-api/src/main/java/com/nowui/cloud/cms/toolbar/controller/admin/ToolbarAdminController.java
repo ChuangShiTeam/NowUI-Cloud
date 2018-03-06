@@ -49,13 +49,13 @@ public class ToolbarAdminController extends BaseController {
         Integer resultTotal = toolbarService.countForAdmin(toolbarEntity.getAppId(), toolbarEntity.getToolbarName());
         List<Toolbar> resultList = toolbarService.listForAdmin(toolbarEntity.getAppId(), toolbarEntity.getToolbarName(), toolbarEntity.getM(), toolbarEntity.getN());
         //处理工具栏未激活图片
-        String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE);
+        String fileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_IMAGE_FILE_ID);
 //        List<File> fileList = fileRpc.findsV1(fileIds);
 
 //        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
 
         //处理工具栏激活图片
-        String activeFileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
+        String activeFileIds = Util.beanToFieldString(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID);
 //        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
 
 //        resultList = Util.beanReplaceField(resultList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
@@ -63,8 +63,8 @@ public class ToolbarAdminController extends BaseController {
         validateResponse(
                 Toolbar.TOOLBAR_ID,
                 Toolbar.TOOLBAR_NAME,
-                Toolbar.TOOLBAR_IMAGE,
-                Toolbar.TOOLBAR_ACTIVE_IMAGE,
+                Toolbar.TOOLBAR_IMAGE_FILE_ID,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
                 Toolbar.TOOLBAR_URL,
                 Toolbar.TOOLBAR_SORT
         );
@@ -92,8 +92,8 @@ public class ToolbarAdminController extends BaseController {
         validateResponse(
                 Toolbar.TOOLBAR_ID,
                 Toolbar.TOOLBAR_NAME,
-                Toolbar.TOOLBAR_ACTIVE_IMAGE,
-                Toolbar.TOOLBAR_IMAGE,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
+                Toolbar.TOOLBAR_IMAGE_FILE_ID,
                 Toolbar.TOOLBAR_SORT,
                 Toolbar.TOOLBAR_URL,
                 Toolbar.SYSTEM_VERSION
@@ -111,8 +111,8 @@ public class ToolbarAdminController extends BaseController {
                 toolbarEntity,
                 Toolbar.APP_ID,
                 Toolbar.TOOLBAR_NAME,
-                Toolbar.TOOLBAR_ACTIVE_IMAGE,
-                Toolbar.TOOLBAR_IMAGE,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
+                Toolbar.TOOLBAR_IMAGE_FILE_ID,
                 Toolbar.TOOLBAR_URL,
                 Toolbar.TOOLBAR_SORT
         );
@@ -140,8 +140,8 @@ public class ToolbarAdminController extends BaseController {
                 toolbarEntity,
                 Toolbar.TOOLBAR_ID,
                 Toolbar.TOOLBAR_NAME,
-                Toolbar.TOOLBAR_ACTIVE_IMAGE,
-                Toolbar.TOOLBAR_IMAGE,
+                Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
+                Toolbar.TOOLBAR_IMAGE_FILE_ID,
                 Toolbar.TOOLBAR_URL,
                 Toolbar.TOOLBAR_SORT,
                 Toolbar.SYSTEM_VERSION
