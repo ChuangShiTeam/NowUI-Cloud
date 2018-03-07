@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.nowui.cloud.member.member.router.MemberFollowRouter;
 import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
 

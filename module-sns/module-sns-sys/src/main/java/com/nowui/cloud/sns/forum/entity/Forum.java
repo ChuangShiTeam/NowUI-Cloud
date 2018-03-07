@@ -55,30 +55,30 @@ public class Forum extends BaseEntity {
     public static final String FORUM_NAME = "forumName";
     
     /**
+     * 版主(用户编号)
+     */
+    @TableField
+    @NotNull(message = "版主(用户编号)不能为空")
+    @Length(max = 32, message = "版主(用户编号)长度超出限制")
+    private String forumModeratorUserId;
+    public static final String FORUM_MODERATOR_USER_ID = "forumModeratorUserId";
+    
+    /**
      * 版主(会员编号)
      */
     @TableField
     @NotNull(message = "版主(会员编号)不能为空")
     @Length(max = 32, message = "版主(会员编号)长度超出限制")
-    private String forumModerator;
-    public static final String FORUM_MODERATOR = "forumModerator";
+    private String forumModeratorMemberId;
+    public static final String FORUM_MODERATOR_MEMBER_ID = "forumModeratorMemberId";
     
     /**
-     * TODO 由头像路径和昵称的字段全部替换完成后要删除掉
-     * 版主头像路径和昵称和签名
+     * 版主头像文件路径
      */
     @TableField(exist = false)
-    @NotNull(message = "版主头像路径和昵称和签名不能为空")
-    private JSONObject forumModeratorInfo;
-    public static final String FORUM_MODERATOR_INFO = "forumModeratorInfo";
-    
-    /**
-     * 版主头像
-     */
-    @TableField(exist = false)
-    @NotNull(message = "版主头像")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    @NotNull(message = "版主头像文件路径")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
     
     /**
      * 版主昵称
@@ -97,12 +97,20 @@ public class Forum extends BaseEntity {
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
     /**
-     * 论坛多媒体
+     * 论坛多媒体文件Id
      */
     @TableField
-    @NotNull(message = "论坛多媒体不能为空")
-    private String forumMedia;
-    public static final String FORUM_MEDIA = "forumMedia";
+    @NotNull(message = "论坛多媒体文件Id不能为空")
+    private String forumMediaId;
+    public static final String FORUM_MEDIA_ID = "forumMediaId";
+    
+    /**
+     * 论坛多媒体文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "论坛多媒体文件路径不能为空")
+    private String forumMediaFilePath;
+    public static final String FORUM_MEDIA_FILE_PATH = "forumMediaFilePath";
 
     /**
      * 论坛多媒体类型
@@ -114,12 +122,20 @@ public class Forum extends BaseEntity {
     public static final String FORUM_MEDIA_TYPE = "forumMediaType";
 
     /**
-     * 论坛背景
+     * 论坛背景文件Id
      */
     @TableField
-    @NotNull(message = "论坛背景不能为空")
-    private String forumBackgroundMedia;
-    public static final String FORUM_BACKGROUND_MEDIA = "forumBackgroundMedia";
+    @NotNull(message = "论坛背景文件Id不能为空")
+    private String forumBackgroundMediaId;
+    public static final String FORUM_BACKGROUND_MEDIA_ID = "forumBackgroundMediaId";
+    
+    /**
+     * 论坛背景文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "论坛背景文件路径不能为空")
+    private String forumBackgroundMediaFilePath;
+    public static final String FORUM_BACKGROUND_MEDIA_FILE_PATH = "forumBackgroundMediaFilePath";
 
     /**
      * 论坛背景类型
@@ -263,13 +279,21 @@ public class Forum extends BaseEntity {
     public void setAppId(String appId) {
         put(APP_ID, appId);
     }
-
-    public String getForumMedia() {
-        return getString(FORUM_MEDIA);
+    
+    public String getForumMediaId() {
+        return getString(FORUM_MEDIA_ID);
     }
     
-    public void setForumMedia(String forumMedia) {
-        put(FORUM_MEDIA, forumMedia);
+    public void setForumMediaId(String forumMediaId) {
+        put(FORUM_MEDIA_ID, forumMediaId);
+    }
+
+    public String getForumMediaFilePath() {
+        return getString(FORUM_MEDIA_FILE_PATH);
+    }
+    
+    public void setForumMediaFilePath(String forumMediaFilePath) {
+        put(FORUM_MEDIA_FILE_PATH, forumMediaFilePath);
     }
 
     public String getForumMediaType() {
@@ -280,12 +304,20 @@ public class Forum extends BaseEntity {
         put(FORUM_MEDIA_TYPE, forumMediaType);
     }
 
-    public String getForumBackgroundMedia() {
-        return getString(FORUM_BACKGROUND_MEDIA);
+    public String getForumBackgroundMediaId() {
+        return getString(FORUM_BACKGROUND_MEDIA_ID);
     }
     
-    public void setForumBackgroundMedia(String forumBackgroundMedia) {
-        put(FORUM_BACKGROUND_MEDIA, forumBackgroundMedia);
+    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
+        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
+    }
+    
+    public String getForumBackgroundMediaFilePath() {
+        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
+    }
+    
+    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
+        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
     }
 
     public String getForumBackgroundMediaType() {
@@ -311,29 +343,29 @@ public class Forum extends BaseEntity {
     public void setForumDescription(String forumDescription) {
         put(FORUM_DESCRIPTION, forumDescription);
     }
+    
+    public String getForumModeratorUserId() {
+    	return getString(FORUM_MODERATOR_USER_ID);
+	}
 
-    public String getForumModerator() {
-        return getString(FORUM_MODERATOR);
+	public void setForumModeratorUserId(String forumModeratorUserId) {
+		put(FORUM_MODERATOR_USER_ID, forumModeratorUserId);
+	}
+
+    public String getForumModeratorMemberId() {
+        return getString(FORUM_MODERATOR_MEMBER_ID);
     }
     
-    public void setForumModerator(String forumModerator) {
-        put(FORUM_MODERATOR, forumModerator);
+    public void setForumModeratorMemberId(String forumModeratorMemberId) {
+        put(FORUM_MODERATOR_MEMBER_ID, forumModeratorMemberId);
     }
-
-    public JSONObject getForumModeratorInfo() {
-        return getJSONObject(FORUM_MODERATOR_INFO);
+    
+	public String getUserAvatarFilePath() {
+		return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setForumModeratorInfo(JSONObject forumModeratorInfo) {
-        put(FORUM_MODERATOR_INFO, forumModeratorInfo);
-	}
-	
-	public String getUserAvatar() {
-		return getString(USER_AVATAR);
-	}
-
-	public void setUserAvatar(String userAvatar) {
-		put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
 
 	public String getUserNickName() {

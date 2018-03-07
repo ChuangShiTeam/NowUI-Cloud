@@ -19,10 +19,10 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
-import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
@@ -103,9 +103,8 @@ public class TopicUserLikeMobileController extends BaseController {
                 TopicUserLike.MEMBER_ID,
                 TopicUserLike.TOPIC_ID,
                 User.USER_ID,
-        		UserAvatar.USER_AVATAR_FILE_PATH,
-        		"userAvatar",
-        		UserNickName.USER_NICK_NAME,
+                TopicUserLike.USER_AVATAR_FILE_PATH,
+        		TopicUserLike.USER_NICK_NAME,
         		MemberFollow.MEMBER_IS_FOLLOW,
         		TopicUserLike.TOPIC_USER_LIKE_IS_SELF
         );
@@ -122,7 +121,11 @@ public class TopicUserLikeMobileController extends BaseController {
                 body,
                 TopicUserLike.APP_ID,
                 TopicUserLike.TOPIC_ID,
-                TopicUserLike.SYSTEM_REQUEST_USER_ID
+                TopicUserLike.SYSTEM_REQUEST_USER_ID,
+                
+                TopicUserLike.MEMBER_ID,
+                TopicUserLike.USER_AVATAR_FILE_PATH,
+                TopicUserLike.USER_NICK_NAME
         );
         
         String appId = body.getAppId();
@@ -132,7 +135,7 @@ public class TopicUserLikeMobileController extends BaseController {
         String requestMemberId = member.getMemberId();
         
         String userNickName = body.getUserNickName();
-        String userAvatar = body.getUserAvatar();
+        String userAvatar = body.getUserAvatarFilePath();
 
         TopicUserLikeView userLike = topicUserLikeService.findByTopicIdAndMemberId(topicId, requestMemberId);
         
@@ -158,10 +161,10 @@ public class TopicUserLikeMobileController extends BaseController {
             /**
              * 用户头像,用户昵称,
              */
-            TopicUserLikeView topicView = JSON.parseObject(result.toJSONString(), TopicUserLikeView.class);
-            topicView.setUserNickName(userNickName);
-            topicView.setUserAvatar(userAvatar);
-            topicUserLikeService.save(topicView);
+            TopicUserLikeView topicUserLikeView = JSON.parseObject(result.toJSONString(), TopicUserLikeView.class);
+            topicUserLikeView.setUserNickName(userNickName);
+            topicUserLikeView.setUserAvatarFilePath(userAvatar);
+            topicUserLikeService.save(topicUserLikeView);
             
             //sendMessage(result, TopicUserLikeRouter.TOPIC_USER_LIKE_V1_SAVE, appId, userId);
             success = true;

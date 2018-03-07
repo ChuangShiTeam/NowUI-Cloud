@@ -36,20 +36,60 @@ public class TopicUserBookmarkView extends BaseView {
     public static final String APP_ID = "appId";
 
     /**
-     * 话题Id
-     */
-    @Field
-    @NotNull(message = "话题Id不能为空")
-    private String topicId;
-    public static final String TOPIC_ID = "topicId";
-
-    /**
-     * 用户ID
+     * 会员ID
      */
     @Field
     @NotNull(message = "用户ID不能为空")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
+    
+    /**
+     * 动态Id
+     */
+    @Field
+    @NotNull(message = "动态Id不能为空")
+    private String topicId;
+    public static final String TOPIC_ID = "topicId";
+    
+    /**
+     * 发布动态的人的会员编号
+     */
+    @Field
+    @NotNull(message = "发布动态的人的会员编号不能为空")
+    private String topicMemberId;
+    public static final String TOPIC_MEMBER_ID = "topicMemberId";
+    
+    /**
+     * 发布动态的人的头像
+     */
+    @Field
+    @NotNull(message = "发布动态的人的头像不能为空")
+    private String topicUserAvatarFilePath;
+    public static final String TOPIC_USER_AVATAR_FILE_PATH = "topicUserAvatarFilePath";
+    
+    /**
+     * 发布动态的人的昵称
+     */
+    @Field
+    @NotNull(message = "发布动态的人的昵称不能为空")
+    private String topicUserNickName;
+    public static final String TOPIC_USER_NICK_NAME = "topicUserNickName";
+    
+    /**
+     * 动态的内容
+     */
+    @Field
+    @NotNull(message = "动态的内容不能为空")
+    private String topicSummary;
+    public static final String TOPIC_SUMMARY = "topicSummary";
+    
+    /**
+     * 动态的第一张图片文件路径
+     */
+    @Field
+    @NotNull(message = "动态的第一张图片文件路径不能为空")
+    private String topicFirstMediaFilePath;
+    public static final String TOPIC_FIRST_MEDIA_FILE_PATH = "topicFirstMediaFilePath";
 
 
     public String getTopicUserBookmarkId() {
@@ -84,5 +124,44 @@ public class TopicUserBookmarkView extends BaseView {
         put(MEMBER_ID, memberId);
     }
 
+	public String getTopicMemberId() {
+		return getString(TOPIC_MEMBER_ID);
+	}
+
+	public void setTopicMemberId(String topicMemberId) {
+		put(TOPIC_MEMBER_ID, topicMemberId);
+	}
+
+	public String getTopicUserAvatarFilePath() {
+		return getString(TOPIC_USER_AVATAR_FILE_PATH);
+	}
+
+	public void setTopicUserAvatarFilePath(String topicUserAvatarFilePath) {
+		put(TOPIC_USER_AVATAR_FILE_PATH, topicUserAvatarFilePath);
+	}
+
+	public String getTopicUserNickName() {
+		return getString(TOPIC_USER_NICK_NAME);
+	}
+
+	public void setTopicUserNickName(String topicUserNickName) {
+		put(TOPIC_USER_NICK_NAME, topicUserNickName);
+	}
+
+	public String getTopicSummary() {
+		return getString(TOPIC_SUMMARY);
+	}
+
+	public void setTopicSummary(String topicSummary) {
+		put(TOPIC_SUMMARY, topicSummary);
+	}
+
+	public String getTopicFirstMediaFilePath() {
+		return getString(TOPIC_FIRST_MEDIA_FILE_PATH);
+	}
+
+	public void setTopicFirstMediaFilePath(String topicFirstMedia) {
+		put(TOPIC_FIRST_MEDIA_FILE_PATH, topicFirstMedia);
+	}
 
 }

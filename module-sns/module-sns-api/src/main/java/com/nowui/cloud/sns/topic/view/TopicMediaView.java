@@ -44,12 +44,20 @@ public class TopicMediaView extends BaseView {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 多媒体
+     * 多媒体图片文件id
      */
     @Field
-    @NotNull(message = "多媒体不能为空")
-    private String topicMedia;
-    public static final String TOPIC_MEDIA = "topicMedia";
+    @NotNull(message = "多媒体图片文件id不能为空")
+    private String topicMediaFileId;
+    public static final String TOPIC_MEDIA_FILE_ID = "topicMediaFileId";
+    
+    /**
+     * 多媒体图片文件路径
+     */
+    @Field
+    @NotNull(message = "多媒体图片文件路径不能为空")
+    private String topicMediaFilePath;
+    public static final String TOPIC_MEDIA_FILE_PATH = "topicMediaFilePath";
 
     /**
      * 多媒体类型
@@ -92,12 +100,20 @@ public class TopicMediaView extends BaseView {
         put(TOPIC_ID, topicId);
     }
 
-    public String getTopicMedia() {
-        return getString(TOPIC_MEDIA);
+    public String getTopicMediaFileId() {
+        return getString(TOPIC_MEDIA_FILE_ID);
     }
 
-    public void setTopicMedia(String topicMedia) {
-        put(TOPIC_MEDIA, topicMedia);
+    public void setTopicMediaFileId(String topicMediaFileId) {
+        put(TOPIC_MEDIA_FILE_ID, topicMediaFileId);
+    }
+    
+    public String getTopicMediaFilePath() {
+        return getString(TOPIC_MEDIA_FILE_PATH);
+    }
+
+    public void setTopicMediaFilePath(String topicMediaFilePath) {
+        put(TOPIC_MEDIA_FILE_PATH, topicMediaFilePath);
     }
 
     public String getTopicMediaType() {

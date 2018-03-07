@@ -71,7 +71,6 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 		}
 
         body.setMemberId(memberId);
-//      Boolean result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, userId);
         TopicUserUnbookmark result = topicUserUnbookmarkService.save(body, Util.getRandomUUID(), requestUserId);
         
         boolean success = false;
@@ -81,7 +80,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
             TopicUserBookmark userBookmark = topicUserBookmarkService.deleteByTopicIdAndMemberId(topicId, memberId, body.getAppId(), requestUserId);
             
             if (userBookmark != null) {
-            	//TODO 删除收藏记录
+            	// 删除收藏记录
                 TopicUserBookmarkView bookmarkView = JSON.parseObject(userBookmark.toJSONString(), TopicUserBookmarkView.class);
                 topicUserBookmarkService.delete(bookmarkView);
 			}

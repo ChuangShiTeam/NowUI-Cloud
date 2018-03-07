@@ -93,7 +93,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.FORUM_CATEGORY_IS_RECOMMEND
         );
 
-//  TODO admin论坛分类      Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), body.getSystemRequestUserId());
+//   admin论坛分类      Boolean result = forumCategoryService.save(body, Util.getRandomUUID(), body.getAppId(), body.getSystemRequestUserId());
 
         return renderJson(null);
     }
@@ -113,7 +113,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-// TODO admin论坛分类       Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+//  admin论坛分类       Boolean result = forumCategoryService.update(body, body.getForumCategoryId(), body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }
@@ -128,7 +128,7 @@ public class ForumCategoryAdminController extends BaseController {
                 ForumCategory.SYSTEM_VERSION
         );
 
-// TODO admin论坛分类      Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
+//  admin论坛分类      Boolean result = forumCategoryService.delete(body.getForumCategoryId(),body.getAppId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         return renderJson(null);
     }

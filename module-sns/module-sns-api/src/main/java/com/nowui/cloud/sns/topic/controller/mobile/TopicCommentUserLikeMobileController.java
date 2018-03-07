@@ -86,9 +86,8 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         	
         	TopicCommentUserUnlike commentUserUnlike = topicCommentUserUnlikeService.deleteByCommentIdAndMemberId(commentId, appId, memberId, requestUserId);
     		
-        	/**
-        	 * 向MongoDB中保存数据
-        	 */
+        	// 向MongoDB中保存数据
+        	
         	if (commentUserUnlike != null) {
 				// 删除MongoDB中的取消点赞记录
         		TopicCommentUserUnlikeView userUnlikeView = JSON.parseObject(commentUserUnlike.toJSONString(), TopicCommentUserUnlikeView.class);

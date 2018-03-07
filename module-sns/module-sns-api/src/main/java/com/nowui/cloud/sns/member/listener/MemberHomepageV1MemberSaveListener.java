@@ -73,6 +73,9 @@ public class MemberHomepageV1MemberSaveListener {
             	homepageView.setMemberBeFollowCount(0);
             	homepageView.setMemberFollowCount(0);
             	homepageView.setMemberSendTopicCount(0);
+            	homepageView.setMemberSignature("");
+            	// TODO 个人主页背景图片
+            	homepageView.setMemberBackgroundFilePath(homepageView.getUserAvatarFilePath());
             	
             	memberHomepageService.save(homepageView);
             }

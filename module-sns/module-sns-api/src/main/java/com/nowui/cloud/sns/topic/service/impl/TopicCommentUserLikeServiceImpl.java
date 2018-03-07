@@ -65,21 +65,10 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 
 	@Override
 	public TopicCommentUserLikeView findTheCommentUserLike(String appId, String commentId, String memberId) {
-//		List<TopicCommentUserLike> topicCommentUserLikeList = list(
-//                new BaseWrapper<TopicCommentUserLike>()
-//                        .likeAllowEmpty(TopicCommentUserLike.COMMENT_ID, commentId)
-//                        .likeAllowEmpty(TopicCommentUserLike.USER_ID, userId)
-//                        .eq(TopicCommentUserLike.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicCommentUserLike.SYSTEM_CREATE_TIME))
-//        );
-//		if (topicCommentUserLikeList == null || topicCommentUserLikeList.size() == 0) {
-//			return null;
-//		}
-//        return topicCommentUserLikeList.get(0);
 		
 		Criteria criteria = Criteria.where(TopicCommentUserLikeView.APP_ID).is(appId)
-                .and(TopicCommentUserLikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
-                .and(TopicCommentUserLikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
+                .and(TopicCommentUserLikeView.COMMENT_ID).is(commentId)
+                .and(TopicCommentUserLikeView.MEMBER_ID).is(memberId)
                 .and(TopicCommentUserLikeView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -107,31 +96,13 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 			return null;
 		}
 		// 有: 删除
-//TODO 后面处理消息  	Boolean delete = delete(userLike.getCommentUserLikeId(), appId, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_DELETE, userId, userLike.getSystemVersion());
 		TopicCommentUserLike result = delete(userLike.getCommentUserLikeId(), systemRequestUserId, userLike.getSystemVersion());
-		
-//	TODO 没有处理点赞数量 	if (delete) {
-//			Integer count = countByCommentIdWithRedis(commentId);
-//			redisTemplate.opsForValue().set(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId, (count - 1));
-//		}
-		
-		
-		// TODO 返回不了实体类id,所以不用这个方法删除
-//		TopicCommentUserLike deleteresult = delete(
-//				new BaseWrapper<TopicCommentUserLike>()
-//                .eq(TopicCommentUserUnlike.APP_ID, appId)
-//                .eq(TopicCommentUserUnlike.COMMENT_ID, commentId)
-//                .eq(TopicCommentUserUnlike.USER_ID, userId)
-//                .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
-//				, systemRequestUserId
-//			);
 		
 		if (result != null) {
 			return result;
 		}else {
 			return null;
 		}
-		
 	}
 
 	@Override
@@ -141,17 +112,6 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 		body.setCommentId(commentId);
 		body.setMemberId(memberId);
 		
-//		Boolean result = save(body, appId, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
-//		
-//		if (result) {
-//			//往缓存中存一份
-//			//先从缓存中取出原来的点赞数量
-//	TODO 后面处理点赞数量		Integer count = countByCommentIdWithRedis(commentId);
-//			
-//			//+1,然后放入缓存
-//			redisTemplate.opsForValue().set(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId, (count + 1));
-//		}
-		
 		TopicCommentUserLike result = save(body, Util.getRandomUUID(), systemRequestUserId);
 		
 		return result;
@@ -159,24 +119,9 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 
 	@Override
 	public Integer countByCommentIdWithRedis(String appId, String commentId) {
-//		//先从缓存中查询有没有记录
-//		Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId);
-//		
-//		//没有就从数据库查询
-//		if (count == null) {
-//			count = count(
-//                new BaseWrapper<TopicCommentUserLike>()
-//                        .likeAllowEmpty(TopicCommentUserLike.COMMENT_ID, commentId)
-//                        .eq(TopicCommentUserLike.SYSTEM_STATUS, true)
-//	        );
-//			//查询后,把结果放入缓存
-//			redisTemplate.opsForValue().set(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId, count);
-//		}
-//		// 有: 就直接返回
-//		return count;
 		
 		Criteria criteria = Criteria.where(TopicCommentUserLikeView.APP_ID).is(appId)
-                .and(TopicCommentUserLikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
+                .and(TopicCommentUserLikeView.COMMENT_ID).is(commentId)
                 .and(TopicCommentUserLikeView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -193,28 +138,17 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 		List<TopicCommentUserLikeView> likeList = listByCommentIdWithoutPage(commentId);
 		//然后删除所有记录
 		if (!Util.isNullOrEmpty(likeList)) {
-//			likeList.stream().forEach(commentUserLike -> delete(commentUserLike.getCommentUserLikeId(), appId, TopicCommentUserLikeRouter.TOPIC_COMMENT_USER_LIKE_V1_SAVE , systemRequestUserId, commentUserLike.getSystemVersion()));
 			likeList.stream().forEach(commentUserLike -> delete(commentUserLike.getCommentUserLikeId(), systemRequestUserId, commentUserLike.getSystemVersion()));
 			
 		}
-		//从redis中此commentId的点赞数
-//		Boolean delete = redisTemplate.delete(TOPIC_COMMENT_USER_LIKE_COUNT_BY_COMMENT_ID + commentId);
 
 		return true;
 	}
 
 	@Override
 	public List<TopicCommentUserLikeView> listByCommentIdWithoutPage(String commentId) {
-//		List<TopicCommentUserLike> topicCommentUserLikeList = list(
-//                new BaseWrapper<TopicCommentUserLike>()
-//                        .eq(TopicCommentUserLike.COMMENT_ID, commentId)
-//                        .eq(TopicCommentUserLike.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicCommentUserLike.SYSTEM_CREATE_TIME))
-//        );
-//
-//        return topicCommentUserLikeList;
 		
-		Criteria criteria = Criteria.where(TopicCommentUserLikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
+		Criteria criteria = Criteria.where(TopicCommentUserLikeView.COMMENT_ID).is(commentId)
                 .and(TopicCommentUserLikeView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();

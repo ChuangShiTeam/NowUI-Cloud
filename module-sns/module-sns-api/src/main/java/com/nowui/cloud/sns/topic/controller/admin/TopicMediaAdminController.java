@@ -38,19 +38,19 @@ public class TopicMediaAdminController extends BaseController {
                 body,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_ID,
                 TopicMedia.TOPIC_MEDIA_TYPE,
                 TopicMedia.PAGE_INDEX,
                 TopicMedia.PAGE_SIZE
         );
 
-        Integer resultTotal = topicMediaService.countForAdmin(body.getAppId() , body.getTopicId(), body.getTopicMedia(), body.getTopicMediaType());
-        List<TopicMedia> resultList = topicMediaService.listForAdmin(body.getAppId(), body.getTopicId(), body.getTopicMedia(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicMediaService.countForAdmin(body.getAppId() , body.getTopicId(), body.getTopicMediaFilePath(), body.getTopicMediaType());
+        List<TopicMedia> resultList = topicMediaService.listForAdmin(body.getAppId(), body.getTopicId(), body.getTopicMediaFilePath(), body.getTopicMediaType(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_PATH,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -63,15 +63,15 @@ public class TopicMediaAdminController extends BaseController {
         validateRequest(
                 body,
                 TopicMedia.APP_ID,
-                TopicMedia.TOPIC_MEDIA
+                TopicMedia.TOPIC_MEDIA_FILE_PATH
         );
 
         TopicMediaView result = topicMediaService.find(body.getTopicMediaId());
 
         validateResponse(
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_PATH,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_ID,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -85,7 +85,7 @@ public class TopicMediaAdminController extends BaseController {
                 body,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_ID,
                 TopicMedia.TOPIC_MEDIA_TYPE
         );
 
@@ -100,10 +100,10 @@ public class TopicMediaAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_ID,
                 TopicMedia.APP_ID,
                 TopicMedia.TOPIC_ID,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_PATH,
                 TopicMedia.TOPIC_MEDIA_TYPE,
                 TopicMedia.SYSTEM_VERSION
         );
@@ -119,7 +119,7 @@ public class TopicMediaAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody TopicMedia body) {
         validateRequest(
                 body,
-                TopicMedia.TOPIC_MEDIA,
+                TopicMedia.TOPIC_MEDIA_FILE_ID,
                 TopicMedia.APP_ID,
                 TopicMedia.SYSTEM_VERSION
         );

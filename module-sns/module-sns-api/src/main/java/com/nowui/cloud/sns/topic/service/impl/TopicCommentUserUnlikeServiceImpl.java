@@ -75,16 +75,6 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
 //		Boolean delete = delete(userUnlike.getCommentUserUnlikeId(), appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_DELETE, systemRequestUserId, userUnlike.getSystemVersion());
 		TopicCommentUserUnlike result = delete(userUnlike.getCommentUserUnlikeId(), systemRequestUserId, userUnlike.getSystemVersion());
 		
-		// TODO 因为不能返回实体id,所以不用这个方法
-//		TopicCommentUserUnlike deleteresult = delete(
-//				new BaseWrapper<TopicCommentUserUnlike>()
-//                .eq(TopicCommentUserUnlike.APP_ID, appId)
-//                .eq(TopicCommentUserUnlike.COMMENT_ID, commentId)
-//                .eq(TopicCommentUserUnlike.USER_ID, userId)
-//                .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
-//				, systemRequestUserId
-//			);
-		
 		if (result != null) {
 			return result;
 		}else {
@@ -94,22 +84,10 @@ public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCom
 
 	@Override
 	public TopicCommentUserUnlikeView findTheCommentUserUnlike(String appId, String commentId, String memberId) {
-//		List<TopicCommentUserUnlike> topicCommentUserUnlikeList = list(
-//                new BaseWrapper<TopicCommentUserUnlike>()
-//                        .likeAllowEmpty(TopicCommentUserUnlike.COMMENT_ID, commentId)
-//                        .likeAllowEmpty(TopicCommentUserUnlike.USER_ID, userId)
-//                        .eq(TopicCommentUserUnlike.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicCommentUserUnlike.SYSTEM_CREATE_TIME))
-//        );
-//		if (topicCommentUserUnlikeList == null || topicCommentUserUnlikeList.size() == 0) {
-//			return null;
-//		}
-//        return topicCommentUserUnlikeList.get(0);
-//	}
 		
 		Criteria criteria = Criteria.where(TopicCommentUserUnlikeView.APP_ID).is(appId)
-                .and(TopicCommentUserUnlikeView.COMMENT_ID).regex(".*?" + commentId + ".*")
-                .and(TopicCommentUserUnlikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
+                .and(TopicCommentUserUnlikeView.COMMENT_ID).is(commentId)
+                .and(TopicCommentUserUnlikeView.MEMBER_ID).is(memberId)
                 .and(TopicCommentUserUnlikeView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);

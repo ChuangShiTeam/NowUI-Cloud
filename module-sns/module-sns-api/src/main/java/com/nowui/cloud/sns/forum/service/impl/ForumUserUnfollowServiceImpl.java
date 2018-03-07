@@ -59,22 +59,10 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 
 	@Override
 	public ForumUserUnfollowView findByMemberIdAndForumId(String appId, String memberId, String forumId) {
-//		List<ForumUserUnfollow> forumUserUnfollowList = list(
-//                new BaseWrapper<ForumUserUnfollow>()
-//                        .eqAllowEmpty(ForumUserUnfollow.APP_ID, appId)
-//                        .eq(ForumUserUnfollow.USER_ID, userId)
-//                        .eq(ForumUserUnfollow.FORUM_ID, forumId)
-//                        .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(ForumUserUnfollow.SYSTEM_CREATE_TIME))
-//        );
-//		if (forumUserUnfollowList == null || forumUserUnfollowList.size() == 0) {
-//			return null;
-//		}
-//		return forumUserUnfollowList.get(0);
 		
 		Criteria criteria = Criteria.where(ForumUserUnfollowView.APP_ID).is(appId)
-                .and(ForumUserUnfollowView.MEMBER_ID).regex(".*?" + memberId + ".*")
-                .and(ForumUserUnfollowView.FORUM_ID).regex(".*?" + forumId + ".*")
+                .and(ForumUserUnfollowView.MEMBER_ID).is(memberId)
+                .and(ForumUserUnfollowView.FORUM_ID).is(forumId)
                 .and(ForumUserUnfollowView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -94,25 +82,6 @@ public class ForumUserUnfollowServiceImpl extends SuperServiceImpl<ForumUserUnfo
 
 	@Override
 	public ForumUserUnfollow deleteByForumId(String appId, String forumId, String systemUpdateUserId) {
-//		List<ForumUserUnfollow> forumUserUnfollowList = list(
-//                new BaseWrapper<ForumUserUnfollow>()
-//                        .eq(ForumUserUnfollow.APP_ID, appId)
-//                        .eq(ForumUserUnfollow.FORUM_ID, forumId)
-//                        .eq(ForumUserUnfollow.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(ForumUserUnfollow.SYSTEM_CREATE_TIME))
-//        );
-//		//如果没有记录就返回true
-//		if (forumUserUnfollowList == null || forumUserUnfollowList.size() == 0) {
-//			return true;
-//		}
-//		
-//		//遍历
-//		for (ForumUserUnfollow forumUserUnfollow : forumUserUnfollowList) {
-//			Boolean delete = delete(forumUserUnfollow.getForumUserUnfollowId(), appId, systemUpdateUserId, forumUserUnfollow.getSystemVersion());
-//			if (delete == false) {
-//				return false;
-//			}
-//		}
 		
 		ForumUserUnfollow userUnfollow = delete(
 				new BaseWrapper<ForumUserUnfollow>()

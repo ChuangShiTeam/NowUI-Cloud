@@ -67,8 +67,8 @@ public class TopicCommentView extends BaseView {
      */
     @Field
     @NotNull(message = "发评论的用户头像不能为空")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
 
     /**
      * 被回复的评论的id
@@ -79,12 +79,20 @@ public class TopicCommentView extends BaseView {
     public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
 
     /**
-     * 被回复人
+     * 被回复人的会员编号
      */
     @Field
     @NotNull(message = "被回复人不能为空")
-    private String topicReplayMemberId;
-    public static final String TOPIC_REPLAY_MEMBER_ID = "topicReplayMemberId";
+    private String topicReplyMemberId;
+    public static final String TOPIC_REPLY_MEMBER_ID = "topicReplyMemberId";
+    
+    /**
+     * 被回复人的用户昵称
+     */
+    @Field
+    @NotNull(message = "被回复人的用户昵称不能为空")
+    private String topicReplyUserNickName;
+    public static final String TOPIC_REPLY_USER_NICKNAME = "topicReplyUserNickName";
 
     /**
      * 话题评论内容
@@ -135,12 +143,12 @@ public class TopicCommentView extends BaseView {
         put(USER_NICK_NAME, userNickName);
 	}
 
-	public String getUserAvatar() {
-        return getString(USER_AVATAR);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
 
     public String getTopicReplyCommentId() {
@@ -151,12 +159,20 @@ public class TopicCommentView extends BaseView {
         put(TOPIC_REPLY_COMMENT_ID, topicReplyCommentId);
     }
 
-    public String getTopicReplayMemberId() {
-        return getString(TOPIC_REPLAY_MEMBER_ID);
+    public String getTopicReplyMemberId() {
+        return getString(TOPIC_REPLY_MEMBER_ID);
     }
 
-    public void setTopicReplayMemberId(String topicReplayMemberId) {
-        put(TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId);
+    public void setTopicReplyMemberId(String topicReplyMemberId) {
+        put(TOPIC_REPLY_MEMBER_ID, topicReplyMemberId);
+    }
+    
+    public String getTopicReplyUserNickName() {
+        return getString(TOPIC_REPLY_USER_NICKNAME);
+    }
+
+    public void setTopicReplyUserNickName(String topicReplyUserNickName) {
+        put(TOPIC_REPLY_USER_NICKNAME, topicReplyUserNickName);
     }
 
     public String getTopicCommentContent() {

@@ -10,13 +10,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.mapper.MemberFollowMapper;
 import com.nowui.cloud.member.member.repository.MemberFollowRepository;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
 
 /**
  * 会员关注业务实现

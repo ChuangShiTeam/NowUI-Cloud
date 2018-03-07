@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.MemberFollow;
 import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.member.member.view.MemberView;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;

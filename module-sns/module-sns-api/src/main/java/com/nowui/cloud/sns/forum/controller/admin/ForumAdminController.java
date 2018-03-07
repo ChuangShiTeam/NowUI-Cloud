@@ -104,13 +104,13 @@ public class ForumAdminController extends BaseController {
 
        validateResponse(
             Forum.FORUM_ID,
-            Forum.FORUM_MEDIA,
+            Forum.FORUM_MEDIA_FILE_PATH,
             Forum.FORUM_MEDIA_TYPE,
-            Forum.FORUM_BACKGROUND_MEDIA,
+            Forum.FORUM_BACKGROUND_MEDIA_FILE_PATH,
             Forum.FORUM_BACKGROUND_MEDIA_TYPE,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_MODERATOR,
+            Forum.FORUM_MODERATOR_MEMBER_ID,
             Forum.FORUM_LOCATION,
             Forum.FORUM_SORT,
             Forum.FORUM_IS_TOP,
@@ -155,13 +155,13 @@ public class ForumAdminController extends BaseController {
 
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA,
+                Forum.FORUM_MEDIA_FILE_PATH,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA,
+                Forum.FORUM_BACKGROUND_MEDIA_FILE_PATH,
                 Forum.FORUM_BACKGROUND_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR,
+                Forum.FORUM_MODERATOR_MEMBER_ID,
                 Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,
@@ -181,7 +181,7 @@ public class ForumAdminController extends BaseController {
         validateRequest(
             body,
             Forum.APP_ID,
-            Forum.FORUM_MEDIA,
+            Forum.FORUM_MEDIA_FILE_PATH,
             Forum.FORUM_MEDIA_TYPE,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
@@ -194,9 +194,9 @@ public class ForumAdminController extends BaseController {
       );
 
       body.setForumMediaType(FileType.IMAGE.getKey());
-      body.setForumBackgroundMedia(body.getForumMedia());
+      body.setForumBackgroundMediaFilePath(body.getForumMediaFilePath());
       body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
-      body.setForumModerator(body.getSystemRequestUserId());
+      body.setForumModeratorMemberId(body.getSystemRequestUserId());
       body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
       body.setForumAuditContent("");
 
@@ -222,13 +222,13 @@ public class ForumAdminController extends BaseController {
                 body,
                 Forum.FORUM_ID,
                 Forum.APP_ID,
-                Forum.FORUM_MEDIA,
+                Forum.FORUM_MEDIA_FILE_PATH,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA,
+                Forum.FORUM_BACKGROUND_MEDIA_FILE_PATH,
                 Forum.FORUM_BACKGROUND_MEDIA_TYPE,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR,
+                Forum.FORUM_MODERATOR_MEMBER_ID,
                 Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,

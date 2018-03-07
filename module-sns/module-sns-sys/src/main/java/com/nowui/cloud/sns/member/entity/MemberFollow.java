@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.entity;
+package com.nowui.cloud.sns.member.entity;
 
 import javax.validation.constraints.NotNull;
 
