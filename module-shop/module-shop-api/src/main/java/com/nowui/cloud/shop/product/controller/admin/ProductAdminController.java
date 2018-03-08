@@ -87,10 +87,10 @@ public class ProductAdminController extends BaseController {
                 Product.PRODUCT_IMAGE_ID
         );
 
-        ProductView productView = getEntry(ProductView.class);
+        ProductView productViewValidate = getEntry(ProductView.class);
 
         validateRequest(
-                productView,
+                productViewValidate,
                 ProductView.PRODUCT_CATEGORY_NAME,
                 ProductView.PRODUCT_IMAGE_PATH
         );
@@ -100,7 +100,7 @@ public class ProductAdminController extends BaseController {
         Product result = productService.save(productEntity, productId, productEntity.getSystemRequestUserId());
 
         if (result != null) {
-            productView = new ProductView();
+            ProductView productView = new ProductView();
             productView.putAll(result);
 
             productService.save(productView);
@@ -124,10 +124,10 @@ public class ProductAdminController extends BaseController {
                 ProductView.SYSTEM_VERSION
         );
 
-        ProductView productView = getEntry(ProductView.class);
+        ProductView productViewValidate = getEntry(ProductView.class);
 
         validateRequest(
-                productView,
+                productViewValidate,
                 ProductView.PRODUCT_CATEGORY_NAME,
                 ProductView.PRODUCT_IMAGE_PATH
         );
@@ -135,7 +135,7 @@ public class ProductAdminController extends BaseController {
         Product result = productService.update(productEntity, productEntity.getProductId(), productEntity.getSystemRequestUserId(), productEntity.getSystemVersion());
 
         if (result != null) {
-            productView = new ProductView();
+            ProductView productView = new ProductView();
             productView.putAll(result);
 
             productService.update(productView);
