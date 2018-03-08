@@ -65,7 +65,7 @@ public class ProductView extends BaseView {
      */
     @Field
     @NotNull(message = "商品图片路径不能为空")
-    @Length(max = 32, message = "商品图片路径长度超出限制")
+    @Length(max = 200, message = "商品图片路径长度超出限制")
     private String productImagePath;
     public static final String PRODUCT_IMAGE_PATH = "productImagePath";
 
