@@ -109,8 +109,7 @@ public class ForumMobileController extends BaseController {
          );
 	     String appId = body.getAppId();
 	     String requestUserId = body.getSystemRequestUserId();
-	     MemberView member = memberRpc.findByUserIdV1(requestUserId);
-	     String forumModeratormemberId = member.getMemberId();
+	     String forumModeratormemberId = body.getForumModeratorMemberId();
 	     
 	     String forumId = Util.getRandomUUID();
 	     String forumUserFollowId = Util.getRandomUUID();
@@ -290,12 +289,12 @@ public class ForumMobileController extends BaseController {
                 body,
                 Forum.APP_ID,
                 Forum.PAGE_SIZE,
-                Forum.SYSTEM_REQUEST_USER_ID
+                Forum.SYSTEM_REQUEST_USER_ID,
+                Forum.REQUEST_MEMBER_ID
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getRequestMemberId();
         
         // TODO 这个查的mysql 查询编辑推荐的且用户没有关注过的论坛
         List<ForumView> recommendList = forumService.getRandomRecommendAndNotFollowListByMemberId(body.getAppId(), memberId, body.getPageSize());
@@ -335,7 +334,7 @@ public class ForumMobileController extends BaseController {
 	   
 	    ForumView forum = forumService.find(body.getForumId());
 	    if (!forum.getForumModeratorMemberId().equals(memberId)) {
-	    return renderJson(false);
+	    	return renderJson(false);
 		}
 	    
 	   //不清楚是否单独写一个更改背景图片的接口
