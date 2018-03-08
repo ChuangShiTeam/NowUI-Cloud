@@ -19,7 +19,6 @@ import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
-import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -32,6 +31,8 @@ import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
@@ -69,6 +70,9 @@ public class ForumMobileController extends BaseController {
 	 
 	 @Autowired
 	 private ForumUserUnfollowService forumUserUnfollowService;
+	 
+	 @Autowired
+	 private MemberFollowService memberFollowService;
 	 
      @Autowired
      private MemberRpc memberRpc;
@@ -644,7 +648,8 @@ public class ForumMobileController extends BaseController {
 	            if (memberId.equals(topic.getMemberId())) {
 	            	topic.put(Topic.TOPIC_IS_SELF, true);
 				}else {
-					Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+//					Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+					Boolean isFollow = memberFollowService.checkIsFollow(requestUserId, topic.getSystemCreateUserId());
 					topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
 				}
 	        }

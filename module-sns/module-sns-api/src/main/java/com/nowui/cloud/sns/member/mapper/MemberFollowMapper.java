@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.mapper;
+package com.nowui.cloud.sns.member.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
 import com.nowui.cloud.sns.member.entity.MemberFollow;

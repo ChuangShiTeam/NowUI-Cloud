@@ -1,11 +1,6 @@
 package com.nowui.cloud.sns.member.service.impl;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -16,8 +11,6 @@ import com.nowui.cloud.sns.member.repository.MemberHomepageRepository;
 import com.nowui.cloud.sns.member.service.MemberHomepageService;
 import com.nowui.cloud.sns.member.view.MemberHomepageView;
 import com.nowui.cloud.sns.topic.entity.MemberHomepage;
-import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
-import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.util.Util;
 
 /**

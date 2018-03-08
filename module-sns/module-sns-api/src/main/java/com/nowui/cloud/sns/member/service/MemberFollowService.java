@@ -1,9 +1,9 @@
-package com.nowui.cloud.member.member.service;
+package com.nowui.cloud.sns.member.service;
 import java.util.List;
 
-import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 /**
  * 会员关注业务接口

@@ -28,14 +28,16 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.entity.MemberSignature;
-import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
 import com.nowui.cloud.sns.member.service.MemberHomepageService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 import com.nowui.cloud.sns.member.view.MemberHomepageView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
@@ -100,6 +102,9 @@ public class TopicMobileController extends BaseController {
     
     @Autowired
     private MemberFollowRpc memberFollowRpc;
+    
+    @Autowired
+    private MemberFollowService memberFollowService;
     
     @Autowired
     private TopicUserLikeService topicUserLikeService;
@@ -191,7 +196,8 @@ public class TopicMobileController extends BaseController {
         // TODO 不能这样写,得优化, 请求用户是否关注对方
         MemberHomepageView otherHomepageView = memberHomepageService.findByMemberId(appId, otherMemberId);
         
-        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, otherHomepageView.getUserId());
+//        Boolean memberIsFollow = memberFollowRpc.checkIsFollowV1(requestUserId, otherHomepageView.getUserId());
+        Boolean memberIsFollow = memberFollowService.checkIsFollow(requestUserId, otherHomepageView.getUserId());
         memberHomepageView.put(MemberFollow.MEMBER_IS_FOLLOW, memberIsFollow);
         
         // TODO 我的宠物
@@ -442,7 +448,8 @@ public class TopicMobileController extends BaseController {
             // 验证话题发布者是否自己
             topic.put(Topic.TOPIC_IS_SELF, true);
         }else {
-        	Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+//        	Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
+        	Boolean isFollow = memberFollowService.checkIsFollow(requestUserId, topic.getSystemCreateUserId());
         	topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
         }
         
@@ -517,8 +524,12 @@ public class TopicMobileController extends BaseController {
         String appId = body.getAppId();
         
         // 用户关注的人的编号列表  
-        List<String> followUserIdList = memberFollowRpc.followUserIdList(requestUserId);
-        
+//        List<String> followUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+        List<String> followUserIdList = new ArrayList<>();
+        List<MemberFollowView> memberFollowViewList = memberFollowService.listByUserId(requestUserId);
+        if (memberFollowViewList != null || memberFollowViewList.size() != 0) {
+        	followUserIdList = memberFollowViewList.stream().map(memberFollowView -> memberFollowView.getFollowUserId()).collect(Collectors.toList());
+		}
         // 加上本人的用户编号
         followUserIdList.add(requestUserId);
         
@@ -527,8 +538,7 @@ public class TopicMobileController extends BaseController {
         
         List<String> memberIdList = new ArrayList<>();
         for (MemberView memberView : memberViewList) {
-        	String memberId = memberView.getMemberId();
-        	memberIdList.add(memberId);
+        	memberIdList.add(memberView.getMemberId());
 		}
         
         Integer countResult = topicService.countByMemberIdList(appId, memberIdList);
@@ -537,7 +547,14 @@ public class TopicMobileController extends BaseController {
         if (!Util.isNullOrEmpty(resultList)) {
             // 在controller层调用其他接口处理发布话题者信息(昵称,头像,是否关注)
         	// 取出来的动态中,有发布者的头像,昵称,而且在主页的人,那肯定是关注了
-        	List<String> theFollowUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+//        	List<String> theFollowUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+        	
+        	// TODO 下面的应该可以用上面列表
+        	List<String> theFollowUserIdList = new ArrayList<>();
+            List<MemberFollowView> memberFollowViews = memberFollowService.listByUserId(requestUserId);
+            if (memberFollowViews != null || memberFollowViews.size() != 0) {
+            	theFollowUserIdList = memberFollowViews.stream().map(memberFollowView -> memberFollowView.getFollowUserId()).collect(Collectors.toList());
+    		}
         	String theFollowUserIdJsonList = JSONArray.toJSONString(theFollowUserIdList);
         	for (TopicView topicView : resultList) {
 			
@@ -545,7 +562,7 @@ public class TopicMobileController extends BaseController {
         		if (requestUserId.equals(topicView.getSystemCreateUserId())) {
         			topicView.put(Topic.TOPIC_IS_SELF, true);
 				}else {
-					//处理是否关注话题发布者
+					// TODO 处理是否关注话题发布者,这里应该可以直接赋值为true,
 	        		boolean isFollow = theFollowUserIdJsonList.contains(topicView.getSystemCreateUserId());
 	        		topicView.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
 				}

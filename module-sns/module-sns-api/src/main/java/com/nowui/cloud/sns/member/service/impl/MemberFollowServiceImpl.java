@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.service.impl;
+package com.nowui.cloud.sns.member.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,13 +10,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.member.member.mapper.MemberFollowMapper;
-import com.nowui.cloud.member.member.repository.MemberFollowRepository;
-import com.nowui.cloud.member.member.service.MemberFollowService;
-import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.mapper.MemberFollowMapper;
+import com.nowui.cloud.sns.member.repository.MemberFollowRepository;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 /**
  * 会员关注业务实现
@@ -26,7 +26,7 @@ import com.nowui.cloud.sns.member.entity.MemberFollow;
  * 2018-01-02
  */
 @Service
-public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper, MemberFollow,MemberFollowRepository,MemberFollowView> implements MemberFollowService {
+public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper, MemberFollow, MemberFollowRepository, MemberFollowView> implements MemberFollowService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId) {

@@ -1,11 +1,12 @@
-package com.nowui.cloud.member.member.controller.admin;
+package com.nowui.cloud.sns.member.controller.admin;
 
 import java.util.List;
 import java.util.Map;
 
 import com.nowui.cloud.member.member.router.MemberFollowRouter;
-import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -36,7 +36,7 @@ public class MemberFollowAdminController extends BaseController {
     private MemberFollowService memberFollowService;
 
     @ApiOperation(value = "会员关注列表")
-    @RequestMapping(value = "/member/follow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -62,7 +62,7 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员关注信息")
-    @RequestMapping(value = "/member/follow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -85,7 +85,7 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -109,7 +109,7 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -135,7 +135,7 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,

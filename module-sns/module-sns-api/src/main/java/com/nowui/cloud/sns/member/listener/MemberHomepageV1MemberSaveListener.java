@@ -1,6 +1,5 @@
 package com.nowui.cloud.sns.member.listener;
 
-import java.util.List;
 
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;

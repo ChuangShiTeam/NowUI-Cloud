@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.controller.desktop;
+package com.nowui.cloud.sns.member.controller.desktop;
 
 import org.springframework.web.bind.annotation.RestController;
 

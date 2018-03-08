@@ -1,8 +1,10 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,10 +21,12 @@ import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
-import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
@@ -56,6 +60,9 @@ public class TopicUserLikeMobileController extends BaseController {
 	private TopicUserUnlikeService topicUserUnlikeService;
 	
 	@Autowired
+	private MemberFollowService memberFollowService;
+	
+	@Autowired
 	private MemberRpc memberRpc;
 	
 	@Autowired
@@ -80,7 +87,13 @@ public class TopicUserLikeMobileController extends BaseController {
         String requestUserId = body.getSystemRequestUserId();
        
         //处理列表中用户的头像,昵称,是否关注
-        List<String> followUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+//        List<String> followUserIdList = memberFollowRpc.followUserIdList(requestUserId);
+        List<String> followUserIdList = new ArrayList<>();
+        List<MemberFollowView> memberFollowViewList = memberFollowService.listByUserId(requestUserId);
+        if (memberFollowViewList != null || memberFollowViewList.size() != 0) {
+        	followUserIdList = memberFollowViewList.stream().map(memberFollowView -> memberFollowView.getFollowUserId()).collect(Collectors.toList());
+		}
+     
         String followUserIds = JSONArray.toJSONString(followUserIdList);
 
         boolean isSelf = false;

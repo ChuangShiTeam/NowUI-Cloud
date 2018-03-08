@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.view;
+package com.nowui.cloud.sns.member.view;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,7 +15,7 @@ import com.nowui.cloud.view.BaseView;
  * 2018-02-03
  */
 @Component
-@Document(collection = "member_follow_info")
+@Document(collection = "topic_member_follow_info")
 public class MemberFollowView extends BaseView {
 
     /**

@@ -1,11 +1,8 @@
 package com.nowui.cloud.sns.member.service;
-import java.util.Date;
-import java.util.List;
 
 import com.nowui.cloud.service.SuperService;
 import com.nowui.cloud.sns.member.view.MemberHomepageView;
 import com.nowui.cloud.sns.topic.entity.MemberHomepage;
-import com.nowui.cloud.sns.topic.view.TopicView;
 
 /**
  * 话题信息业务接口

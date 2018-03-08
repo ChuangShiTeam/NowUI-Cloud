@@ -19,7 +19,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2018-01-02
  */
 @Component
-@TableName(value = "member_follow_info")
+@TableName(value = "topic_member_follow_info")
 public class MemberFollow extends BaseEntity {
 
     /**

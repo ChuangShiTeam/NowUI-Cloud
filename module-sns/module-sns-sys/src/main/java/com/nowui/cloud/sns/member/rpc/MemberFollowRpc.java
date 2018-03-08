@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.rpc;
+package com.nowui.cloud.sns.member.rpc;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface MemberFollowRpc {
      * @param followUserId 关注用户编号
      * @return
      */
-    @RequestMapping(value = "/member/follow/system/v1/check/is/follow", method = RequestMethod.POST)
+    @RequestMapping(value = "/sns/member/follow/system/v1/check/is/follow", method = RequestMethod.POST)
     Boolean checkIsFollowV1(
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "followUserId", required = true) String followUserId
@@ -38,7 +38,7 @@ public interface MemberFollowRpc {
      * @param userId 用户编号
      * @return Integer 会员关注数
      */
-    @RequestMapping(value = "/member/follow/system/v1/count/follow", method = RequestMethod.POST)
+    @RequestMapping(value = "/sns/member/follow/system/v1/count/follow", method = RequestMethod.POST)
     Integer countFollow(@RequestParam(value = "userId", required = true) String userId);
     
     /**
@@ -47,7 +47,7 @@ public interface MemberFollowRpc {
      * @param userId 用户编号
      * @return Integer 会员被关注数
      */
-    @RequestMapping(value = "/member/follow/system/v1/count/be/followed", method = RequestMethod.POST)
+    @RequestMapping(value = "/sns/member/follow/system/v1/count/be/followed", method = RequestMethod.POST)
     Integer countBeFollowed(@RequestParam(value = "userId", required = true) String userId);
     
     /**
@@ -56,7 +56,7 @@ public interface MemberFollowRpc {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/member/follow/system/v1/follow/user/id/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/sns/member/follow/system/v1/follow/user/id/list", method = RequestMethod.POST)
     List<String> followUserIdList(@RequestParam(value = "userId", required = true) String userId);
 
 }

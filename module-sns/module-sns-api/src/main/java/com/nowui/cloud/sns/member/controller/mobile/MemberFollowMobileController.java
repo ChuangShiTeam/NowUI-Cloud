@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.controller.mobile;
+package com.nowui.cloud.sns.member.controller.mobile;
 
 import java.util.List;
 import java.util.Map;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.service.MemberFollowService;
-import com.nowui.cloud.member.member.service.MemberService;
-import com.nowui.cloud.member.member.view.MemberFollowView;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.service.MemberHomepageService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
+import com.nowui.cloud.sns.member.view.MemberHomepageView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -37,11 +37,15 @@ public class MemberFollowMobileController extends BaseController {
     @Autowired
     private MemberFollowService memberFollowService;
     
+//    @Autowired
+//    private MemberService memberService;
+    
     @Autowired
-    private MemberService memberService;
+    private MemberHomepageService memberHomepageService;
+    
 
     @ApiOperation(value = "我的关注列表")
-    @RequestMapping(value = "/member/follow/mobile/v1/my/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/my/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> myFollowlistV1() {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -62,7 +66,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "关注我的列表")
-    @RequestMapping(value = "/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/follow/me/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> followMelistV1() {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -90,7 +94,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "他的关注列表")
-    @RequestMapping(value = "/member/follow/mobile/v1/follow/him/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/follow/him/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> followHimlistV1() {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -121,7 +125,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "关注他的列表")
-    @RequestMapping(value = "/member/follow/mobile/v1/him/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/him/follow/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> himFollowListV1(@RequestBody MemberFollow body) {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -152,7 +156,7 @@ public class MemberFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "新增会员关注")
-    @RequestMapping(value = "/member/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -161,25 +165,42 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
+        String appId = memberFollow.getAppId();
         
-        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
-        if (followMemberView == null) {
-            throw new RuntimeException("会员不存在");
+//        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
+        MemberHomepageView otherMemberHomepageView = memberHomepageService.findByMemberId(appId, memberFollow.getFollowMemberId());
+        
+//        if (followMemberView == null) {
+//            throw new RuntimeException("会员不存在");
+//        }
+        if (otherMemberHomepageView == null) {
+            throw new RuntimeException("未找到对方会员账号,请稍后再试,或反馈");
         }
         
-        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
+//        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
+        MemberHomepageView selfMemberHomepageVIew = memberHomepageService.findByUserId(appId, memberFollow.getSystemRequestUserId());
         
-        if (memberView == null) {
-            throw new RuntimeException("会员不存在");
+//        if (memberView == null) {
+//            throw new RuntimeException("会员不存在");
+//        }
+        if (selfMemberHomepageVIew == null) {
+            throw new RuntimeException("没有找到您的会员账号,请稍后再试,或反馈");
         }
         
-        if (memberFollow.getSystemRequestUserId().equals(followMemberView.getUserId())) {
+//        if (memberFollow.getSystemRequestUserId().equals(followMemberView.getUserId())) {
+//            throw new BusinessException("不能关注自己");
+//        }
+        if (memberFollow.getSystemRequestUserId().equals(otherMemberHomepageView.getUserId())) {
             throw new BusinessException("不能关注自己");
         }
 
-        memberFollow.setUserId(memberView.getUserId());
-        memberFollow.setMemberId(memberView.getMemberId());
-        memberFollow.setFollowUserId(followMemberView.getUserId());
+//        memberFollow.setUserId(memberView.getUserId());
+//        memberFollow.setMemberId(memberView.getMemberId());
+        memberFollow.setUserId(selfMemberHomepageVIew.getUserId());
+        memberFollow.setMemberId(selfMemberHomepageVIew.getMemberId());
+        
+//        memberFollow.setFollowUserId(followMemberView.getUserId());
+        memberFollow.setFollowUserId(otherMemberHomepageView.getUserId());
 
         MemberFollow result = memberFollowService.save(memberFollow, Util.getRandomUUID(), memberFollow.getSystemRequestUserId());
 
@@ -188,10 +209,15 @@ public class MemberFollowMobileController extends BaseController {
         if (result != null) {
             // 保存会员关注视图到MongoDB
             MemberFollowView memberFollowView = JSON.parseObject(result.toJSONString(), MemberFollowView.class);
-            memberFollowView.setUserAvatarFilePath(memberView.getUserAvatarFilePath());
-            memberFollowView.setUserNickName(memberView.getUserNickName());
-            memberFollowView.setFollowUserAvatarFilePath(followMemberView.getUserAvatarFilePath());
-            memberFollowView.setFollowUserNickName(followMemberView.getUserNickName());
+//            memberFollowView.setUserAvatarFilePath(memberView.getUserAvatarFilePath());
+//            memberFollowView.setUserNickName(memberView.getUserNickName());
+            memberFollowView.setUserAvatarFilePath(selfMemberHomepageVIew.getUserAvatarFilePath());
+            memberFollowView.setUserNickName(selfMemberHomepageVIew.getUserNickName());
+            
+//            memberFollowView.setFollowUserAvatarFilePath(followMemberView.getUserAvatarFilePath());
+//            memberFollowView.setFollowUserNickName(followMemberView.getUserNickName());
+            memberFollowView.setFollowUserAvatarFilePath(otherMemberHomepageView.getUserAvatarFilePath());
+            memberFollowView.setFollowUserNickName(otherMemberHomepageView.getUserNickName());
             
             memberFollowService.save(memberFollowView);
             
@@ -202,7 +228,7 @@ public class MemberFollowMobileController extends BaseController {
     }
 
     @ApiOperation(value = "取消会员关注")
-    @RequestMapping(value = "/member/follow/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
         MemberFollow memberFollow = getEntry(MemberFollow.class);
         validateRequest(
@@ -211,19 +237,27 @@ public class MemberFollowMobileController extends BaseController {
                 MemberFollow.FOLLOW_MEMBER_ID,
                 MemberFollow.SYSTEM_REQUEST_USER_ID
         );
-        
-        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
-        if (followMemberView == null) {
-            throw new RuntimeException("会员不存在");
+        String appId = memberFollow.getAppId();
+//        MemberView followMemberView = memberService.find(memberFollow.getFollowMemberId());
+        MemberHomepageView otherMemberHomepageView = memberHomepageService.findByMemberId(appId, memberFollow.getFollowMemberId());
+//        if (followMemberView == null) {
+//            throw new RuntimeException("会员不存在");
+//        }
+        if (otherMemberHomepageView == null) {
+            throw new RuntimeException("对方的账号没找到,请您稍后再试,或反馈");
         }
         
-        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
-        
-        if (memberView == null) {
-            throw new RuntimeException("会员不存在");
+//        MemberView memberView = memberService.findByUserId(memberFollow.getSystemRequestUserId());
+        MemberHomepageView selfMemberHomepageView = memberHomepageService.findByUserId(appId, memberFollow.getSystemRequestUserId());
+//        if (memberView == null) {
+//            throw new RuntimeException("会员不存在");
+//        }
+        if (selfMemberHomepageView == null) {
+            throw new RuntimeException("您的账号未找到,请您稍后再试,或反馈");
         }
         
-        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
+//        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
+        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), otherMemberHomepageView.getUserId());
 
         if (memberFollowView == null) {
             throw new BusinessException("没有关注该会员");

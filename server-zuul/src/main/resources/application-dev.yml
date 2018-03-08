@@ -76,6 +76,10 @@ zuul:
       path: /topic/**
       serviceId: module-sns
       stripPrefix: false
+    sns:
+      path: /sns/**
+      serviceId: module-sns
+      stripPrefix: false
     wawi:
       path: /wawi/**
       serviceId: module-wawi
