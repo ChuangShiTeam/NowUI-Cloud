@@ -1,7 +1,7 @@
-package com.nowui.cloud.member.member.mapper;
+package com.nowui.cloud.sns.member.mapper;
 
 import com.nowui.cloud.mapper.BaseMapper;
-import com.nowui.cloud.member.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
 
 /**
  * 会员关注mapping映射接口

@@ -70,11 +70,11 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         	throw new BusinessException("已经取消过点赞了");
 		}
         
-//        body.setAppId(appId);
-//        body.setCommentId(commentId);
+        // body.setAppId(appId);
+        // body.setCommentId(commentId);
         
         // 没有: 就去取消评论点赞表插入一条记录
-//        Boolean result = topicCommentUserUnlikeService.save(body, appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, Util.getRandomUUID(), userId);
+        // Boolean result = topicCommentUserUnlikeService.save(body, appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, Util.getRandomUUID(), userId);
         body.setMemberId(memberId);
         TopicCommentUserUnlike result = topicCommentUserUnlikeService.save(body, Util.getRandomUUID(), requestUserId);
         
@@ -85,9 +85,8 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         	// 去点赞表删除点赞记录
         	TopicCommentUserLike commentUserLike = topicCommentUserLikeService.deleteByCommentIdAndMemberIdWithRedis(commentId, appId, memberId, requestUserId);
         	
-        	/**
-        	 * 向MongoDB中保存数据
-        	 */
+        	// 向MongoDB中保存数据
+        	
         	if (commentUserLike != null) {
         		// 删除MongoDB中的点赞记录
         		TopicCommentUserLikeView userLikeView = JSON.parseObject(commentUserLike.toJSONString(), TopicCommentUserLikeView.class);
@@ -97,7 +96,6 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         	// 向MongoDB中新增取消点赞记录
         	TopicCommentUserUnlikeView userUnlikeView = JSON.parseObject(result.toJSONString(), TopicCommentUserUnlikeView.class);
         	topicCommentUserUnlikeService.save(userUnlikeView);
-        	
         	
         	//sendMessage(result, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, appId, userId);
 

@@ -1,6 +1,7 @@
 package com.nowui.cloud.sns.forum.view;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
@@ -37,52 +38,69 @@ public class ForumUserFollowView extends BaseView {
     public static final String APP_ID = "appId";
 
     /**
-     * 用户编号
+     * 关注论坛的会员编号
      */
     @Field
-    @NotNull(message = "会员编号不能为空")
+    @NotNull(message = "关注论坛的会员编号不能为空")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
     
     /**
-     * 版主的头像路径和昵称,签名
+     * 关注论坛的用户的头像
      */
     @Field
-    @NotNull(message = "版主的头像路径和昵称,签名不能为空")
-    private JSONObject userInfo;
-    public static final String USER_INFO = "userInfo";
-
+    @NotNull(message = "关注论坛的头像")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
+    /**
+     * 关注论坛的用户的昵称
+     */
+    @Field
+    @NotNull(message = "关注论坛的用户的昵称")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 关注论坛的会员签名
+     */
+    @Field
+    @NotNull(message = "关注论坛的会员签名")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
+    
+    
     /**
      * 论坛版主(id)
      */
     @Field
     @NotNull(message = "论坛版主(id)不能为空")
-    private String forumModerator;
-    public static final String FORUM_MODERATOR = "forumModerator";
+    private String forumModeratorMemberId;
+    public static final String FORUM_MODERATOR_MEMBER_ID = "forumModeratorMemberId";
     
     /**
-     * 关注用户的头像
+     * 版主的头像文件路径
      */
     @Field
-    @NotNull(message = "版主的头像")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    @NotNull(message = "版主的头像文件路径")
+    private String forumModeratorUserAvatarFilePath;
+    public static final String FORUM_MODERATOR_AVATAR_FILE_PATH = "forumModeratorUserAvatarFilePath";
     
     /**
-     * 关注用户的昵称
+     * 版主的昵称
      */
     @Field
     @NotNull(message = "版主的昵称")
-    private String userNickName;
-    public static final String USER_NICKNAME = "userNickName";
+    private String forumModeratorUserNickName;
+    public static final String FORUM_MODERATOR_USER_NICKNAME = "forumModeratorUserNickName";
     
     /**
-     * 关注用户的会员签名
+     * 版主的会员签名
      */
     @Field
-    @NotNull(message = "版主的会员签名")
-    private String memberSignature;
-    public static final String MEMBER_SIGNATURE = "memberSignature";
+    @NotNull(message = "版主的会员签名不能为空")
+    private String forumModeratorMemberSignature;
+    public static final String FORUM_MODERATOR_MEMBER_SIGNATURE = "forumModeratorMemberSignature";
     
     /**
      * 论坛编号
@@ -91,6 +109,8 @@ public class ForumUserFollowView extends BaseView {
     @NotNull(message = "论坛编号不能为空")
     private String forumId;
     public static final String FORUM_ID = "forumId";
+    
+    
     
     /**
      * 是否置顶
@@ -124,21 +144,13 @@ public class ForumUserFollowView extends BaseView {
     public void setMemberId(String memberId) {
         put(MEMBER_ID, memberId);
     }
-
-    public JSONObject getUserInfo() {
-        return getJSONObject(USER_INFO);
-	}
-
-	public void setUserInfo(JSONObject userInfo) {
-        put(USER_INFO, userInfo);
-	}
 	
-	public String getUserAvatar() {
-		return getString(USER_AVATAR);
+    public String getUserAvatarFilePath() {
+		return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setUserAvatar(String userAvatar) {
-		put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
 
 	public String getUserNickName() {
@@ -166,11 +178,35 @@ public class ForumUserFollowView extends BaseView {
     }
     
     public String getForumModerator() {
-        return getString(FORUM_MODERATOR);
+        return getString(FORUM_MODERATOR_MEMBER_ID);
     }
     
     public void setForumModerator(String forumModerator) {
-        put(FORUM_MODERATOR, forumModerator);
+        put(FORUM_MODERATOR_MEMBER_ID, forumModerator);
+    }
+    
+    public String getForumModeratorUserAvatarFilePath() {
+        return getString(FORUM_MODERATOR_AVATAR_FILE_PATH);
+    }
+    
+    public void setForumModeratorUserAvatarFilePath(String forumModeratorUserAvatarFilePath) {
+        put(FORUM_MODERATOR_AVATAR_FILE_PATH, forumModeratorUserAvatarFilePath);
+    }
+    
+    public String getForumModeratorUserNickName() {
+        return getString(FORUM_MODERATOR_USER_NICKNAME);
+    }
+    
+    public void setForumModeratorUserNickName(String forumModeratorUserNickName) {
+        put(FORUM_MODERATOR_USER_NICKNAME, forumModeratorUserNickName);
+    }
+    
+    public String getForumModeratorMemberSignature() {
+        return getString(FORUM_MODERATOR_MEMBER_SIGNATURE);
+    }
+    
+    public void setForumModeratorMemberSignature(String forumModeratorMemberSignature) {
+        put(FORUM_MODERATOR_MEMBER_SIGNATURE, forumModeratorMemberSignature);
     }
     
     public Boolean getForumUserFollowIsTop() {

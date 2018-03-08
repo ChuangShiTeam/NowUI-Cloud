@@ -64,17 +64,9 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 
 	@Override
 	public TopicUserBookmarkView findByTopicIdAndMemberId(String topicId, String memberId) {
-//		TopicUserBookmark topicUserBookmark = find(
-//                new BaseWrapper<TopicUserBookmark>()
-//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-//                        .eq(TopicUserBookmark.USER_ID, userId)
-//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-//        );
-//
-//        return topicUserBookmark;
 		
-		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserBookmarkView.MEMBER_ID).regex(".*?" + memberId + ".*")
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).is(topicId)
+                .and(TopicUserBookmarkView.MEMBER_ID).is(memberId)
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -90,17 +82,9 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 	
 	@Override
 	public List<TopicUserBookmarkView> listByTopicIdAndMemberId(String topicId, String memberId) {
-//		TopicUserBookmark topicUserBookmark = find(
-//                new BaseWrapper<TopicUserBookmark>()
-//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-//                        .eq(TopicUserBookmark.USER_ID, userId)
-//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-//        );
-//
-//        return topicUserBookmark;
 		
-		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserBookmarkView.MEMBER_ID).regex(".*?" + memberId + ".*")
+		Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).is(topicId)
+                .and(TopicUserBookmarkView.MEMBER_ID).is(memberId)
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -116,21 +100,8 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 
     @Override
     public Integer countByTopicId(String topicId) {
-//        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
-//        
-//        if (count == null) {
-//            count = count(
-//                new BaseWrapper<TopicUserBookmark>()
-//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-//            );
-//            
-//            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, count);
-//        }
-//        
-//        return count;
     	
-    	Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+    	Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).is(topicId)
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -143,16 +114,8 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
 
     @Override
     public List<TopicUserBookmarkView> listByTopicId(String topicId) {
-//        List<TopicUserBookmark> topicUserBookmarkList = list(
-//                new BaseWrapper<TopicUserBookmark>()
-//                        .eq(TopicUserBookmark.TOPIC_ID, topicId)
-//                        .eq(TopicUserBookmark.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicUserBookmark.SYSTEM_CREATE_TIME))
-//        );
-//
-//        return topicUserBookmarkList;
     	
-    	Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
+    	Criteria criteria = Criteria.where(TopicUserBookmarkView.TOPIC_ID).is(topicId)
                 .and(TopicUserBookmarkView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -172,10 +135,8 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
         List<TopicUserBookmarkView> topicUserBookmarkList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserBookmarkList)) {
-//            topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE, systemRequestUserId, topicUserBookmark.getSystemVersion()));
        	 topicUserBookmarkList.stream().forEach(topicUserBookmark -> delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion()));
         }
-//        redisTemplate.delete(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -185,13 +146,9 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
         topicUserBookmark.setTopicId(topicId);
         topicUserBookmark.setMemberId(memberId);
         
-//        Boolean result = save(topicUserBookmark, Util.getRandomUUID(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE,systemRequestUserId);
         TopicUserBookmark result = save(topicUserBookmark, Util.getRandomUUID(), systemRequestUserId);
         
         if (result != null) {
-            // 更新话题收藏数缓存
-//            Integer count = countByTopicId(topicId);
-//            redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count + 1));
         	return result;
         }else {
         	 return null;
@@ -205,16 +162,9 @@ public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBook
         if (Util.isNullOrEmpty(topicUserBookmark)) {
             return null;
         }
-        // 查询缓存收藏数
-//        Integer count = countByTopicId(topicId);  
-        
-//        Boolean result = delete(topicUserBookmark.getTopicUserBookMarkId(), appId, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_DELETE,systemRequestUserId, topicUserBookmark.getSystemVersion());
-        String topicUserBookMarkId = topicUserBookmark.getTopicUserBookmarkId();
         TopicUserBookmark result = delete(topicUserBookmark.getTopicUserBookmarkId(), systemRequestUserId, topicUserBookmark.getSystemVersion());
         
         if (result != null) {
-            // 更新话题收藏数缓存
-//        	redisTemplate.opsForValue().set(TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID + topicId, (count - 1));
         	return result;
         }else {
         	return null;

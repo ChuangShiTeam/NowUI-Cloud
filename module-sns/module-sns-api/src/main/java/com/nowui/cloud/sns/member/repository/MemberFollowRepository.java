@@ -1,7 +1,8 @@
-package com.nowui.cloud.member.member.repository;
+package com.nowui.cloud.sns.member.repository;
 
 import com.nowui.cloud.repository.BaseRepository;
-import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
+
 import org.springframework.stereotype.Component;
 
 /**

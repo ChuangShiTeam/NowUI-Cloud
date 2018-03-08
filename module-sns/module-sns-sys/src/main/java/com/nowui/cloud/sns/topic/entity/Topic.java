@@ -53,6 +53,30 @@ public class Topic extends BaseEntity {
     @Length(max = 32, message = "用户编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
+    
+    /**
+     * 发布动态的用户的昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户的昵称不能为空")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 发布动态的用户头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户头像不能为空")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
+    /**
+     * 发布动态的用户签名
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户签名不能为空")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
 
     /**
      * 动态内容
@@ -150,14 +174,6 @@ public class Topic extends BaseEntity {
     @TableField(exist = false)
     private JSONObject topicForumList;
     public static final String TOPIC_FORUM_LIST = "topicForumList";
-    
-    /**
-     * 发布动态相关信息
-     */
-    @TableField(exist = false)
-    @NotNull(message = "发布动态相关信息不能为空")
-    private JSONObject theSendInfo;
-    public static final String THE_SEND_INFO = "theSendInfo";
     
     
     /**
@@ -340,17 +356,28 @@ public class Topic extends BaseEntity {
         put(TOPIC_FORUM_LIST, topicForumList);
 	}
 	
-	public JSONObject getTheSendInfo() {
-        return getJSONObject(THE_SEND_INFO);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
+    }
+    
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+    }
+
+	public String getUserNickName() {
+		return getString(USER_NICKNAME);
 	}
 
-	public void setTheSendInfo(JSONObject theSendInfo) {
-        put(THE_SEND_INFO, theSendInfo);
+	public void setUserNickName(String userNickName) {
+		put(USER_NICKNAME, userNickName);
 	}
-	
-	
-    
-    
 
+	public String getMemberSignature() {
+		return getString(MEMBER_SIGNATURE);
+	}
+
+	public void setMemberSignature(String memberSignature) {
+		put(MEMBER_SIGNATURE, memberSignature);
+	}
 
 }

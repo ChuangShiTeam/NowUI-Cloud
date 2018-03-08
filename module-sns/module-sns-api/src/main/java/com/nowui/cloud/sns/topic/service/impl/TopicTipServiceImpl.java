@@ -62,28 +62,8 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
 
     @Override
     public List<TopicTipView> listByTopicId(String topicId) {
-        // 查询缓存
-//        List<String> topicTipIdList = (List<String>) redisTemplate.opsForValue().get(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
-        
-        //TODO 先注释掉,回来再调试,默认返回null
-//        if (topicTipIdList == null) {
-//            List<TopicTip> topicTipList = list(
-//                    new BaseWrapper<TopicTip>()
-//                            .eq(TopicTip.TOPIC_ID, topicId)
-//                            .eq(TopicTip.SYSTEM_STATUS, true)
-//                            .orderAsc(Arrays.asList(TopicTip.SYSTEM_CREATE_TIME))
-//            );
-//            
-//            // 缓存话题提醒编号列表
-//            topicTipIdList = topicTipList.stream().map(topicTip -> topicTip.getTopicTipId()).collect(Collectors.toList());
-//            redisTemplate.opsForValue().set(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId, topicTipIdList);
-//            
-//            return topicTipList;
-//        } 
-        
-//        return topicTipIdList.stream().map(topicTipId -> find(topicTipId)).collect(Collectors.toList());
     	
-    	Criteria criteria = Criteria.where(TopicTipView.TOPIC_ID).regex(".*?" + topicId + ".*")
+    	Criteria criteria = Criteria.where(TopicTipView.TOPIC_ID).is(topicId)
                 .and(TopicTipView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -103,13 +83,10 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
         List<TopicTipView> topicTipList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicTipList)) {
-//            topicTipList.stream().forEach(topicTip -> delete(topicTip.getTopicTipId(), appId, TopicTipRouter.TOPIC_TIP_V1_DELETE, systemRequestUserId, topicTip.getSystemVersion()));
             topicTipList.stream().forEach(topicTip -> delete(topicTip.getTopicTipId(), systemRequestUserId, topicTip.getSystemVersion()));
             
         }
         
-        // 清空缓存
-//        redisTemplate.delete(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId);
     }
 
     @Override
@@ -123,17 +100,12 @@ public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicT
                 topicTip.setAppId(appId);
                 String topicTipId = Util.getRandomUUID();
                 
-//TODO 消息放在 topicMobileController的保存提醒谁看
-//                save(topicTip, topicTipId, appId, TopicTipRouter.TOPIC_TIP_V1_SAVE, systemRequestUserId);
                 TopicTip result = save(topicTip, topicTipId, systemRequestUserId);
                 theReturnTopicTipList.add(result);
                 topicTipIdList.add(topicTipId);
             }
         }
-        // 缓存话题提醒编号列表
-//        redisTemplate.opsForValue().set(TOPIC_TIP_ID_LIST_BY_TOPIC_ID + topicId, topicTipIdList);
         return theReturnTopicTipList;
-        
     }
 
 }

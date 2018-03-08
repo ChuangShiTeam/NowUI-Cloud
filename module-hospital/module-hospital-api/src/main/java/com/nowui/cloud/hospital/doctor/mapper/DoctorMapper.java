@@ -6,9 +6,9 @@ import com.nowui.cloud.hospital.doctor.entity.Doctor;
 /**
  * 医生mapping映射接口
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 public interface DoctorMapper extends BaseMapper<Doctor> {
 

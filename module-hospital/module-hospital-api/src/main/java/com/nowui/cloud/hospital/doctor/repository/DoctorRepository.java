@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 /**
  * 医生视图访问组件接口
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 @Component
 public interface DoctorRepository extends BaseRepository<DoctorView> {

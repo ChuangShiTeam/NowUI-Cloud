@@ -38,13 +38,19 @@ public class MemberHomepageView extends BaseView {
     private String appId;
     public static final String APP_ID = "appId";
     
-    // TODO ,,,,动态数,关注数,粉丝数
-    
     /**
      * 用户编号
      */
     @Field
     @NotNull(message = "用户编号不能为空")
+    private String userId;
+    public static final String USER_ID = "userId";
+    
+    /**
+     * 会员编号
+     */
+    @Field
+    @NotNull(message = "会员编号不能为空")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
     
@@ -151,6 +157,14 @@ public class MemberHomepageView extends BaseView {
     public static final String PET = "pet";
     
     
+    
+    public String getUserId() {
+        return getString(USER_ID);
+    }
+
+    public void setUserId(String userId) {
+        put(USER_ID, userId);
+    }
     
     public String getMemberId() {
         return getString(MEMBER_ID);

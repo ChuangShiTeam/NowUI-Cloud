@@ -40,21 +40,21 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
+                TopicComment.TOPIC_REPLY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID,
                 TopicComment.PAGE_INDEX,
                 TopicComment.PAGE_SIZE
         );
 
-        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayMemberId(), body.getTopicReplyCommentId());
-        List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplayMemberId(), body.getTopicReplyCommentId(), body.getPageIndex(), body.getPageSize());
+        Integer resultTotal = topicCommentService.countForAdmin(body.getAppId() , body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplyMemberId(), body.getTopicReplyCommentId());
+        List<TopicComment> resultList = topicCommentService.listForAdmin(body.getAppId(), body.getMemberId(), body.getTopicId(), body.getTopicCommentContent(), body.getTopicReplyMemberId(), body.getTopicReplyCommentId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
                 TopicComment.TOPIC_COMMENT_ID,
                 TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
+                TopicComment.TOPIC_REPLY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -77,7 +77,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
+                TopicComment.TOPIC_REPLY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -93,7 +93,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
+                TopicComment.TOPIC_REPLY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID
         );
 
@@ -112,7 +112,7 @@ public class TopicCommentAdminController extends BaseController {
                 TopicComment.MEMBER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
+                TopicComment.TOPIC_REPLY_MEMBER_ID,
                 TopicComment.TOPIC_REPLY_COMMENT_ID,
                 TopicComment.SYSTEM_VERSION
         );
