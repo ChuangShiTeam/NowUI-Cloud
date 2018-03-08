@@ -15,7 +15,6 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.mapper.TopicTipMapper;
 import com.nowui.cloud.sns.topic.repository.TopicTipRepository;
-import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.sns.topic.view.TopicTipView;
 import com.nowui.cloud.util.Util;

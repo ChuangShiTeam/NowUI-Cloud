@@ -107,7 +107,6 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      */
     TopicView findDetailByTopicIdAndMemberId(String topicId, String memberId);
 
-
     /**
      * 根据userId的list集合使用in方法统计所有话题信息数量
      * (根据我关注的人的用户编号的list 统计话题数量)
@@ -187,8 +186,6 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      */
     List<TopicView> listDetailByTopicIdList(String memberId, List<String> topicIdList);
     
-    
-    
     /**
      * 根据话题编号删除话题相关信息
      * 
@@ -224,5 +221,6 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      * 
      */
     Integer countAllUserTopic();
+    
     
 }

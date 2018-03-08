@@ -81,7 +81,7 @@ public interface TopicCommentUserLikeService extends SuperService<TopicCommentUs
      * @param systemRequestUserId 操作的用户编号
      * @return boolean 操作结果
      */
-    TopicCommentUserLike saveWithRedis(String appId, String commentId, String memberId, String systemRequestUserId );
+    TopicCommentUserLike save(String appId, String commentId, String memberId, String systemRequestUserId );
     
     /**
      * 根据评论id查询相应评论的点赞数(使用redis)

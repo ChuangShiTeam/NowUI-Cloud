@@ -15,9 +15,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.mapper.TopicUserLikeMapper;
 import com.nowui.cloud.sns.topic.repository.TopicUserLikeRepository;
-import com.nowui.cloud.sns.topic.router.TopicUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
-import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.util.Util;
 
@@ -152,8 +150,6 @@ public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapp
         if (Util.isNullOrEmpty(topicUserLike)) {
             return null;
         }
-        
-//        Integer count = countByTopicId(topicId);
         
         TopicUserLike result = delete(topicUserLike.getTopicUserLikeId(), systemRequestUserId, topicUserLike.getSystemVersion());
         

@@ -79,9 +79,9 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_MODERATOR_AVATAR_FILE_PATH,
                 ForumUserFollow.FORUM_MODERATOR_USER_NICKNAME,
                 ForumUserFollow.FORUM_MODERATOR_MEMBER_SIGNATURE,
-                
 
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.USER_AVATAR_FILE_PATH,
                 ForumUserFollow.USER_NICKNAME,
                 ForumUserFollow.MEMBER_SIGNATURE
@@ -89,8 +89,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         String forumId = body.getForumId();
         

@@ -12,13 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.mapper.TopicUserBookmarkMapper;
 import com.nowui.cloud.sns.topic.repository.TopicUserBookmarkRepository;
-import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
-import com.nowui.cloud.sns.topic.view.TopicForumView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.util.Util;
 

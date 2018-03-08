@@ -1,11 +1,8 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,6 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.mapper.TopicUserUnbookmarkMapper;
 import com.nowui.cloud.sns.topic.repository.TopicUserUnbookmarkRepository;
-import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.util.Util;

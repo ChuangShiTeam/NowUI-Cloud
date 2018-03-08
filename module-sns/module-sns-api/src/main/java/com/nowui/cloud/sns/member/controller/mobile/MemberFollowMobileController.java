@@ -273,7 +273,7 @@ public class MemberFollowMobileController extends BaseController {
         }
         
 //        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), followMemberView.getUserId());
-        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndFollowUserId(memberFollow.getSystemRequestUserId(), otherMemberHomepageView.getUserId());
+        MemberFollowView memberFollowView = memberFollowService.findByUserIdAndBeFollowUserId(memberFollow.getSystemRequestUserId(), otherMemberHomepageView.getUserId());
 
         if (memberFollowView == null) {
             throw new BusinessException("没有关注该会员");

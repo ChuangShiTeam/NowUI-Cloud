@@ -3,13 +3,10 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
-import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
-import com.nowui.cloud.sns.topic.router.TopicCommentUserUnlikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
@@ -70,11 +67,7 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
         	throw new BusinessException("已经取消过点赞了");
 		}
         
-        // body.setAppId(appId);
-        // body.setCommentId(commentId);
-        
         // 没有: 就去取消评论点赞表插入一条记录
-        // Boolean result = topicCommentUserUnlikeService.save(body, appId, TopicCommentUserUnlikeRouter.TOPIC_COMMENT_USER_UNLIKE_V1_SAVE, Util.getRandomUUID(), userId);
         body.setMemberId(memberId);
         TopicCommentUserUnlike result = topicCommentUserUnlikeService.save(body, Util.getRandomUUID(), requestUserId);
         
