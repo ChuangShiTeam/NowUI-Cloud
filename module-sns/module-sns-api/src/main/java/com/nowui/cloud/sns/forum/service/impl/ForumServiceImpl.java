@@ -133,7 +133,7 @@ public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, Forum
     public Boolean checkName(String appId, String forumName) {
     	
     	Criteria criteria = Criteria.where(ForumView.APP_ID).is(appId)
-                .and(ForumView.FORUM_NAME).regex(".*?" + forumName + ".*")
+                .and(ForumView.FORUM_NAME).is(forumName)
                 .and(Forum.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);

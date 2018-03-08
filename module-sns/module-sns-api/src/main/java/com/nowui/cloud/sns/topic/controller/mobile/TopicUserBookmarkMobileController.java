@@ -24,6 +24,7 @@ import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
+import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,7 +56,14 @@ public class TopicUserBookmarkMobileController extends BaseController {
         validateRequest(
                 body,
                 TopicUserBookmark.APP_ID,
-                TopicUserBookmark.TOPIC_ID
+                TopicUserBookmark.TOPIC_ID,
+                TopicUserBookmark.MEMBER_ID,
+                
+                TopicUserBookmark.TOPIC_FIRST_MEDIA_FILE_PATH,
+                TopicUserBookmark.TOPIC_MEMBER_ID,
+                TopicUserBookmark.TOPIC_SUMMARY,
+                TopicUserBookmark.TOPIC_USER_AVATAR_FILE_PATH,
+                TopicUserBookmark.TOPIC_USER_NICK_NAME
         );
         
         String appId = body.getAppId();
@@ -71,8 +79,8 @@ public class TopicUserBookmarkMobileController extends BaseController {
 			throw new BusinessException("已经收藏过了");
 		}
         // 如果没有收藏过,新增
-        TopicUserBookmark result = topicUserBookmarkService.save(appId, topicId, theBookMarkMemberId, requestUserId);
-        
+//        TopicUserBookmark result = topicUserBookmarkService.save(appId, topicId, theBookMarkMemberId, requestUserId);
+        TopicUserBookmark result = topicUserBookmarkService.save(body, Util.getRandomUUID(), requestUserId);
         boolean success = false;
         if (result != null) {
         	//去取消收藏表删除记录
@@ -84,7 +92,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
                 topicUserUnbookmarkService.delete(unbookmarkView);
 			}
             
-            //TODO 新增点赞收藏记录(MOngoDB)
+            //TODO 新增收藏记录(MOngoDB)
             TopicUserBookmarkView bookmarkView = JSON.parseObject(result.toJSONString(), TopicUserBookmarkView.class);
             topicUserBookmarkService.save(bookmarkView);
             

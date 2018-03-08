@@ -64,10 +64,9 @@ public class TopicUserLike extends BaseEntity {
      */
     @TableField(exist = false)
     @NotNull(message = "头像不能为空")
-    @Length(max = 200, message = "头像长度超出限制")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
-
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
     /**
      * 话题编号
      */
@@ -111,12 +110,12 @@ public class TopicUserLike extends BaseEntity {
         put(USER_NICK_NAME, userNickName);
 	}
 
-	public String getUserAvatar() {
-        return getString(USER_AVATAR);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
 
 	public String getTopicId() {

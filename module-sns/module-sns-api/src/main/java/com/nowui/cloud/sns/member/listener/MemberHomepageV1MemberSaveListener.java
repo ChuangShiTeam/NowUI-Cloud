@@ -1,6 +1,5 @@
 package com.nowui.cloud.sns.member.listener;
 
-import java.util.List;
 
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
@@ -73,6 +72,9 @@ public class MemberHomepageV1MemberSaveListener {
             	homepageView.setMemberBeFollowCount(0);
             	homepageView.setMemberFollowCount(0);
             	homepageView.setMemberSendTopicCount(0);
+            	homepageView.setMemberSignature("");
+            	// TODO 个人主页背景图片
+            	homepageView.setMemberBackgroundFilePath(homepageView.getUserAvatarFilePath());
             	
             	memberHomepageService.save(homepageView);
             }

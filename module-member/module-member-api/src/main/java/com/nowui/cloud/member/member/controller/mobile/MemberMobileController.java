@@ -563,7 +563,22 @@ public class MemberMobileController extends BaseController {
             jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
             
             result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
-            validateResponse(Constant.TOKEN);
+            
+            String userAvatarFilePath = userView.getUserAvatarFilePath();
+            String userNickName = userView.getUserNickName();
+            MemberView memberView = memberService.findByUserId(userView.getUserId());
+            String memberId = memberView.getMemberId();
+            
+            result.put(MemberView.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            result.put(MemberView.USER_NICK_NAME, userNickName);
+            result.put(MemberView.MEMBER_ID, memberId);
+            
+            validateResponse(
+            		Constant.TOKEN, 
+            		MemberView.USER_AVATAR_FILE_PATH,
+            		MemberView.USER_NICK_NAME,
+            		MemberView.MEMBER_ID
+            	);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException("登录不成功");

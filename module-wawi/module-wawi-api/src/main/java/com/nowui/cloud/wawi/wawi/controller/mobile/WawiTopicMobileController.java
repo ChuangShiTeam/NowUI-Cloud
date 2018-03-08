@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.sns.topic.rpc.TopicRpc;
 
 import io.swagger.annotations.Api;

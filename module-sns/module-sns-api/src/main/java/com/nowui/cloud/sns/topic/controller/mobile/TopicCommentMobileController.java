@@ -106,35 +106,22 @@ public class TopicCommentMobileController extends BaseController {
             topicComment.put(TopicComment.TOPIC_COMMENT_LIKE_COUNT, likeCount);
 		}
         
-        
-        
         // TODO 处理回复用户信息(头像,昵称)
-//        String respondUserIds = Util.beanToFieldString(topicCommentList, TopicComment.TOPIC_REPLAY_USER_ID);
-//        
-//        List<Member> respondMemberList = memberRpc.nickNameAndAvatarListV1(respondUserIds);
-//    
-//        if (!Util.isNullOrEmpty(respondMemberList)) {
-//            for (TopicComment topicComment : topicCommentList) {
-//                if (Util.isNullOrEmpty(topicComment.getTopicReplayUserId())) {
-//                    continue;
-//                }
-//                Optional<Member> memberOption = respondMemberList.stream().filter(respondMember -> topicComment.getTopicReplayUserId().equals(respondMember.getUserId())).findFirst();
-//                topicComment.put(TopicComment.TOPIC_REPLAY_USER_NICK_NAME, memberOption.isPresent() ? memberOption.get().get(UserNickName.USER_NICK_NAME) : null);
-//            }
-//        }
         
         validateResponse(
             TopicComment.TOPIC_COMMENT_ID,
-            TopicComment.MEMBER_ID,
             TopicComment.TOPIC_ID,
             TopicComment.TOPIC_COMMENT_CONTENT,
-            TopicComment.TOPIC_REPLAY_MEMBER_ID,
-            TopicComment.TOPIC_REPLY_COMMENT_ID,
-            TopicComment.TOPIC_REPLAY_USER_NICK_NAME,
+            
             User.USER_ID,
-    		UserAvatar.USER_AVATAR_FILE_PATH,
-    		"userAvatar",
-    		UserNickName.USER_NICK_NAME,
+            TopicComment.MEMBER_ID,
+            TopicComment.USER_NICK_NAME,
+            TopicComment.USER_AVATAR_FILE_PATH,
+            
+            TopicComment.TOPIC_REPLY_COMMENT_ID,
+            TopicComment.TOPIC_REPLY_MEMBER_ID,
+            TopicComment.TOPIC_REPLY_USER_NICKNAME,
+    		
     		TopicComment.SYSTEM_CREATE_TIME,
     		TopicComment.TOPIC_COMMENT_IS_SELF,
     		TopicComment.TOPIC_COMMENT_IS_LIKE,
@@ -154,15 +141,17 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.SYSTEM_REQUEST_USER_ID,
                 TopicComment.TOPIC_ID,
                 TopicComment.TOPIC_COMMENT_CONTENT,
-                TopicComment.TOPIC_REPLAY_MEMBER_ID,
-                TopicComment.TOPIC_REPLY_COMMENT_ID
+                
+                TopicComment.MEMBER_ID,
+                TopicComment.USER_AVATAR_FILE_PATH,
+                TopicComment.USER_NICK_NAME
         );
         String systemRequestUserId = body.getSystemRequestUserId();
         MemberView member = memberRpc.findByUserIdV1(systemRequestUserId);
         String memberId = member.getMemberId();
         body.setMemberId(memberId);
         
-        String topicReplayMemberId = body.getTopicReplayMemberId();
+        String topicReplayMemberId = body.getTopicReplyMemberId();
         String appId = body.getAppId();
         
         TopicComment result = topicCommentService.save(body, Util.getRandomUUID(), systemRequestUserId);
@@ -185,8 +174,9 @@ public class TopicCommentMobileController extends BaseController {
             
             
             /**
-             * 向MongoDB中保存
-             * 动态评论(1:发评论的用户头像, 2:发评论的用户Id(这个不用), 3:发评论的用户昵称, 4:被回复的评论的id(这个前端自动带过来了), 5:被回复的用户的头像(这个不用), 6:被回复的用户的id(前端带过来) 7:被回复的用户昵称)
+             * 向MongoDB中保存:
+             * 动态评论(1:发评论的用户头像, 2:发评论的用户Id(这个不用), 3:发评论的用户昵称, 4:被回复的评论的id(这个前端自动带过来了), 
+             * 		 5:被回复的用户的头像(这个不用), 6:被回复的用户的id(前端带过来) 7:被回复的用户昵称)
              * 提醒谁看
              */
             // 保存动态评论
@@ -196,7 +186,6 @@ public class TopicCommentMobileController extends BaseController {
             // 保存提醒谁看
             TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
             topicTipService.save(topicTipView);
-            
             
             //sendMessage(result, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, appId, systemRequestUserId);
 

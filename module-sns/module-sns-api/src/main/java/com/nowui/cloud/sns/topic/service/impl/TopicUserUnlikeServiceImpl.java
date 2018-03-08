@@ -60,17 +60,9 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
 
 	@Override
 	public TopicUserUnlikeView findByTopciIdAndMemberId(String topicId, String memberId) {
-//		TopicUserUnlike topicUserUnlike = find(
-//                new BaseWrapper<TopicUserUnlike>()
-//                        .eq(TopicUserUnlike.USER_ID, userId)
-//                        .eq(TopicUserUnlike.TOPIC_ID, topicId)
-//                        .eq(TopicUserUnlike.SYSTEM_STATUS, true)
-//        );
-//
-//        return topicUserUnlike;
 		
-		Criteria criteria = Criteria.where(TopicUserUnlikeView.MEMBER_ID).regex(".*?" + memberId + ".*")
-                .and(TopicUserUnlikeView.TOPIC_ID).regex(".*?" + topicId + ".*")
+		Criteria criteria = Criteria.where(TopicUserUnlikeView.MEMBER_ID).is(memberId)
+                .and(TopicUserUnlikeView.TOPIC_ID).is(topicId)
                 .and(TopicUserUnlikeView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -100,7 +92,6 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
         List<TopicUserUnlike> topicUserUnlikeList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicUserUnlikeList)) {
-//            topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion()));
             topicUserUnlikeList.stream().forEach(topicUserUnlike -> delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion()));
             
         }
@@ -114,7 +105,6 @@ public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlike
             return null;
         }
         
-//        Boolean result = delete(topicUserUnlike.getTopicUserUnlikeId(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_DELETE, systemRequestUserId, topicUserUnlike.getSystemVersion());
         TopicUserUnlike result = delete(topicUserUnlike.getTopicUserUnlikeId(), systemRequestUserId, topicUserUnlike.getSystemVersion());
        
         if (result != null) {
