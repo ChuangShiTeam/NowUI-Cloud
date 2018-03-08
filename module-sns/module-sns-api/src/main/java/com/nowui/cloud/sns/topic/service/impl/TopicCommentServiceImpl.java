@@ -1,16 +1,12 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentRepository;
-import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
-import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 import org.springframework.data.domain.Sort;
@@ -104,17 +100,6 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
 
     @Override
     public List<TopicCommentView> listByTopicId(String topicId, Integer pageIndex, Integer pageSize) {
-//        List<TopicComment> topicCommentList = list(
-//                new BaseWrapper<TopicComment>()
-//                        .eq(TopicComment.TOPIC_ID, topicId)
-//                        .eq(TopicComment.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
-//                pageIndex,
-//                pageSize
-//        );
-//
-//        return topicCommentList;
-    	
     	
     	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).is(topicId)
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
@@ -166,18 +151,6 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     @Override
     public Boolean save(String appId, String topicId, String memberId, TopicComment topicComment, String systemRequestUserId) {
         //TODO 不用缓存,所以不用这个方法 
-//        topicComment.setAppId(appId);
-//        topicComment.setUserId(userId);
-//        topicComment.setTopicId(topicId);
-//        
-//        Boolean result = save(topicComment, appId, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
-//        
-//        if (result) {
-//            // 更新话题评论数缓存
-//            Integer count = countByTopicId(topicId);
-//            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
-//        }
-//        return result;
     	return null;
     }
 

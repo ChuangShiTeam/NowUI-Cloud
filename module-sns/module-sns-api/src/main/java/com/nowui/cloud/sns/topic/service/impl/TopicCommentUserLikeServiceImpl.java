@@ -13,14 +13,10 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentUserLikeMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentUserLikeRepository;
-import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
-import com.nowui.cloud.sns.topic.view.TopicCommentView;
-import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -106,7 +102,7 @@ public class TopicCommentUserLikeServiceImpl extends SuperServiceImpl<TopicComme
 	}
 
 	@Override
-	public TopicCommentUserLike saveWithRedis(String appId, String commentId, String memberId, String systemRequestUserId) {
+	public TopicCommentUserLike save(String appId, String commentId, String memberId, String systemRequestUserId) {
 		TopicCommentUserLike body = new TopicCommentUserLike();
 		body.setAppId(appId);
 		body.setCommentId(commentId);

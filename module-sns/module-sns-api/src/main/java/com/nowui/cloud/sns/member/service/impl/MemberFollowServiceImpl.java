@@ -161,14 +161,47 @@ public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper
     }
 
     @Override
-    public MemberFollowView findByUserIdAndFollowUserId(String userId, String followUserId) {
+    public MemberFollowView findByUserIdAndBeFollowUserId(String userId, String beFollowUserId) {
         Criteria criteria = Criteria.where(MemberFollowView.USER_ID).is(userId)
-                .and(MemberFollowView.FOLLOW_USER_ID).is(followUserId)
+                .and(MemberFollowView.FOLLOW_USER_ID).is(beFollowUserId)
                 .and(MemberFollowView.SYSTEM_STATUS).is(true);
         
         MemberFollowView memberFollowView = find(new Query(criteria));
         
         return memberFollowView;
     }
+
+	@Override
+	public MemberFollowView findByMemberIdAndBeFollowMemberId(String memberId, String beFollowMemberId) {
+		Criteria criteria = Criteria.where(MemberFollowView.MEMBER_ID).is(memberId)
+                .and(MemberFollowView.FOLLOW_MEMBER_ID).is(beFollowMemberId)
+                .and(MemberFollowView.SYSTEM_STATUS).is(true);
+        
+        MemberFollowView memberFollowView = find(new Query(criteria));
+        
+        return memberFollowView;
+	}
+
+	@Override
+	public MemberFollowView findByUserIdAndBeFollowMemberId(String userId, String beFollowMemberId) {
+		Criteria criteria = Criteria.where(MemberFollowView.USER_ID).is(userId)
+                .and(MemberFollowView.FOLLOW_MEMBER_ID).is(beFollowMemberId)
+                .and(MemberFollowView.SYSTEM_STATUS).is(true);
+        
+        MemberFollowView memberFollowView = find(new Query(criteria));
+        
+        return memberFollowView;
+	}
+
+	@Override
+	public MemberFollowView findByMemberIdAndBeFollowUserId(String memberId, String beFollowUserId) {
+		Criteria criteria = Criteria.where(MemberFollowView.MEMBER_ID).is(memberId)
+                .and(MemberFollowView.FOLLOW_USER_ID).is(beFollowUserId)
+                .and(MemberFollowView.SYSTEM_STATUS).is(true);
+        
+        MemberFollowView memberFollowView = find(new Query(criteria));
+        
+        return memberFollowView;
+	}
 
 }

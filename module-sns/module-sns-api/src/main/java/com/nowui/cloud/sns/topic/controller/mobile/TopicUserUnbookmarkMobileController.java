@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,17 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
+import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -44,6 +42,9 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 	
 	@Autowired
 	private TopicUserBookmarkService topicUserBookmarkService;
+	
+	@Autowired
+	private TopicService topicService;
 	
 	@Autowired
 	private MemberRpc memberRpc;
@@ -88,6 +89,12 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
             // 新增取消收藏记录
             TopicUserUnbookmarkView unBookmarkView = JSON.parseObject(result.toJSONString(), TopicUserUnbookmarkView.class);
             topicUserUnbookmarkService.save(unBookmarkView);
+            
+            // TODO 更新话题视图中的收藏数量: 减1
+            TopicView topicView = topicService.find(topicId);
+            Integer topicCountBookmark = topicView.getTopicCountBookmark();
+            topicView.setTopicCountBookmark(topicCountBookmark - 1);
+            topicService.update(topicView);
             
             //sendMessage(result, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_SAVE, appId, userId);
             

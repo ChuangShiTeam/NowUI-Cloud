@@ -19,11 +19,13 @@ import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
+import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -45,6 +47,9 @@ public class TopicUserBookmarkMobileController extends BaseController {
 
 	@Autowired
 	private TopicUserUnbookmarkService topicUserUnbookmarkService;
+	
+	@Autowired
+	private TopicService topicService;
 	
 	@Autowired
 	private MemberRpc memberRpc;
@@ -95,6 +100,12 @@ public class TopicUserBookmarkMobileController extends BaseController {
             //TODO 新增收藏记录(MOngoDB)
             TopicUserBookmarkView bookmarkView = JSON.parseObject(result.toJSONString(), TopicUserBookmarkView.class);
             topicUserBookmarkService.save(bookmarkView);
+            
+            // TODO 更新话题视图中的收藏数量: 加1
+            TopicView topicView = topicService.find(topicId);
+            Integer topicCountBookmark = topicView.getTopicCountBookmark();
+            topicView.setTopicCountBookmark(topicCountBookmark + 1);
+            topicService.update(topicView);
             
             //sendMessage(result, TopicUserBookmarkRouter.TOPIC_USER_BOOKMARK_V1_SAVE, appId, requestUserId);
             

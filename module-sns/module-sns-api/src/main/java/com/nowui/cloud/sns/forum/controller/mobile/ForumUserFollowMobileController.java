@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.file.file.rpc.FileRpc;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
@@ -56,9 +52,6 @@ public class ForumUserFollowMobileController extends BaseController {
 
 	@Autowired
 	private ForumService forumService;
-
-	@Autowired
-    private FileRpc fileRpc;
 	
 	@Autowired
 	private MemberRpc memberRpc;
@@ -79,9 +72,9 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.FORUM_MODERATOR_AVATAR_FILE_PATH,
                 ForumUserFollow.FORUM_MODERATOR_USER_NICKNAME,
                 ForumUserFollow.FORUM_MODERATOR_MEMBER_SIGNATURE,
-                
 
                 ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.MEMBER_ID,
                 ForumUserFollow.USER_AVATAR_FILE_PATH,
                 ForumUserFollow.USER_NICKNAME,
                 ForumUserFollow.MEMBER_SIGNATURE
@@ -89,8 +82,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         String forumId = body.getForumId();
         
@@ -254,17 +246,18 @@ public class ForumUserFollowMobileController extends BaseController {
                 ForumUserFollow.APP_ID,
                 ForumUserFollow.PAGE_INDEX,
                 ForumUserFollow.PAGE_SIZE,
-                ForumUserFollow.SYSTEM_REQUEST_USER_ID
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.MEMBER_ID
         );
 
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        if (member == null) {
+        String requestMemberId = body.getMemberId();
+        
+        if (Util.isNullOrEmpty(requestMemberId)) {
         	//TODO 这里可以加个判断,返回没有登录状态下的数据??
         	return renderJson(0, null);
 		}
-        String requestMemberId = member.getMemberId();
 
         Integer resultTotal = forumUserFollowService.countByMemberId(appId, requestMemberId);
 
@@ -309,13 +302,13 @@ public class ForumUserFollowMobileController extends BaseController {
         validateRequest(
                 body,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.SYSTEM_REQUEST_USER_ID
+                ForumUserFollow.SYSTEM_REQUEST_USER_ID,
+                ForumUserFollow.MEMBER_ID
         );
         
         String appId = body.getAppId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         List<ForumUserFollowView> resultList = forumUserFollowService.listByMemberId(appId, memberId);
 
@@ -342,12 +335,13 @@ public class ForumUserFollowMobileController extends BaseController {
         		forumUserFollowEntry,
                 ForumUserFollow.FORUM_ID,
                 ForumUserFollow.APP_ID,
-                ForumUserFollow.FORUM_USER_FOLLOW_ID
+                ForumUserFollow.FORUM_USER_FOLLOW_ID,
+                ForumUserFollow.MEMBER_ID
         );
         
         String requestUserId = forumUserFollowEntry.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = forumUserFollowEntry.getMemberId();
+        
 		
 		ForumUserFollow result = forumUserFollowService.updateTopForum(forumUserFollowEntry.getAppId(), forumUserFollowEntry.getForumId(), memberId, requestUserId);
         Boolean success = false;

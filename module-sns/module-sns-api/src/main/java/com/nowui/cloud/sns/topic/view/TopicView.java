@@ -166,6 +166,30 @@ public class TopicView extends BaseView {
     private JSONObject topicForumList;
     public static final String TOPIC_FORUM_LIST = "topicForumList";
     
+    /**
+     * 话题被收藏数
+     */
+    @Field
+    @NotNull(message = "话题被收藏数不能为空")
+    private Integer topicCountBookmark;
+    public static final String TOPIC_COUNT_BOOKMARK = "topicCountBookmark";
+    
+    /**
+     * 话题被点赞数
+     */
+    @Field
+    @NotNull(message = "话题被点赞数不能为空")
+    private Integer topicCountLike;
+    public static final String TOPIC_COUNT_LIKE = "topicCountLike";
+    
+    /**
+     * 话题被评论数
+     */
+    @Field
+    @NotNull(message = "话题被评论数不能为空")
+    private Integer topicCountComment;
+    public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
+    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }
@@ -308,6 +332,30 @@ public class TopicView extends BaseView {
 
 	public void setMemberSignature(String memberSignature) {
 		put(MEMBER_SIGNATURE, memberSignature);
+	}
+	
+	public Integer getTopicCountBookmark() {
+		return getInteger(TOPIC_COUNT_BOOKMARK);
+	}
+
+	public void setTopicCountBookmark(Integer topicCountBookmark) {
+		put(TOPIC_COUNT_BOOKMARK, topicCountBookmark);
+	}
+
+	public Integer getTopicCountLike() {
+		return getInteger(TOPIC_COUNT_LIKE);
+	}
+
+	public void setTopicCountLike(Integer topicCountLike) {
+		put(TOPIC_COUNT_LIKE, topicCountLike);
+	}
+
+	public Integer getTopicCountComment() {
+		return getInteger(TOPIC_COUNT_COMMENT);
+	}
+
+	public void setTopicCountComment(Integer topicCountComment) {
+		put(TOPIC_COUNT_COMMENT, topicCountComment);
 	}
 	
 	

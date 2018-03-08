@@ -2,39 +2,29 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.UserAvatar;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
-import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
-import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
-import com.nowui.cloud.sns.topic.router.TopicTipRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
+import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicTipService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
 import com.nowui.cloud.sns.topic.view.TopicTipView;
-import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +45,9 @@ public class TopicCommentMobileController extends BaseController {
 	
 	@Autowired
 	private TopicTipService topicTipService;
+	
+	@Autowired
+    private TopicService topicService;
 	
 	@Autowired
     private TopicCommentUserLikeService topicCommentUserLikeService;
@@ -147,9 +140,7 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.USER_NICK_NAME
         );
         String systemRequestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(systemRequestUserId);
-        String memberId = member.getMemberId();
-        body.setMemberId(memberId);
+        String memberId = body.getMemberId();
         
         String topicReplayMemberId = body.getTopicReplyMemberId();
         String appId = body.getAppId();
@@ -183,6 +174,12 @@ public class TopicCommentMobileController extends BaseController {
             TopicCommentView topicCommentView = JSON.parseObject(result.toJSONString(), TopicCommentView.class);
             topicCommentService.save(topicCommentView);
             
+            // TODO 更新话题视图中的评论数量: 加1
+            TopicView topicView = topicService.find(body.getTopicId());
+            Integer topicCountComment = topicView.getTopicCountComment();
+            topicView.setTopicCountComment(topicCountComment + 1);
+            topicService.update(topicView);
+            
             // 保存提醒谁看
             TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
             topicTipService.save(topicTipView);
@@ -206,7 +203,6 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.APP_ID
         );
      //TODO 删除话题评论的接口,没有这功能,也没完善接口  
-//        Boolean result = topicCommentService.delete(topicCommentId, body.getAppId(), TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, body.getSystemRequestUserId(), TopicComment.getSystemVersion());
         
         TopicComment result = topicCommentService.delete(body.getTopicCommentId(), body.getSystemRequestUserId(), body.getSystemVersion());
         

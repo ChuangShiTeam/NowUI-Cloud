@@ -15,7 +15,6 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.mapper.TopicMediaMapper;
 import com.nowui.cloud.sns.topic.repository.TopicMediaRepository;
-import com.nowui.cloud.sns.topic.router.TopicMediaRouter;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
 import com.nowui.cloud.sns.topic.view.TopicMediaView;
 import com.nowui.cloud.util.Util;

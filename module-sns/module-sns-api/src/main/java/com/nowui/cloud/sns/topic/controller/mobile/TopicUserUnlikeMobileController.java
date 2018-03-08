@@ -1,11 +1,9 @@
 package com.nowui.cloud.sns.topic.controller.mobile;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,17 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
-import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
-import com.nowui.cloud.sns.topic.router.TopicUserUnlikeRouter;
+import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
+import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -45,6 +42,9 @@ public class TopicUserUnlikeMobileController extends BaseController {
 	
 	@Autowired
 	private TopicUserLikeService topicUserLikeService;
+	
+	@Autowired
+	private TopicService topicService;
 	
 	@Autowired
 	private MemberRpc memberRpc;
@@ -94,6 +94,11 @@ public class TopicUserUnlikeMobileController extends BaseController {
             TopicUserUnlikeView unlikeView = JSON.parseObject(result.toJSONString(), TopicUserUnlikeView.class);
             topicUserUnlikeService.save(unlikeView);
             
+            // TODO 更新话题视图中的点赞数量: 减1
+            TopicView topicView = topicService.find(topicId);
+            Integer topicCountLike = topicView.getTopicCountLike();
+            topicView.setTopicCountLike(topicCountLike - 1);
+            topicService.update(topicView);
             
             //sendMessage(result, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, appId, userId);
             success = true;

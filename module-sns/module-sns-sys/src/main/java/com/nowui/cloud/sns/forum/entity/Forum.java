@@ -73,10 +73,19 @@ public class Forum extends BaseEntity {
     public static final String FORUM_MODERATOR_MEMBER_ID = "forumModeratorMemberId";
     
     /**
+     * 请求者的会员编号(用于查看论坛列表等类似接口)
+     */
+    @TableField(exist = false)
+    @NotNull(message = "请求者的会员编号不能为空")
+    @Length(max = 32, message = "请求者的会员编号长度超出限制")
+    private String requestMemberId;
+    public static final String REQUEST_MEMBER_ID = "requestMemberId";
+    
+    /**
      * 版主头像文件路径
      */
     @TableField(exist = false)
-    @NotNull(message = "版主头像文件路径")
+    @NotNull(message = "版主头像文件路径不能为空")
     private String userAvatarFilePath;
     public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
     
@@ -358,6 +367,14 @@ public class Forum extends BaseEntity {
     
     public void setForumModeratorMemberId(String forumModeratorMemberId) {
         put(FORUM_MODERATOR_MEMBER_ID, forumModeratorMemberId);
+    }
+    
+    public String getRequestMemberId() {
+        return getString(REQUEST_MEMBER_ID);
+    }
+    
+    public void setRequestMemberId(String requestMemberId) {
+        put(REQUEST_MEMBER_ID, requestMemberId);
     }
     
 	public String getUserAvatarFilePath() {

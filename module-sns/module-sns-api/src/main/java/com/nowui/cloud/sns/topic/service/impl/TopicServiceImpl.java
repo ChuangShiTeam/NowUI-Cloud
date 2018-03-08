@@ -14,20 +14,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.service.ForumService;
-import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
-import com.nowui.cloud.sns.topic.entity.TopicForum;
-import com.nowui.cloud.sns.topic.entity.TopicMedia;
-import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
-import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.mapper.TopicMapper;
 import com.nowui.cloud.sns.topic.repository.TopicRepository;
-import com.nowui.cloud.sns.topic.router.TopicRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicMediaService;
@@ -41,7 +34,6 @@ import com.nowui.cloud.sns.topic.view.TopicMediaView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
-import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -218,37 +210,13 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public TopicView findDetailByTopicIdAndMemberId(String topicId, String memberId) {
-		
 		//根据topicId查询topic
 		TopicView topic = find(topicId);
 		
 		//TODO 检查topic是否为null
-//		if (Util.isNullOrEmpty(topic)) {
-//			
-//		}
-		
 		// 话题多媒体列表
-//        List<TopicMediaView> topicMediaList = topicMediaService.listByTopicId(topic.getTopicId());
-//        topic.put(Topic.TOPIC_MEDIA_LIST, topicMediaList);
-        //TODO 暂时注释掉,回来在调试
-//        for (TopicMediaView topicMedia : topicMediaList) {
-//            topicMedia.keep(TopicMedia.TOPIC_MEDIA, TopicMedia.TOPIC_MEDIA_TYPE);
-//        }
-
         // 论坛列表
-//        List<TopicForumView> topicForumList = topicForumService.listByTopicId(topic.getTopicId());
-//        ArrayList<ForumView> forumList = new ArrayList<>();
-//        for (TopicForumView topicForum : topicForumList) {
-//            ForumView forum = forumService.find(topicForum.getForumId());
-////TODO      forum.keep(Forum.FORUM_ID, Forum.FORUM_NAME);
-//            forumList.add(forum);
-//        }
-//        topic.put(Topic.TOPIC_FORUM_LIST, forumList);
-
         // 话题最新3条评论
-//        List<TopicComment> commentList = topicCommentService.listByTopicId(topic.getTopicId(), 1, 3);
-//        topic.put(Topic.TOPIC_COMMENT_LIST, commentList);
-
         // 话题收藏数
         Integer countBookMark = topicUserBookmarkService.countByTopicId(topic.getTopicId());
         topic.put(Topic.TOPIC_COUNT_BOOKMARK, countBookMark);
@@ -275,7 +243,6 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public Integer countByMemberIdList(String appId, List<String> memberIdList) {
-		
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
                 .and(TopicView.MEMBER_ID).in(memberIdList)
                 .and(TopicView.SYSTEM_STATUS).is(true);
@@ -392,7 +359,6 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public Integer countTopicByMemberId(String memberId) {
-		
 		Integer count = count(
                 new BaseWrapper<Topic>()
                         .eq(Topic.MEMBER_ID, memberId)
@@ -417,20 +383,6 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId) {
-        
-//        if (result) {
-//        	Integer num = (Integer)redisTemplate.opsForValue().get(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId);
-//        	if (num == null) {
-//    			Integer count = count(
-//    	                new BaseWrapper<Topic>()
-//    	                        .eq(Topic.USER_ID, systemCreateUserId)
-//    	                        .eq(Topic.SYSTEM_STATUS, true)
-//    	        );
-//    			redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, count);
-//    		}
-//        	
-//        	redisTemplate.opsForValue().set(TOPIC_COUTN_THE_USER_SEND + systemCreateUserId, num++);
-//		}
 		
 		return null;
 	}
@@ -452,7 +404,6 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public List<TopicView> listByTopicIdList(List<String> topicIdList) {
-		
 		Criteria criteria = Criteria.where(TopicView.TOPIC_ID).in(topicIdList)
                 .and(TopicView.SYSTEM_STATUS).is(true);
 

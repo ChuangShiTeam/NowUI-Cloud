@@ -38,7 +38,11 @@ import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.sns.topic.service.TopicService;
+import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
+import com.nowui.cloud.sns.topic.service.TopicUserLikeService;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
+import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
+import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
@@ -64,6 +68,12 @@ public class ForumMobileController extends BaseController {
 	 
 	 @Autowired
 	 private TopicService topicService;
+	 
+	 @Autowired
+	 private TopicUserLikeService topicUserLikeService;
+	 
+	 @Autowired
+	 private TopicUserBookmarkService topicUserBookmarkService;
 	 
 	 @Autowired
 	 private ForumUserFollowService forumUserFollowService;
@@ -99,8 +109,7 @@ public class ForumMobileController extends BaseController {
          );
 	     String appId = body.getAppId();
 	     String requestUserId = body.getSystemRequestUserId();
-	     MemberView member = memberRpc.findByUserIdV1(requestUserId);
-	     String forumModeratormemberId = member.getMemberId();
+	     String forumModeratormemberId = body.getForumModeratorMemberId();
 	     
 	     String forumId = Util.getRandomUUID();
 	     String forumUserFollowId = Util.getRandomUUID();
@@ -280,12 +289,12 @@ public class ForumMobileController extends BaseController {
                 body,
                 Forum.APP_ID,
                 Forum.PAGE_SIZE,
-                Forum.SYSTEM_REQUEST_USER_ID
+                Forum.SYSTEM_REQUEST_USER_ID,
+                Forum.REQUEST_MEMBER_ID
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getRequestMemberId();
         
         // TODO 这个查的mysql 查询编辑推荐的且用户没有关注过的论坛
         List<ForumView> recommendList = forumService.getRandomRecommendAndNotFollowListByMemberId(body.getAppId(), memberId, body.getPageSize());
@@ -325,7 +334,7 @@ public class ForumMobileController extends BaseController {
 	   
 	    ForumView forum = forumService.find(body.getForumId());
 	    if (!forum.getForumModeratorMemberId().equals(memberId)) {
-	    return renderJson(false);
+	    	return renderJson(false);
 		}
 	    
 	   //不清楚是否单独写一个更改背景图片的接口
@@ -567,11 +576,11 @@ public class ForumMobileController extends BaseController {
         validateRequest(
                 body,
                 Forum.APP_ID,
-                Forum.FORUM_ID
+                Forum.FORUM_ID,
+                Forum.REQUEST_MEMBER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String requestMemberId = member.getMemberId();
+        String requestMemberId = body.getRequestMemberId();
         
         ForumView forum = forumService.find(body.getForumId());
 
@@ -611,6 +620,7 @@ public class ForumMobileController extends BaseController {
                 body,
                 Forum.APP_ID,
                 Forum.FORUM_ID,
+                Forum.REQUEST_MEMBER_ID,
                 Topic.SYSTEM_CREATE_TIME,
                 Forum.PAGE_INDEX,
                 Forum.PAGE_SIZE
@@ -619,8 +629,7 @@ public class ForumMobileController extends BaseController {
         Integer pageIndex = body.getPageIndex();
         Integer pageSize = body.getPageSize();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String requestMemberId = body.getRequestMemberId();
         String appId = body.getAppId();
         
         
@@ -638,20 +647,25 @@ public class ForumMobileController extends BaseController {
         List<TopicView> topicList = new ArrayList<>();
         // 4,根据topicIdList查找topicList
         if (!Util.isNullOrEmpty(topicIdList)) {
-        	topicList = topicService.listDetailByTopicIdList(memberId, topicIdList);
+        	topicList = topicService.listByTopicIdList(topicIdList);
 
-	        // 图片多媒体
-	        for (TopicView topic : topicList) {
-	            // List<TopicMedia> topicMediaList = (List<TopicMedia>) topic.get(Topic.TOPIC_MEDIA_LIST);
+        	for (TopicView topic : topicList) {
 	            
-	            // 处理评论是否自己发布
-	            if (memberId.equals(topic.getMemberId())) {
+	            // 处理话题是否自己发布
+	            if (requestMemberId.equals(topic.getMemberId())) {
 	            	topic.put(Topic.TOPIC_IS_SELF, true);
 				}else {
-//					Boolean isFollow = memberFollowRpc.checkIsFollowV1(requestUserId, topic.getSystemCreateUserId());
 					Boolean isFollow = memberFollowService.checkIsFollow(requestUserId, topic.getSystemCreateUserId());
 					topic.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
 				}
+	            
+	            // 是否点赞
+	    		TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndMemberId(topic.getTopicId(), requestMemberId);
+	    		topic.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
+	            // 是否收藏
+	            TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topic.getTopicId(), requestMemberId);
+	            topic.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
+	            
 	        }
         }
         

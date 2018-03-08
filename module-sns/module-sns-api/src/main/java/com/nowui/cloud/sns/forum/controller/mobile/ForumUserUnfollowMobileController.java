@@ -51,15 +51,14 @@ public class ForumUserUnfollowMobileController extends BaseController {
                 body,
                 ForumUserUnfollow.APP_ID,
                 ForumUserUnfollow.SYSTEM_REQUEST_USER_ID,
-                ForumUserUnfollow.FORUM_ID
+                ForumUserUnfollow.FORUM_ID,
+                ForumUserUnfollow.MEMBER_ID
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
-        String appId = body.getAppId();
+        String memberId = body.getMemberId();
         
-        body.setMemberId(memberId);
+        String appId = body.getAppId();
         
         ForumUserFollow delResult = new ForumUserFollow();
         
@@ -67,7 +66,6 @@ public class ForumUserUnfollowMobileController extends BaseController {
         ForumUserFollowView followBody = forumUserFollowService.findByMemberIdAndForumId(appId, memberId, body.getForumId());
         //有: 删除
         if (followBody != null) {
-//  TODO  后面处理消息      	Boolean delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), body.getAppId(), body.getSystemRequestUserId(), followBody.getSystemVersion());
         	delResult = forumUserFollowService.delete(followBody.getForumUserFollowId(), requestUserId, followBody.getSystemVersion());
 		}
         //没有: 就去取消关注表查询
@@ -78,7 +76,6 @@ public class ForumUserUnfollowMobileController extends BaseController {
 		}
         
         //没有: 新增取消关注记录
-//      boolean result = forumUserUnfollowService.save(body, Util.getRandomUUID(), body.getAppId(), body.getSystemRequestUserId());
         ForumUserUnfollow result = forumUserUnfollowService.save(body, Util.getRandomUUID(), requestUserId);
         Boolean success = false;
 
