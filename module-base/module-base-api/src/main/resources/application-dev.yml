@@ -6,9 +6,11 @@ logging:
     root: info
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3030/eureka/
+      defaultZone: http://118.31.229.16:3030/eureka/
 
 feign:
   hystrix:
@@ -61,8 +63,8 @@ spring:
     # host: 118.31.229.16
     host: 127.0.0.1
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
   data:
     #elasticsearch:
     #  cluster-name: elasticsearch

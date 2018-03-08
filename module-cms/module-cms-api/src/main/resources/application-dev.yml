@@ -62,8 +62,8 @@ spring:
 #    password: guest
     host: 127.0.0.1
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
   data:
     #elasticsearch:
     #  cluster-name: elasticsearch

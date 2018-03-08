@@ -56,7 +56,7 @@ public class MemberFollowMobileController extends BaseController {
         List<MemberFollowView> resultList = memberFollowService.listByUserId(memberFollow.getSystemRequestUserId());
         
         validateResponse(
-                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.SNS_MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
                 MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME
@@ -83,7 +83,7 @@ public class MemberFollowMobileController extends BaseController {
 		}
         
         validateResponse(
-                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.SNS_MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
                 MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
@@ -113,7 +113,7 @@ public class MemberFollowMobileController extends BaseController {
 		}
         
         validateResponse(
-                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.SNS_MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
                 MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
@@ -144,7 +144,7 @@ public class MemberFollowMobileController extends BaseController {
         }
         
         validateResponse(
-                MemberFollowView.MEMBER_FOLLOW_ID,
+                MemberFollowView.SNS_MEMBER_FOLLOW_ID,
                 MemberFollowView.FOLLOW_MEMBER_ID,
                 MemberFollowView.USER_AVATAR_FILE_PATH,
                 MemberFollowView.USER_NICK_NAME,
@@ -221,6 +221,22 @@ public class MemberFollowMobileController extends BaseController {
             
             memberFollowService.save(memberFollowView);
             
+            //会员主页视图修改 请求者 的关注数: 加1
+            MemberHomepageView theRequestMemberHomepageView = memberHomepageService.findByUserId(appId, memberFollow.getSystemRequestUserId());
+            Integer memberFollowCount = theRequestMemberHomepageView.getMemberFollowCount();
+            Integer memberFollowSystemVersion = theRequestMemberHomepageView.getSystemVersion();
+            theRequestMemberHomepageView.setSystemVersion(memberFollowSystemVersion + 1);
+            theRequestMemberHomepageView.setMemberFollowCount(memberFollowCount + 1);
+            memberHomepageService.update(theRequestMemberHomepageView);
+            
+            //会员主页视图修改 被关注者 的被关注数: 加1
+            MemberHomepageView beFollowMemberHomepageView = memberHomepageService.findByMemberId(appId, memberFollow.getFollowMemberId());
+            Integer memberBeFollowCount = beFollowMemberHomepageView.getMemberBeFollowCount();
+            Integer beFollowSystemVersion = theRequestMemberHomepageView.getSystemVersion();
+            theRequestMemberHomepageView.setSystemVersion(beFollowSystemVersion + 1);
+            beFollowMemberHomepageView.setMemberBeFollowCount(memberBeFollowCount + 1);
+            memberHomepageService.update(beFollowMemberHomepageView);
+            
             success = true;
         }
 
@@ -263,13 +279,30 @@ public class MemberFollowMobileController extends BaseController {
             throw new BusinessException("没有关注该会员");
         }
         
-        MemberFollow result = memberFollowService.delete(memberFollowView.getMemberFollowId(), memberFollow.getSystemRequestUserId(), memberFollowView.getSystemVersion());
+        MemberFollow result = memberFollowService.delete(memberFollowView.getSnsMemberFollowId(), memberFollow.getSystemRequestUserId(), memberFollowView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
             // 删除会员关注视图
             memberFollowService.delete(memberFollowView);
+            
+            
+            // 修改请求者的关注数: 减一
+            MemberHomepageView theRequestMemberHomepageView = memberHomepageService.findByUserId(appId, memberFollow.getSystemRequestUserId());
+            Integer memberFollowCount = theRequestMemberHomepageView.getMemberFollowCount();
+            Integer theRequestSystemVersion = theRequestMemberHomepageView.getSystemVersion();
+            theRequestMemberHomepageView.setSystemVersion(theRequestSystemVersion + 1);
+            theRequestMemberHomepageView.setMemberFollowCount(memberFollowCount - 1);
+            memberHomepageService.update(theRequestMemberHomepageView);
+            
+            // 会员主页视图修改 被取消关注者 的被关注数: 减一
+            MemberHomepageView beFollowMemberHomepageView = memberHomepageService.findByMemberId(appId, memberFollow.getFollowMemberId());
+            Integer memberBeFollowCount = beFollowMemberHomepageView.getMemberBeFollowCount();
+            Integer beFollowSystemVersion = beFollowMemberHomepageView.getSystemVersion();
+            beFollowMemberHomepageView.setSystemVersion(beFollowSystemVersion + 1);
+            beFollowMemberHomepageView.setMemberBeFollowCount(memberBeFollowCount - 1);
+            memberHomepageService.update(beFollowMemberHomepageView);
             
             success = true;
         }

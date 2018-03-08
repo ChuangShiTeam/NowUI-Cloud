@@ -51,7 +51,7 @@ public class MemberFollowAdminController extends BaseController {
         List<MemberFollow> resultList = memberFollowService.listForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 MemberFollow.FOLLOW_MEMBER_ID,
@@ -67,14 +67,14 @@ public class MemberFollowAdminController extends BaseController {
         validateRequest(
                 body,
                 MemberFollow.APP_ID,
-                MemberFollow.MEMBER_FOLLOW_ID
+                MemberFollow.SNS_MEMBER_FOLLOW_ID
         );
 
-        MemberFollowView result = memberFollowService.find(body.getMemberFollowId());
+        MemberFollowView result = memberFollowService.find(body.getSnsMemberFollowId());
 //        MemberFollow result = memberFollowService.find(body.getMemberFollowId());
 
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 MemberFollow.FOLLOW_MEMBER_ID,
@@ -113,7 +113,7 @@ public class MemberFollowAdminController extends BaseController {
     public Map<String, Object> updateV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.APP_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
@@ -122,7 +122,7 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        MemberFollow result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberFollow result = memberFollowService.update(body, body.getSnsMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         Boolean success = false;
 
@@ -139,12 +139,12 @@ public class MemberFollowAdminController extends BaseController {
     public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.APP_ID,
                 MemberFollow.SYSTEM_VERSION
         );
 
-        MemberFollow result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberFollow result = memberFollowService.delete(body.getSnsMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         Boolean success = false;
 

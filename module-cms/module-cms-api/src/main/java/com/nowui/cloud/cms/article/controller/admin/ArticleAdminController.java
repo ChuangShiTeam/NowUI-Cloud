@@ -158,7 +158,7 @@ public class ArticleAdminController extends BaseController {
         if (result != null) {
             ArticleView articleView = new ArticleView();
             articleView.putAll(result);
-            
+
             articleService.save(articleView);
         }
 
