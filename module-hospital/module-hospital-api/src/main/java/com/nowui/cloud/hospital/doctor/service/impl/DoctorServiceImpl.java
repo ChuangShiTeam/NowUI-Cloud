@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * 医生业务实现
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 @Service
 public class DoctorServiceImpl extends SuperServiceImpl<DoctorMapper, Doctor, DoctorRepository, DoctorView> implements DoctorService {

@@ -1,4 +1,5 @@
 package com.nowui.cloud.shop.product.controller.admin;
+
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -57,7 +58,15 @@ public class ProductAdminController extends BaseController {
 
         ProductView result = productService.find(product.getProductId());
 
-        validateResponse(Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.SYSTEM_VERSION);
+        validateResponse(
+                ProductView.PRODUCT_ID,
+                ProductView.PRODUCT_NAME,
+                ProductView.PRODUCT_CATEGORY_ID,
+                ProductView.PRODUCT_CATEGORY_NAME,
+                ProductView.PRODUCT_IMAGE_ID,
+                ProductView.PRODUCT_IMAGE_PATH,
+                ProductView.SYSTEM_VERSION
+        );
 
         return renderJson(result);
     }
@@ -67,21 +76,22 @@ public class ProductAdminController extends BaseController {
     public Map<String, Object> saveV1() {
         Product product = getEntry(Product.class);
 
-        String productId = Util.getRandomUUID();
+        System.out.println(product.toJSONString());
 
         validateRequest(product, Product.APP_ID, Product.PRODUCT_NAME);
 
+        String productId = Util.getRandomUUID();
+
         Product result = productService.save(product, productId, product.getSystemRequestUserId());
 
-        Boolean success = false;
-
         if (result != null) {
-            //sendMessage(result, ProductRouter.PRODUCT_V1_SAVE, product.getAppId(), product.getSystemRequestUserId());
+            ProductView productView = new ProductView();
+            productView.putAll(result);
 
-            success = true;
+            productService.save(productView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "商品修改")
@@ -93,15 +103,14 @@ public class ProductAdminController extends BaseController {
 
         Product result = productService.update(product, product.getProductId(), product.getSystemRequestUserId(), product.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            //sendMessage(result, ProductRouter.PRODUCT_V1_UPDATE, product.getAppId(), product.getSystemRequestUserId());
+            ProductView productView = new ProductView();
+            productView.putAll(result);
 
-            success = true;
+            productService.update(productView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "商品删除")
@@ -113,15 +122,14 @@ public class ProductAdminController extends BaseController {
 
         Product result = productService.delete(product.getProductId(), product.getSystemRequestUserId(), product.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            //sendMessage(result, ProductRouter.PRODUCT_V1_DELETE, product.getAppId(), product.getSystemRequestUserId());
+            ProductView productView = new ProductView();
+            productView.putAll(result);
 
-            success = true;
+            productService.update(productView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "商品数据同步")
@@ -133,7 +141,7 @@ public class ProductAdminController extends BaseController {
             ProductView productView = new ProductView();
             productView.putAll(product);
 
-            productService.update(productView);
+            productService.saveOrUpdate(productView);
         }
 
         return renderJson(true);

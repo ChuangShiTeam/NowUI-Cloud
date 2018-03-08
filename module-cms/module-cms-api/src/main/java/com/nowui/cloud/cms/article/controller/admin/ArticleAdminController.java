@@ -249,7 +249,7 @@ public class ArticleAdminController extends BaseController {
             ArticleView articleView = new ArticleView();
             articleView.putAll(article);
 
-            articleService.update(articleView);
+            articleService.saveOrUpdate(articleView);
         }
 
         return renderJson(true);
