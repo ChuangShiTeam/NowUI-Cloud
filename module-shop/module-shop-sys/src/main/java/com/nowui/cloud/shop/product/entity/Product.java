@@ -46,6 +46,24 @@ public class Product extends BaseEntity {
     private String productName;
     public static final String PRODUCT_NAME = "productName";
 
+    /**
+     * 商品分类
+     */
+    @TableField
+    @NotNull(message = "商品分类编号不能为空")
+    @Length(max = 32, message = "商品分类编号长度超出限制")
+    private String productCategoryId;
+    public static final String PRODUCT_CATEGORY_ID = "productCategoryId";
+
+    /**
+     * 商品图片
+     */
+    @TableField
+    @NotNull(message = "商品图片编号不能为空")
+    @Length(max = 32, message = "商品图片编号长度超出限制")
+    private String productImageId;
+    public static final String PRODUCT_IMAGE_ID = "productImageId";
+
     public String getProductId() {
         return getString(PRODUCT_ID);
     }
@@ -68,6 +86,22 @@ public class Product extends BaseEntity {
 
     public void setProductName(String productName) {
         put(PRODUCT_NAME, productName);
+    }
+
+    public String getProductCategoryId() {
+        return getString(PRODUCT_CATEGORY_ID);
+    }
+
+    public void setProductCategoryId(String productCategoryId) {
+        put(PRODUCT_CATEGORY_ID, productCategoryId);
+    }
+
+    public String getProductImageId() {
+        return getString(PRODUCT_IMAGE_ID);
+    }
+
+    public void setProductImageId(String productImageId) {
+        put(PRODUCT_IMAGE_ID, productImageId);
     }
 
 }
