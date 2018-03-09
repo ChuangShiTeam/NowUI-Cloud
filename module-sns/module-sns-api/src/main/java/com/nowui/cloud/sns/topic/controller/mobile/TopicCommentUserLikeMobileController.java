@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
@@ -51,12 +50,12 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         validateRequest(
         		body,
                 TopicCommentUserLike.APP_ID,
-                TopicCommentUserLike.COMMENT_ID
+                TopicCommentUserLike.COMMENT_ID,
+                TopicCommentUserLike.MEMBER_ID
         );
         String commentId = body.getCommentId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         String appId = body.getAppId();
         

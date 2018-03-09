@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,19 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
-import com.nowui.cloud.sns.topic.router.TopicUserBookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicService;
 import com.nowui.cloud.sns.topic.service.TopicUserBookmarkService;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
-import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
 import com.nowui.cloud.util.Util;
 
@@ -73,9 +67,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
         
         String appId = body.getAppId();
         String topicId = body.getTopicId();
-        String theBookMarkUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(theBookMarkUserId);
-        String theBookMarkMemberId = member.getMemberId();
+        String theBookMarkMemberId = body.getMemberId();
         String requestUserId = body.getSystemRequestUserId();
         
         TopicUserBookmarkView bookmark = topicUserBookmarkService.findByTopicIdAndMemberId(topicId, theBookMarkMemberId);

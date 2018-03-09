@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.view;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
@@ -54,6 +55,38 @@ public class ForumView extends BaseView {
     @NotNull(message = "论坛多媒体文件路径不能为空")
     private String forumMediaFilePath;
     public static final String FORUM_MEDIA_FILE_PATH = "forumMediaFilePath";
+    
+    /**
+     * 论坛多媒体类型
+     */
+    @Field
+    @NotNull(message = "论坛多媒体类型不能为空")
+    private String forumMediaType;
+    public static final String FORUM_MEDIA_TYPE = "forumMediaType";
+
+    /**
+     * 论坛多媒体背景文件路径
+     */
+//    @Field
+//    @NotNull(message = "论坛多媒体背景文件路径不能为空")
+//    private String forumBackgroundMediaFilePath;
+//    public static final String FORUM_BACKGROUND_MEDIA_FILE_PATH = "forumBackgroundMediaFilePath";
+
+    /**
+     * 论坛多媒体背景类型
+     */
+//    @Field
+//    @NotNull(message = "论坛多媒体背景类型不能为空")
+//    private String forumBackgroundMediaType;
+//    public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
+
+    /**
+     * 论坛多媒体背景文件List(fileId,filePath,fileType,sort)
+     */
+    @Field
+    @NotNull(message = "论坛多媒体背景文件List不能为空")
+    private JSONArray forumBackgroundMediaList;
+    public static final String FORUM_BACKGROUND_MEDIA_LIST = "forumBackgroundMediaList";
 
     /**
      * 版主(会员编号)
@@ -62,7 +95,7 @@ public class ForumView extends BaseView {
     @NotNull(message = "版主(会员编号)不能为空")
     private String forumModeratorMemberId;
     public static final String FORUM_MODERATOR_MEMBER_ID = "forumModeratorMemberId";
-    
+
     /**
      * 版主头像文件路径
      */
@@ -87,29 +120,6 @@ public class ForumView extends BaseView {
     private String memberSignature;
     public static final String MEMBER_SIGNATURE = "memberSignature";
     
-    /**
-     * 论坛多媒体类型
-     */
-    @Field
-    @NotNull(message = "论坛多媒体类型不能为空")
-    private String forumMediaType;
-    public static final String FORUM_MEDIA_TYPE = "forumMediaType";
-
-    /**
-     * 论坛多媒体背景文件路径
-     */
-    @Field
-    @NotNull(message = "论坛多媒体背景文件路径不能为空")
-    private String forumBackgroundMediaFilePath;
-    public static final String FORUM_BACKGROUND_MEDIA_FILE_PATH = "forumBackgroundMediaFilePath";
-
-    /**
-     * 论坛多媒体背景类型
-     */
-    @Field
-    @NotNull(message = "论坛多媒体背景类型不能为空")
-    private String forumBackgroundMediaType;
-    public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
 
     /**
      * 位置
@@ -272,21 +282,29 @@ public class ForumView extends BaseView {
         put(FORUM_MEDIA_TYPE, forumMediaType);
     }
 
-    public String getForumBackgroundMediaFilePath() {
-        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
-    }
+//    public String getForumBackgroundMediaFilePath() {
+//        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
+//    }
+//
+//    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
+//        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
+//    }
+//
+//    public String getForumBackgroundMediaType() {
+//        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
+//    }
+//
+//    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
+//        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
+//    }
+    
+	public JSONArray getForumBackgorundMediaList() {
+        return getJSONArray(FORUM_BACKGROUND_MEDIA_LIST);
+	}
 
-    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
-        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
-    }
-
-    public String getForumBackgroundMediaType() {
-        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
-    }
-
-    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
-        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
-    }
+	public void setForumBackgorundMediaList(JSONArray topicTipUserList) {
+        put(FORUM_BACKGROUND_MEDIA_LIST, topicTipUserList);
+	}
 
     public String getForumLocation() {
         return getString(FORUM_LOCATION);

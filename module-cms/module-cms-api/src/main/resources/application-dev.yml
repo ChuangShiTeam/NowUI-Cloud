@@ -69,11 +69,11 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui_cms
+      uri: mongodb://118.31.229.16/nowui
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_cms
+      authentication-database: nowui_cms
       username: user
       password: '123456'
 

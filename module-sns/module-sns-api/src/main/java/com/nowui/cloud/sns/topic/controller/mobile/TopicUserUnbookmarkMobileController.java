@@ -12,7 +12,6 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.service.TopicService;
@@ -57,13 +56,13 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
                 body,
                 TopicUserUnbookmark.APP_ID,
                 TopicUserUnbookmark.TOPIC_ID,
-                TopicUserUnbookmark.SYSTEM_REQUEST_USER_ID
+                TopicUserUnbookmark.SYSTEM_REQUEST_USER_ID,
+                TopicUserUnbookmark.MEMBER_ID
         );
         
         String topicId = body.getTopicId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
 
 
         TopicUserUnbookmarkView topicUserUnbookmark = topicUserUnbookmarkService.findByTopicIdAndMemberId(topicId, memberId);

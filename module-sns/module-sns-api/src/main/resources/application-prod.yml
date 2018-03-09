@@ -1,5 +1,5 @@
 server:
-  port: 10070
+  port: 10080
 
 logging:
   level:
@@ -65,11 +65,11 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui_sns
+      uri: mongodb://118.31.229.16/nowui
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_sns
+      authentication-database: nowui_sns
       username: user
       password: '123456'
 

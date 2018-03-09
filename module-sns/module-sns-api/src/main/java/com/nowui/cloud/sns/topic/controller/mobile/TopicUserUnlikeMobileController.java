@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.service.TopicService;
@@ -46,9 +44,6 @@ public class TopicUserUnlikeMobileController extends BaseController {
 	@Autowired
 	private TopicService topicService;
 	
-	@Autowired
-	private MemberRpc memberRpc;
-	
 	@ApiOperation(value = "新增话题用户取消点赞关联")
     @RequestMapping(value = "/topic/user/unlike/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
@@ -57,12 +52,12 @@ public class TopicUserUnlikeMobileController extends BaseController {
                 body,
                 TopicUserUnlike.APP_ID,
                 TopicUserUnlike.TOPIC_ID,
-                TopicUserUnlike.SYSTEM_REQUEST_USER_ID
+                TopicUserUnlike.SYSTEM_REQUEST_USER_ID,
+                TopicUserUnlike.MEMBER_ID
         );
         
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         String topicId = body.getTopicId();
         String appId = body.getAppId();
@@ -74,7 +69,6 @@ public class TopicUserUnlikeMobileController extends BaseController {
 		}
         
         body.setMemberId(memberId);
-//        Boolean result = topicUserUnlikeService.save(body, Util.getRandomUUID(), appId, TopicUserUnlikeRouter.TOPIC_USER_UNLIKE_V1_SAVE, body.getSystemRequestUserId());
         TopicUserUnlike result = topicUserUnlikeService.save(body, Util.getRandomUUID(), requestUserId);
 
         boolean success = false;
