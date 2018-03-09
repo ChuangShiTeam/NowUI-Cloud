@@ -3,8 +3,6 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
@@ -51,9 +49,6 @@ public class TopicCommentMobileController extends BaseController {
 	
 	@Autowired
     private TopicCommentUserLikeService topicCommentUserLikeService;
-
-	@Autowired
-	private MemberRpc memberRpc;
 
     @ApiOperation(value = "话题详情页评论列表")
     @RequestMapping(value = "/topic/comment/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

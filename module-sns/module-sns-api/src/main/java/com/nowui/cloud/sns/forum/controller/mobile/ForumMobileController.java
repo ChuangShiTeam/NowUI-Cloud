@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAvatar;
@@ -22,16 +23,17 @@ import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.entity.ForumBackgroundMedia;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
-import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
+import com.nowui.cloud.sns.forum.service.ForumBackgroundMediaService;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
 import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumBackgroundMediaView;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 import com.nowui.cloud.sns.forum.view.ForumView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
-import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
 import com.nowui.cloud.sns.member.service.MemberFollowService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
@@ -84,12 +86,12 @@ public class ForumMobileController extends BaseController {
 	 @Autowired
 	 private MemberFollowService memberFollowService;
 	 
+	 @Autowired
+	 private ForumBackgroundMediaService forumBackgroundMediaService;
+	 
      @Autowired
      private MemberRpc memberRpc;
      
-     @Autowired
-     private MemberFollowRpc memberFollowRpc;
-
 	 @ApiOperation(value = "新增论坛信息")
 	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public Map<String, Object> saveV1() {
@@ -105,7 +107,9 @@ public class ForumMobileController extends BaseController {
 	             Forum.FORUM_MODERATOR_MEMBER_ID,
 	             Forum.SYSTEM_REQUEST_USER_ID,
 	             Forum.USER_AVATAR_FILE_PATH,
-	             Forum.USER_NICKNAME
+	             Forum.USER_NICKNAME,
+	             
+	             Forum.FORUM_BACKGROUND_MEDIA_LIST
          );
 	     String appId = body.getAppId();
 	     String requestUserId = body.getSystemRequestUserId();
@@ -123,9 +127,6 @@ public class ForumMobileController extends BaseController {
 	     if (isRepeat) {
 	         throw new BusinessException("论坛名称已注册");
 	     }
-	     body.setForumBackgroundMediaId(body.getForumMediaId());
-	     body.setForumBackgroundMediaFilePath(body.getForumMediaFilePath());
-	     body.setForumBackgroundMediaType(body.getForumMediaType());
 	     body.setForumModeratorUserId(requestUserId);
 	     body.setForumModeratorMemberId(forumModeratormemberId);
 	     body.setForumSort(0);
@@ -149,14 +150,29 @@ public class ForumMobileController extends BaseController {
 	         forumUserFollow.setForumId(forumId);
 	         forumUserFollow.setMemberId(forumModeratormemberId);
 	         forumUserFollow.setForumUserFollowIsTop(false);
-
+	
 	         ForumUserFollow forumUserFollowResult = forumUserFollowService.save(forumUserFollow, forumUserFollowId, requestUserId);
-        	
-	         //保存到MongoDB
-	         ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+	    	
+	         // 遍历保存圈子默认背景图片list
+	         JSONArray forumBackgorundMediaArray = body.getForumBackgorundMediaList();
+	         List<ForumBackgroundMedia> forumBackgorundMediaList = JSONArray.parseArray(forumBackgorundMediaArray.toJSONString(), ForumBackgroundMedia.class);
+	         if (!Util.isNullOrEmpty(forumBackgorundMediaList)) {
+	        	 for (ForumBackgroundMedia forumBackgroundMedia : forumBackgorundMediaList) {
+		        	 forumBackgroundMedia.setAppId(appId);
+		        	 forumBackgroundMedia.setForumId(forumId);
+		        	 
+		        	 forumBackgroundMediaService.save(forumBackgroundMedia, Util.getRandomUUID(), requestUserId);
+		         }
+			}
+	         
+	         // mongdb保存论坛
+	         ForumView forumView = new ForumView();
+	         forumView.putAll(result);
              forumService.save(forumView);
              
-             ForumUserFollowView forumUserFollowView = JSON.parseObject(forumUserFollowResult.toJSONString(), ForumUserFollowView.class);
+             // mongdb保存论坛关注表
+             ForumUserFollowView forumUserFollowView= new ForumUserFollowView();
+             forumUserFollowView.putAll(forumUserFollowResult);
              
              forumUserFollowView.setForumModerator(forumModeratormemberId);
              forumUserFollowView.setUserAvatarFilePath(forumModeratorUserAvatar);
@@ -242,12 +258,13 @@ public class ForumMobileController extends BaseController {
                 Member.MEMBER_IS_SELF,
                 
                 Forum.USER_AVATAR_FILE_PATH,
-                Forum.FORUM_BACKGROUND_MEDIA_FILE_PATH,
                 Forum.USER_NICKNAME,
-                Forum.MEMBER_SIGNATURE
+                Forum.MEMBER_SIGNATURE,
+                Forum.FORUM_BACKGROUND_MEDIA_LIST
         );
 
         validateSecondResponse(Forum.FORUM_USER_FOLLOW_LIST, ForumUserFollowView.USER_AVATAR_FILE_PATH, ForumUserFollowView.MEMBER_ID);
+        validateSecondResponse(Forum.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_TYPE);
         
         return renderJson(forum);
     }
@@ -338,7 +355,7 @@ public class ForumMobileController extends BaseController {
 		}
 	    
 	   //不清楚是否单独写一个更改背景图片的接口
-	   body.setForumBackgroundMediaFilePath(body.getForumMediaFilePath());
+//	   body.setForumBackgroundMediaFilePath(body.getForumMediaFilePath());
 
 	   Forum result = forumService.update(body, body.getForumId(), body.getSystemRequestUserId(), forum.getSystemVersion());
 	   
@@ -481,7 +498,7 @@ public class ForumMobileController extends BaseController {
         
         if (result != null) {
         	//再从论坛话题关联表中逻辑删除所有的有论坛编号的记录
-        	TopicForum topicForum = topicForumService.deleteByForumId(appId, forumId, requestUserId);
+        	topicForumService.deleteByForumId(appId, forumId, requestUserId);
         	
         	//从论坛关注表中删除有forumId的记录
         	forumUserFollowService.deleteByForumId(appId, forumId, requestUserId);
@@ -596,8 +613,7 @@ public class ForumMobileController extends BaseController {
                 Forum.FORUM_ID,
                 Forum.FORUM_MEDIA_FILE_PATH,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA_FILE_PATH,
-                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+                Forum.FORUM_BACKGROUND_MEDIA_LIST,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
                 Forum.FORUM_MODERATOR_MEMBER_ID,
@@ -607,6 +623,8 @@ public class ForumMobileController extends BaseController {
                 Forum.USER_NICKNAME,
                 Forum.MEMBER_SIGNATURE
         );
+        
+        validateSecondResponse(Forum.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_TYPE);
         
         return renderJson(forum);
     }

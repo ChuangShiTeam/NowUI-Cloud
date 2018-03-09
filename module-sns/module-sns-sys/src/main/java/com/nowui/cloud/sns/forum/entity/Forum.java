@@ -1,5 +1,6 @@
 package com.nowui.cloud.sns.forum.entity;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -133,28 +134,36 @@ public class Forum extends BaseEntity {
     /**
      * 论坛背景文件Id
      */
-    @TableField
-    @NotNull(message = "论坛背景文件Id不能为空")
-    private String forumBackgroundMediaId;
-    public static final String FORUM_BACKGROUND_MEDIA_ID = "forumBackgroundMediaId";
+//    @TableField
+//    @NotNull(message = "论坛背景文件Id不能为空")
+//    private String forumBackgroundMediaId;
+//    public static final String FORUM_BACKGROUND_MEDIA_ID = "forumBackgroundMediaId";
     
     /**
      * 论坛背景文件路径
      */
-    @TableField(exist = false)
-    @NotNull(message = "论坛背景文件路径不能为空")
-    private String forumBackgroundMediaFilePath;
-    public static final String FORUM_BACKGROUND_MEDIA_FILE_PATH = "forumBackgroundMediaFilePath";
+//    @TableField(exist = false)
+//    @NotNull(message = "论坛背景文件路径不能为空")
+//    private String forumBackgroundMediaFilePath;
+//    public static final String FORUM_BACKGROUND_MEDIA_FILE_PATH = "forumBackgroundMediaFilePath";
 
     /**
      * 论坛背景类型
      */
-    @TableField
-    @NotNull(message = "论坛背景类型不能为空")
-    @Length(max = 32, message = "论坛背景类型长度超出限制")
-    private String forumBackgroundMediaType;
-    public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
-
+//    @TableField
+//    @NotNull(message = "论坛背景类型不能为空")
+//    @Length(max = 32, message = "论坛背景类型长度超出限制")
+//    private String forumBackgroundMediaType;
+//    public static final String FORUM_BACKGROUND_MEDIA_TYPE = "forumBackgroundMediaType";
+    
+    /**
+     * 论坛多媒体背景文件List(fileId,filePath,fileType,sort)
+     */
+    @TableField(exist = false)
+    @NotNull(message = "论坛多媒体背景文件List不能为空")
+    private JSONArray forumBackgroundMediaList;
+    public static final String FORUM_BACKGROUND_MEDIA_LIST = "forumBackgroundMediaList";
+    
     /**
      * 位置
      */
@@ -313,29 +322,37 @@ public class Forum extends BaseEntity {
         put(FORUM_MEDIA_TYPE, forumMediaType);
     }
 
-    public String getForumBackgroundMediaId() {
-        return getString(FORUM_BACKGROUND_MEDIA_ID);
-    }
+//    public String getForumBackgroundMediaId() {
+//        return getString(FORUM_BACKGROUND_MEDIA_ID);
+//    }
+//    
+//    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
+//        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
+//    }
     
-    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
-        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
-    }
-    
-    public String getForumBackgroundMediaFilePath() {
-        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
-    }
-    
-    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
-        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
-    }
+//    public String getForumBackgroundMediaFilePath() {
+//        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
+//    }
 
-    public String getForumBackgroundMediaType() {
-        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
-    }
+//    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
+//        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
+//    }
+
+    public JSONArray getForumBackgorundMediaList() {
+        return getJSONArray(FORUM_BACKGROUND_MEDIA_LIST);
+	}
+
+	public void setForumBackgorundMediaList(JSONArray topicTipUserList) {
+        put(FORUM_BACKGROUND_MEDIA_LIST, topicTipUserList);
+	}
     
-    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
-        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
-    }
+//    public String getForumBackgroundMediaType() {
+//        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
+//    }
+//    
+//    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
+//        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
+//    }
 
     public String getForumName() {
         return getString(FORUM_NAME);

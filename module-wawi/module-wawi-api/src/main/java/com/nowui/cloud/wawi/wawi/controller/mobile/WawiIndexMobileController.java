@@ -68,17 +68,17 @@ public class WawiIndexMobileController extends BaseController {
             App.APP_ID
         );
         
-        // 获取首页导航栏列表
-        List<Navigation> indexNavigationList = navigationRpc.listByCategoryCodeV1(body.getAppId(), "INDEX");
-        
-        for (Navigation navigation : indexNavigationList) {
-            navigation.keep(
-                    Navigation.NAVIGATION_ID,
-                    File.FILE_PATH,
-                    Navigation.NAVIGATION_NAME,
-                    Navigation.NAVIGATION_URL
-            );
-        }
+//        // 获取首页导航栏列表
+//        List<Navigation> indexNavigationList = navigationRpc.listByCategoryCodeV1(body.getAppId(), "INDEX");
+//
+//        for (Navigation navigation : indexNavigationList) {
+//            navigation.keep(
+//                    Navigation.NAVIGATION_ID,
+//                    File.FILE_PATH,
+//                    Navigation.NAVIGATION_NAME,
+//                    Navigation.NAVIGATION_URL
+//            );
+//        }
         
         // 宠物分类列表
         List<PetCategory> petCategoryList = petCategoryService.topList(body.getAppId());
@@ -101,7 +101,7 @@ public class WawiIndexMobileController extends BaseController {
         
         Map<String, Object> result = new HashMap<String, Object>();
         
-        result.put("indexNavigationList", indexNavigationList);
+//        result.put("indexNavigationList", indexNavigationList);
         result.put("petCategoryList", petCategoryList);
         result.put("recommendArticleList", recommendArticleList);
         result.put("hotArticleList", hotArticleList);
