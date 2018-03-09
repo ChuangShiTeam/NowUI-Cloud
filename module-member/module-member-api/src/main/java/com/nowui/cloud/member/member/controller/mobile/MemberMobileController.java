@@ -39,7 +39,6 @@ import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
@@ -419,10 +418,10 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
-        
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
         if (!isRegister) {
@@ -441,9 +440,10 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
@@ -464,10 +464,11 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
-
+        
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
         if (!isRegister) {

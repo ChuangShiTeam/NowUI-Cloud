@@ -95,6 +95,10 @@ public class BaseController {
             return JSONObject.parseObject(getRequest().getAttribute(Constant.REQUEST_BODY).toString(), clazz);
         }
     }
+    
+    protected String getIpAddress() {
+    	return getRequest().getAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS).toString();
+    }
 
     private JSONObject checkFirstMap(Object data) {
         JSONObject result = (JSONObject) JSON.toJSON(data);
