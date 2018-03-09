@@ -110,6 +110,7 @@ public class TopicMobileController extends BaseController {
                 TopicForum.PAGE_SIZE,
                 TopicForum.SYSTEM_REQUEST_USER_ID
         );
+        // TODO 这个接口好像没有被用到
         String requestUserId = body.getSystemRequestUserId();
         MemberView member = memberRpc.findByUserIdV1(requestUserId);
         String requestMemberId = member.getMemberId();
@@ -506,19 +507,19 @@ public class TopicMobileController extends BaseController {
                 Topic.PAGE_INDEX,
                 Topic.PAGE_SIZE,
                 Topic.SYSTEM_REQUEST_USER_ID,
-                Topic.SYSTEM_CREATE_TIME
+                Topic.SYSTEM_CREATE_TIME,
+                Topic.MEMBER_ID
         );
         String requestUserId = body.getSystemRequestUserId();
+        
+        // TODO 
         if (Util.isNullOrEmpty(requestUserId)) {
-        	//TODO 这里可以加个判断,返回没有登录状态下的数据??
         	return renderJson(0, null);
 		}
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        if (Util.isNullOrEmpty(member)) {
-        	//TODO 这里可以加个判断,返回没有登录状态下的数据??
+        String requestMemberId = body.getMemberId();
+        if (Util.isNullOrEmpty(requestMemberId)) {
         	return renderJson(0, null);
 		}
-        String requestMemberId = member.getMemberId();
         
         String appId = body.getAppId();
         
@@ -582,7 +583,6 @@ public class TopicMobileController extends BaseController {
                 // 是否收藏
                 TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
                 topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
-        		
         	}
         }
         
@@ -651,9 +651,7 @@ public class TopicMobileController extends BaseController {
         String topicId = Util.getRandomUUID();
         String requestUserId = body.getSystemRequestUserId();
         String appId = body.getAppId();
-        MemberView requestMember = memberRpc.findByUserIdV1(requestUserId);
         
-        body.setMemberId(requestMember.getMemberId());
         body.setTopicIsTop(false);
         body.setTopicIsRecommend(false);
         // 保存话题

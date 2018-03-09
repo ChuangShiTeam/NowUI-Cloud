@@ -1,5 +1,5 @@
 server:
-  port: 10080
+  port: 2010
 
 logging:
   level:
@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://118.31.229.16:10000/eureka/
+      defaultZone: http://118.31.229.16:3030/eureka/
 
 feign:
   hystrix:

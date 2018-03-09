@@ -2,8 +2,6 @@ package com.nowui.cloud.sns.forum.controller.mobile;
 
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.ForumUserUnfollow;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
@@ -39,9 +37,6 @@ public class ForumUserUnfollowMobileController extends BaseController {
 	
 	@Autowired
 	private ForumUserFollowService forumUserFollowService;
-	
-	@Autowired
-	private MemberRpc memberRpc;
 	
 	@ApiOperation(value = "新增论坛用户取关")
     @RequestMapping(value = "/forum/user/unfollow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

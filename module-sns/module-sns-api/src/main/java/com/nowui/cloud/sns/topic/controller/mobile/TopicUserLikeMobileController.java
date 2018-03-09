@@ -17,7 +17,6 @@ import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
 import com.nowui.cloud.sns.member.service.MemberFollowService;
 import com.nowui.cloud.sns.member.view.MemberFollowView;
@@ -135,8 +134,7 @@ public class TopicUserLikeMobileController extends BaseController {
         String appId = body.getAppId();
         String topicId = body.getTopicId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String requestMemberId = member.getMemberId();
+        String requestMemberId = body.getMemberId();
         
         String userNickName = body.getUserNickName();
         String userAvatar = body.getUserAvatarFilePath();
