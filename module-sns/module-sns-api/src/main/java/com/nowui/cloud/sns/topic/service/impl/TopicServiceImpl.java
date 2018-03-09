@@ -34,6 +34,7 @@ import com.nowui.cloud.sns.topic.view.TopicMediaView;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 import com.nowui.cloud.sns.topic.view.TopicUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicView;
+import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -420,13 +421,15 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	}
 
 	@Override
-	public List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-		long time = systemCreateTime.getTime();
+	public List<TopicView> hotTopicList(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
         Criteria criteria = Criteria.where(TopicView.TOPIC_ID).nin(excludeTopicIdList)
-        		.and(Topic.SYSTEM_CREATE_TIME).lte(time)
+        		.and(Topic.SYSTEM_CREATE_TIME).lte(DateUtil.getTwoMonthAgoDateTime())
+//        		.and(Topic.SYSTEM_CREATE_TIME).lte(systemCreateTime)
                 .and(TopicView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
+
+        orders.add(new Order(Sort.Direction.DESC, TopicView.TOPIC_COUNT_COMMENT));
         orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
         Sort sort = Sort.by(orders);
 
@@ -440,7 +443,8 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public Integer countAllUserTopic() {
-		Criteria criteria = Criteria.where(TopicView.SYSTEM_STATUS).is(true);
+		Criteria criteria = Criteria.where(TopicView.SYSTEM_STATUS).is(true)
+				.and(Topic.SYSTEM_CREATE_TIME).lte(DateUtil.getTwoMonthAgoDateTime());
 
         Query query = new Query(criteria);
 
