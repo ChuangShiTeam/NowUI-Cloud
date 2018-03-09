@@ -1,5 +1,5 @@
 server:
-  port: 10090
+  port: 10100
 logging:
   level:
     root: info
