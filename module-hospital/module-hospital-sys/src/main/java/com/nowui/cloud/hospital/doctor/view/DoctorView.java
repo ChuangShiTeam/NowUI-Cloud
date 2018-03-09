@@ -107,6 +107,14 @@ public class DoctorView extends BaseView {
     public static final String DOCTOR_IMAGE_ID = "doctorImageId";
 
     /**
+     * 头像路径
+     */
+    @Field
+    @NotNull(message = "头像路径不能为空")
+    private String doctorImagePath;
+    public static final String DOCTOR_IMAGE_PATH = "doctorImagePath";
+
+    /**
      * 职称
      */
     @Field

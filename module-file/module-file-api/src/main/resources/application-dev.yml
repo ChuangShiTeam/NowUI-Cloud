@@ -1,5 +1,5 @@
 server:
-  port: 10030
+  port: 10040
 
 logging:
   level:
@@ -75,8 +75,8 @@ spring:
       uri: mongodb://118.31.229.16/nowui_file
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_file
+      authentication-database: nowui_file
       username: user
       password: '123456'
 #mybatis
