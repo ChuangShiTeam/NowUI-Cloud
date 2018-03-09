@@ -65,12 +65,12 @@ public class TopicCommentMobileController extends BaseController {
                 TopicComment.TOPIC_ID,
                 TopicComment.PAGE_INDEX,
                 TopicComment.PAGE_SIZE,
-                TopicComment.SYSTEM_CREATE_TIME
+                TopicComment.SYSTEM_CREATE_TIME,
+                TopicComment.MEMBER_ID
         );
 
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String requestMemberId = member.getMemberId();
+        String requestMemberId = body.getMemberId();
         
         String appId = body.getAppId();
         String topicId = body.getTopicId();
