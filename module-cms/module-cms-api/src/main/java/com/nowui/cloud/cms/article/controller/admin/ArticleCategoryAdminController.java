@@ -53,8 +53,12 @@ public class ArticleCategoryAdminController extends BaseController {
         );
 
         Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode());
+
+        System.out.println("resultTotal:"+resultTotal);
+
         System.out.println("articleCategoryView.getArticleCategoryName() :"+articleCategoryView.getArticleCategoryName());
         System.out.println("articleCategoryView.getArticleCategoryCode() :"+articleCategoryView.getArticleCategoryCode());
+
         if (Util.isNullOrEmpty(articleCategoryView.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryView.getArticleCategoryCode())) {
 
             List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryView.getAppId(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
@@ -128,6 +132,9 @@ public class ArticleCategoryAdminController extends BaseController {
 
         String articleCategoryId = Util.getRandomUUID();
         String articleCategoryParentPath = "";
+
+        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_PATH);
+        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID);
 
         validateRequest(
             articleCategoryEntity, 
