@@ -208,13 +208,14 @@ public interface TopicService extends SuperService<Topic, TopicView> {
     Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId);
     
     /**
-     * 全部人的动态
-     * 
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * 热门动态
+     * @param excludeTopicIdList 被排除的动态id(也就是已经查看过的)
+     * @param systemCreateTime 最后一次查询的最后一个动态的创建时间
+     * @param pageIndex 从第几页开始
+     * @param pageSize 查多少列
+     * @return List<TopicView>
      */
-    List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicView> hotTopicList(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 全部人的动态数量

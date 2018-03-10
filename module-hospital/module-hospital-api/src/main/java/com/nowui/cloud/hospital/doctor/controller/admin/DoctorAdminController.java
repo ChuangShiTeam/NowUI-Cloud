@@ -68,7 +68,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生信息")
-    @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+        @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         DoctorView doctorView = getEntry(DoctorView.class);
 
@@ -128,14 +128,13 @@ public class DoctorAdminController extends BaseController {
 
         Doctor result = doctorService.save(doctorEntity, doctorId, doctorEntity.getSystemRequestUserId());
 
-        Boolean success = false;
 
         if (result != null) {
             DoctorView doctorView = JSON.parseObject(result.toJSONString(), DoctorView.class);
             doctorService.save(doctorView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "医生修改")

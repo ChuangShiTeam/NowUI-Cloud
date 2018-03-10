@@ -10,6 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
+#      defaultZone: http://118.31.229.16:10000/eureka/
       defaultZone: http://localhost:10000/eureka/
 
 feign:
@@ -19,10 +20,6 @@ feign:
 spring:
   application:
     name: module-base
-  mvc:
-    static-path-pattern: /upload/**
-  resources:
-    static-locations: file:D:/static/upload/
   datasource:
       url: jdbc:mysql://118.31.229.16:3306/nowui_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: chuangshi
@@ -70,7 +67,7 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui
+      uri: mongodb://118.31.229.16/nowui_base
       host: 118.31.229.16
       port: 27017
       database: nowui_base
@@ -106,8 +103,6 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-config:
-  uploadFilePath: D:/static
 
 hystrix:
   command:

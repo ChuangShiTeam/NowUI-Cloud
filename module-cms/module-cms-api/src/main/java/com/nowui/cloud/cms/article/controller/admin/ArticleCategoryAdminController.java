@@ -37,34 +37,42 @@ public class ArticleCategoryAdminController extends BaseController {
     @ApiOperation(value = "文章分类列表")
     @RequestMapping(value = "/article/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+//
+
+        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
 
         validateRequest(
-            articleCategoryEntity, 
-            ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_NAME,
-            ArticleCategory.ARTICLE_CATEGORY_CODE,
-            ArticleCategory.PAGE_INDEX, 
-            ArticleCategory.PAGE_SIZE
+                articleCategoryView,
+                ArticleCategoryView.APP_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.PAGE_INDEX,
+                ArticleCategoryView.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryEntity.getAppId(), articleCategoryEntity.getArticleCategoryName(), articleCategoryEntity.getArticleCategoryCode());
-        if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryCode())) {
+        Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode());
 
-            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryEntity.getAppId(), articleCategoryEntity.getPageIndex(), articleCategoryEntity.getPageSize());
+        System.out.println("resultTotal:"+resultTotal);
 
-            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+        System.out.println("articleCategoryView.getArticleCategoryName() :"+articleCategoryView.getArticleCategoryName());
+        System.out.println("articleCategoryView.getArticleCategoryCode() :"+articleCategoryView.getArticleCategoryCode());
 
-            validateSecondResponse(Constant.CHILDREN, ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+        if (Util.isNullOrEmpty(articleCategoryView.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryView.getArticleCategoryCode())) {
+
+            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryView.getAppId(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
+
+            validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+
+            validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
 
         } else {
-            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(articleCategoryEntity.getAppId(), articleCategoryEntity.getArticleCategoryName(), articleCategoryEntity.getArticleCategoryCode(), articleCategoryEntity.getPageIndex(), articleCategoryEntity.getPageSize());
+            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
 
-            validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+            validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
-            validateSecondResponse(Constant.CHILDREN, ArticleCategory.ARTICLE_CATEGORY_NAME, ArticleCategory.ARTICLE_CATEGORY_CODE, ArticleCategory.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
+            validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
             return renderJson(resultTotal, resultList);
         }
@@ -120,19 +128,21 @@ public class ArticleCategoryAdminController extends BaseController {
     public Map<String, Object> saveV1() {
         ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
 
+        String articleCategoryId = Util.getRandomUUID();
+        String articleCategoryParentPath = "";
+
+        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_PATH);
+        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID);
+
         validateRequest(
             articleCategoryEntity, 
             ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_NAME, 
+            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID,
+            ArticleCategory.ARTICLE_CATEGORY_NAME,
             ArticleCategory.ARTICLE_CATEGORY_CODE, 
             ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
             ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION
         );
-
-        String articleCategoryId = Util.getRandomUUID();
-        String articleCategoryParentPath = "";
-
         if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryParentId())) {
 
             JSONArray jsonArray = new JSONArray();
@@ -144,23 +154,24 @@ public class ArticleCategoryAdminController extends BaseController {
             JSONArray jsonArray = new JSONArray();;
             if (!Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
                 jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
-            } 
+            }
             jsonArray.add(parent.getArticleCategoryId());
 
             articleCategoryParentPath = jsonArray.toJSONString();
         }
-        
+
         articleCategoryEntity.setArticleCategoryParentPath(articleCategoryParentPath);
 
         ArticleCategory result = articleCategoryService.save(articleCategoryEntity, articleCategoryId, articleCategoryEntity.getSystemRequestUserId());
 
-        Boolean success = false;
-
         if (result != null) {
-            success = true;
+            ArticleCategoryView articleCategoryView = new ArticleCategoryView();
+            articleCategoryView.putAll(result);
+            articleCategoryService.save(articleCategoryView);
+
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "文章分类修改")

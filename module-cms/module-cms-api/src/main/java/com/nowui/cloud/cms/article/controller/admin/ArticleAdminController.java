@@ -124,8 +124,7 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_AUTHOR,
                 Article.ARTICLE_SUMMARY,
                 Article.ARTICLE_CONTENT,
-                Article.ARTICLE_MEDIA_ID,
-                Article.ARTICLE_MEDIA_PATH,
+//                Article.ARTICLE_MEDIA_ID,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_IS_ALLOW_COMMENT,
                 Article.ARTICLE_IS_DRAFT,
@@ -147,10 +146,13 @@ public class ArticleAdminController extends BaseController {
 
         String articleId = Util.getRandomUUID();
 
+        //文章主分类
         ArticleArticleCategory articlePrimaryArticleCategory = JSON.parseObject(articleEntity.getArticlePrimaryArticleCategory().toJSONString(), ArticleArticleCategory.class);
 
+        //文章二级分类
         List<ArticleArticleCategory> articleSecondaryArticleCategoryList = JSON.parseArray(articleEntity.getArticleSecondaryArticleCategoryList().toJSONString(), ArticleArticleCategory.class);
 
+        //文章媒体列表
         List<ArticleMedia> articleMediaList = articleEntity.getArticleMediaList().toJavaList(ArticleMedia.class);
 
         Article result = articleService.save(articleEntity, articleId, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
