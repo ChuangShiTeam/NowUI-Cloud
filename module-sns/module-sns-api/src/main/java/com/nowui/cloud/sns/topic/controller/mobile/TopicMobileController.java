@@ -569,8 +569,8 @@ public class TopicMobileController extends BaseController {
 				}
               
         		//评论列表: 取3条
-        		List<TopicCommentView> topicCommentList = topicCommentService.listByTopicId(topicView.getTopicId(), 1, 3);
-        		topicView.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
+//        		List<TopicCommentView> topicCommentList = topicCommentService.listByTopicId(topicView.getTopicId(), 1, 3);
+//        		topicView.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
         		
         		// 不用处理评论的人的信息,因为直接就取出来了
         		// 处理被回复人的信息
@@ -620,6 +620,115 @@ public class TopicMobileController extends BaseController {
         validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
         return renderJson(countResult, resultList);
     }
+    
+    
+    
+    
+    
+    
+    
+    @ApiOperation(value = "热门动态列表")
+    @RequestMapping(value = "/topic/mobile/v1/hot/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> hotListV1() {
+    	Topic body = getEntry(Topic.class);
+        validateRequest(
+                body,
+                Topic.APP_ID,
+                Topic.PAGE_INDEX,
+                Topic.PAGE_SIZE,
+                Topic.SYSTEM_REQUEST_USER_ID,
+                Topic.SYSTEM_CREATE_TIME,
+                Topic.MEMBER_ID
+        );
+        String requestUserId = body.getSystemRequestUserId();
+        
+        // TODO 
+        if (Util.isNullOrEmpty(requestUserId)) {
+        	return renderJson(0, null);
+		}
+        String requestMemberId = body.getMemberId();
+        if (Util.isNullOrEmpty(requestMemberId)) {
+        	return renderJson(0, null);
+		}
+        
+        String appId = body.getAppId();
+        
+        // 所有人的动态,按评论排序
+        Integer countResult = topicService.countAllUserTopic();
+        List<TopicView> resultList = topicService.hotTopicList((List<String>) body.get(Topic.EXCLUDE_TOPIC_ID_LIST), body.getSystemCreateTime(), body.getPageIndex(), body.getPageSize());
+        if (!Util.isNullOrEmpty(resultList)) {
+        	
+        	// 获取关注id列表
+        	List<String> theFollowUserIdList = new ArrayList<>();
+            List<MemberFollowView> memberFollowViews = memberFollowService.listByUserId(requestUserId);
+            if (memberFollowViews != null || memberFollowViews.size() != 0) {
+            	theFollowUserIdList = memberFollowViews.stream().map(memberFollowView -> memberFollowView.getFollowUserId()).collect(Collectors.toList());
+    		}
+        	String theFollowUserIdJsonList = JSONArray.toJSONString(theFollowUserIdList);
+        	for (TopicView topicView : resultList) {
+			
+        		//话题是否自己发布
+        		if (requestUserId.equals(topicView.getSystemCreateUserId())) {
+        			topicView.put(Topic.TOPIC_IS_SELF, true);
+				}else {
+					// TODO 处理是否关注话题发布者,这里应该有更好的方法
+	        		boolean isFollow = theFollowUserIdJsonList.contains(topicView.getSystemCreateUserId());
+	        		topicView.put(MemberFollow.MEMBER_IS_FOLLOW, isFollow);
+				}
+              
+        		//评论列表: 取3条
+//        		List<TopicCommentView> topicCommentList = topicCommentService.listByTopicId(topicView.getTopicId(), 1, 3);
+//        		topicView.put(Topic.TOPIC_COMMENT_LIST, topicCommentList);
+        		
+        		// 不用处理评论的人的信息,因为直接就取出来了
+        		// 处理被回复人的信息
+        		
+        		// 不用处理各种数量,因为视图里面有了
+        		
+        		// 是否点赞
+        		TopicUserLikeView userLikeView = topicUserLikeService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
+                topicView.put(Topic.TOPIC_USER_IS_LIKE, !Util.isNullOrEmpty(userLikeView));
+                // 是否收藏
+                TopicUserBookmarkView bookmarkView = topicUserBookmarkService.findByTopicIdAndMemberId(topicView.getTopicId(), requestMemberId);
+                topicView.put(Topic.TOPIC_USER_IS_BOOKEMARK, !Util.isNullOrEmpty(bookmarkView));
+        	}
+        }
+        
+        validateResponse(
+                Topic.TOPIC_ID,
+                Topic.TOPIC_SUMMARY,
+                Topic.MEMBER_ID,
+                Topic.LATITUDE,
+                Topic.LONGTITUDE,
+                Topic.TOPIC_LOCATION,
+                Topic.TOPIC_IS_LOCATION,
+                Topic.TOPIC_IS_TOP,
+                Topic.TOPIC_TOP_LEVEL,
+                Topic.TOPIC_FORUM_LIST,
+                Topic.TOPIC_MEDIA_LIST,
+                Topic.TOPIC_COMMENT_LIST,
+                Topic.TOPIC_COUNT_BOOKMARK,
+                Topic.TOPIC_COUNT_LIKE,
+                Topic.TOPIC_COUNT_COMMENT,
+                Topic.TOPIC_USER_IS_BOOKEMARK,
+                Topic.TOPIC_USER_IS_LIKE,
+                Topic.TOPIC_USER_LIKE_LIST,
+                Topic.TOPIC_IS_SELF,
+                TopicView.USER_AVATAR_FILE_PATH,
+                TopicView.USER_NICKNAME,
+                MemberFollow.MEMBER_IS_FOLLOW,
+                Topic.SYSTEM_CREATE_TIME,
+                
+                TopicView.TOPIC_MEDIA_LIST,
+                TopicView.TOPIC_TIP_USER_LIST,
+                TopicView.TOPIC_FORUM_LIST
+        );
+        validateSecondResponse(TopicView.TOPIC_MEDIA_LIST, TopicMedia.TOPIC_MEDIA_FILE_PATH, TopicMedia.TOPIC_MEDIA_SORT, TopicMedia.TOPIC_MEDIA_TYPE);
+        validateSecondResponse(TopicView.TOPIC_TIP_USER_LIST, Topic.MEMBER_ID);
+        validateSecondResponse(TopicView.TOPIC_FORUM_LIST, Forum.FORUM_NAME, Forum.FORUM_ID);
+        return renderJson(countResult, resultList);
+    }
+    
 
     @ApiOperation(value = "新增话题信息")
     @RequestMapping(value = "/topic/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

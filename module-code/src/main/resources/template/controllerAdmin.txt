@@ -98,14 +98,14 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
 
         ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
 
-        Boolean success = false;
-
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
+            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+
             ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}View);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "${tableComment}修改")
@@ -126,7 +126,9 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
 
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
+            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
         }
 
@@ -147,10 +149,10 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
 
         ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = JSON.parseObject(result.toJSONString(), ${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
+            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
         }
 

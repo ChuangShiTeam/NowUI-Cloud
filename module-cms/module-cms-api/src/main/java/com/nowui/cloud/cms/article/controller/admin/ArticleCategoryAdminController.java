@@ -3,8 +3,6 @@ package com.nowui.cloud.cms.article.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.nowui.cloud.cms.article.entity.ArticleAuthor;
-import com.nowui.cloud.cms.article.view.ArticleAuthorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

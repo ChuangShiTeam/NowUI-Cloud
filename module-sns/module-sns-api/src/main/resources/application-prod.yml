@@ -65,7 +65,7 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui
+      uri: mongodb://118.31.229.16/nowui_sns
       host: 118.31.229.16
       port: 27017
       database: nowui_sns
