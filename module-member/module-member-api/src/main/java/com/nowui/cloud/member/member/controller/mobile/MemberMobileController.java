@@ -295,8 +295,6 @@ public class MemberMobileController extends BaseController {
 
         Member result = memberService.save(member, memberId, userAccountBean.getSystemRequestUserId());
 
-        Boolean success = false;
-
         if (result != null) {
             // 发送会员手机注册用户消息
             String userAccount = userAccountBean.getUserAccount();
@@ -333,10 +331,24 @@ public class MemberMobileController extends BaseController {
             // 发送会员保存信息
             sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccountBean.getSystemRequestUserId());
             
-            success = true;
+        }
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.add(Calendar.YEAR, 1);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(User.USER_ID, userId);
+            jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
+            
+            result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
+            validateResponse(Constant.TOKEN);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return renderJson(success);
+        return renderJson(map);
     }
     
     @ApiOperation(value = "会员邮箱注册")
@@ -386,13 +398,12 @@ public class MemberMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            // 发送会员手机注册用户消息
+            // 发送会员用户注册用户消息
             User user = new User();
             user.setAppId(userAccount.getAppId());
             user.setUserId(userId);
             user.setObjectId(memberId);
             user.setUserType(UserType.MEMBER.getKey());
-//            user.put(UserNickName.USER_NICK_NAME, "wawi" + theUserAccount.substring(theUserAccount.length() - 4 ));
             user.put(UserAccount.USER_ACCOUNT, theUserAccount);
             user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
             user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
