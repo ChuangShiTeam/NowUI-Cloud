@@ -1,11 +1,13 @@
 package com.nowui.cloud.cms.article.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleCategory;
@@ -14,8 +16,6 @@ import com.nowui.cloud.cms.article.repository.ArticleCategoryRepository;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
@@ -34,68 +34,78 @@ public class ArticleCategoryServiceImpl extends SuperServiceImpl<ArticleCategory
         Integer count = 0;
         
         if (Util.isNullOrEmpty(articleCategoryName) && Util.isNullOrEmpty(articleCategoryCode)) {
-            count = count(
-                    new BaseWrapper<ArticleCategory>()
-                            .eq(ArticleCategory.APP_ID, appId)
-                            .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                            .eq(ArticleCategory.SYSTEM_STATUS, true)
-                    );
+            Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                    .and(ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID).is("")
+                    .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+            Query query = new Query(criteria);
+
+            count = count(query);
         } else {
-            count = count(
-                    new BaseWrapper<ArticleCategory>()
-                            .eq(ArticleCategory.APP_ID, appId)
-                            .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
-                            .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
-                            .eq(ArticleCategory.SYSTEM_STATUS, true)
-                    );
+            Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                    .and(ArticleCategoryView.ARTICLE_CATEGORY_NAME).regex(".*?" + articleCategoryName + ".*")
+                    .and(ArticleCategoryView.ARTICLE_CATEGORY_CODE).regex(".*?" + articleCategoryCode + ".*")
+                    .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+            Query query = new Query(criteria);
+
+            count = count(query);
         }
         
         return count;
     }
     
     @Override
-    public List<ArticleCategory> listForAdmin(String appId, String articleCategoryName, String articleCategoryCode, Integer m, Integer n) {
-        List<ArticleCategory> articleCategoryList = list(
-                new BaseWrapper<ArticleCategory>()
-                        .eq(ArticleCategory.APP_ID, appId)
-                        .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategoryName)
-                        .likeAllowEmpty(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
-                        .eq(ArticleCategory.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-                ,m
-                ,n
-        );
-        return articleCategoryList;
+    public List<ArticleCategoryView> listForAdmin(String appId, String articleCategoryName, String articleCategoryCode, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_NAME).regex(".*?" + articleCategoryName + ".*")
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_CODE).regex(".*?" + articleCategoryCode + ".*")
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleCategoryView.ARTICLE_CATEGORY_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+        
+        return list(query, sort, pageIndex, pageSize);
     }
     
     @Override
     public List<Map<String, Object>> adminTreeList(String appId, Integer pageIndex, Integer pageSize) {
-        List<ArticleCategory> topList = list(
-                new BaseWrapper<ArticleCategory>()
-                        .eq(ArticleCategory.APP_ID, appId)
-                        .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                        .eq(ArticleCategory.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT)),
-                pageIndex,
-                pageSize
-        );
-        List<ArticleCategory> childrenList = list(
-                new BaseWrapper<ArticleCategory>()
-                .eq(ArticleCategory.APP_ID, appId)
-                .ne(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                .eq(ArticleCategory.SYSTEM_STATUS, true)
-                .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-        );
+        Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID).is("")
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleCategoryView.ARTICLE_CATEGORY_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+        
+        List<ArticleCategoryView> topList = list(query, sort, pageIndex, pageSize);
+        
+        Criteria criteria1 = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID).ne("")
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+
+        Query query1 = new Query(criteria1);
+        query1.with(sort);
+        
+        List<ArticleCategoryView> childrenList = list(query1, sort);
         List<Map<String, Object>> list = new ArrayList<>();
         
-        for (ArticleCategory articleCategory : topList) {
+        for (ArticleCategoryView articleCategoryView : topList) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put(ArticleCategory.ARTICLE_CATEGORY_ID, articleCategory.getArticleCategoryId());
-            map.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategory.getArticleCategoryName());
-            map.put(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategory.getArticleCategoryCode());
-            map.put(ArticleCategory.ARTICLE_CATEGORY_SORT, articleCategory.getArticleCategorySort());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_ID, articleCategoryView.getArticleCategoryId());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_NAME, articleCategoryView.getArticleCategoryName());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_CODE, articleCategoryView.getArticleCategoryCode());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_SORT, articleCategoryView.getArticleCategorySort());
             
-            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategory.getArticleCategoryId(), ArticleCategory.ARTICLE_CATEGORY_SORT, ArticleCategory.ARTICLE_CATEGORY_CODE));
+            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategoryView.getArticleCategoryId(), ArticleCategoryView.ARTICLE_CATEGORY_SORT, ArticleCategoryView.ARTICLE_CATEGORY_CODE));
             
             list.add(map);
         }
@@ -110,21 +120,21 @@ public class ArticleCategoryServiceImpl extends SuperServiceImpl<ArticleCategory
      * @param keys 树形中需要保存的Key
      * @return
      */
-    private List<Map<String, Object>> getChildren(List<ArticleCategory> articleCategoryList, String articleCategoryParentId, String... keys) {
+    private List<Map<String, Object>> getChildren(List<ArticleCategoryView> articleCategoryViewList, String articleCategoryParentId, String... keys) {
         List<Map<String, Object>> list = new ArrayList<>();
         
-        if (articleCategoryList != null && articleCategoryList.size() > 0) {
-            for (ArticleCategory articleCategory : articleCategoryList) {
-                if (articleCategoryParentId.equals(articleCategory.getArticleCategoryParentId())) {
+        if (articleCategoryViewList != null && articleCategoryViewList.size() > 0) {
+            for (ArticleCategoryView articleCategoryView : articleCategoryViewList) {
+                if (articleCategoryParentId.equals(articleCategoryView.getArticleCategoryParentId())) {
                     Map<String, Object> map = new HashMap<String, Object>();
-                    map.put(ArticleCategory.ARTICLE_CATEGORY_ID, articleCategory.getArticleCategoryId());
-                    map.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategory.getArticleCategoryName());
+                    map.put(ArticleCategoryView.ARTICLE_CATEGORY_ID, articleCategoryView.getArticleCategoryId());
+                    map.put(ArticleCategoryView.ARTICLE_CATEGORY_NAME, articleCategoryView.getArticleCategoryName());
                     
                     for (String key : keys) {
-                        map.put(key, articleCategory.get(key)); 
+                        map.put(key, articleCategoryView.get(key)); 
                     }
                     
-                    List<Map<String, Object>> childrenList = getChildren(articleCategoryList, articleCategory.getArticleCategoryId(), keys);
+                    List<Map<String, Object>> childrenList = getChildren(articleCategoryViewList, articleCategoryView.getArticleCategoryId(), keys);
                     
                     map.put(Constant.CHILDREN, childrenList);
                     
@@ -138,44 +148,52 @@ public class ArticleCategoryServiceImpl extends SuperServiceImpl<ArticleCategory
 
     @Override
     public List<Map<String, Object>> adminAllTreeList(String appId) {
-        List<ArticleCategory> topList = list(
-                new BaseWrapper<ArticleCategory>()
-                        .eq(ArticleCategory.APP_ID, appId)
-                        .eq(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                        .eq(ArticleCategory.SYSTEM_STATUS, true)
-                        .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-        );
-        List<ArticleCategory> childrenList = list(
-                new BaseWrapper<ArticleCategory>()
-                .eq(ArticleCategory.APP_ID, appId)
-                .ne(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, "")
-                .eq(ArticleCategory.SYSTEM_STATUS, true)
-                .orderAsc(Arrays.asList(ArticleCategory.ARTICLE_CATEGORY_SORT))
-        );
+        Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID).is("")
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleCategoryView.ARTICLE_CATEGORY_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+        
+        List<ArticleCategoryView> topList = list(query, sort);
+        
+        Criteria criteria1 = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID).ne("")
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+
+
+        Query query1 = new Query(criteria1);
+        query1.with(sort);
+        
+        List<ArticleCategoryView> childrenList = list(query1, sort);
         List<Map<String, Object>> list = new ArrayList<>();
         
-        for (ArticleCategory articleCategory : topList) {
+        for (ArticleCategoryView articleCategoryView : topList) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put(ArticleCategory.ARTICLE_CATEGORY_ID, articleCategory.getArticleCategoryId());
-            map.put(ArticleCategory.ARTICLE_CATEGORY_NAME, articleCategory.getArticleCategoryName());
-            map.put(ArticleCategory.ARTICLE_CATEGORY_SORT, articleCategory.getArticleCategorySort());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_ID, articleCategoryView.getArticleCategoryId());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_NAME, articleCategoryView.getArticleCategoryName());
+            map.put(ArticleCategoryView.ARTICLE_CATEGORY_SORT, articleCategoryView.getArticleCategorySort());
             
-            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategory.getArticleCategoryId(), ArticleCategory.ARTICLE_CATEGORY_SORT));
+            map.put(Constant.CHILDREN, getChildren(childrenList, articleCategoryView.getArticleCategoryId(), ArticleCategoryView.ARTICLE_CATEGORY_SORT));
             
             list.add(map);
         }
+        
         return list;
     }
 
     @Override
-    public ArticleCategory findByCategoryCode(String appId, String articleCategoryCode) {
-        ArticleCategory articleCategory = find(
-                new BaseWrapper<ArticleCategory>()
-                .eq(ArticleCategory.APP_ID, appId)
-                .eq(ArticleCategory.ARTICLE_CATEGORY_CODE, articleCategoryCode)
-                .eq(ArticleCategory.SYSTEM_STATUS, true)
-        );
-        return articleCategory;
+    public ArticleCategoryView findByCategoryCode(String appId, String articleCategoryCode) {
+        Criteria criteria = Criteria.where(ArticleCategoryView.APP_ID).is(appId)
+                .and(ArticleCategoryView.ARTICLE_CATEGORY_CODE).is(articleCategoryCode)
+                .and(ArticleCategoryView.SYSTEM_STATUS).is(true);
+        Query query = new Query(criteria);
+        
+        return find(query);
     }
 
 }

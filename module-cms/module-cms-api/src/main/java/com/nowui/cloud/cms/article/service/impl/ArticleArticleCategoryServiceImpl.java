@@ -2,6 +2,8 @@ package com.nowui.cloud.cms.article.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
@@ -23,66 +25,66 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 public class ArticleArticleCategoryServiceImpl extends SuperServiceImpl<ArticleArticleCategoryMapper, ArticleArticleCategory, ArticleArticleCategoryRepository, ArticleArticleCategoryView> implements ArticleArticleCategoryService {
 
     @Override
-    public ArticleArticleCategory findPrimaryByArticleId(String articleId) {
+    public ArticleArticleCategoryView findPrimaryByArticleId(String articleId) {
+        Criteria criteria = Criteria.where(ArticleArticleCategoryView.ARTICLE_ID).is(articleId)
+                .and(ArticleArticleCategoryView.ARTICLE_CATEGORY_IS_PRIMARY).is(true)
+                .and(ArticleArticleCategoryView.SYSTEM_STATUS).is(true);
 
-        List<ArticleArticleCategory> articleArticleCategoryList = list(
-                new BaseWrapper<ArticleArticleCategory>()
-                        .eq(ArticleArticleCategory.ARTICLE_ID, articleId)
-                        .eq(ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY, true)
-                        .eq(ArticleArticleCategory.SYSTEM_STATUS, true)
-        );
+        Query query = new Query(criteria);
 
-        if (articleArticleCategoryList == null || articleArticleCategoryList.size() == 0) {
-            return null;
-        }
-
-        return articleArticleCategoryList.get(0);
+        return find(query);
     }
 
     @Override
-    public List<ArticleArticleCategory> listByArticleId(String articleId) {
+    public List<ArticleArticleCategoryView> listByArticleId(String articleId) {
+        
+        Criteria criteria = Criteria.where(ArticleArticleCategoryView.ARTICLE_ID).is(articleId)
+                .and(ArticleArticleCategoryView.SYSTEM_STATUS).is(true);
 
-        List<ArticleArticleCategory> articleArticleCategoryList = list(
-                new BaseWrapper<ArticleArticleCategory>()
-                        .eq(ArticleArticleCategory.ARTICLE_ID, articleId)
-                        .eq(ArticleArticleCategory.SYSTEM_STATUS, true)
-        );
+        Query query = new Query(criteria);
 
-        return articleArticleCategoryList;
+        return list(query);
     }
 
     @Override
-    public List<ArticleArticleCategory> listNotPrimaryByArticleId(String articleId) {
+    public List<ArticleArticleCategoryView> listNotPrimaryByArticleId(String articleId) {
 
-        List<ArticleArticleCategory> articleArticleCategoryList = list(
-                new BaseWrapper<ArticleArticleCategory>()
-                        .eq(ArticleArticleCategory.ARTICLE_ID, articleId)
-                        .eq(ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY, false)
-                        .eq(ArticleArticleCategory.SYSTEM_STATUS, true)
-        );
+        Criteria criteria = Criteria.where(ArticleArticleCategoryView.ARTICLE_ID).is(articleId)
+                .and(ArticleArticleCategoryView.ARTICLE_CATEGORY_IS_PRIMARY).is(false)
+                .and(ArticleArticleCategoryView.SYSTEM_STATUS).is(true);
 
-        return articleArticleCategoryList;
+        Query query = new Query(criteria);
+
+        return list(query);
     }
 
     @Override
     public void deleteByArticleId(String articleId, String systemRequestUserId) {
-        delete(
-                new BaseWrapper<ArticleArticleCategory>()
-                        .eq(ArticleArticleCategory.ARTICLE_ID, articleId)
-                        .eq(ArticleArticleCategory.SYSTEM_STATUS, true),
-                systemRequestUserId
+        ArticleArticleCategory result = delete(
+            new BaseWrapper<ArticleArticleCategory>()
+                    .eq(ArticleArticleCategory.ARTICLE_ID, articleId)
+                    .eq(ArticleArticleCategory.SYSTEM_STATUS, true),
+            systemRequestUserId
         );
+        
+        if (result != null) {
+            // 删除MongoDB文章文章分类视图信息
+            ArticleArticleCategoryView articleArticleCategoryView = new ArticleArticleCategoryView();
+            articleArticleCategoryView.putAll(result);
+            
+            delete(articleArticleCategoryView);
+        }
     }
 
     @Override
-    public List<ArticleArticleCategory> listPrimaryByArticleCategoryId(String articleCategoryId) {
-        List<ArticleArticleCategory> articleArticleCategoryList = list(
-                new BaseWrapper<ArticleArticleCategory>()
-                        .eq(ArticleArticleCategory.ARTICLE_CATEGORY_ID, articleCategoryId)
-                        .eq(ArticleArticleCategory.ARTICLE_CATEGORY_IS_PRIMARY, true)
-                        .eq(ArticleArticleCategory.SYSTEM_STATUS, true)
-        );
-        return articleArticleCategoryList;
+    public List<ArticleArticleCategoryView> listPrimaryByArticleCategoryId(String articleCategoryId) {
+        Criteria criteria = Criteria.where(ArticleArticleCategoryView.ARTICLE_CATEGORY_ID).is(articleCategoryId)
+                .and(ArticleArticleCategoryView.ARTICLE_CATEGORY_IS_PRIMARY).is(true)
+                .and(ArticleArticleCategoryView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        return list(query);
     }
 
 
