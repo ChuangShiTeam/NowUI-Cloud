@@ -38,30 +38,30 @@ public class ArticleAdminController extends BaseController {
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ArticleView articleEntity = getEntry(ArticleView.class);
+        ArticleView articleView = getEntry(ArticleView.class);
 
         validateRequest(
-                articleEntity,
+                articleView,
                 ArticleView.APP_ID,
                 ArticleView.ARTICLE_TITLE,
                 ArticleView.PAGE_INDEX,
                 ArticleView.PAGE_SIZE
         );
 
-        Integer resultTotal = articleService.countForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle());
-        List<ArticleView> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
+        Integer resultTotal = articleService.countForAdmin(articleView.getAppId(), articleView.getArticleTitle());
+        List<ArticleView> resultList = articleService.listForAdmin(articleView.getAppId(), articleView.getArticleTitle(), articleView.getPageIndex(), articleView.getPageSize());
 
         validateResponse(
                 ArticleView.ARTICLE_ID,
                 ArticleView.ARTICLE_CATEGORY_NAME,
                 ArticleView.ARTICLE_TITLE,
-                Article.ARTICLE_MEDIA_PATH,
-                Article.ARTICLE_MEDIA_TYPE,
-                Article.ARTICLE_AUTHOR,
-                Article.ARTICLE_PUBLISH_TIME,
-                Article.ARTICLE_IS_TOP,
-                Article.ARTICLE_IS_DRAFT,
-                Article.ARTICLE_IS_RECOMMEND
+                ArticleView.ARTICLE_MEDIA_PATH,
+                ArticleView.ARTICLE_MEDIA_TYPE,
+                ArticleView.ARTICLE_AUTHOR,
+                ArticleView.ARTICLE_PUBLISH_TIME,
+                ArticleView.ARTICLE_IS_TOP,
+                ArticleView.ARTICLE_IS_DRAFT,
+                ArticleView.ARTICLE_IS_RECOMMEND
         );
 
         return renderJson(resultTotal, resultList);

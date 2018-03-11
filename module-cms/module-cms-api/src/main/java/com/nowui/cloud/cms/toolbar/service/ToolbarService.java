@@ -31,14 +31,14 @@ public interface ToolbarService extends SuperService<Toolbar, ToolbarView>{
      * @param articleName 工具栏名称
      * @param m 从m条开始
      * @param n 取n条数据
-     * @return List<Toolbar> 工具栏列表
+     * @return List<ToolbarView> 工具栏视图列表
      */
-    List<Toolbar> listForAdmin(String appId, String toolbarName, Integer m, Integer n);
+    List<ToolbarView> listForAdmin(String appId, String toolbarName, Integer m, Integer n);
 
     /**
      * 工具栏列表
      * @param appId
-     * @return List<Toolbar> 工具栏列表
+     * @return List<ToolbarView> 工具栏视图列表
      */
-    List<Toolbar> mobileList(String appId);
+    List<ToolbarView> mobileList(String appId);
 }

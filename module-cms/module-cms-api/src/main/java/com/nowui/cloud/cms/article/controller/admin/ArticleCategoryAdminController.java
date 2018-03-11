@@ -37,8 +37,7 @@ public class ArticleCategoryAdminController extends BaseController {
     @ApiOperation(value = "文章分类列表")
     @RequestMapping(value = "/article/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-//
-
+        
         ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
 
         validateRequest(
@@ -52,11 +51,6 @@ public class ArticleCategoryAdminController extends BaseController {
 
         Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode());
 
-        System.out.println("resultTotal:"+resultTotal);
-
-        System.out.println("articleCategoryView.getArticleCategoryName() :"+articleCategoryView.getArticleCategoryName());
-        System.out.println("articleCategoryView.getArticleCategoryCode() :"+articleCategoryView.getArticleCategoryCode());
-
         if (Util.isNullOrEmpty(articleCategoryView.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryView.getArticleCategoryCode())) {
 
             List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryView.getAppId(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
@@ -68,7 +62,7 @@ public class ArticleCategoryAdminController extends BaseController {
             return renderJson(resultTotal, resultList);
 
         } else {
-            List<ArticleCategory> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
+            List<ArticleCategoryView> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
 
             validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
 
@@ -83,18 +77,18 @@ public class ArticleCategoryAdminController extends BaseController {
     @ApiOperation(value = "文章分类树形列表")
     @RequestMapping(value = "/article/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> allTreeListV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
 
         validateRequest(
-            articleCategoryEntity, 
-            ArticleCategory.APP_ID
+                articleCategoryView, 
+                ArticleCategoryView.APP_ID
         );
 
-        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(articleCategoryEntity.getAppId());
+        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(articleCategoryView.getAppId());
 
-        validateResponse(ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
+        validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
 
-        validateSecondResponse(Constant.CHILDREN, ArticleCategory.ARTICLE_CATEGORY_ID, ArticleCategory.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
+        validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
 
         return renderJson(resultList);
         
@@ -103,21 +97,21 @@ public class ArticleCategoryAdminController extends BaseController {
     @ApiOperation(value = "根据编号查询文章分类信息")
     @RequestMapping(value = "/article/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
 
-        validateRequest(articleCategoryEntity, ArticleCategory.ARTICLE_CATEGORY_ID);
+        validateRequest(articleCategoryView, ArticleCategoryView.ARTICLE_CATEGORY_ID);
 
-        ArticleCategory result = articleCategoryService.findByMysql(articleCategoryEntity.getArticleCategoryId());
+        ArticleCategoryView result = articleCategoryService.find(articleCategoryView.getArticleCategoryId());
 
         validateResponse(
-                ArticleCategory.ARTICLE_CATEGORY_ID, 
-                ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
-                ArticleCategory.ARTICLE_CATEGORY_NAME, 
-                ArticleCategory.ARTICLE_CATEGORY_CODE, 
-                ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
-                ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
-                ArticleCategory.ARTICLE_CATEGORY_SORT, 
-                ArticleCategory.SYSTEM_VERSION
+                ArticleCategoryView.ARTICLE_CATEGORY_ID, 
+                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, 
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME, 
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE, 
+                ArticleCategoryView.ARTICLE_CATEGORY_KEYWORDS, 
+                ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, 
+                ArticleCategoryView.ARTICLE_CATEGORY_SORT, 
+                ArticleCategoryView.SYSTEM_VERSION
         );
 
         return renderJson(result);
@@ -130,9 +124,6 @@ public class ArticleCategoryAdminController extends BaseController {
 
         String articleCategoryId = Util.getRandomUUID();
         String articleCategoryParentPath = "";
-
-        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_PATH);
-        System.out.println(ArticleCategory.ARTICLE_CATEGORY_PARENT_ID);
 
         validateRequest(
             articleCategoryEntity, 
@@ -167,8 +158,8 @@ public class ArticleCategoryAdminController extends BaseController {
         if (result != null) {
             ArticleCategoryView articleCategoryView = new ArticleCategoryView();
             articleCategoryView.putAll(result);
+            
             articleCategoryService.save(articleCategoryView);
-
         }
 
         return renderJson(true);
@@ -193,13 +184,14 @@ public class ArticleCategoryAdminController extends BaseController {
 
         ArticleCategory result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            success = true;
+            ArticleCategoryView articleCategoryView = new ArticleCategoryView();
+            articleCategoryView.putAll(result);
+            
+            articleCategoryService.update(articleCategoryView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "文章分类删除")
@@ -215,13 +207,11 @@ public class ArticleCategoryAdminController extends BaseController {
 
         ArticleCategory result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
 
-        Boolean success = false;
-
         if (result != null) {
-            success = true;
+            // TODO 删除文章分类
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
     
     @ApiOperation(value = "文章分类数据同步")
@@ -233,7 +223,7 @@ public class ArticleCategoryAdminController extends BaseController {
             ArticleCategoryView articleCategoryView = new ArticleCategoryView();
             articleCategoryView.putAll(articleCategory);
 
-            articleCategoryService.update(articleCategoryView);
+            articleCategoryService.saveOrUpdate(articleCategoryView);
         }
 
         return renderJson(true);

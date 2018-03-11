@@ -140,7 +140,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         List<E> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
 
         for (E baseEntity : list) {
-            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
+            baseEntity.putAll(findByMysql(baseEntity.getString(entity.getTableId())));
         }
 
         if (list == null || list.size() == 0) {

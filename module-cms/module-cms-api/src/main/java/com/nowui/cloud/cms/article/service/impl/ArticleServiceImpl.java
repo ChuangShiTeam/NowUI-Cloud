@@ -2,6 +2,7 @@ package com.nowui.cloud.cms.article.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
-import com.nowui.cloud.cms.article.entity.ArticleCategory;
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.mapper.ArticleMapper;
 import com.nowui.cloud.cms.article.repository.ArticleRepository;
@@ -19,6 +19,8 @@ import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.service.ArticleService;
+import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
+import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
@@ -176,30 +178,37 @@ public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article,
     }
 
     @Override
-    public List<Article> listByPrimaryCategoryCode(String appId, String articleCategoryCode) {
+    public List<ArticleView> listByPrimaryCategoryCode(String appId, String articleCategoryCode) {
         
-        ArticleCategory articleCategory = articleCategoryService.findByCategoryCode(appId, articleCategoryCode);
+        ArticleCategoryView articleCategoryView = articleCategoryService.findByCategoryCode(appId, articleCategoryCode);
         
-        if (articleCategory == null) {
+        if (articleCategoryView == null) {
             return null;
         }
         
-        List<ArticleArticleCategory> articleArticleCategoryList = articleArticleCategoryService.listPrimaryByArticleCategoryId(articleCategory.getArticleCategoryId());
+        List<ArticleArticleCategoryView> articleArticleCategoryViewList = articleArticleCategoryService.listPrimaryByArticleCategoryId(articleCategoryView.getArticleCategoryId());
         
-        if (Util.isNullOrEmpty(articleArticleCategoryList)) {
+        if (Util.isNullOrEmpty(articleArticleCategoryViewList)) {
             return null;
         }
         
-//        // 查询文章列表并按文章排序字段排序
-//        List<Article> articleList = articleArticleCategoryList
-//                                    .stream()
-//                                    .map(articleArticleCategory -> find(articleArticleCategory.getArticleId()))
-//                                    .sorted(Comparator.comparing(Article::getArticleSort))
-//                                    .collect(Collectors.toList());
-//
-//        return articleList;
+        List<String> articleIdList = articleArticleCategoryViewList
+                                    .stream()
+                                    .map(articleArticleCategoryView -> articleArticleCategoryView.getArticleId())
+                                    .collect(Collectors.toList());
+        
+        Criteria criteria = Criteria.where(ArticleView.APP_ID).is(appId)
+                .and(ArticleView.ARTICLE_ID).in(articleIdList)
+                .and(ArticleView.SYSTEM_STATUS).is(true);
 
-        return null;
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, ArticleView.ARTICLE_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+
+        return list(query, sort);
     }
 
 }
