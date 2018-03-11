@@ -293,15 +293,16 @@ public class MemberMobileController extends BaseController {
         member.setMemberTopLevel(0);
 
         Member result = memberService.save(member, memberId, userAccountBean.getSystemRequestUserId());
+        String userAvatarFileId = "";
+        String userAvatarFilePath = "";
+        String userNickName = "";
 
         if (result != null) {
             // 发送会员手机注册用户消息
             String userAccount = userAccountBean.getUserAccount();
             // 默认用户昵称
-            String userNickName = "WAWIPET" + userAccount.substring(userAccount.length() - 4);
+            userNickName = "WAWIPET" + userAccount.substring(userAccount.length() - 4);
             // 默认会员头像
-            String userAvatarFileId = null;
-            String userAvatarFilePath = null;
             MemberDefaultAvatarView memberDefaultAvatarView = memberDefaultAvatarService.randomFind(userAccountBean.getAppId());
             if (memberDefaultAvatarView != null) {
                 userAvatarFileId = memberDefaultAvatarView.getUserAvatarFileId();
@@ -341,8 +342,18 @@ public class MemberMobileController extends BaseController {
             jsonObject.put(User.USER_ID, userId);
             jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
             
-            result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
-            validateResponse(Constant.TOKEN);
+            map.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
+            
+            map.put(MemberView.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            map.put(MemberView.USER_NICK_NAME, userNickName);
+            map.put(MemberView.MEMBER_ID, memberId);
+            
+            validateResponse(
+                    Constant.TOKEN, 
+                    MemberView.USER_AVATAR_FILE_PATH,
+                    MemberView.USER_NICK_NAME,
+                    MemberView.MEMBER_ID
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -529,7 +540,22 @@ public class MemberMobileController extends BaseController {
             jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
             
             result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
-            validateResponse(Constant.TOKEN);
+            
+            String userAvatarFilePath = userView.getUserAvatarFilePath();
+            String userNickName = userView.getUserNickName();
+            MemberView memberView = memberService.findByUserId(userView.getUserId());
+            String memberId = memberView.getMemberId();
+            
+            result.put(MemberView.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            result.put(MemberView.USER_NICK_NAME, userNickName);
+            result.put(MemberView.MEMBER_ID, memberId);
+            
+            validateResponse(
+                    Constant.TOKEN, 
+                    MemberView.USER_AVATAR_FILE_PATH,
+                    MemberView.USER_NICK_NAME,
+                    MemberView.MEMBER_ID
+            );
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException("登录不成功");
@@ -590,7 +616,7 @@ public class MemberMobileController extends BaseController {
             		MemberView.USER_AVATAR_FILE_PATH,
             		MemberView.USER_NICK_NAME,
             		MemberView.MEMBER_ID
-            	);
+        	);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException("登录不成功");
