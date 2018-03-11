@@ -810,7 +810,8 @@ public class TopicMobileController extends BaseController {
             
             // 话题,多媒体列表,论坛列表,提醒谁的列表
             // 保存到话题表
-            TopicView topicView = JSON.parseObject(result.toJSONString(), TopicView.class);
+            TopicView topicView = new TopicView();
+            topicView.putAll(result);
             topicView.setTopicCountBookmark(0);
             topicView.setTopicCountComment(0);
             topicView.setTopicCountLike(0);
@@ -829,8 +830,9 @@ public class TopicMobileController extends BaseController {
             if (!Util.isNullOrEmpty(topicForumList)) {
             	for (TopicForum topicForum : topicForumList) {
     				// topicForum.setSystemRequestUserId(requestUserId);
-    				
-    				TopicForumView topicForumView = JSON.parseObject(topicForum.toJSONString(), TopicForumView.class);
+
+    				TopicForumView topicForumView = new TopicForumView();
+    				topicForumView.putAll(topicForum);
     				topicForumService.save(topicForumView);
     			}
 			}
@@ -838,7 +840,8 @@ public class TopicMobileController extends BaseController {
             // 保存话题提醒表
             if (!Util.isNullOrEmpty(topicTipList)) {
                  for (TopicTip topicTip : topicTipList) {
-                     TopicTipView topicTipView = JSON.parseObject(topicTip.toJSONString(), TopicTipView.class);
+                     TopicTipView topicTipView = new TopicTipView();
+                     topicTipView.putAll(topicTip);
                      topicTipService.save(topicTipView);
 				}
              }

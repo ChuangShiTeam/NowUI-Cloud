@@ -69,7 +69,7 @@ public class DateUtil {
 	 */
 	public static Date getTwoMonthAgoDateTime() {
 		Calendar curr = Calendar.getInstance();
-		curr.set(Calendar.MONTH,curr.get(Calendar.MONTH)+2);
+		curr.set(Calendar.MONTH, curr.get(Calendar.MONTH) - 2);
 		return curr.getTime();
 	}
 	
@@ -86,11 +86,9 @@ public class DateUtil {
 //        System.out.println(date.getTime());
 		
 		Calendar curr = Calendar.getInstance();
-		curr.set(Calendar.MONTH,curr.get(Calendar.MONTH)+2);
-		Date date=curr.getTime();
-		String format = DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss");
-		Date parseDate = DateUtil.parseDate(format);
-		System.out.println(parseDate);
+		curr.set(Calendar.MONTH, curr.get(Calendar.MONTH) + 2);
+		Date date = curr.getTime();
+		System.out.println(getDateTimeString(date));
 	}
 
 }
