@@ -167,6 +167,6 @@ public class RequestFilter extends ZuulFilter {
             }
         }
 
-        return null;
+        return "";
     }
 }
