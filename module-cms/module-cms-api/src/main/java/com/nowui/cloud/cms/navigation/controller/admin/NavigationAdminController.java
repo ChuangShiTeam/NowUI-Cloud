@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -32,6 +33,9 @@ public class NavigationAdminController extends BaseController {
 
     @Autowired
     private NavigationService navigationService;
+    
+    @Autowired
+    private FileRpc fileRpc;
     
     @ApiOperation(value = "导航栏列表")
     @RequestMapping(value = "/navigation/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -196,6 +200,25 @@ public class NavigationAdminController extends BaseController {
             success = true;
         }
         return renderJson(success);
+    }
+    
+    @ApiOperation(value = "工具栏数据同步")
+    @RequestMapping(value = "/navigation/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> replaceV1() {
+        List<Navigation> navigationList = navigationService.listByMysql();
+
+        for(Navigation navigation : navigationList) {
+            NavigationView navigationView = new NavigationView();
+            navigationView.putAll(navigation);
+            
+            File navigationImageFile = fileRpc.findByMysqlV1(navigationView.getNavigationImageFileId());
+            
+            navigationView.setNavigationImageFilePath(navigationImageFile.getFilePath());
+
+            navigationService.saveOrUpdate(navigationView);
+        }
+
+        return renderJson(true);
     }
 
 }
