@@ -2,16 +2,15 @@ package com.nowui.cloud.code.code.entity;
 
 import javax.validation.constraints.NotNull;
 
-import com.alibaba.fastjson.JSONArray;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 
 /**
- * 应用
+ * 代码
  * 
  * @author marcus
  *
@@ -25,8 +24,6 @@ public class Code extends BaseEntity {
      * 数据库名称
      */
     @TableField(exist = false)
-    @NotNull(message = "数据库名称不能为空")
-    @Length(max = 100, message = "数据库名称长度超出限制")
     private String tableSchema;
     public static final String TABLE_SCHEMA = "tableSchema";
 
@@ -38,11 +35,18 @@ public class Code extends BaseEntity {
     public static final String ENGINE = "engine";
 
     /**
-     * 数据库说明
+     * 表注释
      */
     @TableField(exist = false)
     private String tableComment;
     public static final String TABLE_COMMENT = "tableComment";
+    
+    /**
+     * 数据表名称
+     */
+    @TableField(exist = false)
+    private String tableName;
+    public static final String TABLE_NAME = "tableName";
 
     /**
      * 列名称
@@ -91,7 +95,7 @@ public class Code extends BaseEntity {
      */
     @TableField(exist = false)
     @NotNull(message = "数据列表不能为空")
-    private String columnList;
+    private JSONArray columnList;
     public static final String COLUMN_LIST = "columnList";
 
     /**
@@ -121,126 +125,170 @@ public class Code extends BaseEntity {
     @TableField(exist = false)
     private Boolean isMq;
     public static final String IS_MQ = "isMq";
-
+    
+    /**
+     * 是否搜索
+     */
+    @TableField(exist = false)
+    private Boolean isSearch;
+    public static final String IS_SEARCH = "isSearch";
+    
+    /**
+     * 是否列表
+     */
+    @TableField(exist = false)
+    private Boolean isList;
+    public static final String IS_LIST = "isList";
+    
+    /**
+     * 是否详情
+     */
+    @TableField(exist = false)
+    private Boolean isDetail;
+    public static final String IS_DETAIL = "isDetail";
+    
     public String getTableSchema() {
-        return getString(TABLE_SCHEMA);
+        return tableSchema;
     }
-
+    
     public void setTableSchema(String tableSchema) {
-        put(TABLE_SCHEMA, tableSchema);
+        this.tableSchema = tableSchema;
     }
-
-    @Override
+    
+    public String getEngine() {
+        return engine;
+    }
+    
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
+    
+    public String getTableComment() {
+        return tableComment;
+    }
+    
+    public void setTableComment(String tableComment) {
+        this.tableComment = tableComment;
+    }
+    
     public String getTableName() {
-        return getString(TABLE_NAME);
+        return tableName;
     }
 
     public void setTableName(String tableName) {
-        put(TABLE_NAME, tableName);
-    }
-
-    public String getEngine() {
-        return getString(ENGINE);
-    }
-
-    public void setEngine(String engine) {
-        put(ENGINE, engine);
-    }
-
-    public String getTableComment() {
-        return getString(TABLE_COMMENT);
-    }
-
-    public void setTableComment(String tableComment) {
-        put(TABLE_COMMENT, tableComment);
+        this.tableName = tableName;
     }
 
     public String getColumnName() {
-        return getString(COLUMN_NAME);
+        return columnName;
     }
-
+    
     public void setColumnName(String columnName) {
-        put(COLUMN_NAME, columnName);
+        this.columnName = columnName;
     }
-
+    
     public String getColumnKey() {
-        return getString(COLUMN_KEY);
+        return columnKey;
     }
-
+    
     public void setColumnKey(String columnKey) {
-        put(COLUMN_KEY, columnKey);
+        this.columnKey = columnKey;
     }
-
+    
     public String getCharacterMaximumLength() {
-        return getString(CHARACTER_MAXIMUM_LENGTH);
+        return characterMaximumLength;
     }
-
+    
     public void setCharacterMaximumLength(String characterMaximumLength) {
-        put(CHARACTER_MAXIMUM_LENGTH, characterMaximumLength);
+        this.characterMaximumLength = characterMaximumLength;
     }
-
+    
     public String getColumnType() {
-        return getString(COLUMN_TYPE);
+        return columnType;
     }
-
+    
     public void setColumnType(String columnType) {
-        put(COLUMN_TYPE, columnType);
+        this.columnType = columnType;
     }
-
+    
     public String getDataType() {
-        return getString(DATA_TYPE);
+        return dataType;
     }
-
+    
     public void setDataType(String dataType) {
-        put(DATA_TYPE, dataType);
+        this.dataType = dataType;
     }
-
+    
     public String getColumnComment() {
-        return getString(COLUMN_COMMENT);
+        return columnComment;
     }
-
+    
     public void setColumnComment(String columnComment) {
-        put(COLUMN_COMMENT, columnComment);
+        this.columnComment = columnComment;
     }
-
+    
     public JSONArray getColumnList() {
-        return getJSONArray(COLUMN_LIST);
+        return columnList;
     }
-
-    public void setColumnList(String columnList) {
-        put(COLUMN_LIST, columnList);
+    
+    public void setColumnList(JSONArray columnList) {
+        this.columnList = columnList;
     }
-
+    
     public String getModuleName() {
-        return getString(MODULE_NAME);
+        return moduleName;
     }
-
+    
     public void setModuleName(String moduleName) {
-        put(MODULE_NAME, moduleName);
+        this.moduleName = moduleName;
     }
-
+    
     public String getPackageName() {
-        return getString(PACKAGE_NAME);
+        return packageName;
     }
-
+    
     public void setPackageName(String packageName) {
-        put(PACKAGE_NAME, packageName);
+        this.packageName = packageName;
     }
-
+    
     public String getAuthor() {
-        return getString(AUTHOR);
+        return author;
     }
-
+    
     public void setAuthor(String author) {
-        put(AUTHOR, author);
+        this.author = author;
     }
-
+    
     public Boolean getIsMq() {
-        return getBoolean(IS_MQ);
+        return isMq;
+    }
+    
+    public void setIsMq(Boolean isMq) {
+        this.isMq = isMq;
     }
 
-    public void setIsMq(String isMq) {
-        put(IS_MQ, isMq);
+    public Boolean getIsSearch() {
+        return isSearch;
+    }
+
+    public void setIsSearch(Boolean isSearch) {
+        this.isSearch = isSearch;
+    }
+
+    public Boolean getIsList() {
+        return isList;
+    }
+
+    public void setIsList(Boolean isList) {
+        this.isList = isList;
+    }
+
+    public Boolean getIsDetail() {
+        return isDetail;
+    }
+
+    public void setIsDetail(Boolean isDetail) {
+        this.isDetail = isDetail;
     }
 
 }
