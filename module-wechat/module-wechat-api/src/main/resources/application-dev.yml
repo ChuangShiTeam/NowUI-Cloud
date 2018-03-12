@@ -1,5 +1,5 @@
 server:
-  port: 2000
+  port: 10100
 logging:
   level:
     root: info
@@ -8,7 +8,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3030/eureka/
+      defaultZone: http://localhost:10000/eureka/
 feign:
   hystrix:
     enabled: false
@@ -52,10 +52,22 @@ spring:
     database: 0
     password:
   rabbitmq:
-    host: 118.31.229.16
+    host: localhost
     port: 5672
     username: guest
     password: guest
+  data:
+    #elasticsearch:
+    #  cluster-name: elasticsearch
+    #  cluster-nodes: 118.31.229.16:9300
+    mongodb:
+      uri: mongodb://118.31.229.16/nowui_wechat
+      host: 118.31.229.16
+      port: 27017
+      database: nowui_wechat
+      authentication-database: nowui_wechat
+      username: user
+      password: '123456'
 
 #mybatis
 mybatis-plus:

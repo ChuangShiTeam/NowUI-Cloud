@@ -59,9 +59,9 @@ public class TopicUserLikeView extends BaseView {
      */
     @Field
     @NotNull(message = "头像不能为空")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
-
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
     /**
      * 话题编号
      */
@@ -103,12 +103,12 @@ public class TopicUserLikeView extends BaseView {
         put(USER_NICK_NAME, userNickName);
 	}
 
-	public String getUserAvatar() {
-        return getString(USER_AVATAR);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
 
     public String getTopicId() {

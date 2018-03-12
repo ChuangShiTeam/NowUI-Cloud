@@ -16,6 +16,8 @@ import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -34,34 +36,37 @@ public class ArticleAdminController extends BaseController {
 
     @Autowired
     private ArticleService articleService;
+    
+    @Autowired
+    private FileRpc fileRpc;
 
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ArticleView articleEntity = getEntry(ArticleView.class);
+        ArticleView articleView = getEntry(ArticleView.class);
 
         validateRequest(
-                articleEntity,
+                articleView,
                 ArticleView.APP_ID,
                 ArticleView.ARTICLE_TITLE,
                 ArticleView.PAGE_INDEX,
                 ArticleView.PAGE_SIZE
         );
 
-        Integer resultTotal = articleService.countForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle());
-        List<ArticleView> resultList = articleService.listForAdmin(articleEntity.getAppId(), articleEntity.getArticleTitle(), articleEntity.getPageIndex(), articleEntity.getPageSize());
+        Integer resultTotal = articleService.countForAdmin(articleView.getAppId(), articleView.getArticleTitle());
+        List<ArticleView> resultList = articleService.listForAdmin(articleView.getAppId(), articleView.getArticleTitle(), articleView.getPageIndex(), articleView.getPageSize());
 
         validateResponse(
                 ArticleView.ARTICLE_ID,
                 ArticleView.ARTICLE_CATEGORY_NAME,
                 ArticleView.ARTICLE_TITLE,
-                Article.ARTICLE_MEDIA_PATH,
-                Article.ARTICLE_MEDIA_TYPE,
-                Article.ARTICLE_AUTHOR,
-                Article.ARTICLE_PUBLISH_TIME,
-                Article.ARTICLE_IS_TOP,
-                Article.ARTICLE_IS_DRAFT,
-                Article.ARTICLE_IS_RECOMMEND
+                ArticleView.ARTICLE_MEDIA_PATH,
+                ArticleView.ARTICLE_MEDIA_TYPE,
+                ArticleView.ARTICLE_AUTHOR,
+                ArticleView.ARTICLE_PUBLISH_TIME,
+                ArticleView.ARTICLE_IS_TOP,
+                ArticleView.ARTICLE_IS_DRAFT,
+                ArticleView.ARTICLE_IS_RECOMMEND
         );
 
         return renderJson(resultTotal, resultList);
@@ -124,8 +129,7 @@ public class ArticleAdminController extends BaseController {
                 Article.ARTICLE_AUTHOR,
                 Article.ARTICLE_SUMMARY,
                 Article.ARTICLE_CONTENT,
-                Article.ARTICLE_MEDIA_ID,
-                Article.ARTICLE_MEDIA_PATH,
+//                Article.ARTICLE_MEDIA_ID,
                 Article.ARTICLE_MEDIA_TYPE,
                 Article.ARTICLE_IS_ALLOW_COMMENT,
                 Article.ARTICLE_IS_DRAFT,
@@ -147,10 +151,13 @@ public class ArticleAdminController extends BaseController {
 
         String articleId = Util.getRandomUUID();
 
+        //文章主分类
         ArticleArticleCategory articlePrimaryArticleCategory = JSON.parseObject(articleEntity.getArticlePrimaryArticleCategory().toJSONString(), ArticleArticleCategory.class);
 
+        //文章二级分类
         List<ArticleArticleCategory> articleSecondaryArticleCategoryList = JSON.parseArray(articleEntity.getArticleSecondaryArticleCategoryList().toJSONString(), ArticleArticleCategory.class);
 
+        //文章媒体列表
         List<ArticleMedia> articleMediaList = articleEntity.getArticleMediaList().toJavaList(ArticleMedia.class);
 
         Article result = articleService.save(articleEntity, articleId, articlePrimaryArticleCategory, articleSecondaryArticleCategoryList, articleMediaList, articleEntity.getSystemRequestUserId());
@@ -158,7 +165,7 @@ public class ArticleAdminController extends BaseController {
         if (result != null) {
             ArticleView articleView = new ArticleView();
             articleView.putAll(result);
-            
+
             articleService.save(articleView);
         }
 
@@ -248,8 +255,12 @@ public class ArticleAdminController extends BaseController {
         for(Article article : articleList) {
             ArticleView articleView = new ArticleView();
             articleView.putAll(article);
+            
+            File artileMediaFile = fileRpc.findByMysqlV1(articleView.getArticleMediaId());
+            
+            articleView.setArticleMediaPath(artileMediaFile.getFilePath());
 
-            articleService.update(articleView);
+            articleService.saveOrUpdate(articleView);
         }
 
         return renderJson(true);

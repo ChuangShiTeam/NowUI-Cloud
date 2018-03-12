@@ -3,7 +3,8 @@ package com.nowui.cloud.cms.toolbar.entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;import org.springframework.stereotype.Component;
+import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -55,8 +56,17 @@ public class Toolbar extends BaseEntity {
     @TableField
     @NotNull(message = "工具栏激活图片文件编号不能为空")
     @Length(max = 32, message = "工具栏激活图片文件编号长度超出限制")
-    private String toolbarActiveImage;
+    private String toolbarActiveImageFileId;
     public static final String TOOLBAR_ACTIVE_IMAGE_FILE_ID = "toolbarActiveImageFileId";
+    
+    /**
+     * 工具栏激活图片文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "工具栏激活图片文件路径不能为空")
+    @Length(max = 200, message = "工具栏激活图片文件路径长度超出限制")
+    private String toolbarActiveImageFilePath;
+    public static final String TOOLBAR_ACTIVE_IMAGE_FILE_PATH = "toolbarActiveImageFilePath";
     
     /**
      * 工具栏图片文件编号
@@ -67,6 +77,14 @@ public class Toolbar extends BaseEntity {
     private String toolbarImageFileId;
     public static final String TOOLBAR_IMAGE_FILE_ID = "toolbarImageFileId";
     
+    /**
+     * 工具栏图片文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "工具栏图片文件路径不能为空")
+    @Length(max = 200, message = "工具栏图片文件路径长度超出限制")
+    private String toolbarImageFilePath;
+    public static final String TOOLBAR_IMAGE_FILE_PATH = "toolbarImageFilePath";
     
     /**
      * 工具栏地址
@@ -76,7 +94,6 @@ public class Toolbar extends BaseEntity {
     @Length(max = 200, message = "工具栏地址长度超出限制")
     private String toolbarUrl;
     public static final String TOOLBAR_URL = "toolbarUrl";
-    
     
     /**
      * 工具栏排序
@@ -118,12 +135,28 @@ public class Toolbar extends BaseEntity {
         put(TOOLBAR_ACTIVE_IMAGE_FILE_ID, toolbarActiveImageFileId);
     }
     
+    public String getToolbarActiveImageFilePath() {
+        return getString(TOOLBAR_ACTIVE_IMAGE_FILE_PATH);
+    }
+    
+    public void setToolbarActiveImageFilePath(String toolbarActiveImageFilePath) {
+        put(TOOLBAR_ACTIVE_IMAGE_FILE_PATH, toolbarActiveImageFilePath);
+    }
+    
     public String getToolbarImageFileId() {
         return getString(TOOLBAR_IMAGE_FILE_ID);
     }
     
     public void setToolbarImageFileId(String toolbarImageFileId) {
         put(TOOLBAR_IMAGE_FILE_ID, toolbarImageFileId);
+    }
+    
+    public String getToolbarImageFilePath() {
+        return getString(TOOLBAR_IMAGE_FILE_PATH);
+    }
+    
+    public void setToolbarImageFilePath(String toolbarImageFilePath) {
+        put(TOOLBAR_IMAGE_FILE_PATH, toolbarImageFilePath);
     }
     
     public String getToolbarUrl() {

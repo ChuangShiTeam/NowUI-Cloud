@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.entity;
+package com.nowui.cloud.sns.member.entity;
 
 import javax.validation.constraints.NotNull;
 
@@ -19,7 +19,7 @@ import com.nowui.cloud.entity.BaseEntity;
  * 2018-01-02
  */
 @Component
-@TableName(value = "member_follow_info")
+@TableName(value = "sns_member_follow_info")
 public class MemberFollow extends BaseEntity {
 
     /**
@@ -29,8 +29,8 @@ public class MemberFollow extends BaseEntity {
     @TableId
     @NotNull(message = "会员关注编号不能为空")
     @Length(max = 32, message = "会员关注编号长度超出限制")
-    private String memberFollowId;
-    public static final String MEMBER_FOLLOW_ID = "memberFollowId";
+    private String snsMemberFollowId;
+    public static final String SNS_MEMBER_FOLLOW_ID = "snsMemberFollowId";
 
     /**
      * 应用编号
@@ -81,12 +81,12 @@ public class MemberFollow extends BaseEntity {
 
     public static final String MEMBER_IS_SELF = "memberIsSelf";
 
-    public String getMemberFollowId() {
-        return getString(MEMBER_FOLLOW_ID);
+    public String getSnsMemberFollowId() {
+        return getString(SNS_MEMBER_FOLLOW_ID);
     }
 
-    public void setMemberFollowId(String memberFollowId) {
-        put(MEMBER_FOLLOW_ID, memberFollowId);
+    public void setSnsMemberFollowId(String snsMemberFollowId) {
+        put(SNS_MEMBER_FOLLOW_ID, snsMemberFollowId);
     }
     public String getAppId() {
         return getString(APP_ID);

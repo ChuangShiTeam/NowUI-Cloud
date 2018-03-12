@@ -1,15 +1,10 @@
 package com.nowui.cloud.cms.toolbar.controller.system;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.rpc.ToolbarRpc;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -26,29 +21,5 @@ public class ToolbarSystemController implements ToolbarRpc {
     
     @Autowired
     private ToolbarService toolbarService;
-
-    @Override
-    public List<Toolbar> list(String appId) {
-
-        List<Toolbar> toolbarList = toolbarService.mobileList(appId);
-
-        if (Util.isNullOrEmpty(toolbarList)) {
-            return new ArrayList<>();
-        }
-
-//        String fileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_IMAGE);
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-//
-//        toolbarList = Util.beanReplaceField(toolbarList, Toolbar.TOOLBAR_IMAGE, fileList, File.FILE_PATH);
-//
-//
-//        String activeFileIds = Util.beanToFieldString(toolbarList, Toolbar.TOOLBAR_ACTIVE_IMAGE);
-//        List<File> activeFileList = fileRpc.findsV1(activeFileIds);
-//
-//        toolbarList = Util.beanReplaceField(toolbarList, Toolbar.TOOLBAR_ACTIVE_IMAGE, activeFileList, File.FILE_PATH);
-
-
-        return toolbarList;
-    }
 
 }

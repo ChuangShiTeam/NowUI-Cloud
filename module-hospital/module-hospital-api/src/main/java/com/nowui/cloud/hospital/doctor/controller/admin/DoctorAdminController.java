@@ -18,9 +18,9 @@ import java.util.Map;
 /**
  * 医生管理端控制器
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 @Api(value = "医生", description = "医生管理端接口管理")
 @RestController
@@ -54,15 +54,21 @@ public class DoctorAdminController extends BaseController {
                 DoctorView.DOCTOR_SEX,
                 DoctorView.DOCTOR_AGE,
                 DoctorView.DOCTOR_SUMMARY,
+                DoctorView.DOCTOR_PROFESSIONAL,
                 DoctorView.DOCTOR_ORGANIZATION_NAME,
-                DoctorView.DOCTOR_DEPARTMENT_NAME
+                DoctorView.DOCTOR_DEPARTMENT_NAME,
+                DoctorView.DOCTOR_MASTER,
+                DoctorView.DOCTOR_IMAGE_ID,
+                DoctorView.DOCTOR_RANK,
+                DoctorView.DOCTOR_STATUS,
+                DoctorView.DOCTOR_CERT
         );
 
         return renderJson(resultTotal, resultList);
     }
 
     @ApiOperation(value = "医生信息")
-    @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+        @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         DoctorView doctorView = getEntry(DoctorView.class);
 
@@ -85,7 +91,7 @@ public class DoctorAdminController extends BaseController {
             	DoctorView.DOCTOR_ORGANIZATION_NAME,
             	DoctorView.DOCTOR_DEPARTMENT_NAME,
             	DoctorView.DOCTOR_MASTER,
-            	DoctorView.DOCTOR_IMAGE,
+            	DoctorView.DOCTOR_IMAGE_ID,
             	DoctorView.DOCTOR_RANK,
             	DoctorView.DOCTOR_STATUS,
             	DoctorView.DOCTOR_CERT,
@@ -114,7 +120,7 @@ public class DoctorAdminController extends BaseController {
                 Doctor.DOCTOR_ORGANIZATION_NAME,
                 Doctor.DOCTOR_DEPARTMENT_NAME,
                 Doctor.DOCTOR_MASTER,
-                Doctor.DOCTOR_IMAGE,
+                Doctor.DOCTOR_IMAGE_ID,
                 Doctor.DOCTOR_RANK,
                 Doctor.DOCTOR_STATUS,
                 Doctor.DOCTOR_CERT
@@ -122,14 +128,13 @@ public class DoctorAdminController extends BaseController {
 
         Doctor result = doctorService.save(doctorEntity, doctorId, doctorEntity.getSystemRequestUserId());
 
-        Boolean success = false;
 
         if (result != null) {
             DoctorView doctorView = JSON.parseObject(result.toJSONString(), DoctorView.class);
             doctorService.save(doctorView);
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "医生修改")
@@ -150,7 +155,7 @@ public class DoctorAdminController extends BaseController {
                 Doctor.DOCTOR_ORGANIZATION_NAME,
                 Doctor.DOCTOR_DEPARTMENT_NAME,
                 Doctor.DOCTOR_MASTER,
-                Doctor.DOCTOR_IMAGE,
+                Doctor.DOCTOR_IMAGE_ID,
                 Doctor.DOCTOR_RANK,
                 Doctor.DOCTOR_STATUS,
                 Doctor.DOCTOR_CERT,

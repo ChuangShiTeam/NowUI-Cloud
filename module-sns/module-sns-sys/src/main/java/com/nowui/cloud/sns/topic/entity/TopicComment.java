@@ -65,8 +65,8 @@ public class TopicComment extends BaseEntity {
     @TableField(exist = false)
     @NotNull(message = "发评论的用户头像不能为空")
     @Length(max = 200, message = "发评论的用户头像长度超出限制")
-    private String userAvatar;
-    public static final String USER_AVATAR = "userAvatar";
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
 
     /**
      * 话题编号
@@ -85,18 +85,7 @@ public class TopicComment extends BaseEntity {
     @Length(max = 255, message = "话题评论内容长度超出限制")
     private String topicCommentContent;
     public static final String TOPIC_COMMENT_CONTENT = "topicCommentContent";
-
-    /**
-     * 被回复人
-     */
-    @TableField
-    @NotNull(message = "被回复人不能为空")
-    @Length(max = 32, message = "被回复人长度超出限制")
-    private String topicReplayMemberId;
-    public static final String TOPIC_REPLAY_MEMBER_ID = "topicReplayMemberId";
     
-    public static final String TOPIC_REPLAY_USER_NICK_NAME = "topicReplayUserNickName";
-
     /**
      * 被回复评论id
      */
@@ -106,6 +95,24 @@ public class TopicComment extends BaseEntity {
     private String topicReplyCommentId;
     public static final String TOPIC_REPLY_COMMENT_ID = "topicReplyCommentId";
     
+    /**
+     * 被回复人的会员编号
+     */
+    @TableField
+    @NotNull(message = "被回复人的会员编号不能为空")
+    @Length(max = 32, message = "被回复人的会员编号长度超出限制")
+    private String topicReplyMemberId;
+    public static final String TOPIC_REPLY_MEMBER_ID = "topicReplyMemberId";
+
+    /**
+     * 被回复的用户昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "被回复的用户昵称不能为空")
+    @Length(max = 32, message = "被回复的用户昵称长度超出限制")
+    private String topicReplyUserNickName;
+    public static final String TOPIC_REPLY_USER_NICKNAME = "topicReplyUserNickName";
+
     /**
      * 评论是否自己发的
      */
@@ -160,12 +167,12 @@ public class TopicComment extends BaseEntity {
         put(USER_NICK_NAME, userNickName);
 	}
 
-	public String getUserAvatar() {
-        return getString(USER_AVATAR);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
 	}
 
-	public void setUserAvatar(String userAvatar) {
-        put(USER_AVATAR, userAvatar);
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
 	}
     
     public String getTopicId() {
@@ -184,15 +191,6 @@ public class TopicComment extends BaseEntity {
         put(TOPIC_COMMENT_CONTENT, topicCommentContent);
     }
     
-    public String getTopicReplayMemberId() {
-        return getString(TOPIC_REPLAY_MEMBER_ID);
-    }
-
-    public void setTopicReplayMemberId(String topicReplayMemberId) {
-        put(TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId);
-    }
-    
-
     public String getTopicReplyCommentId() {
         return getString(TOPIC_REPLY_COMMENT_ID);
     }
@@ -200,6 +198,22 @@ public class TopicComment extends BaseEntity {
     public void setTopicReplyCommentId(String topicReplyCommentId) {
         put(TOPIC_REPLY_COMMENT_ID, topicReplyCommentId);
     }
+    
+    public String getTopicReplyMemberId() {
+        return getString(TOPIC_REPLY_MEMBER_ID);
+    }
 
+    public void setTopicReplyMemberId(String topicReplyMemberId) {
+        put(TOPIC_REPLY_MEMBER_ID, topicReplyMemberId);
+    }
+    
+    public String getTopicReplyUserNickName() {
+        return getString(TOPIC_REPLY_USER_NICKNAME);
+    }
 
+    public void setTopicReplyUserNickName(String topicReplyUserNickName) {
+        put(TOPIC_REPLY_USER_NICKNAME, topicReplyUserNickName);
+    }
+    
+    
 }

@@ -50,6 +50,30 @@ public class TopicView extends BaseView {
     public static final String MEMBER_ID = "memberId";
 
     /**
+     * 发布动态的用户的昵称
+     */
+    @Field
+    @NotNull(message = "发布动态的用户的昵称不能为空")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 发布动态的用户头像
+     */
+    @Field
+    @NotNull(message = "发布动态的用户头像不能为空")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
+    /**
+     * 发布动态的用户签名
+     */
+    @Field
+    @NotNull(message = "发布动态的用户签名不能为空")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
+    
+    /**
      * 话题内容
      */
     @Field
@@ -143,13 +167,29 @@ public class TopicView extends BaseView {
     public static final String TOPIC_FORUM_LIST = "topicForumList";
     
     /**
-     * 发布动态相关信息
+     * 话题被收藏数
      */
     @Field
-    private JSONObject theSendInfo;
-    public static final String THE_SEND_INFO = "theSendInfo";
-
-
+    @NotNull(message = "话题被收藏数不能为空")
+    private Integer topicCountBookmark;
+    public static final String TOPIC_COUNT_BOOKMARK = "topicCountBookmark";
+    
+    /**
+     * 话题被点赞数
+     */
+    @Field
+    @NotNull(message = "话题被点赞数不能为空")
+    private Integer topicCountLike;
+    public static final String TOPIC_COUNT_LIKE = "topicCountLike";
+    
+    /**
+     * 话题被评论数
+     */
+    @Field
+    @NotNull(message = "话题被评论数不能为空")
+    private Integer topicCountComment;
+    public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
+    
     public String getTopicId() {
         return getString(TOPIC_ID);
     }
@@ -270,12 +310,52 @@ public class TopicView extends BaseView {
         put(TOPIC_FORUM_LIST, topicForumList);
 	}
 
-	public JSONObject getTheSendInfo() {
-        return getJSONObject(THE_SEND_INFO);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
+    }
+    
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+    }
+
+	public String getUserNickName() {
+		return getString(USER_NICKNAME);
 	}
 
-	public void setTheSendInfo(JSONObject theSendInfo) {
-        put(THE_SEND_INFO, theSendInfo);
+	public void setUserNickName(String userNickName) {
+		put(USER_NICKNAME, userNickName);
+	}
+
+	public String getMemberSignature() {
+		return getString(MEMBER_SIGNATURE);
+	}
+
+	public void setMemberSignature(String memberSignature) {
+		put(MEMBER_SIGNATURE, memberSignature);
+	}
+	
+	public Integer getTopicCountBookmark() {
+		return getInteger(TOPIC_COUNT_BOOKMARK);
+	}
+
+	public void setTopicCountBookmark(Integer topicCountBookmark) {
+		put(TOPIC_COUNT_BOOKMARK, topicCountBookmark);
+	}
+
+	public Integer getTopicCountLike() {
+		return getInteger(TOPIC_COUNT_LIKE);
+	}
+
+	public void setTopicCountLike(Integer topicCountLike) {
+		put(TOPIC_COUNT_LIKE, topicCountLike);
+	}
+
+	public Integer getTopicCountComment() {
+		return getInteger(TOPIC_COUNT_COMMENT);
+	}
+
+	public void setTopicCountComment(Integer topicCountComment) {
+		put(TOPIC_COUNT_COMMENT, topicCountComment);
 	}
 	
 	

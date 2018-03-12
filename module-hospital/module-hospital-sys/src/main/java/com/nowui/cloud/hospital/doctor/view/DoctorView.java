@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 /**
  * 医生视图
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 @Component
 @Document(collection = "doctor_info")
@@ -55,7 +55,6 @@ public class DoctorView extends BaseView {
      * 医生年龄
      */
     @Field
-    @NotNull(message = "医生年龄不能为空")
     private Integer doctorAge;
     public static final String DOCTOR_AGE = "doctorAge";
 
@@ -104,8 +103,16 @@ public class DoctorView extends BaseView {
      */
     @Field
     @NotNull(message = "头像不能为空")
-    private String doctorImage;
-    public static final String DOCTOR_IMAGE = "doctorImage";
+    private String doctorImageId;
+    public static final String DOCTOR_IMAGE_ID = "doctorImageId";
+
+    /**
+     * 头像路径
+     */
+    @Field
+    @NotNull(message = "头像路径不能为空")
+    private String doctorImagePath;
+    public static final String DOCTOR_IMAGE_PATH = "doctorImagePath";
 
     /**
      * 职称
@@ -210,12 +217,12 @@ public class DoctorView extends BaseView {
     public void setDoctorMaster(String doctorMaster) {
         put(DOCTOR_MASTER, doctorMaster);
     }
-    public String getDoctorImage() {
-        return getString(DOCTOR_IMAGE);
+    public String getDoctorImageId() {
+        return getString(DOCTOR_IMAGE_ID);
     }
 
-    public void setDoctorImage(String doctorImage) {
-        put(DOCTOR_IMAGE, doctorImage);
+    public void setDoctorImageId(String doctorImageId) {
+        put(DOCTOR_IMAGE_ID, doctorImageId);
     }
     public String getDoctorRank() {
         return getString(DOCTOR_RANK);

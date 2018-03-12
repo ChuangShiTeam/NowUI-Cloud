@@ -1,16 +1,12 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
-import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentRepository;
-import com.nowui.cloud.sns.topic.router.TopicCommentRouter;
 import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.view.TopicCommentView;
-import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 
 import org.springframework.data.domain.Sort;
@@ -44,7 +40,7 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
                         .likeAllowEmpty(TopicComment.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicComment.TOPIC_ID, topicId)
                         .likeAllowEmpty(TopicComment.TOPIC_COMMENT_CONTENT, topicCommentContent)
-                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId)
+                        .likeAllowEmpty(TopicComment.TOPIC_REPLY_MEMBER_ID, topicReplayMemberId)
                         .likeAllowEmpty(TopicComment.TOPIC_REPLY_COMMENT_ID, topicReplyCommentId)
                         .eq(TopicComment.SYSTEM_STATUS, true)
         );
@@ -59,7 +55,7 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
                         .likeAllowEmpty(TopicComment.MEMBER_ID, memberId)
                         .likeAllowEmpty(TopicComment.TOPIC_ID, topicId)
                         .likeAllowEmpty(TopicComment.TOPIC_COMMENT_CONTENT, topicCommentContent)
-                        .likeAllowEmpty(TopicComment.TOPIC_REPLAY_MEMBER_ID, topicReplayMemberId)
+                        .likeAllowEmpty(TopicComment.TOPIC_REPLY_MEMBER_ID, topicReplayMemberId)
                         .likeAllowEmpty(TopicComment.TOPIC_REPLY_COMMENT_ID, topicReplyCommentId)
                         .eq(TopicComment.SYSTEM_STATUS, true)
                         .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
@@ -72,21 +68,8 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     
     @Override
     public Integer countByTopicId(String topicId) {
-//        Integer count = (Integer) redisTemplate.opsForValue().get(TOPIC_COMMENT_COUNT_BY_TOPIC_ID);
-//        
-//        if (count == null) {
-//            count = count(
-//                    new BaseWrapper<TopicComment>()
-//                            .eq(TopicComment.TOPIC_ID, topicId)
-//                            .eq(TopicComment.SYSTEM_STATUS, true)
-//            );
-//            // 更新话题评论数缓存
-//            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, count);
-//        }
-//        
-//        return count;
     	
-    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).is(topicId)
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -99,16 +82,8 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     
 	@Override
 	public List<TopicCommentView> listByTopicId(String topicId) {
-//		List<TopicComment> topicCommentList = list(
-//                new BaseWrapper<TopicComment>()
-//                        .eq(TopicComment.TOPIC_ID, topicId)
-//                        .eq(TopicComment.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME))
-//        );
-//
-//        return topicCommentList;
 		
-		Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+		Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).is(topicId)
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -125,19 +100,8 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
 
     @Override
     public List<TopicCommentView> listByTopicId(String topicId, Integer pageIndex, Integer pageSize) {
-//        List<TopicComment> topicCommentList = list(
-//                new BaseWrapper<TopicComment>()
-//                        .eq(TopicComment.TOPIC_ID, topicId)
-//                        .eq(TopicComment.SYSTEM_STATUS, true)
-//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
-//                pageIndex,
-//                pageSize
-//        );
-//
-//        return topicCommentList;
     	
-    	
-    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+    	Criteria criteria = Criteria.where(TopicCommentView.TOPIC_ID).is(topicId)
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -155,27 +119,9 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
     @Override
 	public List<TopicCommentView> listByTopicId(String appId, String topicId, List<String> excludeCommentIdList, Date systemCreateTime,
 			Integer pageIndex, Integer pageSize) {
-//    	List<TopicComment> topicCommentList = list(
-//                new BaseWrapper<TopicComment>()
-//                        .eq(TopicComment.TOPIC_ID, topicId)
-//                        .notIn(TopicComment.TOPIC_COMMENT_ID, excludeCommentIdList)
-//                        .eq(TopicComment.SYSTEM_STATUS, true)
-//                        .le(TopicComment.SYSTEM_CREATE_TIME, DateUtil.getDateTimeString(systemCreateTime))
-//                        .orderDesc(Arrays.asList(TopicComment.SYSTEM_CREATE_TIME)),
-//                pageIndex,
-//                pageSize
-//        );
-//
-//        return topicCommentList;
-    	
-//    	Criteria criteria = Criteria.where(TopicCommentView.APP_ID).is(appId)
-//                .and(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
-//                .and(TopicCommentView.TOPIC_COMMENT_ID).nin(excludeCommentIdList)
-//                .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(DateUtil.getDateTimeString(systemCreateTime))
-//                .and(TopicCommentView.SYSTEM_STATUS).is(true);
     	
     	Criteria criteria = Criteria.where(TopicCommentView.APP_ID).is(appId)
-                .and(TopicCommentView.TOPIC_ID).regex(".*?" + topicId + ".*")
+                .and(TopicCommentView.TOPIC_ID).is(topicId)
                 .and(TopicCommentView.TOPIC_COMMENT_ID).nin(excludeCommentIdList)
                 .and(TopicCommentView.SYSTEM_CREATE_TIME).lte(systemCreateTime.getTime())
                 .and(TopicCommentView.SYSTEM_STATUS).is(true);
@@ -198,27 +144,13 @@ public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper
         List<TopicCommentView> topicCommentList = listByTopicId(topicId);
         
         if (!Util.isNullOrEmpty(topicCommentList)) {
-//            topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), appId, TopicCommentRouter.TOPIC_COMMENT_V1_DELETE, systemRequestUserId, topicComment.getSystemVersion()));
         	topicCommentList.stream().forEach(topicComment -> delete(topicComment.getTopicCommentId(), systemRequestUserId, topicComment.getSystemVersion()));
         }
-//        redisTemplate.delete(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId);
     }
 
     @Override
     public Boolean save(String appId, String topicId, String memberId, TopicComment topicComment, String systemRequestUserId) {
         //TODO 不用缓存,所以不用这个方法 
-//        topicComment.setAppId(appId);
-//        topicComment.setUserId(userId);
-//        topicComment.setTopicId(topicId);
-//        
-//        Boolean result = save(topicComment, appId, TopicCommentRouter.TOPIC_COMMENT_V1_SAVE, Util.getRandomUUID(), systemRequestUserId);
-//        
-//        if (result) {
-//            // 更新话题评论数缓存
-//            Integer count = countByTopicId(topicId);
-//            redisTemplate.opsForValue().set(TOPIC_COMMENT_COUNT_BY_TOPIC_ID + topicId, (count + 1));
-//        }
-//        return result;
     	return null;
     }
 

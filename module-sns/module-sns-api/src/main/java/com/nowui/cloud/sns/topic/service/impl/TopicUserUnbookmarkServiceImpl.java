@@ -1,11 +1,8 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,6 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.mapper.TopicUserUnbookmarkMapper;
 import com.nowui.cloud.sns.topic.repository.TopicUserUnbookmarkRepository;
-import com.nowui.cloud.sns.topic.router.TopicUserUnbookmarkRouter;
 import com.nowui.cloud.sns.topic.service.TopicUserUnbookmarkService;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 import com.nowui.cloud.util.Util;
@@ -60,17 +56,9 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
 
 	@Override
 	public TopicUserUnbookmarkView findByTopicIdAndMemberId(String topicId, String mmeberId) {
-//		TopicUserUnbookmark topicUserUnbookmark = find(
-//                new BaseWrapper<TopicUserUnbookmark>()
-//                        .eq(TopicUserUnbookmark.TOPIC_ID, topicId)
-//                        .eq(TopicUserUnbookmark.USER_ID, userId)
-//                        .eq(TopicUserUnbookmark.SYSTEM_STATUS, true)
-//        );
-//
-//        return topicUserUnbookmark;
 		
-		Criteria criteria = Criteria.where(TopicUserUnbookmarkView.TOPIC_ID).regex(".*?" + topicId + ".*")
-                .and(TopicUserUnbookmarkView.MEMBER_ID).regex(".*?" + mmeberId + ".*")
+		Criteria criteria = Criteria.where(TopicUserUnbookmarkView.TOPIC_ID).is(topicId)
+                .and(TopicUserUnbookmarkView.MEMBER_ID).is(mmeberId)
                 .and(TopicUserUnbookmarkView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -101,7 +89,6 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
         if (Util.isNullOrEmpty(topicUserUnbookmarkList)) {
             return;
         }
-//        topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
         topicUserUnbookmarkList.stream().forEach(topicUserUnbookmark -> delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion()));
         
     }
@@ -114,7 +101,6 @@ public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUn
             return null;
         }
         
-//        Boolean result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), appId, TopicUserUnbookmarkRouter.TOPIC_USER_UNBOOKMARK_V1_DELETE, systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         TopicUserUnbookmark result = delete(topicUserUnbookmark.getTopicUserUnbookmarkId(), systemRequestUserId, topicUserUnbookmark.getSystemVersion());
         
         if (result != null) {

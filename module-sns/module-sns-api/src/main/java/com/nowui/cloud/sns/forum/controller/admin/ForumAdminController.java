@@ -14,6 +14,7 @@ import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
 import com.nowui.cloud.sns.forum.entity.Forum;
+import com.nowui.cloud.sns.forum.entity.ForumBackgroundMedia;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumService;
 import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
@@ -104,13 +105,12 @@ public class ForumAdminController extends BaseController {
 
        validateResponse(
             Forum.FORUM_ID,
-            Forum.FORUM_MEDIA,
+            Forum.FORUM_MEDIA_FILE_PATH,
             Forum.FORUM_MEDIA_TYPE,
-            Forum.FORUM_BACKGROUND_MEDIA,
-            Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+            Forum.FORUM_BACKGROUND_MEDIA_LIST,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_MODERATOR,
+            Forum.FORUM_MODERATOR_MEMBER_ID,
             Forum.FORUM_LOCATION,
             Forum.FORUM_SORT,
             Forum.FORUM_IS_TOP,
@@ -120,6 +120,8 @@ public class ForumAdminController extends BaseController {
             Forum.FORUM_IS_RECOMAND,
             Forum.FORUM_AUDIT_STATUS
        );
+       
+       validateSecondResponse(Forum.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_TYPE);
 
         return renderJson(resultTotal, resultList);
     }
@@ -155,13 +157,12 @@ public class ForumAdminController extends BaseController {
 
         validateResponse(
                 Forum.FORUM_ID,
-                Forum.FORUM_MEDIA,
+                Forum.FORUM_MEDIA_FILE_PATH,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA,
-                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+                Forum.FORUM_BACKGROUND_MEDIA_LIST,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR,
+                Forum.FORUM_MODERATOR_MEMBER_ID,
                 Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,
@@ -170,6 +171,8 @@ public class ForumAdminController extends BaseController {
                 Forum.FORUM_IS_ACTIVE,
                 Forum.FORUM_IS_RECOMAND
         );
+        
+        validateSecondResponse(Forum.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_TYPE);
 
         return renderJson(result);
     }
@@ -181,7 +184,7 @@ public class ForumAdminController extends BaseController {
         validateRequest(
             body,
             Forum.APP_ID,
-            Forum.FORUM_MEDIA,
+            Forum.FORUM_MEDIA_FILE_PATH,
             Forum.FORUM_MEDIA_TYPE,
             Forum.FORUM_NAME,
             Forum.FORUM_DESCRIPTION,
@@ -194,9 +197,7 @@ public class ForumAdminController extends BaseController {
       );
 
       body.setForumMediaType(FileType.IMAGE.getKey());
-      body.setForumBackgroundMedia(body.getForumMedia());
-      body.setForumBackgroundMediaType(FileType.IMAGE.getKey());
-      body.setForumModerator(body.getSystemRequestUserId());
+      body.setForumModeratorMemberId(body.getSystemRequestUserId());
       body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
       body.setForumAuditContent("");
 
@@ -222,13 +223,12 @@ public class ForumAdminController extends BaseController {
                 body,
                 Forum.FORUM_ID,
                 Forum.APP_ID,
-                Forum.FORUM_MEDIA,
+                Forum.FORUM_MEDIA_FILE_PATH,
                 Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA,
-                Forum.FORUM_BACKGROUND_MEDIA_TYPE,
+                Forum.FORUM_BACKGROUND_MEDIA_LIST,
                 Forum.FORUM_NAME,
                 Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR,
+                Forum.FORUM_MODERATOR_MEMBER_ID,
                 Forum.FORUM_LOCATION,
                 Forum.FORUM_SORT,
                 Forum.FORUM_IS_TOP,

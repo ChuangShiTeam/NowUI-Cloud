@@ -1,9 +1,10 @@
 package com.nowui.cloud.member.member.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,6 @@ import com.nowui.cloud.member.member.service.MemberPreferenceLanguageService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.Util;
 
@@ -49,30 +49,30 @@ public class MemberServiceImpl extends SuperServiceImpl<MemberMapper, Member, Me
 
     @Override
     public Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
-        Integer count = count(
-                new BaseWrapper<Member>()
-                        .eq(Member.APP_ID, appId)
-                        .eqAllowEmpty(Member.MEMBER_IS_TOP, memberIsTop)
-                        .eqAllowEmpty(Member.MEMBER_IS_RECOMMED, memberIsRecommed)
-                        .eq(Member.SYSTEM_STATUS, true)
-        );
-        return count;
+        Criteria criteria = Criteria.where(MemberView.APP_ID).is(appId)
+                .and(MemberView.MEMBER_IS_TOP).is(memberIsTop)
+                .and(MemberView.MEMBER_IS_RECOMMED).is(memberIsRecommed)
+                .and(MemberView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        return count(query);
     }
 
     @Override
-    public List<Member> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
-        List<Member> memberList = list(
-                new BaseWrapper<Member>()
-                        .eq(Member.APP_ID, appId)
-                        .eqAllowEmpty(Member.MEMBER_IS_TOP, memberIsTop)
-                        .eqAllowEmpty(Member.MEMBER_IS_RECOMMED, memberIsRecommed)
-                        .eq(Member.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Member.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return memberList;
+    public List<MemberView> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(MemberView.APP_ID).is(appId)
+                .and(MemberView.MEMBER_IS_TOP).is(memberIsTop)
+                .and(MemberView.MEMBER_IS_RECOMMED).is(memberIsRecommed)
+                .and(MemberView.SYSTEM_STATUS).is(true);
+        
+        Query query = new Query(criteria);
+        
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, MemberView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
+        
+        return list(query, sort);
     }
 
     @Override

@@ -62,10 +62,33 @@ public class DateUtil {
         return calendar1.getTime();
 	}
 	
+	/**
+	 * 获取距今两个月前的时间点
+	 * 
+	 * @return Date 距今两个月前的时间点
+	 */
+	public static Date getTwoMonthAgoDateTime() {
+		Calendar curr = Calendar.getInstance();
+		curr.set(Calendar.MONTH, curr.get(Calendar.MONTH) - 2);
+		return curr.getTime();
+	}
+	
 	public static void main(String args[]) {
-	    Calendar calendar1 = Calendar.getInstance();
-        calendar1.add(Calendar.MINUTE, -10);
-        System.out.println(DateUtil.getDateTimeString(calendar1.getTime()));
+//	    Calendar calendar1 = Calendar.getInstance();
+//        calendar1.add(Calendar.MINUTE, -10);
+//        System.out.println(DateUtil.getDateTimeString(calendar1.getTime()));
+		
+//		Calendar date = Calendar.getInstance();
+//        Date d = new Date();
+//        date.setTime(d);
+//        int td = date.get(Calendar.DATE);
+//        date.set(Calendar.DATE, td+1);      
+//        System.out.println(date.getTime());
+		
+		Calendar curr = Calendar.getInstance();
+		curr.set(Calendar.MONTH, curr.get(Calendar.MONTH) + 2);
+		Date date = curr.getTime();
+		System.out.println(getDateTimeString(date));
 	}
 
 }

@@ -8,11 +8,16 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3030/eureka/
+      defaultZone: http://localhost:10000/eureka/
 zuul:
   routes:
     shop:
       path: /product/**
+      serviceId: module-shop
+      stripPrefix: false
+
+    supplier:
+      path: /supplier/**
       serviceId: module-shop
       stripPrefix: false
     app:
@@ -71,6 +76,10 @@ zuul:
       path: /topic/**
       serviceId: module-sns
       stripPrefix: false
+    sns:
+      path: /sns/**
+      serviceId: module-sns
+      stripPrefix: false
     wawi:
       path: /wawi/**
       serviceId: module-wawi
@@ -87,6 +96,7 @@ zuul:
       path: /patient/**
       serviceId: module-hospital
       stripPrefix: false
+
 
   okhttp:
     enabled: true # 使用okhttp方式请求，正常来说okhttp比较速度快一点

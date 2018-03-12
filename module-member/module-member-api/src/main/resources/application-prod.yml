@@ -1,5 +1,5 @@
 server:
-  port: 2050
+  port: 10060
 
 logging:
   level:
@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://118.31.229.16:3030/eureka/
+      defaultZone: http://118.31.229.16:10000/eureka/
 
 
 feign:
@@ -66,11 +66,11 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui
+      uri: mongodb://118.31.229.16/nowui_member
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_member
+      authentication-database: nowui_member
       username: user
       password: '123456'
 

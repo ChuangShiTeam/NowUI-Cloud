@@ -3,4 +3,5 @@ VOLUME /tmp
 ADD module-member-api-1.0.0.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
+ENV PRIVATE_KEY=ShengLiUnion2010
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]

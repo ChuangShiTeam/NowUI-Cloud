@@ -82,6 +82,10 @@ public class BaseController {
             getRequest().setAttribute(Constant.VERSION, version);
             jsonObject.remove(Constant.VERSION);
 
+            String systemRequestIpAddress = jsonObject.getString(Constant.SYSTEM_REQUEST_IP_ADDRESS);
+            getRequest().setAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS, systemRequestIpAddress);
+            jsonObject.remove(Constant.SYSTEM_REQUEST_IP_ADDRESS);
+
             requestBody = jsonObject.toJSONString();
 
             getRequest().setAttribute(Constant.REQUEST_BODY, requestBody);
@@ -90,6 +94,10 @@ public class BaseController {
         } else {
             return JSONObject.parseObject(getRequest().getAttribute(Constant.REQUEST_BODY).toString(), clazz);
         }
+    }
+    
+    protected String getIpAddress() {
+    	return getRequest().getAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS).toString();
     }
 
     private JSONObject checkFirstMap(Object data) {

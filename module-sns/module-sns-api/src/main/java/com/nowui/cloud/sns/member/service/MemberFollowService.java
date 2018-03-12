@@ -1,9 +1,9 @@
-package com.nowui.cloud.member.member.service;
+package com.nowui.cloud.sns.member.service;
 import java.util.List;
 
-import com.nowui.cloud.member.member.entity.MemberFollow;
-import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 /**
  * 会员关注业务接口
@@ -96,9 +96,36 @@ public interface MemberFollowService extends SuperService<MemberFollow,MemberFol
     /**
      * 根据用户编号和被关注用户编号查询会员关注
      * 
-     * @param userId
+     * @param userId 操作者用户编号
+     * @param befollowUserId 被关注者用户编号
      * @return MemberFollowView 会员关注视图信息
      */
-    MemberFollowView findByUserIdAndFollowUserId(String userId, String followUserId);
+    MemberFollowView findByUserIdAndBeFollowUserId(String userId, String beFollowUserId);
+    
+    /**
+     * 根据用户编号和被关注用户编号查询会员关注
+     * 
+     * @param memberId 操作者会员编号
+     * @param befollowMemberId 被关注者会员编号
+     * @return MemberFollowView 会员关注视图信息
+     */
+    MemberFollowView findByMemberIdAndBeFollowMemberId(String memberId, String beFollowMemberId);
 
+    /**
+     * 根据用户编号和被关注用户编号查询会员关注
+     * 
+     * @param userId 操作者用户编号
+     * @param befollowMemberId 被关注者会员编号
+     * @return MemberFollowView 会员关注视图信息
+     */
+    MemberFollowView findByUserIdAndBeFollowMemberId(String userId, String beFollowMemberId);
+
+    /**
+     * 根据用户编号和被关注用户编号查询会员关注
+     * 
+     * @param memberId 操作者会员编号
+     * @param beFollowUserId 被关注者会员编号
+     * @return MemberFollowView 会员关注视图信息
+     */
+    MemberFollowView findByMemberIdAndBeFollowUserId(String memberId, String beFollowUserId);
 }

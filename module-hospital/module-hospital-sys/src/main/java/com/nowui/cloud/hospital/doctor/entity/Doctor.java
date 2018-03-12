@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 /**
  * 医生
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 @Component
 
@@ -46,7 +46,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "医生姓名不能为空")
-    @Length(max = 200, message = "医生姓名长度超出限制")
+    @Length(max = 50, message = "医生姓名长度超出限制")
     private String doctorName;
     public static final String DOCTOR_NAME = "doctorName";
 
@@ -63,8 +63,6 @@ public class Doctor extends BaseEntity {
      * 医生年龄
      */
     @TableField
-    @NotNull(message = "医生年龄不能为空")
-    @Length(max = 4, message = "医生年龄长度超出限制")
     private Integer doctorAge;
     public static final String DOCTOR_AGE = "doctorAge";
 
@@ -73,7 +71,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "医生简介不能为空")
-    @Length(max = 255, message = "医生简介长度超出限制")
+    @Length(max = 200, message = "医生简介长度超出限制")
     private String doctorSummary;
     public static final String DOCTOR_SUMMARY = "doctorSummary";
 
@@ -82,7 +80,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "专业技能不能为空")
-    @Length(max = 255, message = "专业技能长度超出限制")
+    @Length(max = 200, message = "专业技能长度超出限制")
     private String doctorProfessional;
     public static final String DOCTOR_PROFESSIONAL = "doctorProfessional";
 
@@ -91,7 +89,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "单位名称不能为空")
-    @Length(max = 200, message = "单位名称长度超出限制")
+    @Length(max = 50, message = "单位名称长度超出限制")
     private String doctorOrganizationName;
     public static final String DOCTOR_ORGANIZATION_NAME = "doctorOrganizationName";
 
@@ -100,7 +98,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "部门名称不能为空")
-    @Length(max = 200, message = "部门名称长度超出限制")
+    @Length(max = 50, message = "部门名称长度超出限制")
     private String doctorDepartmentName;
     public static final String DOCTOR_DEPARTMENT_NAME = "doctorDepartmentName";
 
@@ -109,7 +107,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "擅长不能为空")
-    @Length(max = 255, message = "擅长长度超出限制")
+    @Length(max = 50, message = "擅长长度超出限制")
     private String doctorMaster;
     public static final String DOCTOR_MASTER = "doctorMaster";
 
@@ -118,16 +116,16 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "头像不能为空")
-    @Length(max = 255, message = "头像长度超出限制")
-    private String doctorImage;
-    public static final String DOCTOR_IMAGE = "doctorImage";
+    @Length(max = 32, message = "头像长度超出限制")
+    private String doctorImageId;
+    public static final String DOCTOR_IMAGE_ID = "doctorImageId";
 
     /**
      * 职称
      */
     @TableField
     @NotNull(message = "职称不能为空")
-    @Length(max = 255, message = "职称长度超出限制")
+    @Length(max = 200, message = "职称长度超出限制")
     private String doctorRank;
     public static final String DOCTOR_RANK = "doctorRank";
 
@@ -136,7 +134,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "状态不能为空")
-    @Length(max = 255, message = "状态长度超出限制")
+    @Length(max = 200, message = "状态长度超出限制")
     private String doctorStatus;
     public static final String DOCTOR_STATUS = "doctorStatus";
 
@@ -145,7 +143,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "证书不能为空")
-    @Length(max = 255, message = "证书长度超出限制")
+    @Length(max = 200, message = "证书长度超出限制")
     private String doctorCert;
     public static final String DOCTOR_CERT = "doctorCert";
 
@@ -154,7 +152,7 @@ public class Doctor extends BaseEntity {
      */
     @TableField
     @NotNull(message = "不能为空")
-    @Length(max = 255, message = "长度超出限制")
+    @Length(max = 32, message = "长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -239,12 +237,12 @@ public class Doctor extends BaseEntity {
         put(DOCTOR_MASTER, doctorMaster);
     }
 
-    public String getDoctorImage() {
-        return getString(DOCTOR_IMAGE);
+    public String getDoctorImageId() {
+        return getString(DOCTOR_IMAGE_ID);
     }
     
-    public void setDoctorImage(String doctorImage) {
-        put(DOCTOR_IMAGE, doctorImage);
+    public void setDoctorImageId(String doctorImageId) {
+        put(DOCTOR_IMAGE_ID, doctorImageId);
     }
 
     public String getDoctorRank() {

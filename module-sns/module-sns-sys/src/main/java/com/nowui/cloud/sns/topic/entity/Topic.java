@@ -53,6 +53,39 @@ public class Topic extends BaseEntity {
     @Length(max = 32, message = "用户编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
+    
+    /**
+     * 请求者的会员编号(用于查看别人的主页等类似接口)
+     */
+    @TableField(exist = false)
+    @NotNull(message = "请求者的会员编号不能为空")
+    @Length(max = 32, message = "请求者的会员编号长度超出限制")
+    private String requestMemberId;
+    public static final String REQUEST_MEMBER_ID = "requestMemberId";
+    
+    /**
+     * 发布动态的用户的昵称
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户的昵称不能为空")
+    private String userNickName;
+    public static final String USER_NICKNAME = "userNickName";
+    
+    /**
+     * 发布动态的用户头像
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户头像不能为空")
+    private String userAvatarFilePath;
+    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
+    
+    /**
+     * 发布动态的用户签名
+     */
+    @TableField(exist = false)
+    @NotNull(message = "发布动态的用户签名不能为空")
+    private String memberSignature;
+    public static final String MEMBER_SIGNATURE = "memberSignature";
 
     /**
      * 动态内容
@@ -151,40 +184,46 @@ public class Topic extends BaseEntity {
     private JSONObject topicForumList;
     public static final String TOPIC_FORUM_LIST = "topicForumList";
     
-    /**
-     * 发布动态相关信息
-     */
-    @TableField(exist = false)
-    @NotNull(message = "发布动态相关信息不能为空")
-    private JSONObject theSendInfo;
-    public static final String THE_SEND_INFO = "theSendInfo";
-    
     
     /**
      * 话题被收藏数
      */
+    @TableField(exist = false)
+    @NotNull(message = "话题被收藏数不能为空")
+    private Integer topicCountBookmark;
     public static final String TOPIC_COUNT_BOOKMARK = "topicCountBookmark";
+    
     /**
      * 话题被点赞数
      */
+    @TableField(exist = false)
+    @NotNull(message = "话题被点赞数不能为空")
+    private Integer topicCountLike;
     public static final String TOPIC_COUNT_LIKE = "topicCountLike";
+    
+    /**
+     * 话题被评论数
+     */
+    @TableField(exist = false)
+    @NotNull(message = "话题被评论数不能为空")
+    private Integer topicCountComment;
+    public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
+    
     /**
      * 给话题点赞的用户列表
      */
     public static final String TOPIC_USER_LIKE_LIST = "topicUserLikeList";
-    /**
-     * 话题被评论数
-     */
-    public static final String TOPIC_COUNT_COMMENT = "topicCountComment";
     
     /**
      * 话题评论列表
      */
     public static final String TOPIC_COMMENT_LIST = "topicCommentList";
+    
     /**
      * 话题是否被用户点赞
      */
     public static final String TOPIC_USER_IS_LIKE = "topicUserIsLike";
+    
     /**
      * 话题是否被用户收藏
      */
@@ -209,15 +248,16 @@ public class Topic extends BaseEntity {
      * 排除的话题Id列表
      */
     public static final String EXCLUDE_TOPIC_ID_LIST = "excludeTopicIdList";
+    
     /**
      * 话题评论查询第几页
      */
     public static final String COMMENT_PAGE_INDEX = "commentPageIndex";
+    
     /**
      * 话题评论查询多少条
      */
     public static final String COMMENT_PAGE_SIZE = "commentPageSize";
-    
     
     
     public String getTopicId() {
@@ -250,6 +290,13 @@ public class Topic extends BaseEntity {
     
     public void setMemberId(String memberId) {
         put(MEMBER_ID, memberId);
+    }
+    public String getRequestMemberId() {
+        return getString(REQUEST_MEMBER_ID);
+    }
+    
+    public void setRequestMemberId(String requestMemberId) {
+        put(REQUEST_MEMBER_ID, requestMemberId);
     }
 
     public String getLatitude() {
@@ -340,17 +387,52 @@ public class Topic extends BaseEntity {
         put(TOPIC_FORUM_LIST, topicForumList);
 	}
 	
-	public JSONObject getTheSendInfo() {
-        return getJSONObject(THE_SEND_INFO);
+	public String getUserAvatarFilePath() {
+        return getString(USER_AVATAR_FILE_PATH);
+    }
+    
+    public void setUserAvatarFilePath(String userAvatarFilePath) {
+        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+    }
+
+	public String getUserNickName() {
+		return getString(USER_NICKNAME);
 	}
 
-	public void setTheSendInfo(JSONObject theSendInfo) {
-        put(THE_SEND_INFO, theSendInfo);
+	public void setUserNickName(String userNickName) {
+		put(USER_NICKNAME, userNickName);
+	}
+
+	public String getMemberSignature() {
+		return getString(MEMBER_SIGNATURE);
+	}
+
+	public void setMemberSignature(String memberSignature) {
+		put(MEMBER_SIGNATURE, memberSignature);
+	}
+
+	public Integer getTopicCountBookmark() {
+		return getInteger(TOPIC_COUNT_BOOKMARK);
+	}
+
+	public void setTopicCountBookmark(Integer topicCountBookmark) {
+		put(TOPIC_COUNT_BOOKMARK, topicCountBookmark);
+	}
+
+	public Integer getTopicCountLike() {
+		return getInteger(TOPIC_COUNT_LIKE);
+	}
+
+	public void setTopicCountLike(Integer topicCountLike) {
+		put(TOPIC_COUNT_LIKE, topicCountLike);
+	}
+
+	public Integer getTopicCountComment() {
+		return getInteger(TOPIC_COUNT_COMMENT);
+	}
+
+	public void setTopicCountComment(Integer topicCountComment) {
+		put(TOPIC_COUNT_COMMENT, topicCountComment);
 	}
 	
-	
-    
-    
-
-
 }

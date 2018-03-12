@@ -51,13 +51,21 @@ public class TopicMedia extends BaseEntity {
     public static final String TOPIC_ID = "topicId";
 
     /**
-     * 多媒体
+     * 多媒体图片文件id
      */
     @TableField
-    @NotNull(message = "多媒体不能为空")
-    @Length(max = 25, message = "多媒体长度超出限制")
-    private String topicMedia;
-    public static final String TOPIC_MEDIA = "topicMedia";
+    @NotNull(message = "多媒体图片文件id不能为空")
+    @Length(max = 32, message = "多媒体图片文件id长度超出限制")
+    private String topicMediaFileId;
+    public static final String TOPIC_MEDIA_FILE_ID = "topicMediaFileId";
+    
+    /**
+     * 多媒体图片文件路径
+     */
+    @TableField(exist = false)
+    @NotNull(message = "多媒体图片文件路径不能为空")
+    private String topicMediaFilePath;
+    public static final String TOPIC_MEDIA_FILE_PATH = "topicMediaFilePath";
 
     /**
      * 多媒体类型
@@ -101,12 +109,20 @@ public class TopicMedia extends BaseEntity {
         put(TOPIC_ID, topicId);
     }
 
-    public String getTopicMedia() {
-        return getString(TOPIC_MEDIA);
+    public String getTopicMediaFileId() {
+        return getString(TOPIC_MEDIA_FILE_ID);
     }
     
-    public void setTopicMedia(String topicMedia) {
-        put(TOPIC_MEDIA, topicMedia);
+    public void setTopicMediaFileId(String topicMediaFileId) {
+        put(TOPIC_MEDIA_FILE_ID, topicMediaFileId);
+    }
+    
+    public String getTopicMediaFilePath() {
+        return getString(TOPIC_MEDIA_FILE_PATH);
+    }
+    
+    public void setTopicMediaFilePath(String topicMediaFilePath) {
+        put(TOPIC_MEDIA_FILE_PATH, topicMediaFilePath);
     }
 
     public String getTopicMediaType() {

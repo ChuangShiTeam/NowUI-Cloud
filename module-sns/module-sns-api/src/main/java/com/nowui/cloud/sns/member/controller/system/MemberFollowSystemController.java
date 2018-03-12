@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.controller.system;
+package com.nowui.cloud.sns.member.controller.system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.member.member.rpc.MemberFollowRpc;
-import com.nowui.cloud.member.member.service.MemberFollowService;
-import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.sns.member.rpc.MemberFollowRpc;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 import io.swagger.annotations.Api;
 

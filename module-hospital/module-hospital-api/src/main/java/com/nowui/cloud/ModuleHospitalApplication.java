@@ -1,4 +1,4 @@
-package com.nowui.cloud.hospital;
+package com.nowui.cloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

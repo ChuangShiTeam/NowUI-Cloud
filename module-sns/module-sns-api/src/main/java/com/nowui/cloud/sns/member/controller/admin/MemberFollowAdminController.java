@@ -1,10 +1,13 @@
-package com.nowui.cloud.member.member.controller.admin;
+package com.nowui.cloud.sns.member.controller.admin;
 
 import java.util.List;
 import java.util.Map;
 
 import com.nowui.cloud.member.member.router.MemberFollowRouter;
-import com.nowui.cloud.member.member.view.MemberFollowView;
+import com.nowui.cloud.sns.member.entity.MemberFollow;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.entity.MemberFollow;
-import com.nowui.cloud.member.member.service.MemberFollowService;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -35,7 +36,7 @@ public class MemberFollowAdminController extends BaseController {
     private MemberFollowService memberFollowService;
 
     @ApiOperation(value = "会员关注列表")
-    @RequestMapping(value = "/member/follow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -50,7 +51,7 @@ public class MemberFollowAdminController extends BaseController {
         List<MemberFollow> resultList = memberFollowService.listForAdmin(body.getAppId(), body.getMemberId(), body.getUserId(), body.getPageIndex(), body.getPageSize());
 
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 MemberFollow.FOLLOW_MEMBER_ID,
@@ -61,19 +62,19 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员关注信息")
-    @RequestMapping(value = "/member/follow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
                 MemberFollow.APP_ID,
-                MemberFollow.MEMBER_FOLLOW_ID
+                MemberFollow.SNS_MEMBER_FOLLOW_ID
         );
 
-        MemberFollowView result = memberFollowService.find(body.getMemberFollowId());
+        MemberFollowView result = memberFollowService.find(body.getSnsMemberFollowId());
 //        MemberFollow result = memberFollowService.find(body.getMemberFollowId());
 
         validateResponse(
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
                 MemberFollow.FOLLOW_MEMBER_ID,
@@ -84,7 +85,7 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
@@ -108,11 +109,11 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.APP_ID,
                 MemberFollow.MEMBER_ID,
                 MemberFollow.USER_ID,
@@ -121,7 +122,7 @@ public class MemberFollowAdminController extends BaseController {
                 MemberFollow.SYSTEM_VERSION
         );
 
-        MemberFollow result = memberFollowService.update(body, body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberFollow result = memberFollowService.update(body, body.getSnsMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         Boolean success = false;
 
@@ -134,16 +135,16 @@ public class MemberFollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员关注")
-    @RequestMapping(value = "/member/follow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sns/member/follow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberFollow body) {
         validateRequest(
                 body,
-                MemberFollow.MEMBER_FOLLOW_ID,
+                MemberFollow.SNS_MEMBER_FOLLOW_ID,
                 MemberFollow.APP_ID,
                 MemberFollow.SYSTEM_VERSION
         );
 
-        MemberFollow result = memberFollowService.delete(body.getMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
+        MemberFollow result = memberFollowService.delete(body.getSnsMemberFollowId(), body.getSystemRequestUserId(), body.getSystemVersion());
 
         Boolean success = false;
 

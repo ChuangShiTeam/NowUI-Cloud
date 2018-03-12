@@ -1,5 +1,5 @@
 server:
-  port: 2080
+  port: 10020
 
 logging:
   level:
@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:3030/eureka/
+      defaultZone: http://localhost:10000/eureka/
 
 feign:
   hystrix:
@@ -56,7 +56,11 @@ spring:
     database: 0
     password:
   rabbitmq:
-    host: 118.31.229.16
+#    host: 118.31.229.16
+#    port: 5673
+#    username: guest
+#    password: guest
+    host: 127.0.0.1
     port: 5672
     username: guest
     password: guest
@@ -65,11 +69,11 @@ spring:
     #  cluster-name: elasticsearch
     #  cluster-nodes: 118.31.229.16:9300
     mongodb:
-      uri: mongodb://118.31.229.16/nowui
+      uri: mongodb://118.31.229.16/nowui_cms
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_cms
+      authentication-database: nowui_cms
       username: user
       password: '123456'
 

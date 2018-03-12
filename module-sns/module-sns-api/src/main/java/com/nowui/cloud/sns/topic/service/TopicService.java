@@ -107,7 +107,6 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      */
     TopicView findDetailByTopicIdAndMemberId(String topicId, String memberId);
 
-
     /**
      * 根据userId的list集合使用in方法统计所有话题信息数量
      * (根据我关注的人的用户编号的list 统计话题数量)
@@ -187,8 +186,6 @@ public interface TopicService extends SuperService<Topic, TopicView> {
      */
     List<TopicView> listDetailByTopicIdList(String memberId, List<String> topicIdList);
     
-    
-    
     /**
      * 根据话题编号删除话题相关信息
      * 
@@ -211,18 +208,20 @@ public interface TopicService extends SuperService<Topic, TopicView> {
     Boolean saveWithRedis(Topic entity, String id, String systemCreateUserId);
     
     /**
-     * 全部人的动态
-     * 
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * 热门动态
+     * @param excludeTopicIdList 被排除的动态id(也就是已经查看过的)
+     * @param systemCreateTime 最后一次查询的最后一个动态的创建时间
+     * @param pageIndex 从第几页开始
+     * @param pageSize 查多少列
+     * @return List<TopicView>
      */
-    List<TopicView> allUserTopic(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
+    List<TopicView> hotTopicList(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize);
     
     /**
      * 全部人的动态数量
      * 
      */
     Integer countAllUserTopic();
+    
     
 }

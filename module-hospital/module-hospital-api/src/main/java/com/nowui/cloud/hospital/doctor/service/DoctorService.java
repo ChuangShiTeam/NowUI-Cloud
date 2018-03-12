@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * 医生业务接口
  *
- * @author ZhongYongQiangZ
+ * @author WangZhiCai
  *
- * 2018-03-01
+ * 2018-03-08
  */
 public interface DoctorService extends SuperService<Doctor, DoctorView> {
 

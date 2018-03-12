@@ -1,4 +1,4 @@
-package com.nowui.cloud.member.member.listener;
+package com.nowui.cloud.sns.member.listener;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.router.UserNickNameRouter;
 import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.member.member.service.MemberFollowService;
-import com.nowui.cloud.member.member.view.MemberFollowView;
 import com.nowui.cloud.rabbit.RabbitListener;
+import com.nowui.cloud.sns.member.service.MemberFollowService;
+import com.nowui.cloud.sns.member.view.MemberFollowView;
 
 /**
  * 会员关注用户昵称消息队列

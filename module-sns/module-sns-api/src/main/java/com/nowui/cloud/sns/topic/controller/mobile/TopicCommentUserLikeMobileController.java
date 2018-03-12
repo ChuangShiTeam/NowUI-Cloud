@@ -3,30 +3,21 @@ package com.nowui.cloud.sns.topic.controller.mobile;
 import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.rpc.MemberRpc;
-import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserUnlike;
-import com.nowui.cloud.sns.topic.router.TopicCommentUserLikeRouter;
-import com.nowui.cloud.sns.topic.service.TopicCommentService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserLikeService;
 import com.nowui.cloud.sns.topic.service.TopicCommentUserUnlikeService;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserUnlikeView;
-import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,12 +50,12 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         validateRequest(
         		body,
                 TopicCommentUserLike.APP_ID,
-                TopicCommentUserLike.COMMENT_ID
+                TopicCommentUserLike.COMMENT_ID,
+                TopicCommentUserLike.MEMBER_ID
         );
         String commentId = body.getCommentId();
         String requestUserId = body.getSystemRequestUserId();
-        MemberView member = memberRpc.findByUserIdV1(requestUserId);
-        String memberId = member.getMemberId();
+        String memberId = body.getMemberId();
         
         String appId = body.getAppId();
         
@@ -77,7 +68,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         
         // 没有: 就去评论点赞表插入一条记录
         // TODO 没有处理点赞数
-        TopicCommentUserLike result = topicCommentUserLikeService.saveWithRedis(appId, commentId, memberId, requestUserId);
+        TopicCommentUserLike result = topicCommentUserLikeService.save(appId, commentId, memberId, requestUserId);
         
         //并且删除取消点赞表的记录
         Boolean success = false;
@@ -86,9 +77,8 @@ public class TopicCommentUserLikeMobileController extends BaseController {
         	
         	TopicCommentUserUnlike commentUserUnlike = topicCommentUserUnlikeService.deleteByCommentIdAndMemberId(commentId, appId, memberId, requestUserId);
     		
-        	/**
-        	 * 向MongoDB中保存数据
-        	 */
+        	// 向MongoDB中保存数据
+        	
         	if (commentUserUnlike != null) {
 				// 删除MongoDB中的取消点赞记录
         		TopicCommentUserUnlikeView userUnlikeView = JSON.parseObject(commentUserUnlike.toJSONString(), TopicCommentUserUnlikeView.class);
