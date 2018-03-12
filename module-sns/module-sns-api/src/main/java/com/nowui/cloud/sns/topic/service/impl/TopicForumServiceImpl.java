@@ -81,9 +81,9 @@ public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, To
 	@Override
 	public Integer countTodayByForumId(String forumId) {
 		Date todayStartDateTime = DateUtil.getTodayStartDateTime();
-		long todayStartTime = todayStartDateTime.getTime();
+//		long todayStartTime = todayStartDateTime.getTime();
 		Criteria criteria = Criteria.where(TopicForumView.FORUM_ID).is(forumId)
-			    .and(TopicForumView.SYSTEM_CREATE_TIME).gte(todayStartTime)
+			    .and(TopicForumView.SYSTEM_CREATE_TIME).gte(todayStartDateTime)
                 .and(TopicForumView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
