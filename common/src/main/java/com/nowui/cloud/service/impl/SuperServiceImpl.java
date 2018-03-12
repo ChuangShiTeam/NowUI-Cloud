@@ -1,10 +1,12 @@
 package com.nowui.cloud.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.mongodb.client.result.UpdateResult;
+import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.mapper.BaseMapper;
 import com.nowui.cloud.mongodb.BasePageable;
@@ -21,15 +23,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.redis.core.RedisTemplate;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
  * SuperService
  *
  * @author ZhongYongQiang
- *
+ * <p>
  * 2018-01-29
  */
 public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R extends BaseRepository<V>, V extends BaseView> extends ServiceImpl<M, E> implements SuperService<E, V> {
@@ -55,13 +58,13 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     @Autowired
     protected MongoTemplate mongoTemplate;
 
-    protected String getItemCacheName(String id) {
-        return entity.getTableName() + "_item_" + id;
-    }
+//    protected String getItemCacheName(String id) {
+//        return entity.getTableName() + "_item_" + id;
+//    }
 
-    protected String getItemCacheName(String tableName, String id) {
-        return tableName + "_item_" + id;
-    }
+//    protected String getItemCacheName(String tableName, String id) {
+//        return tableName + "_item_" + id;
+//    }
 
     @Override
     public Integer count(Query query) {
@@ -82,7 +85,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         return resultList;
     }
-    
+
     @Override
     public List<V> list(Query query, Sort sort) {
         query.with(sort);
@@ -108,22 +111,14 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public List<E> list(@Param("ew") Wrapper<E> var1, Integer m, Integer n) {
-        List<E> list = mapper.selectPage(new Page<E>(m, n), var1.setSqlSelect(entity.getTableId()));
-
-        for (E baseEntity : list) {
-            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
-        }
+        List<E> list = mapper.selectPage(new Page<E>(m, n), var1);
 
         return list;
     }
 
     @Override
     public List<E> list(@Param("ew") Wrapper<E> var1) {
-        List<E> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
-
-        for (E baseEntity : list) {
-            baseEntity.putAll(findByMysql(baseEntity.getString(entity.getTableId())));
-        }
+        List<E> list = mapper.selectList(var1);
 
         return list;
     }
@@ -137,11 +132,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E find(@Param("ew") Wrapper<E> var1) {
-        List<E> list = mapper.selectList(var1.setSqlSelect(entity.getTableId()));
-
-        for (E baseEntity : list) {
-            baseEntity.putAll(find(baseEntity.getString(entity.getTableId())));
-        }
+        List<E> list = mapper.selectList(var1.setSqlSelect(entity.tableId()));
 
         if (list == null || list.size() == 0) {
             return null;
@@ -159,18 +150,30 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         }
         return resultList.get(0);
     }
-    
+
     @Override
     public V find(String id) {
         if (Util.isNullOrEmpty(id)) {
             return null;
         }
 
-        if (Util.isNullOrEmpty(view.getTableId())) {
+        Criteria criteria = Criteria.where(view.tableId()).is(id);
+        Query query = new Query();
+        query.addCriteria(criteria);
+
+        V result = (V) mongoTemplate.findOne(query, view.getClass());
+
+        return result;
+    }
+
+    @Override
+    public V find(String id, String appId) {
+        if (Util.isNullOrEmpty(id)) {
             return null;
         }
 
-        Criteria criteria = Criteria.where(view.getTableId()).is(id);
+        Criteria criteria = Criteria.where(view.tableId()).is(id)
+                .and(Constant.APP_ID).is(appId);
         Query query = new Query();
         query.addCriteria(criteria);
 
@@ -187,7 +190,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         List<E> list = mapper.selectList(
                 new EntityWrapper<E>()
-                        .eq(entity.getTableId(), id)
+                        .eq(entity.tableId(), id)
         );
 
         if (list.size() == 0) {
@@ -205,8 +208,8 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         List<E> list = mapper.selectList(
                 new EntityWrapper<E>()
-                        .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_STATUS, systemStatus)
+                        .eq(entity.tableId(), id)
+                        .eq(Constant.SYSTEM_STATUS, systemStatus)
         );
 
         if (list.size() == 0) {
@@ -218,7 +221,6 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean save(V view) {
-//        mongoTemplate.insert(view);
         mongoTemplate.save(view);
 
         return true;
@@ -233,7 +235,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
 //    @Override
 //    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
-//        baseEntity.put(entity.getTableId(), id);
+//        baseEntity.put(entity.tableId(), id);
 //        baseEntity.setSystemCreateUserId(systemCreateUserId);
 //        baseEntity.setSystemCreateTime(new Date());
 //        baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -252,7 +254,19 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E save(E baseEntity, String id, String systemCreateUserId) {
-        baseEntity.put(baseEntity.getTableId(), id);
+        try {
+            String method = "set" + baseEntity.tableId().substring(0, 1).toUpperCase() + baseEntity.tableId().substring(1);
+            Method setId = baseEntity.getClass().getMethod(method, String.class);
+            setId.invoke(baseEntity, id);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+//        baseEntity.put(baseEntity.tableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -262,7 +276,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         Boolean success = mapper.insert(baseEntity) != 0;
 
-        if(success) {
+        if (success) {
             return baseEntity;
         } else {
             return null;
@@ -286,7 +300,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
         Boolean success = insertBatch(list);
 
-        if(success) {
+        if (success) {
             return list;
         } else {
             return null;
@@ -295,7 +309,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
 //    @Override
 //    public Boolean save(E baseEntity, String id, String appId, String routing, String systemCreateUserId) {
-//        baseEntity.put(entity.getTableId(), id);
+//        baseEntity.put(entity.tableId(), id);
 //        baseEntity.setSystemCreateUserId(systemCreateUserId);
 //        baseEntity.setSystemCreateTime(new Date());
 //        baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -311,18 +325,22 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //
 //        return success;
 //    }
-    
+
     @Override
-    public Boolean saveOrUpdate(V view) {
-        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
+    public Boolean saveOrUpdate(V view, String id) {
+        Criteria criteria = Criteria.where(view.tableId()).is(id);
         Query query = new Query(criteria);
         Update update = new Update();
 
-        Iterator<Map.Entry<String, Object>> iterator = view.getInnerMap().entrySet().iterator();
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(view);
+
+        Iterator<Map.Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
 
-            update.set(entry.getKey(), entry.getValue());
+            if (!Util.isNullOrEmpty(entry.getValue())) {
+                update.set(entry.getKey(), entry.getValue());
+            }
         }
 
         UpdateResult updateResult = mongoTemplate.upsert(query, update, view.getClass());
@@ -331,16 +349,20 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
     }
 
     @Override
-    public Boolean update(V view) {
-        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
+    public Boolean update(V view, String id) {
+        Criteria criteria = Criteria.where(view.tableId()).is(id);
         Query query = new Query(criteria);
         Update update = new Update();
 
-        Iterator<Map.Entry<String, Object>> iterator = view.getInnerMap().entrySet().iterator();
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(view);
+
+        Iterator<Map.Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
 
-            update.set(entry.getKey(), entry.getValue());
+            if (!Util.isNullOrEmpty(entry.getValue())) {
+                update.set(entry.getKey(), entry.getValue());
+            }
         }
 
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, view.getClass());
@@ -350,19 +372,32 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public Boolean update(E baseEntity, String id, String systemUpdateUserId) {
-        baseEntity.put(baseEntity.getTableId(), id);
+        try {
+            String method = "set" + baseEntity.tableId().substring(0, 1).toUpperCase() + baseEntity.tableId().substring(1);
+            Method setId = baseEntity.getClass().getMethod(method, String.class);
+            setId.invoke(baseEntity, id);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+
+//        baseEntity.put(baseEntity.tableId(), id);
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
 
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<E>()
-                        .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_STATUS, true)
+                        .eq(entity.tableId(), id)
+                        .eq(Constant.SYSTEM_STATUS, true)
         ) != 0;
 
         if (success) {
-            replace(id);
+
         }
 
         return success;
@@ -370,7 +405,19 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
-        baseEntity.put(baseEntity.getTableId(), id);
+        try {
+            String method = "set" + baseEntity.tableId().substring(0, 1).toUpperCase() + baseEntity.tableId().substring(1);
+            Method setId = baseEntity.getClass().getMethod(method, String.class);
+            setId.invoke(baseEntity, id);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+//        baseEntity.put(baseEntity.tableId(), id);
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
@@ -378,42 +425,44 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<E>()
-                        .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
-                        .eq(BaseEntity.SYSTEM_STATUS, true)
+                        .eq(entity.tableId(), id)
+                        .eq(Constant.SYSTEM_VERSION, systemVersion)
+                        .eq(Constant.SYSTEM_STATUS, true)
         ) != 0;
 
-        if(success) {
+        if (success) {
             return baseEntity;
         } else {
             return null;
         }
     }
 
-	@Override
-	public E update(E entity, Wrapper<E> var1, String systemUpdateUserId) {
-		entity.setSystemUpdateUserId(systemUpdateUserId);
-		entity.setSystemUpdateTime(new Date());
+    @Override
+    public E update(E entity, Wrapper<E> var1, String systemUpdateUserId) {
+        entity.setSystemUpdateUserId(systemUpdateUserId);
+        entity.setSystemUpdateTime(new Date());
 
         Boolean success = mapper.update(
-        		entity,
-        		var1
+                entity,
+                var1
         ) != 0;
 
-        if(success) {
+        if (success) {
             return entity;
         } else {
             return null;
         }
-	}
+    }
 
     @Override
-    public Boolean delete(V view) {
-        Criteria criteria = Criteria.where(view.getTableId()).is(view.get(view.getTableId()));
+    public Boolean delete(V view, String id) {
+        Criteria criteria = Criteria.where(view.tableId()).is(id);
         Query query = new Query(criteria);
         Update update = new Update();
 
-        Iterator<Map.Entry<String, Object>> iterator = view.getInnerMap().entrySet().iterator();
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(view);
+
+        Iterator<Map.Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
 
@@ -434,7 +483,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //        Boolean success = mapper.update(
 //                baseEntity,
 //                new EntityWrapper<E>()
-//                        .eq(entity.getTableId(), id)
+//                        .eq(entity.tableId(), id)
 //                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
 //                        .eq(BaseEntity.SYSTEM_STATUS, true)
 //        ) != 0;
@@ -447,7 +496,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //    }
 
     private void redisSaveOrUpdate(E baseEntity, String id) {
-        baseEntity.keepTableFieldValue();
+//        baseEntity.keepTableFieldValue();
 
 //        redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
     }
@@ -462,7 +511,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //        Boolean success = mapper.update(
 //                entity,
 //                new EntityWrapper<E>()
-//                        .eq(entity.getTableId(), id)
+//                        .eq(entity.tableId(), id)
 //                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
 //                        .eq(BaseEntity.SYSTEM_STATUS, true)
 //        ) != 0;
@@ -483,7 +532,7 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 //        Boolean success = mapper.update(
 //                entity,
 //                new EntityWrapper<E>()
-//                        .eq(entity.getTableId(), id)
+//                        .eq(entity.tableId(), id)
 //                        .eq(BaseEntity.SYSTEM_STATUS, true)
 //        ) != 0;
 //
@@ -496,7 +545,19 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
 
     @Override
     public E delete(String id, String systemUpdateUserId, Integer systemVersion) {
-        entity.put(entity.getTableId(), id);
+        try {
+            String name = "set" + entity.tableId().substring(0, 1).toUpperCase() + entity.tableId().substring(1);
+            Method method = entity.getClass().getMethod(name, String.class);
+            method.invoke(entity, id);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+//        entity.put(entity.tableId(), id);
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
         entity.setSystemVersion(systemVersion + 1);
@@ -505,12 +566,12 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
         Boolean success = mapper.update(
                 entity,
                 new EntityWrapper<E>()
-                        .eq(entity.getTableId(), id)
-                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
-                        .eq(BaseEntity.SYSTEM_STATUS, true)
+                        .eq(entity.tableId(), id)
+                        .eq(Constant.SYSTEM_VERSION, systemVersion)
+                        .eq(Constant.SYSTEM_STATUS, true)
         ) != 0;
 
-        if(success) {
+        if (success) {
             return entity;
         } else {
             return null;
@@ -528,85 +589,11 @@ public class SuperServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R e
                 var1
         ) != 0;
 
-        if(success) {
+        if (success) {
             return entity;
         } else {
             return null;
         }
     }
-
-    @Override
-    public void replace(String id) {
-//        redisTemplate.delete(getItemCacheName(id));
-
-        E baseEntity = mapper.selectById(id);
-
-        redisSaveOrUpdate(baseEntity, id);
-    }
-
-    /**
-     * redis获取key下的所有列表
-     *
-     * @param key 键值
-     * @return List<E> 列表数据
-     */
-//    public <E> List<E> lrange(String key) {
-//        return (List<E>) redisTemplate.opsForList().range(key, 0, -1);
-//    }
-
-    /**
-     * redis获取key下的所有列表
-     *
-     * @param key
-     * @return List<Map> 列表数据
-     */
-//    public <Map> List<Map> lrangeToMap(String key) {
-//        return (List<Map>) redisTemplate.opsForList().range(key, 0, -1);
-//    }
-
-    /**
-     * redis获取key下的分页列表
-     *
-     * @param key 键值
-     * @return List<E> 列表数据
-     */
-//    public <E> List<E> lrange(String key, Integer pageIndex, Integer pageSize) {
-//        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
-//            return new ArrayList<E>();
-//        }
-//
-//        int start = pageIndex - 1;
-//        int end = (pageIndex * pageSize) - 1;
-//
-//        return (List<E>) redisTemplate.opsForList().range(key, start, end);
-//    }
-
-    /**
-     * redis获取key下的分页列表
-     *
-     * @param key
-     * @return List<Map> 列表数据
-     */
-//    public <Map> List<Map> lrangeToMap(String key, Integer pageIndex, Integer pageSize) {
-//        if (pageIndex == null || pageIndex <= 0 || pageSize == null || pageSize <= 0) {
-//            return new ArrayList<Map>();
-//        }
-//
-//        int start = pageIndex - 1;
-//        int end = (pageIndex * pageSize) - 1;
-//
-//        return (List<Map>) redisTemplate.opsForList().range(key, start, end);
-//    }
-
-    /**
-     * redis获取key下列表的大小
-     *
-     * @param key 键值
-     * @return int 列表大小
-     */
-//    public int lsize(final String key) {
-//        long size = redisTemplate.opsForList().size(key);
-//        return (int) size;
-//    }
 
 }

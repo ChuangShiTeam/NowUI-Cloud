@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 产品
@@ -24,84 +21,70 @@ public class Product extends BaseEntity {
      * 商品编号
      */
     @TableId
-    @NotNull(message = "商品编号不能为空")
-    @Length(max = 32, message = "商品编号长度超出限制")
+    @TableField
     private String productId;
-    public static final String PRODUCT_ID = "productId";
 
     /**
      * 应用编号
      */
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
+    @TableField
     private String appId;
-    public static final String APP_ID = "appId";
 
     /**
      * 商品名称
      */
     @TableField
-    @NotNull(message = "商品名称不能为空")
-    @Length(max = 100, message = "商品名称长度超出限制")
     private String productName;
-    public static final String PRODUCT_NAME = "productName";
 
     /**
      * 商品分类
      */
     @TableField
-    @NotNull(message = "商品分类编号不能为空")
-    @Length(max = 32, message = "商品分类编号长度超出限制")
     private String productCategoryId;
-    public static final String PRODUCT_CATEGORY_ID = "productCategoryId";
 
     /**
      * 商品图片
      */
     @TableField
-    @NotNull(message = "商品图片编号不能为空")
-    @Length(max = 32, message = "商品图片编号长度超出限制")
-    private String productImageId;
-    public static final String PRODUCT_IMAGE_ID = "productImageId";
+    private String productImageFileId;
 
     public String getProductId() {
-        return getString(PRODUCT_ID);
+        return productId;
     }
 
     public void setProductId(String productId) {
-        put(PRODUCT_ID, productId);
+        this.productId = productId;
     }
 
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
 
     public String getProductName() {
-        return getString(PRODUCT_NAME);
+        return productName;
     }
 
     public void setProductName(String productName) {
-        put(PRODUCT_NAME, productName);
+        this.productName = productName;
     }
 
     public String getProductCategoryId() {
-        return getString(PRODUCT_CATEGORY_ID);
+        return productCategoryId;
     }
 
     public void setProductCategoryId(String productCategoryId) {
-        put(PRODUCT_CATEGORY_ID, productCategoryId);
+        this.productCategoryId = productCategoryId;
     }
 
-    public String getProductImageId() {
-        return getString(PRODUCT_IMAGE_ID);
+    public String getProductImageFileId() {
+        return productImageFileId;
     }
 
-    public void setProductImageId(String productImageId) {
-        put(PRODUCT_IMAGE_ID, productImageId);
+    public void setProductImageFileId(String productImageFileId) {
+        this.productImageFileId = productImageFileId;
     }
-
 }

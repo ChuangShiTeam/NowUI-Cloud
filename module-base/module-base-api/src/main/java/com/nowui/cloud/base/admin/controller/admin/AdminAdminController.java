@@ -3,6 +3,7 @@ package com.nowui.cloud.base.admin.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import com.nowui.cloud.base.user.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,7 @@ import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.UserAccount;
-import com.nowui.cloud.base.user.entity.UserEmail;
-import com.nowui.cloud.base.user.entity.UserMobile;
-import com.nowui.cloud.base.user.entity.UserNickName;
 import com.nowui.cloud.base.user.entity.enums.UserType;
-import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 
@@ -42,17 +39,17 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "管理员列表")
     @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        User userEntity = getEntry(User.class);
+        UserView userEntityView = getEntry(UserView.class);
 
         validateRequest(
-                userEntity,
-                User.APP_ID,
-                User.PAGE_INDEX,
-                User.PAGE_SIZE
+                userEntityView,
+                UserView.APP_ID,
+                UserView.PAGE_INDEX,
+                UserView.PAGE_SIZE
         );
 
-        Integer resultTotal = adminService.countForAdmin(userEntity.getAppId());
-        List<AdminView> resultList = adminService.listForAdmin(userEntity.getAppId(), userEntity.getPageIndex(), userEntity.getPageSize());
+        Integer resultTotal = adminService.countForAdmin(userEntityView.getAppId());
+        List<AdminView> resultList = adminService.listForAdmin(userEntityView.getAppId(), userEntityView.getPageIndex(), userEntityView.getPageSize());
 
         validateResponse(
                 AdminView.ADMIN_ID,
@@ -71,15 +68,15 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "管理员信息")
     @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        AdminView adminEntity = getEntry(AdminView.class);
+        AdminView adminEntityView = getEntry(AdminView.class);
 
         validateRequest(
-                adminEntity,
+                adminEntityView,
                 AdminView.APP_ID,
                 AdminView.ADMIN_ID
         );
 
-        AdminView result = adminService.find(adminEntity.getAdminId());
+        AdminView result = adminService.find(adminEntityView.getAdminId());
 
         validateResponse(
                 AdminView.ADMIN_ID,
@@ -98,137 +95,141 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "新增管理员")
     @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
-        User userEntity = getEntry(User.class);
+        UserView userEntityView = getEntry(UserView.class);
 
         validateRequest(
-                userEntity,
-                User.APP_ID
+                userEntityView,
+                UserView.APP_ID
         );
 
         //验证用户账号
-        UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
+        UserAccountView userAccountEntityView = getEntry(UserAccountView.class);
         validateRequest(
-                userAccountEntity,
-                UserAccount.USER_ACCOUNT
+                userAccountEntityView,
+                UserAccountView.USER_ACCOUNT
         );
 
         //验证用户昵称
-        UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
+        UserNickNameView userNickNameEntityView = getEntry(UserNickNameView.class);
         validateRequest(
-                userNickNameEntity,
-                UserNickName.USER_NICK_NAME
+                userNickNameEntityView,
+                UserNickNameView.USER_NICK_NAME
         );
 
         //验证用户邮箱
-        UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
+        UserEmailView userEmailEntityView = getEntry(UserEmailView.class);
         validateRequest(
-                userEmailEntity,
-                UserEmail.USER_EMAIL
+                userEmailEntityView,
+                UserEmailView.USER_EMAIL
         );
 
         //验证用户手机
-        UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
+        UserMobileView userMobileEntityView = getEntry(UserMobileView.class);
         validateRequest(
-                userMobileEntity,
-                UserMobile.USER_MOBILE
+                userMobileEntityView,
+                UserMobileView.USER_MOBILE
         );
 
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
 
-        userEntity.setUserId(userId);
-        userEntity.setUserType(UserType.ADMIN.getKey());
-        userEntity.setObjectId(adminId);
+        User user = getEntry(User.class);
 
-        Admin admin = new Admin();
+        user.setUserId(userId);
+        user.setUserType(UserType.ADMIN.getKey());
+        user.setObjectId(adminId);
+
+        Admin admin = getEntry(Admin.class);
         admin.setUserId(userId);
-        admin.setAppId(userEntity.getAppId());
+        admin.setAppId(user.getAppId());
 
-        Boolean success = true;
+        Admin result = adminService.save(admin, admin.getAdminId(), admin.getSystemRequestUserId());
 
-        return renderJson(success);
+        if (result != null) {
+
+        }
+
+        return renderJson(true);
     }
 
     @ApiOperation(value = "修改管理员")
     @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
-        User userEntity = getEntry(User.class);
+        UserView userEntityView = getEntry(UserView.class);
 
         validateRequest(
-                userEntity,
-                User.APP_ID,
-                User.USER_ID,
-                User.SYSTEM_VERSION
+                userEntityView,
+                UserView.APP_ID,
+                UserView.USER_ID,
+                UserView.SYSTEM_VERSION
         );
 
-        Admin adminEntity = getEntry(Admin.class);
+        AdminView adminEntityView = getEntry(AdminView.class);
         validateRequest(
-                adminEntity,
-                Admin.ADMIN_ID,
-                Admin.APP_ID,
-                Admin.SYSTEM_VERSION
+                adminEntityView,
+                AdminView.ADMIN_ID,
+                AdminView.APP_ID,
+                AdminView.SYSTEM_VERSION
         );
 
         //验证用户账号
-        UserAccount userAccountEntity = getEntry(UserAccount.class).keepTableFieldValue();
+        UserAccountView userAccountEntity = getEntry(UserAccountView.class);
         validateRequest(
                 userAccountEntity,
                 UserAccount.USER_ACCOUNT
         );
 
         //验证用户昵称
-        UserNickName userNickNameEntity = getEntry(UserNickName.class).keepTableFieldValue();
+        UserNickNameView userNickNameEntityView = getEntry(UserNickNameView.class);
         validateRequest(
-                userNickNameEntity,
-                UserNickName.USER_NICK_NAME
+                userNickNameEntityView,
+                UserNickNameView.USER_NICK_NAME
         );
 
         //验证用户邮箱
-        UserEmail userEmailEntity = getEntry(UserEmail.class).keepTableFieldValue();
+        UserEmailView userEmailEntityView = getEntry(UserEmailView.class);
         validateRequest(
-                userEmailEntity,
-                UserEmail.USER_EMAIL
+                userEmailEntityView,
+                UserEmailView.USER_EMAIL
         );
 
         //验证用户手机
-        UserMobile userMobileEntity = getEntry(UserMobile.class).keepTableFieldValue();
+        UserMobileView userMobileEntityView = getEntry(UserMobileView.class);
         validateRequest(
-                userMobileEntity,
-                UserMobile.USER_MOBILE
+                userMobileEntityView,
+                UserMobileView.USER_MOBILE
         );
 
-        Admin result = adminService.update(adminEntity, adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
+        Admin admin = getEntry(Admin.class);
 
-        Boolean success = false;
+        Admin result = adminService.update(admin, admin.getAdminId(), admin.getSystemRequestUserId(), admin.getSystemVersion());
 
         if (result != null) {
-            success = true;
+
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "删除管理员")
     @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
-        Admin adminEntity = getEntry(Admin.class);
+        AdminView adminEntityView = getEntry(AdminView.class);
 
         validateRequest(
-                adminEntity,
-                Admin.ADMIN_ID,
-                Admin.APP_ID,
-                Admin.SYSTEM_VERSION
+                adminEntityView,
+                AdminView.ADMIN_ID,
+                AdminView.APP_ID,
+                AdminView.SYSTEM_VERSION
         );
 
-        Admin result = adminService.delete(adminEntity.getAdminId(), adminEntity.getSystemRequestUserId(), adminEntity.getSystemVersion());
-
-        Boolean success = false;
+        Admin result = adminService.delete(adminEntityView.getAdminId(), adminEntityView.getSystemRequestUserId(), adminEntityView.getSystemVersion());
 
         if (result != null) {
-            success = true;
+
         }
 
-        return renderJson(success);
+        return renderJson(true);
     }
 
     @ApiOperation(value = "管理员数据同步")

@@ -4,6 +4,8 @@ import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,7 @@ public class AdminView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "管理员编号不能为空")
+    @Length(max = 32, message = "管理员编号长度超出限制")
     private String adminId;
     public static final String ADMIN_ID = "adminId";
 
@@ -33,6 +36,7 @@ public class AdminView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -41,6 +45,7 @@ public class AdminView extends BaseView {
      */
     @Field
     @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 

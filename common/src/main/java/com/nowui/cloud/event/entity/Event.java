@@ -27,69 +27,55 @@ public class Event extends BaseEntity {
      */
     @Id
     @TableId
-    @NotNull(message = "事件编号不能为空")
-    @Length(max = 32, message = "事件编号长度超出限制")
     private String eventId;
-    public static final String EVENT_ID = "eventId";
 
     /**
      * 应用编号
      */
     @TableField
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
-    public static final String APP_ID = "appId";
 
     /**
      * 事件名称
      */
     @TableField
-    @NotNull(message = "事件名称不能为空")
-    @Length(max = 200, message = "事件名称长度超出限制")
     private String eventRouting;
-    public static final String EVENT_ROUTING = "eventRouting";
 
     /**
      * 事件内容
      */
     @TableField
-    @NotNull(message = "事件内容不能为空")
-    @Length(max = 0, message = "事件内容长度超出限制")
     private String eventMessage;
-    public static final String EVENT_MESSAGE = "eventMessage";
-
 
     public String getEventId() {
-        return getString(EVENT_ID);
+        return eventId;
     }
 
     public void setEventId(String eventId) {
-        put(EVENT_ID, eventId);
+        this.eventId = eventId;
     }
 
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
 
     public String getEventRouting() {
-        return getString(EVENT_ROUTING);
+        return eventRouting;
     }
 
     public void setEventRouting(String eventRouting) {
-        put(EVENT_ROUTING, eventRouting);
+        this.eventRouting = eventRouting;
     }
 
     public String getEventMessage() {
-        return getString(EVENT_MESSAGE);
+        return eventMessage;
     }
 
     public void setEventMessage(String eventMessage) {
-        put(EVENT_MESSAGE, eventMessage);
+        this.eventMessage = eventMessage;
     }
-
 }

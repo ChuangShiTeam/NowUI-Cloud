@@ -33,6 +33,8 @@ public class Constant {
     
     public static final String UPLOAD = "upload";
 
+    public static final String APP_ID = "appId";
+
     public static final String REQUEST_BODY = "requestBody";
     
     public static final String UPLOAD_IMAGE_TYPES = ".jpg.jpeg.gif.png.bmp.JPG.JPEG.GIF.PNG.BMP";
@@ -49,15 +51,27 @@ public class Constant {
 
     public static final String VERSION = "version";
 
+    public static final int PREFETCH_COUNT = 10;
+
+    public static final String SYSTEM_REQUEST_IP_ADDRESS = "systemRequestIpAddress";
+
     public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
     public static final String SYSTEM_CREATE_USER_ID = "systemCreateUserId";
 
+    public static final String SYSTEM_CREATE_TIME = "systemCreateTime";
+
     public static final String SYSTEM_UPDATE_USER_ID = "systemUpdateUserId";
 
-    public static final String SYSTEM_REQUEST_IP_ADDRESS = "systemRequestIpAddress";
+    public static final String SYSTEM_UPDATE_TIME = "systemUpdateTime";
 
-    public static final int PREFETCH_COUNT = 10;
+    public static final String SYSTEM_VERSION = "systemVersion";
+
+    public static final String SYSTEM_STATUS = "systemStatus";
+
+    public static final String PAGE_INDEX = "pageIndex";
+
+    public static final String PAGE_SIZE = "pageSize";
     
     static {
         PRIVATE_KEY = System.getenv("PRIVATE_KEY");

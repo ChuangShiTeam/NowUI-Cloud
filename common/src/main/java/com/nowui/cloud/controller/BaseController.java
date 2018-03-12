@@ -96,6 +96,10 @@ public class BaseController {
         }
     }
 
+    protected String getSystemRequestUserId() {
+        return getRequest().getParameter(Constant.SYSTEM_REQUEST_USER_ID);
+    }
+
     private JSONObject checkFirstMap(Object data) {
         JSONObject result = (JSONObject) JSON.toJSON(data);
 
@@ -176,6 +180,8 @@ public class BaseController {
             for (Object item : (List) data) {
                 if (item instanceof BaseEntity) {
                     list.add(checkFirstMap(item));
+                } else if (item instanceof BaseView) {
+                    list.add(checkFirstMap(item));
                 } else if (item instanceof Map) {
                     list.add(checkFirstMap(item));
                 }
@@ -222,29 +228,41 @@ public class BaseController {
         return map;
     }
 
-    public void validateRequest(BaseEntity entity, String... columns) {
-        for (String column : columns) {
-            Set<? extends ConstraintViolation<? extends BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateValue(entity.getClass(), column, entity.get(column));
-
-            Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
-            while (iterator.hasNext()) {
-                ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
-                throw new BusinessException(constraintViolation.getMessage());
-            }
-        }
-    }
-    
     public void validateRequest(BaseView view, String... columns) {
         for (String column : columns) {
-            Set<? extends ConstraintViolation<? extends BaseView>> constraintViolations = ValidateUtil.getValidator().validateValue(view.getClass(), column, view.get(column));
+            Set<ConstraintViolation<BaseView>> constraintViolations = ValidateUtil.getValidator().validateProperty(view, column);
 
-            Iterator<ConstraintViolation<BaseView>> iterator = (Iterator<ConstraintViolation<BaseView>>) constraintViolations.iterator();
+            Iterator<ConstraintViolation<BaseView>> iterator = constraintViolations.iterator();
             while (iterator.hasNext()) {
                 ConstraintViolation<BaseView> constraintViolation = iterator.next();
                 throw new BusinessException(constraintViolation.getMessage());
             }
         }
     }
+
+//    public void validateRequest(BaseEntity entity, String... columns) {
+//        for (String column : columns) {
+//            Set<? extends ConstraintViolation<? extends BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateValue(entity.getClass(), column, entity.get(column));
+//
+//            Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
+//            while (iterator.hasNext()) {
+//                ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
+//                throw new BusinessException(constraintViolation.getMessage());
+//            }
+//        }
+//    }
+    
+//    public void validateRequest(BaseView view, String... columns) {
+//        for (String column : columns) {
+//            Set<? extends ConstraintViolation<? extends BaseView>> constraintViolations = ValidateUtil.getValidator().validateValue(view.getClass(), column, view.get(column));
+//
+//            Iterator<ConstraintViolation<BaseView>> iterator = (Iterator<ConstraintViolation<BaseView>>) constraintViolations.iterator();
+//            while (iterator.hasNext()) {
+//                ConstraintViolation<BaseView> constraintViolation = iterator.next();
+//                throw new BusinessException(constraintViolation.getMessage());
+//            }
+//        }
+//    }
 
     public void validateResponse(String... columns) {
         validateResponseColumnList = columns;

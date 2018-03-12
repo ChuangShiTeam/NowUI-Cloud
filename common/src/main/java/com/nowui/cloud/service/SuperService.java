@@ -116,6 +116,15 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * 单个实体类查询
      *
      * @param id 编号
+     * @param appId 应用编号
+     * @return E 单个实体类
+     */
+    V find(String id, String appId);
+
+    /**
+     * 单个实体类查询
+     *
+     * @param id 编号
      * @return E 单个实体类
      */
     E findByMysql(String id);
@@ -128,16 +137,6 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @return E 单个实体类
      */
     E find(String id, Boolean systemStatus);
-
-//    /**
-//     * 实体类新增
-//     *
-//     * @param entity 实体类
-//     * @param id 实体类编号
-//     * @param systemCreateUserId 创建人编号
-//     * @return Boolean 是否成功
-//     */
-//    Boolean save(E entity, String id, String systemCreateUserId);
 
     /**
      * 实体类新增
@@ -154,16 +153,6 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @return 是否成功
      */
     Boolean save(List<V> viewList);
-
-//    /**
-//     * 实体类新增
-//     *
-//     * @param entity 实体类
-//     * @param id 实体类编号
-//     * @param systemCreateUserId 创建人编号
-//     * @return Boolean 是否成功
-//     */
-//    Boolean save(E entity, String id, String systemCreateUserId);
 
     /**
      * 实体类新增
@@ -190,7 +179,7 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @param view 视图类
      * @return 是否成功
      */
-    Boolean saveOrUpdate(V view);
+    Boolean saveOrUpdate(V view, String id);
 
     /**
      * 实体类修改
@@ -198,7 +187,7 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @param view 视图类
      * @return 是否成功
      */
-    Boolean update(V view);
+    Boolean update(V view, String id);
 
     /**
      * 实体类修改
@@ -231,47 +220,13 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      */
     E update(E entity, @Param("ew") Wrapper<E> var1, String systemUpdateUserId);
 
-//    /**
-//     * 实体类修改
-//     *
-//     * @param entity 实体类
-//     * @param id 实体类编号
-//     * @param appId 应用编号
-//     * @param routing 路由
-//     * @param systemUpdateUserId 更新人编号
-//     * @param systemVersion 版本号
-//     * @return 是否成功
-//     */
-//    Boolean update(E entity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion);
-
-//    /**
-//     * 实体类删除
-//     *
-//     * @param id 实体类编号
-//     * @param systemUpdateUserId 更新人编号
-//     * @param systemVersion 版本号
-//     * @return 是否成功
-//     */
-//    Boolean delete(String id, String systemUpdateUserId, Integer systemVersion);
-
-//    /**
-//     * 实体类删除
-//     *
-//     * @param id 实体类编号
-//     * @param appId 应用编号
-//     * @param routing 路由
-//     * @param systemUpdateUserId 更新人编号
-//     * @return 是否成功
-//     */
-//    Boolean delete(String id, String appId, String routing, String systemUpdateUserId);
-
     /**
      * 实体类修改
      *
      * @param view 视图类
      * @return 是否成功
      */
-    Boolean delete(V view);
+    Boolean delete(V view, String id);
 
     /**
      * 实体类删除
@@ -291,14 +246,5 @@ public interface SuperService<E extends BaseEntity, V extends BaseView> extends 
      * @return 是否成功
      */
     E delete(@Param("ew") Wrapper<E> var1, String systemUpdateUserId);
-
-
-    /**
-     * 搜索、缓存更新
-     *
-     * @param id 实体类编号
-     * @return 是否成功
-     */
-    void replace(String id);
 
 }

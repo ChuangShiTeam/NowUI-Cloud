@@ -40,7 +40,7 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product,
 
     @Override
     public List<ProductView> listForAdmin(String appId, String productName, Integer pageIndex, Integer pageSize) {
-        Criteria criteria = Criteria.where(Product.APP_ID).is(appId)
+        Criteria criteria = Criteria.where(ProductView.APP_ID).is(appId)
                 .and(ProductView.PRODUCT_NAME).regex(".*?" + productName + ".*")
                 .and(ProductView.SYSTEM_STATUS).is(true);
 

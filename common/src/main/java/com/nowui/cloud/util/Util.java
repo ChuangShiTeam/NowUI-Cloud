@@ -223,7 +223,7 @@ public class Util {
     /**
      * 密码加密
      *
-     * @param user_password
+     * @param userPassword
      * @return
      */
     public static String generatePassword(String userPassword) {
@@ -308,26 +308,26 @@ public class Util {
      * @param field 实体对象字段
      * @return List<String> 实体对象字段列表
      */
-    public static List<String> beanToField(List<? extends BaseEntity> beanList, String field) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
-    }
+//    public static List<String> beanToField(List<? extends BaseEntity> beanList, String field) {
+//        if (Util.isNullOrEmpty(beanList)) {
+//            return null;
+//        }
+//        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+//    }
     
-    /**
-     * 实体对象列表映射实体对象字段列表
-     *
-     * @param beanList 实体对象列表
-     * @param field 实体对象字段
-     * @return List<String> 实体对象字段列表
-     */
-    public static List<String> viewBeanToField(List<? extends BaseView> beanList, String field) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
-    }
+//    /**
+//     * 实体对象列表映射实体对象字段列表
+//     *
+//     * @param beanList 实体对象列表
+//     * @param field 实体对象字段
+//     * @return List<String> 实体对象字段列表
+//     */
+//    public static List<String> viewBeanToField(List<? extends BaseView> beanList, String field) {
+//        if (Util.isNullOrEmpty(beanList)) {
+//            return null;
+//        }
+//        return beanList.stream().map(bean -> bean.getString(field)).collect(Collectors.toList());
+//    }
 
     /**
      * 实体对象列表映射实体对象字段列表json字符串
@@ -336,28 +336,28 @@ public class Util {
      * @param field 实体对象字段
      * @return String 字段列表json字符串
      */
-    public static String beanToFieldString(List<? extends BaseEntity> beanList, String field) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
-        return JSONArray.toJSONString(list);
-    }
+//    public static String beanToFieldString(List<? extends BaseEntity> beanList, String field) {
+//        if (Util.isNullOrEmpty(beanList)) {
+//            return null;
+//        }
+//        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
+//        return JSONArray.toJSONString(list);
+//    }
     
-    /**
-     * 实体对象列表映射实体对象字段列表json字符串
-     *
-     * @param beanList 实体对象列表
-     * @param field 实体对象字段
-     * @return String 字段列表json字符串
-     */
-    public static String viewBeanToFieldString(List<? extends BaseView> beanList, String field) {
-        if (Util.isNullOrEmpty(beanList)) {
-            return null;
-        }
-        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
-        return JSONArray.toJSONString(list);
-    }
+//    /**
+//     * 实体对象列表映射实体对象字段列表json字符串
+//     *
+//     * @param beanList 实体对象列表
+//     * @param field 实体对象字段
+//     * @return String 字段列表json字符串
+//     */
+//    public static String viewBeanToFieldString(List<? extends BaseView> beanList, String field) {
+//        if (Util.isNullOrEmpty(beanList)) {
+//            return null;
+//        }
+//        List<String> list = beanList.stream().filter(bean -> !Util.isNullOrEmpty(bean.getString(field))).map(bean -> bean.getString(field)).collect(Collectors.toList());
+//        return JSONArray.toJSONString(list);
+//    }
 
     /**
      * 实体对象列表关联字段映射实体字段对象
@@ -367,49 +367,49 @@ public class Util {
      * @param fieldCloumns 实体对象映射实体字段列表字段集合
      * @return List<T> 实体对象列表
      */
-    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
-            return beanList;
-        }
-        for (BaseEntity bean : beanList) {
-            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
-            for (String fieldCloumn : fieldCloumns) {
-                if (fieldBeanOption.isPresent()) {
-                    Object object = fieldBeanOption.get().get(fieldCloumn);
-                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
-                        bean.put(fieldCloumn, ((JSONObject) object).clone());
-                    } else {
-                        bean.put(fieldCloumn, object);
-                    }
-                } else {
-                    bean.put(fieldCloumn, null);
-                }
-            }
-        }
-        return beanList;
-    }
+//    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+//        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+//            return beanList;
+//        }
+//        for (BaseEntity bean : beanList) {
+//            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
+//            for (String fieldCloumn : fieldCloumns) {
+//                if (fieldBeanOption.isPresent()) {
+//                    Object object = fieldBeanOption.get().get(fieldCloumn);
+//                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+//                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+//                    } else {
+//                        bean.put(fieldCloumn, object);
+//                    }
+//                } else {
+//                    bean.put(fieldCloumn, null);
+//                }
+//            }
+//        }
+//        return beanList;
+//    }
 
-    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
-            return beanList;
-        }
-        for (BaseEntity bean : beanList) {
-            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
-            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
-        }
-        return beanList;
-    }
-
-    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
-            return beanList;
-        }
-        for (BaseEntity bean : beanList) {
-            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
-            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
-        }
-        return beanList;
-    }
+//    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+//        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+//            return beanList;
+//        }
+//        for (BaseEntity bean : beanList) {
+//            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldBean.getTableId()))).findFirst();
+//            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
+//        }
+//        return beanList;
+//    }
+//
+//    public static <T extends BaseEntity> List<T> beanReplaceField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+//        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+//            return beanList;
+//        }
+//        for (BaseEntity bean : beanList) {
+//            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+//            bean.put(beanCloumn, fieldBeanOption.isPresent() ? fieldBeanOption.get().keep(fieldCloumns).clone() : null);
+//        }
+//        return beanList;
+//    }
 
     /**
      * 实体对象列表关联字段映射实体字段对象
@@ -420,58 +420,58 @@ public class Util {
      * @param fieldCloumns 实体对象映射实体字段列表字段集合
      * @return List<T> 实体对象列表
      */
-    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
-            return beanList;
-        }
-        for (BaseEntity bean : beanList) {
-            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
-            for (String fieldCloumn : fieldCloumns) {
-                if (fieldBeanOption.isPresent()) {
-                    Object object = fieldBeanOption.get().get(fieldCloumn);
-                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
-                        bean.put(fieldCloumn, ((JSONObject) object).clone());
-                    } else {
-                        bean.put(fieldCloumn, object);
-                    }
-                } else {
-                    bean.put(fieldCloumn, null);
-                }
-            }
-        }
-        return beanList;
-    }
+//    public static <T extends BaseEntity> List<T> beanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseEntity> fieldBeanList, String ...fieldCloumns) {
+//        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+//            return beanList;
+//        }
+//        for (BaseEntity bean : beanList) {
+//            Optional<? extends BaseEntity> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+//            for (String fieldCloumn : fieldCloumns) {
+//                if (fieldBeanOption.isPresent()) {
+//                    Object object = fieldBeanOption.get().get(fieldCloumn);
+//                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+//                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+//                    } else {
+//                        bean.put(fieldCloumn, object);
+//                    }
+//                } else {
+//                    bean.put(fieldCloumn, null);
+//                }
+//            }
+//        }
+//        return beanList;
+//    }
     
-    /**
-     * 实体对象列表关联字段映射实体字段对象
-     * @param beanList 实体对象列表
-     * @param beanCloumn 实体对象匹配字段
-     * @param fieldMapCloumn 实体字段对象映射匹配字段
-     * @param fieldBeanList 实体对象映射实体字段列表
-     * @param fieldCloumns 实体对象映射实体字段列表字段集合
-     * @return List<T> 实体对象列表
-     */
-    public static <T extends BaseView> List<T> viewBeanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseView> fieldBeanList, String ...fieldCloumns) {
-        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
-            return beanList;
-        }
-        for (BaseView bean : beanList) {
-            Optional<? extends BaseView> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
-            for (String fieldCloumn : fieldCloumns) {
-                if (fieldBeanOption.isPresent()) {
-                    Object object = fieldBeanOption.get().get(fieldCloumn);
-                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
-                        bean.put(fieldCloumn, ((JSONObject) object).clone());
-                    } else {
-                        bean.put(fieldCloumn, object);
-                    }
-                } else {
-                    bean.put(fieldCloumn, null);
-                }
-            }
-        }
-        return beanList;
-    }
+//    /**
+//     * 实体对象列表关联字段映射实体字段对象
+//     * @param beanList 实体对象列表
+//     * @param beanCloumn 实体对象匹配字段
+//     * @param fieldMapCloumn 实体字段对象映射匹配字段
+//     * @param fieldBeanList 实体对象映射实体字段列表
+//     * @param fieldCloumns 实体对象映射实体字段列表字段集合
+//     * @return List<T> 实体对象列表
+//     */
+//    public static <T extends BaseView> List<T> viewBeanAddField(List<T> beanList, String beanCloumn, String fieldMapCloumn, List<? extends BaseView> fieldBeanList, String ...fieldCloumns) {
+//        if (Util.isNullOrEmpty(beanList) || Util.isNullOrEmpty(fieldBeanList)) {
+//            return beanList;
+//        }
+//        for (BaseView bean : beanList) {
+//            Optional<? extends BaseView> fieldBeanOption = fieldBeanList.stream().filter(fieldBean -> bean.get(beanCloumn).equals(fieldBean.get(fieldMapCloumn))).findFirst();
+//            for (String fieldCloumn : fieldCloumns) {
+//                if (fieldBeanOption.isPresent()) {
+//                    Object object = fieldBeanOption.get().get(fieldCloumn);
+//                    if (!Util.isNullOrEmpty(object) && object instanceof JSONObject) {
+//                        bean.put(fieldCloumn, ((JSONObject) object).clone());
+//                    } else {
+//                        bean.put(fieldCloumn, object);
+//                    }
+//                } else {
+//                    bean.put(fieldCloumn, null);
+//                }
+//            }
+//        }
+//        return beanList;
+//    }
 
     public static String getTableName(Class<? extends BaseEntity> clazz) {
         TableName table = clazz.getAnnotation(TableName.class);

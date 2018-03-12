@@ -2,38 +2,36 @@ package com.nowui.cloud.view;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.entity.BaseEntity;
+import com.nowui.cloud.exception.SystemException;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * baseView
  *
  * @author ZhongYongQiang
- *
+ * <p>
  * 2018-01-29
  */
 @Component
-public class BaseView extends JSONObject implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class BaseView implements Serializable {
 
     /**
      * 创建人编号
      */
     @Field
+    @NotNull(message = "创建人编号不能为空")
+    @Length(max = 32, message = "创建人编号长度超出限制")
     private String systemCreateUserId;
     public static final String SYSTEM_CREATE_USER_ID = "systemCreateUserId";
 
@@ -41,6 +39,7 @@ public class BaseView extends JSONObject implements Serializable {
      * 创建时间
      */
     @Field
+    @NotNull(message = "创建时间不能为空")
     private Date systemCreateTime;
     public static final String SYSTEM_CREATE_TIME = "systemCreateTime";
 
@@ -48,6 +47,8 @@ public class BaseView extends JSONObject implements Serializable {
      * 更新人编号
      */
     @Field
+    @NotNull(message = "更新人编号不能为空")
+    @Length(max = 32, message = "更新人编号长度超出限制")
     private String systemUpdateUserId;
     public static final String SYSTEM_UPDATE_USER_ID = "systemUpdateUserId";
 
@@ -55,6 +56,7 @@ public class BaseView extends JSONObject implements Serializable {
      * 更新时间
      */
     @Field
+    @NotNull(message = "更新时间不能为空")
     private Date systemUpdateTime;
     public static final String SYSTEM_UPDATE_TIME = "systemUpdateTime";
 
@@ -62,6 +64,7 @@ public class BaseView extends JSONObject implements Serializable {
      * 版本号
      */
     @Field
+    @NotNull(message = "版本号不能为空")
     private Integer systemVersion;
     public static final String SYSTEM_VERSION = "systemVersion";
 
@@ -69,13 +72,24 @@ public class BaseView extends JSONObject implements Serializable {
      * 删除标识
      */
     @Field
+    @NotNull(message = "删除标识不能为空")
     private Boolean systemStatus;
     public static final String SYSTEM_STATUS = "systemStatus";
+
+    /**
+     * 请求人编号
+     */
+    @NotNull(message = "请求人编号不能为空")
+    @Length(max = 32, message = "请求人编号长度超出限制")
+    @JsonIgnore
+    private String systemRequestUserId;
+    public static final String SYSTEM_REQUEST_USER_ID = "systemRequestUserId";
 
     /**
      * 分页页数
      */
     @NotNull(message = "分页页数不能为空")
+    @Digits(integer = 11, fraction = 0, message = "分页页数长度超出限制")
     @JsonIgnore
     private Integer pageIndex;
     public static final String PAGE_INDEX = "pageIndex";
@@ -84,64 +98,86 @@ public class BaseView extends JSONObject implements Serializable {
      * 每页数量
      */
     @NotNull(message = "每页数量不能为空")
+    @Digits(integer = 11, fraction = 0, message = "分页页数长度超出限制")
     @JsonIgnore
     private Integer pageSize;
     public static final String PAGE_SIZE = "pageSize";
 
+    private String tableId;
 
     public String getSystemCreateUserId() {
-        return getString(SYSTEM_CREATE_USER_ID);
+        return systemCreateUserId;
     }
 
     public void setSystemCreateUserId(String systemCreateUserId) {
-        put(SYSTEM_CREATE_USER_ID, systemCreateUserId);
+        this.systemCreateUserId = systemCreateUserId;
     }
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getSystemCreateTime() {
-        return getDate(SYSTEM_CREATE_TIME);
+        return systemCreateTime;
     }
 
     public void setSystemCreateTime(Date systemCreateTime) {
-        put(SYSTEM_CREATE_TIME, systemCreateTime);
+        this.systemCreateTime = systemCreateTime;
     }
 
     public String getSystemUpdateUserId() {
-        return getString(SYSTEM_UPDATE_USER_ID);
+        return systemUpdateUserId;
     }
 
     public void setSystemUpdateUserId(String systemUpdateUserId) {
-        put(SYSTEM_UPDATE_USER_ID, systemUpdateUserId);
+        this.systemUpdateUserId = systemUpdateUserId;
     }
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getSystemUpdateTime() {
-        return getDate(SYSTEM_UPDATE_TIME);
+        return systemUpdateTime;
     }
 
     public void setSystemUpdateTime(Date systemUpdateTime) {
-        put(SYSTEM_UPDATE_TIME, systemUpdateTime);
+        this.systemUpdateTime = systemUpdateTime;
     }
 
     public Integer getSystemVersion() {
-        return getInteger(SYSTEM_VERSION);
+        return systemVersion;
     }
 
     public void setSystemVersion(Integer systemVersion) {
-        put(SYSTEM_VERSION, systemVersion);
+        this.systemVersion = systemVersion;
     }
 
     public Boolean getSystemStatus() {
-        return getBoolean(SYSTEM_STATUS);
+        return systemStatus;
     }
 
     public void setSystemStatus(Boolean systemStatus) {
-        put(SYSTEM_STATUS, systemStatus);
+        this.systemStatus = systemStatus;
     }
 
-    private String tableId;
+    public String getSystemRequestUserId() {
+        return systemRequestUserId;
+    }
 
-    public String getTableId() {
+    public void setSystemRequestUserId(String systemRequestUserId) {
+        this.systemRequestUserId = systemRequestUserId;
+    }
+
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String tableId() {
         if (tableId == null) {
             java.lang.reflect.Field[] fields = this.getClass().getDeclaredFields();
             for (java.lang.reflect.Field field : fields) {
@@ -155,73 +191,62 @@ public class BaseView extends JSONObject implements Serializable {
         }
         return tableId;
     }
-    
-    public Integer getPageIndex() {
-        return getInteger(PAGE_INDEX);
-    }
 
-    public void setPageIndex(Integer pageIndex) {
-        put(PAGE_INDEX, pageIndex);
-    }
+    public void putEntry(BaseEntity baseEntity) {
+        try {
+            Class sourCls = baseEntity.getClass();
+            //遍历源属性
+            do {
+                //源属性集
+                java.lang.reflect.Field[] sourFlds = sourCls.getDeclaredFields();
+                //遍历源所有属性
+                for (int i = 0; i < sourFlds.length; i++) {
+                    java.lang.reflect.Field sf = sourFlds[i];
+                    sf.setAccessible(true);
+                    //遍历目标所有属性
+                    Class toCls = this.getClass();
+                    do {
+                        //源属性集
+                        java.lang.reflect.Field[] toFlds = toCls.getDeclaredFields();
+                        //遍历源所有属性
+                        for (int j = 0; j < toFlds.length; j++) {
+                            java.lang.reflect.Field tof = toFlds[j];
+                            tof.setAccessible(true);
+                            TableField tableField = (TableField) sf.getAnnotation(TableField.class);
+                            Boolean isExist = false;
+                            if (tableField != null) {
+                                isExist = tableField.exist();
+                            }
+                            //属性名字相同
+                            if (sf.getName().equals(tof.getName()) && isExist) {
+                                //得到此属性的类型
+                                String type = tof.getType().toString();
+                                if (type.endsWith("String")) {
+                                    tof.set(this, (String) sf.get(baseEntity));
+                                } else if (type.endsWith("int") || type.endsWith("Integer")) {
+                                    tof.set(this, (Integer) sf.get(baseEntity));
+                                } else if (type.endsWith("Date")) {
+                                    tof.set(this, (Date) sf.get(baseEntity));
+                                } else if (type.endsWith("long") || type.endsWith("Long")) {
+                                    tof.set(this, (Long) sf.get(baseEntity));
+                                } else if (type.endsWith("short") || type.endsWith("Short")) {
+                                    tof.set(this, (Long) sf.get(baseEntity));
+                                } else if (type.endsWith("Boolean")) {
+                                    tof.set(this, (Boolean) sf.get(baseEntity));
+                                } else {
+                                    throw new SystemException("类型转换失败！");
+                                }
+                            }
+                        }
+                        toCls = toCls.getSuperclass();
 
-    public Integer getPageSize() {
-        return getInteger(PAGE_SIZE);
-    }
-
-    public void setPageSize(Integer pageSize) {
-        put(PAGE_SIZE, pageSize);
-    }
-
-    /**
-     * 对象默认保留属性，去除基本公共字段
-     */
-    public <V extends BaseView> V removeBaseTableField() {
-        Iterator<Entry<String, Object>> iterator = this.getInnerMap().entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Object> entry = iterator.next();
-            if (SYSTEM_CREATE_USER_ID.equals(entry.getKey())) {
-                iterator.remove();
-            } else if (SYSTEM_CREATE_TIME.equals(entry.getKey())) {
-                iterator.remove();
-            } else if (SYSTEM_UPDATE_USER_ID.equals(entry.getKey())) {
-                iterator.remove();
-            } else if (SYSTEM_UPDATE_TIME.equals(entry.getKey())) {
-                iterator.remove();
-            } else if (SYSTEM_VERSION.equals(entry.getKey())) {
-                iterator.remove();
-            } else if (SYSTEM_STATUS.equals(entry.getKey())) {
-                iterator.remove();
-            }
+                    } while (toCls != Object.class);
+                }
+                sourCls = sourCls.getSuperclass();
+            } while (sourCls != Object.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return (V) this;
-    }
-
-    public Integer getM() {
-        int index = 0;
-        if (getPageIndex() != null) {
-            index = getPageIndex();
-        }
-
-        int size = 0;
-        if (getPageSize() != null) {
-            size = getPageSize();
-        }
-
-
-        if (index > 0) {
-            return (index - 1) * size;
-        } else {
-            return 0;
-        }
-    }
-
-    public Integer getN() {
-        int size = 0;
-        if (getPageSize() != null) {
-            size = getPageSize();
-        }
-
-        return size > 0 ? size : 0;
     }
 
 }

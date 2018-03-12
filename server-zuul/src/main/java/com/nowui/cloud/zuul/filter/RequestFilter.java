@@ -1,15 +1,14 @@
 package com.nowui.cloud.zuul.filter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -54,7 +53,8 @@ public class RequestFilter extends ZuulFilter {
 
         String jsonType = "application/json";
         String formDataType = "multipart/form-data";
-        if (contentType.contains(jsonType)) {
+        String formUrlencodedType = "application/x-www-form-urlencoded";
+        if (contentType.equals(jsonType)) {
             String requestBody = Util.readData(request);
 
             System.out.println(requestBody);
@@ -128,7 +128,7 @@ public class RequestFilter extends ZuulFilter {
                 }
             });
 
-        } else if (contentType.contains(formDataType)) {
+        } else if (contentType.equals(formDataType)) {
             MultipartHttpServletRequest multipartRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
             String token = multipartRequest.getParameter(Constant.TOKEN);
             String systemRequestUserId = decipherToken(token, context);
@@ -137,6 +137,18 @@ public class RequestFilter extends ZuulFilter {
             Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
             map.put(Constant.SYSTEM_REQUEST_USER_ID, params);
             context.setRequestQueryParams(map);
+        } else if (contentType.equals(formUrlencodedType)) {
+            Map<String, List<String>> params = context.getRequestQueryParams();
+            if (params == null) {
+                params = Maps.newHashMap();
+            }
+
+            String token = context.getRequest().getParameter(Constant.TOKEN);
+            String systemRequestUserId = decipherToken(token, context);
+
+            params.put(Constant.SYSTEM_REQUEST_USER_ID, Lists.newArrayList(systemRequestUserId));
+
+            context.setRequestQueryParams(params);
         }
 
         return null;

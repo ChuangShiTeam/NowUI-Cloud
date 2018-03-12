@@ -32,10 +32,10 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "${tableComment}列表")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}View,
+                ${firstLowerWithoutUnderlineEntityName}EntityView,
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in searchColumnList){%>
                 ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
@@ -44,8 +44,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}View.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}View.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}View.getPageSize());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}EntityView.get${column.firstUpperColumnName}()<%}%>);
+        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}EntityView.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}EntityView.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}EntityView.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}EntityView.getPageSize());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
@@ -60,15 +60,15 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "${tableComment}信息")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}View,
+                ${firstLowerWithoutUnderlineEntityName}EntityView,
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId}
         );
 
-        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}());
+        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}EntityView.get${firstUpperTableId}());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
@@ -84,79 +84,95 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiOperation(value = "${tableComment}新增")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
-
-        String ${firstLowerWithoutUnderlineEntityName}Id = Util.getRandomUUID();
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
                 ${firstLowerWithoutUnderlineEntityName}Entity,
-                ${firstUpperWithoutUnderlineEntityName}.APP_ID,
+                ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in detailColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
+                ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}<%if(!columnLP.last){%>,<%}%>
                 <%}%>
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId());
+        String ${firstLowerWithoutUnderlineEntityName}Id = Util.getRandomUUID();
+
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName} = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}, ${firstLowerWithoutUnderlineEntityName}Id, ${firstLowerWithoutUnderlineEntityName}.getSystemRequestUserId());
+
+        Boolean success = false;
 
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
-            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}View);
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "${tableComment}修改")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}Entity,
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
-                ${firstUpperWithoutUnderlineEntityName}.APP_ID,
+                ${firstLowerWithoutUnderlineEntityName}EntityView,
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
+                ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in detailColumnList){%>
-                ${firstUpperWithoutUnderlineEntityName}.${column.upperWithUnderlineColumnName},
+                ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
                 <%}%>
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}Entity, ${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName} = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}, ${firstLowerWithoutUnderlineEntityName}.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}.getSystemVersion());
+
+        Boolean success = false;
 
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
-            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "${tableComment}删除")
     @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}Entity = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}Entity,
-                ${firstUpperWithoutUnderlineEntityName}.${upperWithUnderlineTableId},
+                ${firstLowerWithoutUnderlineEntityName}EntityView,
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 ${firstUpperWithoutUnderlineEntityName}.APP_ID,
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}Entity.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}Entity.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}EntityView.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}EntityView.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}EntityView.getSystemVersion());
+
+        Boolean success = false;
 
         if (result != null) {
-            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
-            ${firstLowerWithoutUnderlineEntityName}View.putAll(result);
+            ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View);
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "${tableComment}数据同步")

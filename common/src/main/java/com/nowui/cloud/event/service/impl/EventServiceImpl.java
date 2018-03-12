@@ -52,8 +52,8 @@ public class EventServiceImpl implements EventService {
         Boolean success = eventMapper.update(
                 event,
                 new EntityWrapper<Event>()
-                        .eq(Event.EVENT_ID, eventId)
-                        .eq(BaseEntity.SYSTEM_STATUS, true)
+                        .eq("eventId", eventId)
+                        .eq("systemStatus", true)
         ) != 0;
 
         return success;

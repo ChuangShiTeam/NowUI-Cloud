@@ -1,8 +1,5 @@
 package com.nowui.cloud.base.admin.entity;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +24,6 @@ public class Admin extends BaseEntity {
      */
     @Id
     @TableId
-    @NotNull(message = "管理员编号不能为空")
-    @Length(max = 32, message = "管理员编号长度超出限制")
     private String adminId;
     public static final String ADMIN_ID = "adminId";
 
@@ -36,8 +31,6 @@ public class Admin extends BaseEntity {
      * 应用编号
      */
     @TableField
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -45,8 +38,6 @@ public class Admin extends BaseEntity {
      * 用户编号
      */
     @TableField
-    @NotNull(message = "用户编号不能为空")
-    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 

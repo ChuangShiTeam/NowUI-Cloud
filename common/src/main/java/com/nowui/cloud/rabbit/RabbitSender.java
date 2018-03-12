@@ -57,7 +57,8 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
     }
 
     public void send(String appId, String routing, BaseEntity baseEntity, String systemCreateUserId) {
-        String message = baseEntity.toJSONString();
+//        String message = baseEntity.toJSONString();
+        String message = "";
 
         String eventId = Util.getRandomUUID();
 

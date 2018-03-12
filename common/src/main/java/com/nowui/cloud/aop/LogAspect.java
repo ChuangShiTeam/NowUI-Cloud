@@ -3,8 +3,6 @@ package com.nowui.cloud.aop;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 
-import com.nowui.cloud.entity.BaseEntity;
-
 /**
  * @author ZhongYongQiang
  */
@@ -14,7 +12,7 @@ public class LogAspect {
     public Object doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object[] args = proceedingJoinPoint.getArgs();
 
-        ((BaseEntity)args[0]).put(BaseEntity.SYSTEM_UPDATE_USER_ID, "456");
+//        ((BaseEntity)args[0]).put(BaseEntity.SYSTEM_UPDATE_USER_ID, "456");
 
         return proceedingJoinPoint.proceed(args);
     }

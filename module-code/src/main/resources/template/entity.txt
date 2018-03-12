@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * ${tableComment}
@@ -32,8 +29,6 @@ public class ${firstUpperWithoutUnderlineEntityName} extends BaseEntity {
     <%}else{%>
     @TableField
     <%}%>
-    @NotNull(message = "${column.columnComment}不能为空")
-    @Length(max = ${column.characterMaximumLength}, message = "${column.columnComment}长度超出限制")
     <%if(column.dataType == "TINYINT"){%>
     private Boolean ${column.columnName};
     <%}else if(column.dataType == "INT"){%>

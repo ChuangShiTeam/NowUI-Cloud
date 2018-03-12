@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
@@ -24,21 +25,26 @@ public class ProductAdminController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "商品列表")
-    @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
-        Product productEntity = getEntry(Product.class);
+    @ApiOperation(value = "商品列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_NAME, value = "商品名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = ProductView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@ApiIgnore ProductView productView) {
 
         validateRequest(
-                productEntity,
+                productView,
                 ProductView.APP_ID,
                 ProductView.PRODUCT_NAME,
                 ProductView.PAGE_INDEX,
                 ProductView.PAGE_SIZE
         );
 
-        Integer resultTotal = productService.countForAdmin(productEntity.getAppId(), productEntity.getProductName());
-        List<ProductView> resultList = productService.listForAdmin(productEntity.getAppId(), productEntity.getProductName(), productEntity.getPageIndex(), productEntity.getPageSize());
+        Integer resultTotal = productService.countForAdmin(productView.getAppId(), productView.getProductName());
+        List<ProductView> resultList = productService.listForAdmin(productView.getAppId(), productView.getProductName(), productView.getPageIndex(), productView.getPageSize());
 
         validateResponse(
                 ProductView.PRODUCT_ID,
@@ -48,135 +54,154 @@ public class ProductAdminController extends BaseController {
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "商品信息")
-    @RequestMapping(value = "/product/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
-        Product productEntity = getEntry(Product.class);
+    @ApiOperation(value = "商品信息", httpMethod = "POST")
+    @RequestMapping(value = "/product/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ProductView.PRODUCT_ID, value = "商品编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+    })
+    public Map<String, Object> findV1(@ApiIgnore ProductView productView) {
 
         validateRequest(
-                productEntity,
-                ProductView.APP_ID,
-                ProductView.PRODUCT_ID
+                productView,
+                ProductView.PRODUCT_ID,
+                ProductView.APP_ID
         );
 
-        ProductView result = productService.find(productEntity.getProductId());
+        ProductView result = productService.find(productView.getProductId(), productView.getAppId());
 
         validateResponse(
                 ProductView.PRODUCT_ID,
                 ProductView.PRODUCT_NAME,
                 ProductView.PRODUCT_CATEGORY_ID,
                 ProductView.PRODUCT_CATEGORY_NAME,
-                ProductView.PRODUCT_IMAGE_ID,
-                ProductView.PRODUCT_IMAGE_PATH,
+                ProductView.PRODUCT_IMAGE_FILE_ID,
+                ProductView.PRODUCT_IMAGE_FILE_PATH,
                 ProductView.SYSTEM_VERSION
         );
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "商品新增")
-    @RequestMapping(value = "/product/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1() {
-        Product productEntity = getEntry(Product.class);
+    @ApiOperation(value = "商品新增", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_NAME, value = "商品名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_CATEGORY_ID, value = "商品分类", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_CATEGORY_NAME, value = "商品分类名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_ID, value = "商品图片编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_PATH, value = "商品图片路径", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/product/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> saveV1(@ApiIgnore Product product, @ApiIgnore ProductView productView) {
 
         validateRequest(
-                productEntity,
-                Product.APP_ID,
-                Product.PRODUCT_NAME,
-                Product.PRODUCT_CATEGORY_ID,
-                Product.PRODUCT_IMAGE_ID
-        );
-
-        ProductView productViewValidate = getEntry(ProductView.class);
-
-        validateRequest(
-                productViewValidate,
+                productView,
+                ProductView.APP_ID,
+                ProductView.PRODUCT_NAME,
+                ProductView.PRODUCT_CATEGORY_ID,
                 ProductView.PRODUCT_CATEGORY_NAME,
-                ProductView.PRODUCT_IMAGE_PATH
+                ProductView.PRODUCT_IMAGE_FILE_ID,
+                ProductView.PRODUCT_IMAGE_FILE_PATH
         );
 
         String productId = Util.getRandomUUID();
 
-        Product result = productService.save(productEntity, productId, productEntity.getSystemRequestUserId());
+        Product result = productService.save(product, productId, productView.getSystemRequestUserId());
+
+        Boolean success = false;
 
         if (result != null) {
-            ProductView productView = new ProductView();
-            productView.putAll(result);
+            productView.putEntry(result);
 
             productService.save(productView);
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "商品修改")
-    @RequestMapping(value = "/product/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1() {
-        Product productEntity = getEntry(Product.class);
+    @ApiOperation(value = "商品修改", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ProductView.PRODUCT_ID, value = "商品编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_NAME, value = "商品名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_CATEGORY_ID, value = "商品分类", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_CATEGORY_NAME, value = "商品分类名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_ID, value = "商品图片编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_PATH, value = "商品图片路径", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/product/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> updateV1(@ApiIgnore Product product, @ApiIgnore ProductView productView) {
 
         validateRequest(
-                productEntity,
-                Product.APP_ID,
-                Product.PRODUCT_ID,
-                Product.PRODUCT_NAME,
-                Product.PRODUCT_CATEGORY_ID,
-                Product.PRODUCT_IMAGE_ID,
+                productView,
+                ProductView.PRODUCT_ID,
+                ProductView.APP_ID,
+                ProductView.PRODUCT_NAME,
+                ProductView.PRODUCT_CATEGORY_ID,
+                ProductView.PRODUCT_CATEGORY_NAME,
+                ProductView.PRODUCT_IMAGE_FILE_ID,
+                ProductView.PRODUCT_IMAGE_FILE_PATH,
                 ProductView.SYSTEM_VERSION
         );
 
-        ProductView productViewValidate = getEntry(ProductView.class);
+        Product result = productService.update(product, productView.getProductId(), productView.getSystemRequestUserId(), productView.getSystemVersion());
 
-        validateRequest(
-                productViewValidate,
-                ProductView.PRODUCT_CATEGORY_NAME,
-                ProductView.PRODUCT_IMAGE_PATH
-        );
-
-        Product result = productService.update(productEntity, productEntity.getProductId(), productEntity.getSystemRequestUserId(), productEntity.getSystemVersion());
+        Boolean success = false;
 
         if (result != null) {
-            ProductView productView = new ProductView();
-            productView.putAll(result);
+            productView.putEntry(result);
 
-            productService.update(productView);
+            productService.update(productView, productView.getProductId());
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "商品删除")
-    @RequestMapping(value = "/product/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        Product productEntity = getEntry(Product.class);
+    @ApiOperation(value = "商品删除", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ProductView.PRODUCT_ID, value = "商品编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ProductView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/product/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@ApiIgnore ProductView productView) {
 
         validateRequest(
-                productEntity,
-                Product.PRODUCT_ID,
-                Product.SYSTEM_VERSION
+                productView,
+                ProductView.PRODUCT_ID,
+                ProductView.SYSTEM_VERSION
         );
 
-        Product result = productService.delete(productEntity.getProductId(), productEntity.getSystemRequestUserId(), productEntity.getSystemVersion());
+        Product result = productService.delete(productView.getProductId(), productView.getSystemRequestUserId(), productView.getSystemVersion());
+
+        Boolean success = false;
 
         if (result != null) {
-            ProductView productView = new ProductView();
-            productView.putAll(result);
+            productView.putEntry(result);
 
-            productService.update(productView);
+            productService.delete(productView, productView.getProductId());
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
-    @ApiOperation(value = "商品数据同步")
-    @RequestMapping(value = "/product/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "商品数据同步", httpMethod = "POST")
+    @RequestMapping(value = "/product/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
         List<Product> productList = productService.listByMysql();
 
         for (Product product : productList) {
             ProductView productView = new ProductView();
-            productView.putAll(product);
+            productView.putEntry(product);
 
-            productService.saveOrUpdate(productView);
+            productService.saveOrUpdate(productView, productView.getProductId());
         }
 
         return renderJson(true);
