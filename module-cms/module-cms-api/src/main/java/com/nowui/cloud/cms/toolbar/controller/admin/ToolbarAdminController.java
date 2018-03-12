@@ -38,7 +38,7 @@ public class ToolbarAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "工具栏分页列表")
-    @RequestMapping(value = "/toolbar/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ToolbarView toolbarView = getEntry(ToolbarView.class);
 
@@ -65,7 +65,7 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询工具栏信息")
-    @RequestMapping(value = "/toolbar/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ToolbarView toolbarView = getEntry(ToolbarView.class);
 
@@ -91,7 +91,7 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏新增")
-    @RequestMapping(value = "/toolbar/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Toolbar toolbarEntity = getEntry(Toolbar.class);
 
@@ -121,7 +121,7 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏修改")
-    @RequestMapping(value = "/toolbar/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Toolbar toolbarEntity = getEntry(Toolbar.class);
         validateRequest(
@@ -150,7 +150,7 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏删除")
-    @RequestMapping(value = "/toolbar/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Toolbar toolbarEntity = getEntry(Toolbar.class);
         validateRequest(
@@ -173,7 +173,7 @@ public class ToolbarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "工具栏数据同步")
-    @RequestMapping(value = "/toolbar/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/toolbar/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
         List<Toolbar> toolbarList = toolbarService.listByMysql();
 

@@ -35,7 +35,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "用户默认头像列表")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         MemberDefaultAvatarView memberDefaultAvatarView = getEntry(MemberDefaultAvatarView.class);
 
@@ -60,7 +60,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户默认头像信息")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         MemberDefaultAvatarView memberDefaultAvatarView = getEntry(MemberDefaultAvatarView.class);
 
@@ -83,7 +83,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户默认头像新增")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         MemberDefaultAvatar memberDefaultAvatarEntity = getEntry(MemberDefaultAvatar.class);
 
@@ -111,7 +111,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户默认头像修改")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         MemberDefaultAvatar memberDefaultAvatarEntity = getEntry(MemberDefaultAvatar.class);
 
@@ -135,7 +135,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户默认头像删除")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         MemberDefaultAvatar memberDefaultAvatarEntity = getEntry(MemberDefaultAvatar.class);
 
@@ -159,7 +159,7 @@ public class MemberDefaultAvatarAdminController extends BaseController {
     }
 
     @ApiOperation(value = "用户默认头像数据同步")
-    @RequestMapping(value = "/member/default/avatar/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/default/avatar/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<MemberDefaultAvatar> memberDefaultAvatarList = memberDefaultAvatarService.listByMysql();
 

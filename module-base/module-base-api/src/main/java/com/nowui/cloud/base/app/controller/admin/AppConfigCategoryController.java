@@ -29,7 +29,7 @@ public class AppConfigCategoryController extends BaseController {
     private AppConfigCategoryService appConfigCategoryService;
 
     @ApiOperation(value = "应用配置分类列表")
-    @RequestMapping(value = "/app/config/category/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         AppConfigCategoryView appConfigCategoryView = getEntry(AppConfigCategoryView.class);
 
@@ -55,7 +55,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "所有应用配置分类列表")
-    @RequestMapping(value = "/app/config/category/admin/v1/all/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/all/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> allListV1() {
     	AppConfigCategoryView appConfigCategoryView = getEntry(AppConfigCategoryView.class);
 
@@ -71,7 +71,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类信息")
-    @RequestMapping(value = "/app/config/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         AppConfigCategoryView appConfigCategoryView = getEntry(AppConfigCategoryView.class);
 
@@ -94,7 +94,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类新增")
-    @RequestMapping(value = "/app/config/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         AppConfigCategory appConfigCategoryEntity = getEntry(AppConfigCategory.class);
 
@@ -120,7 +120,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类修改")
-    @RequestMapping(value = "/app/config/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         AppConfigCategory appConfigCategoryEntity = getEntry(AppConfigCategory.class);
 
@@ -146,7 +146,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类删除")
-    @RequestMapping(value = "/app/config/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         AppConfigCategory appConfigCategoryEntity = getEntry(AppConfigCategory.class);
 
@@ -168,7 +168,7 @@ public class AppConfigCategoryController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置分类数据同步")
-    @RequestMapping(value = "/app/config/category/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/category/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<AppConfigCategory> appConfigCategoryList = appConfigCategoryService.listByMysql();
 

@@ -59,7 +59,7 @@ public class ForumUserFollowMobileController extends BaseController {
 	private TopicForumService topicForumService;
 
 	@ApiOperation(value = "新增用户论坛关注")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
 		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
@@ -129,7 +129,7 @@ public class ForumUserFollowMobileController extends BaseController {
 
 
 	@ApiOperation(value = "邀请用户加入论坛")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/invite/user", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> inviteUserV1() {
 		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
@@ -175,7 +175,7 @@ public class ForumUserFollowMobileController extends BaseController {
     }
 	
 	@ApiOperation(value = "批量新增用户论坛关注")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/batch/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> batchSaveV1() {
 		ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
@@ -237,7 +237,7 @@ public class ForumUserFollowMobileController extends BaseController {
         
 
     @ApiOperation(value = "用户关注论坛列表")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
     	ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
@@ -295,7 +295,7 @@ public class ForumUserFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "用户所有关注论坛名称列表")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/name/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/name/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> nameListV1() {
     	ForumUserFollow body = getEntry(ForumUserFollow.class);
         validateRequest(
@@ -327,7 +327,7 @@ public class ForumUserFollowMobileController extends BaseController {
     }
     
     @ApiOperation(value = "置顶用户关注论坛")
-    @RequestMapping(value = "/forum/user/follow/mobile/v1/top", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/follow/mobile/v1/top", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> topV1() {
     	ForumUserFollow forumUserFollowEntry = getEntry(ForumUserFollow.class);
         validateRequest(

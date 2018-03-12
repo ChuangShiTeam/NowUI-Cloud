@@ -59,7 +59,7 @@ public class CodeController extends BaseController {
         @ApiImplicitParam(name = CodeView.TABLE_SCHEMA, value = "数据库名称", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = CodeView.TABLE_NAME, value = "表名称", required = true, paramType = "query", dataType = "string"),
     })
-    @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> tableList(@ApiIgnore CodeView codeView) {
         
         validateRequest(codeView, CodeView.TABLE_SCHEMA, CodeView.TABLE_NAME);
@@ -76,7 +76,7 @@ public class CodeController extends BaseController {
         @ApiImplicitParam(name = CodeView.TABLE_SCHEMA, value = "数据库名称", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = CodeView.TABLE_NAME, value = "表名称", required = true, paramType = "query", dataType = "string"),
     })
-    @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> fieldlLst(@ApiIgnore CodeView codeView) {
 
         validateRequest(codeView, CodeView.TABLE_SCHEMA, CodeView.TABLE_NAME);
@@ -95,7 +95,7 @@ public class CodeController extends BaseController {
         @ApiImplicitParam(name = CodeView.AUTHOR, value = "开发者", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = CodeView.COLUMN_LIST, value = "数据列表", required = true, paramType = "query", dataType = "string"),
     })
-    @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> generate(@ApiIgnore CodeView codeView) {
 
         validateRequest(codeView, CodeView.TABLE_COMMENT, CodeView.TABLE_NAME, CodeView.AUTHOR, CodeView.COLUMN_LIST);

@@ -45,7 +45,7 @@ public class TopicUserUnlikeMobileController extends BaseController {
 	private TopicService topicService;
 	
 	@ApiOperation(value = "新增话题用户取消点赞关联")
-    @RequestMapping(value = "/topic/user/unlike/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unlike/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
 		TopicUserUnlike body = getEntry(TopicUserUnlike.class);
         validateRequest(

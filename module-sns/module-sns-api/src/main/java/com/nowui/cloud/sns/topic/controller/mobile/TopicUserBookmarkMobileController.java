@@ -49,7 +49,7 @@ public class TopicUserBookmarkMobileController extends BaseController {
 	private MemberRpc memberRpc;
 	
 	@ApiOperation(value = "新增话题收藏")
-    @RequestMapping(value = "/topic/user/bookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/bookmark/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
 		TopicUserBookmark body = getEntry(TopicUserBookmark.class);
         validateRequest(

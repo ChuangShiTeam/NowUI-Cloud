@@ -32,7 +32,7 @@ public class TopicTipAdminController extends BaseController {
     private TopicTipService topicTipService;
 
     @ApiOperation(value = "话题提醒列表")
-    @RequestMapping(value = "/topic/tip/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
@@ -56,7 +56,7 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题提醒信息")
-    @RequestMapping(value = "/topic/tip/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
@@ -76,7 +76,7 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
@@ -92,7 +92,7 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
@@ -110,7 +110,7 @@ public class TopicTipAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题提醒")
-    @RequestMapping(value = "/topic/tip/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody TopicTip body) {
         validateRequest(
                 body,
@@ -126,7 +126,7 @@ public class TopicTipAdminController extends BaseController {
     }
     
     @ApiOperation(value = "动态提醒数据同步")
-    @RequestMapping(value = "/topic/tip/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/tip/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody TopicTip body) {
     	List<TopicTip> topicTips = topicTipService.listByMysql();
     	

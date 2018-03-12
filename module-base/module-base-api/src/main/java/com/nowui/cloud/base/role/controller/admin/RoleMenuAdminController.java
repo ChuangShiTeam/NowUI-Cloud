@@ -29,7 +29,7 @@ public class RoleMenuAdminController extends BaseController {
     private RoleMenuService roleMenuService;
 
     @ApiOperation(value = "角色菜单列表")
-    @RequestMapping(value = "/role/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
 
@@ -55,7 +55,7 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色菜单信息")
-    @RequestMapping(value = "/role/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
 
@@ -77,7 +77,7 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增角色菜单")
-    @RequestMapping(value = "/role/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
 
@@ -100,7 +100,7 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改角色菜单")
-    @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
 
@@ -125,7 +125,7 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除角色菜单")
-    @RequestMapping(value = "/role/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         RoleMenu roleMenuEntity = getEntry(RoleMenu.class);
 
@@ -148,7 +148,7 @@ public class RoleMenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色数据同步")
-    @RequestMapping(value = "/role/menu/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/menu/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<RoleMenu> roleMenuList = roleMenuService.listByMysql();
 

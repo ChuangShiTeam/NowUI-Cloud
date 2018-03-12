@@ -31,7 +31,7 @@ public class MemberDialogueMobileController extends BaseController {
     private UserRpc userRpc;
 
 //    @ApiOperation(value = "会员对话查找")
-//    @RequestMapping(value = "/member/dialogue/mobile/v1/find", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/member/dialogue/mobile/v1/find", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> findV1(@RequestBody MemberDialogue body) {
 //        validateRequest(
 //                body,
@@ -110,7 +110,7 @@ public class MemberDialogueMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "会员对话记录列表")
-//    @RequestMapping(value = "/member/dialogue/record/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/member/dialogue/record/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> recordListV1(@RequestBody MemberDialogue body) {
 //        validateRequest(
 //                body,
@@ -176,7 +176,7 @@ public class MemberDialogueMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "新增会员对话记录")
-//    @RequestMapping(value = "/member/dialogue/record/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/member/dialogue/record/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> saveV1(@RequestBody MemberDialogueRecord body) {
 //        validateRequest(
 //                body,

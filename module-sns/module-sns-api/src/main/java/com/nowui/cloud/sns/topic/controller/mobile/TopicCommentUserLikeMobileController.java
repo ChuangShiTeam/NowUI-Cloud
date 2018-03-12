@@ -43,7 +43,7 @@ public class TopicCommentUserLikeMobileController extends BaseController {
 	private MemberRpc memberRpc;
 	
 	@ApiOperation(value = "新增话题的评论用户点赞")
-    @RequestMapping(value = "/topic/comment/user/like/mubile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/like/mubile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         TopicCommentUserLike body = getEntry(TopicCommentUserLike.class);
 

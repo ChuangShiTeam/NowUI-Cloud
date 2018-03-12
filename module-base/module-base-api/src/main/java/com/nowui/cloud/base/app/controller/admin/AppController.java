@@ -30,7 +30,7 @@ public class AppController extends BaseController {
     private AppService appService;
     
     @ApiOperation(value = "应用列表")
-    @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         AppView appView = getEntry(AppView.class);
 
@@ -45,7 +45,7 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用信息")
-    @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         App appView = getEntry(App.class);
 
@@ -59,7 +59,7 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用新增")
-    @RequestMapping(value = "/app/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         App appEntity = getEntry(App.class);
 
@@ -84,7 +84,7 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用修改")
-    @RequestMapping(value = "/app/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         App appEntity = getEntry(App.class);
 
@@ -106,7 +106,7 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用删除")
-    @RequestMapping(value = "/app/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         App appEntity = getEntry(App.class);
 
@@ -124,7 +124,7 @@ public class AppController extends BaseController {
     }
 
     @ApiOperation(value = "应用数据同步")
-    @RequestMapping(value = "/app/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<App> appList = appService.listByMysql();
 

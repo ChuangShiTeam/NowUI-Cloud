@@ -33,7 +33,7 @@ public class NotifyAdminController extends BaseController {
     private NotifyService notifyService;
 
     @ApiOperation(value = "消息列表")
-    @RequestMapping(value = "/notify/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -63,7 +63,7 @@ public class NotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "消息信息")
-    @RequestMapping(value = "/notify/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -89,7 +89,7 @@ public class NotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增消息")
-    @RequestMapping(value = "/notify/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -117,7 +117,7 @@ public class NotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改消息")
-    @RequestMapping(value = "/notify/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -145,7 +145,7 @@ public class NotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除消息")
-    @RequestMapping(value = "/notify/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -168,7 +168,7 @@ public class NotifyAdminController extends BaseController {
     }
 
     @ApiOperation(value = "消息数据同步")
-    @RequestMapping(value = "/notify/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Notify> notifyList = notifyService.listByMysql();
 

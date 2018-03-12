@@ -31,7 +31,7 @@ public class AdvertisementMobileController extends BaseController {
     private AdvertisementService advertisementService;
 
     @ApiOperation(value = "首页广告轮播图列表")
-    @RequestMapping(value = "/advertisement/mobile/v1/index/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/mobile/v1/index/banner/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> indexBannerListV1() {
         AdvertisementView advertisementView = getEntry(AdvertisementView.class);
         validateRequest(
@@ -51,7 +51,7 @@ public class AdvertisementMobileController extends BaseController {
     }
     
     @ApiOperation(value = "首页热门话题广告轮播图列表")
-    @RequestMapping(value = "/advertisement/mobile/v1/index/hot/topic/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/mobile/v1/index/hot/topic/banner/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> indexHotTopicBannerlistV1() {
         AdvertisementView advertisementView = getEntry(AdvertisementView.class);
         validateRequest(

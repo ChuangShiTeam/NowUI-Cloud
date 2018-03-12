@@ -40,7 +40,7 @@ public class WawiMyMobileController extends BaseController {
     private MemberRpc memberRpc;
     
 //    @ApiOperation(value = "哇伊我的首页列表")
-//    @RequestMapping(value = "/wawi/mobile/v1/my/index", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/wawi/mobile/v1/my/index", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> myIndexV1(@RequestBody App body) {
 //        validateRequest(
 //            body,
@@ -58,7 +58,7 @@ public class WawiMyMobileController extends BaseController {
 //    }
     
 //    @ApiOperation(value = "哇伊我的个人资料")
-//    @RequestMapping(value = "/wawi/mobile/v1/my/info", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/wawi/mobile/v1/my/info", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> myInfoV1(@RequestBody App body) {
 //        validateRequest(
 //            body,
@@ -83,7 +83,7 @@ public class WawiMyMobileController extends BaseController {
 //    }
     
 //    @ApiOperation(value = "更新我的个人资料")
-//    @RequestMapping(value = "/wawi/mobile/v1/my/info/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/wawi/mobile/v1/my/info/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> myInfoUpdateV1(@RequestBody Member body){
 //        validateRequest(
 //            body,
@@ -135,7 +135,7 @@ public class WawiMyMobileController extends BaseController {
 //    }
     
     @ApiOperation(value = "哇伊我的首页消息提示")
-    @RequestMapping(value = "/wawi/mobile/v1/my/index/message", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/mobile/v1/my/index/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> myIndexMessageV1(@RequestBody App body) {
         validateRequest(
             body, 

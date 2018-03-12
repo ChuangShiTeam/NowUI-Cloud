@@ -36,7 +36,7 @@ public class TopicForumAdminController extends BaseController {
     private TopicForumService topicForumService;
 
     @ApiOperation(value = "话题论坛关联列表")
-    @RequestMapping(value = "/topic/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
@@ -60,7 +60,7 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题论坛关联信息")
-    @RequestMapping(value = "/topic/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
@@ -80,7 +80,7 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
@@ -96,7 +96,7 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
@@ -114,7 +114,7 @@ public class TopicForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题论坛关联")
-    @RequestMapping(value = "/topic/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody TopicForum body) {
         validateRequest(
                 body,
@@ -130,7 +130,7 @@ public class TopicForumAdminController extends BaseController {
     }
     
     @ApiOperation(value = "圈子动态数据同步")
-    @RequestMapping(value = "/topic/forum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody TopicForum body) {
     	List<TopicForum> topicForums = topicForumService.listByMysql();
     	

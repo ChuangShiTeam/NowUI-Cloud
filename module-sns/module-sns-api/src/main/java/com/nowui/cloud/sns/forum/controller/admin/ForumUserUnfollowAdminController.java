@@ -28,7 +28,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     private ForumUserUnfollowService forumUserUnfollowService;
 
     @ApiOperation(value = "论坛用户取关关联列表")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
@@ -52,7 +52,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛用户取关关联信息")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
@@ -72,7 +72,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增论坛用户取关关联")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
@@ -87,7 +87,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改论坛用户取关关联")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
@@ -104,7 +104,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除论坛用户取关关联")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody ForumUserUnfollow body) {
         validateRequest(
                 body,
@@ -119,7 +119,7 @@ public class ForumUserUnfollowAdminController extends BaseController {
     }
     
     @ApiOperation(value = "论坛用户取消关注数据同步")
-    @RequestMapping(value = "/forum/user/unfollow/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody ForumUserUnfollow body) {
     	
     	List<ForumUserUnfollow> forumUserUnfollows= forumUserUnfollowService.listByMysql();

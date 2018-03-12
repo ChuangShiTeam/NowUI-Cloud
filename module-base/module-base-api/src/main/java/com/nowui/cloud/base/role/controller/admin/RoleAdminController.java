@@ -29,7 +29,7 @@ public class RoleAdminController extends BaseController {
     private RoleService roleService;
 
     @ApiOperation(value = "角色列表")
-    @RequestMapping(value = "/role/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         Role roleEntity = getEntry(Role.class);
 
@@ -56,7 +56,7 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色信息")
-    @RequestMapping(value = "/role/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         Role roleEntity = getEntry(Role.class);
 
@@ -80,7 +80,7 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增角色")
-    @RequestMapping(value = "/role/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Role roleEntity = getEntry(Role.class);
 
@@ -107,7 +107,7 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改角色")
-    @RequestMapping(value = "/role/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Role roleEntity = getEntry(Role.class);
 
@@ -134,7 +134,7 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除角色")
-    @RequestMapping(value = "/role/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Role roleEntity = getEntry(Role.class);
 
@@ -157,7 +157,7 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "角色数据同步")
-    @RequestMapping(value = "/role/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/role/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Role> roleList = roleService.listByMysql();
 

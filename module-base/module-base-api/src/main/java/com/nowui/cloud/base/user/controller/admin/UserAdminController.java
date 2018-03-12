@@ -71,7 +71,7 @@ public class UserAdminController extends BaseController {
 	private UserWechatService userWechatService;
 	
 	@ApiOperation(value = "用户数据同步")
-    @RequestMapping(value = "/user/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<User> userList = userService.listByMysql();
 

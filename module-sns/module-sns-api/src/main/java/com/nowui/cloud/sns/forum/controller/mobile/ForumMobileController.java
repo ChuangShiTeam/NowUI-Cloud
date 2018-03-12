@@ -93,7 +93,7 @@ public class ForumMobileController extends BaseController {
      private MemberRpc memberRpc;
      
 	 @ApiOperation(value = "新增论坛信息")
-	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @RequestMapping(value = "/forum/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public Map<String, Object> saveV1() {
 		 Forum body = getEntry(Forum.class);
 	     validateRequest(
@@ -189,7 +189,7 @@ public class ForumMobileController extends BaseController {
     }
 	
 	@ApiOperation(value = "查询论坛信息")
-    @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
 		Forum body = getEntry(Forum.class);
         validateRequest(
@@ -270,7 +270,7 @@ public class ForumMobileController extends BaseController {
     }
 	
 	@ApiOperation(value = "论坛中所有用户信息")
-    @RequestMapping(value = "/forum/mobile/v1/findAll", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/findAll", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findAllV1() {
 		Forum body = getEntry(Forum.class);
         validateRequest(
@@ -299,7 +299,7 @@ public class ForumMobileController extends BaseController {
     }
 	
 	@ApiOperation(value = "论坛推荐列表")
-    @RequestMapping(value = "/forum/mobile/v1/recommend/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/recommend/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> recommendListV1() {
 		Forum body = getEntry(Forum.class);
         validateRequest(
@@ -336,7 +336,7 @@ public class ForumMobileController extends BaseController {
     }
 
 	@ApiOperation(value = "更新论坛头像")
-	@RequestMapping(value = "/forum/mobile/v1/update/media", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/forum/mobile/v1/update/media", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> updateMediaV1() {
 	   Forum body = getEntry(Forum.class);
 	   validateRequest(
@@ -374,7 +374,7 @@ public class ForumMobileController extends BaseController {
     }
 
 	@ApiOperation(value = "更新论坛名称")
-	@RequestMapping(value = "/forum/mobile/v1/update/name", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/forum/mobile/v1/update/name", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> updateNameV1() {
 		Forum body = getEntry(Forum.class);
 	    validateRequest(
@@ -436,7 +436,7 @@ public class ForumMobileController extends BaseController {
     }
 
 	@ApiOperation(value = "更新论坛简介")
-	@RequestMapping(value = "/forum/mobile/v1/update/description", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/forum/mobile/v1/update/description", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> updateDescriptionV1() {
 		Forum body = getEntry(Forum.class);
 	    validateRequest(
@@ -471,7 +471,7 @@ public class ForumMobileController extends BaseController {
 	
 
 	@ApiOperation(value = "删除论坛")
-    @RequestMapping(value = "/forum/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
 		Forum body = getEntry(Forum.class);
         validateRequest(
@@ -544,7 +544,7 @@ public class ForumMobileController extends BaseController {
     }
 	
     @ApiOperation(value = "论坛信息搜索列表")
-    @RequestMapping(value = "/forum/mobile/v1/search/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/search/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> searchListV1() {
     	Forum body = getEntry(Forum.class);
         validateRequest(
@@ -588,7 +588,7 @@ public class ForumMobileController extends BaseController {
     }
     
     @ApiOperation(value = "论坛主页信息(论坛主页)")
-    @RequestMapping(value = "/forum/mobile/v1/home", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/home", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeV1() {
     	Forum body = getEntry(Forum.class);
         validateRequest(
@@ -632,7 +632,7 @@ public class ForumMobileController extends BaseController {
 
 
     @ApiOperation(value = "论坛详情的主页的动态列表")
-    @RequestMapping(value = "/forum/mobile/v1/home/topic/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/mobile/v1/home/topic/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeTopicV1() {
     	Forum body = getEntry(Forum.class);
         validateRequest(

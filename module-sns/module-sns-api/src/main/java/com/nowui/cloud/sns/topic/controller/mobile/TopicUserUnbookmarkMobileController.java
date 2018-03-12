@@ -49,7 +49,7 @@ public class TopicUserUnbookmarkMobileController extends BaseController {
 	private MemberRpc memberRpc;
 
 	@ApiOperation(value = "新增话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
 		TopicUserUnbookmark body = getEntry(TopicUserUnbookmark.class);
         validateRequest(

@@ -60,7 +60,7 @@ public class TopicUserLikeMobileController extends BaseController {
 	private MemberRpc memberRpc;
 	
     @ApiOperation(value = "给话题点赞的用户列表")
-    @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/like/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
     	TopicUserLike body = getEntry(TopicUserLike.class);
         validateRequest(
@@ -117,7 +117,7 @@ public class TopicUserLikeMobileController extends BaseController {
 
 
     @ApiOperation(value = "新增点赞话题关联")
-    @RequestMapping(value = "/topic/user/like/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/like/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
     	TopicUserLike body = getEntry(TopicUserLike.class);
         validateRequest(

@@ -30,7 +30,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     private ${firstUpperWithoutUnderlineEntityName}Service ${firstLowerWithoutUnderlineEntityName}Service;
 
     @ApiOperation(value = "${tableComment}列表")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
@@ -58,7 +58,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}信息")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
@@ -82,7 +82,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}新增")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
@@ -115,7 +115,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}修改")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
@@ -148,7 +148,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}删除")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
@@ -176,7 +176,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}数据同步")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = ${firstLowerWithoutUnderlineEntityName}Service.listByMysql();
 

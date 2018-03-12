@@ -33,7 +33,7 @@ public class ToolbarMobileController extends BaseController {
     private ToolbarService toolbarService;
 
     @ApiOperation(value = "工具栏列表")
-	@RequestMapping(value = "/toolbar/mobile/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/toolbar/mobile/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> listV1() {
         ToolbarView toolbarView = getEntry(ToolbarView.class);
         

@@ -32,7 +32,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     private TopicUserUnbookmarkService topicUserUnbookmarkService;
 
     @ApiOperation(value = "话题用户取消收藏关联列表")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
@@ -56,7 +56,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题用户取消收藏关联信息")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
@@ -76,7 +76,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
@@ -92,7 +92,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
@@ -110,7 +110,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题用户取消收藏关联")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody TopicUserUnbookmark body) {
         validateRequest(
                 body,
@@ -127,7 +127,7 @@ public class TopicUserUnbookmarkAdminController extends BaseController {
     
     
     @ApiOperation(value = "动态取消收藏数据同步")
-    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/user/unbookmark/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody TopicUserUnbookmark body) {
     	List<TopicUserUnbookmark> unbookmarks = topicUserUnbookmarkService.listByMysql();
     	

@@ -31,7 +31,7 @@ public class AppConfigController extends BaseController {
     private AppConfigService appConfigService;
     
     @ApiOperation(value = "应用配置列表")
-    @RequestMapping(value = "/app/config/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         AppConfigView appConfigView = getEntry(AppConfigView.class);
 
@@ -61,7 +61,7 @@ public class AppConfigController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置信息")
-    @RequestMapping(value = "/app/config/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         AppConfigView appConfigView = getEntry(AppConfigView.class);
 
@@ -86,7 +86,7 @@ public class AppConfigController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置新增")
-    @RequestMapping(value = "/app/config/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         AppConfig appConfigEntity = getEntry(AppConfig.class);
 
@@ -114,7 +114,7 @@ public class AppConfigController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置修改")
-    @RequestMapping(value = "/app/config/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         AppConfig appConfigEntity = getEntry(AppConfig.class);
 
@@ -141,7 +141,7 @@ public class AppConfigController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置删除")
-    @RequestMapping(value = "/app/config/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         AppConfig appConfigEntity = getEntry(AppConfig.class);
 
@@ -163,7 +163,7 @@ public class AppConfigController extends BaseController {
     }
 
     @ApiOperation(value = "应用配置数据同步")
-    @RequestMapping(value = "/app/config/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/app/config/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<AppConfig> appConfigList = appConfigService.listByMysql();
 

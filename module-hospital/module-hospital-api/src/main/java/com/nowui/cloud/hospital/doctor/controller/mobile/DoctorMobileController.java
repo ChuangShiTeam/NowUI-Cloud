@@ -29,7 +29,7 @@ public class DoctorMobileController extends BaseController {
     private DoctorService doctorService;
 
     @ApiOperation(value = "医生列表")
-    @RequestMapping(value = "/doctor/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         DoctorView doctorView = getEntry(DoctorView.class);
 

@@ -43,7 +43,7 @@ public class NotifyMobileController extends BaseController {
     private MemberRpc memberRpc;
 
     @ApiOperation(value = "新增一条公告记录")
-    @RequestMapping(value = "/notify/mobile/v1/create/notify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/mobile/v1/create/notify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> createAnnounceV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -67,7 +67,7 @@ public class NotifyMobileController extends BaseController {
     }
 
     @ApiOperation(value = "新增一条提醒记录")
-    @RequestMapping(value = "/notify/mobile/v1/create/remind", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notify/mobile/v1/create/remind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> createRemindV1() {
         Notify notifyEntity = getEntry(Notify.class);
 
@@ -95,7 +95,7 @@ public class NotifyMobileController extends BaseController {
     }
 
 //    @ApiOperation(value = "拉取公告信息")
-//    @RequestMapping(value = "/notify/mobile/v1/pull/announce", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/notify/mobile/v1/pull/announce", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> pullAnnounceV1(@RequestBody Notify body) {
 //        validateRequest(
 //                body,
@@ -156,7 +156,7 @@ public class NotifyMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "拉取提醒信息")
-//    @RequestMapping(value = "/notify/mobile/v1/pull/remind", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/notify/mobile/v1/pull/remind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> pullRemindV1(@RequestBody User body) {
 //        validateRequest(
 //                body,
@@ -203,7 +203,7 @@ public class NotifyMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "订阅消息")
-//    @RequestMapping(value = "/notify/mobile/v1/subscribe/message", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/notify/mobile/v1/subscribe/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> subscribeV1(@RequestBody User body) {
 //        validateRequest(
 //                body,
@@ -249,7 +249,7 @@ public class NotifyMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "取消订阅")
-//    @RequestMapping(value = "/notify/mobile/v1/delete/subscribe", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/notify/mobile/v1/delete/subscribe", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> cancelSubscriptionV1(@RequestBody User body) {
 //        validateRequest(
 //                body,
@@ -268,7 +268,7 @@ public class NotifyMobileController extends BaseController {
 //    }
 //
 //    @ApiOperation(value = "将消息设置成已读")
-//    @RequestMapping(value = "/notify/mobile/v1/set/read", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/notify/mobile/v1/set/read", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> readV1(@RequestBody UserNotify body) {
 //        validateRequest(
 //                body,

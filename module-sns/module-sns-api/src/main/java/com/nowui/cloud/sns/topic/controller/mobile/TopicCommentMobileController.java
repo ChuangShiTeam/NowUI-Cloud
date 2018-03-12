@@ -51,7 +51,7 @@ public class TopicCommentMobileController extends BaseController {
     private TopicCommentUserLikeService topicCommentUserLikeService;
 
     @ApiOperation(value = "话题详情页评论列表")
-    @RequestMapping(value = "/topic/comment/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
     	TopicComment body = getEntry(TopicComment.class);
         validateRequest(
@@ -120,7 +120,7 @@ public class TopicCommentMobileController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题评论")
-    @RequestMapping(value = "/topic/comment/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
     	TopicComment body = getEntry(TopicComment.class);
         validateRequest(
@@ -189,7 +189,7 @@ public class TopicCommentMobileController extends BaseController {
     
     
     @ApiOperation(value = "删除话题评论")
-    @RequestMapping(value = "/topic/comment/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/mobile/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
     	TopicComment body = getEntry(TopicComment.class);
         validateRequest(

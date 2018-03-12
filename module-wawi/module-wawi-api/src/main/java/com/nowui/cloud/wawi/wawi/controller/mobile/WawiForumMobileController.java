@@ -38,7 +38,7 @@ public class WawiForumMobileController extends BaseController {
     private ForumRpc forumRpc;
     
     @ApiOperation(value = "哇伊圈子首页初始数据")
-    @RequestMapping(value = "/wawi/mobile/v1/forum/index", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/mobile/v1/forum/index", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> indexInitV1() {
         App app = getEntry(App.class);
         validateRequest(

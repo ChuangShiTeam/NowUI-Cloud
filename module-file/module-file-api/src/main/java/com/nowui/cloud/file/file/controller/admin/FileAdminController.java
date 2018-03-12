@@ -36,7 +36,7 @@ public class FileAdminController extends BaseController {
     private FileService fileService;
 
     @ApiOperation(value = "文件列表")
-    @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         File fileEntity = getEntry(File.class);
 
@@ -65,7 +65,7 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文件信息")
-    @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         File fileEntity = getEntry(File.class);
 
@@ -95,7 +95,7 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文件")
-    @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         File fileEntity = getEntry(File.class);
 
@@ -145,7 +145,7 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "base64图片上传")
-    @RequestMapping(value = "/file/admin/image/base64/upload", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/image/base64/upload", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> imageBase64Upload() {
         File fileEntity = getEntry(File.class);
 
@@ -167,7 +167,7 @@ public class FileAdminController extends BaseController {
     }
 
     @ApiOperation(value = "图片数据同步")
-    @RequestMapping(value = "/file/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/file/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<File> fileList = fileService.listByMysql();
 

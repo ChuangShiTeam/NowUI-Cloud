@@ -32,7 +32,7 @@ public class ArticleMobileController extends BaseController {
     private ArticleService articleService;
     
     @ApiOperation(value = "热门文章列表")
-    @RequestMapping(value = "/article/mobile/v1/hot/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/mobile/v1/hot/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> hotListV1() {
         ArticleView articleEntity = getEntry(ArticleView.class);
 

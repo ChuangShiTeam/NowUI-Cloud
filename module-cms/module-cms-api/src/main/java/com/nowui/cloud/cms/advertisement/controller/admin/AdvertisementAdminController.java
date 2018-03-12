@@ -38,7 +38,7 @@ public class AdvertisementAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "广告分页列表")
-    @RequestMapping(value = "/advertisement/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         AdvertisementView advertisementView = getEntry(AdvertisementView.class);
 
@@ -71,7 +71,7 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询广告信息")
-    @RequestMapping(value = "/advertisement/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         AdvertisementView advertisementView = getEntry(AdvertisementView.class);
 
@@ -100,7 +100,7 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告新增")
-    @RequestMapping(value = "/advertisement/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Advertisement advertisementEntity = getEntry(Advertisement.class);
 
@@ -140,7 +140,7 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告修改")
-    @RequestMapping(value = "/advertisement/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Advertisement advertisementEntity = getEntry(Advertisement.class);
 
@@ -180,7 +180,7 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告删除")
-    @RequestMapping(value = "/advertisement/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Advertisement advertisementEntity = getEntry(Advertisement.class);
 
@@ -209,7 +209,7 @@ public class AdvertisementAdminController extends BaseController {
     }
 
     @ApiOperation(value = "广告数据同步")
-    @RequestMapping(value = "/advertisement/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/advertisement/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Advertisement> advertisementList = advertisementService.listByMysql();
 
