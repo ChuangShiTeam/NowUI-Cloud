@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleMediaServiceImpl extends SuperServiceImpl<ArticleMediaMapper, ArticleMedia, ArticleMediaRepository, ArticleMediaView> implements ArticleMediaService {
+public class ArticleMediaServiceImpl extends BaseServiceImpl<ArticleMediaMapper, ArticleMedia, ArticleMediaRepository, ArticleMediaView> implements ArticleMediaService {
 
     @Override
     public List<ArticleMedia> listByArticleId(String articleId) {

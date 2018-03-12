@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-28
  */
 @Service
-public class SubscriptionConfigServiceImpl extends SuperServiceImpl<SubscriptionConfigMapper, SubscriptionConfig,SubscriptionConfigRepository,SubscriptionConfigView> implements SubscriptionConfigService {
+public class SubscriptionConfigServiceImpl extends BaseServiceImpl<SubscriptionConfigMapper, SubscriptionConfig,SubscriptionConfigRepository,SubscriptionConfigView> implements SubscriptionConfigService {
 
     @Override
     public Integer countForAdmin(String appId, String subscriptionAction, String subscriptionUserId) {

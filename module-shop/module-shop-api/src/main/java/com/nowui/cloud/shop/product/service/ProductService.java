@@ -1,6 +1,6 @@
 package com.nowui.cloud.shop.product.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.view.ProductView;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author ZhongYongQiang
  */
-public interface ProductService extends SuperService<Product, ProductView> {
+public interface ProductService extends BaseService<Product, ProductView> {
 
     /**
      * 商品计数

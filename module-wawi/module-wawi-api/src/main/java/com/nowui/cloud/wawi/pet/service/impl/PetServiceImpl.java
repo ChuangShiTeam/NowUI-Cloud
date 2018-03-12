@@ -22,7 +22,7 @@ import java.util.List;
  * 2018-01-21
  */
 @Service
-public class PetServiceImpl extends SuperServiceImpl<PetMapper, Pet, PetRepository, PetView> implements PetService {
+public class PetServiceImpl extends BaseServiceImpl<PetMapper, Pet, PetRepository, PetView> implements PetService {
 
     @Override
     public Integer countForAdmin(String appId, String petCategoryId, String petName) {

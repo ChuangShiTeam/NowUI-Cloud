@@ -28,7 +28,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class TopicCommentServiceImpl extends SuperServiceImpl<TopicCommentMapper, TopicComment, TopicCommentRepository, TopicCommentView> implements TopicCommentService {
+public class TopicCommentServiceImpl extends BaseServiceImpl<TopicCommentMapper, TopicComment, TopicCommentRepository, TopicCommentView> implements TopicCommentService {
 
     public static final String TOPIC_COMMENT_COUNT_BY_TOPIC_ID = "topic_comment_count_by_topic_id_";
     

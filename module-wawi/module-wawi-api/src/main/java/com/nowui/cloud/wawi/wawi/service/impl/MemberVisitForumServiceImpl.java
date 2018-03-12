@@ -22,7 +22,7 @@ import com.nowui.cloud.wawi.wawi.view.MemberVisitForumView;
  * 2018-01-17
  */
 @Service
-public class MemberVisitForumServiceImpl extends SuperServiceImpl<MemberVisitForumMapper, MemberVisitForum, MemberVisitForumRepository, MemberVisitForumView> implements MemberVisitForumService {
+public class MemberVisitForumServiceImpl extends BaseServiceImpl<MemberVisitForumMapper, MemberVisitForum, MemberVisitForumRepository, MemberVisitForumView> implements MemberVisitForumService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId) {

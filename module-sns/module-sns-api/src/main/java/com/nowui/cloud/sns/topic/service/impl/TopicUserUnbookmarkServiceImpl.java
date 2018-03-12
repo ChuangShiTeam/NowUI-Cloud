@@ -24,7 +24,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicUserUnbookmarkServiceImpl extends SuperServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark, TopicUserUnbookmarkRepository, TopicUserUnbookmarkView> implements TopicUserUnbookmarkService {
+public class TopicUserUnbookmarkServiceImpl extends BaseServiceImpl<TopicUserUnbookmarkMapper, TopicUserUnbookmark, TopicUserUnbookmarkRepository, TopicUserUnbookmarkView> implements TopicUserUnbookmarkService {
 
     @Override
     public Integer countForAdmin(String appId, String topicId, String memberId) {

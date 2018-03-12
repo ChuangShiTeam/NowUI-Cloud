@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.subscription.entity.SubscriptionConfig;
 import com.nowui.cloud.base.subscription.view.SubscriptionConfigView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 订阅配置业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-28
  */
-public interface SubscriptionConfigService extends SuperService<SubscriptionConfig,SubscriptionConfigView> {
+public interface SubscriptionConfigService extends BaseService<SubscriptionConfig,SubscriptionConfigView> {
 
     /**
      * 订阅配置统计

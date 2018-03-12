@@ -24,7 +24,7 @@ import java.util.List;
  * 2018-01-23
  */
 @Service
-public class TopicCommentUserUnlikeServiceImpl extends SuperServiceImpl<TopicCommentUserUnlikeMapper, TopicCommentUserUnlike, TopicCommentUserUnlikeRepository, TopicCommentUserUnlikeView> implements TopicCommentUserUnlikeService {
+public class TopicCommentUserUnlikeServiceImpl extends BaseServiceImpl<TopicCommentUserUnlikeMapper, TopicCommentUserUnlike, TopicCommentUserUnlikeRepository, TopicCommentUserUnlikeView> implements TopicCommentUserUnlikeService {
 	
 
     @Override

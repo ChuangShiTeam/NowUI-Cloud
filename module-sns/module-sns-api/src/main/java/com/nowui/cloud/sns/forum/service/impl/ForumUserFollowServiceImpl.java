@@ -27,7 +27,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ForumUserFollowServiceImpl extends SuperServiceImpl<ForumUserFollowMapper, ForumUserFollow, ForumUserFollowRepository, ForumUserFollowView> implements ForumUserFollowService {
+public class ForumUserFollowServiceImpl extends BaseServiceImpl<ForumUserFollowMapper, ForumUserFollow, ForumUserFollowRepository, ForumUserFollowView> implements ForumUserFollowService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String forumId) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.sms.entity.SmsCaptcha;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 短信验证码业务接口
@@ -13,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-05
  */
-public interface SmsCaptchaService extends SuperService<SmsCaptcha,SmsCaptchaView> {
+public interface SmsCaptchaService extends BaseService<SmsCaptcha,SmsCaptchaView> {
 
     /**
      * 短信验证码统计

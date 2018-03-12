@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleArticleCategoryServiceImpl extends SuperServiceImpl<ArticleArticleCategoryMapper, ArticleArticleCategory, ArticleArticleCategoryRepository, ArticleArticleCategoryView> implements ArticleArticleCategoryService {
+public class ArticleArticleCategoryServiceImpl extends BaseServiceImpl<ArticleArticleCategoryMapper, ArticleArticleCategory, ArticleArticleCategoryRepository, ArticleArticleCategoryView> implements ArticleArticleCategoryService {
 
     @Override
     public ArticleArticleCategoryView findPrimaryByArticleId(String articleId) {

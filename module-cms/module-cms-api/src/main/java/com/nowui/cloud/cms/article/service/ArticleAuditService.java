@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.article.entity.ArticleAudit;
 import com.nowui.cloud.cms.article.view.ArticleAuditView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 文章审核业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-03
  */
-public interface ArticleAuditService extends SuperService<ArticleAudit, ArticleAuditView> {
+public interface ArticleAuditService extends BaseService<ArticleAudit, ArticleAuditView> {
 
     /**
      * 文章审核统计

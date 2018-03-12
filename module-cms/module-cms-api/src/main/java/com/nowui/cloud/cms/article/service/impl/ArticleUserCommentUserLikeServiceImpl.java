@@ -21,7 +21,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ArticleUserCommentUserLikeServiceImpl extends SuperServiceImpl<ArticleUserCommentUserLikeMapper, ArticleUserCommentUserLike, ArticleUserCommentUserLikeRepository, ArticleUserCommentUserLikeView> implements ArticleUserCommentUserLikeService {
+public class ArticleUserCommentUserLikeServiceImpl extends BaseServiceImpl<ArticleUserCommentUserLikeMapper, ArticleUserCommentUserLike, ArticleUserCommentUserLikeRepository, ArticleUserCommentUserLikeView> implements ArticleUserCommentUserLikeService {
 
     @Override
     public Integer countForAdmin(String appId, String articleUserCommentId, String userId) {

@@ -1,7 +1,7 @@
 package com.nowui.cloud.sns.member.service;
 import java.util.List;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.member.entity.MemberFollow;
 import com.nowui.cloud.sns.member.view.MemberFollowView;
 
@@ -12,7 +12,7 @@ import com.nowui.cloud.sns.member.view.MemberFollowView;
  *
  * 2018-01-02
  */
-public interface MemberFollowService extends SuperService<MemberFollow,MemberFollowView> {
+public interface MemberFollowService extends BaseService<MemberFollow,MemberFollowView> {
 
     /**
      * 会员关注统计

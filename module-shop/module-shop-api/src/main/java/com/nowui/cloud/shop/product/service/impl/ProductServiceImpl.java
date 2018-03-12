@@ -23,7 +23,7 @@ import java.util.List;
  * 2018-02-03
  */
 @Service
-public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product, ProductRepository, ProductView> implements ProductService {
+public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product, ProductRepository, ProductView> implements ProductService {
 
     @Override
     public Integer countForAdmin(String appId, String productName) {

@@ -4,7 +4,7 @@ import java.util.List;
 import com.nowui.cloud.member.member.entity.MemberDialogue;
 import com.nowui.cloud.member.member.view.MemberDialogueView;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 会员对话业务接口
@@ -13,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-08
  */
-public interface MemberDialogueService extends SuperService<MemberDialogue,MemberDialogueView> {
+public interface MemberDialogueService extends BaseService<MemberDialogue,MemberDialogueView> {
 
     /**
      * 会员对话统计

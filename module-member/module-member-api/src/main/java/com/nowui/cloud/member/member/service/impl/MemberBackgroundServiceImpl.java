@@ -21,7 +21,7 @@ import com.nowui.cloud.mybatisplus.BaseWrapper;
  * 2018-01-14
  */
 @Service
-public class MemberBackgroundServiceImpl extends SuperServiceImpl<MemberBackgroundMapper, MemberBackground, MemberBackgroundRepository, MemberBackgroundView> implements MemberBackgroundService {
+public class MemberBackgroundServiceImpl extends BaseServiceImpl<MemberBackgroundMapper, MemberBackground, MemberBackgroundRepository, MemberBackgroundView> implements MemberBackgroundService {
 
     @Override
     public MemberBackground findByMemberId(String memberId) {

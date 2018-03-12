@@ -1,6 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnderlineEntityName}View;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * ${date}
  */
-public interface ${firstUpperWithoutUnderlineEntityName}Service extends SuperService<${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}View> {
+public interface ${firstUpperWithoutUnderlineEntityName}Service extends BaseService<${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}View> {
 
     /**
      * ${tableComment}统计

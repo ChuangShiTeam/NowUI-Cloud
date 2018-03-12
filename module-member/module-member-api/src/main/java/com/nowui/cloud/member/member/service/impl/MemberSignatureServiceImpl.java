@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-14
  */
 @Service
-public class MemberSignatureServiceImpl extends SuperServiceImpl<MemberSignatureMapper, MemberSignature, MemberSignatureRepository, MemberSignatureView> implements MemberSignatureService {
+public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureMapper, MemberSignature, MemberSignatureRepository, MemberSignatureView> implements MemberSignatureService {
 
     @Override
     public MemberSignature findByMemberId(String memberId) {

@@ -23,7 +23,7 @@ import java.util.List;
  * 2018-03-02
  */
 @Service
-public class PatientServiceImpl extends SuperServiceImpl<PatientMapper, Patient, PatientRepository, PatientView> implements PatientService {
+public class PatientServiceImpl extends BaseServiceImpl<PatientMapper, Patient, PatientRepository, PatientView> implements PatientService {
 
     @Override
         public Integer countForAdmin(String appId, String patientPhone, String patientNickname, String patientProvince, String patientCity, String patientArea, String patientSource) {

@@ -31,7 +31,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicForumServiceImpl extends SuperServiceImpl<TopicForumMapper, TopicForum, TopicForumRepository, TopicForumView> implements TopicForumService {
+public class TopicForumServiceImpl extends BaseServiceImpl<TopicForumMapper, TopicForum, TopicForumRepository, TopicForumView> implements TopicForumService {
 
     public static final String TOPIC_FORUM_ID_LIST_BY_TOPIC_ID = "topic_forum_id_list_by_topic_id_";
     

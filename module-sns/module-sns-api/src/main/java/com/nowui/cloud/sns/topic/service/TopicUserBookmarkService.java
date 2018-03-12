@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicUserBookmark;
 import com.nowui.cloud.sns.topic.view.TopicUserBookmarkView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserBookmarkService extends SuperService<TopicUserBookmark, TopicUserBookmarkView> {
+public interface TopicUserBookmarkService extends BaseService<TopicUserBookmark, TopicUserBookmarkView> {
 
     /**
      * 话题收藏统计

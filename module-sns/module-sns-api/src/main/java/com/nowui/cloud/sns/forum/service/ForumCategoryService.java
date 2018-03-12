@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.forum.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.forum.entity.ForumCategory;
 import com.nowui.cloud.sns.forum.view.ForumCategoryView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ForumCategoryService extends SuperService<ForumCategory, ForumCategoryView> {
+public interface ForumCategoryService extends BaseService<ForumCategory, ForumCategoryView> {
 
     /**
      * 论坛分类统计

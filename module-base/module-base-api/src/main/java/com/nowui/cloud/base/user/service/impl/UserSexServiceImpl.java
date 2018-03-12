@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserSexServiceImpl extends SuperServiceImpl<UserSexMapper, UserSex, UserSexRepository, UserSexView> implements UserSexService {
+public class UserSexServiceImpl extends BaseServiceImpl<UserSexMapper, UserSex, UserSexRepository, UserSexView> implements UserSexService {
 
     @Override
     public UserSex findByUserId(String userId) {

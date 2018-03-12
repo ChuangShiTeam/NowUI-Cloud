@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnlike;
 import com.nowui.cloud.sns.topic.view.TopicUserUnlikeView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserUnlikeService extends SuperService<TopicUserUnlike, TopicUserUnlikeView> {
+public interface TopicUserUnlikeService extends BaseService<TopicUserUnlike, TopicUserUnlikeView> {
 
     /**
      * 话题用户取消点赞关联统计

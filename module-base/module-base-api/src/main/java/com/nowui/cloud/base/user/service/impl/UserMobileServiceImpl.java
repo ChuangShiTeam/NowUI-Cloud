@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserMobileServiceImpl extends SuperServiceImpl<UserMobileMapper, UserMobile, UserMobileRepository, UserMobileView> implements UserMobileService {
+public class UserMobileServiceImpl extends BaseServiceImpl<UserMobileMapper, UserMobile, UserMobileRepository, UserMobileView> implements UserMobileService {
 
     @Override
     public UserMobile findByUserId(String userId) {

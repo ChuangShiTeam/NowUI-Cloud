@@ -23,7 +23,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2017年12月26日
  */
 @Service
-public class ToolbarServiceImpl extends SuperServiceImpl<ToolbarMapper, Toolbar, ToolbarRepository, ToolbarView> implements ToolbarService {
+public class ToolbarServiceImpl extends BaseServiceImpl<ToolbarMapper, Toolbar, ToolbarRepository, ToolbarView> implements ToolbarService {
 
     @Override
     public Integer countForAdmin(String appId, String toolbarName) {

@@ -17,6 +17,6 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-02
  */
 @Service
-public class UserRoleServiceImpl extends SuperServiceImpl<UserRoleMapper, UserRole, UserRoleRepository, UserRoleView> implements UserRoleService {
+public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRole, UserRoleRepository, UserRoleView> implements UserRoleService {
 
 }

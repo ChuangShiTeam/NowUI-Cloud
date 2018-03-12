@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.subscription.entity.Subscription;
 import com.nowui.cloud.base.subscription.view.SubscriptionView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 订阅业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-28
  */
-public interface SubscriptionService extends SuperService<Subscription,SubscriptionView> {
+public interface SubscriptionService extends BaseService<Subscription,SubscriptionView> {
 
     /**
      * 订阅统计

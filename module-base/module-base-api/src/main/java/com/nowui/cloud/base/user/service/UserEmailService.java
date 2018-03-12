@@ -1,7 +1,7 @@
 package com.nowui.cloud.base.user.service;
 import com.nowui.cloud.base.user.entity.UserEmail;
 import com.nowui.cloud.base.user.view.UserEmailView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户邮箱业务接口
@@ -10,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-08
  */
-public interface UserEmailService extends SuperService<UserEmail,UserEmailView> {
+public interface UserEmailService extends BaseService<UserEmail,UserEmailView> {
     
     /**
      * 根据用户编号查询用户邮箱信息

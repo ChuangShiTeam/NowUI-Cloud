@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.forum.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.forum.entity.ForumBackgroundMedia;
 import com.nowui.cloud.sns.forum.view.ForumBackgroundMediaView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-03-09
  */
-public interface ForumBackgroundMediaService extends SuperService<ForumBackgroundMedia, ForumBackgroundMediaView> {
+public interface ForumBackgroundMediaService extends BaseService<ForumBackgroundMedia, ForumBackgroundMediaView> {
 
     /**
      * 论坛背景统计

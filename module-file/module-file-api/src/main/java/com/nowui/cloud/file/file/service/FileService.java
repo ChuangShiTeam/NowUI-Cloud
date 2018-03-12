@@ -1,6 +1,6 @@
 package com.nowui.cloud.file.file.service;
 import com.nowui.cloud.file.file.view.FileView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.file.file.entity.File;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  *
  * 2018-01-01
  */
-public interface FileService extends SuperService<File,FileView> {
+public interface FileService extends BaseService<File,FileView> {
 
     /**
      * 文件统计

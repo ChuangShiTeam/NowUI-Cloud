@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.article.entity.ArticleArticleCategory;
 import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 文章文章分类业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-03
  */
-public interface ArticleArticleCategoryService extends SuperService<ArticleArticleCategory, ArticleArticleCategoryView> {
+public interface ArticleArticleCategoryService extends BaseService<ArticleArticleCategory, ArticleArticleCategoryView> {
     
     /**
      * 根据文章ID查询文章的主文章分类

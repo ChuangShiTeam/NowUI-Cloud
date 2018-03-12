@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.navigation.view.NavigationView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 导航栏业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-02
  */
-public interface NavigationService extends SuperService<Navigation, NavigationView> {
+public interface NavigationService extends BaseService<Navigation, NavigationView> {
 
     /**
      * 导航栏统计

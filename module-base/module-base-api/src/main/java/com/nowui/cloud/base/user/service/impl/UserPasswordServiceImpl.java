@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-11
  */
 @Service
-public class UserPasswordServiceImpl extends SuperServiceImpl<UserPasswordMapper, UserPassword, UserPasswordRepository, UserPasswordView> implements UserPasswordService {
+public class UserPasswordServiceImpl extends BaseServiceImpl<UserPasswordMapper, UserPassword, UserPasswordRepository, UserPasswordView> implements UserPasswordService {
 
     @Override
     public UserPassword findByUserId(String userId) {

@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserEmailServiceImpl extends SuperServiceImpl<UserEmailMapper, UserEmail, UserEmailRepository, UserEmailView> implements UserEmailService {
+public class UserEmailServiceImpl extends BaseServiceImpl<UserEmailMapper, UserEmail, UserEmailRepository, UserEmailView> implements UserEmailService {
 
     @Override
     public UserEmail findByUserId(String userId) {

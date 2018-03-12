@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.advertisement.entity.Advertisement;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 广告业务接口
@@ -13,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2017年12月26日
  */
-public interface AdvertisementService extends SuperService<Advertisement, AdvertisementView> {
+public interface AdvertisementService extends BaseService<Advertisement, AdvertisementView> {
     
     /**
      * 广告统计

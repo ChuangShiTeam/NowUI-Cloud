@@ -17,7 +17,7 @@ import com.nowui.cloud.code.code.service.CodeService;
  *
  */
 @Service
-public class CodeServiceImpl extends SuperServiceImpl<CodeMapper, Code, CodeRepository, CodeView> implements CodeService {
+public class CodeServiceImpl extends BaseServiceImpl<CodeMapper, Code, CodeRepository, CodeView> implements CodeService {
 
     @Override
     public List<Code> tableSchemaList(String tableSchema, String tableName) {

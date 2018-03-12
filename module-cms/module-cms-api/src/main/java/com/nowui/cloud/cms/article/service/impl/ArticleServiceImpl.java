@@ -33,7 +33,7 @@ import com.nowui.cloud.util.Util;
  * 2017年12月26日
  */
 @Service
-public class ArticleServiceImpl extends SuperServiceImpl<ArticleMapper, Article, ArticleRepository, ArticleView> implements ArticleService {
+public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article, ArticleRepository, ArticleView> implements ArticleService {
     
     @Autowired
     private ArticleArticleCategoryService articleArticleCategoryService;

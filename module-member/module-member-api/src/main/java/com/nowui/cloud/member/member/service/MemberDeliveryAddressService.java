@@ -2,7 +2,7 @@ package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.view.MemberDeliveryAddressView;
 import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.member.member.entity.MemberDeliveryAddress;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-14
  */
-public interface MemberDeliveryAddressService extends SuperService<MemberDeliveryAddress,MemberDeliveryAddressView> {
+public interface MemberDeliveryAddressService extends BaseService<MemberDeliveryAddress,MemberDeliveryAddressView> {
 
     /**
      * 会员收货地址统计

@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-28
  */
 @Service
-public class NotifyServiceImpl extends SuperServiceImpl<NotifyMapper, Notify,NotifyRepository,NotifyView> implements NotifyService {
+public class NotifyServiceImpl extends BaseServiceImpl<NotifyMapper, Notify,NotifyRepository,NotifyView> implements NotifyService {
 
     public static final String NOTIFY_ANNOUNCE_RECORD_BY_APP_ID = "notify_announce_record_by_app_id";
 

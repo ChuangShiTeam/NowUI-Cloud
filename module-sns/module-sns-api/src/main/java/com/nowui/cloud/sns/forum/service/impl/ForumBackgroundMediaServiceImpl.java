@@ -23,7 +23,7 @@ import java.util.List;
  * 2018-03-09
  */
 @Service
-public class ForumBackgroundMediaServiceImpl extends SuperServiceImpl<ForumBackgroundMediaMapper, ForumBackgroundMedia, ForumBackgroundMediaRepository, ForumBackgroundMediaView> implements ForumBackgroundMediaService {
+public class ForumBackgroundMediaServiceImpl extends BaseServiceImpl<ForumBackgroundMediaMapper, ForumBackgroundMedia, ForumBackgroundMediaRepository, ForumBackgroundMediaView> implements ForumBackgroundMediaService {
 
     @Override
         public Integer countForAdmin(String appId, String forumId) {

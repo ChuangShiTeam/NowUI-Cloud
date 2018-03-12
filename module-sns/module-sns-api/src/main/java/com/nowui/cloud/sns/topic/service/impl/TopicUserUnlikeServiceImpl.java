@@ -24,7 +24,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicUserUnlikeServiceImpl extends SuperServiceImpl<TopicUserUnlikeMapper, TopicUserUnlike, TopicUserUnlikeRepository, TopicUserUnlikeView> implements TopicUserUnlikeService {
+public class TopicUserUnlikeServiceImpl extends BaseServiceImpl<TopicUserUnlikeMapper, TopicUserUnlike, TopicUserUnlikeRepository, TopicUserUnlikeView> implements TopicUserUnlikeService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String topicId) {

@@ -22,7 +22,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ForumCategoryServiceImpl extends SuperServiceImpl<ForumCategoryMapper, ForumCategory, ForumCategoryRepository, ForumCategoryView> implements ForumCategoryService {
+public class ForumCategoryServiceImpl extends BaseServiceImpl<ForumCategoryMapper, ForumCategory, ForumCategoryRepository, ForumCategoryView> implements ForumCategoryService {
 
     @Override
     public Integer countForAdmin(String appId, String forumCategoryName, String forumCategoryThumb, Integer forumCategorySort, Boolean forumCategoryIsActive, Boolean forumCategoryIsRecommend) {

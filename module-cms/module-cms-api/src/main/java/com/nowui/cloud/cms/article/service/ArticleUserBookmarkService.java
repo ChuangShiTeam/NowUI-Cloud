@@ -1,6 +1,6 @@
 package com.nowui.cloud.cms.article.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.cms.article.entity.ArticleUserBookmark;
 import com.nowui.cloud.cms.article.view.ArticleUserBookmarkView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ArticleUserBookmarkService extends SuperService<ArticleUserBookmark, ArticleUserBookmarkView> {
+public interface ArticleUserBookmarkService extends BaseService<ArticleUserBookmark, ArticleUserBookmarkView> {
 
     /**
      * 文章用户收藏统计

@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-29
  */
 @Service
-public class MemberPreferenceLanguageServiceImpl extends SuperServiceImpl<MemberPreferenceLanguageMapper, MemberPreferenceLanguage, MemberPreferenceLanguageRepository, MemberPreferenceLanguageView> implements MemberPreferenceLanguageService {
+public class MemberPreferenceLanguageServiceImpl extends BaseServiceImpl<MemberPreferenceLanguageMapper, MemberPreferenceLanguage, MemberPreferenceLanguageRepository, MemberPreferenceLanguageView> implements MemberPreferenceLanguageService {
 
     @Override
     public MemberPreferenceLanguage findByMemberId(String memberId) {

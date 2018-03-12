@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicUserBookmarkServiceImpl extends SuperServiceImpl<TopicUserBookmarkMapper, TopicUserBookmark, TopicUserBookmarkRepository, TopicUserBookmarkView> implements TopicUserBookmarkService {
+public class TopicUserBookmarkServiceImpl extends BaseServiceImpl<TopicUserBookmarkMapper, TopicUserBookmark, TopicUserBookmarkRepository, TopicUserBookmarkView> implements TopicUserBookmarkService {
 
     public static final String TOPIC_USER_BOOKMARK_COUNT_BY_TOPIC_ID = "topic_user_bookmark_count_by_topic_id_";
 

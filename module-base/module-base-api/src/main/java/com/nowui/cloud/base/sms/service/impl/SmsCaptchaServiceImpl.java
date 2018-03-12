@@ -30,7 +30,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-05
  */
 @Service
-public class SmsCaptchaServiceImpl extends SuperServiceImpl<SmsCaptchaMapper, SmsCaptcha,SmsCaptchaRepository,SmsCaptchaView> implements SmsCaptchaService {
+public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, SmsCaptcha,SmsCaptchaRepository,SmsCaptchaView> implements SmsCaptchaService {
 
     @Autowired
     private AppConfigRpc appConfigRpc;

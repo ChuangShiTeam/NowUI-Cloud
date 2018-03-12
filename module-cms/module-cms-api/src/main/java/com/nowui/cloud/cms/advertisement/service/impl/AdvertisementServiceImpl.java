@@ -23,7 +23,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2017年12月26日
  */
 @Service
-public class AdvertisementServiceImpl extends SuperServiceImpl<AdvertisementMapper, Advertisement, AdvertisementRepository, AdvertisementView> implements AdvertisementService {
+public class AdvertisementServiceImpl extends BaseServiceImpl<AdvertisementMapper, Advertisement, AdvertisementRepository, AdvertisementView> implements AdvertisementService {
     
     @Override
     public Integer countForAdmin(String appId, String advertisementCategoryCode, String advertisementTitle) {

@@ -45,7 +45,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, TopicRepository, TopicView> implements TopicService {
+public class TopicServiceImpl extends BaseServiceImpl<TopicMapper, Topic, TopicRepository, TopicView> implements TopicService {
     
 	@Autowired
 	private TopicForumService topicForumService;

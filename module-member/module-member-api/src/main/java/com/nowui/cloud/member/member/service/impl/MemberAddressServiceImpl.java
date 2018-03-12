@@ -21,7 +21,7 @@ import com.nowui.cloud.mybatisplus.BaseWrapper;
  * 2018-01-08
  */
 @Service
-public class MemberAddressServiceImpl extends SuperServiceImpl<MemberAddressMapper, MemberAddress, MemberAddressRepository, MemberAddressView> implements MemberAddressService {
+public class MemberAddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, MemberAddress, MemberAddressRepository, MemberAddressView> implements MemberAddressService {
 
     @Override
     public MemberAddress findByMemberId(String memberId) {

@@ -2,7 +2,7 @@ package com.nowui.cloud.wawi.pet.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.wawi.pet.entity.PetCategory;
 import com.nowui.cloud.wawi.pet.view.PetCategoryView;
 
@@ -13,7 +13,7 @@ import com.nowui.cloud.wawi.pet.view.PetCategoryView;
  *
  * 2018-01-24
  */
-public interface PetCategoryService extends SuperService<PetCategory, PetCategoryView> {
+public interface PetCategoryService extends BaseService<PetCategory, PetCategoryView> {
 
     /**
      * 宠物分类统计

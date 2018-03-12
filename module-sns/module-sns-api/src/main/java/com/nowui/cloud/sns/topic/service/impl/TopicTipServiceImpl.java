@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicTipServiceImpl extends SuperServiceImpl<TopicTipMapper, TopicTip, TopicTipRepository, TopicTipView> implements TopicTipService {
+public class TopicTipServiceImpl extends BaseServiceImpl<TopicTipMapper, TopicTip, TopicTipRepository, TopicTipView> implements TopicTipService {
     
     public static final String TOPIC_TIP_ID_LIST_BY_TOPIC_ID = "topic_tip_id_list_by_topic_id_";
 

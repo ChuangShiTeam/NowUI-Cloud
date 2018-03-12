@@ -26,7 +26,7 @@ import com.nowui.cloud.sns.member.view.MemberFollowView;
  * 2018-01-02
  */
 @Service
-public class MemberFollowServiceImpl extends SuperServiceImpl<MemberFollowMapper, MemberFollow, MemberFollowRepository, MemberFollowView> implements MemberFollowService {
+public class MemberFollowServiceImpl extends BaseServiceImpl<MemberFollowMapper, MemberFollow, MemberFollowRepository, MemberFollowView> implements MemberFollowService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId) {

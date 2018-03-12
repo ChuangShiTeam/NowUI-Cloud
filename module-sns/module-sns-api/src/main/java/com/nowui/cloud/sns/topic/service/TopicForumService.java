@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.view.TopicForumView;
@@ -15,7 +15,7 @@ import com.nowui.cloud.sns.topic.view.TopicForumView;
  *
  * 2018-01-08
  */
-public interface TopicForumService extends SuperService<TopicForum, TopicForumView> {
+public interface TopicForumService extends BaseService<TopicForum, TopicForumView> {
 
     /**
      * 话题论坛关联统计

@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.admin.entity.Admin;
 import com.nowui.cloud.base.admin.view.AdminView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 管理员业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-01
  */
-public interface AdminService extends SuperService<Admin, AdminView> {
+public interface AdminService extends BaseService<Admin, AdminView> {
 
     /**
      * 管理员统计

@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.view.ArticleMediaView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 文章多媒体业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-03
  */
-public interface ArticleMediaService extends SuperService<ArticleMedia, ArticleMediaView> {
+public interface ArticleMediaService extends BaseService<ArticleMedia, ArticleMediaView> {
     
     /**
      * 根据文章ID查询文章的文章多媒体列表

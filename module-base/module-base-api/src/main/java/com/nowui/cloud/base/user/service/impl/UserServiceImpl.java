@@ -40,7 +40,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-02
  */
 @Service
-public class UserServiceImpl extends SuperServiceImpl<UserMapper, User, UserRepository, UserView> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, UserRepository, UserView> implements UserService {
 	
 	@Autowired
 	private UserAccountService userAccountService;

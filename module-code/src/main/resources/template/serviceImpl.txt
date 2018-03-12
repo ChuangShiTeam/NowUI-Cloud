@@ -23,7 +23,7 @@ import java.util.List;
  * ${date}
  */
 @Service
-public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends SuperServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}Repository, ${firstUpperWithoutUnderlineEntityName}View> implements ${firstUpperWithoutUnderlineEntityName}Service {
+public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}Repository, ${firstUpperWithoutUnderlineEntityName}View> implements ${firstUpperWithoutUnderlineEntityName}Service {
 
     @Override
         public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {

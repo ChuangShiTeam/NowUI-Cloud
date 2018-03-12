@@ -21,7 +21,7 @@ import java.util.List;
  * 2018-01-14
  */
 @Service
-public class MemberDeliveryAddressServiceImpl extends SuperServiceImpl<MemberDeliveryAddressMapper, MemberDeliveryAddress,MemberDeliveryAddressRepository,MemberDeliveryAddressView> implements MemberDeliveryAddressService {
+public class MemberDeliveryAddressServiceImpl extends BaseServiceImpl<MemberDeliveryAddressMapper, MemberDeliveryAddress,MemberDeliveryAddressRepository,MemberDeliveryAddressView> implements MemberDeliveryAddressService {
 
     @Override
     public Integer countForAdmin(String appId, String memberDeliveryAddressName, String memberDeliveryAddressPhone) {

@@ -26,7 +26,7 @@ import com.nowui.cloud.util.Util;
  * 2018-03-05
  */
 @Service
-public class MemberDefaultAvatarServiceImpl extends SuperServiceImpl<MemberDefaultAvatarMapper, MemberDefaultAvatar, MemberDefaultAvatarRepository, MemberDefaultAvatarView> implements MemberDefaultAvatarService {
+public class MemberDefaultAvatarServiceImpl extends BaseServiceImpl<MemberDefaultAvatarMapper, MemberDefaultAvatar, MemberDefaultAvatarRepository, MemberDefaultAvatarView> implements MemberDefaultAvatarService {
 
     @Override
     public Integer countForAdmin(String appId, String userAvatarFileId) {

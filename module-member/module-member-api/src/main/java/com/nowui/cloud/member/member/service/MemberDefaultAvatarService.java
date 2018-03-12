@@ -1,6 +1,6 @@
 package com.nowui.cloud.member.member.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.member.member.entity.MemberDefaultAvatar;
 import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-03-05
  */
-public interface MemberDefaultAvatarService extends SuperService<MemberDefaultAvatar, MemberDefaultAvatarView> {
+public interface MemberDefaultAvatarService extends BaseService<MemberDefaultAvatar, MemberDefaultAvatarView> {
 
     /**
      * 会员默认头像统计

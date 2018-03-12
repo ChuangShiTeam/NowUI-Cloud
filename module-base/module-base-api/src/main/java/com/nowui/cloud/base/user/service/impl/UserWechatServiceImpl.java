@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserWechatServiceImpl extends SuperServiceImpl<UserWechatMapper, UserWechat, UserWechatRepository, UserWechatView> implements UserWechatService {
+public class UserWechatServiceImpl extends BaseServiceImpl<UserWechatMapper, UserWechat, UserWechatRepository, UserWechatView> implements UserWechatService {
 
     @Override
     public UserWechat findByUserId(String userId) {

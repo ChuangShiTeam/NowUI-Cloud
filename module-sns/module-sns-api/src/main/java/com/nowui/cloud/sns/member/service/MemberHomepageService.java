@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.member.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.member.view.MemberHomepageView;
 import com.nowui.cloud.sns.topic.entity.MemberHomepage;
 
@@ -11,7 +11,7 @@ import com.nowui.cloud.sns.topic.entity.MemberHomepage;
  *
  * 2018-01-08
  */
-public interface MemberHomepageService extends SuperService<MemberHomepage, MemberHomepageView> {
+public interface MemberHomepageService extends BaseService<MemberHomepage, MemberHomepageView> {
 
 	/**
      * 根据memberId查询会员主页信息

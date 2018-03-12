@@ -33,7 +33,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class MemberServiceImpl extends SuperServiceImpl<MemberMapper, Member, MemberRepository, MemberView> implements MemberService {
+public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, MemberRepository, MemberView> implements MemberService {
 
     @Autowired
     private MemberSignatureService memberSignatureService;

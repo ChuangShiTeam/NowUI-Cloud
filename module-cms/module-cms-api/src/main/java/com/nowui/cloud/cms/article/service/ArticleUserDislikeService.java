@@ -1,6 +1,6 @@
 package com.nowui.cloud.cms.article.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.cms.article.entity.ArticleUserDislike;
 import com.nowui.cloud.cms.article.view.ArticleUserDislikeView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ArticleUserDislikeService extends SuperService<ArticleUserDislike, ArticleUserDislikeView> {
+public interface ArticleUserDislikeService extends BaseService<ArticleUserDislike, ArticleUserDislikeView> {
 
     /**
      * 文章用户鄙视统计

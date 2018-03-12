@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.view.TopicCommentUserLikeView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-23
  */
-public interface TopicCommentUserLikeService extends SuperService<TopicCommentUserLike, TopicCommentUserLikeView> {
+public interface TopicCommentUserLikeService extends BaseService<TopicCommentUserLike, TopicCommentUserLikeView> {
 
     /**
      * 话题的评论用户点赞统计

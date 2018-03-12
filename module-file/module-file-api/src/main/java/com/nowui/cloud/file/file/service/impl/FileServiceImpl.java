@@ -36,7 +36,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-01
  */
 @Service
-public class FileServiceImpl extends SuperServiceImpl<FileMapper, File, FileRepository, FileView> implements FileService {
+public class FileServiceImpl extends BaseServiceImpl<FileMapper, File, FileRepository, FileView> implements FileService {
 
     @Autowired
     private Config config;

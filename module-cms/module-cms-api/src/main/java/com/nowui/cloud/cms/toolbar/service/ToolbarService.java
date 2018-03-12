@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.view.ToolbarView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 工具栏业务接口
@@ -13,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2017年12月26日
  */
-public interface ToolbarService extends SuperService<Toolbar, ToolbarView>{
+public interface ToolbarService extends BaseService<Toolbar, ToolbarView>{
     
     /**
      * 工具栏统计

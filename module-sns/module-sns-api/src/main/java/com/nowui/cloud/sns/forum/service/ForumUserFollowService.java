@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.forum.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.view.ForumUserFollowView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ForumUserFollowService extends SuperService<ForumUserFollow, ForumUserFollowView> {
+public interface ForumUserFollowService extends BaseService<ForumUserFollow, ForumUserFollowView> {
 
     /**
      * 论坛用户关注统计

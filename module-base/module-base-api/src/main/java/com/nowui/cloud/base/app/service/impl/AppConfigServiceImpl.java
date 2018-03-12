@@ -24,7 +24,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppConfigServiceImpl extends SuperServiceImpl<AppConfigMapper, AppConfig, AppConfigRepository, AppConfigView> implements AppConfigService {
+public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppConfig, AppConfigRepository, AppConfigView> implements AppConfigService {
 
     @Override
     public Integer countForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled) {

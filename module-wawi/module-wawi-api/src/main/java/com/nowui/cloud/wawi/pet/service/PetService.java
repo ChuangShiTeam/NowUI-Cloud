@@ -1,7 +1,7 @@
 package com.nowui.cloud.wawi.pet.service;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.wawi.pet.entity.Pet;
 import com.nowui.cloud.wawi.pet.view.PetView;
 
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-21
  */
-public interface PetService extends SuperService<Pet, PetView> {
+public interface PetService extends BaseService<Pet, PetView> {
 
     /**
      * 宠物统计

@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.nowui.cloud.base.app.entity.AppConfigCategory;
 import com.nowui.cloud.base.app.view.AppConfigCategoryView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppConfigCategoryService extends SuperService<AppConfigCategory, AppConfigCategoryView> {
+public interface AppConfigCategoryService extends BaseService<AppConfigCategory, AppConfigCategoryView> {
     
     /**
      * 应用配置分类统计

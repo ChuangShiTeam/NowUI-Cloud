@@ -1,6 +1,6 @@
 package com.nowui.cloud.base.role.service;
 import com.nowui.cloud.base.role.view.RoleView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.base.role.entity.Role;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * 2018-01-02
  */
-public interface RoleService extends SuperService<Role,RoleView> {
+public interface RoleService extends BaseService<Role,RoleView> {
 
     /**
      * 角色统计

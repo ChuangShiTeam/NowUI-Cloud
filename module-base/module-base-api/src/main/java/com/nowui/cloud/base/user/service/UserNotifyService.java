@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.user.entity.UserNotify;
 import com.nowui.cloud.base.user.view.UserNotifyView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户消息队列表业务接口
@@ -13,7 +13,7 @@ import com.nowui.cloud.service.SuperService;
  * <p>
  * 2018-01-28
  */
-public interface UserNotifyService extends SuperService<UserNotify,UserNotifyView> {
+public interface UserNotifyService extends BaseService<UserNotify,UserNotifyView> {
 
     /**
      * 用户消息队列表统计

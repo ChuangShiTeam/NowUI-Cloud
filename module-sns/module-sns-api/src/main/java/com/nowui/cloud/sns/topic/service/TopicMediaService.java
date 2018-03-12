@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicMedia;
 import com.nowui.cloud.sns.topic.view.TopicMediaView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicMediaService extends SuperService<TopicMedia, TopicMediaView> {
+public interface TopicMediaService extends BaseService<TopicMedia, TopicMediaView> {
 
     /**
      * 话题多媒体统计

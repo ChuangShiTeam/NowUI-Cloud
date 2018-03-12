@@ -22,7 +22,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ArticleUserDislikeServiceImpl extends SuperServiceImpl<ArticleUserDislikeMapper, ArticleUserDislike, ArticleUserDislikeRepository, ArticleUserDislikeView> implements ArticleUserDislikeService {
+public class ArticleUserDislikeServiceImpl extends BaseServiceImpl<ArticleUserDislikeMapper, ArticleUserDislike, ArticleUserDislikeRepository, ArticleUserDislikeView> implements ArticleUserDislikeService {
 
     @Override
     public Integer countForAdmin(String appId, String articleId, String userId) {

@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicMediaServiceImpl extends SuperServiceImpl<TopicMediaMapper, TopicMedia, TopicMediaRepository, TopicMediaView> implements TopicMediaService {
+public class TopicMediaServiceImpl extends BaseServiceImpl<TopicMediaMapper, TopicMedia, TopicMediaRepository, TopicMediaView> implements TopicMediaService {
     
     public static final String TOPIC_MEDIA_ID_LIST_BY_TOPIC_ID = "topic_media_id_list_by_topic_id_";
 

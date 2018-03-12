@@ -5,7 +5,7 @@ import java.util.List;
 import com.nowui.cloud.member.member.entity.MemberInform;
 import com.nowui.cloud.member.member.view.MemberInformView;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 会员举报业务接口
@@ -14,7 +14,7 @@ import com.nowui.cloud.service.SuperService;
  * <p>
  * 2018-01-09
  */
-public interface MemberInformService extends SuperService<MemberInform, MemberInformView> {
+public interface MemberInformService extends BaseService<MemberInform, MemberInformView> {
 
     /**
      * 会员举报统计

@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-09
  */
 @Service
-public class MemberInformServiceImpl extends SuperServiceImpl<MemberInformMapper, MemberInform,MemberInformRepository,MemberInformView> implements MemberInformService {
+public class MemberInformServiceImpl extends BaseServiceImpl<MemberInformMapper, MemberInform,MemberInformRepository,MemberInformView> implements MemberInformService {
 
     @Override
     public Integer countForAdmin(String appId, String memberId, String userId, String informUserId, String informMemberId) {

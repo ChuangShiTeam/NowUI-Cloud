@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.forum.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.view.ForumView;
 
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ForumService extends SuperService<Forum, ForumView> {
+public interface ForumService extends BaseService<Forum, ForumView> {
 
     /**
      * 论坛信息统计(用于Admin)

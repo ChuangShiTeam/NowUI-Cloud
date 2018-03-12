@@ -2,7 +2,7 @@ package com.nowui.cloud.sns.topic.service;
 import java.util.List;
 
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicTip;
 import com.nowui.cloud.sns.topic.view.TopicTipView;
 
@@ -13,7 +13,7 @@ import com.nowui.cloud.sns.topic.view.TopicTipView;
  *
  * 2018-01-08
  */
-public interface TopicTipService extends SuperService<TopicTip, TopicTipView> {
+public interface TopicTipService extends BaseService<TopicTip, TopicTipView> {
 
     /**
      * 话题提醒统计

@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.topic.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.sns.topic.entity.TopicUserUnbookmark;
 import com.nowui.cloud.sns.topic.view.TopicUserUnbookmarkView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface TopicUserUnbookmarkService extends SuperService<TopicUserUnbookmark, TopicUserUnbookmarkView> {
+public interface TopicUserUnbookmarkService extends BaseService<TopicUserUnbookmark, TopicUserUnbookmarkView> {
 
     /**
      * 话题用户取消收藏关联统计

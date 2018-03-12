@@ -1,6 +1,6 @@
 package com.nowui.cloud.hospital.patient.service;
 
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.hospital.patient.entity.Patient;
 import com.nowui.cloud.hospital.patient.view.PatientView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-03-02
  */
-public interface PatientService extends SuperService<Patient, PatientView> {
+public interface PatientService extends BaseService<Patient, PatientView> {
 
     /**
      * 患者统计

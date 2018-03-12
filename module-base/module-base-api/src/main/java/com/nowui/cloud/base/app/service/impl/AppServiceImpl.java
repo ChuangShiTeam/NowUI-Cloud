@@ -22,7 +22,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * @since 2017-12-20
  */
 @Service
-public class AppServiceImpl extends SuperServiceImpl<AppMapper, App, AppRepository, AppView> implements AppService {
+public class AppServiceImpl extends BaseServiceImpl<AppMapper, App, AppRepository, AppView> implements AppService {
 
     @Override
     public Integer countForAdmin(String appName) {

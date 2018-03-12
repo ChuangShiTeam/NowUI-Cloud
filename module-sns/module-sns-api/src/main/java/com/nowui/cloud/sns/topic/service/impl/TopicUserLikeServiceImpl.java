@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class TopicUserLikeServiceImpl extends SuperServiceImpl<TopicUserLikeMapper, TopicUserLike, TopicUserLikeRepository, TopicUserLikeView> implements TopicUserLikeService {
+public class TopicUserLikeServiceImpl extends BaseServiceImpl<TopicUserLikeMapper, TopicUserLike, TopicUserLikeRepository, TopicUserLikeView> implements TopicUserLikeService {
 
     public static final String TOPIC_USER_LIKE_COUNT_BY_TOPIC_ID = "topic_user_like_count_by_topic_id_";
     

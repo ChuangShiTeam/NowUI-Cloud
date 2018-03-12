@@ -26,7 +26,7 @@ import java.util.Map;
  * 2018-01-01
  */
 @Service
-public class MenuServiceImpl extends SuperServiceImpl<MenuMapper, Menu,MenuRepository,MenuView> implements MenuService {
+public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu,MenuRepository,MenuView> implements MenuService {
 
     @Override
     public Integer countForAdmin(String appId, String menuName) {

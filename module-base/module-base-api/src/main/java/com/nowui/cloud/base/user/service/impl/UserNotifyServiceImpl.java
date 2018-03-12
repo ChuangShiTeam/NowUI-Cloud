@@ -23,7 +23,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-28
  */
 @Service
-public class UserNotifyServiceImpl extends SuperServiceImpl<UserNotifyMapper, UserNotify, UserNotifyRepository, UserNotifyView> implements UserNotifyService {
+public class UserNotifyServiceImpl extends BaseServiceImpl<UserNotifyMapper, UserNotify, UserNotifyRepository, UserNotifyView> implements UserNotifyService {
 
     @Override
     public Integer countForAdmin(String appId, Boolean userNotifyIsRead, String userNotifyOwerId) {

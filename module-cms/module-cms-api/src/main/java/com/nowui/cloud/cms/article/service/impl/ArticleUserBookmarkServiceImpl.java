@@ -22,7 +22,7 @@ import java.util.List;
  * 2018-01-08
  */
 @Service
-public class ArticleUserBookmarkServiceImpl extends SuperServiceImpl<ArticleUserBookmarkMapper, ArticleUserBookmark, ArticleUserBookmarkRepository, ArticleUserBookmarkView> implements ArticleUserBookmarkService {
+public class ArticleUserBookmarkServiceImpl extends BaseServiceImpl<ArticleUserBookmarkMapper, ArticleUserBookmark, ArticleUserBookmarkRepository, ArticleUserBookmarkView> implements ArticleUserBookmarkService {
 
     @Override
     public Integer countForAdmin(String appId, String articleId, String useId) {

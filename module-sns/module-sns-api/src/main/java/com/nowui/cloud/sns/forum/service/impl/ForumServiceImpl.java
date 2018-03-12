@@ -34,7 +34,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class ForumServiceImpl extends SuperServiceImpl<ForumMapper, Forum, ForumRepository, ForumView> implements ForumService {
+public class ForumServiceImpl extends BaseServiceImpl<ForumMapper, Forum, ForumRepository, ForumView> implements ForumService {
 
     @Override
     public Integer countForAdmin(String appId, String forumName, Boolean forumIsActive, Boolean forumIsRecommend, String forumAuditStatus) {

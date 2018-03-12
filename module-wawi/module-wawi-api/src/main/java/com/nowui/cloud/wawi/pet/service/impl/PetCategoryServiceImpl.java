@@ -24,7 +24,7 @@ import com.nowui.cloud.wawi.pet.view.PetCategoryView;
  * 2018-01-24
  */
 @Service
-public class PetCategoryServiceImpl extends SuperServiceImpl<PetCategoryMapper, PetCategory, PetCategoryRepository, PetCategoryView> implements PetCategoryService {
+public class PetCategoryServiceImpl extends BaseServiceImpl<PetCategoryMapper, PetCategory, PetCategoryRepository, PetCategoryView> implements PetCategoryService {
 
     /**
      * 应用宠物一级分类缓存KEY

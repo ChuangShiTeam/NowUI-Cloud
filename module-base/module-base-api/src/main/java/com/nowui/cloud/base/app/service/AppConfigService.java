@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.nowui.cloud.base.app.entity.AppConfig;
 import com.nowui.cloud.base.app.view.AppConfigView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppConfigService extends SuperService<AppConfig, AppConfigView> {
+public interface AppConfigService extends BaseService<AppConfig, AppConfigView> {
     
     /**
      * 应用配置统计

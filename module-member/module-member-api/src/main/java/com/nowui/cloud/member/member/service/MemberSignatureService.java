@@ -1,7 +1,7 @@
 package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.view.MemberSignatureView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 	会员签名业务接口
@@ -10,7 +10,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-14
  */
-public interface MemberSignatureService extends SuperService<MemberSignature,MemberSignatureView> {
+public interface MemberSignatureService extends BaseService<MemberSignature,MemberSignatureView> {
 
     /**
      * 根据会员编号查询会员签名信息

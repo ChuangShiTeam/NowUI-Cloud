@@ -21,7 +21,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-03
  */
 @Service
-public class ArticleAuditServiceImpl extends SuperServiceImpl<ArticleAuditMapper, ArticleAudit,  ArticleAuditRepository, ArticleAuditView> implements ArticleAuditService {
+public class ArticleAuditServiceImpl extends BaseServiceImpl<ArticleAuditMapper, ArticleAudit,  ArticleAuditRepository, ArticleAuditView> implements ArticleAuditService {
 
     @Override
     public Integer countForAdmin(String appId, String articleId, String userId, String articleAuditStatus) {

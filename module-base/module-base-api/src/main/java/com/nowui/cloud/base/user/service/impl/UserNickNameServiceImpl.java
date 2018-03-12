@@ -20,7 +20,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-08
  */
 @Service
-public class UserNickNameServiceImpl extends SuperServiceImpl<UserNickNameMapper, UserNickName, UserNickNameRepository, UserNickNameView> implements UserNickNameService {
+public class UserNickNameServiceImpl extends BaseServiceImpl<UserNickNameMapper, UserNickName, UserNickNameRepository, UserNickNameView> implements UserNickNameService {
 
     @Override
     public UserNickName findByUserId(String userId) {

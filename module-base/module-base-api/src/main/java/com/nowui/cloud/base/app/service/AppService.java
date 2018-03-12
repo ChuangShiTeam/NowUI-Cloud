@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.nowui.cloud.base.app.entity.App;
 import com.nowui.cloud.base.app.view.AppView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 
  * @author marcus
  * @since 2017-12-20
  */
-public interface AppService extends SuperService<App, AppView> {
+public interface AppService extends BaseService<App, AppView> {
     
     /**
      * 应用统计

@@ -20,7 +20,7 @@ import java.util.List;
  * 2018-01-02
  */
 @Service
-public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role,RoleRepository,RoleView> implements RoleService {
+public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role,RoleRepository,RoleView> implements RoleService {
 
     @Override
     public Integer countForAdmin(String appId, String roleName, String roleCode) {

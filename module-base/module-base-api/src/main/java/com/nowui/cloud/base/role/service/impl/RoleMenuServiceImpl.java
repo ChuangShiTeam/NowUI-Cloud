@@ -20,7 +20,7 @@ import java.util.List;
  * 2018-01-02
  */
 @Service
-public class RoleMenuServiceImpl extends SuperServiceImpl<RoleMenuMapper, RoleMenu, RoleMenuRepository, RoleMenuView> implements RoleMenuService {
+public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMenu, RoleMenuRepository, RoleMenuView> implements RoleMenuService {
 
     @Override
     public Integer countForAdmin(String appId, String roleId, String menuId) {

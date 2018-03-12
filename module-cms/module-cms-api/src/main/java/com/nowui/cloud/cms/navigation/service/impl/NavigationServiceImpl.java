@@ -26,7 +26,7 @@ import com.nowui.cloud.service.impl.SuperServiceImpl;
  * 2018-01-02
  */
 @Service
-public class NavigationServiceImpl extends SuperServiceImpl<NavigationMapper, Navigation, NavigationRepository, NavigationView> implements NavigationService {
+public class NavigationServiceImpl extends BaseServiceImpl<NavigationMapper, Navigation, NavigationRepository, NavigationView> implements NavigationService {
 	
     @Override
     public Integer countForAdmin(String appId, String navigationCategoryCode, String navigationCode, String navigationName) {

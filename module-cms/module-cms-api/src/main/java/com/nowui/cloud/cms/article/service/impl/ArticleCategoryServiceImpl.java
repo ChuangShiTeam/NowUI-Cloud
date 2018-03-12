@@ -27,7 +27,7 @@ import com.nowui.cloud.util.Util;
  * 2017年12月26日
  */
 @Service
-public class ArticleCategoryServiceImpl extends SuperServiceImpl<ArticleCategoryMapper, ArticleCategory, ArticleCategoryRepository, ArticleCategoryView> implements ArticleCategoryService {
+public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategoryMapper, ArticleCategory, ArticleCategoryRepository, ArticleCategoryView> implements ArticleCategoryService {
 
     @Override
     public Integer countForAdmin(String appId, String articleCategoryName, String articleCategoryCode) {

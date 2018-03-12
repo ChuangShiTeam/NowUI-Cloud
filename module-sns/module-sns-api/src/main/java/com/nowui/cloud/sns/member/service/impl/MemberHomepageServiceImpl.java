@@ -21,7 +21,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-08
  */
 @Service
-public class MemberHomepageServiceImpl extends SuperServiceImpl<MemberHomepageMapper, MemberHomepage, MemberHomepageRepository, MemberHomepageView> implements MemberHomepageService {
+public class MemberHomepageServiceImpl extends BaseServiceImpl<MemberHomepageMapper, MemberHomepage, MemberHomepageRepository, MemberHomepageView> implements MemberHomepageService {
 
 	@Override
 	public MemberHomepageView findByMemberId(String appId, String memberId) {

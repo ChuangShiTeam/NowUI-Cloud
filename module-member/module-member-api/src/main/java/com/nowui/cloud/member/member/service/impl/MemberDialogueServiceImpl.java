@@ -24,7 +24,7 @@ import com.nowui.cloud.service.impl.BaseServiceImpl;
  * 2018-01-08
  */
 @Service
-public class MemberDialogueServiceImpl extends SuperServiceImpl<MemberDialogueMapper, MemberDialogue,MemberDialogueRepository,MemberDialogueView> implements MemberDialogueService {
+public class MemberDialogueServiceImpl extends BaseServiceImpl<MemberDialogueMapper, MemberDialogue,MemberDialogueRepository,MemberDialogueView> implements MemberDialogueService {
 
     @Override
     public Integer countForAdmin(String appId, String initiateMemberId, String initiateUserId, String respondMemberId, String respondUserId) {

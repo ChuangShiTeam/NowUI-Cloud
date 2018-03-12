@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.view.UserView;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 
 /**
  * 用户业务接口
@@ -12,7 +12,7 @@ import com.nowui.cloud.service.SuperService;
  *
  * 2018-01-02
  */
-public interface UserService extends SuperService<User,UserView> {
+public interface UserService extends BaseService<User,UserView> {
 
     /**
      * 用户统计

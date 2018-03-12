@@ -1,6 +1,6 @@
 package com.nowui.cloud.cms.article.service;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.SuperService;
+import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.cms.article.entity.ArticleUserCommentUserLike;
 import com.nowui.cloud.cms.article.view.ArticleUserCommentUserLikeView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * 2018-01-08
  */
-public interface ArticleUserCommentUserLikeService extends SuperService<ArticleUserCommentUserLike, ArticleUserCommentUserLikeView> {
+public interface ArticleUserCommentUserLikeService extends BaseService<ArticleUserCommentUserLike, ArticleUserCommentUserLikeView> {
 
     /**
      * 文章用户评论用户点赞统计

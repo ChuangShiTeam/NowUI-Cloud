@@ -26,7 +26,7 @@ import com.nowui.cloud.util.Util;
  * 2018-01-01
  */
 @Service
-public class AdminServiceImpl extends SuperServiceImpl<AdminMapper, Admin, AdminRepository, AdminView> implements AdminService {
+public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin, AdminRepository, AdminView> implements AdminService {
     
     @Autowired
     private UserRpc userRpc;
