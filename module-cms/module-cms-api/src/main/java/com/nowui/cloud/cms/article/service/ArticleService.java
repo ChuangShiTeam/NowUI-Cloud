@@ -77,7 +77,7 @@ public interface ArticleService extends SuperService<Article, ArticleView> {
      * 
      * @param appId 应用编号
      * @param articleCategoryCode 文章主分类编码
-     * @return List<Article> 文章列表信息
+     * @return List<ArticleView> 文章列表信息
      */
-    List<Article> listByPrimaryCategoryCode(String appId, String articleCategoryCode);
+    List<ArticleView> listByPrimaryCategoryCode(String appId, String articleCategoryCode);
 }

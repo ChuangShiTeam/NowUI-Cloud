@@ -39,7 +39,6 @@ import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberBackground;
@@ -294,17 +293,16 @@ public class MemberMobileController extends BaseController {
         member.setMemberTopLevel(0);
 
         Member result = memberService.save(member, memberId, userAccountBean.getSystemRequestUserId());
-
-        Boolean success = false;
+        String userAvatarFileId = "";
+        String userAvatarFilePath = "";
+        String userNickName = "";
 
         if (result != null) {
             // 发送会员手机注册用户消息
             String userAccount = userAccountBean.getUserAccount();
             // 默认用户昵称
-            String userNickName = "WAWIPET" + userAccount.substring(userAccount.length() - 4);
+            userNickName = "WAWIPET" + userAccount.substring(userAccount.length() - 4);
             // 默认会员头像
-            String userAvatarFileId = null;
-            String userAvatarFilePath = null;
             MemberDefaultAvatarView memberDefaultAvatarView = memberDefaultAvatarService.randomFind(userAccountBean.getAppId());
             if (memberDefaultAvatarView != null) {
                 userAvatarFileId = memberDefaultAvatarView.getUserAvatarFileId();
@@ -333,10 +331,34 @@ public class MemberMobileController extends BaseController {
             // 发送会员保存信息
             sendMessage(memberView, MemberRouter.MEMBER_V1_SAVE, memberView.getAppId(), userAccountBean.getSystemRequestUserId());
             
-            success = true;
+        }
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.add(Calendar.YEAR, 1);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(User.USER_ID, userId);
+            jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
+            
+            map.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
+            
+            map.put(MemberView.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            map.put(MemberView.USER_NICK_NAME, userNickName);
+            map.put(MemberView.MEMBER_ID, memberId);
+            
+            validateResponse(
+                    Constant.TOKEN, 
+                    MemberView.USER_AVATAR_FILE_PATH,
+                    MemberView.USER_NICK_NAME,
+                    MemberView.MEMBER_ID
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return renderJson(success);
+        return renderJson(map);
     }
     
     @ApiOperation(value = "会员邮箱注册")
@@ -386,13 +408,12 @@ public class MemberMobileController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            // 发送会员手机注册用户消息
+            // 发送会员用户注册用户消息
             User user = new User();
             user.setAppId(userAccount.getAppId());
             user.setUserId(userId);
             user.setObjectId(memberId);
             user.setUserType(UserType.MEMBER.getKey());
-//            user.put(UserNickName.USER_NICK_NAME, "wawi" + theUserAccount.substring(theUserAccount.length() - 4 ));
             user.put(UserAccount.USER_ACCOUNT, theUserAccount);
             user.put(UserPassword.USER_PASSWORD, userPassword.getUserPassword());
             user.setSystemRequestUserId(userAccount.getSystemRequestUserId());
@@ -419,10 +440,10 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
-        
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
         if (!isRegister) {
@@ -441,9 +462,10 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
@@ -464,10 +486,11 @@ public class MemberMobileController extends BaseController {
         validateRequest(
                 userAccount,
                 UserAccount.APP_ID,
-                UserAccount.USER_ACCOUNT,
-                BaseEntity.SYSTEM_REQUEST_IP_ADDRESS
+                UserAccount.USER_ACCOUNT
         );
-
+        
+        String ipAddress = getIpAddress();
+        userAccount.setSystemRequestIpAddress(ipAddress);
         Boolean isRegister = userRpc.checkUserAccountV1(userAccount.getAppId(), UserType.MEMBER.getKey(), userAccount.getUserAccount());
         
         if (!isRegister) {
@@ -517,7 +540,22 @@ public class MemberMobileController extends BaseController {
             jsonObject.put(Constant.EXPIRE_TIME, calendar2.getTime());
             
             result.put(Constant.TOKEN, AesUtil.aesEncrypt(jsonObject.toJSONString(), Constant.PRIVATE_KEY));
-            validateResponse(Constant.TOKEN);
+            
+            String userAvatarFilePath = userView.getUserAvatarFilePath();
+            String userNickName = userView.getUserNickName();
+            MemberView memberView = memberService.findByUserId(userView.getUserId());
+            String memberId = memberView.getMemberId();
+            
+            result.put(MemberView.USER_AVATAR_FILE_PATH, userAvatarFilePath);
+            result.put(MemberView.USER_NICK_NAME, userNickName);
+            result.put(MemberView.MEMBER_ID, memberId);
+            
+            validateResponse(
+                    Constant.TOKEN, 
+                    MemberView.USER_AVATAR_FILE_PATH,
+                    MemberView.USER_NICK_NAME,
+                    MemberView.MEMBER_ID
+            );
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException("登录不成功");
@@ -578,7 +616,7 @@ public class MemberMobileController extends BaseController {
             		MemberView.USER_AVATAR_FILE_PATH,
             		MemberView.USER_NICK_NAME,
             		MemberView.MEMBER_ID
-            	);
+        	);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException("登录不成功");

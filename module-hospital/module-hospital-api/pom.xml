@@ -12,6 +12,11 @@
     <artifactId>module-hospital-api</artifactId>
 
     <dependencies>
+    	<dependency>
+            <groupId>com.nowui.cloud</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>com.nowui.cloud</groupId>
             <artifactId>module-hospital-sys</artifactId>

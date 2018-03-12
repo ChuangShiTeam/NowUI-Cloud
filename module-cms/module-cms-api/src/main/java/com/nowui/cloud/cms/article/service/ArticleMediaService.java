@@ -3,7 +3,6 @@ import java.util.List;
 
 import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.view.ArticleMediaView;
-import com.nowui.cloud.service.BaseService;
 import com.nowui.cloud.service.SuperService;
 
 /**

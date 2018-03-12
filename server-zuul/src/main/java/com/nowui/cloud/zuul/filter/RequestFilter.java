@@ -163,7 +163,7 @@ public class RequestFilter extends ZuulFilter {
      * @return systemUserId 请求用户编号
      */
     private String decipherToken(String token, RequestContext context) {
-        if (token != null) {
+        if (!Util.isNullOrEmpty(token)) {
             JSONObject jsonObject = null;
             try {
                 jsonObject = JSONObject.parseObject(AesUtil.aesDecrypt(token, "ShengLiUnion2010"));
@@ -179,6 +179,6 @@ public class RequestFilter extends ZuulFilter {
             }
         }
 
-        return null;
+        return "";
     }
 }

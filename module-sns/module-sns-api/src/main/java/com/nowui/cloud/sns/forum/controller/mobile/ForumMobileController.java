@@ -364,6 +364,7 @@ public class ForumMobileController extends BaseController {
        if (result != null) {
     	   
     	   ForumView forumView = JSON.parseObject(result.toJSONString(), ForumView.class);
+    	   
     	   forumService.update(forumView);
 
            success = true;

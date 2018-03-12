@@ -95,6 +95,10 @@ public class BaseController {
             return JSONObject.parseObject(getRequest().getAttribute(Constant.REQUEST_BODY).toString(), clazz);
         }
     }
+    
+    protected String getIpAddress() {
+    	return getRequest().getAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS).toString();
+    }
 
     protected String getSystemRequestUserId() {
         return getRequest().getParameter(Constant.SYSTEM_REQUEST_USER_ID);

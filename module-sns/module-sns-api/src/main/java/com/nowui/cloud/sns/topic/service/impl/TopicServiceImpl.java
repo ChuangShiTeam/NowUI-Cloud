@@ -257,13 +257,12 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 
 	@Override
 	public List<TopicView> listByMemberIdList(String appId, List<String> memberIdToSearchList, List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
-		long time = systemCreateTime.getTime();
 		Criteria criteria = Criteria.where(TopicView.APP_ID).is(appId)
                 .and(TopicView.MEMBER_ID).in(memberIdToSearchList)
                 .and(TopicView.TOPIC_ID).nin(excludeTopicIdList)
-                .and(TopicView.SYSTEM_CREATE_TIME).lte(time)
+                .and(TopicView.SYSTEM_CREATE_TIME).lte(systemCreateTime)
                 .and(TopicView.SYSTEM_STATUS).is(true);
-		
+		// DateUtil
         List<Order> orders = new ArrayList<Order>();
         orders.add(new Order(Sort.Direction.DESC, TopicView.SYSTEM_CREATE_TIME));
         Sort sort = Sort.by(orders);
@@ -423,8 +422,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	@Override
 	public List<TopicView> hotTopicList(List<String> excludeTopicIdList, Date systemCreateTime, Integer pageIndex, Integer pageSize) {
         Criteria criteria = Criteria.where(TopicView.TOPIC_ID).nin(excludeTopicIdList)
-        		.and(Topic.SYSTEM_CREATE_TIME).lte(DateUtil.getTwoMonthAgoDateTime())
-//        		.and(Topic.SYSTEM_CREATE_TIME).lte(systemCreateTime)
+        		.and(TopicView.SYSTEM_CREATE_TIME).gte(DateUtil.getTwoMonthAgoDateTime()).lte(systemCreateTime)
                 .and(TopicView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
@@ -444,7 +442,7 @@ public class TopicServiceImpl extends SuperServiceImpl<TopicMapper, Topic, Topic
 	@Override
 	public Integer countAllUserTopic() {
 		Criteria criteria = Criteria.where(TopicView.SYSTEM_STATUS).is(true)
-				.and(Topic.SYSTEM_CREATE_TIME).lte(DateUtil.getTwoMonthAgoDateTime());
+				.and(Topic.SYSTEM_CREATE_TIME).gte(DateUtil.getTwoMonthAgoDateTime());
 
         Query query = new Query(criteria);
 

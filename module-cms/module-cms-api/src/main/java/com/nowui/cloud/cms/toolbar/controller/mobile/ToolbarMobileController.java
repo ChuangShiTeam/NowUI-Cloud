@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.cms.navigation.entity.Navigation;
 import com.nowui.cloud.cms.toolbar.entity.Toolbar;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
+import com.nowui.cloud.cms.toolbar.view.ToolbarView;
 import com.nowui.cloud.controller.BaseController;
 
 import io.swagger.annotations.Api;
@@ -34,19 +34,21 @@ public class ToolbarMobileController extends BaseController {
 
     @ApiOperation(value = "工具栏列表")
 	@RequestMapping(value = "/toolbar/mobile/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> listV1(@RequestBody Navigation body) {
+	public Map<String, Object> listV1() {
+        ToolbarView toolbarView = getEntry(ToolbarView.class);
+        
     	validateRequest(
-    		body,
-    		Toolbar.APP_ID
+	        toolbarView,
+	        ToolbarView.APP_ID
     	);
 
-    	List<Toolbar> resultList = toolbarService.mobileList(body.getAppId());
+    	List<ToolbarView> resultList = toolbarService.mobileList(toolbarView.getAppId());
 
     	validateResponse(
-    		Toolbar.TOOLBAR_ACTIVE_IMAGE_FILE_ID,
-    		Toolbar.TOOLBAR_IMAGE_FILE_ID,
-    		Toolbar.TOOLBAR_URL,
-    		Toolbar.TOOLBAR_NAME
+	        ToolbarView.TOOLBAR_ACTIVE_IMAGE_FILE_PATH,
+	        ToolbarView.TOOLBAR_IMAGE_FILE_PATH,
+	        ToolbarView.TOOLBAR_URL,
+	        ToolbarView.TOOLBAR_NAME
     	);
 
     	return renderJson(resultList);

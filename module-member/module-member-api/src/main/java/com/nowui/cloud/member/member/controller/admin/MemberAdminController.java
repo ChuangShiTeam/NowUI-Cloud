@@ -165,5 +165,21 @@ public class MemberAdminController extends BaseController {
 
         return renderJson(success);
     }
+    
+    @ApiOperation(value = "会员数据同步")
+    @RequestMapping(value = "/member/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> synchronizeV1() {
+        List<Member> memberList = memberService.listByMysql();
+
+        for (Member member : memberList) {
+            MemberView memberView = new MemberView();
+            memberView.putAll(member);
+
+
+            memberService.saveOrUpdate(memberView);
+        }
+
+        return renderJson(true);
+    }
 
 }

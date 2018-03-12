@@ -1,15 +1,10 @@
 package com.nowui.cloud.cms.article.controller.system;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.cms.article.entity.Article;
 import com.nowui.cloud.cms.article.rpc.ArticleRpc;
 import com.nowui.cloud.cms.article.service.ArticleService;
-import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
 
@@ -26,22 +21,5 @@ public class ArticleSystemController implements ArticleRpc {
     
     @Autowired
     private ArticleService articleService;
-
-    @Override
-    public List<Article> listByCategoryCodeV1(String appId, String articleCategoryCode) {
-        
-        List<Article> articleList = articleService.listByPrimaryCategoryCode(appId, articleCategoryCode);
-        
-        if (Util.isNullOrEmpty(articleList)) {
-            return new ArrayList<>();
-        }
-        String fileIds = Util.beanToFieldString(articleList, Article.ARTICLE_MEDIA_ID);
-
-//        List<File> fileList = fileRpc.findsV1(fileIds);
-
-//        articleList = Util.beanAddField(articleList, Article.ARTICLE_MEDIA_ID, fileList, File.FILE_PATH);
-        
-        return articleList;
-    }
 
 }
