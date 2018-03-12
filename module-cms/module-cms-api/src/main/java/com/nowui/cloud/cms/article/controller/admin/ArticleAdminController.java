@@ -16,6 +16,8 @@ import com.nowui.cloud.cms.article.entity.ArticleMedia;
 import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleView;
 import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.util.Util;
 
 import io.swagger.annotations.Api;
@@ -34,6 +36,9 @@ public class ArticleAdminController extends BaseController {
 
     @Autowired
     private ArticleService articleService;
+    
+    @Autowired
+    private FileRpc fileRpc;
 
     @ApiOperation(value = "文章分页列表")
     @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -250,6 +255,10 @@ public class ArticleAdminController extends BaseController {
         for(Article article : articleList) {
             ArticleView articleView = new ArticleView();
             articleView.putAll(article);
+            
+            File artileMediaFile = fileRpc.findByMysqlV1(articleView.getArticleMediaId());
+            
+            articleView.setArticleMediaPath(artileMediaFile.getFilePath());
 
             articleService.saveOrUpdate(articleView);
         }

@@ -32,7 +32,7 @@ public class AdvertisementMobileController extends BaseController {
 
     @ApiOperation(value = "首页广告轮播图列表")
     @RequestMapping(value = "/advertisement/mobile/v1/index/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
+    public Map<String, Object> indexBannerListV1() {
         AdvertisementView advertisementView = getEntry(AdvertisementView.class);
         validateRequest(
                 advertisementView,
@@ -40,6 +40,26 @@ public class AdvertisementMobileController extends BaseController {
         );
 
         List<AdvertisementView> resultList = advertisementService.listByCategoryCode(advertisementView.getAppId(), "INDEX_BANNER");
+
+        validateResponse(
+                AdvertisementView.ADVERTISEMENT_TITLE,
+                AdvertisementView.ADVERTISEMENT_IMAGE_FILE_PATH,
+                AdvertisementView.ADVERTISEMENT_LINK
+        );
+
+        return renderJson(resultList);
+    }
+    
+    @ApiOperation(value = "首页热门话题广告轮播图列表")
+    @RequestMapping(value = "/advertisement/mobile/v1/index/hot/topic/banner/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> indexHotTopicBannerlistV1() {
+        AdvertisementView advertisementView = getEntry(AdvertisementView.class);
+        validateRequest(
+                advertisementView,
+                AdvertisementView.APP_ID
+        );
+
+        List<AdvertisementView> resultList = advertisementService.listByCategoryCode(advertisementView.getAppId(), "INDEX_HOT_TOPIC_BANNER");
 
         validateResponse(
                 AdvertisementView.ADVERTISEMENT_TITLE,
