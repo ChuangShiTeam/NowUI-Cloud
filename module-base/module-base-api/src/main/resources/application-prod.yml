@@ -68,8 +68,8 @@ spring:
       uri: mongodb://118.31.229.16/nowui_base
       host: 118.31.229.16
       port: 27017
-      database: nowui
-      authentication-database: nowui
+      database: nowui_base
+      authentication-database: nowui_base
       username: user
       password: '123456'
 #mybatis
