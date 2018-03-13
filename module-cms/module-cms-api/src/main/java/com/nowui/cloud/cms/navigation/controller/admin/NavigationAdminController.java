@@ -38,7 +38,7 @@ public class NavigationAdminController extends BaseController {
     private FileRpc fileRpc;
     
     @ApiOperation(value = "导航栏列表")
-    @RequestMapping(value = "/navigation/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
@@ -74,7 +74,7 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "导航栏信息")
-    @RequestMapping(value = "/navigation/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
@@ -105,7 +105,7 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增导航栏")
-    @RequestMapping(value = "/navigation/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
@@ -139,7 +139,7 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改导航栏")
-    @RequestMapping(value = "/navigation/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
@@ -175,7 +175,7 @@ public class NavigationAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除导航栏")
-    @RequestMapping(value = "/navigation/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody Navigation body) {
         validateRequest(
                 body,
@@ -203,7 +203,7 @@ public class NavigationAdminController extends BaseController {
     }
     
     @ApiOperation(value = "工具栏数据同步")
-    @RequestMapping(value = "/navigation/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/navigation/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
         List<Navigation> navigationList = navigationService.listByMysql();
 

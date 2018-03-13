@@ -238,7 +238,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员手机号码注册")
-    @RequestMapping(value = "/member/mobile/v1/mobile/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/mobile/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> mobileRegisterV1() {
         UserAccount userAccountBean = getEntry(UserAccount.class);
         validateRequest(
@@ -362,7 +362,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员邮箱注册")
-    @RequestMapping(value = "/member/mobile/v1/email/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/email/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> emailRegisterV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -434,7 +434,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员手机登录验证码发送")
-    @RequestMapping(value = "/member/mobile/v1/login/sms/captcha/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/login/sms/captcha/send", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> loginSmsCaptchaSendV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -456,7 +456,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员手机注册验证码发送")
-    @RequestMapping(value = "/member/mobile/v1/register/sms/captcha/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/register/sms/captcha/send", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> registerSmsCaptchaSendV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -480,7 +480,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员忘记密码手机验证码发送")
-    @RequestMapping(value = "/member/mobile/v1/forget/password/sms/captcha/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/forget/password/sms/captcha/send", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> forgetPasswordSmsCaptchaSendV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -503,7 +503,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员手机验证码登录")
-    @RequestMapping(value = "/member/mobile/v1/sms/captcha/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/sms/captcha/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> captchaLoginV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -565,7 +565,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员密码登录")
-    @RequestMapping(value = "/member/mobile/v1/password/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/password/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> passwordLoginV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -626,7 +626,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员忘记密码验证")
-    @RequestMapping(value = "/member/mobile/v1/forget/password/check", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/forget/password/check", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> forgetPasswordCheckV1() {
         UserAccount userAccount = getEntry(UserAccount.class);
         validateRequest(
@@ -662,7 +662,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员签名更新")
-    @RequestMapping(value = "/member/mobile/v1/update/signature", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/update/signature", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateSignatureV1() {
         MemberSignature memberSignature = getEntry(MemberSignature.class);
         validateRequest(
@@ -683,7 +683,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员背景更新")
-    @RequestMapping(value = "/member/mobile/v1/update/background", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/update/background", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateBackgroundV1() {
         MemberBackground memberBackground = getEntry(MemberBackground.class);
         validateRequest(
@@ -701,7 +701,7 @@ public class MemberMobileController extends BaseController {
     }
     
     @ApiOperation(value = "会员偏好语言更新")
-    @RequestMapping(value = "/member/mobile/v1/update/preference/language", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/mobile/v1/update/preference/language", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updatePreferenceLanguageV1() {
         MemberPreferenceLanguage memberPreferenceLanguage = getEntry(MemberPreferenceLanguage.class);
         validateRequest(

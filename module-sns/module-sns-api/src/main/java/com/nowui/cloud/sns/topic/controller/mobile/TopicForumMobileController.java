@@ -31,7 +31,7 @@ public class TopicForumMobileController extends BaseController {
     private TopicForumService topicForumService;
 
     @ApiOperation(value = "话题论坛关联列表")
-    @RequestMapping(value = "/topic/forum/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/forum/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
     	TopicForum body = getEntry(TopicForum.class);
         validateRequest(

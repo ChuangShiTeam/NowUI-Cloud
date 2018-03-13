@@ -32,7 +32,7 @@ public class TopicCommentAdminController extends BaseController {
     private TopicCommentService topicCommentService;
 
     @ApiOperation(value = "话题评论列表")
-    @RequestMapping(value = "/topic/comment/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
@@ -62,7 +62,7 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题评论信息")
-    @RequestMapping(value = "/topic/comment/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
@@ -85,7 +85,7 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题评论")
-    @RequestMapping(value = "/topic/comment/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
@@ -103,7 +103,7 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题评论")
-    @RequestMapping(value = "/topic/comment/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
@@ -123,7 +123,7 @@ public class TopicCommentAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题评论")
-    @RequestMapping(value = "/topic/comment/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody TopicComment body) {
         validateRequest(
                 body,
@@ -139,7 +139,7 @@ public class TopicCommentAdminController extends BaseController {
     
     
     @ApiOperation(value = "动态评论数据同步")
-    @RequestMapping(value = "/topic/comment/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody Topic body) {
     	List<TopicComment> topicCommentList = topicCommentService.listByMysql();
     	

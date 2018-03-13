@@ -36,7 +36,7 @@ public class UserMobileController extends BaseController {
     private UserService userService;
     
     @ApiOperation(value = "用户忘记密码找回")
-    @RequestMapping(value = "/user/mobile/v1/forget/password/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/mobile/v1/forget/password/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> forgetPasswordFindV1() {
         UserPassword userPassword = getEntry(UserPassword.class);
         validateRequest(
@@ -53,7 +53,7 @@ public class UserMobileController extends BaseController {
     }
     
     @ApiOperation(value = "用户密码更新")
-    @RequestMapping(value = "/user/mobile/v1/update/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/mobile/v1/update/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updatePasswordV1() {
         UserPassword userPassword = getEntry(UserPassword.class);
         validateRequest(
@@ -69,7 +69,7 @@ public class UserMobileController extends BaseController {
     }
     
     @ApiOperation(value = "用户昵称更新")
-    @RequestMapping(value = "/user/mobile/v1/update/nick/name", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/mobile/v1/update/nick/name", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateNickNameV1() {
         UserNickName userNickName = getEntry(UserNickName.class);
         validateRequest(
@@ -92,7 +92,7 @@ public class UserMobileController extends BaseController {
     }
     
     @ApiOperation(value = "用户头像更新")
-    @RequestMapping(value = "/user/mobile/v1/update/avatar", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/mobile/v1/update/avatar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateAvatarV1() {
         UserAvatar userAvatar = getEntry(UserAvatar.class);
         validateRequest(

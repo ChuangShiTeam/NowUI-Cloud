@@ -36,7 +36,7 @@ public class PetCategoryMobileController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "获取宠物分类列表")
-    @RequestMapping(value = "/wawi/pet/category/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/category/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> petCategoryListV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
         validateRequest(
@@ -60,7 +60,7 @@ public class PetCategoryMobileController extends BaseController {
     }
 
     @ApiOperation(value = "获取宠物子分类列表")
-    @RequestMapping(value = "/wawi/pet/category/mobile/v1/child/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/category/mobile/v1/child/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String,Object> childListV1(){
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
         validateRequest(

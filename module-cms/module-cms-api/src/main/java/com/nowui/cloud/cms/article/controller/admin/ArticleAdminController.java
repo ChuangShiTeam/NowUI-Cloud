@@ -41,7 +41,7 @@ public class ArticleAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "文章分页列表")
-    @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ArticleView articleView = getEntry(ArticleView.class);
 
@@ -73,7 +73,7 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "根据编号查询文章信息")
-    @RequestMapping(value = "/article/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ArticleView articleView = getEntry(ArticleView.class);
 
@@ -118,7 +118,7 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章新增")
-    @RequestMapping(value = "/article/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Article articleEntity = getEntry(Article.class);
 
@@ -173,7 +173,7 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章修改")
-    @RequestMapping(value = "/article/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Article articleEntity = getEntry(Article.class);
 
@@ -225,7 +225,7 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章删除")
-    @RequestMapping(value = "/article/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Article articleEntity = getEntry(Article.class);
 
@@ -248,7 +248,7 @@ public class ArticleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章数据同步")
-    @RequestMapping(value = "/article/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Article> articleList = articleService.listByMysql();
 

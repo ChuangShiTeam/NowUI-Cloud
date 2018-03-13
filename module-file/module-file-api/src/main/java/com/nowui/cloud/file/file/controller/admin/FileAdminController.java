@@ -2,8 +2,6 @@ package com.nowui.cloud.file.file.controller.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
-import com.nowui.cloud.file.file.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.nowui.cloud.file.file.entity.File;
-import com.nowui.cloud.file.file.service.FileService;
-import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.file.file.entity.File;
+import com.nowui.cloud.file.file.service.FileService;
+import com.nowui.cloud.file.file.view.FileView;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 文件管理端控制器
@@ -35,95 +36,114 @@ public class FileAdminController extends BaseController {
     @Autowired
     private FileService fileService;
 
-    @ApiOperation(value = "文件列表")
-    @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
-        File fileEntity = getEntry(File.class);
+    @ApiOperation(value = "文件列表", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.FILE_NAME, value = "文件名称", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.FILE_TYPE, value = "文件类型", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = FileView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@ApiIgnore FileView fileView) {
 
         validateRequest(
-                fileEntity,
-                File.APP_ID,
-                File.SYSTEM_REQUEST_USER_ID,
-                File.FILE_NAME,
-                File.FILE_TYPE,
-                File.PAGE_INDEX,
-                File.PAGE_SIZE
+                fileView,
+                FileView.APP_ID,
+                FileView.SYSTEM_REQUEST_USER_ID,
+                FileView.FILE_NAME,
+                FileView.FILE_TYPE,
+                FileView.PAGE_INDEX,
+                FileView.PAGE_SIZE
         );
 
-        Integer resultTotal = fileService.countForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType());
-        List<FileView> resultList = fileService.listForAdmin(fileEntity.getAppId(), fileEntity.getSystemRequestUserId(), fileEntity.getFileName(), fileEntity.getFileType(), fileEntity.getPageIndex(), fileEntity.getPageSize());
+        Integer resultTotal = fileService.countForAdmin(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType());
+        List<FileView> resultList = fileService.listForAdmin(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType(), fileView.getPageIndex(), fileView.getPageSize());
 
         validateResponse(
-                File.FILE_ID,
-                File.FILE_TYPE,
-                File.FILE_NAME,
-                File.FILE_PATH,
-                File.FILE_COVER_IMAGE
+                FileView.FILE_ID,
+                FileView.FILE_TYPE,
+                FileView.FILE_NAME,
+                FileView.FILE_PATH,
+                FileView.FILE_COVER_IMAGE
         );
 
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "文件信息")
-    @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
-        File fileEntity = getEntry(File.class);
+    @ApiOperation(value = "文件信息", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.FILE_ID, value = "文件编号", required = true, paramType = "query", dataType = "string")
+    })
+    @RequestMapping(value = "/file/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@ApiIgnore FileView fileView) {
 
         validateRequest(
-                fileEntity,
-                File.APP_ID,
-                File.FILE_ID
+                fileView,
+                FileView.APP_ID,
+                FileView.FILE_ID
         );
 
-        FileView result = fileService.find(fileEntity.getFileId());
+        FileView result = fileService.find(fileView.getFileId());
 
         validateResponse(
-                File.FILE_ID,
-                File.FILE_TYPE,
-                File.FILE_NAME,
-                File.FILE_SUFFIX,
-                File.FILE_SIZE,
-                File.FILE_PATH,
-                File.FILE_THUMBNAIL_PATH,
-                File.FILE_ORIGINAL_PATH,
-                File.FILE_COVER_IMAGE,
-                File.FILE_IS_OUTER,
-                File.FILE_OUTER_LINK
+                FileView.FILE_ID,
+                FileView.FILE_TYPE,
+                FileView.FILE_NAME,
+                FileView.FILE_SUFFIX,
+                FileView.FILE_SIZE,
+                FileView.FILE_PATH,
+                FileView.FILE_THUMBNAIL_PATH,
+                FileView.FILE_ORIGINAL_PATH,
+                FileView.FILE_COVER_IMAGE,
+                FileView.FILE_IS_OUTER,
+                FileView.FILE_OUTER_LINK
         );
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "删除文件")
-    @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        File fileEntity = getEntry(File.class);
+    @ApiOperation(value = "删除文件", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.FILE_ID, value = "文件编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int")
+    })
+    @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> deleteV1(@ApiIgnore FileView fileView) {
 
         validateRequest(
-                fileEntity,
-                File.FILE_ID,
-                File.APP_ID,
-                File.SYSTEM_VERSION
+                fileView,
+                FileView.FILE_ID,
+                FileView.APP_ID,
+                FileView.SYSTEM_REQUEST_USER_ID,
+                FileView.SYSTEM_VERSION
         );
 
-        File result = fileService.delete(fileEntity.getFileId(), fileEntity.getSystemUpdateUserId(),fileEntity.getSystemVersion());
+        File result = fileService.delete(fileView.getFileId(), fileView.getSystemUpdateUserId(), fileView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
-            //sendMessage(result, FileRouter.FILE_V1_DELETE, fileEntity.getAppId(), fileEntity.getSystemRequestUserId());
-
+            // 删除MongoDB里面存储的视图信息
+            fileView.putEntry(result);
+            
+            fileService.delete(fileView, fileView.getFileId());
+            
             success = true;
         }
 
         return renderJson(success);
     }
 
-    @ApiOperation(value = "图片上传")
+    @ApiOperation(value = "图片上传", httpMethod = "POST")
     @RequestMapping(value = "/file/admin/v1/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, Object> uploadImageV1(
-            @RequestParam(File.APP_ID) String appId,
-            @RequestParam(File.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
+            @RequestParam(FileView.APP_ID) String appId,
+            @RequestParam(FileView.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
             @RequestParam("file") MultipartFile[] multipartFiles) {
         if (multipartFiles.length == 0) {
             throw new BusinessException("上传文件为空");
@@ -131,51 +151,56 @@ public class FileAdminController extends BaseController {
         List<File> fileList = fileService.uploadImage(appId, systemRequestUserId, multipartFiles);
 
         for(File file : fileList) {
-            FileView fileView = JSON.parseObject(file.toJSONString(), FileView.class);
+            FileView fileView = new FileView();
+            fileView.putEntry(file);
+            
             fileService.save(fileView);
         }
 
         validateResponse(
-            File.FILE_ID,
-            File.FILE_NAME,
-            File.FILE_PATH
+            FileView.FILE_ID,
+            FileView.FILE_NAME,
+            FileView.FILE_PATH
         );
 
         return renderJson(fileList);
     }
 
-    @ApiOperation(value = "base64图片上传")
-    @RequestMapping(value = "/file/admin/image/base64/upload", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> imageBase64Upload() {
-        File fileEntity = getEntry(File.class);
+    @ApiOperation(value = "base64图片上传", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = FileView.BASE_64_DATA, value = "版本号", required = true, paramType = "query", dataType = "string")
+    })
+    @RequestMapping(value = "/file/admin/v1/image/base64/upload", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> imageBase64UploadV1(@ApiIgnore FileView fileView) {
 
-        String appId = fileEntity.getString(File.APP_ID);
-        String userId = fileEntity.getString(File.SYSTEM_REQUEST_USER_ID);
-        String base64Data = fileEntity.getString(Constant.DATA);
+        File file = fileService.uploadBase64(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getBase64Data());
 
-        File file = fileService.uploadBase64(appId, userId, base64Data);
-
-        FileView fileView = JSON.parseObject(file.toJSONString(), FileView.class);
-        fileService.save(fileView);
+        if (file != null) {
+            fileView.putEntry(file);
+            
+            fileService.save(fileView);
+        }
 
         validateResponse(
-                File.FILE_ID,
-                File.FILE_NAME,
-                File.FILE_PATH
-            );
+            FileView.FILE_ID,
+            FileView.FILE_NAME,
+            FileView.FILE_PATH
+        );
         return renderJson(file);
     }
 
-    @ApiOperation(value = "图片数据同步")
-    @RequestMapping(value = "/file/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "图片数据同步", httpMethod = "POST")
+    @RequestMapping(value = "/file/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<File> fileList = fileService.listByMysql();
 
         for (File file : fileList) {
             FileView fileView = new FileView();
-            fileView.putAll(file);
+            fileView.putEntry(file);
 
-            fileService.update(fileView);
+            fileService.saveOrUpdate(fileView, fileView.getFileId());
         }
 
         return renderJson(true);

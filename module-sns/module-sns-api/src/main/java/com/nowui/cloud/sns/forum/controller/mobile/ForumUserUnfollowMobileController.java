@@ -39,7 +39,7 @@ public class ForumUserUnfollowMobileController extends BaseController {
 	private ForumUserFollowService forumUserFollowService;
 	
 	@ApiOperation(value = "新增论坛用户取关")
-    @RequestMapping(value = "/forum/user/unfollow/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/user/unfollow/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
 		ForumUserUnfollow body = getEntry(ForumUserUnfollow.class);
         validateRequest(

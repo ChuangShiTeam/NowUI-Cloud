@@ -31,7 +31,7 @@ public class WawiTopicMobileController extends BaseController {
     private MemberRpc memberRpc;
     
     /*@ApiOperation(value = "哇伊话题首页初始数据")
-    @RequestMapping(value = "/wawi/topic/mobile/v1/home/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/topic/mobile/v1/home/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> homeListV1() {
         Topic topic = getEntry(Topic.class);
         validateRequest(

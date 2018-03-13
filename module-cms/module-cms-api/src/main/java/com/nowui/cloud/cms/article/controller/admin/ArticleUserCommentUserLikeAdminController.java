@@ -30,7 +30,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     private ArticleUserCommentUserLikeService articleUserCommentUserLikeService;
 
     @ApiOperation(value = "文章用户评论用户点赞列表")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
 
@@ -56,7 +56,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户评论用户点赞信息")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
 
@@ -78,7 +78,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
 
@@ -103,7 +103,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
 
@@ -128,7 +128,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文章用户评论用户点赞")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         ArticleUserCommentUserLike articleUserCommentUserLikeEntity = getEntry(ArticleUserCommentUserLike.class);
 
@@ -151,7 +151,7 @@ public class ArticleUserCommentUserLikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户评论用户点赞数据同步")
-    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/comment/user/like/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<ArticleUserCommentUserLike> articleUserCommentUserLikeList = articleUserCommentUserLikeService.listByMysql();
 

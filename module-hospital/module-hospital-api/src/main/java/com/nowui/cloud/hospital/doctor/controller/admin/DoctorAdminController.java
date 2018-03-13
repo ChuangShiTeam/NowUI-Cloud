@@ -30,7 +30,7 @@ public class DoctorAdminController extends BaseController {
     private DoctorService doctorService;
 
     @ApiOperation(value = "医生列表")
-    @RequestMapping(value = "/doctor/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         DoctorView doctorView = getEntry(DoctorView.class);
 
@@ -68,7 +68,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生信息")
-        @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+        @RequestMapping(value = "/doctor/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         DoctorView doctorView = getEntry(DoctorView.class);
 
@@ -102,7 +102,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生新增")
-    @RequestMapping(value = "/doctor/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Doctor doctorEntity = getEntry(Doctor.class);
 
@@ -138,7 +138,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生修改")
-    @RequestMapping(value = "/doctor/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Doctor doctorEntity = getEntry(Doctor.class);
 
@@ -173,7 +173,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生删除")
-    @RequestMapping(value = "/doctor/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Doctor doctorEntity = getEntry(Doctor.class);
 
@@ -197,7 +197,7 @@ public class DoctorAdminController extends BaseController {
     }
 
     @ApiOperation(value = "医生数据同步")
-    @RequestMapping(value = "/doctor/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/doctor/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Doctor> doctorList = doctorService.listByMysql();
 

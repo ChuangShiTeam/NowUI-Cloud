@@ -39,7 +39,7 @@ public class PetCategoryAdminController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "宠物分类列表")
-    @RequestMapping(value = "/pet/category/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 
@@ -89,7 +89,7 @@ public class PetCategoryAdminController extends BaseController {
     }
     
     @ApiOperation(value = "宠物分类树形列表")
-    @RequestMapping(value = "/pet/category/admin/v1/all/tree/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/all/tree/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> allTreeListV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 
@@ -106,7 +106,7 @@ public class PetCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "宠物分类信息")
-    @RequestMapping(value = "/pet/category/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 
@@ -137,7 +137,7 @@ public class PetCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增宠物分类")
-    @RequestMapping(value = "/pet/category/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
         
@@ -186,7 +186,7 @@ public class PetCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改宠物分类")
-    @RequestMapping(value = "/pet/category/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 
@@ -215,7 +215,7 @@ public class PetCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除宠物分类")
-    @RequestMapping(value = "/pet/category/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         PetCategory petCategoryEntity = getEntry(PetCategory.class);
 
@@ -238,7 +238,7 @@ public class PetCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "宠物分类数据同步")
-    @RequestMapping(value = "/pet/category/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pet/category/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<PetCategory> petCategoryList = petCategoryService.listByMysql();
 

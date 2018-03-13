@@ -37,7 +37,7 @@ public class AdminAdminController extends BaseController {
     private AdminService adminService;
 
     @ApiOperation(value = "管理员列表")
-    @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         UserView userEntityView = getEntry(UserView.class);
 
@@ -66,7 +66,7 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "管理员信息")
-    @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         AdminView adminEntityView = getEntry(AdminView.class);
 
@@ -93,7 +93,7 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增管理员")
-    @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         UserView userEntityView = getEntry(UserView.class);
 
@@ -153,7 +153,7 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改管理员")
-    @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         UserView userEntityView = getEntry(UserView.class);
 
@@ -212,7 +212,7 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除管理员")
-    @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         AdminView adminEntityView = getEntry(AdminView.class);
 
@@ -233,7 +233,7 @@ public class AdminAdminController extends BaseController {
     }
 
     @ApiOperation(value = "管理员数据同步")
-    @RequestMapping(value = "/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Admin> adminList = adminService.listByMysql();
 

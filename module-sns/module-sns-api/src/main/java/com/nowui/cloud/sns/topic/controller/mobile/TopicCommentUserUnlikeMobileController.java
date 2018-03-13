@@ -45,7 +45,7 @@ public class TopicCommentUserUnlikeMobileController extends BaseController {
 	private MemberRpc memberRpc;
 	
 	@ApiOperation(value = "新增话题评论的取消点赞")
-    @RequestMapping(value = "/topic/comment/user/unlike/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         TopicCommentUserUnlike body = getEntry(TopicCommentUserUnlike.class);
 

@@ -33,7 +33,7 @@ public class SubscriptionAdminController extends BaseController {
     private SubscriptionService subscriptionService;
 
     @ApiOperation(value = "订阅列表")
-    @RequestMapping(value = "/subscription/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
@@ -65,7 +65,7 @@ public class SubscriptionAdminController extends BaseController {
     }
 
     @ApiOperation(value = "订阅信息")
-    @RequestMapping(value = "/subscription/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
@@ -90,7 +90,7 @@ public class SubscriptionAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增订阅")
-    @RequestMapping(value = "/subscription/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
@@ -115,7 +115,7 @@ public class SubscriptionAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改订阅")
-    @RequestMapping(value = "/subscription/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
@@ -142,7 +142,7 @@ public class SubscriptionAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除订阅")
-    @RequestMapping(value = "/subscription/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Subscription subscriptionEntity = getEntry(Subscription.class);
 
@@ -165,7 +165,7 @@ public class SubscriptionAdminController extends BaseController {
     }
 
     @ApiOperation(value = "订阅数据同步")
-    @RequestMapping(value = "/subscription/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/subscription/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<Subscription> subscriptionList = subscriptionService.listByMysql();
 

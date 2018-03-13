@@ -34,7 +34,7 @@ public class MemberVisitForumAdminController extends BaseController {
     private MemberVisitForumService memberVisitForumService;
 
     @ApiOperation(value = "会员访问圈子列表")
-    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
 
@@ -60,7 +60,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员访问圈子信息")
-    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
 
@@ -82,7 +82,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员访问圈子")
-    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
 
@@ -109,7 +109,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员访问圈子")
-    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
 
@@ -136,7 +136,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员访问圈子")
-    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/member/visit/forum/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         MemberVisitForum memberVisitForumEntity = getEntry(MemberVisitForum.class);
 
@@ -161,7 +161,7 @@ public class MemberVisitForumAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员访问圈子数据同步")
-    @RequestMapping(value = "/pemberVisitForum/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pemberVisitForum/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<MemberVisitForum> pemberVisitForumList = memberVisitForumService.listByMysql();
 

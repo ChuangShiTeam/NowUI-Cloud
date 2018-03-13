@@ -29,7 +29,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
     private MemberDeliveryAddressService memberDeliveryAddressService;
 
     @ApiOperation(value = "会员收货地址列表")
-    @RequestMapping(value = "/member/delivery/address/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/delivery/address/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1(@RequestBody MemberDeliveryAddress body) {
         validateRequest(
                 body,
@@ -59,7 +59,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "会员收货地址信息")
-    @RequestMapping(value = "/member/delivery/address/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/delivery/address/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@RequestBody MemberDeliveryAddress body) {
         validateRequest(
                 body,
@@ -87,7 +87,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增会员收货地址")
-    @RequestMapping(value = "/member/delivery/address/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/delivery/address/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@RequestBody MemberDeliveryAddress body) {
         validateRequest(
                 body,
@@ -116,7 +116,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改会员收货地址")
-    @RequestMapping(value = "/member/delivery/address/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/delivery/address/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@RequestBody MemberDeliveryAddress body) {
         validateRequest(
                 body,
@@ -147,7 +147,7 @@ public class MemberDeliveryAddressAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除会员收货地址")
-    @RequestMapping(value = "/member/delivery/address/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/member/delivery/address/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@RequestBody MemberDeliveryAddress body) {
         validateRequest(
                 body,

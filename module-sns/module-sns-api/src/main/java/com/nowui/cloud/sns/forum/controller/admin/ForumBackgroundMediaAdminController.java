@@ -30,7 +30,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     private ForumBackgroundMediaService forumBackgroundMediaService;
 
     @ApiOperation(value = "论坛背景列表")
-    @RequestMapping(value = "/forum/background/media/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ForumBackgroundMediaView forumBackgroundMediaView = getEntry(ForumBackgroundMediaView.class);
 
@@ -54,7 +54,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛背景信息")
-    @RequestMapping(value = "/forum/background/media/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ForumBackgroundMediaView forumBackgroundMediaView = getEntry(ForumBackgroundMediaView.class);
 
@@ -79,7 +79,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛背景新增")
-    @RequestMapping(value = "/forum/background/media/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         ForumBackgroundMedia forumBackgroundMediaEntity = getEntry(ForumBackgroundMedia.class);
 
@@ -107,7 +107,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛背景修改")
-    @RequestMapping(value = "/forum/background/media/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         ForumBackgroundMedia forumBackgroundMediaEntity = getEntry(ForumBackgroundMedia.class);
 
@@ -135,7 +135,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛背景删除")
-    @RequestMapping(value = "/forum/background/media/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         ForumBackgroundMedia forumBackgroundMediaEntity = getEntry(ForumBackgroundMedia.class);
 
@@ -159,7 +159,7 @@ public class ForumBackgroundMediaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "论坛背景数据同步")
-    @RequestMapping(value = "/forum/background/media/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/forum/background/media/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<ForumBackgroundMedia> forumBackgroundMediaList = forumBackgroundMediaService.listByMysql();
 

@@ -29,7 +29,7 @@ public class SmsCaptchaAdminController extends BaseController {
     private SmsCaptchaService smsCaptchaService;
 
     @ApiOperation(value = "短信验证码列表")
-    @RequestMapping(value = "/sms/captcha/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
 
@@ -58,7 +58,7 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "短信验证码信息")
-    @RequestMapping(value = "/sms/captcha/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
 
@@ -82,7 +82,7 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
 
@@ -109,7 +109,7 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
 
@@ -136,7 +136,7 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除短信验证码")
-    @RequestMapping(value = "/sms/captcha/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         SmsCaptcha smsCaptchaEntity = getEntry(SmsCaptcha.class);
 
@@ -159,7 +159,7 @@ public class SmsCaptchaAdminController extends BaseController {
     }
 
     @ApiOperation(value = "短信验证码数据同步")
-    @RequestMapping(value = "/sms/captcha/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sms/captcha/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<SmsCaptcha> smsCaptchaList = smsCaptchaService.listByMysql();
 

@@ -32,7 +32,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     private TopicCommentUserUnlikeService topicCommentUserUnlikeService;
 
     @ApiOperation(value = "话题评论的取消点赞列表")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         TopicCommentUserUnlike topicCommentUserUnlikeEntity = getEntry(TopicCommentUserUnlike.class);
 
@@ -58,7 +58,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "话题评论的取消点赞信息")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         TopicCommentUserUnlike topicCommentUserUnlikeEntity = getEntry(TopicCommentUserUnlike.class);
 
@@ -80,7 +80,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增话题评论的取消点赞")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         TopicCommentUserUnlike topicCommentUserUnlikeEntity = getEntry(TopicCommentUserUnlike.class);
 
@@ -98,7 +98,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改话题评论的取消点赞")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         TopicCommentUserUnlike topicCommentUserUnlikeEntity = getEntry(TopicCommentUserUnlike.class);
 
@@ -118,7 +118,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除话题评论的取消点赞")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         TopicCommentUserUnlike topicCommentUserUnlikeEntity = getEntry(TopicCommentUserUnlike.class);
 
@@ -136,7 +136,7 @@ public class TopicCommentUserUnlikeAdminController extends BaseController {
     }
     
     @ApiOperation(value = "动态评论取消点赞数据同步")
-    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topic/comment/user/unlike/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1(@RequestBody TopicCommentUserUnlike body) {
     	List<TopicCommentUserUnlike> topicCommentUserUnlikeList = topicCommentUserUnlikeService.listByMysql();
     	

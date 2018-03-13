@@ -29,7 +29,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     private ArticleUserBookmarkService articleUserBookmarkService;
 
     @ApiOperation(value = "文章用户收藏列表")
-    @RequestMapping(value = "/article/user/bookmark/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
         
@@ -55,7 +55,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户收藏信息")
-    @RequestMapping(value = "/article/user/bookmark/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
 
@@ -77,7 +77,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
 
@@ -102,7 +102,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
 
@@ -127,7 +127,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除文章用户收藏")
-    @RequestMapping(value = "/article/user/bookmark/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         ArticleUserBookmark articleUserBookmarkEntity = getEntry(ArticleUserBookmark.class);
 
@@ -150,7 +150,7 @@ public class ArticleUserBookmarkAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章用户收藏数据同步")
-    @RequestMapping(value = "/article/user/bookmark/admin/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/article/user/bookmark/admin/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<ArticleUserBookmark> articleUserBookmarkList = articleUserBookmarkService.listByMysql();
 

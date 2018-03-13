@@ -32,7 +32,7 @@ public class MenuAdminController extends BaseController {
     private MenuService menuService;
 
     @ApiOperation(value = "菜单分类树形列表")
-    @RequestMapping(value = "/menu/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
         Menu menuEntity = getEntry(Menu.class);
 
@@ -64,7 +64,7 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "菜单信息")
-    @RequestMapping(value = "/menu/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         Menu menuEntity = getEntry(Menu.class);
 
@@ -90,7 +90,7 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "新增菜单")
-    @RequestMapping(value = "/menu/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Menu menuEntity = getEntry(Menu.class);
 
@@ -139,7 +139,7 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "修改菜单")
-    @RequestMapping(value = "/menu/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Menu menuEntity = getEntry(Menu.class);
 
@@ -167,7 +167,7 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除菜单")
-    @RequestMapping(value = "/menu/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Menu menuEntity = getEntry(Menu.class);
 
@@ -190,7 +190,7 @@ public class MenuAdminController extends BaseController {
     }
 
     @ApiOperation(value = "菜单数据同步")
-    @RequestMapping(value = "/menu/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/menu/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> replaceV1() {
         List<Menu> menuList = menuService.listByMysql();
 

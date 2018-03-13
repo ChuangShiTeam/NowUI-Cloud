@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.admin.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,9 @@ import com.nowui.cloud.base.admin.mapper.AdminMapper;
 import com.nowui.cloud.base.admin.repository.AdminRepository;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.admin.view.AdminView;
-import com.nowui.cloud.base.user.entity.User;
-import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.base.user.view.UserView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**
@@ -58,10 +55,10 @@ public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin, AdminR
     public AdminView find(String adminId) {
         AdminView adminView = super.find(adminId);
         
-        if (!Util.isNullOrEmpty(adminView)) {
-            UserView userView = userRpc.findV1(adminView.getUserId());
-            adminView.putAll(userView);
-        }
+//        if (!Util.isNullOrEmpty(adminView)) {
+//            UserView userView = userRpc.findV1(adminView.getUserId());
+//            adminView.putAll(userView);
+//        }
         
         return adminView;
     }

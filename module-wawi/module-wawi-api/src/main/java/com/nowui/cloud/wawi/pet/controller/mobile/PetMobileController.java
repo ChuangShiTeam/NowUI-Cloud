@@ -37,7 +37,7 @@ public class PetMobileController extends BaseController {
     private FileRpc fileRpc;
 
     @ApiOperation(value = "我的宠物列表")
-    @RequestMapping(value = "/wawi/pet/mobile/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/mobile/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> petListV1() {
         Pet petEntity = getEntry(Pet.class);
         validateRequest(
@@ -66,7 +66,7 @@ public class PetMobileController extends BaseController {
     }
 
     @ApiOperation(value = "宠物信息")
-    @RequestMapping(value = "/wawi/pet/mobile/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/mobile/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
         Pet petEntity = getEntry(Pet.class);
 
@@ -93,7 +93,7 @@ public class PetMobileController extends BaseController {
     }
 
     @ApiOperation(value = "新增宠物")
-    @RequestMapping(value = "/wawi/pet/mobile/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/mobile/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
         Pet petEntity = getEntry(Pet.class);
 
@@ -121,7 +121,7 @@ public class PetMobileController extends BaseController {
     }
 
     @ApiOperation(value = "修改宠物")
-    @RequestMapping(value = "/wawi/pet/mobile/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/mobile/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
         Pet petEntity = getEntry(Pet.class);
 
@@ -151,7 +151,7 @@ public class PetMobileController extends BaseController {
     }
 
     @ApiOperation(value = "删除宠物")
-    @RequestMapping(value = "/wawi/pet/mobile/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wawi/pet/mobile/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
         Pet petEntity = getEntry(Pet.class);
 
