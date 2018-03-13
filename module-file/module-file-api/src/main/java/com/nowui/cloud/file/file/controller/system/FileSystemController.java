@@ -32,8 +32,6 @@ public class FileSystemController implements FileRpc {
     public File findByMysqlV1(String fileId) {
         File file = fileService.findByMysql(fileId);
 
-        file.removeBaseTableField();
-
         return file;
     }
 

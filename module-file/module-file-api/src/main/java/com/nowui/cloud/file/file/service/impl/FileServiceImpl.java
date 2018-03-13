@@ -24,6 +24,7 @@ import com.nowui.cloud.file.file.service.FileService;
 import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.exception.BusinessException;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.service.impl.SuperServiceImpl;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
@@ -57,7 +58,7 @@ public class FileServiceImpl extends BaseServiceImpl<FileMapper, File, FileRepos
 
     @Override
     public List<FileView> listForAdmin(String appId, String systemCreateUserId, String fileName, String fileType, Integer pageIndex, Integer pageSize) {
-        Criteria criteria = Criteria.where(File.APP_ID).is(appId)
+        Criteria criteria = Criteria.where(FileView.APP_ID).is(appId)
                 .and(FileView.FILE_NAME).regex(".*?" + fileName + ".*")
                 .and(FileView.FILE_TYPE).is(fileType)
                 .and(FileView.SYSTEM_STATUS).is(true);

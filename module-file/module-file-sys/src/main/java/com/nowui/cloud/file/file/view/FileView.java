@@ -2,7 +2,10 @@ package com.nowui.cloud.file.file.view;
 
 import javax.validation.constraints.NotNull;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,7 @@ public class FileView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "文件编号不能为空")
+    @Length(max = 32, message = "文件编号长度超出限制")
     private String fileId;
     public static final String FILE_ID = "fileId";
 
@@ -34,6 +38,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -42,6 +47,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "类型不能为空")
+    @Length(max = 25, message = "类型长度超出限制")
     private String fileType;
     public static final String FILE_TYPE = "fileType";
 
@@ -50,6 +56,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "名称不能为空")
+    @Length(max = 100, message = "名称长度超出限制")
     private String fileName;
     public static final String FILE_NAME = "fileName";
 
@@ -58,6 +65,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "后缀不能为空")
+    @Length(max = 10, message = "后缀长度超出限制")
     private String fileSuffix;
     public static final String FILE_SUFFIX = "fileSuffix";
 
@@ -66,6 +74,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "大小不能为空")
+    @Length(max = 11, message = "大小长度超出限制")
     private Integer fileSize;
     public static final String FILE_SIZE = "fileSize";
 
@@ -74,6 +83,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "文件路径不能为空")
+    @Length(max = 200, message = "文件路径长度超出限制")
     private String filePath;
     public static final String FILE_PATH = "filePath";
 
@@ -82,6 +92,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "文件路径不能为空")
+    @Length(max = 200, message = "文件路径长度超出限制")
     private String fileThumbnailPath;
     public static final String FILE_THUMBNAIL_PATH = "fileThumbnailPath";
 
@@ -90,6 +101,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "文件路径不能为空")
+    @Length(max = 200, message = "文件路径长度超出限制")
     private String fileOriginalPath;
     public static final String FILE_ORIGINAL_PATH = "fileOriginalPath";
 
@@ -98,6 +110,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "文件封面图片不能为空")
+    @Length(max = 32, message = "文件封面图片长度超出限制")
     private String fileCoverImage;
     public static final String FILE_COVER_IMAGE = "fileCoverImage";
 
@@ -106,6 +119,7 @@ public class FileView extends BaseView {
      */
     @Field
     @NotNull(message = "文件外部链接不能为空")
+    @Length(max = 200, message = "外部链接长度超出限制")
     private String fileOuterLink;
     public static final String FILE_OUTER_LINK = "fileOuterLink";
 
@@ -116,103 +130,116 @@ public class FileView extends BaseView {
     @NotNull(message = "是否外部链接不能为空")
     private Boolean fileIsOuter;
     public static final String FILE_IS_OUTER = "fileIsOuter";
-
-
+    
+    /**
+     * base64数据
+     */
+    @NotNull(message = "base64数据不能为空")
+    private String base64Data;
+    public static final String BASE_64_DATA = "base64Data";
+    
     public String getFileId() {
-        return getString(FILE_ID);
+        return fileId;
     }
-
+    
     public void setFileId(String fileId) {
-        put(FILE_ID, fileId);
+        this.fileId = fileId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
-
+    
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getFileType() {
-        return getString(FILE_TYPE);
+        return fileType;
     }
-
+    
     public void setFileType(String fileType) {
-        put(FILE_TYPE, fileType);
+        this.fileType = fileType;
     }
-
+    
     public String getFileName() {
-        return getString(FILE_NAME);
+        return fileName;
     }
-
+    
     public void setFileName(String fileName) {
-        put(FILE_NAME, fileName);
+        this.fileName = fileName;
     }
-
+    
     public String getFileSuffix() {
-        return getString(FILE_SUFFIX);
+        return fileSuffix;
     }
-
+    
     public void setFileSuffix(String fileSuffix) {
-        put(FILE_SUFFIX, fileSuffix);
+        this.fileSuffix = fileSuffix;
     }
-
+    
     public Integer getFileSize() {
-        return getInteger(FILE_SIZE);
+        return fileSize;
     }
-
+    
     public void setFileSize(Integer fileSize) {
-        put(FILE_SIZE, fileSize);
+        this.fileSize = fileSize;
     }
-
+    
     public String getFilePath() {
-        return getString(FILE_PATH);
+        return filePath;
     }
-
+    
     public void setFilePath(String filePath) {
-        put(FILE_PATH, filePath);
+        this.filePath = filePath;
     }
-
+    
     public String getFileThumbnailPath() {
-        return getString(FILE_THUMBNAIL_PATH);
+        return fileThumbnailPath;
     }
-
+    
     public void setFileThumbnailPath(String fileThumbnailPath) {
-        put(FILE_THUMBNAIL_PATH, fileThumbnailPath);
+        this.fileThumbnailPath = fileThumbnailPath;
     }
-
+    
     public String getFileOriginalPath() {
-        return getString(FILE_ORIGINAL_PATH);
+        return fileOriginalPath;
     }
-
+    
     public void setFileOriginalPath(String fileOriginalPath) {
-        put(FILE_ORIGINAL_PATH, fileOriginalPath);
+        this.fileOriginalPath = fileOriginalPath;
     }
-
+    
     public String getFileCoverImage() {
-        return getString(FILE_COVER_IMAGE);
+        return fileCoverImage;
     }
-
+    
     public void setFileCoverImage(String fileCoverImage) {
-        put(FILE_COVER_IMAGE, fileCoverImage);
+        this.fileCoverImage = fileCoverImage;
     }
-
+    
     public String getFileOuterLink() {
-        return getString(FILE_OUTER_LINK);
+        return fileOuterLink;
     }
-
+    
     public void setFileOuterLink(String fileOuterLink) {
-        put(FILE_OUTER_LINK, fileOuterLink);
+        this.fileOuterLink = fileOuterLink;
     }
-
+    
     public Boolean getFileIsOuter() {
-        return getBoolean(FILE_IS_OUTER);
+        return fileIsOuter;
     }
-
+    
     public void setFileIsOuter(Boolean fileIsOuter) {
-        put(FILE_IS_OUTER, fileIsOuter);
+        this.fileIsOuter = fileIsOuter;
     }
-
+    
+    public String getBase64Data() {
+        return base64Data;
+    }
+    
+    public void setBase64Data(String base64Data) {
+        this.base64Data = base64Data;
+    }
 
 }
