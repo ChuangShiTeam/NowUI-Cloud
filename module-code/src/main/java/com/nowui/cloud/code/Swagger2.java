@@ -22,14 +22,14 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.nowui.cloud.base"))
+                .apis(RequestHandlerSelectors.basePackage("com.nowui.cloud.code"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("基础服务")
+                .title("代码生成服务")
                 .description("提供详细的API接口")
                 .version("1.0.0")
                 .build();

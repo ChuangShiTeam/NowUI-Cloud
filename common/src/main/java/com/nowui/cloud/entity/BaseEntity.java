@@ -60,14 +60,6 @@ public abstract class BaseEntity implements Serializable {
     @JsonIgnore
     private String tableId;
 
-    public Integer getSystemVersion() {
-        return systemVersion;
-    }
-
-    public void setSystemVersion(Integer systemVersion) {
-        this.systemVersion = systemVersion;
-    }
-
     public String getSystemCreateUserId() {
         return systemCreateUserId;
     }
@@ -98,6 +90,14 @@ public abstract class BaseEntity implements Serializable {
 
     public void setSystemUpdateTime(Date systemUpdateTime) {
         this.systemUpdateTime = systemUpdateTime;
+    }
+
+    public Integer getSystemVersion() {
+        return systemVersion;
+    }
+
+    public void setSystemVersion(Integer systemVersion) {
+        this.systemVersion = systemVersion;
     }
 
     public Boolean getSystemStatus() {

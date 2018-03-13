@@ -96,13 +96,13 @@ public class BaseController {
         }
     }
     
-    protected String getIpAddress() {
-    	return getRequest().getAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS).toString();
-    }
-
-    protected String getSystemRequestUserId() {
-        return getRequest().getParameter(Constant.SYSTEM_REQUEST_USER_ID);
-    }
+//    protected String getIpAddress() {
+//    	return getRequest().getAttribute(Constant.SYSTEM_REQUEST_IP_ADDRESS).toString();
+//    }
+//
+//    protected String getSystemRequestUserId() {
+//        return getRequest().getParameter(Constant.SYSTEM_REQUEST_USER_ID);
+//    }
 
     private JSONObject checkFirstMap(Object data) {
         JSONObject result = (JSONObject) JSON.toJSON(data);

@@ -144,9 +144,17 @@ public class RequestFilter extends ZuulFilter {
             }
 
             String token = context.getRequest().getParameter(Constant.TOKEN);
-            String systemRequestUserId = decipherToken(token, context);
+            if (Util.isNullOrEmpty(token)) {
+                String systemRequestUserId = decipherToken(token, context);
 
-            params.put(Constant.SYSTEM_REQUEST_USER_ID, Lists.newArrayList(systemRequestUserId));
+                params.put(Constant.SYSTEM_REQUEST_USER_ID, Lists.newArrayList(systemRequestUserId));
+            }
+
+            String systemRequestIpAddress = Util.getIpAddress(request);
+            if (Util.isNullOrEmpty(systemRequestIpAddress)) {
+
+                params.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Lists.newArrayList(systemRequestIpAddress));
+            }
 
             context.setRequestQueryParams(params);
         }

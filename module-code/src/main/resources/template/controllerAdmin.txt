@@ -1,6 +1,5 @@
 package com.nowui.cloud.${moduleName}.${packageName}.controller.admin;
 
-import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
@@ -8,10 +7,12 @@ import com.nowui.cloud.${moduleName}.${packageName}.view.${firstUpperWithoutUnde
 import com.nowui.cloud.${moduleName}.${packageName}.service.${firstUpperWithoutUnderlineEntityName}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
+import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +30,21 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @Autowired
     private ${firstUpperWithoutUnderlineEntityName}Service ${firstLowerWithoutUnderlineEntityName}Service;
 
-    @ApiOperation(value = "${tableComment}列表")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "${tableComment}列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            <%for(column in searchColumnList){%>
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}, value = "${column.columnComment}", required = true, paramType = "query", dataType = "string"),
+            <%}%>
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listV1() {
-        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}EntityView,
+                ${firstLowerWithoutUnderlineEntityName}View,
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in searchColumnList){%>
                 ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
@@ -44,8 +53,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstUpperWithoutUnderlineEntityName}View.PAGE_SIZE
         );
 
-        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}EntityView.get${column.firstUpperColumnName}()<%}%>);
-        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}EntityView.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}EntityView.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}EntityView.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}EntityView.getPageSize());
+        Integer resultTotal = ${firstLowerWithoutUnderlineEntityName}Service.countForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>);
+        List<${firstUpperWithoutUnderlineEntityName}View> resultList = ${firstLowerWithoutUnderlineEntityName}Service.listForAdmin(${firstLowerWithoutUnderlineEntityName}View.getAppId()<%for(column in searchColumnList){%>, ${firstLowerWithoutUnderlineEntityName}View.get${column.firstUpperColumnName}()<%}%>, ${firstLowerWithoutUnderlineEntityName}View.getPageIndex(), ${firstLowerWithoutUnderlineEntityName}View.getPageSize());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
@@ -58,17 +67,21 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}信息")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId}, value = "${tableIdComment}", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1() {
-        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
+        ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}View.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}EntityView,
-                ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
-                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId}
+                ${firstLowerWithoutUnderlineEntityName}View,
+                ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
+                ${firstUpperWithoutUnderlineEntityName}View.APP_ID
         );
 
-        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}EntityView.get${firstUpperTableId}());
+        ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}View.getAppId());
 
         validateResponse(
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
@@ -82,9 +95,15 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}新增")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            <%for(column in detailColumnList){%>
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}, value = "${column.columnComment}", required = true, paramType = "query", dataType = "string"),
+            <%}%>
+    })
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
                 ${firstLowerWithoutUnderlineEntityName}Entity,
@@ -115,12 +134,18 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}修改")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            <%for(column in detailColumnList){%>
+            @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}, value = "${column.columnComment}", required = true, paramType = "query", dataType = "string"),
+            <%}%>
+    })
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}EntityView,
+                ${firstLowerWithoutUnderlineEntityName}View,
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
                 <%for(column in detailColumnList){%>
@@ -148,18 +173,18 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}删除")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1() {
-        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}EntityView = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
+        ${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName}View = getEntry(${firstUpperWithoutUnderlineEntityName}.class);
 
         validateRequest(
-                ${firstLowerWithoutUnderlineEntityName}EntityView,
+                ${firstLowerWithoutUnderlineEntityName}View,
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 ${firstUpperWithoutUnderlineEntityName}.APP_ID,
                 ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
         );
 
-        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}EntityView.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}EntityView.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}EntityView.getSystemVersion());
+        ${firstUpperWithoutUnderlineEntityName} result = ${firstLowerWithoutUnderlineEntityName}Service.delete(${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}View.getSystemRequestUserId(), ${firstLowerWithoutUnderlineEntityName}View.getSystemVersion());
 
         Boolean success = false;
 
@@ -176,7 +201,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}数据同步")
-    @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = ${firstLowerWithoutUnderlineEntityName}Service.listByMysql();
 

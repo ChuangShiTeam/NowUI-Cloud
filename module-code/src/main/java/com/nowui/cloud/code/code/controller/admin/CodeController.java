@@ -9,10 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.code.code.entity.Code;
+import com.nowui.cloud.code.code.view.CodeView;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -23,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nowui.cloud.code.code.service.CodeService;
 import com.nowui.cloud.controller.BaseController;
@@ -31,6 +34,7 @@ import com.nowui.cloud.exception.BusinessException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author marcus
@@ -43,50 +47,89 @@ public class CodeController extends BaseController {
     @Autowired
     private CodeService codeService;
 
-    @ApiOperation(value = "数据库表列表")
-    @RequestMapping(value = "/code/admin/table/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> tableList() {
-        Code codeEntity = getEntry(Code.class);
+    @ApiOperation(value = "数据库表列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = CodeView.TABLE_SCHEMA, value = "数据表结构", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.TABLE_NAME, value = "数据库名称", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/code/admin/table/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> tableList(@ApiIgnore CodeView codeView) {
 
-        validateRequest(codeEntity, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+        validateRequest(
+                codeView,
+                CodeView.TABLE_SCHEMA,
+                CodeView.TABLE_NAME
+        );
 
-        List<Code> resultList = codeService.tableSchemaList(codeEntity.getTableSchema(), codeEntity.getTableName());
+        List<Code> resultList = codeService.tableSchemaList(codeView.getTableSchema(), codeView.getTableName());
 
-        validateResponse(Code.TABLE_SCHEMA, Code.TABLE_NAME, Code.ENGINE, Code.TABLE_COMMENT, Code.SYSTEM_CREATE_TIME);
+        validateResponse(
+                CodeView.TABLE_SCHEMA,
+                CodeView.TABLE_NAME,
+                CodeView.ENGINE,
+                CodeView.TABLE_COMMENT,
+                CodeView.SYSTEM_CREATE_TIME
+        );
 
         return renderJson(resultList.size(), resultList);
     }
 
-    @ApiOperation(value = "数据库表字段列表")
-    @RequestMapping(value = "/code/admin/table/field/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> fieldlLst() {
-        Code codeEntity = getEntry(Code.class);
+    @ApiOperation(value = "数据库表字段列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = CodeView.TABLE_SCHEMA, value = "数据表结构", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.TABLE_NAME, value = "数据库名称", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/code/admin/table/field/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> fieldlLst(@ApiIgnore CodeView codeView) {
 
-        validateRequest(codeEntity, Code.TABLE_SCHEMA, Code.TABLE_NAME);
+        validateRequest(
+                codeView,
+                CodeView.TABLE_SCHEMA,
+                CodeView.TABLE_NAME
+        );
 
-        List<Code> resultList = codeService.tableNameList(codeEntity.getTableSchema(), codeEntity.getTableName());
+        List<Code> resultList = codeService.tableNameList(codeView.getTableSchema(), codeView.getTableName());
 
-        validateResponse(Code.COLUMN_NAME, Code.COLUMN_KEY, Code.CHARACTER_MAXIMUM_LENGTH, Code.COLUMN_TYPE, Code.DATA_TYPE, Code.COLUMN_COMMENT);
+        validateResponse(
+                CodeView.COLUMN_NAME,
+                CodeView.COLUMN_KEY,
+                CodeView.CHARACTER_MAXIMUM_LENGTH,
+                CodeView.COLUMN_TYPE, CodeView.DATA_TYPE,
+                CodeView.COLUMN_COMMENT
+        );
 
         return renderJson(resultList);
     }
 
-    @ApiOperation(value = "数据库表映射代码生成")
-    @RequestMapping(value = "/code/admin/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> generate() {
-        Code codeEntity = getEntry(Code.class);
+    @ApiOperation(value = "数据库表映射代码生成", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = CodeView.TABLE_COMMENT, value = "数据库说明", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.TABLE_NAME, value = "数据库名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.AUTHOR, value = "开发者", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.COLUMN_LIST, value = "数据列表", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CodeView.IS_MQ, value = "是否消息队列", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/code/admin/v1/generate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> generate(@ApiIgnore CodeView codeView) {
 
-        validateRequest(codeEntity, Code.TABLE_COMMENT, Code.TABLE_NAME, Code.AUTHOR, Code.COLUMN_LIST);
+        validateRequest(
+                codeView,
+                CodeView.TABLE_COMMENT,
+                CodeView.TABLE_NAME,
+                CodeView.AUTHOR,
+                CodeView.COLUMN_LIST,
+                CodeView.IS_MQ
+        );
 
         try {
             String path = CodeController.class.getResource("/").toURI().getPath();
             path = new File(path).getParentFile().getCanonicalPath() + "/" + Constant.PUBLISH;
             String apiPath = path + "/api";
-            String apiPackagePath = apiPath + "/" + codeEntity.getPackageName();
+            String apiPackagePath = apiPath + "/" + codeView.getPackageName();
             String sysPath = path + "/sys";
-            String sysPackagePath = sysPath + "/" + codeEntity.getPackageName();
+            String sysPackagePath = sysPath + "/" + codeView.getPackageName();
             String webPath = path + "/web";
-            String webPackagePath = webPath + "/" + codeEntity.getPackageName();
+            String webPackagePath = webPath + "/" + codeView.getPackageName();
             String entityPath = sysPackagePath + "/entity";
             String sysRouterPath = sysPackagePath + "/router";
             String listenerPath = apiPackagePath + "/listener";
@@ -114,7 +157,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(webPath);
             FileUtil.createPath(webPackagePath);
             FileUtil.createPath(entityPath);
-            if (codeEntity.getIsMq()) {
+            if (codeView.getIsMq()) {
                 FileUtil.createPath(sysRouterPath);
                 FileUtil.createPath(listenerPath);
             }
@@ -134,15 +177,13 @@ public class CodeController extends BaseController {
             FileUtil.createPath(routerPath);
             FileUtil.createPath(viewPath);
 
-            List<Code> codeList = JSONArray.parseArray(codeEntity.getColumnList().toJSONString(), Code.class);
+            List<JSONObject> columnList = new ArrayList<JSONObject>(Constant.DEFAULT_LOAD_FACTOR);
+            List<JSONObject> searchColumnList = new ArrayList<JSONObject>(Constant.DEFAULT_LOAD_FACTOR);
+            List<JSONObject> listColumnList = new ArrayList<JSONObject>(Constant.DEFAULT_LOAD_FACTOR);
+            List<JSONObject> detailColumnList = new ArrayList<JSONObject>(Constant.DEFAULT_LOAD_FACTOR);
 
-            List<JSONObject> columnList = new ArrayList<JSONObject>();
-            List<JSONObject> searchColumnList = new ArrayList<JSONObject>();
-            List<JSONObject> listColumnList = new ArrayList<JSONObject>();
-            List<JSONObject> detailColumnList = new ArrayList<JSONObject>();
-
-            String upperTableName = codeEntity.getTableName().toUpperCase();
-            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(codeEntity.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
+            String upperTableName = codeView.getTableName().toUpperCase();
+            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(codeView.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
             String upperEntityName = lowerEntityName.toUpperCase();
             String urlEntityName = lowerEntityName.replaceAll("_", "/");
             String firstLowerEntityName = lowerEntityName.substring(0, 1).toLowerCase() + lowerEntityName.substring(1);
@@ -150,51 +191,56 @@ public class CodeController extends BaseController {
             String firstLowerWithoutUnderlineEntityName = removeUnderline(firstLowerEntityName);
             String firstUpperWithoutUnderlineEntityName = removeUnderline(firstUpperEntityName);
             String tableId = "";
+            String tableIdComment = "";
 
             String viewPackagePath = viewPath + "/" + firstLowerWithoutUnderlineEntityName;
             FileUtil.createPath(viewPackagePath);
 
-            for (Code code : codeList) {
-                String columnName = code.getColumnName();
-                String dataType = code.getDataType();
+            JSONArray jsonArray = JSONArray.parseArray(codeView.getColumnList());
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject column = jsonArray.getJSONObject(i);
 
-                if (Util.isNullOrEmpty(code.getCharacterMaximumLength())) {
-                    String length = code.getColumnType().replace(dataType, "").replace("(", "").replace(")", "");
+                String columnName = column.getString(CodeView.COLUMN_NAME);
+                String dataType = column.getString(CodeView.DATA_TYPE);
+
+                if (Util.isNullOrEmpty(column.getString(CodeView.CHARACTER_MAXIMUM_LENGTH))) {
+                    String length = column.getString(CodeView.COLUMN_TYPE).replace(dataType, "").replace("(", "").replace(")", "");
 
                     if ("".equals(length) || length.contains(",")) {
                         length = "0";
                     }
 
-                    code.setCharacterMaximumLength(length);
+                    column.put(CodeView.CHARACTER_MAXIMUM_LENGTH, length);
                 } else {
                     if ("longtext".equals(dataType)) {
-                        code.setCharacterMaximumLength("0");
+                        column.put(CodeView.CHARACTER_MAXIMUM_LENGTH, "0");
                     }
                 }
 
-                if ("PRI".equals(code.getColumnKey())) {
+                if ("PRI".equals(column.getString(CodeView.COLUMN_KEY))) {
                     tableId = columnName;
+                    tableIdComment = column.getString(CodeView.TABLE_COMMENT);
                 }
 
-                code.put("firstUpperColumnName", columnName.substring(0, 1).toUpperCase() + columnName.substring(1));
-                code.put("upperWithUnderlineColumnName", insertUnderline(columnName));
-                code.setDataType(dataType.toUpperCase());
-                code.put("upperColumnName", columnName.toUpperCase());
+                column.put("firstUpperColumnName", columnName.substring(0, 1).toUpperCase() + columnName.substring(1));
+                column.put("upperWithUnderlineColumnName", insertUnderline(columnName));
+                column.put(CodeView.DATA_TYPE, dataType.toUpperCase());
+                column.put("upperColumnName", columnName.toUpperCase());
 
-                if (!code.getColumnName().startsWith("system")) {
-                    columnList.add(code);
+                if (!column.getString(CodeView.COLUMN_NAME).startsWith("system")) {
+                    columnList.add(column);
                 }
 
-                if (code.getBoolean("isSearch")) {
-                    searchColumnList.add(code);
+                if (column.getBoolean("isSearch")) {
+                    searchColumnList.add(column);
                 }
 
-                if (code.getBoolean("isList")) {
-                    listColumnList.add(code);
+                if (column.getBoolean("isList")) {
+                    listColumnList.add(column);
                 }
 
-                if (code.getBoolean("isDetail")) {
-                    detailColumnList.add(code);
+                if (column.getBoolean("isDetail")) {
+                    detailColumnList.add(column);
                 }
             }
 
@@ -206,17 +252,18 @@ public class CodeController extends BaseController {
             String upperWithUnderlineTableId = insertUnderline(tableId);
 
             Map<String, Object> templateMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-            templateMap.put("tableComment", codeEntity.getTableComment());
-            templateMap.put("moduleName", codeEntity.getModuleName());
-            templateMap.put("packageName", codeEntity.getPackageName());
-            templateMap.put("tableName", codeEntity.getTableName());
-            templateMap.put("author", codeEntity.getAuthor());
+            templateMap.put("tableComment", codeView.getTableComment());
+            templateMap.put("moduleName", codeView.getModuleName());
+            templateMap.put("packageName", codeView.getPackageName());
+            templateMap.put("tableName", codeView.getTableName());
+            templateMap.put("author", codeView.getAuthor());
             templateMap.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             templateMap.put("upperTableName", upperTableName);
             templateMap.put("tableId", tableId);
             templateMap.put("firstUpperTableId", firstUpperTableId);
             templateMap.put("upperTableId", upperTableId);
             templateMap.put("upperWithUnderlineTableId", upperWithUnderlineTableId);
+            templateMap.put("tableIdComment", tableIdComment);
             templateMap.put("lowerEntityName", lowerEntityName);
             templateMap.put("urlEntityName", urlEntityName);
             templateMap.put("upperEntityName", upperEntityName);
@@ -230,7 +277,7 @@ public class CodeController extends BaseController {
             templateMap.put("detailColumnList", detailColumnList);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
-            if (codeEntity.getIsMq()) {
+            if (codeView.getIsMq()) {
                 write(templateMap, "apiRoute.txt", sysRouterPath + "/" + firstUpperWithoutUnderlineEntityName + "Router.java");
                 write(templateMap, "saveListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1SaveListener.java");
                 write(templateMap, "updateListener.txt", listenerPath + "/" + firstUpperWithoutUnderlineEntityName + "V1UpdateListener.java");

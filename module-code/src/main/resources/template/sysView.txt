@@ -3,11 +3,10 @@ package com.nowui.cloud.${moduleName}.${packageName}.view;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * ${tableComment}视图
@@ -57,51 +56,51 @@ public class ${firstUpperWithoutUnderlineEntityName}View extends BaseView {
     <%for(column in columnList){%>
     <%if(column.dataType == "TINYINT"){%>
     public Boolean get${column.firstUpperColumnName}() {
-        return getBoolean(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(Boolean ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}else if(column.dataType == "INT"){%>
     public Integer get${column.firstUpperColumnName}() {
-        return getInteger(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(Integer ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}else if(column.dataType == "DECIMAL"){%>
     public BigDecimal get${column.firstUpperColumnName}() {
-        return getBigDecimal(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(BigDecimal ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}else if(column.dataType == "DATETIME"){%>
     public Date get${column.firstUpperColumnName}() {
-        return getDate(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(Date ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}else if(column.dataType == "DATE"){%>
     public Date get${column.firstUpperColumnName}() {
-        return getDate(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(Date ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}else{%>
     public String get${column.firstUpperColumnName}() {
-        return getString(${column.upperWithUnderlineColumnName});
+        return ${column.columnName};
     }
 
     public void set${column.firstUpperColumnName}(String ${column.columnName}) {
-        put(${column.upperWithUnderlineColumnName}, ${column.columnName});
+        this.${column.columnName} = ${column.columnName};
     }
     <%}%>
     <%}%>

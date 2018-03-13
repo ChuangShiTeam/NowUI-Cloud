@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nowui.cloud.code.code.repository.CodeRepository;
 import com.nowui.cloud.code.code.view.CodeView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import com.nowui.cloud.code.code.entity.Code;
 import com.nowui.cloud.code.code.mapper.CodeMapper;

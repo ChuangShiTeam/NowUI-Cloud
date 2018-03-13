@@ -5,13 +5,12 @@ import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
 import com.nowui.cloud.shop.product.view.ProductView;
 import com.nowui.cloud.util.Util;
-
+import com.nowui.cloud.view.CommonView;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
 import java.util.List;
 import java.util.Map;
 
@@ -29,22 +28,26 @@ public class ProductAdminController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.PRODUCT_NAME, value = "商品名称", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ProductView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = ProductView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
     @RequestMapping(value = "/product/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@ApiIgnore ProductView productView) {
+    public Map<String, Object> listV1(@ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 productView,
                 ProductView.APP_ID,
-                ProductView.PRODUCT_NAME,
-                ProductView.PAGE_INDEX,
-                ProductView.PAGE_SIZE
+                ProductView.PRODUCT_NAME
+        );
+
+        validateRequest(
+                commonView,
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
         );
 
         Integer resultTotal = productService.countForAdmin(productView.getAppId(), productView.getProductName());
-        List<ProductView> resultList = productService.listForAdmin(productView.getAppId(), productView.getProductName(), productView.getPageIndex(), productView.getPageSize());
+        List<ProductView> resultList = productService.listForAdmin(productView.getAppId(), productView.getProductName(), commonView.getPageIndex(), commonView.getPageSize());
 
         validateResponse(
                 ProductView.PRODUCT_ID,
@@ -93,7 +96,7 @@ public class ProductAdminController extends BaseController {
             @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_PATH, value = "商品图片路径", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/product/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@ApiIgnore Product product, @ApiIgnore ProductView productView) {
+    public Map<String, Object> saveV1(@ApiIgnore Product product, @ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 productView,
@@ -105,9 +108,14 @@ public class ProductAdminController extends BaseController {
                 ProductView.PRODUCT_IMAGE_FILE_PATH
         );
 
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
         String productId = Util.getRandomUUID();
 
-        Product result = productService.save(product, productId, productView.getSystemRequestUserId());
+        Product result = productService.save(product, productId, commonView.getSystemRequestUserId());
 
         Boolean success = false;
 
@@ -134,7 +142,7 @@ public class ProductAdminController extends BaseController {
             @ApiImplicitParam(name = ProductView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
     })
     @RequestMapping(value = "/product/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@ApiIgnore Product product, @ApiIgnore ProductView productView) {
+    public Map<String, Object> updateV1(@ApiIgnore Product product, @ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 productView,
@@ -148,7 +156,12 @@ public class ProductAdminController extends BaseController {
                 ProductView.SYSTEM_VERSION
         );
 
-        Product result = productService.update(product, productView.getProductId(), productView.getSystemRequestUserId(), productView.getSystemVersion());
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
+        Product result = productService.update(product, productView.getProductId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
 
         Boolean success = false;
 
@@ -169,7 +182,7 @@ public class ProductAdminController extends BaseController {
             @ApiImplicitParam(name = ProductView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
     })
     @RequestMapping(value = "/product/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@ApiIgnore ProductView productView) {
+    public Map<String, Object> deleteV1(@ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 productView,
@@ -177,7 +190,12 @@ public class ProductAdminController extends BaseController {
                 ProductView.SYSTEM_VERSION
         );
 
-        Product result = productService.delete(productView.getProductId(), productView.getSystemRequestUserId(), productView.getSystemVersion());
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
+        Product result = productService.delete(productView.getProductId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
 
         Boolean success = false;
 

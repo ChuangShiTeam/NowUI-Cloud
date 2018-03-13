@@ -2,12 +2,11 @@ package com.nowui.cloud.shop.product.view;
 
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 产品
