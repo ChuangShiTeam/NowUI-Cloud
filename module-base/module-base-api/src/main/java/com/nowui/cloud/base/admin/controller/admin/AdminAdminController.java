@@ -15,18 +15,14 @@ import com.nowui.cloud.base.admin.entity.AdminPassword;
 import com.nowui.cloud.base.admin.service.AdminAccountService;
 import com.nowui.cloud.base.admin.service.AdminPasswordService;
 import com.nowui.cloud.base.admin.service.AdminService;
-import com.nowui.cloud.base.admin.view.AdminAccountView;
-import com.nowui.cloud.base.admin.view.AdminPasswordView;
 import com.nowui.cloud.base.admin.view.AdminView;
 import com.nowui.cloud.base.user.entity.User;
 import com.nowui.cloud.base.user.entity.enums.UserType;
 import com.nowui.cloud.base.user.service.UserService;
-import com.nowui.cloud.base.user.view.UserEmailView;
-import com.nowui.cloud.base.user.view.UserMobileView;
-import com.nowui.cloud.base.user.view.UserNickNameView;
 import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -60,21 +56,25 @@ public class AdminAdminController extends BaseController {
     @ApiOperation(value = "管理员列表", httpMethod = "POST")
     @ApiImplicitParams({
         @ApiImplicitParam(name = AdminView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = AdminView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
-        @ApiImplicitParam(name = AdminView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
     @RequestMapping(value = "/admin/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@ApiIgnore AdminView adminView) {
+    public Map<String, Object> listV1(@ApiIgnore AdminView adminView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 adminView,
-                AdminView.APP_ID,
-                AdminView.PAGE_INDEX,
-                AdminView.PAGE_SIZE
+                AdminView.APP_ID
+        );
+        
+        validateRequest(
+                commonView,
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
         );
 
         Integer resultTotal = adminService.countForAdmin(adminView.getAppId());
-        List<AdminView> resultList = adminService.listForAdmin(adminView.getAppId(), adminView.getPageIndex(), adminView.getPageSize());
+        List<AdminView> resultList = adminService.listForAdmin(adminView.getAppId(), commonView.getPageIndex(), commonView.getPageSize());
 
         validateResponse(
                 AdminView.ADMIN_ID,
@@ -114,20 +114,25 @@ public class AdminAdminController extends BaseController {
         @ApiImplicitParam(name = AdminView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = AdminView.ADMIN_ID, value = "管理员编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = AdminView.ADMIN_ACCOUNT, value = "管理员账号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = AdminView.ADMIN_PASSWORD, value = "管理员密码", required = true, paramType = "query", dataType = "string")
+        @ApiImplicitParam(name = AdminView.ADMIN_PASSWORD, value = "管理员密码", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
     })
     @RequestMapping(value = "/admin/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1(@ApiIgnore Admin admin, @ApiIgnore AdminView adminView) {
+    public Map<String, Object> saveV1(@ApiIgnore Admin admin, @ApiIgnore AdminView adminView, @ApiIgnore CommonView commonView) {
         validateRequest(
                 adminView,
                 AdminView.APP_ID,
                 AdminView.ADMIN_ID,
                 AdminView.ADMIN_ACCOUNT,
-                AdminView.ADMIN_PASSWORD,
-                AdminView.SYSTEM_REQUEST_USER_ID
+                AdminView.ADMIN_PASSWORD
+        );
+        
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
         );
 
-        String requestUserId = adminView.getSystemRequestUserId();
+        String requestUserId = commonView.getSystemRequestUserId();
         String adminId = Util.getRandomUUID();
         String userId = Util.getRandomUUID();
 
@@ -150,31 +155,20 @@ public class AdminAdminController extends BaseController {
             adminAccount.setAppId(adminView.getAppId());
             adminAccount.setAdminId(adminId);
             adminAccount.setAdminAccount(adminView.getAdminAccount());
-            AdminAccount adminAccountResult = adminAccountService.save(adminAccount, Util.getRandomUUID(), requestUserId);
+            adminAccountService.save(adminAccount, Util.getRandomUUID(), requestUserId);
             
             // 保存管理员密码信息
             AdminPassword adminPassword = new AdminPassword();
             adminPassword.setAppId(adminView.getAppId());
             adminPassword.setAdminId(adminId);
-            adminPassword.setAdminPassword(adminView.getAdminPassword());
-            AdminPassword adminPasswordResult = adminPasswordService.save(adminPassword, Util.getRandomUUID(), requestUserId);
+            adminPassword.setAdminPassword(Util.generatePassword(adminView.getAdminPassword()));
+            adminPasswordService.save(adminPassword, Util.getRandomUUID(), requestUserId);
             
             // 保存管理员视图信息
             adminView.putEntry(admin);
+            adminView.setAdminPassword(Util.generatePassword(adminView.getAdminPassword()));
             
             adminService.save(adminView);
-            
-            // 保存管理员账号视图信息
-            AdminAccountView adminAccountView = new AdminAccountView();
-            adminAccountView.putEntry(adminAccountResult);
-            
-            adminAccountService.save(adminAccountView);
-            
-            // 保存管理员账号视图信息
-            AdminPasswordView adminPasswordView = new AdminPasswordView();
-            adminPasswordView.putEntry(adminPasswordResult);
-            
-            adminPasswordService.save(adminPasswordView);
             
             // 保存用户视图信息
             UserView userView = new UserView();
@@ -194,9 +188,10 @@ public class AdminAdminController extends BaseController {
         @ApiImplicitParam(name = AdminView.ADMIN_ACCOUNT, value = "管理员账号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = AdminView.ADMIN_PASSWORD, value = "管理员密码", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = AdminView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
     })
     @RequestMapping(value = "/admin/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@ApiIgnore AdminView adminView) {
+    public Map<String, Object> updateV1(@ApiIgnore Admin admin, @ApiIgnore AdminView adminView, @ApiIgnore CommonView commonView) {
         
         validateRequest(
                 adminView,
@@ -205,6 +200,11 @@ public class AdminAdminController extends BaseController {
                 AdminView.ADMIN_ACCOUNT,
                 AdminView.ADMIN_PASSWORD,
                 AdminView.SYSTEM_VERSION
+        );
+        
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
         );
 
         AdminView adminViewBean = adminService.find(adminView.getAdminId());
@@ -215,62 +215,79 @@ public class AdminAdminController extends BaseController {
         
         // 验证管理员账号是否更改
         if (!adminView.getAdminAccount().equals(adminViewBean.getAdminAccount())) {
-            // 刪除
+            // 刪除旧的管理员账号
+            adminAccountService.deleteByAdminId(adminView.getAdminId(), commonView.getSystemRequestUserId());
+            // 保存新的管理员账号
+            AdminAccount adminAccount = new AdminAccount();
+            adminAccount.setAppId(adminView.getAppId());
+            adminAccount.setAdminId(adminView.getAdminId());
+            adminAccount.setAdminAccount(adminView.getAdminAccount());
+            
+            adminAccountService.save(adminAccount, Util.getRandomUUID(), commonView.getSystemRequestUserId());
+            
+            adminViewBean.setAdminAccount(adminView.getAdminAccount());
         }
         
-        // 验证管理员
-
-        //验证用户昵称
-        UserNickNameView userNickNameEntityView = getEntry(UserNickNameView.class);
-        validateRequest(
-                userNickNameEntityView,
-                UserNickNameView.USER_NICK_NAME
-        );
-
-        //验证用户邮箱
-        UserEmailView userEmailEntityView = getEntry(UserEmailView.class);
-        validateRequest(
-                userEmailEntityView,
-                UserEmailView.USER_EMAIL
-        );
-
-        //验证用户手机
-        UserMobileView userMobileEntityView = getEntry(UserMobileView.class);
-        validateRequest(
-                userMobileEntityView,
-                UserMobileView.USER_MOBILE
-        );
-
-        Admin admin = getEntry(Admin.class);
-
-        Admin result = adminService.update(admin, admin.getAdminId(), adminView.getSystemRequestUserId(), admin.getSystemVersion());
-
-        if (result != null) {
-
+        // 验证管理员密码是否更改
+        if (!Util.generatePassword(adminView.getAdminPassword()).equals(adminViewBean.getAdminPassword())) {
+            // 刪除旧的管理员密码
+            adminPasswordService.deleteByAdminId(adminView.getAdminId(), commonView.getSystemRequestUserId());
+            // 保存新的管理员密码
+            AdminPassword adminPassword = new AdminPassword();
+            adminPassword.setAppId(adminView.getAppId());
+            adminPassword.setAdminId(adminView.getAdminId());
+            adminPassword.setAdminPassword(Util.generatePassword(adminView.getAdminPassword()));
+            
+            adminPasswordService.save(adminPassword, Util.getRandomUUID(), commonView.getSystemRequestUserId());
+            
+            adminViewBean.setAdminPassword(Util.generatePassword(adminView.getAdminPassword()));
         }
+
+        // 更新管理员视图信息
+        adminService.update(adminViewBean, adminViewBean.getAdminId());
 
         return renderJson(true);
     }
 
     @ApiOperation(value = "删除管理员", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AdminView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = AdminView.ADMIN_ID, value = "管理员编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = AdminView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
+    })
     @RequestMapping(value = "/admin/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        AdminView adminEntityView = getEntry(AdminView.class);
-
+    public Map<String, Object> deleteV1(@ApiIgnore AdminView adminView, @ApiIgnore CommonView commonView) {
         validateRequest(
-                adminEntityView,
+                adminView,
                 AdminView.ADMIN_ID,
                 AdminView.APP_ID,
                 AdminView.SYSTEM_VERSION
         );
+        
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-        Admin result = adminService.delete(adminEntityView.getAdminId(), adminEntityView.getSystemRequestUserId(), adminEntityView.getSystemVersion());
-
+        Admin result = adminService.delete(adminView.getAdminId(), commonView.getSystemRequestUserId(), adminView.getSystemVersion());
+        
+        Boolean success = false;
+        
         if (result != null) {
-
+            // 删除管理员账号
+            adminAccountService.deleteByAdminId(adminView.getAdminId(), commonView.getSystemRequestUserId());
+            // 删除管理员密码
+            adminPasswordService.deleteByAdminId(adminView.getAdminId(), commonView.getSystemRequestUserId());
+            // 删除管理员视图信息
+            adminView.putEntry(result);
+            
+            adminService.delete(adminView, adminView.getAdminId());
+            
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "管理员数据同步", httpMethod = "POST")
@@ -282,7 +299,12 @@ public class AdminAdminController extends BaseController {
             AdminView adminView = new AdminView();
             adminView.putEntry(admin);
 
-            // TODO 管理员账号和密码
+            AdminAccount adminAccount = adminAccountService.findByAdminId(adminView.getAdminId());
+            adminView.setAdminAccount(adminAccount.getAdminAccount());
+            
+            AdminPassword adminPassword = adminPasswordService.findByAdminId(adminView.getAdminId());
+            adminView.setAdminPassword(adminPassword.getAdminPassword());
+            
             adminService.saveOrUpdate(adminView, admin.getAdminId());
         }
 

@@ -32,5 +32,21 @@ public interface AdminPasswordService extends BaseService<AdminPassword, AdminPa
      * @return List<AdminPassword> 管理员密码列表
      */
     List<AdminPasswordView> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据管理员编号删除管理员密码
+     * 
+     * @param adminId 管理员编号
+     * @param systemRequestUserId 请求用户编号
+     */
+    void deleteByAdminId(String adminId, String systemRequestUserId);
+    
+    /**
+     * 根据管理员编号查询管理员密码
+     * 
+     * @param adminId 管理员编号
+     * @return AdminPassword 管理员密码
+     */
+    AdminPassword findByAdminId(String adminId);
 
 }

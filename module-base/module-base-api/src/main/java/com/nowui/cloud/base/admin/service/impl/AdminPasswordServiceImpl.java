@@ -1,6 +1,7 @@
 package com.nowui.cloud.base.admin.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -13,7 +14,9 @@ import com.nowui.cloud.base.admin.mapper.AdminPasswordMapper;
 import com.nowui.cloud.base.admin.repository.AdminPasswordRepository;
 import com.nowui.cloud.base.admin.service.AdminPasswordService;
 import com.nowui.cloud.base.admin.view.AdminPasswordView;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
+import com.nowui.cloud.util.Util;
 
 /**
  * 管理员密码业务实现
@@ -51,6 +54,33 @@ public class AdminPasswordServiceImpl extends BaseServiceImpl<AdminPasswordMappe
         List<AdminPasswordView> adminPasswordViewList = list(query, sort, pageIndex, pageSize);
         
         return adminPasswordViewList;
+    }
+
+    @Override
+    public void deleteByAdminId(String adminId, String systemRequestUserId) {
+        List<AdminPassword> adminPasswordList = list(
+                new BaseWrapper<AdminPassword>()
+                        .eq(AdminPasswordView.ADMIN_ID, adminId)
+                        .eq(AdminPasswordView.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AdminPasswordView.SYSTEM_CREATE_TIME))
+        );
+        
+        if (!Util.isNullOrEmpty(adminPasswordList)) {
+            for (AdminPassword adminPassword : adminPasswordList) {
+                delete(adminPassword.getAdminPasswordId(), systemRequestUserId, adminPassword.getSystemVersion());
+            }
+        }
+    }
+
+    @Override
+    public AdminPassword findByAdminId(String adminId) {
+        AdminPassword adminPassword = find(
+                new BaseWrapper<AdminPassword>()
+                        .eq(AdminPasswordView.ADMIN_ID, adminId)
+                        .eq(AdminPasswordView.SYSTEM_STATUS, true)
+        );
+        
+        return adminPassword;
     }
 
 }

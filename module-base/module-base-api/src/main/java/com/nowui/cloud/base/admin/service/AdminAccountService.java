@@ -29,8 +29,24 @@ public interface AdminAccountService extends BaseService<AdminAccount, AdminAcco
      * @param appId 应用编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<AdminAccount> 管理员账号列表
+     * @return List<AdminAccountView> 管理员账号视图列表
      */
     List<AdminAccountView> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
+    
+    /**
+     * 根据管理员编号删除管理员账号
+     * 
+     * @param adminId 管理员编号
+     * @param systemRequestUserId 请求用户编号
+     */
+    void deleteByAdminId(String adminId, String systemRequestUserId);
+    
+    /**
+     * 根据管理员编号查询管理员账号
+     * 
+     * @param adminId 管理员编号
+     * @return AdminAccount 管理员账号
+     */
+    AdminAccount findByAdminId(String adminId);
 
 }
