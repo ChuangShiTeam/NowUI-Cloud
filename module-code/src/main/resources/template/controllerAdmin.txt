@@ -129,7 +129,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
+            ${firstLowerWithoutUnderlineEntityName}View.copy(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.save(${firstLowerWithoutUnderlineEntityName}View);
 
@@ -156,7 +156,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 <%for(column in detailColumnList){%>
                 ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName},
                 <%}%>
-                ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
+                ${firstUpperWithoutUnderlineEntityName}View.SYSTEM_VERSION
         );
 
         validateRequest(
@@ -169,7 +169,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
+            ${firstLowerWithoutUnderlineEntityName}View.copy(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View, ${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}());
 
@@ -187,7 +187,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstLowerWithoutUnderlineEntityName}View,
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID,
-                ${firstUpperWithoutUnderlineEntityName}.SYSTEM_VERSION
+                ${firstUpperWithoutUnderlineEntityName}View.SYSTEM_VERSION
         );
 
         validateRequest(
@@ -200,7 +200,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
         Boolean success = false;
 
         if (result != null) {
-            ${firstLowerWithoutUnderlineEntityName}View.putEntry(result);
+            ${firstLowerWithoutUnderlineEntityName}View.copy(result);
 
             ${firstLowerWithoutUnderlineEntityName}Service.update(${firstLowerWithoutUnderlineEntityName}View, ${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}());
 
@@ -217,7 +217,7 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
 
         for (${firstUpperWithoutUnderlineEntityName} ${firstLowerWithoutUnderlineEntityName} : ${firstLowerWithoutUnderlineEntityName}List) {
             ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View = new ${firstUpperWithoutUnderlineEntityName}View();
-            ${firstLowerWithoutUnderlineEntityName}View.putEntry(${firstLowerWithoutUnderlineEntityName});
+            ${firstLowerWithoutUnderlineEntityName}View.copy(${firstLowerWithoutUnderlineEntityName});
 
             ${firstLowerWithoutUnderlineEntityName}Service.saveOrUpdate(${firstLowerWithoutUnderlineEntityName}View, ${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}());
         }

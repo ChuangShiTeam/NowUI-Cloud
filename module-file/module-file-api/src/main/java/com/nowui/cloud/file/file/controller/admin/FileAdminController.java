@@ -129,7 +129,7 @@ public class FileAdminController extends BaseController {
 
         if (result != null) {
             // 删除MongoDB里面存储的视图信息
-            fileView.putEntry(result);
+            fileView.copy(result);
             
             fileService.delete(fileView, fileView.getFileId());
             
@@ -152,7 +152,7 @@ public class FileAdminController extends BaseController {
 
         for(File file : fileList) {
             FileView fileView = new FileView();
-            fileView.putEntry(file);
+            fileView.copy(file);
             
             fileService.save(fileView);
         }
@@ -178,7 +178,7 @@ public class FileAdminController extends BaseController {
         File file = fileService.uploadBase64(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getBase64Data());
 
         if (file != null) {
-            fileView.putEntry(file);
+            fileView.copy(file);
             
             fileService.save(fileView);
         }
@@ -198,7 +198,7 @@ public class FileAdminController extends BaseController {
 
         for (File file : fileList) {
             FileView fileView = new FileView();
-            fileView.putEntry(file);
+            fileView.copy(file);
 
             fileService.saveOrUpdate(fileView, fileView.getFileId());
         }

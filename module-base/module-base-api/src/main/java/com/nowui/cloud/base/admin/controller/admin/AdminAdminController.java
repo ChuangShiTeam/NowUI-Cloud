@@ -165,14 +165,14 @@ public class AdminAdminController extends BaseController {
             adminPasswordService.save(adminPassword, Util.getRandomUUID(), requestUserId);
             
             // 保存管理员视图信息
-            adminView.putEntry(admin);
+            adminView.copy(admin);
             adminView.setAdminPassword(Util.generatePassword(adminView.getAdminPassword()));
             
             adminService.save(adminView);
             
             // 保存用户视图信息
             UserView userView = new UserView();
-            userView.putEntry(user);
+            userView.copy(user);
             
             userService.save(userView);
             
@@ -280,7 +280,7 @@ public class AdminAdminController extends BaseController {
             // 删除管理员密码
             adminPasswordService.deleteByAdminId(adminView.getAdminId(), commonView.getSystemRequestUserId());
             // 删除管理员视图信息
-            adminView.putEntry(result);
+            adminView.copy(result);
             
             adminService.delete(adminView, adminView.getAdminId());
             
@@ -297,7 +297,7 @@ public class AdminAdminController extends BaseController {
 
         for (Admin admin : adminList) {
             AdminView adminView = new AdminView();
-            adminView.putEntry(admin);
+            adminView.copy(admin);
 
             AdminAccount adminAccount = adminAccountService.findByAdminId(adminView.getAdminId());
             adminView.setAdminAccount(adminAccount.getAdminAccount());
