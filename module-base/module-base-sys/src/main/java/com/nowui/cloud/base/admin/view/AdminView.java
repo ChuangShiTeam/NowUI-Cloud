@@ -48,31 +48,63 @@ public class AdminView extends BaseView {
     @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
-
-
+    
+    /**
+     * 管理员账号
+     */
+    @Field
+    @NotNull(message = "管理员账号不能为空")
+    @Length(max = 30, message = "管理员账号长度超出限制")
+    private String adminAccount;
+    public static final String ADMIN_ACCOUNT = "adminAccount";
+    
+    /**
+     * 管理员密码
+     */
+    @Field
+    @NotNull(message = "管理员密码不能为空")
+    @Length(max = 128, message = "管理员密码长度超出限制")
+    private String adminPassword;
+    public static final String ADMIN_PASSWORD = "adminPassword";
+    
     public String getAdminId() {
-        return getString(ADMIN_ID);
+        return adminId;
     }
-
+    
     public void setAdminId(String adminId) {
-        put(ADMIN_ID, adminId);
+        this.adminId = adminId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
-
+    
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getUserId() {
-        return getString(USER_ID);
+        return userId;
     }
-
+    
     public void setUserId(String userId) {
-        put(USER_ID, userId);
+        this.userId = userId;
     }
-
+    
+    public String getAdminAccount() {
+        return adminAccount;
+    }
+    
+    public void setAdminAccount(String adminAccount) {
+        this.adminAccount = adminAccount;
+    }
+    
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+    
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
 
 }
