@@ -11,7 +11,7 @@ import com.nowui.cloud.base.notify.entity.Notify;
 import com.nowui.cloud.base.notify.mapper.NotifyMapper;
 import com.nowui.cloud.base.notify.service.NotifyService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 消息表业务实现

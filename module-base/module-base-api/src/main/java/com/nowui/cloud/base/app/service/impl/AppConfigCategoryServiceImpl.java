@@ -17,7 +17,7 @@ import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.view.AppConfigCategoryView;
 import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 

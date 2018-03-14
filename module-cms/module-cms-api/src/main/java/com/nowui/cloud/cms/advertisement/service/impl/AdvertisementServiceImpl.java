@@ -13,7 +13,7 @@ import com.nowui.cloud.cms.advertisement.mapper.AdvertisementMapper;
 import com.nowui.cloud.cms.advertisement.repository.AdvertisementRepository;
 import com.nowui.cloud.cms.advertisement.service.AdvertisementService;
 import com.nowui.cloud.cms.advertisement.view.AdvertisementView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 广告业务接口实现

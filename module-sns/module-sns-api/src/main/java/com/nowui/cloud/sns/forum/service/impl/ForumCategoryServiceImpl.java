@@ -2,7 +2,7 @@ package com.nowui.cloud.sns.forum.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumCategory;
 import com.nowui.cloud.sns.forum.mapper.ForumCategoryMapper;
 import com.nowui.cloud.sns.forum.repository.ForumCategoryRepository;

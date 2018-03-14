@@ -15,7 +15,7 @@ import com.nowui.cloud.member.member.mapper.MemberDefaultAvatarMapper;
 import com.nowui.cloud.member.member.repository.MemberDefaultAvatarRepository;
 import com.nowui.cloud.member.member.service.MemberDefaultAvatarService;
 import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**

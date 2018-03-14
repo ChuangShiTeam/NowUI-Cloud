@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicCommentUserLike;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentUserLikeMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentUserLikeRepository;

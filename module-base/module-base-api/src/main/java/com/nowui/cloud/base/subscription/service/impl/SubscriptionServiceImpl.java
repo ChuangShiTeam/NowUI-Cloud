@@ -11,7 +11,7 @@ import com.nowui.cloud.base.subscription.entity.Subscription;
 import com.nowui.cloud.base.subscription.mapper.SubscriptionMapper;
 import com.nowui.cloud.base.subscription.service.SubscriptionService;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户订阅表业务实现

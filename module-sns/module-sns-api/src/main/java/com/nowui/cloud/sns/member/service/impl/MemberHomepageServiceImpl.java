@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.member.mapper.MemberHomepageMapper;
 import com.nowui.cloud.sns.member.repository.MemberHomepageRepository;
 import com.nowui.cloud.sns.member.service.MemberHomepageService;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.nowui.cloud.member.member.repository.MemberBackgroundRepository;
 import com.nowui.cloud.member.member.router.MemberBackgroundRouter;
 import com.nowui.cloud.member.member.view.MemberBackgroundView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberBackground;

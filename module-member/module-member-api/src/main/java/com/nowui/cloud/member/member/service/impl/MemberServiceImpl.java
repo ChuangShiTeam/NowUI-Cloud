@@ -22,7 +22,7 @@ import com.nowui.cloud.member.member.service.MemberPreferenceLanguageService;
 import com.nowui.cloud.member.member.service.MemberService;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.member.member.view.MemberView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**

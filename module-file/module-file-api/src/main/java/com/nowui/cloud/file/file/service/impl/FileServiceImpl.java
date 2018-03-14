@@ -25,7 +25,7 @@ import com.nowui.cloud.constant.Config;
 import com.nowui.cloud.constant.Constant;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.FileUtil;
 import com.nowui.cloud.util.Util;
 

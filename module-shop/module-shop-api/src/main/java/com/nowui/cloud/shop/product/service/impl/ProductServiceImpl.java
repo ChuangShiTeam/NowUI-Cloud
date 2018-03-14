@@ -1,6 +1,6 @@
 package com.nowui.cloud.shop.product.service.impl;
 
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.mapper.ProductMapper;
 import com.nowui.cloud.shop.product.repository.ProductRepository;

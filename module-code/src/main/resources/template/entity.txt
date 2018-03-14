@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.springframework.stereotype.Component;
+<%if(isDate){%>
+import java.util.Date;
+<%}%>
 
 /**
  * ${tableComment}

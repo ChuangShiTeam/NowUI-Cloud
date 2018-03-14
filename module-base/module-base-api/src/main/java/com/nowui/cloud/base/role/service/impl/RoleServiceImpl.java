@@ -3,7 +3,7 @@ package com.nowui.cloud.base.role.service.impl;
 import com.nowui.cloud.base.role.repository.RoleRepository;
 import com.nowui.cloud.base.role.view.RoleView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.base.role.entity.Role;
 import com.nowui.cloud.base.role.mapper.RoleMapper;
 import com.nowui.cloud.base.role.service.RoleService;

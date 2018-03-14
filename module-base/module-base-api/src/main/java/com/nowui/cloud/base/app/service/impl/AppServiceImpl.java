@@ -14,7 +14,7 @@ import com.nowui.cloud.base.app.mapper.AppMapper;
 import com.nowui.cloud.base.app.repository.AppRepository;
 import com.nowui.cloud.base.app.service.AppService;
 import com.nowui.cloud.base.app.view.AppView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 

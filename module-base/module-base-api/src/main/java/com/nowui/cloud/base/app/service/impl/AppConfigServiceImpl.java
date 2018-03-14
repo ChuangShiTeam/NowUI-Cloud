@@ -16,7 +16,7 @@ import com.nowui.cloud.base.app.repository.AppConfigRepository;
 import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.service.AppConfigService;
 import com.nowui.cloud.base.app.view.AppConfigView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 

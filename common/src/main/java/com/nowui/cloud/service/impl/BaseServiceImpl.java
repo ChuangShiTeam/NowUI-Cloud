@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * SuperService
+ * BaseServiceImpl
  *
  * @author ZhongYongQiang
  * <p>
@@ -52,19 +52,8 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
     @Autowired
     protected RabbitSender rabbitSender;
 
-//    @Autowired
-//    protected RedisTemplate<String, Object> redisTemplate;
-
     @Autowired
     protected MongoTemplate mongoTemplate;
-
-//    protected String getItemCacheName(String id) {
-//        return entity.getTableName() + "_item_" + id;
-//    }
-
-//    protected String getItemCacheName(String tableName, String id) {
-//        return tableName + "_item_" + id;
-//    }
 
     @Override
     public Integer count(Query query) {
@@ -233,25 +222,6 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
         return true;
     }
 
-//    @Override
-//    public Boolean save(E baseEntity, String id, String systemCreateUserId) {
-//        baseEntity.put(entity.tableId(), id);
-//        baseEntity.setSystemCreateUserId(systemCreateUserId);
-//        baseEntity.setSystemCreateTime(new Date());
-//        baseEntity.setSystemUpdateUserId(systemCreateUserId);
-//        baseEntity.setSystemUpdateTime(new Date());
-//        baseEntity.setSystemVersion(0);
-//        baseEntity.setSystemStatus(true);
-//
-//        Boolean success = mapper.insert(baseEntity) != 0;
-//
-//        if (success) {
-//
-//        }
-//
-//        return success;
-//    }
-
     @Override
     public E save(E baseEntity, String id, String systemCreateUserId) {
         try {
@@ -266,7 +236,6 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
             e.printStackTrace();
         }
 
-//        baseEntity.put(baseEntity.tableId(), id);
         baseEntity.setSystemCreateUserId(systemCreateUserId);
         baseEntity.setSystemCreateTime(new Date());
         baseEntity.setSystemUpdateUserId(systemCreateUserId);
@@ -306,25 +275,6 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
             return null;
         }
     }
-
-//    @Override
-//    public Boolean save(E baseEntity, String id, String appId, String routing, String systemCreateUserId) {
-//        baseEntity.put(entity.tableId(), id);
-//        baseEntity.setSystemCreateUserId(systemCreateUserId);
-//        baseEntity.setSystemCreateTime(new Date());
-//        baseEntity.setSystemUpdateUserId(systemCreateUserId);
-//        baseEntity.setSystemUpdateTime(new Date());
-//        baseEntity.setSystemVersion(0);
-//        baseEntity.setSystemStatus(true);
-//
-//        Boolean success = mapper.insert(baseEntity) != 0;
-//
-//        if (success) {
-//            rabbitSender.send(appId, routing, baseEntity, systemCreateUserId);
-//        }
-//
-//        return success;
-//    }
 
     @Override
     public Boolean saveOrUpdate(V view, String id) {
@@ -371,24 +321,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
     }
 
     @Override
-    public Boolean update(E baseEntity, String id, String systemUpdateUserId) {
-        try {
-            String method = "set" + baseEntity.tableId().substring(0, 1).toUpperCase() + baseEntity.tableId().substring(1);
-            Method setId = baseEntity.getClass().getMethod(method, String.class);
-            setId.invoke(baseEntity, id);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-
-//        baseEntity.put(baseEntity.tableId(), id);
-        baseEntity.setSystemUpdateUserId(systemUpdateUserId);
-        baseEntity.setSystemUpdateTime(new Date());
-
+    public Boolean update(E baseEntity, String id) {
         Boolean success = mapper.update(
                 baseEntity,
                 new EntityWrapper<E>()
@@ -404,20 +337,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
     }
 
     @Override
-    public E update(E baseEntity, String id, String systemUpdateUserId, Integer systemVersion) {
-        try {
-            String method = "set" + baseEntity.tableId().substring(0, 1).toUpperCase() + baseEntity.tableId().substring(1);
-            Method setId = baseEntity.getClass().getMethod(method, String.class);
-            setId.invoke(baseEntity, id);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-//        baseEntity.put(baseEntity.tableId(), id);
+    public E update(E baseEntity, String id, String appId, String systemUpdateUserId, Integer systemVersion) {
         baseEntity.setSystemUpdateUserId(systemUpdateUserId);
         baseEntity.setSystemUpdateTime(new Date());
         baseEntity.setSystemVersion(systemVersion + 1);
@@ -426,6 +346,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
                 baseEntity,
                 new EntityWrapper<E>()
                         .eq(entity.tableId(), id)
+                        .eq(Constant.APP_ID, appId)
                         .eq(Constant.SYSTEM_VERSION, systemVersion)
                         .eq(Constant.SYSTEM_STATUS, true)
         ) != 0;
@@ -474,90 +395,26 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
         return updateResult.isModifiedCountAvailable();
     }
 
-//    @Override
-//    public Boolean update(E baseEntity, String id, String appId, String routing, String systemUpdateUserId, Integer systemVersion) {
-//        baseEntity.setSystemUpdateUserId(systemUpdateUserId);
-//        baseEntity.setSystemUpdateTime(new Date());
-//        baseEntity.setSystemVersion(systemVersion + 1);
-//
-//        Boolean success = mapper.update(
-//                baseEntity,
-//                new EntityWrapper<E>()
-//                        .eq(entity.tableId(), id)
-//                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
-//                        .eq(BaseEntity.SYSTEM_STATUS, true)
-//        ) != 0;
-//
-//        if (success) {
-//            rabbitSender.send(appId, routing, baseEntity, systemUpdateUserId);
-//        }
-//
-//        return success;
-//    }
+    @Override
+    public E delete(String id) {
+        entity.setSystemStatus(false);
 
-    private void redisSaveOrUpdate(E baseEntity, String id) {
-//        baseEntity.keepTableFieldValue();
+        Boolean success = mapper.update(
+                entity,
+                new EntityWrapper<E>()
+                        .eq(entity.tableId(), id)
+                        .eq(Constant.SYSTEM_STATUS, true)
+        ) != 0;
 
-//        redisTemplate.opsForValue().set(getItemCacheName(id), baseEntity);
+        if (success) {
+            return entity;
+        } else {
+            return null;
+        }
     }
 
-//    @Override
-//    public Boolean delete(String id, String systemUpdateUserId, Integer systemVersion) {
-//        entity.setSystemUpdateUserId(systemUpdateUserId);
-//        entity.setSystemUpdateTime(new Date());
-//        entity.setSystemVersion(systemVersion + 1);
-//        entity.setSystemStatus(false);
-//
-//        Boolean success = mapper.update(
-//                entity,
-//                new EntityWrapper<E>()
-//                        .eq(entity.tableId(), id)
-//                        .eq(BaseEntity.SYSTEM_VERSION, systemVersion)
-//                        .eq(BaseEntity.SYSTEM_STATUS, true)
-//        ) != 0;
-//
-//        if (success) {
-//            redis.delete(getItemCacheName(id));
-//        }
-//
-//        return success;
-//    }
-
-//    @Override
-//    public Boolean delete(String id, String appId, String routing, String systemUpdateUserId) {
-//        entity.setSystemUpdateUserId(systemUpdateUserId);
-//        entity.setSystemUpdateTime(new Date());
-//        entity.setSystemStatus(false);
-//
-//        Boolean success = mapper.update(
-//                entity,
-//                new EntityWrapper<E>()
-//                        .eq(entity.tableId(), id)
-//                        .eq(BaseEntity.SYSTEM_STATUS, true)
-//        ) != 0;
-//
-//        if (success) {
-//            rabbitSender.send(appId, routing, entity, systemUpdateUserId);
-//        }
-//
-//        return success;
-//    }
-
     @Override
-    public E delete(String id, String systemUpdateUserId, Integer systemVersion) {
-        try {
-            String name = "set" + entity.tableId().substring(0, 1).toUpperCase() + entity.tableId().substring(1);
-            Method method = entity.getClass().getMethod(name, String.class);
-            method.invoke(entity, id);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-//        entity.put(entity.tableId(), id);
+    public E delete(String id, String appId, String systemUpdateUserId, Integer systemVersion) {
         entity.setSystemUpdateUserId(systemUpdateUserId);
         entity.setSystemUpdateTime(new Date());
         entity.setSystemVersion(systemVersion + 1);
@@ -567,6 +424,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
                 entity,
                 new EntityWrapper<E>()
                         .eq(entity.tableId(), id)
+                        .eq(Constant.APP_ID, appId)
                         .eq(Constant.SYSTEM_VERSION, systemVersion)
                         .eq(Constant.SYSTEM_STATUS, true)
         ) != 0;

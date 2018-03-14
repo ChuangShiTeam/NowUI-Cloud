@@ -22,7 +22,7 @@ import com.nowui.cloud.cms.article.service.ArticleService;
 import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
 import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.cms.article.view.ArticleView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**

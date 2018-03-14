@@ -3,7 +3,7 @@ package com.nowui.cloud.base.menu.service.impl;
 import com.nowui.cloud.base.menu.repository.MenuRepository;
 import com.nowui.cloud.base.menu.view.MenuView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.base.menu.entity.Menu;
 import com.nowui.cloud.base.menu.mapper.MenuMapper;

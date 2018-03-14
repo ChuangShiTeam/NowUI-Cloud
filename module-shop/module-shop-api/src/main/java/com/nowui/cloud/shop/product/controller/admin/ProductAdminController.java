@@ -1,5 +1,6 @@
 package com.nowui.cloud.shop.product.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -161,7 +162,7 @@ public class ProductAdminController extends BaseController {
                 CommonView.SYSTEM_REQUEST_USER_ID
         );
 
-        Product result = productService.update(product, productView.getProductId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
+        Product result = productService.update(product, productView.getProductId(), productView.getAppId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
 
         Boolean success = false;
 
@@ -187,6 +188,7 @@ public class ProductAdminController extends BaseController {
         validateRequest(
                 productView,
                 ProductView.PRODUCT_ID,
+                ProductView.APP_ID,
                 ProductView.SYSTEM_VERSION
         );
 
@@ -195,7 +197,7 @@ public class ProductAdminController extends BaseController {
                 CommonView.SYSTEM_REQUEST_USER_ID
         );
 
-        Product result = productService.delete(productView.getProductId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
+        Product result = productService.delete(productView.getProductId(), productView.getAppId(), commonView.getSystemRequestUserId(), productView.getSystemVersion());
 
         Boolean success = false;
 

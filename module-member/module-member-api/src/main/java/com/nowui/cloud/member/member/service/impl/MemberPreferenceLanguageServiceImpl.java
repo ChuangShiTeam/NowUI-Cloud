@@ -10,7 +10,7 @@ import com.nowui.cloud.member.member.repository.MemberPreferenceLanguageReposito
 import com.nowui.cloud.member.member.service.MemberPreferenceLanguageService;
 import com.nowui.cloud.member.member.view.MemberPreferenceLanguageView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 会员偏好语言业务实现

@@ -12,7 +12,7 @@ import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.view.BaseView;
 
 /**
- * SuperService
+ * BaseService
  *
  * @author ZhongYongQiang
  *
@@ -194,21 +194,21 @@ public interface BaseService<E extends BaseEntity, V extends BaseView> extends I
      *
      * @param entity 实体类
      * @param id 实体类编号
-     * @param systemUpdateUserId 更新人编号
      * @return 是否成功
      */
-    Boolean update(E entity, String id, String systemUpdateUserId);
+    Boolean update(E entity, String id);
 
     /**
      * 实体类修改
      *
      * @param entity 实体类
      * @param id 实体类编号
+     * @param appId 应用编号
      * @param systemUpdateUserId 更新人编号
      * @param systemVersion 版本号
      * @return 是否成功
      */
-    E update(E entity, String id, String systemUpdateUserId, Integer systemVersion);
+    E update(E entity, String id, String appId, String systemUpdateUserId, Integer systemVersion);
 
     /**
      * 实体类修改
@@ -232,11 +232,20 @@ public interface BaseService<E extends BaseEntity, V extends BaseView> extends I
      * 实体类删除
      *
      * @param id 实体类编号
+     * @return 是否成功
+     */
+    E delete(String id);
+
+    /**
+     * 实体类删除
+     *
+     * @param id 实体类编号
+     * @param appId 应用编号
      * @param systemUpdateUserId 更新人编号
      * @param systemVersion 版本号
      * @return 是否成功
      */
-    E delete(String id, String systemUpdateUserId, Integer systemVersion);
+    E delete(String id, String appId, String systemUpdateUserId, Integer systemVersion);
 
     /**
      * 实体类删除

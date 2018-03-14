@@ -1,7 +1,7 @@
 package com.nowui.cloud.sns.topic.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.TopicComment;
 import com.nowui.cloud.sns.topic.mapper.TopicCommentMapper;
 import com.nowui.cloud.sns.topic.repository.TopicCommentRepository;

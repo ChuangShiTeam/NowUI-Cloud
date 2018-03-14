@@ -13,7 +13,7 @@ import com.nowui.cloud.cms.toolbar.mapper.ToolbarMapper;
 import com.nowui.cloud.cms.toolbar.repository.ToolbarRepository;
 import com.nowui.cloud.cms.toolbar.service.ToolbarService;
 import com.nowui.cloud.cms.toolbar.view.ToolbarView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 工具栏业务接口实现

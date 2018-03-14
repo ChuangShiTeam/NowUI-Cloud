@@ -11,7 +11,7 @@ import com.nowui.cloud.base.user.repository.UserMobileRepository;
 import com.nowui.cloud.base.user.service.UserMobileService;
 import com.nowui.cloud.base.user.view.UserMobileView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户手机号码业务实现

@@ -11,7 +11,7 @@ import com.nowui.cloud.cms.article.repository.ArticleAuditRepository;
 import com.nowui.cloud.cms.article.service.ArticleAuditService;
 import com.nowui.cloud.cms.article.view.ArticleAuditView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 文章审核业务实现

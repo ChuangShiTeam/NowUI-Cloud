@@ -1,6 +1,6 @@
 package com.nowui.cloud.hospital.doctor.service.impl;
 
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.hospital.doctor.entity.Doctor;
 import com.nowui.cloud.hospital.doctor.mapper.DoctorMapper;
 import com.nowui.cloud.hospital.doctor.repository.DoctorRepository;

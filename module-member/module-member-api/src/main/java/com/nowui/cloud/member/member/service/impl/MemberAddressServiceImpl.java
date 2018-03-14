@@ -5,7 +5,7 @@ import java.util.List;
 import com.nowui.cloud.member.member.repository.MemberAddressRepository;
 import com.nowui.cloud.member.member.router.MemberAddressRouter;
 import com.nowui.cloud.member.member.view.MemberAddressView;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberAddress;

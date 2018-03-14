@@ -10,7 +10,7 @@ import com.nowui.cloud.member.member.repository.MemberSignatureRepository;
 import com.nowui.cloud.member.member.service.MemberSignatureService;
 import com.nowui.cloud.member.member.view.MemberSignatureView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 会员签名业务实现

@@ -2,7 +2,7 @@ package com.nowui.cloud.wawi.pet.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.wawi.pet.entity.Pet;
 import com.nowui.cloud.wawi.pet.mapper.PetMapper;
 import com.nowui.cloud.wawi.pet.repository.PetRepository;

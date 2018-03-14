@@ -10,7 +10,7 @@ import com.nowui.cloud.base.user.repository.UserNickNameRepository;
 import com.nowui.cloud.base.user.service.UserNickNameService;
 import com.nowui.cloud.base.user.view.UserNickNameView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户昵称业务实现

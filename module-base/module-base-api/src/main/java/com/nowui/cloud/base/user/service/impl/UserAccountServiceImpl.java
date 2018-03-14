@@ -11,7 +11,7 @@ import com.nowui.cloud.base.user.repository.UserAcRepository;
 import com.nowui.cloud.base.user.service.UserAccountService;
 import com.nowui.cloud.base.user.view.UserAccountView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户账号业务实现

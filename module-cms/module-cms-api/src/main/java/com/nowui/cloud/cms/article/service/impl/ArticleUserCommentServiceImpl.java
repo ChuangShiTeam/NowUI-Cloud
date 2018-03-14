@@ -2,7 +2,7 @@ package com.nowui.cloud.cms.article.service.impl;
 
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.cms.article.entity.ArticleUserComment;
 import com.nowui.cloud.cms.article.mapper.ArticleUserCommentMapper;
 import com.nowui.cloud.cms.article.repository.ArticleUserCommentRepository;

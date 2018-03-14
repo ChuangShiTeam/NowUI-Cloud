@@ -11,7 +11,7 @@ import com.nowui.cloud.base.user.repository.UserWechatRepository;
 import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.base.user.view.UserWechatView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户微信业务实现

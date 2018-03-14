@@ -15,7 +15,7 @@ import com.nowui.cloud.base.user.view.UserAvatarView;
 import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumUserFollow;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;

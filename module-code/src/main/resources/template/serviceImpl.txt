@@ -1,6 +1,6 @@
 package com.nowui.cloud.${moduleName}.${packageName}.service.impl;
 
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.${moduleName}.${packageName}.entity.${firstUpperWithoutUnderlineEntityName};
 import com.nowui.cloud.${moduleName}.${packageName}.mapper.${firstUpperWithoutUnderlineEntityName}Mapper;
 import com.nowui.cloud.${moduleName}.${packageName}.repository.${firstUpperWithoutUnderlineEntityName}Repository;
@@ -13,6 +13,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
+<%if(isDate){%>
+import java.util.Date;
+<%}%>
 
 /**
  * ${tableComment}业务实现
@@ -25,7 +29,7 @@ import java.util.List;
 public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServiceImpl<${firstUpperWithoutUnderlineEntityName}Mapper, ${firstUpperWithoutUnderlineEntityName}, ${firstUpperWithoutUnderlineEntityName}Repository, ${firstUpperWithoutUnderlineEntityName}View> implements ${firstUpperWithoutUnderlineEntityName}Service {
 
     @Override
-        public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>) {
+        public Integer countForAdmin(String appId<%for(column in searchColumnList){%>, <%if(column.dataType == "TINYINT"){%>Boolean<%}else if(column.dataType == "INT"){%>Integer<%}else if(column.dataType == "DECIMAL"){%>BigDecimal<%}else if(column.dataType == "DATETIME"){%>Date<%}else{%>String<%}%> ${column.columnName}<%}%>) {
             Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
                     <%for(column in searchColumnList){%>
                     .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?" + ${column.columnName} + ".*")
@@ -40,8 +44,8 @@ public class ${firstUpperWithoutUnderlineEntityName}ServiceImpl extends BaseServ
         }
 
         @Override
-        public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, String ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
-            Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}.APP_ID).is(appId)
+        public List<${firstUpperWithoutUnderlineEntityName}View> listForAdmin(String appId<%for(column in searchColumnList){%>, <%if(column.dataType == "TINYINT"){%>Boolean<%}else if(column.dataType == "INT"){%>Integer<%}else if(column.dataType == "DECIMAL"){%>BigDecimal<%}else if(column.dataType == "DATETIME"){%>Date<%}else{%>String<%}%> ${column.columnName}<%}%>, Integer pageIndex, Integer pageSize) {
+            Criteria criteria = Criteria.where(${firstUpperWithoutUnderlineEntityName}View.APP_ID).is(appId)
                     <%for(column in searchColumnList){%>
                     .and(${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}).regex(".*?" + ${column.columnName} + ".*")
                     <%}%>

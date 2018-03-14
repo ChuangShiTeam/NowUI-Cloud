@@ -29,7 +29,7 @@ import com.nowui.cloud.base.user.service.UserSexService;
 import com.nowui.cloud.base.user.service.UserWechatService;
 import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**

@@ -18,7 +18,7 @@ import com.nowui.cloud.base.sms.repository.SmsCaptchaRepository;
 import com.nowui.cloud.base.sms.service.SmsCaptchaService;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
 

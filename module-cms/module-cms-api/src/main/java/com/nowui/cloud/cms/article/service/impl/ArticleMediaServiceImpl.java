@@ -10,7 +10,7 @@ import com.nowui.cloud.cms.article.repository.ArticleMediaRepository;
 import com.nowui.cloud.cms.article.service.ArticleMediaService;
 import com.nowui.cloud.cms.article.view.ArticleMediaView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 文章多媒体业务实现

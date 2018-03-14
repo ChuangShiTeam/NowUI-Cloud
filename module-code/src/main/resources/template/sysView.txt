@@ -2,11 +2,16 @@ package com.nowui.cloud.${moduleName}.${packageName}.view;
 
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+<%if(isDate){%>
+import java.util.Date;
+<%}%>
 
 /**
  * ${tableComment}视图

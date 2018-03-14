@@ -16,7 +16,7 @@ import com.nowui.cloud.cms.navigation.repository.NavigationRepository;
 import com.nowui.cloud.cms.navigation.service.NavigationService;
 import com.nowui.cloud.cms.navigation.view.NavigationView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 导航栏业务实现

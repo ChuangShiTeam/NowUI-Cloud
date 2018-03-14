@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.topic.entity.Topic;
 import com.nowui.cloud.sns.topic.entity.TopicForum;
 import com.nowui.cloud.sns.topic.mapper.TopicForumMapper;

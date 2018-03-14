@@ -21,12 +21,13 @@ export default connect(function (state) {
             type: 'SEARCH',
             isLoad: true,
             isPrimary: true
-        }, {
+        }],
+		secondButtonList: [{
             name: '新增',
             icon: 'plus-circle',
             type: 'ADD',
             addUrl: '/${urlEntityName}/add'
-        }],
+		}],
         searchList: [{
             <%for(column in searchColumnList){%>
             <%if(!columnLP.first){%>
@@ -34,7 +35,19 @@ export default connect(function (state) {
             <%}%>
             id: '${column.columnName}',
             name: '${column.columnComment}',
-            type: 'VARCHAR'
+            <%if(column.dataType == "tinyint"){%>
+            type: 'BOOLEAN',
+            <%}else if(column.dataType == "int"){%>
+            type: 'NUMBER',
+            <%}else if(column.dataType == "decimal"){%>
+            type: 'NUMBER',
+            <%}else if(column.dataType == "datetime"){%>
+            type: 'DATEPICKER',
+            <%}else if(column.dataType == "date"){%>
+            type: 'DATEPICKER',
+            <%}else{%>
+            type: 'VARCHAR',
+            <%}%>
             <%}%>
         }],
         columnList: [{

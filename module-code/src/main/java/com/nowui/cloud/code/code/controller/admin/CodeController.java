@@ -192,6 +192,7 @@ public class CodeController extends BaseController {
             String firstUpperWithoutUnderlineEntityName = removeUnderline(firstUpperEntityName);
             String tableId = "";
             String tableIdComment = "";
+            Boolean isDate = false;
 
             String viewPackagePath = viewPath + "/" + firstLowerWithoutUnderlineEntityName;
             FileUtil.createPath(viewPackagePath);
@@ -219,7 +220,7 @@ public class CodeController extends BaseController {
 
                 if ("PRI".equals(column.getString(CodeView.COLUMN_KEY))) {
                     tableId = columnName;
-                    tableIdComment = column.getString(CodeView.TABLE_COMMENT);
+                    tableIdComment = column.getString(CodeView.COLUMN_COMMENT);
                 }
 
                 column.put("firstUpperColumnName", columnName.substring(0, 1).toUpperCase() + columnName.substring(1));
@@ -241,6 +242,10 @@ public class CodeController extends BaseController {
 
                 if (column.getBoolean("isDetail")) {
                     detailColumnList.add(column);
+                }
+
+                if (dataType.toLowerCase().equals("datetime") || dataType.toLowerCase().equals("date")) {
+                    isDate = true;
                 }
             }
 
@@ -275,6 +280,7 @@ public class CodeController extends BaseController {
             templateMap.put("searchColumnList", searchColumnList);
             templateMap.put("listColumnList", listColumnList);
             templateMap.put("detailColumnList", detailColumnList);
+            templateMap.put("isDate", isDate);
 
             write(templateMap, "entity.txt", entityPath + "/" + firstUpperWithoutUnderlineEntityName + ".java");
             if (codeView.getIsMq()) {

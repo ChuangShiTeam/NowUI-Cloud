@@ -11,7 +11,7 @@ import com.nowui.cloud.base.user.repository.UserPasswordRepository;
 import com.nowui.cloud.base.user.service.UserPasswordService;
 import com.nowui.cloud.base.user.view.UserPasswordView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户密码业务实现

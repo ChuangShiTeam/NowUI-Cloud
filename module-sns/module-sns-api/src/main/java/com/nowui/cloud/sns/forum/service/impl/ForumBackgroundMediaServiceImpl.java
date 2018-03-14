@@ -1,6 +1,6 @@
 package com.nowui.cloud.sns.forum.service.impl;
 
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.sns.forum.entity.ForumBackgroundMedia;
 import com.nowui.cloud.sns.forum.mapper.ForumBackgroundMediaMapper;
 import com.nowui.cloud.sns.forum.repository.ForumBackgroundMediaRepository;

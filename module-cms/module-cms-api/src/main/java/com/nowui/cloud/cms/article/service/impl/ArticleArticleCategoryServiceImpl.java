@@ -12,7 +12,7 @@ import com.nowui.cloud.cms.article.repository.ArticleArticleCategoryRepository;
 import com.nowui.cloud.cms.article.service.ArticleArticleCategoryService;
 import com.nowui.cloud.cms.article.view.ArticleArticleCategoryView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 文章文章分类业务实现

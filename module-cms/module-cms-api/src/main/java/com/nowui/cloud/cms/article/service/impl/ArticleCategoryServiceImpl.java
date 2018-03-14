@@ -16,7 +16,7 @@ import com.nowui.cloud.cms.article.repository.ArticleCategoryRepository;
 import com.nowui.cloud.cms.article.service.ArticleCategoryService;
 import com.nowui.cloud.cms.article.view.ArticleCategoryView;
 import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.Util;
 
 /**

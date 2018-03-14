@@ -11,7 +11,7 @@ import com.nowui.cloud.base.user.repository.UserEmailRepository;
 import com.nowui.cloud.base.user.service.UserEmailService;
 import com.nowui.cloud.base.user.view.UserEmailView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.SuperServiceImpl;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 用户邮箱业务实现
