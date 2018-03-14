@@ -67,7 +67,7 @@ public class AdminPasswordServiceImpl extends BaseServiceImpl<AdminPasswordMappe
         
         if (!Util.isNullOrEmpty(adminPasswordList)) {
             for (AdminPassword adminPassword : adminPasswordList) {
-                delete(adminPassword.getAdminPasswordId(), systemRequestUserId, adminPassword.getSystemVersion());
+                delete(adminPassword.getAdminPasswordId(), adminPassword.getAppId(), systemRequestUserId, adminPassword.getSystemVersion());
             }
         }
     }

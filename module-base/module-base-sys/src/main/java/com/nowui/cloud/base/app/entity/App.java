@@ -1,8 +1,6 @@
 package com.nowui.cloud.base.app.entity;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -11,47 +9,45 @@ import com.nowui.cloud.entity.BaseEntity;
 
 /**
  * 应用
- * 
+ *
  * @author marcus
  *
- * 2017年12月25日
+ * 2018-03-14
  */
-@Component(value = "app")
+@Component
+
 @TableName(value = "app_info")
 public class App extends BaseEntity {
-    
+
     /**
      * 应用编号
      */
     @TableId
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
+    @TableField
     private String appId;
-    public static final String APP_ID = "appId";
-    
+
     /**
      * 应用名称
      */
     @TableField
-    @NotNull(message = "应用名称不能为空")
-    @Length(max = 100, message = "应用名称长度超出限制")
     private String appName;
-    public static final String APP_NAME = "appName";
+
 
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
-
+    
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
 
     public String getAppName() {
-        return getString(APP_NAME);
+        return appName;
+    }
+    
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
-    public void setAppName(String appName) {
-        put(APP_NAME, appName);
-    }
 
 }

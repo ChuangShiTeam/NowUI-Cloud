@@ -15,12 +15,20 @@ import com.nowui.cloud.base.app.view.AppView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * @author ZhongYongQiang
+ * 应用管理端控制器
+ * 
+ * @author marcus
+ *
+ * 2018年3月14日
  */
 @Api(value = "应用", description = "应用接口管理")
 @RestController
@@ -29,110 +37,188 @@ public class AppController extends BaseController {
     @Autowired
     private AppService appService;
     
-    @ApiOperation(value = "应用列表")
+    @ApiOperation(value = "应用列表", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AppView.APP_NAME, value = "应用名称", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
     @RequestMapping(value = "/app/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
-        AppView appView = getEntry(AppView.class);
+    public Map<String, Object> listV1(@ApiIgnore AppView appView, @ApiIgnore CommonView commonView) {
 
-        validateRequest(appView, AppView.APP_NAME, AppView.PAGE_INDEX, AppView.PAGE_SIZE);
+        validateRequest(
+                appView, 
+                AppView.APP_NAME
+        );
+        
+        validateRequest(
+                commonView, 
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
+        );
 
         Integer resultTotal = appService.countForAdmin(appView.getAppName());
-        List<AppView> resultList = appService.listForAdmin(appView.getAppName(), appView.getPageIndex(), appView.getPageSize());
+        List<AppView> resultList = appService.listForAdmin(appView.getAppName(), commonView.getPageIndex(), commonView.getPageSize());
 
-        validateResponse(AppView.APP_ID, AppView.APP_NAME);
+        validateResponse(
+                AppView.APP_ID, 
+                AppView.APP_NAME
+        );
 
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "应用信息")
+    @ApiOperation(value = "应用信息", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AppView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string")
+    })
     @RequestMapping(value = "/app/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
-        App appView = getEntry(App.class);
+    public Map<String, Object> findV1(@ApiIgnore AppView appView) {
 
-        validateRequest(appView, App.APP_ID);
+        validateRequest(
+                appView, 
+                AppView.APP_ID
+        );
 
         AppView result = appService.find(appView.getAppId());
 
-        validateResponse(AppView.APP_ID, AppView.APP_NAME, AppView.SYSTEM_VERSION);
+        validateResponse(
+                AppView.APP_ID, 
+                AppView.APP_NAME, 
+                AppView.SYSTEM_VERSION
+        );
 
         return renderJson(result);
     }
 
-    @ApiOperation(value = "应用新增")
+    @ApiOperation(value = "应用新增", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AppView.APP_NAME, value = "应用名称", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
+    })
     @RequestMapping(value = "/app/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1() {
-        App appEntity = getEntry(App.class);
-
-        validateRequest(appEntity, App.APP_NAME);
+    public Map<String, Object> saveV1(@ApiIgnore App app, @ApiIgnore AppView appView, @ApiIgnore CommonView commonView) {
+        validateRequest(
+                appView, 
+                AppView.APP_NAME
+        );
+        
+        validateRequest(
+                commonView, 
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
         
         //验证应用名称是否重复
-        if (appService.checkName(appEntity.getAppName())) {
+        if (appService.checkName(appView.getAppName())) {
             throw new BusinessException("应用名称重复");
         }
 
         String appId = Util.getRandomUUID();
 
-        App result = appService.save(appEntity, appId, appEntity.getSystemRequestUserId());
+        App result = appService.save(app, appId, commonView.getSystemRequestUserId());
 
         Boolean success = false;
 
         if (result != null) {
+            // 保存应用视图信息
+            appView.putEntry(result);
+            
+            appService.save(appView);
+            
             success = true;
         }
 
         return renderJson(success);
     }
 
-    @ApiOperation(value = "应用修改")
+    @ApiOperation(value = "应用修改", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AppView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = AppView.APP_NAME, value = "应用名称", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = AppView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
+    })
     @RequestMapping(value = "/app/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1() {
-        App appEntity = getEntry(App.class);
+    public Map<String, Object> updateV1(@ApiIgnore App app, @ApiIgnore AppView appView, @ApiIgnore CommonView commonView) {
 
-        validateRequest(appEntity, App.APP_ID, App.APP_NAME, App.SYSTEM_VERSION);
+        validateRequest(
+                appView, 
+                AppView.APP_ID, 
+                AppView.APP_NAME, 
+                AppView.SYSTEM_VERSION
+        );
+        
+        validateRequest(
+                commonView, 
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-        if (appService.checkName(appEntity.getAppId(), appEntity.getAppName())) {
+        if (appService.checkName(appView.getAppId(), appView.getAppName())) {
             throw new BusinessException("应用名称重复");
         }
 
-        App result = appService.update(appEntity, appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+        App result = appService.update(app, appView.getAppId(), appView.getAppId(), commonView.getSystemRequestUserId(), appView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
+            // 更新应用视图信息
+            appView.putEntry(app);
+            
+            appService.update(appView, appView.getAppId());
+            
             success = true;
         }
 
         return renderJson(success);
     }
 
-    @ApiOperation(value = "应用删除")
+    @ApiOperation(value = "应用删除", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = AppView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = AppView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string")
+    })
     @RequestMapping(value = "/app/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        App appEntity = getEntry(App.class);
+    public Map<String, Object> deleteV1(@ApiIgnore AppView appView, @ApiIgnore CommonView commonView) {
+        
+        validateRequest(
+                appView, 
+                AppView.APP_ID, 
+                AppView.APP_NAME
+        );
+        
+        validateRequest(
+                commonView, 
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-        validateRequest(appEntity, App.APP_ID, App.APP_NAME);
-
-        App result = appService.delete(appEntity.getAppId(), appEntity.getSystemRequestUserId(), appEntity.getSystemVersion());
+        App result = appService.delete(appView.getAppId(), appView.getAppId(), commonView.getSystemRequestUserId(), appView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
+            // 删除应用视图信息
+            appView.putEntry(result);
+            
+            appService.delete(appView, appView.getAppId());
+            
             success = true;
         }
 
         return renderJson(success);
     }
 
-    @ApiOperation(value = "应用数据同步")
+    @ApiOperation(value = "应用数据同步", httpMethod = "POST")
     @RequestMapping(value = "/app/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
         List<App> appList = appService.listByMysql();
 
         for (App app : appList) {
             AppView appView = new AppView();
-            appView.putAll(app);
+            appView.putEntry(app);
 
-            appService.update(appView);
+            appService.saveOrUpdate(appView, appView.getAppId());
         }
 
         return renderJson(true);

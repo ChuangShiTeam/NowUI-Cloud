@@ -33,15 +33,25 @@ public interface AppConfigService extends BaseService<AppConfig, AppConfigView> 
      * @param configIsDisabled 是否禁用
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<AppConfig> 应用配置列表
+     * @return List<AppConfigView> 应用配置视图列表
      */
     List<AppConfigView> listForAdmin(String appId, String configCategoryId, String configKey, Boolean configIsDisabled, Integer pageIndex, Integer pageSize);
 
     /**
      * 查询应用配置分类下的可用的应用配置列表
      * 
-     * @param configCategoryId
-     * @return List<AppConfig> 应用配置列表
+     * @param String appId 应用编号
+     * @param configCategoryId 应用配置分类编号
+     * @return List<AppConfigView> 应用配置视图列表
      */
     List<AppConfigView> abledListByConfigCategoryId(String appId, String configCategoryId);
+    
+    /**
+     * 根据配置分类编号查询配置分类列表
+     * 
+     * @param String appId 应用编号
+     * @param configCategoryId 应用配置分类编号
+     * @return  List<AppConfig> 应用配置列表
+     */
+    List<AppConfig> listByConfigCategoryId(String configCategoryId);
 }

@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.admin.mapper;
 
-import com.nowui.cloud.base.admin.entity.AdminAccount;
 import com.nowui.cloud.base.admin.entity.AdminPassword;
 import com.nowui.cloud.mapper.BaseMapper;
 

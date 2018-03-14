@@ -1,9 +1,9 @@
 package com.nowui.cloud.base.app.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import com.nowui.cloud.base.app.entity.AppConfig;
 import com.nowui.cloud.base.app.mapper.AppConfigMapper;
 import com.nowui.cloud.base.app.repository.AppConfigRepository;
-import com.nowui.cloud.base.app.service.AppConfigCategoryService;
 import com.nowui.cloud.base.app.service.AppConfigService;
 import com.nowui.cloud.base.app.view.AppConfigView;
+import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
@@ -80,6 +80,18 @@ public class AppConfigServiceImpl extends BaseServiceImpl<AppConfigMapper, AppCo
 
     	
         return appConfigViewList;
+    }
+
+    @Override
+    public List<AppConfig> listByConfigCategoryId(String configCategoryId) {
+        List<AppConfig> appConfigList = list(
+                new BaseWrapper<AppConfig>()
+                        .eq(AppConfigView.CONFIG_CATEGORY_ID, configCategoryId)
+                        .eq(AppConfigView.SYSTEM_STATUS, true)
+                        .orderDesc(Arrays.asList(AppConfigView.SYSTEM_CREATE_TIME))
+        );
+        
+        return appConfigList;
     }
 
 }

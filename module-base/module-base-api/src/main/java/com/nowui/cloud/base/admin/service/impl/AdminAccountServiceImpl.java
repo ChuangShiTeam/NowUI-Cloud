@@ -66,7 +66,7 @@ public class AdminAccountServiceImpl extends BaseServiceImpl<AdminAccountMapper,
         
         if (!Util.isNullOrEmpty(adminAccountList)) {
             for (AdminAccount adminAccount : adminAccountList) {
-                delete(adminAccount.getAdminAccountId(), systemRequestUserId, adminAccount.getSystemVersion());
+                delete(adminAccount.getAdminAccountId(), adminAccount.getAppId(), systemRequestUserId, adminAccount.getSystemVersion());
             }
         }
     }

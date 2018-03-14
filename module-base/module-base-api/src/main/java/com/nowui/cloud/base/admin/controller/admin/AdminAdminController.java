@@ -270,7 +270,7 @@ public class AdminAdminController extends BaseController {
                 CommonView.SYSTEM_REQUEST_USER_ID
         );
 
-        Admin result = adminService.delete(adminView.getAdminId(), commonView.getSystemRequestUserId(), adminView.getSystemVersion());
+        Admin result = adminService.delete(adminView.getAdminId(), adminView.getAppId(), commonView.getSystemRequestUserId(), adminView.getSystemVersion());
         
         Boolean success = false;
         

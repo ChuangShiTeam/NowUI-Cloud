@@ -1,12 +1,14 @@
 package com.nowui.cloud.base.app.view;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
-import com.nowui.cloud.annotation.KeyId;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
 /**
@@ -14,7 +16,7 @@ import com.nowui.cloud.view.BaseView;
  *
  * @author marcus
  *
- * 2018-02-04
+ * 2018-03-14
  */
 @Component
 @Document(collection = "app_config_info")
@@ -26,6 +28,7 @@ public class AppConfigView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "配置编号不能为空")
+    @Length(max = 32, message = "配置编号长度超出限制")
     private String configId;
     public static final String CONFIG_ID = "configId";
 
@@ -34,6 +37,7 @@ public class AppConfigView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -42,14 +46,25 @@ public class AppConfigView extends BaseView {
      */
     @Field
     @NotNull(message = "配置分类编号不能为空")
+    @Length(max = 32, message = "配置分类编号长度超出限制")
     private String configCategoryId;
     public static final String CONFIG_CATEGORY_ID = "configCategoryId";
+    
+    /**
+     * 配置分类名称
+     */
+    @Field
+    @NotNull(message = "配置分类名称不能为空")
+    @Length(max = 50, message = "配置分类名称长度超出限制")
+    private String configCategoryName;
+    public static final String CONFIG_CATEGORY_NAME = "configCategoryName";
 
     /**
      * 键
      */
     @Field
     @NotNull(message = "键不能为空")
+    @Length(max = 50, message = "键长度超出限制")
     private String configKey;
     public static final String CONFIG_KEY = "configKey";
 
@@ -58,6 +73,7 @@ public class AppConfigView extends BaseView {
      */
     @Field
     @NotNull(message = "值不能为空")
+    @Length(max = 2000, message = "值长度超出限制")
     private String configValue;
     public static final String CONFIG_VALUE = "configValue";
 
@@ -66,6 +82,7 @@ public class AppConfigView extends BaseView {
      */
     @Field
     @NotNull(message = "是否禁用不能为空")
+    @Digits(integer = 1, fraction = 0, message = "是否禁用长度超出限制")
     private Boolean configIsDisabled;
     public static final String CONFIG_IS_DISABLED = "configIsDisabled";
 
@@ -74,80 +91,73 @@ public class AppConfigView extends BaseView {
      */
     @Field
     @NotNull(message = "描述不能为空")
+    @Length(max = 500, message = "描述长度超出限制")
     private String configDescription;
     public static final String CONFIG_DESCRIPTION = "configDescription";
-    
-    /**
-     * 分类名称
-     */
-    @Field
-    @NotNull(message = "分类名称不能为空")
-    private String configCategoryName;
-    public static final String CONFIG_CATEGORY_NAME = "configCategoryName";
 
 
     public String getConfigId() {
-        return getString(CONFIG_ID);
+        return configId;
     }
 
     public void setConfigId(String configId) {
-        put(CONFIG_ID, configId);
+        this.configId = configId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getConfigCategoryId() {
-        return getString(CONFIG_CATEGORY_ID);
+        return configCategoryId;
     }
 
     public void setConfigCategoryId(String configCategoryId) {
-        put(CONFIG_CATEGORY_ID, configCategoryId);
+        this.configCategoryId = configCategoryId;
     }
-
-    public String getConfigKey() {
-        return getString(CONFIG_KEY);
-    }
-
-    public void setConfigKey(String configKey) {
-        put(CONFIG_KEY, configKey);
-    }
-
-    public String getConfigValue() {
-        return getString(CONFIG_VALUE);
-    }
-
-    public void setConfigValue(String configValue) {
-        put(CONFIG_VALUE, configValue);
-    }
-
-    public Boolean getConfigIsDisabled() {
-        return getBoolean(CONFIG_IS_DISABLED);
-    }
-
-    public void setConfigIsDisabled(Boolean configIsDisabled) {
-        put(CONFIG_IS_DISABLED, configIsDisabled);
-    }
-
-    public String getConfigDescription() {
-        return getString(CONFIG_DESCRIPTION);
-    }
-
-    public void setConfigDescription(String configDescription) {
-        put(CONFIG_DESCRIPTION, configDescription);
-    }
-
+    
     public String getConfigCategoryName() {
-        return getString(CONFIG_CATEGORY_NAME);
+        return configCategoryName;
     }
 
     public void setConfigCategoryName(String configCategoryName) {
-        put(CONFIG_CATEGORY_NAME, configCategoryName);
+        this.configCategoryName = configCategoryName;
+    }
+
+    public String getConfigKey() {
+        return configKey;
+    }
+
+    public void setConfigKey(String configKey) {
+        this.configKey = configKey;
+    }
+    
+    public String getConfigValue() {
+        return configValue;
+    }
+
+    public void setConfigValue(String configValue) {
+        this.configValue = configValue;
+    }
+    
+    public Boolean getConfigIsDisabled() {
+        return configIsDisabled;
+    }
+
+    public void setConfigIsDisabled(Boolean configIsDisabled) {
+        this.configIsDisabled = configIsDisabled;
+    }
+    
+    public String getConfigDescription() {
+        return configDescription;
+    }
+
+    public void setConfigDescription(String configDescription) {
+        this.configDescription = configDescription;
     }
 
 }

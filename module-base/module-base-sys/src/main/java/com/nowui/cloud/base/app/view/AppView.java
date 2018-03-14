@@ -2,11 +2,12 @@ package com.nowui.cloud.base.app.view;
 
 import javax.validation.constraints.NotNull;
 
-import com.nowui.cloud.annotation.KeyId;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 
 /**
@@ -14,7 +15,7 @@ import com.nowui.cloud.view.BaseView;
  *
  * @author marcus
  *
- * 2018-02-04
+ * 2018-03-14
  */
 @Component
 @Document(collection = "app_info")
@@ -26,6 +27,7 @@ public class AppView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -34,25 +36,25 @@ public class AppView extends BaseView {
      */
     @Field
     @NotNull(message = "应用名称不能为空")
+    @Length(max = 100, message = "应用名称长度超出限制")
     private String appName;
     public static final String APP_NAME = "appName";
 
 
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getAppName() {
-        return getString(APP_NAME);
+        return appName;
     }
 
     public void setAppName(String appName) {
-        put(APP_NAME, appName);
+        this.appName = appName;
     }
-
 
 }
