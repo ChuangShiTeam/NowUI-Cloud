@@ -1,6 +1,5 @@
 package com.nowui.cloud.base.admin.entity;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -22,46 +21,43 @@ public class Admin extends BaseEntity {
     /**
      * 管理员编号
      */
-    @Id
     @TableId
     private String adminId;
-    public static final String ADMIN_ID = "adminId";
-
+    
     /**
      * 应用编号
      */
     @TableField
     private String appId;
-    public static final String APP_ID = "appId";
 
     /**
      * 用户编号
      */
     @TableField
     private String userId;
-    public static final String USER_ID = "userId";
-
 
     public String getAdminId() {
-        return getString(ADMIN_ID);
+        return adminId;
     }
 
     public void setAdminId(String adminId) {
-        put(ADMIN_ID, adminId);
+        this.adminId = adminId;
     }
+
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
+
     public String getUserId() {
-        return getString(USER_ID);
+        return userId;
     }
 
     public void setUserId(String userId) {
-        put(USER_ID, userId);
+        this.userId = userId;
     }
 
 }

@@ -1,8 +1,11 @@
 package com.nowui.cloud.base.admin.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.base.admin.entity.Admin;
@@ -10,10 +13,7 @@ import com.nowui.cloud.base.admin.mapper.AdminMapper;
 import com.nowui.cloud.base.admin.repository.AdminRepository;
 import com.nowui.cloud.base.admin.service.AdminService;
 import com.nowui.cloud.base.admin.view.AdminView;
-import com.nowui.cloud.base.user.rpc.UserRpc;
-import com.nowui.cloud.base.user.view.UserView;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.util.Util;
 
 /**
  * 管理员业务实现
@@ -25,42 +25,32 @@ import com.nowui.cloud.util.Util;
 @Service
 public class AdminServiceImpl extends BaseServiceImpl<AdminMapper, Admin, AdminRepository, AdminView> implements AdminService {
     
-    @Autowired
-    private UserRpc userRpc;
-
     @Override
     public Integer countForAdmin(String appId) {
-        return 0;
+        Criteria criteria = Criteria.where(AdminView.APP_ID).is(appId)
+                .and(AdminView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        Integer count = count(query);
+        
+        return count;
     }
 
     @Override
     public List<AdminView> listForAdmin(String appId, Integer pageIndex, Integer pageSize) {
-//        List<AdminView> listForAdmin = new ArrayList<>();
-//        
-//        List<User> userList = userRpc.listV1(appId, UserType.ADMIN.getKey(), pageIndex, pageSize);
-//        
-//        for (User user : userList) {
-//            
-//            AdminView adminView = new AdminView();
-//            adminView.setAdminId(user.getObjectId());
-//            adminView.putAll(user);
-//            
-//            listForAdmin.add(adminView);
-//        }
+        Criteria criteria = Criteria.where(AdminView.APP_ID).is(appId)
+                .and(AdminView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
         
-        return null;
-    }
-    
-    @Override
-    public AdminView find(String adminId) {
-        AdminView adminView = super.find(adminId);
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, AdminView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
         
-//        if (!Util.isNullOrEmpty(adminView)) {
-//            UserView userView = userRpc.findV1(adminView.getUserId());
-//            adminView.putAll(userView);
-//        }
+        List<AdminView> adminViewList = list(query, sort, pageIndex, pageSize);
         
-        return adminView;
+        return adminViewList;
     }
 
 }
