@@ -37,7 +37,6 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
             <%for(column in searchColumnList){%>
             @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${column.upperWithUnderlineColumnName}, value = "${column.columnComment}", required = true, paramType = "query", dataType = "string"),
             <%}%>
-            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
@@ -54,7 +53,6 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
 
         validateRequest(
                 commonView,
-                CommonView.SYSTEM_REQUEST_USER_ID,
                 CommonView.PAGE_INDEX,
                 CommonView.PAGE_SIZE
         );
@@ -76,7 +74,6 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     @ApiImplicitParams({
             @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId}, value = "${tableIdComment}", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ${firstUpperWithoutUnderlineEntityName}View.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/${urlEntityName}/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> findV1(@ApiIgnore ${firstUpperWithoutUnderlineEntityName}View ${firstLowerWithoutUnderlineEntityName}View, @ApiIgnore CommonView commonView) {
@@ -85,11 +82,6 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
                 ${firstLowerWithoutUnderlineEntityName}View,
                 ${firstUpperWithoutUnderlineEntityName}View.${upperWithUnderlineTableId},
                 ${firstUpperWithoutUnderlineEntityName}View.APP_ID
-        );
-
-        validateRequest(
-                commonView,
-                CommonView.SYSTEM_REQUEST_USER_ID
         );
 
         ${firstUpperWithoutUnderlineEntityName}View result = ${firstLowerWithoutUnderlineEntityName}Service.find(${firstLowerWithoutUnderlineEntityName}View.get${firstUpperTableId}(), ${firstLowerWithoutUnderlineEntityName}View.getAppId());
@@ -225,16 +217,8 @@ public class ${firstUpperWithoutUnderlineEntityName}AdminController extends Base
     }
 
     @ApiOperation(value = "${tableComment}数据同步")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
-    })
     @RequestMapping(value = "/${urlEntityName}/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> synchronizeV1(@ApiIgnore CommonView commonView) {
-
-        validateRequest(
-                commonView,
-                CommonView.SYSTEM_REQUEST_USER_ID
-        );
+    public Map<String, Object> synchronizeV1() {
 
         List<${firstUpperWithoutUnderlineEntityName}> ${firstLowerWithoutUnderlineEntityName}List = ${firstLowerWithoutUnderlineEntityName}Service.listByMysql();
 

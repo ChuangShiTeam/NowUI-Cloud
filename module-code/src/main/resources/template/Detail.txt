@@ -35,9 +35,17 @@ export default connect(function (state) {
             <%}%>
             id: '${column.columnName}',
             name: '${column.columnComment}',
+            <%if(column.dataType == "MEDIA"){%>
             type: '${column.inputType}',
-            required: true
+			returnLimit: 1,
+			supportUploadTypes: ['image'],
+            <%}else if(column.dataType == "NUMBER"){%>
+            <%}else{%>
+            type: '${column.inputType}',
+			min: 0,
+			max: 99999,
             <%}%>
+            required: true
         }]
     }
 })(NDetail);

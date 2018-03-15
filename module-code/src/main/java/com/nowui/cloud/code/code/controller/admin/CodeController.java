@@ -198,6 +198,7 @@ public class CodeController extends BaseController {
             FileUtil.createPath(viewPackagePath);
 
             JSONArray jsonArray = JSONArray.parseArray(codeView.getColumnList());
+            System.out.println(jsonArray.toJSONString());
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject column = jsonArray.getJSONObject(i);
 

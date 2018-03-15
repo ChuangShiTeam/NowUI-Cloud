@@ -63,7 +63,6 @@ public class AppConfigController extends BaseController {
         
         validateRequest(
                 commonView,
-                CommonView.SYSTEM_REQUEST_USER_ID,
                 CommonView.PAGE_INDEX,
                 CommonView.PAGE_SIZE
         );
