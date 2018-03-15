@@ -1,20 +1,20 @@
 package com.nowui.cloud.base.sms.view;
 
-import javax.validation.constraints.NotNull;
-
 import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-
-import com.nowui.cloud.view.BaseView;
 
 /**
  * 短信验证码视图
  *
  * @author marcus
  *
- * 2018-02-04
+ * 2018-03-15
  */
 @Component
 @Document(collection = "sms_captcha_info")
@@ -26,6 +26,7 @@ public class SmsCaptchaView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "短信验证码编号不能为空")
+    @Length(max = 32, message = "短信验证码编号长度超出限制")
     private String smsCaptchaId;
     public static final String SMS_CAPTCHA_ID = "smsCaptchaId";
 
@@ -34,6 +35,7 @@ public class SmsCaptchaView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -42,6 +44,7 @@ public class SmsCaptchaView extends BaseView {
      */
     @Field
     @NotNull(message = "验证码类型不能为空")
+    @Length(max = 25, message = "验证码类型长度超出限制")
     private String smsCaptchaType;
     public static final String SMS_CAPTCHA_TYPE = "smsCaptchaType";
 
@@ -50,6 +53,7 @@ public class SmsCaptchaView extends BaseView {
      */
     @Field
     @NotNull(message = "手机号码不能为空")
+    @Length(max = 11, message = "手机号码长度超出限制")
     private String smsCaptchaMobile;
     public static final String SMS_CAPTCHA_MOBILE = "smsCaptchaMobile";
 
@@ -58,6 +62,7 @@ public class SmsCaptchaView extends BaseView {
      */
     @Field
     @NotNull(message = "验证码不能为空")
+    @Length(max = 6, message = "验证码长度超出限制")
     private String smsCaptchaCode;
     public static final String SMS_CAPTCHA_CODE = "smsCaptchaCode";
 
@@ -66,57 +71,58 @@ public class SmsCaptchaView extends BaseView {
      */
     @Field
     @NotNull(message = "IP地址不能为空")
+    @Length(max = 25, message = "IP地址长度超出限制")
     private String smsCaptchaIpAddress;
     public static final String SMS_CAPTCHA_IP_ADDRESS = "smsCaptchaIpAddress";
 
 
     public String getSmsCaptchaId() {
-        return getString(SMS_CAPTCHA_ID);
+        return smsCaptchaId;
     }
 
     public void setSmsCaptchaId(String smsCaptchaId) {
-        put(SMS_CAPTCHA_ID, smsCaptchaId);
+        this.smsCaptchaId = smsCaptchaId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getSmsCaptchaType() {
-        return getString(SMS_CAPTCHA_TYPE);
+        return smsCaptchaType;
     }
 
     public void setSmsCaptchaType(String smsCaptchaType) {
-        put(SMS_CAPTCHA_TYPE, smsCaptchaType);
+        this.smsCaptchaType = smsCaptchaType;
     }
-
+    
     public String getSmsCaptchaMobile() {
-        return getString(SMS_CAPTCHA_MOBILE);
+        return smsCaptchaMobile;
     }
 
     public void setSmsCaptchaMobile(String smsCaptchaMobile) {
-        put(SMS_CAPTCHA_MOBILE, smsCaptchaMobile);
+        this.smsCaptchaMobile = smsCaptchaMobile;
     }
-
+    
     public String getSmsCaptchaCode() {
-        return getString(SMS_CAPTCHA_CODE);
+        return smsCaptchaCode;
     }
 
     public void setSmsCaptchaCode(String smsCaptchaCode) {
-        put(SMS_CAPTCHA_CODE, smsCaptchaCode);
+        this.smsCaptchaCode = smsCaptchaCode;
     }
-
+    
     public String getSmsCaptchaIpAddress() {
-        return getString(SMS_CAPTCHA_IP_ADDRESS);
+        return smsCaptchaIpAddress;
     }
 
     public void setSmsCaptchaIpAddress(String smsCaptchaIpAddress) {
-        put(SMS_CAPTCHA_IP_ADDRESS, smsCaptchaIpAddress);
+        this.smsCaptchaIpAddress = smsCaptchaIpAddress;
     }
-
+    
 
 }

@@ -1,24 +1,26 @@
 package com.nowui.cloud.base.role.controller.admin;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nowui.cloud.base.role.entity.Role;
+import com.nowui.cloud.base.role.service.RoleService;
 import com.nowui.cloud.base.role.view.RoleView;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.util.Util;
 import com.nowui.cloud.view.CommonView;
-import com.nowui.cloud.base.menu.view.MenuView;
-import com.nowui.cloud.base.role.entity.Role;
-import com.nowui.cloud.base.role.service.RoleService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 角色管理端控制器
@@ -163,12 +165,21 @@ public class RoleAdminController extends BaseController {
                 RoleView.ROLE_SORT,
                 RoleView.SYSTEM_VERSION
         );
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-        Role result = roleService.update(roleEntity, roleEntity.getRoleId(), roleEntity.getSystemUpdateUserId(), roleEntity.getSystemVersion());
+        Role result = roleService.update(role, role.getRoleId(), role.getAppId(), commonView.getSystemRequestUserId(), role.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
+            // 更新角色视图信息
+            roleView.copy(result);
+            
+            roleService.update(roleView, roleView.getRoleId());
+            
             success = true;
         }
 
@@ -176,22 +187,30 @@ public class RoleAdminController extends BaseController {
     }
 
     @ApiOperation(value = "删除角色", httpMethod = "POST")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = RoleView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = RoleView.ROLE_ID, value = "角色编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+    })
     @RequestMapping(value = "/role/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        Role roleEntity = getEntry(Role.class);
+    public Map<String, Object> deleteV1(@ApiIgnore RoleView roleView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
-                roleEntity,
-                Role.ROLE_ID,
-                Role.APP_ID,
-                Role.SYSTEM_VERSION
+                roleView,
+                RoleView.ROLE_ID,
+                RoleView.APP_ID,
+                RoleView.SYSTEM_VERSION
         );
 
-        Role result = roleService.delete(roleEntity.getRoleId(), roleEntity.getSystemUpdateUserId(), roleEntity.getSystemVersion());
+        Role result = roleService.delete(roleView.getRoleId(), roleView.getAppId(), commonView.getSystemRequestUserId(), roleView.getSystemVersion());
 
         Boolean success = false;
 
         if (result != null) {
+            roleView.copy(result);
+            
+            roleService.delete(roleView, roleView.getRoleId());
+            
             success = true;
         }
 
