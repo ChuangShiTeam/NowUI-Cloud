@@ -28,6 +28,7 @@ public class ProductAdminController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.PRODUCT_NAME, value = "商品名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
@@ -42,6 +43,7 @@ public class ProductAdminController extends BaseController {
 
         validateRequest(
                 commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID,
                 CommonView.PAGE_INDEX,
                 CommonView.PAGE_SIZE
         );

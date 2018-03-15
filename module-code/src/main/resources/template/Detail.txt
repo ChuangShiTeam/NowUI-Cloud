@@ -35,19 +35,7 @@ export default connect(function (state) {
             <%}%>
             id: '${column.columnName}',
             name: '${column.columnComment}',
-            <%if(column.dataType == "tinyint"){%>
-            type: 'BOOLEAN',
-            <%}else if(column.dataType == "int"){%>
-            type: 'NUMBER',
-            <%}else if(column.dataType == "decimal"){%>
-            type: 'NUMBER',
-            <%}else if(column.dataType == "datetime"){%>
-            type: 'DATEPICKER',
-            <%}else if(column.dataType == "date"){%>
-            type: 'DATEPICKER',
-            <%}else{%>
-            type: 'VARCHAR',
-            <%}%>
+            type: '${column.inputType}',
             required: true
             <%}%>
         }]

@@ -36,6 +36,7 @@ public class ArticleCategoryAdminController extends BaseController {
             @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
@@ -46,13 +47,12 @@ public class ArticleCategoryAdminController extends BaseController {
                 articleCategoryView,
                 ArticleCategoryView.APP_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
-                CommonView.PAGE_INDEX,
-                CommonView.PAGE_SIZE
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE
         );
 
         validateRequest(
                 commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID,
                 CommonView.PAGE_INDEX,
                 CommonView.PAGE_SIZE
         );
