@@ -146,7 +146,7 @@ public class AppConfigController extends BaseController {
 
         if (result != null) {
             // 保存应用配置视图信息
-            appConfigView.putEntry(result);
+            appConfigView.copy(result);
             
             appConfigService.save(appConfigView);
             
@@ -181,7 +181,7 @@ public class AppConfigController extends BaseController {
                 AppConfigView.CONFIG_VALUE,
                 AppConfigView.CONFIG_IS_DISABLED,
                 AppConfigView.CONFIG_DESCRIPTION,
-                AppConfig.SYSTEM_VERSION
+                AppConfigView.SYSTEM_VERSION
         );
 
         validateRequest(
@@ -195,7 +195,7 @@ public class AppConfigController extends BaseController {
 
         if (result != null) {
             // 更新应用配置信息
-            appConfigView.putEntry(result);
+            appConfigView.copy(result);
             
             appConfigService.update(appConfigView, appConfigView.getConfigId());
             
@@ -233,7 +233,7 @@ public class AppConfigController extends BaseController {
 
         if (result != null) {
             // 删除应用配置
-            appConfigView.putEntry(result);
+            appConfigView.copy(result);
             
             appConfigService.delete(appConfigView, appConfigView.getConfigId());
             success = true;
@@ -249,7 +249,7 @@ public class AppConfigController extends BaseController {
 
         for (AppConfig appConfig : appConfigList) {
             AppConfigView appConfigView = new AppConfigView();
-            appConfigView.putEntry(appConfig);
+            appConfigView.copy(appConfig);
             
             AppConfigCategory appConfigCategory = appConfigCategoryService.findByMysql(appConfigView.getConfigCategoryId());
             appConfigView.setConfigCategoryName(appConfigCategory.getConfigCategoryName());

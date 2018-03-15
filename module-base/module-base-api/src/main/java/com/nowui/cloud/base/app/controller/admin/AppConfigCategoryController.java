@@ -152,7 +152,7 @@ public class AppConfigCategoryController extends BaseController {
 
         if (result != null) {
             // 保存应用配置分类视图信息
-            appConfigCategoryView.putEntry(result);
+            appConfigCategoryView.copy(result);
             
             appConfigCategoryService.save(appConfigCategoryView);
             
@@ -204,7 +204,7 @@ public class AppConfigCategoryController extends BaseController {
                 if (!Util.isNullOrEmpty(appConfigList)) {
                     for (AppConfig appConfig : appConfigList) {
                         AppConfigView appConfigView = new AppConfigView();
-                        appConfigView.putEntry(appConfig);
+                        appConfigView.copy(appConfig);
                         
                         appConfigView.setConfigCategoryName(result.getConfigCategoryName());
                         appConfigService.save(appConfigView);
@@ -213,7 +213,7 @@ public class AppConfigCategoryController extends BaseController {
             }
             
             // 更新应用配置分类视图
-            appConfigCategoryView.putEntry(result);
+            appConfigCategoryView.copy(result);
             appConfigCategoryService.update(appConfigCategoryView, appConfigCategoryView.getConfigCategoryId());
             success = true;
         }
@@ -252,7 +252,7 @@ public class AppConfigCategoryController extends BaseController {
             if (!Util.isNullOrEmpty(appConfigList)) {
                 for (AppConfig appConfig : appConfigList) {
                     AppConfigView appConfigView = new AppConfigView();
-                    appConfigView.putEntry(appConfig);
+                    appConfigView.copy(appConfig);
                     
                     appConfigService.delete(appConfig.getConfigId(), appConfig.getAppId(), commonView.getSystemRequestUserId(), appConfig.getSystemVersion());
                     
@@ -260,7 +260,7 @@ public class AppConfigCategoryController extends BaseController {
                 }
             }
             // 删除应用配置分类视图
-            appConfigCategoryView.putEntry(result);
+            appConfigCategoryView.copy(result);
             
             appConfigCategoryService.delete(appConfigCategoryView, appConfigCategoryView.getConfigCategoryId());
             
@@ -277,7 +277,7 @@ public class AppConfigCategoryController extends BaseController {
 
         for (AppConfigCategory appConfigCategory : appConfigCategoryList) {
             AppConfigCategoryView appConfigCategoryView = new AppConfigCategoryView();
-            appConfigCategoryView.putEntry(appConfigCategory);
+            appConfigCategoryView.copy(appConfigCategory);
 
             appConfigCategoryService.saveOrUpdate(appConfigCategoryView, appConfigCategoryView.getConfigCategoryId());
         }

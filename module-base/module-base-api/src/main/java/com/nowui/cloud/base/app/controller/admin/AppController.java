@@ -121,7 +121,7 @@ public class AppController extends BaseController {
 
         if (result != null) {
             // 保存应用视图信息
-            appView.putEntry(result);
+            appView.copy(result);
             
             appService.save(appView);
             
@@ -163,7 +163,7 @@ public class AppController extends BaseController {
 
         if (result != null) {
             // 更新应用视图信息
-            appView.putEntry(app);
+            appView.copy(app);
             
             appService.update(appView, appView.getAppId());
             
@@ -199,7 +199,7 @@ public class AppController extends BaseController {
 
         if (result != null) {
             // 删除应用视图信息
-            appView.putEntry(result);
+            appView.copy(result);
             
             appService.delete(appView, appView.getAppId());
             
@@ -216,7 +216,7 @@ public class AppController extends BaseController {
 
         for (App app : appList) {
             AppView appView = new AppView();
-            appView.putEntry(app);
+            appView.copy(app);
 
             appService.saveOrUpdate(appView, appView.getAppId());
         }
