@@ -1,16 +1,13 @@
 package com.nowui.cloud.base.role.service.impl;
 
-import com.nowui.cloud.base.role.repository.RoleMenuRepository;
-import com.nowui.cloud.base.role.view.RoleMenuView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.base.role.entity.RoleMenu;
-import com.nowui.cloud.base.role.mapper.RoleMenuMapper;
-import com.nowui.cloud.base.role.service.RoleMenuService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.base.role.entity.RoleMenu;
+import com.nowui.cloud.base.role.mapper.RoleMenuMapper;
+import com.nowui.cloud.base.role.repository.RoleMenuRepository;
+import com.nowui.cloud.base.role.service.RoleMenuService;
+import com.nowui.cloud.base.role.view.RoleMenuView;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 角色菜单业务实现
@@ -21,33 +18,5 @@ import java.util.List;
  */
 @Service
 public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuMapper, RoleMenu, RoleMenuRepository, RoleMenuView> implements RoleMenuService {
-
-    @Override
-    public Integer countForAdmin(String appId, String roleId, String menuId) {
-        Integer count = count(
-                new BaseWrapper<RoleMenu>()
-                        .eq(RoleMenu.APP_ID, appId)
-                        .likeAllowEmpty(RoleMenu.ROLE_ID, roleId)
-                        .likeAllowEmpty(RoleMenu.MENU_ID, menuId)
-                        .eq(RoleMenu.SYSTEM_STATUS, true)
-        );
-        return count;
-    }
-
-    @Override
-    public List<RoleMenu> listForAdmin(String appId, String roleId, String menuId, Integer pageIndex, Integer pageSize) {
-        List<RoleMenu> roleMenuList = list(
-                new BaseWrapper<RoleMenu>()
-                        .eq(RoleMenu.APP_ID, appId)
-                        .likeAllowEmpty(RoleMenu.ROLE_ID, roleId)
-                        .likeAllowEmpty(RoleMenu.MENU_ID, menuId)
-                        .eq(RoleMenu.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(RoleMenu.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
-
-        return roleMenuList;
-    }
 
 }

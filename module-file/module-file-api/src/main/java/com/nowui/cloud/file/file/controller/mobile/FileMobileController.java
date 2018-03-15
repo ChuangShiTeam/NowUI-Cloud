@@ -16,6 +16,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.file.file.entity.File;
 import com.nowui.cloud.file.file.service.FileService;
 import com.nowui.cloud.file.file.view.FileView;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -41,7 +42,7 @@ public class FileMobileController extends BaseController {
     @RequestMapping(value = "/file/mobile/v1/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, Object> uploadImageV1(
             @RequestParam(FileView.APP_ID) String appId,
-            @RequestParam(FileView.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
+            @RequestParam(CommonView.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
             @RequestParam("file") MultipartFile[] multipartFiles) {
         if (multipartFiles.length == 0) {
             throw new BusinessException("上传文件为空");
@@ -67,13 +68,13 @@ public class FileMobileController extends BaseController {
     @ApiOperation(value = "base64图片上传", httpMethod = "POST")
     @ApiImplicitParams({
         @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.BASE_64_DATA, value = "版本号", required = true, paramType = "query", dataType = "string")
     })
     @RequestMapping(value = "/file/mobile/v1/image/base64/upload", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> imageBase64UploadV1(@ApiIgnore FileView fileView) {
+    public Map<String, Object> imageBase64UploadV1(@ApiIgnore FileView fileView, @ApiIgnore CommonView commonView) {
 
-        File file = fileService.uploadBase64(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getBase64Data());
+        File file = fileService.uploadBase64(fileView.getAppId(), commonView.getSystemRequestUserId(), fileView.getBase64Data());
 
         if (file != null) {
             fileView.copy(file);

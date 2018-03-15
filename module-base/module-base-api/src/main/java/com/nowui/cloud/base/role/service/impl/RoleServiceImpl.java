@@ -1,16 +1,20 @@
 package com.nowui.cloud.base.role.service.impl;
 
-import com.nowui.cloud.base.role.repository.RoleRepository;
-import com.nowui.cloud.base.role.view.RoleView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
-import com.nowui.cloud.base.role.entity.Role;
-import com.nowui.cloud.base.role.mapper.RoleMapper;
-import com.nowui.cloud.base.role.service.RoleService;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import com.nowui.cloud.base.menu.view.MenuView;
+import com.nowui.cloud.base.role.entity.Role;
+import com.nowui.cloud.base.role.mapper.RoleMapper;
+import com.nowui.cloud.base.role.repository.RoleRepository;
+import com.nowui.cloud.base.role.service.RoleService;
+import com.nowui.cloud.base.role.view.RoleView;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 角色业务实现
@@ -24,30 +28,31 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role,RoleReposi
 
     @Override
     public Integer countForAdmin(String appId, String roleName, String roleCode) {
-        Integer count = count(
-                new BaseWrapper<Role>()
-                        .eq(Role.APP_ID, appId)
-                        .likeAllowEmpty(Role.ROLE_NAME, roleName)
-                        .likeAllowEmpty(Role.ROLE_CODE, roleCode)
-                        .eq(Role.SYSTEM_STATUS, true)
-        );
-        return count;
+        Criteria criteria = Criteria.where(RoleView.APP_ID).is(appId)
+                .and(RoleView.ROLE_NAME).regex(".*?" + roleName + ".*")
+                .and(RoleView.ROLE_CODE).regex(".*?" + roleCode + ".*")
+                .and(RoleView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        return count(query);
     }
 
     @Override
-    public List<Role> listForAdmin(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize) {
-        List<Role> roleList = list(
-                new BaseWrapper<Role>()
-                        .eq(Role.APP_ID, appId)
-                        .likeAllowEmpty(Role.ROLE_NAME, roleName)
-                        .likeAllowEmpty(Role.ROLE_CODE, roleCode)
-                        .eq(Role.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(Role.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<RoleView> listForAdmin(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(RoleView.APP_ID).is(appId)
+                .and(RoleView.ROLE_NAME).regex(".*?" + roleName + ".*")
+                .and(RoleView.ROLE_CODE).regex(".*?" + roleCode + ".*")
+                .and(MenuView.SYSTEM_STATUS).is(true);
 
-        return roleList;
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.ASC, RoleView.ROLE_SORT));
+        Sort sort = Sort.by(orders);
+
+        Query query = new Query(criteria);
+        query.with(sort);
+        
+        return list(query, sort, pageIndex, pageSize);
     }
 
 }
