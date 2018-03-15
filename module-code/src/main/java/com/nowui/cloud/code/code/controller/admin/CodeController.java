@@ -245,7 +245,9 @@ public class CodeController extends BaseController {
                 }
 
                 if (dataType.toLowerCase().equals("datetime") || dataType.toLowerCase().equals("date")) {
-                    isDate = true;
+                    if (!column.getString(CodeView.COLUMN_NAME).startsWith("system")) {
+                        isDate = true;
+                    }
                 }
             }
 

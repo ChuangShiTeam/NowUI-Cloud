@@ -1,116 +1,100 @@
 package com.nowui.cloud.cms.article.controller.admin;
 
+import com.nowui.cloud.controller.BaseController;
+import com.nowui.cloud.util.Util;
+import com.nowui.cloud.cms.article.entity.ArticleCategory;
+import com.nowui.cloud.cms.article.view.ArticleCategoryView;
+import com.nowui.cloud.cms.article.service.ArticleCategoryService;
+import com.nowui.cloud.view.CommonView;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.alibaba.fastjson.JSONArray;
-import com.nowui.cloud.cms.article.entity.ArticleCategory;
-import com.nowui.cloud.cms.article.service.ArticleCategoryService;
-import com.nowui.cloud.cms.article.view.ArticleCategoryView;
-import com.nowui.cloud.constant.Constant;
-import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.util.Util;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 /**
- * 文章接口后台端控制器
- * 
- * @author marcus
+ * 文章分类管理端控制器
  *
- * 2017年12月26日
+ * @author ZhongYongQiang
+ *
+ * 2018-03-15
  */
-@Api(value = "文章分类", description = "文章分类后台端接口管理")
+@Api(value = "文章分类", description = "文章分类管理端接口管理")
 @RestController
 public class ArticleCategoryAdminController extends BaseController {
-    
+
     @Autowired
     private ArticleCategoryService articleCategoryService;
-    
-    @ApiOperation(value = "文章分类列表")
-    @RequestMapping(value = "/article/category/admin/v1/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
-        
-        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
+
+    @ApiOperation(value = "文章分类列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
+    @RequestMapping(value = "/article/category/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listV1(@ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 articleCategoryView,
                 ArticleCategoryView.APP_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
                 ArticleCategoryView.ARTICLE_CATEGORY_CODE,
-                ArticleCategoryView.PAGE_INDEX,
-                ArticleCategoryView.PAGE_SIZE
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
+        );
+
+        validateRequest(
+                commonView,
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
         );
 
         Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode());
+        List<ArticleCategoryView> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), commonView.getPageIndex(), commonView.getPageSize());
 
-        if (Util.isNullOrEmpty(articleCategoryView.getArticleCategoryName()) && Util.isNullOrEmpty(articleCategoryView.getArticleCategoryCode())) {
+        validateResponse(
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID
+        );
 
-            List<Map<String, Object>> resultList = articleCategoryService.adminTreeList(articleCategoryView.getAppId(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
-
-            validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
-
-            validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
-
-            return renderJson(resultTotal, resultList);
-
-        } else {
-            List<ArticleCategoryView> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), articleCategoryView.getPageIndex(), articleCategoryView.getPageSize());
-
-            validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
-
-            validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_NAME, ArticleCategoryView.ARTICLE_CATEGORY_CODE, ArticleCategoryView.ARTICLE_CATEGORY_SORT, Constant.CHILDREN);
-
-            return renderJson(resultTotal, resultList);
-        }
-
-
+        return renderJson(resultTotal, resultList);
     }
-    
-    @ApiOperation(value = "文章分类树形列表")
-    @RequestMapping(value = "/article/category/admin/v1/all/tree/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> allTreeListV1() {
-        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
+
+    @ApiOperation(value = "文章分类信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_ID, value = "文章分类编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/article/category/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> findV1(@ApiIgnore ArticleCategoryView articleCategoryView) {
 
         validateRequest(
-                articleCategoryView, 
+                articleCategoryView,
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
                 ArticleCategoryView.APP_ID
         );
 
-        List<Map<String, Object>> resultList = articleCategoryService.adminAllTreeList(articleCategoryView.getAppId());
-
-        validateResponse(ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
-
-        validateSecondResponse(Constant.CHILDREN, ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, Constant.CHILDREN);
-
-        return renderJson(resultList);
-        
-    }
-
-    @ApiOperation(value = "根据编号查询文章分类信息")
-    @RequestMapping(value = "/article/category/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
-        ArticleCategoryView articleCategoryView = getEntry(ArticleCategoryView.class);
-
-        validateRequest(articleCategoryView, ArticleCategoryView.ARTICLE_CATEGORY_ID);
-
-        ArticleCategoryView result = articleCategoryService.find(articleCategoryView.getArticleCategoryId());
+        ArticleCategoryView result = articleCategoryService.find(articleCategoryView.getArticleCategoryId(), articleCategoryView.getAppId());
 
         validateResponse(
-                ArticleCategoryView.ARTICLE_CATEGORY_ID, 
-                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, 
-                ArticleCategoryView.ARTICLE_CATEGORY_NAME, 
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE, 
-                ArticleCategoryView.ARTICLE_CATEGORY_KEYWORDS, 
-                ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, 
-                ArticleCategoryView.ARTICLE_CATEGORY_SORT, 
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
+            	ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
+            	ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
+            	ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+            	ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+            	ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
+            	ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
+            	ArticleCategoryView.ARTICLE_CATEGORY_SORT,
                 ArticleCategoryView.SYSTEM_VERSION
         );
 
@@ -118,102 +102,132 @@ public class ArticleCategoryAdminController extends BaseController {
     }
 
     @ApiOperation(value = "文章分类新增")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, value = "父级编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH, value = "父级路径", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "多媒体文件编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, value = "描述", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_SORT, value = "排序", required = true, paramType = "query", dataType = "string"),
+    })
     @RequestMapping(value = "/article/category/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
-
-        String articleCategoryId = Util.getRandomUUID();
-        String articleCategoryParentPath = "";
+    public Map<String, Object> saveV1(@ApiIgnore ArticleCategory articleCategory, @ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
-            articleCategoryEntity, 
-            ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID,
-            ArticleCategory.ARTICLE_CATEGORY_NAME,
-            ArticleCategory.ARTICLE_CATEGORY_CODE, 
-            ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
-            ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION
+                articleCategoryView,
+                ArticleCategoryView.APP_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
+                ArticleCategoryView.ARTICLE_CATEGORY_SORT
         );
-        if (Util.isNullOrEmpty(articleCategoryEntity.getArticleCategoryParentId())) {
 
-            JSONArray jsonArray = new JSONArray();
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-            articleCategoryParentPath = jsonArray.toJSONString();
-        } else {
-            ArticleCategoryView parent = articleCategoryService.find(articleCategoryEntity.getArticleCategoryParentId());
+        String articleCategoryId = Util.getRandomUUID();
 
-            JSONArray jsonArray = new JSONArray();;
-            if (!Util.isNullOrEmpty(parent.getArticleCategoryParentPath())) {
-                jsonArray = JSONArray.parseArray(parent.getArticleCategoryParentPath());
-            }
-            jsonArray.add(parent.getArticleCategoryId());
+        ArticleCategory result = articleCategoryService.save(articleCategory, articleCategoryId, commonView.getSystemRequestUserId());
 
-            articleCategoryParentPath = jsonArray.toJSONString();
-        }
-
-        articleCategoryEntity.setArticleCategoryParentPath(articleCategoryParentPath);
-
-        ArticleCategory result = articleCategoryService.save(articleCategoryEntity, articleCategoryId, articleCategoryEntity.getSystemRequestUserId());
+        Boolean success = false;
 
         if (result != null) {
-            ArticleCategoryView articleCategoryView = new ArticleCategoryView();
-            articleCategoryView.putAll(result);
-            
+            articleCategoryView.copy(result);
+
             articleCategoryService.save(articleCategoryView);
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章分类修改")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, value = "父级编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH, value = "父级路径", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "多媒体文件编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, value = "描述", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_SORT, value = "排序", required = true, paramType = "query", dataType = "string"),
+    })
     @RequestMapping(value = "/article/category/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+    public Map<String, Object> updateV1(@ApiIgnore ArticleCategory articleCategory, @ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
-            articleCategoryEntity, 
-            ArticleCategory.ARTICLE_CATEGORY_ID, 
-            ArticleCategory.APP_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_PARENT_ID, 
-            ArticleCategory.ARTICLE_CATEGORY_NAME, 
-            ArticleCategory.ARTICLE_CATEGORY_CODE, 
-            ArticleCategory.ARTICLE_CATEGORY_KEYWORDS, 
-            ArticleCategory.ARTICLE_CATEGORY_DESCRIPTION, 
-            ArticleCategory.SYSTEM_VERSION
+                articleCategoryView,
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
+                ArticleCategoryView.APP_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
+                ArticleCategoryView.ARTICLE_CATEGORY_SORT,
+                ArticleCategoryView.SYSTEM_VERSION
         );
 
-        ArticleCategory result = articleCategoryService.update(articleCategoryEntity, articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
+        ArticleCategory result = articleCategoryService.update(articleCategory, articleCategory.getArticleCategoryId(), articleCategory.getAppId(), commonView.getSystemRequestUserId(), articleCategory.getSystemVersion());
+
+        Boolean success = false;
 
         if (result != null) {
-            ArticleCategoryView articleCategoryView = new ArticleCategoryView();
-            articleCategoryView.putAll(result);
-            
-            articleCategoryService.update(articleCategoryView);
+            articleCategoryView.copy(result);
+
+            articleCategoryService.update(articleCategoryView, articleCategoryView.getArticleCategoryId());
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
 
     @ApiOperation(value = "文章分类删除")
     @RequestMapping(value = "/article/category/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1() {
-        ArticleCategory articleCategoryEntity = getEntry(ArticleCategory.class);
+    public Map<String, Object> deleteV1(@ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
-            articleCategoryEntity, 
-            ArticleCategory.ARTICLE_CATEGORY_ID,
-            ArticleCategory.SYSTEM_VERSION
+                articleCategoryView,
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
+                ArticleCategoryView.APP_ID,
+                ArticleCategoryView.SYSTEM_VERSION
         );
 
-        ArticleCategory result = articleCategoryService.delete(articleCategoryEntity.getArticleCategoryId(), articleCategoryEntity.getSystemRequestUserId(), articleCategoryEntity.getSystemVersion());
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
+        ArticleCategory result = articleCategoryService.delete(articleCategoryView.getArticleCategoryId(), articleCategoryView.getAppId(), commonView.getSystemRequestUserId(), articleCategoryView.getSystemVersion());
+
+        Boolean success = false;
 
         if (result != null) {
-            // TODO 删除文章分类
+            articleCategoryView.copy(result);
+
+            articleCategoryService.update(articleCategoryView, articleCategoryView.getArticleCategoryId());
+
+            success = true;
         }
 
-        return renderJson(true);
+        return renderJson(success);
     }
-    
+
     @ApiOperation(value = "文章分类数据同步")
     @RequestMapping(value = "/article/category/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
@@ -221,9 +235,9 @@ public class ArticleCategoryAdminController extends BaseController {
 
         for (ArticleCategory articleCategory : articleCategoryList) {
             ArticleCategoryView articleCategoryView = new ArticleCategoryView();
-            articleCategoryView.putAll(articleCategory);
+            articleCategoryView.copy(articleCategory);
 
-            articleCategoryService.saveOrUpdate(articleCategoryView);
+            articleCategoryService.saveOrUpdate(articleCategoryView, articleCategoryView.getArticleCategoryId());
         }
 
         return renderJson(true);
