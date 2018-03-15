@@ -31,18 +31,17 @@ public interface MenuService extends BaseService<Menu,MenuView> {
      * @param menuName 名称
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<Menu> 菜单列表
+     * @return List<MenuView> 菜单视图列表
      */
-    List<Menu> listForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize);
+    List<MenuView> listForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize);
     
     /**
      * 菜单属性列表
      * @param appId 应用编号
-     * @param menuName 菜单名称
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Map<String, Object>> 菜单属性列表
      */
-    List<Map<String, Object>> treeListForAdmin(String appId, String menuName, Integer pageIndex, Integer pageSize);
+    List<Map<String, Object>> treeListForAdmin(String appId, Integer pageIndex, Integer pageSize);
     
 }
