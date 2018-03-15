@@ -4,19 +4,17 @@ import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-import java.util.Date;
 
 /**
  * 用户视图
  *
  * @author marcus
  *
- * 2018-03-14
+ * 2018-03-15
  */
 @Component
 @Document(collection = "user_info")
@@ -42,11 +40,11 @@ public class UserView extends BaseView {
     public static final String APP_ID = "appId";
 
     /**
-     * 用户主体编号
+     * 用户主体编号（会员、管理员、员工等编号）
      */
     @Field
-    @NotNull(message = "用户主体编号不能为空")
-    @Length(max = 32, message = "用户主体编号长度超出限制")
+    @NotNull(message = "用户主体编号（会员、管理员、员工等编号）不能为空")
+    @Length(max = 32, message = "用户主体编号（会员、管理员、员工等编号）长度超出限制")
     private String objectId;
     public static final String OBJECT_ID = "objectId";
 
@@ -91,5 +89,6 @@ public class UserView extends BaseView {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+    
 
 }

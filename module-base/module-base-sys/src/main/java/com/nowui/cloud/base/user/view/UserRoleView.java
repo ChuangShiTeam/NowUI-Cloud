@@ -1,19 +1,20 @@
 package com.nowui.cloud.base.user.view;
 
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
-
-import com.nowui.cloud.view.BaseView;
 
 /**
  * 用户角色视图
  *
  * @author marcus
  *
- * 2018-02-04
+ * 2018-03-15
  */
 @Component
 @Document(collection = "user_role_map")
@@ -22,8 +23,10 @@ public class UserRoleView extends BaseView {
     /**
      * 用户角色编号
      */
+    @KeyId
     @Field
     @NotNull(message = "用户角色编号不能为空")
+    @Length(max = 32, message = "用户角色编号长度超出限制")
     private String userRoleId;
     public static final String USER_ROLE_ID = "userRoleId";
 
@@ -32,6 +35,7 @@ public class UserRoleView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -40,6 +44,7 @@ public class UserRoleView extends BaseView {
      */
     @Field
     @NotNull(message = "用户编号不能为空")
+    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
     public static final String USER_ID = "userId";
 
@@ -48,6 +53,7 @@ public class UserRoleView extends BaseView {
      */
     @Field
     @NotNull(message = "角色编号不能为空")
+    @Length(max = 32, message = "角色编号长度超出限制")
     private String roleId;
     public static final String ROLE_ID = "roleId";
 
@@ -56,49 +62,50 @@ public class UserRoleView extends BaseView {
      */
     @Field
     @NotNull(message = "用户类型不能为空")
+    @Length(max = 25, message = "用户类型长度超出限制")
     private String userType;
     public static final String USER_TYPE = "userType";
 
 
     public String getUserRoleId() {
-        return getString(USER_ROLE_ID);
+        return userRoleId;
     }
 
     public void setUserRoleId(String userRoleId) {
-        put(USER_ROLE_ID, userRoleId);
+        this.userRoleId = userRoleId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getUserId() {
-        return getString(USER_ID);
+        return userId;
     }
 
     public void setUserId(String userId) {
-        put(USER_ID, userId);
+        this.userId = userId;
     }
-
+    
     public String getRoleId() {
-        return getString(ROLE_ID);
+        return roleId;
     }
 
     public void setRoleId(String roleId) {
-        put(ROLE_ID, roleId);
+        this.roleId = roleId;
     }
-
+    
     public String getUserType() {
-        return getString(USER_TYPE);
+        return userType;
     }
 
     public void setUserType(String userType) {
-        put(USER_TYPE, userType);
+        this.userType = userType;
     }
-
+    
 
 }

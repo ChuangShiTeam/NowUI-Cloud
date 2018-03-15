@@ -15,6 +15,7 @@ import com.nowui.cloud.exception.BusinessException;
 import com.nowui.cloud.file.file.entity.File;
 import com.nowui.cloud.file.file.service.FileService;
 import com.nowui.cloud.file.file.view.FileView;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -39,27 +40,31 @@ public class FileAdminController extends BaseController {
     @ApiOperation(value = "文件列表", httpMethod = "POST")
     @ApiImplicitParams({
         @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.FILE_NAME, value = "文件名称", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.FILE_TYPE, value = "文件类型", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = FileView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
-        @ApiImplicitParam(name = FileView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
     @RequestMapping(value = "/file/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1(@ApiIgnore FileView fileView) {
+    public Map<String, Object> listV1(@ApiIgnore FileView fileView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 fileView,
                 FileView.APP_ID,
-                FileView.SYSTEM_REQUEST_USER_ID,
                 FileView.FILE_NAME,
-                FileView.FILE_TYPE,
-                FileView.PAGE_INDEX,
-                FileView.PAGE_SIZE
+                FileView.FILE_TYPE
+        );
+        
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID,
+                CommonView.PAGE_INDEX,
+                CommonView.PAGE_SIZE
         );
 
-        Integer resultTotal = fileService.countForAdmin(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType());
-        List<FileView> resultList = fileService.listForAdmin(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType(), fileView.getPageIndex(), fileView.getPageSize());
+        Integer resultTotal = fileService.countForAdmin(fileView.getAppId(), commonView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType());
+        List<FileView> resultList = fileService.listForAdmin(fileView.getAppId(), commonView.getSystemRequestUserId(), fileView.getFileName(), fileView.getFileType(), commonView.getPageIndex(), commonView.getPageSize());
 
         validateResponse(
                 FileView.FILE_ID,
@@ -109,21 +114,25 @@ public class FileAdminController extends BaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.FILE_ID, value = "文件编号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int")
     })
     @RequestMapping(value = "/file/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@ApiIgnore FileView fileView) {
+    public Map<String, Object> deleteV1(@ApiIgnore FileView fileView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 fileView,
                 FileView.FILE_ID,
                 FileView.APP_ID,
-                FileView.SYSTEM_REQUEST_USER_ID,
                 FileView.SYSTEM_VERSION
         );
+        
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
 
-        File result = fileService.delete(fileView.getFileId(), fileView.getSystemUpdateUserId(), fileView.getSystemVersion());
+        File result = fileService.delete(fileView.getFileId(), fileView.getAppId(), commonView.getSystemRequestUserId(), fileView.getSystemVersion());
 
         Boolean success = false;
 
@@ -143,7 +152,7 @@ public class FileAdminController extends BaseController {
     @RequestMapping(value = "/file/admin/v1/image/upload", method = {RequestMethod.POST}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, Object> uploadImageV1(
             @RequestParam(FileView.APP_ID) String appId,
-            @RequestParam(FileView.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
+            @RequestParam(CommonView.SYSTEM_REQUEST_USER_ID) String systemRequestUserId,
             @RequestParam("file") MultipartFile[] multipartFiles) {
         if (multipartFiles.length == 0) {
             throw new BusinessException("上传文件为空");
@@ -169,13 +178,13 @@ public class FileAdminController extends BaseController {
     @ApiOperation(value = "base64图片上传", httpMethod = "POST")
     @ApiImplicitParams({
         @ApiImplicitParam(name = FileView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-        @ApiImplicitParam(name = FileView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
         @ApiImplicitParam(name = FileView.BASE_64_DATA, value = "版本号", required = true, paramType = "query", dataType = "string")
     })
     @RequestMapping(value = "/file/admin/v1/image/base64/upload", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> imageBase64UploadV1(@ApiIgnore FileView fileView) {
+    public Map<String, Object> imageBase64UploadV1(@ApiIgnore FileView fileView, @ApiIgnore CommonView commonView) {
 
-        File file = fileService.uploadBase64(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getBase64Data());
+        File file = fileService.uploadBase64(fileView.getAppId(), commonView.getSystemRequestUserId(), fileView.getBase64Data());
 
         if (file != null) {
             fileView.copy(file);

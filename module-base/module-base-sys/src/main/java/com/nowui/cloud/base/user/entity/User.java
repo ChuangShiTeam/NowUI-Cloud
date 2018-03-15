@@ -5,14 +5,13 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
 import org.springframework.stereotype.Component;
-import java.util.Date;
 
 /**
  * 用户
  *
  * @author marcus
  *
- * 2018-03-14
+ * 2018-03-15
  */
 @Component
 

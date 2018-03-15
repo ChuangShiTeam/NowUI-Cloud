@@ -1,11 +1,12 @@
 package com.nowui.cloud.base.sms.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import com.nowui.cloud.base.sms.mapper.SmsCaptchaMapper;
 import com.nowui.cloud.base.sms.repository.SmsCaptchaRepository;
 import com.nowui.cloud.base.sms.service.SmsCaptchaService;
 import com.nowui.cloud.base.sms.view.SmsCaptchaView;
-import com.nowui.cloud.mybatisplus.BaseWrapper;
 import com.nowui.cloud.service.impl.BaseServiceImpl;
 import com.nowui.cloud.util.DateUtil;
 import com.nowui.cloud.util.Util;
@@ -37,32 +37,33 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
     
     @Override
     public Integer countForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress) {
-        Integer count = count(
-                new BaseWrapper<SmsCaptcha>()
-                        .eq(SmsCaptcha.APP_ID, appId)
-                        .eqAllowEmpty(SmsCaptcha.SMS_CAPTCHA_TYPE, smsCaptchaType)
-                        .likeAllowEmpty(SmsCaptcha.SMS_CAPTCHA_MOBILE, smsCaptchaMobile)
-                        .likeAllowEmpty(SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS, smsCaptchaIpAddress)
-                        .eq(SmsCaptcha.SYSTEM_STATUS, true)
-        );
-        return count;
+        Criteria criteria = Criteria.where(SmsCaptchaView.APP_ID).is(appId)
+                .and(SmsCaptchaView.SMS_CAPTCHA_TYPE).is(smsCaptchaType)
+                .and(SmsCaptchaView.SMS_CAPTCHA_MOBILE).regex(".*?" + smsCaptchaMobile + ".*")
+                .and(SmsCaptchaView.SMS_CAPTCHA_IP_ADDRESS).regex(".*?" + smsCaptchaIpAddress + ".*")
+                .and(SmsCaptchaView.SYSTEM_STATUS).is(true);
+
+        Query query = new Query(criteria);
+
+        return count(query);
     }
 
     @Override
-    public List<SmsCaptcha> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize) {
-        List<SmsCaptcha> smsCaptchaList = list(
-                new BaseWrapper<SmsCaptcha>()
-                        .eq(SmsCaptcha.APP_ID, appId)
-                        .eqAllowEmpty(SmsCaptcha.SMS_CAPTCHA_TYPE, smsCaptchaType)
-                        .likeAllowEmpty(SmsCaptcha.SMS_CAPTCHA_MOBILE, smsCaptchaMobile)
-                        .likeAllowEmpty(SmsCaptcha.SMS_CAPTCHA_IP_ADDRESS, smsCaptchaIpAddress)
-                        .eq(SmsCaptcha.SYSTEM_STATUS, true)
-                        .orderDesc(Arrays.asList(SmsCaptcha.SYSTEM_CREATE_TIME)),
-                pageIndex,
-                pageSize
-        );
+    public List<SmsCaptchaView> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize) {
+        Criteria criteria = Criteria.where(SmsCaptchaView.APP_ID).is(appId)
+                .and(SmsCaptchaView.SMS_CAPTCHA_TYPE).is(smsCaptchaType)
+                .and(SmsCaptchaView.SMS_CAPTCHA_MOBILE).regex(".*?" + smsCaptchaMobile + ".*")
+                .and(SmsCaptchaView.SMS_CAPTCHA_IP_ADDRESS).regex(".*?" + smsCaptchaIpAddress + ".*")
+                .and(SmsCaptchaView.SYSTEM_STATUS).is(true);
+        
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, SmsCaptchaView.SYSTEM_CREATE_TIME));
+        Sort sort = Sort.by(orders);
 
-        return smsCaptchaList;
+        Query query = new Query(criteria);
+        query.with(sort);
+        
+        return list(query, sort, pageIndex, pageSize);
     }
 
     @Override
@@ -169,7 +170,7 @@ public class SmsCaptchaServiceImpl extends BaseServiceImpl<SmsCaptchaMapper, Sms
         // 保存验证码视图信息到MongoDB
         
         SmsCaptchaView smsCaptchaView = new SmsCaptchaView();
-        smsCaptchaView.putAll(result);
+        smsCaptchaView.copy(result);
         
         save(smsCaptchaView);
 

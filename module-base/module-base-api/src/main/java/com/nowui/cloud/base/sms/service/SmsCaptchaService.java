@@ -35,9 +35,9 @@ public interface SmsCaptchaService extends BaseService<SmsCaptcha,SmsCaptchaView
      * @param smsCaptchaIpAddress IP地址
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<SmsCaptcha> 短信验证码列表
+     * @return List<SmsCaptchaView> 短信验证码视图列表
      */
-    List<SmsCaptcha> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize);
+    List<SmsCaptchaView> listForAdmin(String appId, String smsCaptchaType, String smsCaptchaMobile, String smsCaptchaIpAddress, Integer pageIndex, Integer pageSize);
     
     /**
      * 统计开始时间到当前时间同一类型的单个手机号码的验证码发送次数

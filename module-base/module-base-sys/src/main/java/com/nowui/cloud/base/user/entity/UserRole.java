@@ -1,112 +1,94 @@
 package com.nowui.cloud.base.user.entity;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Component;
-
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
+import org.springframework.stereotype.Component;
 
 /**
  * 用户角色
  *
  * @author marcus
  *
- * 2018-01-02
+ * 2018-03-15
  */
 @Component
+
 @TableName(value = "user_role_map")
 public class UserRole extends BaseEntity {
 
     /**
      * 用户角色编号
      */
-    @Id
     @TableId
-    @NotNull(message = "用户角色编号不能为空")
-    @Length(max = 32, message = "用户角色编号长度超出限制")
+    @TableField
     private String userRoleId;
-    public static final String USER_ROLE_ID = "userRoleId";
 
     /**
      * 应用编号
      */
     @TableField
-    @NotNull(message = "应用编号不能为空")
-    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
-    public static final String APP_ID = "appId";
 
     /**
      * 用户编号
      */
     @TableField
-    @NotNull(message = "用户编号不能为空")
-    @Length(max = 32, message = "用户编号长度超出限制")
     private String userId;
-    public static final String USER_ID = "userId";
 
     /**
      * 角色编号
      */
     @TableField
-    @NotNull(message = "角色编号不能为空")
-    @Length(max = 32, message = "角色编号长度超出限制")
     private String roleId;
-    public static final String ROLE_ID = "roleId";
 
     /**
      * 用户类型
      */
     @TableField
-    @NotNull(message = "用户类型不能为空")
-    @Length(max = 25, message = "用户类型长度超出限制")
     private String userType;
-    public static final String USER_TYPE = "userType";
 
 
     public String getUserRoleId() {
-        return getString(USER_ROLE_ID);
+        return userRoleId;
     }
-
+    
     public void setUserRoleId(String userRoleId) {
-        put(USER_ROLE_ID, userRoleId);
+        this.userRoleId = userRoleId;
     }
-    
+
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
-
+    
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-    
+
     public String getUserId() {
-        return getString(USER_ID);
+        return userId;
     }
-
+    
     public void setUserId(String userId) {
-        put(USER_ID, userId);
+        this.userId = userId;
     }
-    
+
     public String getRoleId() {
-        return getString(ROLE_ID);
-    }
-
-    public void setRoleId(String roleId) {
-        put(ROLE_ID, roleId);
+        return roleId;
     }
     
-    public String getUserType() {
-        return getString(USER_TYPE);
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
-    public void setUserType(String userType) {
-        put(USER_TYPE, userType);
+    public String getUserType() {
+        return userType;
     }
+    
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
 
 }

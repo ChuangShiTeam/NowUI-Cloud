@@ -34,5 +34,5 @@ public interface RoleService extends BaseService<Role,RoleView> {
      * @param pageSize 每页个数
      * @return List<Role> 角色列表
      */
-    List<Role> listForAdmin(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize);
+    List<RoleView> listForAdmin(String appId, String roleName, String roleCode, Integer pageIndex, Integer pageSize);
 }
