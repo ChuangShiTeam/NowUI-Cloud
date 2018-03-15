@@ -1,14 +1,21 @@
 package com.nowui.cloud.view;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.entity.BaseEntity;
 import com.nowui.cloud.exception.SystemException;
+import com.nowui.cloud.util.Util;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import static org.bouncycastle.crypto.tls.BulkCipherAlgorithm.des;
 
 /**
  * baseView
@@ -135,61 +142,8 @@ public class BaseView implements Serializable {
         return tableId;
     }
 
-    public void putEntry(BaseEntity baseEntity) {
-        try {
-            Class sourCls = baseEntity.getClass();
-            //遍历源属性
-            do {
-                //源属性集
-                java.lang.reflect.Field[] sourFlds = sourCls.getDeclaredFields();
-                //遍历源所有属性
-                for (int i = 0; i < sourFlds.length; i++) {
-                    java.lang.reflect.Field sf = sourFlds[i];
-                    sf.setAccessible(true);
-                    //遍历目标所有属性
-                    Class toCls = this.getClass();
-                    do {
-                        //源属性集
-                        java.lang.reflect.Field[] toFlds = toCls.getDeclaredFields();
-                        //遍历源所有属性
-                        for (int j = 0; j < toFlds.length; j++) {
-                            java.lang.reflect.Field tof = toFlds[j];
-                            tof.setAccessible(true);
-                            TableField tableField = (TableField) sf.getAnnotation(TableField.class);
-                            Boolean isExist = false;
-                            if (tableField != null) {
-                                isExist = tableField.exist();
-                            }
-                            //属性名字相同
-                            if (sf.getName().equals(tof.getName()) && isExist) {
-                                //得到此属性的类型
-                                String type = tof.getType().toString();
-                                if (type.endsWith("String")) {
-                                    tof.set(this, (String) sf.get(baseEntity));
-                                } else if (type.endsWith("int") || type.endsWith("Integer")) {
-                                    tof.set(this, (Integer) sf.get(baseEntity));
-                                } else if (type.endsWith("Date")) {
-                                    tof.set(this, (Date) sf.get(baseEntity));
-                                } else if (type.endsWith("long") || type.endsWith("Long")) {
-                                    tof.set(this, (Long) sf.get(baseEntity));
-                                } else if (type.endsWith("short") || type.endsWith("Short")) {
-                                    tof.set(this, (Long) sf.get(baseEntity));
-                                } else if (type.endsWith("Boolean")) {
-                                    tof.set(this, (Boolean) sf.get(baseEntity));
-                                } else {
-                                    throw new SystemException("类型转换失败！");
-                                }
-                            }
-                        }
-                        toCls = toCls.getSuperclass();
-
-                    } while (toCls != Object.class);
-                }
-                sourCls = sourCls.getSuperclass();
-            } while (sourCls != Object.class);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    public void copy(BaseEntity baseEntity) {
+        BeanUtils.copyProperties(this, baseEntity);
     }
 
 }

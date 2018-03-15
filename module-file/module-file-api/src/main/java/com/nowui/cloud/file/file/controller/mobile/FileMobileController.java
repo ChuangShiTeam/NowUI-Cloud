@@ -50,7 +50,7 @@ public class FileMobileController extends BaseController {
 
         for(File file : fileList) {
             FileView fileView = new FileView();
-            fileView.putEntry(file);
+            fileView.copy(file);
             
             fileService.save(fileView);
         }
@@ -76,7 +76,7 @@ public class FileMobileController extends BaseController {
         File file = fileService.uploadBase64(fileView.getAppId(), fileView.getSystemRequestUserId(), fileView.getBase64Data());
 
         if (file != null) {
-            fileView.putEntry(file);
+            fileView.copy(file);
             
             fileService.save(fileView);
         }

@@ -20,28 +20,24 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField
     private String systemCreateUserId;
-    public static final String SYSTEM_CREATE_USER_ID = "systemCreateUserId";
     
     /**
      * 创建时间
      */
     @TableField
     private Date systemCreateTime;
-    public static final String SYSTEM_CREATE_TIME = "systemCreateTime";
     
     /**
      * 更新人编号
      */
     @TableField
     private String systemUpdateUserId;
-    public static final String SYSTEM_UPDATE_USER_ID = "systemUpdateUserId";
     
     /**
      * 更新时间
      */
     @TableField
     private Date systemUpdateTime;
-    public static final String SYSTEM_UPDATE_TIME = "systemUpdateTime";
     
     /**
      * 版本号
@@ -49,14 +45,12 @@ public abstract class BaseEntity implements Serializable {
     @Version
     @TableField
     private Integer systemVersion;
-    public static final String SYSTEM_VERSION = "systemVersion";
 
     /**
      * 删除标识
      */
     @TableField
     private Boolean systemStatus;
-    public static final String SYSTEM_STATUS = "systemStatus";
 
     /**
      * 关键编号

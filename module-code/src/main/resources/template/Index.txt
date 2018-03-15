@@ -27,6 +27,11 @@ export default connect(function (state) {
             icon: 'plus-circle',
             type: 'ADD',
             addUrl: '/${urlEntityName}/add'
+		}, {
+			name: '同步',
+			icon: 'loading-3-quarters',
+			type: 'SYNCHRONIZE',
+			synchronizeUrl: '/${urlEntityName}/admin/v1/synchronize'
 		}],
         searchList: [{
             <%for(column in searchColumnList){%>

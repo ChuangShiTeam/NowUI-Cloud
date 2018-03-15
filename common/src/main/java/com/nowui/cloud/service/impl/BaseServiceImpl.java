@@ -387,7 +387,11 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E extends BaseEntity, R ex
         while (iterator.hasNext()) {
             Map.Entry<String, Object> entry = iterator.next();
 
-            update.set(entry.getKey(), entry.getValue());
+            if (!Util.isNullOrEmpty(entry.getValue())) {
+                update.set(entry.getKey(), entry.getValue());
+
+                System.out.println(entry.getKey() + " - " + entry.getValue());
+            }
         }
         update.set(BaseView.SYSTEM_STATUS, false);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, view.getClass());

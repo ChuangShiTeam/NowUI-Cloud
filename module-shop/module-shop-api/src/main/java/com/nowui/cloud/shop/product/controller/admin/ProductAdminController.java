@@ -1,6 +1,5 @@
 package com.nowui.cloud.shop.product.controller.admin;
 
-import com.alibaba.fastjson.JSON;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.shop.product.entity.Product;
 import com.nowui.cloud.shop.product.service.ProductService;
@@ -121,7 +120,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            productView.putEntry(result);
+            productView.copy(result);
 
             productService.save(productView);
 
@@ -167,7 +166,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            productView.putEntry(result);
+            productView.copy(result);
 
             productService.update(productView, productView.getProductId());
 
@@ -202,7 +201,7 @@ public class ProductAdminController extends BaseController {
         Boolean success = false;
 
         if (result != null) {
-            productView.putEntry(result);
+            productView.copy(result);
 
             productService.delete(productView, productView.getProductId());
 
@@ -219,7 +218,7 @@ public class ProductAdminController extends BaseController {
 
         for (Product product : productList) {
             ProductView productView = new ProductView();
-            productView.putEntry(product);
+            productView.copy(product);
 
             productService.saveOrUpdate(productView, productView.getProductId());
         }
