@@ -64,13 +64,19 @@ public class ProductAdminController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = ProductView.PRODUCT_ID, value = "商品编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
-    public Map<String, Object> findV1(@ApiIgnore ProductView productView) {
+    public Map<String, Object> findV1(@ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
 
         validateRequest(
                 productView,
                 ProductView.PRODUCT_ID,
                 ProductView.APP_ID
+        );
+
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
         );
 
         ProductView result = productService.find(productView.getProductId(), productView.getAppId());
@@ -96,6 +102,7 @@ public class ProductAdminController extends BaseController {
             @ApiImplicitParam(name = ProductView.PRODUCT_CATEGORY_NAME, value = "商品分类名称", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_ID, value = "商品图片编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.PRODUCT_IMAGE_FILE_PATH, value = "商品图片路径", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/product/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@ApiIgnore Product product, @ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
@@ -182,6 +189,7 @@ public class ProductAdminController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = ProductView.PRODUCT_ID, value = "商品编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ProductView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/product/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> deleteV1(@ApiIgnore ProductView productView, @ApiIgnore CommonView commonView) {
@@ -214,8 +222,17 @@ public class ProductAdminController extends BaseController {
     }
 
     @ApiOperation(value = "商品数据同步", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
+    })
     @RequestMapping(value = "/product/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1() {
+    public Map<String, Object> replaceV1(@ApiIgnore CommonView commonView) {
+
+        validateRequest(
+                commonView,
+                CommonView.SYSTEM_REQUEST_USER_ID
+        );
+
         List<Product> productList = productService.listByMysql();
 
         for (Product product : productList) {
