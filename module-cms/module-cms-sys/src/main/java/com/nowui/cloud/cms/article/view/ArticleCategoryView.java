@@ -63,15 +63,15 @@ public class ArticleCategoryView extends BaseView {
     @Field
     @NotNull(message = "分类编码不能为空")
     @Length(max = 100, message = "分类编码长度超出限制")
-    private String articleCategoryCode;
-    public static final String ARTICLE_CATEGORY_CODE = "articleCategoryCode";
+    private String articleCategoryKey;
+    public static final String ARTICLE_CATEGORY_KEY = "articleCategoryKey";
 
     /**
-     * 多媒体文件编号
+     * 图片编号
      */
     @Field
-    @NotNull(message = "多媒体文件编号不能为空")
-    @Length(max = 32, message = "多媒体文件编号长度超出限制")
+    @NotNull(message = "图片编号不能为空")
+    @Length(max = 32, message = "图片编号长度超出限制")
     private String articleCategoryImageId;
     public static final String ARTICLE_CATEGORY_IMAGE_ID = "articleCategoryImageId";
 
@@ -135,12 +135,12 @@ public class ArticleCategoryView extends BaseView {
         this.articleCategoryName = articleCategoryName;
     }
     
-    public String getArticleCategoryCode() {
-        return articleCategoryCode;
+    public String getArticleCategoryKey() {
+        return articleCategoryKey;
     }
 
-    public void setArticleCategoryCode(String articleCategoryCode) {
-        this.articleCategoryCode = articleCategoryCode;
+    public void setArticleCategoryKey(String articleCategoryKey) {
+        this.articleCategoryKey = articleCategoryKey;
     }
     
     public String getArticleCategoryImageId() {

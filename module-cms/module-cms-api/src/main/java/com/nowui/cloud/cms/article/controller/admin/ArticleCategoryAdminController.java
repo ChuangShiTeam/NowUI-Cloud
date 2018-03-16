@@ -35,7 +35,7 @@ public class ArticleCategoryAdminController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_KEY, value = "分类编码", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
@@ -46,7 +46,7 @@ public class ArticleCategoryAdminController extends BaseController {
                 articleCategoryView,
                 ArticleCategoryView.APP_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE
+                ArticleCategoryView.ARTICLE_CATEGORY_KEY
         );
 
         validateRequest(
@@ -55,17 +55,44 @@ public class ArticleCategoryAdminController extends BaseController {
                 CommonView.PAGE_SIZE
         );
 
-        Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode());
-        List<ArticleCategoryView> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryCode(), commonView.getPageIndex(), commonView.getPageSize());
+        Integer resultTotal = articleCategoryService.countForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryKey());
+        List<ArticleCategoryView> resultList = articleCategoryService.listForAdmin(articleCategoryView.getAppId(), articleCategoryView.getArticleCategoryName(), articleCategoryView.getArticleCategoryKey(), commonView.getPageIndex(), commonView.getPageSize());
 
         validateResponse(
                 ArticleCategoryView.ARTICLE_CATEGORY_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_KEY,
                 ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID
         );
 
         return renderJson(resultTotal, resultList);
+    }
+
+    @ApiOperation(value = "文章分类列表", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = ArticleCategoryView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+    })
+    @RequestMapping(value = "/article/category/admin/v1/tree", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> treeV1(@ApiIgnore ArticleCategoryView articleCategoryView) {
+
+        validateRequest(
+                articleCategoryView,
+                ArticleCategoryView.APP_ID
+        );
+
+        List<ArticleCategoryView> articleCategoryViewList = articleCategoryService.tree(articleCategoryView.getAppId());
+
+        String parentId = "";
+        List<Map<String, Object>> resultList = children(articleCategoryViewList, parentId, ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, ArticleCategoryView.ARTICLE_CATEGORY_ID, ArticleCategoryView.ARTICLE_CATEGORY_NAME, new String[]{});
+
+        validateResponse(
+                ArticleCategoryView.ARTICLE_CATEGORY_ID,
+                ArticleCategoryView.ARTICLE_CATEGORY_NAME,
+                ArticleCategoryView.ARTICLE_CATEGORY_KEY,
+                ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID
+        );
+
+        return renderJson(resultList);
     }
 
     @ApiOperation(value = "文章分类信息")
@@ -89,7 +116,7 @@ public class ArticleCategoryAdminController extends BaseController {
             	ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
             	ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
             	ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-            	ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+            	ArticleCategoryView.ARTICLE_CATEGORY_KEY,
             	ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
             	ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
             	ArticleCategoryView.ARTICLE_CATEGORY_SORT,
@@ -105,10 +132,11 @@ public class ArticleCategoryAdminController extends BaseController {
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, value = "父级编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH, value = "父级路径", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "多媒体文件编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_KEY, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "图片编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, value = "描述", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_SORT, value = "排序", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/article/category/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> saveV1(@ApiIgnore ArticleCategory articleCategory, @ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
@@ -119,7 +147,7 @@ public class ArticleCategoryAdminController extends BaseController {
                 ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_KEY,
                 ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
                 ArticleCategoryView.ARTICLE_CATEGORY_SORT
@@ -153,10 +181,11 @@ public class ArticleCategoryAdminController extends BaseController {
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID, value = "父级编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH, value = "父级路径", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_NAME, value = "分类名称", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_CODE, value = "分类编码", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "多媒体文件编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_KEY, value = "分类编码", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID, value = "图片编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION, value = "描述", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = ArticleCategoryView.ARTICLE_CATEGORY_SORT, value = "排序", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CommonView.SYSTEM_REQUEST_USER_ID, value = "请求用户编号", required = true, paramType = "query", dataType = "string"),
     })
     @RequestMapping(value = "/article/category/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> updateV1(@ApiIgnore ArticleCategory articleCategory, @ApiIgnore ArticleCategoryView articleCategoryView, @ApiIgnore CommonView commonView) {
@@ -168,7 +197,7 @@ public class ArticleCategoryAdminController extends BaseController {
                 ArticleCategoryView.ARTICLE_CATEGORY_PARENT_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_PARENT_PATH,
                 ArticleCategoryView.ARTICLE_CATEGORY_NAME,
-                ArticleCategoryView.ARTICLE_CATEGORY_CODE,
+                ArticleCategoryView.ARTICLE_CATEGORY_KEY,
                 ArticleCategoryView.ARTICLE_CATEGORY_IMAGE_ID,
                 ArticleCategoryView.ARTICLE_CATEGORY_DESCRIPTION,
                 ArticleCategoryView.ARTICLE_CATEGORY_SORT,

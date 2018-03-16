@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nowui.cloud.rabbit.RabbitSender;
 import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -244,30 +245,6 @@ public class BaseController {
         }
     }
 
-//    public void validateRequest(BaseEntity entity, String... columns) {
-//        for (String column : columns) {
-//            Set<? extends ConstraintViolation<? extends BaseEntity>> constraintViolations = ValidateUtil.getValidator().validateValue(entity.getClass(), column, entity.get(column));
-//
-//            Iterator<ConstraintViolation<BaseEntity>> iterator = (Iterator<ConstraintViolation<BaseEntity>>) constraintViolations.iterator();
-//            while (iterator.hasNext()) {
-//                ConstraintViolation<BaseEntity> constraintViolation = iterator.next();
-//                throw new BusinessException(constraintViolation.getMessage());
-//            }
-//        }
-//    }
-    
-//    public void validateRequest(BaseView view, String... columns) {
-//        for (String column : columns) {
-//            Set<? extends ConstraintViolation<? extends BaseView>> constraintViolations = ValidateUtil.getValidator().validateValue(view.getClass(), column, view.get(column));
-//
-//            Iterator<ConstraintViolation<BaseView>> iterator = (Iterator<ConstraintViolation<BaseView>>) constraintViolations.iterator();
-//            while (iterator.hasNext()) {
-//                ConstraintViolation<BaseView> constraintViolation = iterator.next();
-//                throw new BusinessException(constraintViolation.getMessage());
-//            }
-//        }
-//    }
-
     public void validateResponse(String... columns) {
         validateResponseColumnList = columns;
     }
@@ -285,18 +262,18 @@ public class BaseController {
         return map;
     }
 
-    protected Map<String, Object> renderJson(int total, Object data) {
-        data = checkFirstResponse(data);
-
-        Map<String, Object> dataMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-        dataMap.put(Constant.TOTAL, total);
-        dataMap.put(Constant.LIST, data);
-
-        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
-        map.put(Constant.CODE, 200);
-        map.put(Constant.DATA, dataMap);
-        return map;
-    }
+//    protected Map<String, Object> renderJson(int total, Object data) {
+//        data = checkFirstResponse(data);
+//
+//        Map<String, Object> dataMap = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+//        dataMap.put(Constant.TOTAL, total);
+//        dataMap.put(Constant.LIST, data);
+//
+//        Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+//        map.put(Constant.CODE, 200);
+//        map.put(Constant.DATA, dataMap);
+//        return map;
+//    }
 
     protected Map<String, Object> renderJson(long total, Object data) {
         data = checkFirstResponse(data);
@@ -313,6 +290,41 @@ public class BaseController {
 
     protected void sendMessage(JSONObject message, String routing, String appId, String systemCreateUserId) {
         rabbitSender.send(appId, routing, message, systemCreateUserId);
+    }
+
+    protected List<Map<String, Object>> children(List<? extends BaseView> list, String parentId, String parentIdColumnName, String idColumnName, String nameColumnName, String[] columns) {
+        String idColumnCustomName = idColumnName;
+        String nameColumnCoustomName = nameColumnName;
+
+        List<Map<String, Object>> resultList = children(list, parentId, parentIdColumnName, idColumnName, idColumnCustomName, nameColumnName, nameColumnCoustomName, columns);
+
+        return resultList;
+    }
+
+    protected List<Map<String, Object>> children(List<? extends BaseView> list, String parentId, String parentIdColumnName, String idColumnName, String idColumnCustomName, String nameColumnName, String nameColumnCoustomName, String[] columns) {
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+
+        for (BaseView baseView : list) {
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(baseView);
+
+            if (jsonObject.getString(parentIdColumnName).equals(parentId)) {
+                Map<String, Object> map = new HashMap<String, Object>(Constant.DEFAULT_LOAD_FACTOR);
+                map.put(idColumnCustomName, jsonObject.getString(idColumnName));
+                map.put(nameColumnCoustomName, jsonObject.getString(nameColumnName));
+
+                for (String column : columns) {
+                    map.put(column, jsonObject.get(column));
+                }
+
+                List<Map<String, Object>> childrenList = children(list, jsonObject.getString(idColumnName), parentIdColumnName, idColumnName, idColumnCustomName, nameColumnName, nameColumnCoustomName, columns);
+                map.put(Constant.CHILDREN, childrenList);
+
+                resultList.add(map);
+            }
+        }
+
+
+        return resultList;
     }
 
 }

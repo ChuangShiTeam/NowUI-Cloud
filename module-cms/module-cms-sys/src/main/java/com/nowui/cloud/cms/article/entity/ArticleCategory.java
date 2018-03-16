@@ -48,10 +48,10 @@ public class ArticleCategory extends BaseEntity {
      * 分类编码
      */
     @TableField
-    private String articleCategoryCode;
+    private String articleCategoryKey;
 
     /**
-     * 多媒体文件编号
+     * 图片编号
      */
     @TableField
     private String articleCategoryImageId;
@@ -107,12 +107,12 @@ public class ArticleCategory extends BaseEntity {
         this.articleCategoryName = articleCategoryName;
     }
 
-    public String getArticleCategoryCode() {
-        return articleCategoryCode;
+    public String getArticleCategoryKey() {
+        return articleCategoryKey;
     }
     
-    public void setArticleCategoryCode(String articleCategoryCode) {
-        this.articleCategoryCode = articleCategoryCode;
+    public void setArticleCategoryKey(String articleCategoryKey) {
+        this.articleCategoryKey = articleCategoryKey;
     }
 
     public String getArticleCategoryImageId() {

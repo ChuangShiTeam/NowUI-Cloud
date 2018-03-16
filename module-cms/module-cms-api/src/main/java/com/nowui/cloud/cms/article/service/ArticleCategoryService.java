@@ -37,4 +37,12 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory, Art
      */
     List<ArticleCategoryView> listForAdmin(String appId, String articleCategoryName, String articleCategoryCode, Integer pageIndex, Integer pageSize);
 
+    /**
+     * 文章分类列表
+     *
+     * @param appId 应用编号
+     * @return List<ArticleCategory> 文章分类列表
+     */
+    List<ArticleCategoryView> tree(String appId);
+
 }
