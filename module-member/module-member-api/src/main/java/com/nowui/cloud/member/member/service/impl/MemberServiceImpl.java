@@ -119,7 +119,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
             // 更新会员视图
             memberView.setMemberSignature(memberSignature);
             
-            update(memberView);
+            update(memberView, memberView.getMemberId());
             
             success = true;
         }
@@ -152,7 +152,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
             memberView.setMemberBackgroundFileId(memberBackgroundFileId);
             memberView.setMemberBackgroundFilePath(memberBackgroundFilePath);
             
-            update(memberView);
+            update(memberView, memberView.getMemberId());
             success = true;
         }
         return success;
@@ -183,7 +183,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
             // 更新会员视图信息
             memberView.setMemberPreferenceLanguage(memberPreferenceLanguage);
             
-            update(memberView);
+            update(memberView, memberView.getMemberId());
             success = true;
         }
         return success;
@@ -215,7 +215,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
             memberView.setMemberAddressArea(memberAddress.getMemberAddressArea());
             memberView.setMemberAddressAddress(memberAddress.getMemberAddressAddress());
             
-            update(memberView);
+            update(memberView, memberView.getMemberId());
             
             success = true;
         }

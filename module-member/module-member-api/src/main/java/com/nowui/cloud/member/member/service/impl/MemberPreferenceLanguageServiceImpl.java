@@ -26,8 +26,8 @@ public class MemberPreferenceLanguageServiceImpl extends BaseServiceImpl<MemberP
     public MemberPreferenceLanguage findByMemberId(String memberId) {
         MemberPreferenceLanguage memberPreferenceLanguage = find(
                 new BaseWrapper<MemberPreferenceLanguage>()
-                        .eq(MemberPreferenceLanguage.MEMBER_ID, memberId)
-                        .eq(MemberPreferenceLanguage.SYSTEM_STATUS, true)
+                        .eq(MemberPreferenceLanguageView.MEMBER_ID, memberId)
+                        .eq(MemberPreferenceLanguageView.SYSTEM_STATUS, true)
         );
         return memberPreferenceLanguage;
     }
@@ -36,16 +36,14 @@ public class MemberPreferenceLanguageServiceImpl extends BaseServiceImpl<MemberP
     public void deleteByMemberId(String memberId, String systemRequestUserId) {
         List<MemberPreferenceLanguage> memberPreferenceLanguageList = list(
                 new BaseWrapper<MemberPreferenceLanguage>()
-                        .eq(MemberPreferenceLanguage.MEMBER_ID, memberId)
-                        .eq(MemberPreferenceLanguage.SYSTEM_STATUS, true)
+                        .eq(MemberPreferenceLanguageView.MEMBER_ID, memberId)
+                        .eq(MemberPreferenceLanguageView.SYSTEM_STATUS, true)
         );
 
         if (memberPreferenceLanguageList != null && memberPreferenceLanguageList.size() > 0) {
             memberPreferenceLanguageList.stream()
-                    .forEach(memberPreferenceLanguage -> delete(memberPreferenceLanguage.getMemberPreferenceLanguageId(), systemRequestUserId, memberPreferenceLanguage.getSystemVersion()));
+                    .forEach(memberPreferenceLanguage -> delete(memberPreferenceLanguage.getMemberPreferenceLanguageId(), memberPreferenceLanguage.getAppId(), systemRequestUserId, memberPreferenceLanguage.getSystemVersion()));
         }
-
     }
-
 
 }

@@ -1,10 +1,9 @@
 package com.nowui.cloud.member.member.service;
+import java.util.List;
+
+import com.nowui.cloud.member.member.entity.MemberDeliveryAddress;
 import com.nowui.cloud.member.member.view.MemberDeliveryAddressView;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.member.member.entity.MemberDeliveryAddress;
-import com.nowui.cloud.service.BaseService;
-
-import java.util.List;
 
 /**
  * 会员收货地址业务接口
@@ -33,7 +32,7 @@ public interface MemberDeliveryAddressService extends BaseService<MemberDelivery
      * @param memberDeliveryAddressPhone 手机号
      * @param pageIndex 页码
      * @param pageSize 每页个数
-     * @return List<MemberDeliveryAddress> 会员收货地址列表
+     * @return List<MemberDeliveryAddressView> 会员收货地址列表
      */
-    List<MemberDeliveryAddress> listForAdmin(String appId, String memberDeliveryAddressName, String memberDeliveryAddressPhone, Integer pageIndex, Integer pageSize);
+    List<MemberDeliveryAddressView> listForAdmin(String appId, String memberDeliveryAddressName, String memberDeliveryAddressPhone, Integer pageIndex, Integer pageSize);
 }

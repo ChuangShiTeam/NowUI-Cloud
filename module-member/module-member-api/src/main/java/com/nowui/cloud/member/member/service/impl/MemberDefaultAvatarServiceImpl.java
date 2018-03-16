@@ -31,7 +31,7 @@ public class MemberDefaultAvatarServiceImpl extends BaseServiceImpl<MemberDefaul
     @Override
     public Integer countForAdmin(String appId, String userAvatarFileId) {
         Criteria criteria = Criteria.where(MemberDefaultAvatarView.APP_ID).is(appId)
-                .and(MemberDefaultAvatarView.USER_AVATAR_FILE_ID).regex(".*?" + userAvatarFileId + ".*")
+                .and(MemberDefaultAvatarView.USER_AVATAR_FILE_ID).is(userAvatarFileId)
                 .and(MemberDefaultAvatarView.SYSTEM_STATUS).is(true);
 
         Query query = new Query(criteria);
@@ -43,7 +43,7 @@ public class MemberDefaultAvatarServiceImpl extends BaseServiceImpl<MemberDefaul
 
     @Override
     public List<MemberDefaultAvatarView> listForAdmin(String appId, String userAvatarFileId, Integer pageIndex, Integer pageSize) {
-        Criteria criteria = Criteria.where(MemberDefaultAvatar.APP_ID).is(appId)
+        Criteria criteria = Criteria.where(MemberDefaultAvatarView.APP_ID).is(appId)
                 .and(MemberDefaultAvatarView.USER_AVATAR_FILE_ID).regex(".*?" + userAvatarFileId + ".*")
                 .and(MemberDefaultAvatarView.SYSTEM_STATUS).is(true);
 
@@ -82,7 +82,7 @@ public class MemberDefaultAvatarServiceImpl extends BaseServiceImpl<MemberDefaul
         // 获取随机数
         Integer pageIndex = new Random().nextInt(count) + 1;
         
-        Criteria criteria = Criteria.where(MemberDefaultAvatar.APP_ID).is(appId)
+        Criteria criteria = Criteria.where(MemberDefaultAvatarView.APP_ID).is(appId)
                 .and(MemberDefaultAvatarView.SYSTEM_STATUS).is(true);
 
         List<Order> orders = new ArrayList<Order>();
