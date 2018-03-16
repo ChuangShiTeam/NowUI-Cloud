@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nowui.cloud.base.user.entity.UserWechat;
-import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.view.MemberView;
 
 /**
@@ -22,21 +20,6 @@ import com.nowui.cloud.member.member.view.MemberView;
 @Component(value = "memberRpc")
 @FeignClient(name = "module-member")
 public interface MemberRpc {
-    
-    /**
-     * 微信登录
-     * 
-     * @param userId 用户编号
-     * @param userPassword 用户密码
-     * @return true 正确   false 不正确 
-     */
-    @RequestMapping(value = "/member/system/v1/wechat/login", method = RequestMethod.POST)
-    String wechatLoginV1(
-            @RequestParam(value = "appId", required = true) String appId,
-            UserWechat userWechat,
-            @RequestParam(value = "systemRequestUserId", required = true) String systemRequestUserId
-    );
-    
     /**
      * 根据用户编号查询会员信息
      * 

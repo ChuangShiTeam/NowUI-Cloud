@@ -143,7 +143,7 @@ public class BaseView implements Serializable {
     }
 
     public void copy(BaseEntity baseEntity) {
-        BeanUtils.copyProperties(this, baseEntity);
+        BeanUtils.copyProperties(baseEntity, this);
     }
 
 }

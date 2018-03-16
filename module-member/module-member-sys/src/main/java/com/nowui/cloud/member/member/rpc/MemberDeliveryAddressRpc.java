@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 /**
  * 会员收货地址服务调用
  *
- * @author xinqing
+ * @author marcus
  *
- * 2018-01-14
+ * 2018-01-08
  */
 @Component(value = "memberDeliveryAddressRpc")
 @FeignClient(name = "module-member")

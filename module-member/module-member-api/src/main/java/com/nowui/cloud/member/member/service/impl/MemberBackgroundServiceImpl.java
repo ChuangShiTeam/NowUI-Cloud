@@ -2,16 +2,15 @@ package com.nowui.cloud.member.member.service.impl;
 
 import java.util.List;
 
-import com.nowui.cloud.member.member.repository.MemberBackgroundRepository;
-import com.nowui.cloud.member.member.router.MemberBackgroundRouter;
-import com.nowui.cloud.member.member.view.MemberBackgroundView;
-import com.nowui.cloud.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import com.nowui.cloud.member.member.entity.MemberBackground;
 import com.nowui.cloud.member.member.mapper.MemberBackgroundMapper;
+import com.nowui.cloud.member.member.repository.MemberBackgroundRepository;
 import com.nowui.cloud.member.member.service.MemberBackgroundService;
+import com.nowui.cloud.member.member.view.MemberBackgroundView;
 import com.nowui.cloud.mybatisplus.BaseWrapper;
+import com.nowui.cloud.service.impl.BaseServiceImpl;
 
 /**
  * 会员背景业务实现
@@ -28,8 +27,8 @@ public class MemberBackgroundServiceImpl extends BaseServiceImpl<MemberBackgroun
 
         MemberBackground memberBackground = find(
                 new BaseWrapper<MemberBackground>()
-                        .eq(MemberBackground.MEMBER_ID, memberId)
-                        .eq(MemberBackground.SYSTEM_STATUS, true)
+                        .eq(MemberBackgroundView.MEMBER_ID, memberId)
+                        .eq(MemberBackgroundView.SYSTEM_STATUS, true)
         );
 
         return memberBackground;
@@ -39,13 +38,13 @@ public class MemberBackgroundServiceImpl extends BaseServiceImpl<MemberBackgroun
     public void deleteByMemberId(String memberId, String systemRequestUserId) {
         List<MemberBackground> memberBackgroundList = list(
                 new BaseWrapper<MemberBackground>()
-                        .eq(MemberBackground.MEMBER_ID, memberId)
-                        .eq(MemberBackground.SYSTEM_STATUS, true)
+                        .eq(MemberBackgroundView.MEMBER_ID, memberId)
+                        .eq(MemberBackgroundView.SYSTEM_STATUS, true)
         );
 
         if (memberBackgroundList != null && memberBackgroundList.size() > 0) {
             memberBackgroundList.stream()
-                    .forEach(memberBackground -> delete(memberBackground.getMemberBackgroundId(), systemRequestUserId, memberBackground.getSystemVersion()));
+                    .forEach(memberBackground -> delete(memberBackground.getMemberBackgroundId(), memberBackground.getAppId(), systemRequestUserId, memberBackground.getSystemVersion()));
         }
     }
 

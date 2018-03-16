@@ -96,6 +96,10 @@ zuul:
       path: /patient/**
       serviceId: module-hospital
       stripPrefix: false
+    course:
+      path: /course/**
+      serviceId: module-hospital
+      stripPrefix: false
 
 
   okhttp:

@@ -1,18 +1,21 @@
 package com.nowui.cloud.member.member.view;
 
-import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
+
 /**
- * 会员签名	视图
+ * 会员签名视图
  *
- * @author shawn
+ * @author marcus
  *
- * 2018-02-03
+ * 2018-03-16
  */
 @Component
 @Document(collection = "member_signature_info")
@@ -23,6 +26,8 @@ public class MemberSignatureView extends BaseView {
      */
     @KeyId
     @Field
+    @NotNull(message = "会员签名编号不能为空")
+    @Length(max = 32, message = "会员签名编号长度超出限制")
     private String memberSignatureId;
     public static final String MEMBER_SIGNATURE_ID = "memberSignatureId";
 
@@ -30,6 +35,8 @@ public class MemberSignatureView extends BaseView {
      * 应用编号
      */
     @Field
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -37,6 +44,8 @@ public class MemberSignatureView extends BaseView {
      * 会员编号
      */
     @Field
+    @NotNull(message = "会员编号不能为空")
+    @Length(max = 32, message = "会员编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
 
@@ -44,41 +53,43 @@ public class MemberSignatureView extends BaseView {
      * 会员签名
      */
     @Field
+    @NotNull(message = "会员签名不能为空")
+    @Length(max = 500, message = "会员签名长度超出限制")
     private String memberSignature;
     public static final String MEMBER_SIGNATURE = "memberSignature";
 
 
     public String getMemberSignatureId() {
-        return getString(MEMBER_SIGNATURE_ID);
+        return memberSignatureId;
     }
 
     public void setMemberSignatureId(String memberSignatureId) {
-        put(MEMBER_SIGNATURE_ID, memberSignatureId);
+        this.memberSignatureId = memberSignatureId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getMemberId() {
-        return getString(MEMBER_ID);
+        return memberId;
     }
 
     public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
+        this.memberId = memberId;
     }
-
+    
     public String getMemberSignature() {
-        return getString(MEMBER_SIGNATURE);
+        return memberSignature;
     }
 
     public void setMemberSignature(String memberSignature) {
-        put(MEMBER_SIGNATURE, memberSignature);
+        this.memberSignature = memberSignature;
     }
-
+    
 
 }

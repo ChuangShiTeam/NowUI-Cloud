@@ -1,18 +1,21 @@
 package com.nowui.cloud.member.member.view;
 
-import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.view.BaseView;
-import org.springframework.data.annotation.Id;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
+
 /**
- * 会员背景	视图
+ * 会员背景视图
  *
- * @author shawn
+ * @author marcus
  *
- * 2018-02-03
+ * 2018-03-16
  */
 @Component
 @Document(collection = "member_background_info")
@@ -23,6 +26,8 @@ public class MemberBackgroundView extends BaseView {
      */
     @KeyId
     @Field
+    @NotNull(message = "会员背景编号不能为空")
+    @Length(max = 32, message = "会员背景编号长度超出限制")
     private String memberBackgroundId;
     public static final String MEMBER_BACKGROUND_ID = "memberBackgroundId";
 
@@ -30,6 +35,8 @@ public class MemberBackgroundView extends BaseView {
      * 应用编号
      */
     @Field
+    @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -37,48 +44,52 @@ public class MemberBackgroundView extends BaseView {
      * 会员编号
      */
     @Field
+    @NotNull(message = "会员编号不能为空")
+    @Length(max = 32, message = "会员编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
 
     /**
-     * 会员背景
+     * 会员背景文件编号
      */
     @Field
-    private String memberBackground;
-    public static final String MEMBER_BACKGROUND = "memberBackground";
+    @NotNull(message = "会员背景文件编号不能为空")
+    @Length(max = 32, message = "会员背景文件编号长度超出限制")
+    private String memberBackgroundFileId;
+    public static final String MEMBER_BACKGROUND_FILE_ID = "memberBackgroundFileId";
 
 
     public String getMemberBackgroundId() {
-        return getString(MEMBER_BACKGROUND_ID);
+        return memberBackgroundId;
     }
 
     public void setMemberBackgroundId(String memberBackgroundId) {
-        put(MEMBER_BACKGROUND_ID, memberBackgroundId);
+        this.memberBackgroundId = memberBackgroundId;
     }
-
+    
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
-
+    
     public String getMemberId() {
-        return getString(MEMBER_ID);
+        return memberId;
     }
 
     public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
+        this.memberId = memberId;
+    }
+    
+    public String getMemberBackgroundFileId() {
+        return memberBackgroundFileId;
     }
 
-    public String getMemberBackground() {
-        return getString(MEMBER_BACKGROUND);
+    public void setMemberBackgroundFileId(String memberBackgroundFileId) {
+        this.memberBackgroundFileId = memberBackgroundFileId;
     }
-
-    public void setMemberBackground(String memberBackground) {
-        put(MEMBER_BACKGROUND, memberBackground);
-    }
-
+    
 
 }

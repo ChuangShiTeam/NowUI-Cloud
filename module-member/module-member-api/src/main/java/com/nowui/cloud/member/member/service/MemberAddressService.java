@@ -2,7 +2,6 @@ package com.nowui.cloud.member.member.service;
 import com.nowui.cloud.member.member.entity.MemberAddress;
 import com.nowui.cloud.member.member.view.MemberAddressView;
 import com.nowui.cloud.service.BaseService;
-import com.nowui.cloud.service.BaseService;
 
 /**
  * 会员地址业务接口
@@ -11,7 +10,7 @@ import com.nowui.cloud.service.BaseService;
  *
  * 2018-01-08
  */
-public interface MemberAddressService extends BaseService<MemberAddress,MemberAddressView> {
+public interface MemberAddressService extends BaseService<MemberAddress, MemberAddressView> {
     
     /**
      * 根据会员编号查询会员地址信息

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.nowui.cloud.base.user.entity.UserWechat;
 import com.nowui.cloud.base.user.rpc.UserRpc;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.MemberAddress;
@@ -45,13 +44,6 @@ public class MemberSystemController extends BaseController implements MemberRpc 
     
     @Autowired
     private MemberBackgroundService memberBackgroundService;
-
-    @Override
-    public String wechatLoginV1(String appId, UserWechat userWechat, String systemRequestUserId) {
-
-
-        return null;
-    }
 
     @Override
     public MemberView findByUserIdV1(String userId) {
@@ -93,10 +85,7 @@ public class MemberSystemController extends BaseController implements MemberRpc 
             memberService.updateMemberSignature(memberView.getAppId(), memberView.getMemberId(), memberSignature, systemRequestUserId);
         }
 
-        userRpc.updateUserNickNameV1(memberView.getAppId(), userId, userNickName, systemRequestUserId);
-        userRpc.updateUserAvatarV1(memberView.getAppId(), userId, userAvatar, userAvatarPath, systemRequestUserId);
-        userRpc.updateUserSexV1(memberView.getAppId(), userId, userSex, systemRequestUserId);
-
+        // TODO
         return true;
     }
 

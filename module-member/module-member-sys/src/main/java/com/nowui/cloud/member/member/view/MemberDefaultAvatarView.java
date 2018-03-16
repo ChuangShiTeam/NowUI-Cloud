@@ -1,18 +1,21 @@
 package com.nowui.cloud.member.member.view;
 
-import com.nowui.cloud.annotation.KeyId;
-import com.nowui.cloud.view.BaseView;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.nowui.cloud.annotation.KeyId;
+import com.nowui.cloud.view.BaseView;
+
 /**
  * 会员默认头像视图
  *
- * @author xupengfei
+ * @author marcus
  *
- * 2018-03-05
+ * 2018-03-16
  */
 @Component
 @Document(collection = "member_default_avatar_info")
@@ -24,6 +27,7 @@ public class MemberDefaultAvatarView extends BaseView {
     @KeyId
     @Field
     @NotNull(message = "会员默认头像编号不能为空")
+    @Length(max = 32, message = "会员默认头像编号长度超出限制")
     private String memberDefaultAvatarId;
     public static final String MEMBER_DEFAULT_AVATAR_ID = "memberDefaultAvatarId";
 
@@ -32,6 +36,7 @@ public class MemberDefaultAvatarView extends BaseView {
      */
     @Field
     @NotNull(message = "应用编号不能为空")
+    @Length(max = 32, message = "应用编号长度超出限制")
     private String appId;
     public static final String APP_ID = "appId";
 
@@ -40,47 +45,34 @@ public class MemberDefaultAvatarView extends BaseView {
      */
     @Field
     @NotNull(message = "头像文件编号不能为空")
+    @Length(max = 32, message = "头像文件编号长度超出限制")
     private String userAvatarFileId;
     public static final String USER_AVATAR_FILE_ID = "userAvatarFileId";
 
-    /**
-     * 头像文件路径
-     */
-    @Field
-    @NotNull(message = "头像文件路径不能为空")
-    private String userAvatarFilePath;
-    public static final String USER_AVATAR_FILE_PATH = "userAvatarFilePath";
 
     public String getMemberDefaultAvatarId() {
-        return getString(MEMBER_DEFAULT_AVATAR_ID);
+        return memberDefaultAvatarId;
     }
 
     public void setMemberDefaultAvatarId(String memberDefaultAvatarId) {
-        put(MEMBER_DEFAULT_AVATAR_ID, memberDefaultAvatarId);
+        this.memberDefaultAvatarId = memberDefaultAvatarId;
     }
     
     public String getAppId() {
-        return getString(APP_ID);
+        return appId;
     }
 
     public void setAppId(String appId) {
-        put(APP_ID, appId);
+        this.appId = appId;
     }
     
     public String getUserAvatarFileId() {
-        return getString(USER_AVATAR_FILE_ID);
+        return userAvatarFileId;
     }
 
     public void setUserAvatarFileId(String userAvatarFileId) {
-        put(USER_AVATAR_FILE_ID, userAvatarFileId);
+        this.userAvatarFileId = userAvatarFileId;
     }
     
-    public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
-    }
-
-    public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
-    }
 
 }

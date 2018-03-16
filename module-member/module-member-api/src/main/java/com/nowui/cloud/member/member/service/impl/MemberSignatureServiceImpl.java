@@ -27,8 +27,8 @@ public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureM
 
         MemberSignature memberSignature = find(
                 new BaseWrapper<MemberSignature>()
-                        .eq(MemberSignature.MEMBER_ID, memberId)
-                        .eq(MemberSignature.SYSTEM_STATUS, true)
+                        .eq(MemberSignatureView.MEMBER_ID, memberId)
+                        .eq(MemberSignatureView.SYSTEM_STATUS, true)
         );
 
         return memberSignature;
@@ -38,13 +38,13 @@ public class MemberSignatureServiceImpl extends BaseServiceImpl<MemberSignatureM
     public void deleteByMemberId(String memberId, String systemRequestUserId) {
         List<MemberSignature> memberSignatureList = list(
                 new BaseWrapper<MemberSignature>()
-                        .eq(MemberSignature.MEMBER_ID, memberId)
-                        .eq(MemberSignature.SYSTEM_STATUS, true)
+                        .eq(MemberSignatureView.MEMBER_ID, memberId)
+                        .eq(MemberSignatureView.SYSTEM_STATUS, true)
         );
 
         if (memberSignatureList != null && memberSignatureList.size() > 0) {
             memberSignatureList.stream()
-                    .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(), systemRequestUserId, memberSignature.getSystemVersion()));
+                    .forEach(memberSignature -> delete(memberSignature.getMemberSignatureId(), memberSignature.getAppId(), systemRequestUserId, memberSignature.getSystemVersion()));
         }
     }
 

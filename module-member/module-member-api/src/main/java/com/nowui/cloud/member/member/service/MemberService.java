@@ -3,9 +3,6 @@ import java.util.List;
 
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.entity.MemberAddress;
-import com.nowui.cloud.member.member.entity.MemberBackground;
-import com.nowui.cloud.member.member.entity.MemberPreferenceLanguage;
-import com.nowui.cloud.member.member.entity.MemberSignature;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.service.BaseService;
 
