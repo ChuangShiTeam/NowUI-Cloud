@@ -1,21 +1,13 @@
 package com.nowui.cloud.view;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
-
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.nowui.cloud.annotation.KeyId;
 import com.nowui.cloud.entity.BaseEntity;
-import com.nowui.cloud.exception.SystemException;
-import com.nowui.cloud.util.Util;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import static org.bouncycastle.crypto.tls.BulkCipherAlgorithm.des;
 
 /**
  * baseView
@@ -24,7 +16,6 @@ import static org.bouncycastle.crypto.tls.BulkCipherAlgorithm.des;
  * <p>
  * 2018-01-29
  */
-//@Component
 public class BaseView implements Serializable {
 
     /**

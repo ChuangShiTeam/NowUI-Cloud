@@ -1,29 +1,11 @@
-import util from '../common/util';
+import React from 'react'
+import {Route} from 'react-router-dom';
 
-export default {
-    childRoutes: [{
-        path: '/${urlEntityName}/index',
-        onEnter: util.handleEnter,
-        getComponent(location, cb) {
-            require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Index').default);
-            }, '${firstLowerWithoutUnderlineEntityName}.index');
-        }
-    }, {
-        path: '/${urlEntityName}/add',
-        onEnter: util.handleEnter,
-        getComponent(location, cb) {
-            require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
-            }, '${firstLowerWithoutUnderlineEntityName}.add');
-        }
-    }, {
-        path: '/${urlEntityName}/edit/:${tableId}',
-        onEnter: util.handleEnter,
-        getComponent(location, cb) {
-            require.ensure([], (require) => {
-                cb(null, require('../view/${firstLowerWithoutUnderlineEntityName}/Detail').default);
-            }, '${firstLowerWithoutUnderlineEntityName}.edit.${tableId}');
-        }
-    }]
-}
+import ${firstUpperWithoutUnderlineEntityName}Index from '../view/${firstLowerWithoutUnderlineEntityName}/Index';
+import ${firstUpperWithoutUnderlineEntityName}Detail from '../view/${firstLowerWithoutUnderlineEntityName}/Detail';
+
+export default [
+	<Route key="${firstUpperWithoutUnderlineEntityName}Index" path="/${urlEntityName}/index" component={${firstUpperWithoutUnderlineEntityName}Index}/>,
+	<Route key="${firstUpperWithoutUnderlineEntityName}Add" path="/${urlEntityName}/add" component={${firstUpperWithoutUnderlineEntityName}Detail}/>,
+	<Route key="${firstUpperWithoutUnderlineEntityName}Edit${firstUpperWithoutUnderlineEntityName}Id" path="/${urlEntityName}/edit/:${firstLowerWithoutUnderlineEntityName}Id" component={${firstUpperWithoutUnderlineEntityName}Detail}/>
+]

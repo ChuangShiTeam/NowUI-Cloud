@@ -183,7 +183,7 @@ public class CodeController extends BaseController {
             List<JSONObject> detailColumnList = new ArrayList<JSONObject>(Constant.DEFAULT_LOAD_FACTOR);
 
             String upperTableName = codeView.getTableName().toUpperCase();
-            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(codeView.getTableName(), "_info", ""), "_map", ""), "count", "").toLowerCase();
+            String lowerEntityName = Util.repalceLast(Util.repalceLast(Util.repalceLast(codeView.getTableName(), "_info", ""), "_map", ""), "_count", "").toLowerCase();
             String upperEntityName = lowerEntityName.toUpperCase();
             String urlEntityName = lowerEntityName.replaceAll("_", "/");
             String firstLowerEntityName = lowerEntityName.substring(0, 1).toLowerCase() + lowerEntityName.substring(1);
