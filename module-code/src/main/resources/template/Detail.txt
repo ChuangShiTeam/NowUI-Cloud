@@ -45,6 +45,7 @@ export default connect(function (state) {
 			max: 99999,
             <%}%>
             required: true
+            <%}%>
         }]
     }
 })(NDetail);
