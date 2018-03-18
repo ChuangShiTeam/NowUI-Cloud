@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nowui.cloud.controller.BaseController;
 import com.nowui.cloud.member.member.entity.Member;
 import com.nowui.cloud.member.member.service.MemberService;
+import com.nowui.cloud.member.member.view.MemberDefaultAvatarView;
 import com.nowui.cloud.member.member.view.MemberView;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 会员管理端控制器
@@ -28,21 +33,30 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class MemberAdminController extends BaseController {
 
-    @Autowired
-    private MemberService memberService;
-
-//    @ApiOperation(value = "会员列表")
-//    @RequestMapping(value = "/member/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Map<String, Object> listV1() {
-//        MemberView memberView = getEntry(MemberView.class);
+//    @Autowired
+//    private MemberService memberService;
 //
+//    @ApiOperation(value = "会员列表", httpMethod = "POST")
+//    @ApiImplicitParams({
+//        @ApiImplicitParam(name = MemberView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+//        @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+//        @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+//    })
+//    @RequestMapping(value = "/member/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Map<String, Object> listV1(@ApiIgnore MemberView memberView, @ApiIgnore CommonView commonView) {
 //        validateRequest(
 //                memberView,
 //                MemberView.APP_ID,
+//                MemberView.MEMBER_ACCOUNT,
+//                MemberView.MEMBER_NICK_NAME,
 //                MemberView.MEMBER_IS_TOP,
-//                MemberView.MEMBER_IS_RECOMMED,
-//                MemberView.PAGE_INDEX,
-//                MemberView.PAGE_SIZE
+//                MemberView.MEMBER_IS_RECOMMED
+//        );
+//        
+//        validateRequest(
+//                commonView,
+//                CommonView.PAGE_INDEX,
+//                CommonView.PAGE_SIZE
 //        );
 //
 //        Integer resultTotal = memberService.countForAdmin(memberView.getAppId() , memberView.getMemberIsTop(), memberView.getMemberIsRecommed());
@@ -57,7 +71,7 @@ public class MemberAdminController extends BaseController {
 //        return renderJson(resultTotal, resultList);
 //    }
 //
-//    @ApiOperation(value = "会员信息")
+//    @ApiOperation(value = "会员信息", httpMethod = "POST")
 //    @RequestMapping(value = "/member/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> findV1() {
 //        MemberView memberView = getEntry(MemberView.class);
@@ -82,7 +96,7 @@ public class MemberAdminController extends BaseController {
 //        return renderJson(result);
 //    }
 //
-//    @ApiOperation(value = "新增会员")
+//    @ApiOperation(value = "新增会员", httpMethod = "POST")
 //    @RequestMapping(value = "/member/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> saveV1() {
 //        Member memberEntity = getEntry(Member.class);
@@ -111,7 +125,7 @@ public class MemberAdminController extends BaseController {
 //        return renderJson(success);
 //    }
 //
-//    @ApiOperation(value = "修改会员")
+//    @ApiOperation(value = "修改会员", httpMethod = "POST")
 //    @RequestMapping(value = "/member/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> updateV1() {
 //        Member memberEntity = getEntry(Member.class);
@@ -141,7 +155,7 @@ public class MemberAdminController extends BaseController {
 //        return renderJson(success);
 //    }
 //
-//    @ApiOperation(value = "删除会员")
+//    @ApiOperation(value = "删除会员", httpMethod = "POST")
 //    @RequestMapping(value = "/member/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> deleteV1() {
 //        Member memberEntity = getEntry(Member.class);
@@ -166,7 +180,7 @@ public class MemberAdminController extends BaseController {
 //        return renderJson(success);
 //    }
 //    
-//    @ApiOperation(value = "会员数据同步")
+//    @ApiOperation(value = "会员数据同步", httpMethod = "POST")
 //    @RequestMapping(value = "/member/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public Map<String, Object> synchronizeV1() {
 //        List<Member> memberList = memberService.listByMysql();

@@ -19,23 +19,27 @@ public interface MemberService extends BaseService<Member,MemberView> {
      * 会员统计
      *
      * @param appId 应用编号
+     * @param memberAccount 会员账号
+     * @param memberNickName 会员昵称
      * @param memberIsTop 是否置顶
      * @param memberIsRecommed 会员是否推荐
      * @return Integer 会员视图统计
      */
-    Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed);
+    Integer countForAdmin(String appId, String memberAccount, String memberNickName, Boolean memberIsTop, Boolean memberIsRecommed);
 
     /**
      * 会员列表
      *
      * @param appId 应用编号
+     * @param memberAccount 会员账号
+     * @param memberNickName 会员昵称
      * @param memberIsTop 是否置顶
      * @param memberIsRecommed 会员是否推荐
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<MemberView> 会员视图列表
      */
-    List<MemberView> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
+    List<MemberView> listForAdmin(String appId, String memberAccount, String memberNickName, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize);
 
     /**
      * 根据用户编号查询会员信息

@@ -19,21 +19,19 @@ public interface MemberDefaultAvatarService extends BaseService<MemberDefaultAva
      * 会员默认头像统计
      *
      * @param appId 应用编号
-     * @param userAvatarFileId 头像文件编号
      * @return Integer 会员默认头像统计
      */
-    Integer countForAdmin(String appId, String userAvatarFileId);
+    Integer countForAdmin(String appId);
 
     /**
      * 会员默认头像列表
      *
      * @param appId 应用编号
-     * @param userAvatarFileId 头像文件编号
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<MemberDefaultAvatarView> 会员默认头像列表
      */
-    List<MemberDefaultAvatarView> listForAdmin(String appId, String userAvatarFileId, Integer pageIndex, Integer pageSize);
+    List<MemberDefaultAvatarView> listForAdmin(String appId, Integer pageIndex, Integer pageSize);
     
     /**
      * 所有会员默认头像统计

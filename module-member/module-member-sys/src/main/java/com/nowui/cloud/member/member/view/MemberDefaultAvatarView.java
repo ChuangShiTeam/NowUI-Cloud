@@ -46,8 +46,17 @@ public class MemberDefaultAvatarView extends BaseView {
     @Field
     @NotNull(message = "头像文件编号不能为空")
     @Length(max = 32, message = "头像文件编号长度超出限制")
-    private String userAvatarFileId;
-    public static final String USER_AVATAR_FILE_ID = "userAvatarFileId";
+    private String memberDefaultAvatarFileId;
+    public static final String MEMBER_DEFAULT_AVATAR_FILE_ID = "memberDefaultAvatarFileId";
+    
+    /**
+     * 头像文件路径
+     */
+    @Field
+    @NotNull(message = "头像文件路径不能为空")
+    @Length(max = 32, message = "头像文件路径长度超出限制")
+    private String memberDefaultAvatarFilePath;
+    public static final String MEMBER_DEFAULT_AVATAR_FILE_PATH = "memberDefaultAvatarFilePath";
 
 
     public String getMemberDefaultAvatarId() {
@@ -65,14 +74,21 @@ public class MemberDefaultAvatarView extends BaseView {
     public void setAppId(String appId) {
         this.appId = appId;
     }
-    
-    public String getUserAvatarFileId() {
-        return userAvatarFileId;
+
+    public String getMemberDefaultAvatarFileId() {
+        return memberDefaultAvatarFileId;
     }
 
-    public void setUserAvatarFileId(String userAvatarFileId) {
-        this.userAvatarFileId = userAvatarFileId;
+    public void setMemberDefaultAvatarFileId(String memberDefaultAvatarFileId) {
+        this.memberDefaultAvatarFileId = memberDefaultAvatarFileId;
+    }
+
+    public String getMemberDefaultAvatarFilePath() {
+        return memberDefaultAvatarFilePath;
+    }
+
+    public void setMemberDefaultAvatarFilePath(String memberDefaultAvatarFilePath) {
+        this.memberDefaultAvatarFilePath = memberDefaultAvatarFilePath;
     }
     
-
 }

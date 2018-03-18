@@ -1,10 +1,11 @@
 package com.nowui.cloud.member.member.entity;
 
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.nowui.cloud.entity.BaseEntity;
-import org.springframework.stereotype.Component;
 
 /**
  * 会员默认头像
@@ -35,8 +36,7 @@ public class MemberDefaultAvatar extends BaseEntity {
      * 头像文件编号
      */
     @TableField
-    private String userAvatarFileId;
-
+    private String memberDefaultAvatarFileId;
 
     public String getMemberDefaultAvatarId() {
         return memberDefaultAvatarId;
@@ -54,13 +54,12 @@ public class MemberDefaultAvatar extends BaseEntity {
         this.appId = appId;
     }
 
-    public String getUserAvatarFileId() {
-        return userAvatarFileId;
-    }
-    
-    public void setUserAvatarFileId(String userAvatarFileId) {
-        this.userAvatarFileId = userAvatarFileId;
+    public String getMemberDefaultAvatarFileId() {
+        return memberDefaultAvatarFileId;
     }
 
+    public void setMemberDefaultAvatarFileId(String memberDefaultAvatarFileId) {
+        this.memberDefaultAvatarFileId = memberDefaultAvatarFileId;
+    }
 
 }

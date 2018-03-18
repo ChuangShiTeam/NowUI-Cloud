@@ -48,7 +48,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
     private MemberPreferenceLanguageService memberPreferenceLanguageService;
 
     @Override
-    public Integer countForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed) {
+    public Integer countForAdmin(String appId, String memberAccount, String memberNickName, Boolean memberIsTop, Boolean memberIsRecommed) {
         Criteria criteria = Criteria.where(MemberView.APP_ID).is(appId)
                 .and(MemberView.MEMBER_IS_TOP).is(memberIsTop)
                 .and(MemberView.MEMBER_IS_RECOMMED).is(memberIsRecommed)
@@ -60,7 +60,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member, Mem
     }
 
     @Override
-    public List<MemberView> listForAdmin(String appId, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
+    public List<MemberView> listForAdmin(String appId, String memberAccount, String memberNickName, Boolean memberIsTop, Boolean memberIsRecommed, Integer pageIndex, Integer pageSize) {
         Criteria criteria = Criteria.where(MemberView.APP_ID).is(appId)
                 .and(MemberView.MEMBER_IS_TOP).is(memberIsTop)
                 .and(MemberView.MEMBER_IS_RECOMMED).is(memberIsRecommed)

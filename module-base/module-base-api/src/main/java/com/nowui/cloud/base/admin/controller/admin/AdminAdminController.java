@@ -305,7 +305,7 @@ public class AdminAdminController extends BaseController {
             AdminPassword adminPassword = adminPasswordService.findByAdminId(adminView.getAdminId());
             adminView.setAdminPassword(adminPassword.getAdminPassword());
             
-            adminService.saveOrUpdate(adminView, admin.getAdminId());
+            adminService.saveOrUpdate(adminView, adminView.getAdminId());
         }
 
         return renderJson(true);
