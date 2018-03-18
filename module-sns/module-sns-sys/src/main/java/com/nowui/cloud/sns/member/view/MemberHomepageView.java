@@ -157,144 +157,107 @@ public class MemberHomepageView extends BaseView {
     public static final String PET = "pet";
     
     
-    
-    public String getUserId() {
-        return getString(USER_ID);
-    }
-
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
-    }
-    
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getMemberAddressProvince() {
-        return getString(MEMBER_ADDRESS_PROVINCE);
-    }
-
-    public void setMemberAddressProvince(String memberAddressProvince) {
-        put(MEMBER_ADDRESS_PROVINCE, memberAddressProvince);
-    }
-
-    public String getMemberAddressCity() {
-        return getString(MEMBER_ADDRESS_CITY);
-    }
-
-    public void setMemberAddressCity(String memberAddressCity) {
-        put(MEMBER_ADDRESS_CITY, memberAddressCity);
-    }
-
-    public String getMemberAddressArea() {
-        return getString(MEMBER_ADDRESS_AREA);
-    }
-
-    public void setMemberAddressArea(String memberAddressArea) {
-        put(MEMBER_ADDRESS_AREA, memberAddressArea);
-    }
-
-    public String getMemberAddressAddress() {
-        return getString(MEMBER_ADDRESS_ADDRESS);
-    }
-
-    public void setMemberAddressAddress(String memberAddressAddress) {
-        put(MEMBER_ADDRESS_ADDRESS, memberAddressAddress);
-    }
-    
-    public String getMemberBackgroundFilePath() {
-        return getString(MEMBER_BACKGROUND_FILE_PATH);
-    }
-
-    public void setMemberBackgroundFilePath(String memberBackgroundFilePath) {
-        put(MEMBER_BACKGROUND_FILE_PATH, memberBackgroundFilePath);
-    }
-
-    public String getMemberSignature() {
-        return getString(MEMBER_SIGNATURE);
-    }
-
-    public void setMemberSignature(String memberSignature) {
-        put(MEMBER_SIGNATURE, memberSignature);
-    }
-
-    
-    
-    public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
-    }
-    
-    public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
-    }
-
-    public String getUserSex() {
-        return getString(USER_SEX);
-    }
-
-    public void setUserSex(String userSex) {
-        put(USER_SEX, userSex);
-    }
-
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
-    }
-
-    public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
-    }
-
-    
 	public String getMemberHomepageId() {
-		return getString(MEMBER_HOMEPAGE_ID);
+		return memberHomepageId;
 	}
-
 	public void setMemberHomepageId(String memberHomepageId) {
-		put(MEMBER_HOMEPAGE_ID, memberHomepageId);
+		this.memberHomepageId = memberHomepageId;
 	}
-
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getUserSex() {
+		return userSex;
+	}
+	public void setUserSex(String userSex) {
+		this.userSex = userSex;
+	}
+	public String getUserAvatarFilePath() {
+		return userAvatarFilePath;
+	}
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		this.userAvatarFilePath = userAvatarFilePath;
+	}
+	public String getUserNickName() {
+		return userNickName;
+	}
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+	}
+	public String getMemberSignature() {
+		return memberSignature;
+	}
+	public void setMemberSignature(String memberSignature) {
+		this.memberSignature = memberSignature;
+	}
+	public String getMemberBackgroundFilePath() {
+		return memberBackgroundFilePath;
+	}
+	public void setMemberBackgroundFilePath(String memberBackgroundFilePath) {
+		this.memberBackgroundFilePath = memberBackgroundFilePath;
+	}
+	public String getMemberAddressProvince() {
+		return memberAddressProvince;
+	}
+	public void setMemberAddressProvince(String memberAddressProvince) {
+		this.memberAddressProvince = memberAddressProvince;
+	}
+	public String getMemberAddressCity() {
+		return memberAddressCity;
+	}
+	public void setMemberAddressCity(String memberAddressCity) {
+		this.memberAddressCity = memberAddressCity;
+	}
+	public String getMemberAddressArea() {
+		return memberAddressArea;
+	}
+	public void setMemberAddressArea(String memberAddressArea) {
+		this.memberAddressArea = memberAddressArea;
+	}
+	public String getMemberAddressAddress() {
+		return memberAddressAddress;
+	}
+	public void setMemberAddressAddress(String memberAddressAddress) {
+		this.memberAddressAddress = memberAddressAddress;
+	}
 	public Integer getMemberSendTopicCount() {
-		return getInteger(MEMBER_SEND_TOPIC_COUNT);
+		return memberSendTopicCount;
 	}
-
 	public void setMemberSendTopicCount(Integer memberSendTopicCount) {
-		put(MEMBER_SEND_TOPIC_COUNT, memberSendTopicCount);
+		this.memberSendTopicCount = memberSendTopicCount;
 	}
-
 	public Integer getMemberFollowCount() {
-		return getInteger(MEMBER_FOLLOW_COUNT);
+		return memberFollowCount;
 	}
-
 	public void setMemberFollowCount(Integer memberFollowCount) {
-		put(MEMBER_FOLLOW_COUNT, memberFollowCount);
+		this.memberFollowCount = memberFollowCount;
 	}
-
 	public Integer getMemberBeFollowCount() {
-		return getInteger(MEMBER_BE_FOLLOW_COUNT);
+		return memberBeFollowCount;
 	}
-
 	public void setMemberBeFollowCount(Integer memberBeFollowCount) {
-		put(MEMBER_BE_FOLLOW_COUNT, memberBeFollowCount);
+		this.memberBeFollowCount = memberBeFollowCount;
 	}
-
 	public String getPet() {
-		return getString(PET);
+		return pet;
 	}
-
 	public void setPet(String pet) {
-		put(PET, pet);
+		this.pet = pet;
 	}
 
 }

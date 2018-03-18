@@ -58,39 +58,30 @@ public class TopicUserUnbookmark extends BaseEntity {
     @Length(max = 32, message = "用户编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
-
-
-    public String getTopicUserUnbookmarkId() {
-        return getString(TOPIC_USER_UNBOOKMARK_ID);
-    }
     
-    public void setUserUnbookmarkId(String topicUserUnbookmarkId) {
-        put(TOPIC_USER_UNBOOKMARK_ID, topicUserUnbookmarkId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
+	public String getTopicUserUnbookmarkId() {
+		return topicUserUnbookmarkId;
+	}
+	public void setTopicUserUnbookmarkId(String topicUserUnbookmarkId) {
+		this.topicUserUnbookmarkId = topicUserUnbookmarkId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
 }

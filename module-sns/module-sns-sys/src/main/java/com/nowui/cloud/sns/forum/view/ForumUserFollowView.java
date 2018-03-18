@@ -119,103 +119,83 @@ public class ForumUserFollowView extends BaseView {
     @NotNull(message = "是否置顶不能为空")
     private Boolean forumUserFollowIsTop;
     public static final String FORUM_USER_FOLLOW_IS_TOP = "forumUserFollowIsTop";
-
-
-    public String getForumUserFollowId() {
-        return getString(FORUM_USER_FOLLOW_ID);
-    }
-
-    public void setForumUserFollowId(String forumUserFollowId) {
-        put(FORUM_USER_FOLLOW_ID, forumUserFollowId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-	
-    public String getUserAvatarFilePath() {
-		return getString(USER_AVATAR_FILE_PATH);
+    
+    
+	public String getAppId() {
+		return appId;
 	}
-
-	public void setUserAvatarFilePath(String userAvatarFilePath) {
-		put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
-
-	public String getUserNickName() {
-		return getString(USER_NICKNAME);
-	}
-
-	public void setUserNickName(String userNickName) {
-		put(USER_NICKNAME, userNickName);
-	}
-
-	public String getMemberSignature() {
-		return getString(MEMBER_SIGNATURE);
-	}
-
-	public void setMemberSignature(String memberSignature) {
-		put(MEMBER_SIGNATURE, memberSignature);
-	}
-
 	public String getForumId() {
-        return getString(FORUM_ID);
-    }
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+	public String getForumUserFollowId() {
+		return forumUserFollowId;
+	}
+	public void setForumUserFollowId(String forumUserFollowId) {
+		this.forumUserFollowId = forumUserFollowId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getUserAvatarFilePath() {
+		return userAvatarFilePath;
+	}
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		this.userAvatarFilePath = userAvatarFilePath;
+	}
+	public String getUserNickName() {
+		return userNickName;
+	}
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+	}
+	public String getMemberSignature() {
+		return memberSignature;
+	}
+	public void setMemberSignature(String memberSignature) {
+		this.memberSignature = memberSignature;
+	}
+	public String getForumModeratorMemberId() {
+		return forumModeratorMemberId;
+	}
+	public void setForumModeratorMemberId(String forumModeratorMemberId) {
+		this.forumModeratorMemberId = forumModeratorMemberId;
+	}
+	public String getForumModeratorUserAvatarFilePath() {
+		return forumModeratorUserAvatarFilePath;
+	}
+	public void setForumModeratorUserAvatarFilePath(String forumModeratorUserAvatarFilePath) {
+		this.forumModeratorUserAvatarFilePath = forumModeratorUserAvatarFilePath;
+	}
+	public String getForumModeratorUserNickName() {
+		return forumModeratorUserNickName;
+	}
+	public void setForumModeratorUserNickName(String forumModeratorUserNickName) {
+		this.forumModeratorUserNickName = forumModeratorUserNickName;
+	}
+	public String getForumModeratorMemberSignature() {
+		return forumModeratorMemberSignature;
+	}
+	public void setForumModeratorMemberSignature(String forumModeratorMemberSignature) {
+		this.forumModeratorMemberSignature = forumModeratorMemberSignature;
+	}
+	public Boolean getForumUserFollowIsTop() {
+		return forumUserFollowIsTop;
+	}
+	public void setForumUserFollowIsTop(Boolean forumUserFollowIsTop) {
+		this.forumUserFollowIsTop = forumUserFollowIsTop;
+	}
+	
 
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
-    
-    public String getForumModerator() {
-        return getString(FORUM_MODERATOR_MEMBER_ID);
-    }
-    
-    public void setForumModerator(String forumModerator) {
-        put(FORUM_MODERATOR_MEMBER_ID, forumModerator);
-    }
-    
-    public String getForumModeratorUserAvatarFilePath() {
-        return getString(FORUM_MODERATOR_AVATAR_FILE_PATH);
-    }
-    
-    public void setForumModeratorUserAvatarFilePath(String forumModeratorUserAvatarFilePath) {
-        put(FORUM_MODERATOR_AVATAR_FILE_PATH, forumModeratorUserAvatarFilePath);
-    }
-    
-    public String getForumModeratorUserNickName() {
-        return getString(FORUM_MODERATOR_USER_NICKNAME);
-    }
-    
-    public void setForumModeratorUserNickName(String forumModeratorUserNickName) {
-        put(FORUM_MODERATOR_USER_NICKNAME, forumModeratorUserNickName);
-    }
-    
-    public String getForumModeratorMemberSignature() {
-        return getString(FORUM_MODERATOR_MEMBER_SIGNATURE);
-    }
-    
-    public void setForumModeratorMemberSignature(String forumModeratorMemberSignature) {
-        put(FORUM_MODERATOR_MEMBER_SIGNATURE, forumModeratorMemberSignature);
-    }
-    
-    public Boolean getForumUserFollowIsTop() {
-        return getBoolean(FORUM_USER_FOLLOW_IS_TOP);
-    }
 
-    public void setForumUserFollowIsTop(Boolean forumUserFollowIsTop) {
-        put(FORUM_USER_FOLLOW_IS_TOP, forumUserFollowIsTop);
-    }
-
+    
 
 }

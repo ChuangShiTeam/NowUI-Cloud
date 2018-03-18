@@ -76,55 +76,94 @@ public class MemberDialogueRecord extends BaseEntity {
     @Length(max = 2000, message = "对话内容长度超出限制")
     private String memberDialogueContent;
     public static final String MEMBER_DIALOGUE_CONTENT = "memberDialogueContent";
-
-
-    public String getMemberDialogueRecordId() {
-        return getString(MEMBER_DIALOGUE_RECORD_ID);
-    }
     
-    public void setMemberDialogueRecordId(String memberDialogueRecordId) {
-        put(MEMBER_DIALOGUE_RECORD_ID, memberDialogueRecordId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
     
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
+	public String getMemberDialogueRecordId() {
+		return memberDialogueRecordId;
+	}
+	public void setMemberDialogueRecordId(String memberDialogueRecordId) {
+		this.memberDialogueRecordId = memberDialogueRecordId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getMemberDialogueId() {
+		return memberDialogueId;
+	}
+	public void setMemberDialogueId(String memberDialogueId) {
+		this.memberDialogueId = memberDialogueId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getMemberDialogueContent() {
+		return memberDialogueContent;
+	}
+	public void setMemberDialogueContent(String memberDialogueContent) {
+		this.memberDialogueContent = memberDialogueContent;
+	}
 
-    public String getMemberDialogueId() {
-        return getString(MEMBER_DIALOGUE_ID);
-    }
-    
-    public void setMemberDialogueId(String memberDialogueId) {
-        put(MEMBER_DIALOGUE_ID, memberDialogueId);
-    }
 
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
     
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
-    public String getUserId() {
-        return getString(USER_ID);
-    }
-    
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
-    }
-
-    public String getMemberDialogueContent() {
-        return getString(MEMBER_DIALOGUE_CONTENT);
-    }
-    
-    public void setMemberDialogueContent(String memberDialogueContent) {
-        put(MEMBER_DIALOGUE_CONTENT, memberDialogueContent);
-    }
+//    public String getMemberDialogueRecordId() {
+//        return getString(MEMBER_DIALOGUE_RECORD_ID);
+//    }
+//    
+//    public void setMemberDialogueRecordId(String memberDialogueRecordId) {
+//        put(MEMBER_DIALOGUE_RECORD_ID, memberDialogueRecordId);
+//    }
+//
+//    public String getAppId() {
+//        return getString(APP_ID);
+//    }
+//    
+//    public void setAppId(String appId) {
+//        put(APP_ID, appId);
+//    }
+//
+//    public String getMemberDialogueId() {
+//        return getString(MEMBER_DIALOGUE_ID);
+//    }
+//    
+//    public void setMemberDialogueId(String memberDialogueId) {
+//        put(MEMBER_DIALOGUE_ID, memberDialogueId);
+//    }
+//
+//    public String getMemberId() {
+//        return getString(MEMBER_ID);
+//    }
+//    
+//    public void setMemberId(String memberId) {
+//        put(MEMBER_ID, memberId);
+//    }
+//
+//    public String getUserId() {
+//        return getString(USER_ID);
+//    }
+//    
+//    public void setUserId(String userId) {
+//        put(USER_ID, userId);
+//    }
+//
+//    public String getMemberDialogueContent() {
+//        return getString(MEMBER_DIALOGUE_CONTENT);
+//    }
+//    
+//    public void setMemberDialogueContent(String memberDialogueContent) {
+//        put(MEMBER_DIALOGUE_CONTENT, memberDialogueContent);
+//    }
 
 
 }

@@ -258,181 +258,182 @@ public class Topic extends BaseEntity {
      * 话题评论查询多少条
      */
     public static final String COMMENT_PAGE_SIZE = "commentPageSize";
-    
-    
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getTopicSummary() {
-        return getString(TOPIC_SUMMARY);
-    }
-    
-    public void setTopicSummary(String topicSummary) {
-        put(TOPIC_SUMMARY, topicSummary);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-    public String getRequestMemberId() {
-        return getString(REQUEST_MEMBER_ID);
-    }
-    
-    public void setRequestMemberId(String requestMemberId) {
-        put(REQUEST_MEMBER_ID, requestMemberId);
-    }
-
-    public String getLatitude() {
-        return getString(LATITUDE);
-    }
-    
-    public void setLatitude(String latitude) {
-        put(LATITUDE, latitude);
-    }
-
-    public String getLongtitude() {
-        return getString(LONGTITUDE);
-    }
-    
-    public void setLongtitude(String longtitude) {
-        put(LONGTITUDE, longtitude);
-    }
-
-    public String getTopicLocation() {
-        return getString(TOPIC_LOCATION);
-    }
-    
-    public void setTopicLocation(String topicLocation) {
-        put(TOPIC_LOCATION, topicLocation);
-    }
-
-    public Boolean getTopicIsLocation() {
-        return getBoolean(TOPIC_IS_LOCATION);
-    }
-    
-    public void setTopicIsLocation(Boolean topicIsLocation) {
-        put(TOPIC_IS_LOCATION, topicIsLocation);
-    }
-
-    public Boolean getTopicIsTop() {
-        return getBoolean(TOPIC_IS_TOP);
-    }
-    
-    public void setTopicIsTop(Boolean topicIsTop) {
-        put(TOPIC_IS_TOP, topicIsTop);
-    }
-
-    public Boolean getTopicIsRecommend() {
-        return getBoolean(TOPIC_IS_RECOMAND);
-    }
-    
-    public void setTopicIsRecommend(Boolean topicIsRecommend) {
-        put(TOPIC_IS_RECOMAND, topicIsRecommend);
-    }
-
-    public Integer getTopicTopLevel() {
-        return getInteger(TOPIC_TOP_LEVEL);
-    }
-    
-    public void setTopicTopLevel(Integer topicTopLevel) {
-        put(TOPIC_TOP_LEVEL, topicTopLevel);
-    }
-    
-    public Date getTopicTopEndTime() {
-        return getDate(TOPIC_TOP_END_TIME);
-    }
-    
-    public void setTopicTopEndTime(Date topicTopEndTime) {
-        put(TOPIC_TOP_END_TIME, topicTopEndTime);
-    }
-
-	public JSONObject getTopicMediaList() {
-        return getJSONObject(TOPIC_MEDIA_LIST);
+	public String getTopicId() {
+		return topicId;
 	}
 
-	public void setTopicMediaList(JSONObject topicMediaList) {
-        put(TOPIC_MEDIA_LIST, topicMediaList);
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
 	}
 
-	public JSONObject getTopicTipUserList() {
-        return getJSONObject(TOPIC_TIP_USER_LIST);
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setTopicTipUserList(JSONObject topicTipUserList) {
-        put(TOPIC_TIP_USER_LIST, topicTipUserList);
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
-	public JSONObject getTopicForumList() {
-        return getJSONObject(TOPIC_FORUM_LIST);
+	public String getMemberId() {
+		return memberId;
 	}
 
-	public void setTopicForumList(JSONObject topicForumList) {
-        put(TOPIC_FORUM_LIST, topicForumList);
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
-	
-	public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
-    }
-    
-    public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
-    }
+
+	public String getRequestMemberId() {
+		return requestMemberId;
+	}
+
+	public void setRequestMemberId(String requestMemberId) {
+		this.requestMemberId = requestMemberId;
+	}
 
 	public String getUserNickName() {
-		return getString(USER_NICKNAME);
+		return userNickName;
 	}
 
 	public void setUserNickName(String userNickName) {
-		put(USER_NICKNAME, userNickName);
+		this.userNickName = userNickName;
+	}
+
+	public String getUserAvatarFilePath() {
+		return userAvatarFilePath;
+	}
+
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		this.userAvatarFilePath = userAvatarFilePath;
 	}
 
 	public String getMemberSignature() {
-		return getString(MEMBER_SIGNATURE);
+		return memberSignature;
 	}
 
 	public void setMemberSignature(String memberSignature) {
-		put(MEMBER_SIGNATURE, memberSignature);
+		this.memberSignature = memberSignature;
+	}
+
+	public String getTopicSummary() {
+		return topicSummary;
+	}
+
+	public void setTopicSummary(String topicSummary) {
+		this.topicSummary = topicSummary;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongtitude() {
+		return longtitude;
+	}
+
+	public void setLongtitude(String longtitude) {
+		this.longtitude = longtitude;
+	}
+
+	public String getTopicLocation() {
+		return topicLocation;
+	}
+
+	public void setTopicLocation(String topicLocation) {
+		this.topicLocation = topicLocation;
+	}
+
+	public Boolean getTopicIsLocation() {
+		return topicIsLocation;
+	}
+
+	public void setTopicIsLocation(Boolean topicIsLocation) {
+		this.topicIsLocation = topicIsLocation;
+	}
+
+	public Boolean getTopicIsTop() {
+		return topicIsTop;
+	}
+
+	public void setTopicIsTop(Boolean topicIsTop) {
+		this.topicIsTop = topicIsTop;
+	}
+
+	public Boolean getTopicIsRecommend() {
+		return topicIsRecommend;
+	}
+
+	public void setTopicIsRecommend(Boolean topicIsRecommend) {
+		this.topicIsRecommend = topicIsRecommend;
+	}
+
+	public Integer getTopicTopLevel() {
+		return topicTopLevel;
+	}
+
+	public void setTopicTopLevel(Integer topicTopLevel) {
+		this.topicTopLevel = topicTopLevel;
+	}
+
+	public Date getTopicTopEndTime() {
+		return topicTopEndTime;
+	}
+
+	public void setTopicTopEndTime(Date topicTopEndTime) {
+		this.topicTopEndTime = topicTopEndTime;
+	}
+
+	public JSONObject getTopicMediaList() {
+		return topicMediaList;
+	}
+
+	public void setTopicMediaList(JSONObject topicMediaList) {
+		this.topicMediaList = topicMediaList;
+	}
+
+	public JSONObject getTopicTipUserList() {
+		return topicTipUserList;
+	}
+
+	public void setTopicTipUserList(JSONObject topicTipUserList) {
+		this.topicTipUserList = topicTipUserList;
+	}
+
+	public JSONObject getTopicForumList() {
+		return topicForumList;
+	}
+
+	public void setTopicForumList(JSONObject topicForumList) {
+		this.topicForumList = topicForumList;
 	}
 
 	public Integer getTopicCountBookmark() {
-		return getInteger(TOPIC_COUNT_BOOKMARK);
+		return topicCountBookmark;
 	}
 
 	public void setTopicCountBookmark(Integer topicCountBookmark) {
-		put(TOPIC_COUNT_BOOKMARK, topicCountBookmark);
+		this.topicCountBookmark = topicCountBookmark;
 	}
 
 	public Integer getTopicCountLike() {
-		return getInteger(TOPIC_COUNT_LIKE);
+		return topicCountLike;
 	}
 
 	public void setTopicCountLike(Integer topicCountLike) {
-		put(TOPIC_COUNT_LIKE, topicCountLike);
+		this.topicCountLike = topicCountLike;
 	}
 
 	public Integer getTopicCountComment() {
-		return getInteger(TOPIC_COUNT_COMMENT);
+		return topicCountComment;
 	}
 
 	public void setTopicCountComment(Integer topicCountComment) {
-		put(TOPIC_COUNT_COMMENT, topicCountComment);
+		this.topicCountComment = topicCountComment;
 	}
+    
 	
 }

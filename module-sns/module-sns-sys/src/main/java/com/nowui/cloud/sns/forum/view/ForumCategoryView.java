@@ -74,63 +74,55 @@ public class ForumCategoryView extends BaseView {
     @NotNull(message = "论坛分类排序不能为空")
     private Integer forumCategorySort;
     public static final String FORUM_CATEGORY_SORT = "forumCategorySort";
+    
+    
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getForumCategoryId() {
+		return forumCategoryId;
+	}
+	public void setForumCategoryId(String forumCategoryId) {
+		this.forumCategoryId = forumCategoryId;
+	}
+	public String getForumCategoryName() {
+		return forumCategoryName;
+	}
+	public void setForumCategoryName(String forumCategoryName) {
+		this.forumCategoryName = forumCategoryName;
+	}
+	public String getForumCategoryThumb() {
+		return forumCategoryThumb;
+	}
+	public void setForumCategoryThumb(String forumCategoryThumb) {
+		this.forumCategoryThumb = forumCategoryThumb;
+	}
+	public Boolean getForumCategoryIsActive() {
+		return forumCategoryIsActive;
+	}
+	public void setForumCategoryIsActive(Boolean forumCategoryIsActive) {
+		this.forumCategoryIsActive = forumCategoryIsActive;
+	}
+	public Boolean getForumCategoryIsRecommend() {
+		return forumCategoryIsRecommend;
+	}
+	public void setForumCategoryIsRecommend(Boolean forumCategoryIsRecommend) {
+		this.forumCategoryIsRecommend = forumCategoryIsRecommend;
+	}
+	public Integer getForumCategorySort() {
+		return forumCategorySort;
+	}
+	public void setForumCategorySort(Integer forumCategorySort) {
+		this.forumCategorySort = forumCategorySort;
+	}
+	
+	
 
-
-    public String getForumCategoryId() {
-        return getString(FORUM_CATEGORY_ID);
-    }
-
-    public void setForumCategoryId(String forumCategoryId) {
-        put(FORUM_CATEGORY_ID, forumCategoryId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getForumCategoryName() {
-        return getString(FORUM_CATEGORY_NAME);
-    }
-
-    public void setForumCategoryName(String forumCategoryName) {
-        put(FORUM_CATEGORY_NAME, forumCategoryName);
-    }
-
-    public String getForumCategoryThumb() {
-        return getString(FORUM_CATEGORY_THUMB);
-    }
-
-    public void setForumCategoryThumb(String forumCategoryThumb) {
-        put(FORUM_CATEGORY_THUMB, forumCategoryThumb);
-    }
-
-    public Boolean getForumCategoryIsActive() {
-        return getBoolean(FORUM_CATEGORY_IS_ACTIVE);
-    }
-
-    public void setForumCategoryIsActive(Boolean forumCategoryIsActive) {
-        put(FORUM_CATEGORY_IS_ACTIVE, forumCategoryIsActive);
-    }
-
-    public Boolean getForumCategoryIsRecommend() {
-        return getBoolean(FORUM_CATEGORY_IS_RECOMMEND);
-    }
-
-    public void setForumCategoryIsRecommend(Boolean forumCategoryIsRecommend) {
-        put(FORUM_CATEGORY_IS_RECOMMEND, forumCategoryIsRecommend);
-    }
-
-    public Integer getForumCategorySort() {
-        return getInteger(FORUM_CATEGORY_SORT);
-    }
-
-    public void setForumCategorySort(Integer forumCategorySort) {
-        put(FORUM_CATEGORY_SORT, forumCategorySort);
-    }
+    
+    
 
 
 }

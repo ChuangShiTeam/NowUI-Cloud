@@ -88,85 +88,67 @@ public class MemberDialogueView extends BaseView {
     @Field
     private String respondUserNickName;
     public static final String RESPOND_USER_NICK_NAME = "respondUserNickName";
+    
+	public String getMemberDialogueId() {
+		return memberDialogueId;
+	}
+	public void setMemberDialogueId(String memberDialogueId) {
+		this.memberDialogueId = memberDialogueId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getInitiateMemberId() {
+		return initiateMemberId;
+	}
+	public void setInitiateMemberId(String initiateMemberId) {
+		this.initiateMemberId = initiateMemberId;
+	}
+	public String getInitiateUserId() {
+		return initiateUserId;
+	}
+	public void setInitiateUserId(String initiateUserId) {
+		this.initiateUserId = initiateUserId;
+	}
+	public String getInitiateUserAvatarPath() {
+		return initiateUserAvatarPath;
+	}
+	public void setInitiateUserAvatarPath(String initiateUserAvatarPath) {
+		this.initiateUserAvatarPath = initiateUserAvatarPath;
+	}
+	public String getInitiateUserNickName() {
+		return initiateUserNickName;
+	}
+	public void setInitiateUserNickName(String initiateUserNickName) {
+		this.initiateUserNickName = initiateUserNickName;
+	}
+	public String getRespondMemberId() {
+		return respondMemberId;
+	}
+	public void setRespondMemberId(String respondMemberId) {
+		this.respondMemberId = respondMemberId;
+	}
+	public String getRespondUserId() {
+		return respondUserId;
+	}
+	public void setRespondUserId(String respondUserId) {
+		this.respondUserId = respondUserId;
+	}
+	public String getRespondUserAvatarPath() {
+		return respondUserAvatarPath;
+	}
+	public void setRespondUserAvatarPath(String respondUserAvatarPath) {
+		this.respondUserAvatarPath = respondUserAvatarPath;
+	}
+	public String getRespondUserNickName() {
+		return respondUserNickName;
+	}
+	public void setRespondUserNickName(String respondUserNickName) {
+		this.respondUserNickName = respondUserNickName;
+	}
 
-    public String getMemberDialogueId() {
-        return getString(MEMBER_DIALOGUE_ID);
-    }
-
-    public void setMemberDialogueId(String memberDialogueId) {
-        put(MEMBER_DIALOGUE_ID, memberDialogueId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getInitiateMemberId() {
-        return getString(INITIATE_MEMBER_ID);
-    }
-
-    public void setInitiateMemberId(String initiateMemberId) {
-        put(INITIATE_MEMBER_ID, initiateMemberId);
-    }
-
-    public String getInitiateUserId() {
-        return getString(INITIATE_USER_ID);
-    }
-
-    public void setInitiateUserId(String initiateUserId) {
-        put(INITIATE_USER_ID, initiateUserId);
-    }
-
-    public String getRespondMemberId() {
-        return getString(RESPOND_MEMBER_ID);
-    }
-
-    public void setRespondMemberId(String respondMemberId) {
-        put(RESPOND_MEMBER_ID, respondMemberId);
-    }
-
-    public String getRespondUserId() {
-        return getString(RESPOND_USER_ID);
-    }
-
-    public void setRespondUserId(String respondUserId) {
-        put(RESPOND_USER_ID, respondUserId);
-    }
-
-    public String getInitiateUserAvatarPath() {
-        return getString(INITIATE_USER_AVATAR_PATH);
-    }
-
-    public void setInitiateUserAvatarPath(String initiateUserAvatarPath) {
-        put(INITIATE_USER_AVATAR_PATH, initiateUserAvatarPath);
-    }
-
-    public String getInitiateUserNickName() {
-        return getString(INITIATE_USER_NICK_NAME);
-    }
-
-    public void setInitiateUserNickName(String initiateUserNickName) {
-        put(INITIATE_USER_NICK_NAME, initiateUserNickName);
-    }
-
-    public String getRespondUserAvatarPath() {
-        return getString(RESPOND_USER_AVATAR_PATH);
-    }
-
-    public void setRespondUserAvatarPath(String respondUserAvatarPath) {
-        put(RESPOND_USER_AVATAR_PATH, respondUserAvatarPath);
-    }
-
-    public String getRespondUserNickName() {
-        return getString(RESPOND_USER_NICK_NAME);
-    }
-
-    public void setRespondUserNickName(String respondUserNickName) {
-        put(RESPOND_USER_NICK_NAME, respondUserNickName);
-    }
     
 }

@@ -200,190 +200,128 @@ public class ForumView extends BaseView {
     @NotNull(message = "论坛排序不能为空")
     private Integer forumSort;
     public static final String FORUM_SORT = "forumSort";
-
-    public String getForumId() {
-        return getString(FORUM_ID);
-    }
-
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getForumName() {
-        return getString(FORUM_NAME);
-    }
-
-    public void setForumName(String forumName) {
-        put(FORUM_NAME, forumName);
-    }
-
-    public String getForumMediaFilePath() {
-        return getString(FORUM_MEDIA_FILE_PATH);
-    }
-
-    public void setForumMediaFilePath(String forumMediaFilePath) {
-        put(FORUM_MEDIA_FILE_PATH, forumMediaFilePath);
-    }
-
-    public String getForumModeratorMemberId() {
-        return getString(FORUM_MODERATOR_MEMBER_ID);
-    }
-
-    public void setForumModeratorMemberId(String forumModeratorMemberId) {
-        put(FORUM_MODERATOR_MEMBER_ID, forumModeratorMemberId);
-    }
-    // 回来要删掉
-//    public JSONObject getForumModeratorInfo() {
-//        return getJSONObject(FORUM_MODERATOR_INFO);
-//	}
-//
-//	public void setForumModeratorInfo(JSONObject forumModeratorInfo) {
-//        put(FORUM_MODERATOR_INFO, forumModeratorInfo);
-//	}
-	
-
-	public String getUserAvatarFilePath() {
-		return getString(USER_AVATAR_FILE_PATH);
-	}
-
-	public void setUserAvatarFilePath(String userAvatarFilePath) {
-		put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
-	}
-
-	public String getUserNickName() {
-		return getString(USER_NICKNAME);
-	}
-
-	public void setUserNickName(String userNickName) {
-		put(USER_NICKNAME, userNickName);
-	}
-
-	public String getMemberSignature() {
-		return getString(MEMBER_SIGNATURE);
-	}
-
-	public void setMemberSignature(String memberSignature) {
-		put(MEMBER_SIGNATURE, memberSignature);
-	}
-
-	public String getForumMediaType() {
-        return getString(FORUM_MEDIA_TYPE);
-    }
-
-    public void setForumMediaType(String forumMediaType) {
-        put(FORUM_MEDIA_TYPE, forumMediaType);
-    }
-
-//    public String getForumBackgroundMediaFilePath() {
-//        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
-//    }
-//
-//    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
-//        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
-//    }
-//
-//    public String getForumBackgroundMediaType() {
-//        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
-//    }
-//
-//    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
-//        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
-//    }
     
-	public JSONArray getForumBackgorundMediaList() {
-        return getJSONArray(FORUM_BACKGROUND_MEDIA_LIST);
+    
+	public String getForumId() {
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getForumName() {
+		return forumName;
+	}
+	public void setForumName(String forumName) {
+		this.forumName = forumName;
+	}
+	public String getForumMediaFilePath() {
+		return forumMediaFilePath;
+	}
+	public void setForumMediaFilePath(String forumMediaFilePath) {
+		this.forumMediaFilePath = forumMediaFilePath;
+	}
+	public String getForumMediaType() {
+		return forumMediaType;
+	}
+	public void setForumMediaType(String forumMediaType) {
+		this.forumMediaType = forumMediaType;
+	}
+	public JSONArray getForumBackgroundMediaList() {
+		return forumBackgroundMediaList;
+	}
+	public void setForumBackgroundMediaList(JSONArray forumBackgroundMediaList) {
+		this.forumBackgroundMediaList = forumBackgroundMediaList;
+	}
+	public String getForumModeratorMemberId() {
+		return forumModeratorMemberId;
+	}
+	public void setForumModeratorMemberId(String forumModeratorMemberId) {
+		this.forumModeratorMemberId = forumModeratorMemberId;
+	}
+	public String getUserAvatarFilePath() {
+		return userAvatarFilePath;
+	}
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		this.userAvatarFilePath = userAvatarFilePath;
+	}
+	public String getUserNickName() {
+		return userNickName;
+	}
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+	}
+	public String getMemberSignature() {
+		return memberSignature;
+	}
+	public void setMemberSignature(String memberSignature) {
+		this.memberSignature = memberSignature;
+	}
+	public String getForumLocation() {
+		return forumLocation;
+	}
+	public void setForumLocation(String forumLocation) {
+		this.forumLocation = forumLocation;
+	}
+	public Boolean getForumIsTop() {
+		return forumIsTop;
+	}
+	public void setForumIsTop(Boolean forumIsTop) {
+		this.forumIsTop = forumIsTop;
+	}
+	public Integer getForumTopLevel() {
+		return forumTopLevel;
+	}
+	public void setForumTopLevel(Integer forumTopLevel) {
+		this.forumTopLevel = forumTopLevel;
+	}
+	public Date getForumTopEndTime() {
+		return forumTopEndTime;
+	}
+	public void setForumTopEndTime(Date forumTopEndTime) {
+		this.forumTopEndTime = forumTopEndTime;
+	}
+	public Boolean getForumIsActive() {
+		return forumIsActive;
+	}
+	public void setForumIsActive(Boolean forumIsActive) {
+		this.forumIsActive = forumIsActive;
+	}
+	public Boolean getForumIsRecommend() {
+		return forumIsRecommend;
+	}
+	public void setForumIsRecommend(Boolean forumIsRecommend) {
+		this.forumIsRecommend = forumIsRecommend;
+	}
+	public String getForumAuditStatus() {
+		return forumAuditStatus;
+	}
+	public void setForumAuditStatus(String forumAuditStatus) {
+		this.forumAuditStatus = forumAuditStatus;
+	}
+	public String getForumAuditContent() {
+		return forumAuditContent;
+	}
+	public void setForumAuditContent(String forumAuditContent) {
+		this.forumAuditContent = forumAuditContent;
+	}
+	public String getForumDescription() {
+		return forumDescription;
+	}
+	public void setForumDescription(String forumDescription) {
+		this.forumDescription = forumDescription;
+	}
+	public Integer getForumSort() {
+		return forumSort;
+	}
+	public void setForumSort(Integer forumSort) {
+		this.forumSort = forumSort;
 	}
 
-	public void setForumBackgorundMediaList(JSONArray topicTipUserList) {
-        put(FORUM_BACKGROUND_MEDIA_LIST, topicTipUserList);
-	}
-
-    public String getForumLocation() {
-        return getString(FORUM_LOCATION);
-    }
-
-    public void setForumLocation(String forumLocation) {
-        put(FORUM_LOCATION, forumLocation);
-    }
-
-    public Boolean getForumIsTop() {
-        return getBoolean(FORUM_IS_TOP);
-    }
-
-    public void setForumIsTop(Boolean forumIsTop) {
-        put(FORUM_IS_TOP, forumIsTop);
-    }
-
-    public Integer getForumTopLevel() {
-        return getInteger(FORUM_TOP_LEVEL);
-    }
-
-    public void setForumTopLevel(Integer forumTopLevel) {
-        put(FORUM_TOP_LEVEL, forumTopLevel);
-    }
-
-    public Date getForumTopEndTime() {
-        return getDate(FORUM_TOP_END_TIME);
-    }
-
-    public void setForumTopEndTime(Date forumTopEndTime) {
-        put(FORUM_TOP_END_TIME, forumTopEndTime);
-    }
-
-    public Boolean getForumIsActive() {
-        return getBoolean(FORUM_IS_ACTIVE);
-    }
-
-    public void setForumIsActive(Boolean forumIsActive) {
-        put(FORUM_IS_ACTIVE, forumIsActive);
-    }
-
-    public Boolean getForumIsRecommend() {
-        return getBoolean(FORUM_IS_RECOMMEND);
-    }
-
-    public void setForumIsRecommend(Boolean forumIsRecommend) {
-        put(FORUM_IS_RECOMMEND, forumIsRecommend);
-    }
-
-    public String getForumAuditStatus() {
-        return getString(FORUM_AUDIT_STATUS);
-    }
-
-    public void setForumAuditStatus(String forumAuditStatus) {
-        put(FORUM_AUDIT_STATUS, forumAuditStatus);
-    }
-
-    public String getForumAuditContent() {
-        return getString(FORUM_AUDIT_CONTENT);
-    }
-
-    public void setForumAuditContent(String forumAuditContent) {
-        put(FORUM_AUDIT_CONTENT, forumAuditContent);
-    }
-
-    public String getForumDescription() {
-        return getString(FORUM_DESCRIPTION);
-    }
-
-    public void setForumDescription(String forumDescription) {
-        put(FORUM_DESCRIPTION, forumDescription);
-    }
-
-    public Integer getForumSort() {
-        return getInteger(FORUM_SORT);
-    }
-
-    public void setForumSort(Integer forumSort) {
-        put(FORUM_SORT, forumSort);
-    }
 
 }

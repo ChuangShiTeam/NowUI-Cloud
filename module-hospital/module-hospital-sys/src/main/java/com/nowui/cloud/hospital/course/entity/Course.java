@@ -75,6 +75,12 @@ public class Course extends BaseEntity {
      */
     @TableField
     private String courseCoverImageFileId;
+    
+    /**
+     * 课程封面图片路径
+     */
+    @TableField(exist = false)
+    private String courseCoverImageFilePath;
 
 
     public String getCourseId() {
@@ -148,6 +154,16 @@ public class Course extends BaseEntity {
     public void setCourseCoverImageFileId(String courseCoverImageFileId) {
         this.courseCoverImageFileId = courseCoverImageFileId;
     }
+
+	public String getCourseCoverImageFilePath() {
+		return courseCoverImageFilePath;
+	}
+
+	public void setCourseCoverImageFilePath(String courseCoverImageFilePath) {
+		this.courseCoverImageFilePath = courseCoverImageFilePath;
+	}
+    
+    
 
 
 }

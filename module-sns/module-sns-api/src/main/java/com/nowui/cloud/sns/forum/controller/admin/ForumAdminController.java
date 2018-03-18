@@ -88,20 +88,6 @@ public class ForumAdminController extends BaseController {
     		   body.getPageSize()
 	   );
        
-       // 论坛图片
-//       String fileIds = Util.beanToFieldString(resultList, Forum.FORUM_MEDIA);
-//       List<File> fileList = fileRpc.findsV1(fileIds);
-//       resultList = Util.beanReplaceField(resultList, Forum.FORUM_MEDIA, fileList, File.FILE_PATH);
-       
-       // 论坛背景
-//       String backFileIds = Util.beanToFieldString(resultList, Forum.FORUM_BACKGROUND_MEDIA);
-//       List<File> backFileList = fileRpc.findsV1(backFileIds);
-//       resultList = Util.beanReplaceField(resultList, Forum.FORUM_BACKGROUND_MEDIA, backFileList, File.FILE_PATH);
-       
-       // 版主昵称和头像
-//       String userIds = Util.beanToFieldString(resultList, Forum.FORUM_MODERATOR);
-//       List<Member> moderatorList = memberRpc.nickNameAndAvatarListV1(userIds);
-//       resultList = Util.beanReplaceField(resultList, Forum.FORUM_MODERATOR, Member.USER_ID, moderatorList, UserAvatar.USER_AVATAR, UserNickName.USER_NICK_NAME);
 
        validateResponse(
             Forum.FORUM_ID,

@@ -58,39 +58,30 @@ public class TopicUserUnlike extends BaseEntity {
     @Length(max = 32, message = "话题编号长度超出限制")
     private String topicId;
     public static final String TOPIC_ID = "topicId";
-
-
-    public String getTopicUserUnlikeId() {
-        return getString(TOPIC_USER_UNLIKE_ID);
-    }
     
-    public void setTopicUserUnlikeId(String topicUserUnlikeId) {
-        put(TOPIC_USER_UNLIKE_ID, topicUserUnlikeId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
+	public String getTopicUserUnlikeId() {
+		return topicUserUnlikeId;
+	}
+	public void setTopicUserUnlikeId(String topicUserUnlikeId) {
+		this.topicUserUnlikeId = topicUserUnlikeId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
 
 }

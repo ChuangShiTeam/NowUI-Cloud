@@ -58,39 +58,31 @@ public class TopicCommentUserLike extends BaseEntity {
     @Length(max = 32, message = "点赞的用户编号长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
-
-
-    public String getCommentUserLikeId() {
-        return getString(COMMENT_USER_LIKE_ID);
-    }
     
-    public void setCommentUserLikeId(String commentUserLikeId) {
-        put(COMMENT_USER_LIKE_ID, commentUserLikeId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
     
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getCommentId() {
-        return getString(COMMENT_ID);
-    }
-    
-    public void setCommentId(String commentId) {
-        put(COMMENT_ID, commentId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
+	public String getCommentUserLikeId() {
+		return commentUserLikeId;
+	}
+	public void setCommentUserLikeId(String commentUserLikeId) {
+		this.commentUserLikeId = commentUserLikeId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getCommentId() {
+		return commentId;
+	}
+	public void setCommentId(String commentId) {
+		this.commentId = commentId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
 }

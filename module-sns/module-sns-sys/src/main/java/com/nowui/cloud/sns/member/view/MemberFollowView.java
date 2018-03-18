@@ -99,83 +99,85 @@ public class MemberFollowView extends BaseView {
      */
     public static final String MEMBER_IS_SELF = "memberIsSelf";
 
-    public String getSnsMemberFollowId() {
-        return getString(SNS_MEMBER_FOLLOW_ID);
-    }
+	public String getSnsMemberFollowId() {
+		return snsMemberFollowId;
+	}
 
-    public void setSnsMemberFollowId(String snsMemberFollowId) {
-        put(SNS_MEMBER_FOLLOW_ID, snsMemberFollowId);
-    }
+	public void setSnsMemberFollowId(String snsMemberFollowId) {
+		this.snsMemberFollowId = snsMemberFollowId;
+	}
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
+	public String getMemberId() {
+		return memberId;
+	}
 
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
-    public String getUserId() {
-        return getString(USER_ID);
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getFollowMemberId() {
-        return getString(FOLLOW_MEMBER_ID);
-    }
+	public String getUserAvatarFilePath() {
+		return userAvatarFilePath;
+	}
 
-    public void setFollowMemberId(String followMemberId) {
-        put(FOLLOW_MEMBER_ID, followMemberId);
-    }
+	public void setUserAvatarFilePath(String userAvatarFilePath) {
+		this.userAvatarFilePath = userAvatarFilePath;
+	}
 
-    public String getFollowUserId() {
-        return getString(FOLLOW_USER_ID);
-    }
+	public String getUserNickName() {
+		return userNickName;
+	}
 
-    public void setFollowUserId(String followUserId) {
-        put(FOLLOW_USER_ID, followUserId);
-    }
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+	}
 
-    public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
-    }
+	public String getFollowMemberId() {
+		return followMemberId;
+	}
 
-    public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
-    }
+	public void setFollowMemberId(String followMemberId) {
+		this.followMemberId = followMemberId;
+	}
 
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
-    }
+	public String getFollowUserId() {
+		return followUserId;
+	}
 
-    public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
-    }
+	public void setFollowUserId(String followUserId) {
+		this.followUserId = followUserId;
+	}
 
-    public String getFollowUserAvatarFilePath() {
-        return getString(FOLLOW_USER_AVATAR_FILE_PATH);
-    }
+	public String getFollowUserAvatarFilePath() {
+		return followUserAvatarFilePath;
+	}
 
-    public void setFollowUserAvatarFilePath(String followUserAvatarFilePath) {
-        put(FOLLOW_USER_AVATAR_FILE_PATH, followUserAvatarFilePath);
-    }
+	public void setFollowUserAvatarFilePath(String followUserAvatarFilePath) {
+		this.followUserAvatarFilePath = followUserAvatarFilePath;
+	}
 
-    public String getFollowUserNickName() {
-        return getString(FOLLOW_USER_NICK_NAME);
-    }
+	public String getFollowUserNickName() {
+		return followUserNickName;
+	}
 
-    public void setFollowUserNickName(String followUserNickName) {
-        put(FOLLOW_USER_NICK_NAME, followUserNickName);
-    }
+	public void setFollowUserNickName(String followUserNickName) {
+		this.followUserNickName = followUserNickName;
+	}
+
+    
 }

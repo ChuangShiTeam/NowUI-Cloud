@@ -60,55 +60,43 @@ public class MemberInformView extends BaseView {
     @Field
     private String informMemberId;
     public static final String INFORM_MEMBER_ID = "informMemberId";
-
-
-    public String getMemberInformId() {
-        return getString(MEMBER_INFORM_ID);
-    }
-
-    public void setMemberInformId(String memberInformId) {
-        put(MEMBER_INFORM_ID, memberInformId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
-    public String getUserId() {
-        return getString(USER_ID);
-    }
-
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
-    }
-
-    public String getInformUserId() {
-        return getString(INFORM_USER_ID);
-    }
-
-    public void setInformUserId(String informUserId) {
-        put(INFORM_USER_ID, informUserId);
-    }
-
-    public String getInformMemberId() {
-        return getString(INFORM_MEMBER_ID);
-    }
-
-    public void setInformMemberId(String informMemberId) {
-        put(INFORM_MEMBER_ID, informMemberId);
-    }
-
+    
+    
+	public String getMemberInformId() {
+		return memberInformId;
+	}
+	public void setMemberInformId(String memberInformId) {
+		this.memberInformId = memberInformId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getInformUserId() {
+		return informUserId;
+	}
+	public void setInformUserId(String informUserId) {
+		this.informUserId = informUserId;
+	}
+	public String getInformMemberId() {
+		return informMemberId;
+	}
+	public void setInformMemberId(String informMemberId) {
+		this.informMemberId = informMemberId;
+	}
 
 }

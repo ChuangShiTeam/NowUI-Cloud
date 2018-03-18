@@ -69,45 +69,36 @@ public class TopicForum extends BaseEntity {
     private JSONObject topicInfo;
     public static final String TOPIC_INFO = "topicInfo";
     
-
-    public String getTopicForumId() {
-        return getString(TOPIC_FORUM_ID);
-    }
     
-    public void setTopicForumId(String topicForumId) {
-        put(TOPIC_FORUM_ID, topicForumId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getForumId() {
-        return getString(FORUM_ID);
-    }
-    
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
-	public JSONObject getTopicInfo() {
-        return getJSONObject(TOPIC_INFO);
+	public String getTopicForumId() {
+		return topicForumId;
 	}
-
+	public void setTopicForumId(String topicForumId) {
+		this.topicForumId = topicForumId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getForumId() {
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+	public JSONObject getTopicInfo() {
+		return topicInfo;
+	}
 	public void setTopicInfo(JSONObject topicInfo) {
-        put(TOPIC_INFO, topicInfo);
+		this.topicInfo = topicInfo;
 	}
 
 }

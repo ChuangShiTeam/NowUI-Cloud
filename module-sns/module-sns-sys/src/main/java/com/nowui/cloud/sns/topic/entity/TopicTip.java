@@ -58,38 +58,32 @@ public class TopicTip extends BaseEntity {
     @Length(max = 32, message = "发送用户长度超出限制")
     private String memberId;
     public static final String MEMBER_ID = "memberId";
-
-    public String getTopicTipId() {
-        return getString(TOPIC_TIP_ID);
-    }
     
-    public void setTopicTipId(String topicTipId) {
-        put(TOPIC_TIP_ID, topicTipId);
-    }
+	public String getTopicTipId() {
+		return topicTipId;
+	}
+	public void setTopicTipId(String topicTipId) {
+		this.topicTipId = topicTipId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
 
 
 }

@@ -78,53 +78,52 @@ public class TopicUserLike extends BaseEntity {
 
     public static final String TOPIC_USER_LIKE_IS_SELF = "topicUserLikeIsSelf";
 
-    public String getTopicUserLikeId() {
-        return getString(TOPIC_USER_LIKE_ID);
-    }
-    
-    public void setTopicUserLikeId(String topicUserLikeId) {
-        put(TOPIC_USER_LIKE_ID, topicUserLikeId);
-    }
+	public String getTopicUserLikeId() {
+		return topicUserLikeId;
+	}
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
+	public void setTopicUserLikeId(String topicUserLikeId) {
+		this.topicUserLikeId = topicUserLikeId;
+	}
 
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getUserNickName() {
+		return userNickName;
 	}
 
 	public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
+		this.userNickName = userNickName;
 	}
 
 	public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
+		return userAvatarFilePath;
 	}
 
 	public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+		this.userAvatarFilePath = userAvatarFilePath;
 	}
 
 	public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
+		return topicId;
+	}
 
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
 
 }

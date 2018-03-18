@@ -100,77 +100,61 @@ public class TopicUserBookmark extends BaseEntity {
     @NotNull(message = "动态的第一张图片文件路径不能为空")
     private String topicFirstMediaFilePath;
     public static final String TOPIC_FIRST_MEDIA_FILE_PATH = "topicFirstMediaFilePath";
-
-    public String getTopicUserBookmarkId() {
-        return getString(TOPIC_USER_BOOKMARK_ID);
-    }
     
-    public void setTopicUserBookmarkId(String topicUserBookmarkId) {
-        put(TOPIC_USER_BOOKMARK_ID, topicUserBookmarkId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
     
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-    
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-    
-    public String getTopicMemberId() {
-		return getString(TOPIC_MEMBER_ID);
+	public String getTopicUserBookmarkId() {
+		return topicUserBookmarkId;
 	}
-
+	public void setTopicUserBookmarkId(String topicUserBookmarkId) {
+		this.topicUserBookmarkId = topicUserBookmarkId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getTopicMemberId() {
+		return topicMemberId;
+	}
 	public void setTopicMemberId(String topicMemberId) {
-		put(TOPIC_MEMBER_ID, topicMemberId);
+		this.topicMemberId = topicMemberId;
 	}
-
 	public String getTopicUserAvatarFilePath() {
-		return getString(TOPIC_USER_AVATAR_FILE_PATH);
+		return topicUserAvatarFilePath;
 	}
-
 	public void setTopicUserAvatarFilePath(String topicUserAvatarFilePath) {
-		put(TOPIC_USER_AVATAR_FILE_PATH, topicUserAvatarFilePath);
+		this.topicUserAvatarFilePath = topicUserAvatarFilePath;
 	}
-
 	public String getTopicUserNickName() {
-		return getString(TOPIC_USER_NICK_NAME);
+		return topicUserNickName;
 	}
-
 	public void setTopicUserNickName(String topicUserNickName) {
-		put(TOPIC_USER_NICK_NAME, topicUserNickName);
+		this.topicUserNickName = topicUserNickName;
 	}
-
 	public String getTopicSummary() {
-		return getString(TOPIC_SUMMARY);
+		return topicSummary;
 	}
-
 	public void setTopicSummary(String topicSummary) {
-		put(TOPIC_SUMMARY, topicSummary);
+		this.topicSummary = topicSummary;
 	}
-
 	public String getTopicFirstMediaFilePath() {
-		return getString(TOPIC_FIRST_MEDIA_FILE_PATH);
+		return topicFirstMediaFilePath;
 	}
-
-	public void setTopicFirstMediaFilePath(String topicFirstMedia) {
-		put(TOPIC_FIRST_MEDIA_FILE_PATH, topicFirstMedia);
+	public void setTopicFirstMediaFilePath(String topicFirstMediaFilePath) {
+		this.topicFirstMediaFilePath = topicFirstMediaFilePath;
 	}
 
 

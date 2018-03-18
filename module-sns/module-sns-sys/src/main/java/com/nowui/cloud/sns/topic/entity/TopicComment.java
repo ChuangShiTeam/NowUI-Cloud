@@ -132,88 +132,85 @@ public class TopicComment extends BaseEntity {
      * 被排除的评论id (用于滚动加载)
      */
     public static final String EXCLUDE_COMMENT_ID_LIST = "excludeCommentIdList";
-    
-    
 
-    public String getTopicCommentId() {
-        return getString(TOPIC_COMMENT_ID);
-    }
-    
-    public void setTopicCommentId(String topicCommentId) {
-        put(TOPIC_COMMENT_ID, topicCommentId);
-    }
+	public String getTopicCommentId() {
+		return topicCommentId;
+	}
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
+	public void setTopicCommentId(String topicCommentId) {
+		this.topicCommentId = topicCommentId;
+	}
 
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-    
-    public String getUserNickName() {
-        return getString(USER_NICK_NAME);
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getUserNickName() {
+		return userNickName;
 	}
 
 	public void setUserNickName(String userNickName) {
-        put(USER_NICK_NAME, userNickName);
+		this.userNickName = userNickName;
 	}
 
 	public String getUserAvatarFilePath() {
-        return getString(USER_AVATAR_FILE_PATH);
+		return userAvatarFilePath;
 	}
 
 	public void setUserAvatarFilePath(String userAvatarFilePath) {
-        put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+		this.userAvatarFilePath = userAvatarFilePath;
 	}
-    
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
 
-    public String getTopicCommentContent() {
-        return getString(TOPIC_COMMENT_CONTENT);
-    }
-    
-    public void setTopicCommentContent(String topicCommentContent) {
-        put(TOPIC_COMMENT_CONTENT, topicCommentContent);
-    }
-    
-    public String getTopicReplyCommentId() {
-        return getString(TOPIC_REPLY_COMMENT_ID);
-    }
-    
-    public void setTopicReplyCommentId(String topicReplyCommentId) {
-        put(TOPIC_REPLY_COMMENT_ID, topicReplyCommentId);
-    }
-    
-    public String getTopicReplyMemberId() {
-        return getString(TOPIC_REPLY_MEMBER_ID);
-    }
+	public String getTopicId() {
+		return topicId;
+	}
 
-    public void setTopicReplyMemberId(String topicReplyMemberId) {
-        put(TOPIC_REPLY_MEMBER_ID, topicReplyMemberId);
-    }
-    
-    public String getTopicReplyUserNickName() {
-        return getString(TOPIC_REPLY_USER_NICKNAME);
-    }
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
 
-    public void setTopicReplyUserNickName(String topicReplyUserNickName) {
-        put(TOPIC_REPLY_USER_NICKNAME, topicReplyUserNickName);
-    }
-    
+	public String getTopicCommentContent() {
+		return topicCommentContent;
+	}
+
+	public void setTopicCommentContent(String topicCommentContent) {
+		this.topicCommentContent = topicCommentContent;
+	}
+
+	public String getTopicReplyCommentId() {
+		return topicReplyCommentId;
+	}
+
+	public void setTopicReplyCommentId(String topicReplyCommentId) {
+		this.topicReplyCommentId = topicReplyCommentId;
+	}
+
+	public String getTopicReplyMemberId() {
+		return topicReplyMemberId;
+	}
+
+	public void setTopicReplyMemberId(String topicReplyMemberId) {
+		this.topicReplyMemberId = topicReplyMemberId;
+	}
+
+	public String getTopicReplyUserNickName() {
+		return topicReplyUserNickName;
+	}
+
+	public void setTopicReplyUserNickName(String topicReplyUserNickName) {
+		this.topicReplyUserNickName = topicReplyUserNickName;
+	}
     
 }

@@ -81,47 +81,53 @@ public class MemberFollow extends BaseEntity {
 
     public static final String MEMBER_IS_SELF = "memberIsSelf";
 
-    public String getSnsMemberFollowId() {
-        return getString(SNS_MEMBER_FOLLOW_ID);
-    }
+	public String getSnsMemberFollowId() {
+		return snsMemberFollowId;
+	}
 
-    public void setSnsMemberFollowId(String snsMemberFollowId) {
-        put(SNS_MEMBER_FOLLOW_ID, snsMemberFollowId);
-    }
-    public String getAppId() {
-        return getString(APP_ID);
-    }
+	public void setSnsMemberFollowId(String snsMemberFollowId) {
+		this.snsMemberFollowId = snsMemberFollowId;
+	}
 
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-    public String getUserId() {
-        return getString(USER_ID);
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setUserId(String userId) {
-        put(USER_ID, userId);
-    }
-    public String getFollowMemberId() {
-        return getString(FOLLOW_MEMBER_ID);
-    }
+	public String getMemberId() {
+		return memberId;
+	}
 
-    public void setFollowMemberId(String followMemberId) {
-        put(FOLLOW_MEMBER_ID, followMemberId);
-    }
-    public String getFollowUserId() {
-        return getString(FOLLOW_USER_ID);
-    }
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
-    public void setFollowUserId(String followUserId) {
-        put(FOLLOW_USER_ID, followUserId);
-    }
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getFollowMemberId() {
+		return followMemberId;
+	}
+
+	public void setFollowMemberId(String followMemberId) {
+		this.followMemberId = followMemberId;
+	}
+
+	public String getFollowUserId() {
+		return followUserId;
+	}
+
+	public void setFollowUserId(String followUserId) {
+		this.followUserId = followUserId;
+	}
+
 
 }

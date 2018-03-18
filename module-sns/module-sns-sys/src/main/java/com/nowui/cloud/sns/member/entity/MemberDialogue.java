@@ -18,6 +18,11 @@ import com.nowui.cloud.entity.BaseEntity;
  *
  * 2018-01-08
  */
+/**
+ * @author xupengfei
+ *
+ * 2018年3月18日
+ */
 @Component
 @TableName(value = "member_dialogue_info")
 public class MemberDialogue extends BaseEntity {
@@ -81,53 +86,54 @@ public class MemberDialogue extends BaseEntity {
     
     public static final String MEMBER_DIALOGUE_RECORD_COUNT = "memberDialogueRecordCount";
 
-    public String getMemberDialogueId() {
-        return getString(MEMBER_DIALOGUE_ID);
-    }
-    
-    public void setMemberDialogueId(String memberDialogueId) {
-        put(MEMBER_DIALOGUE_ID, memberDialogueId);
-    }
+	public String getMemberDialogueId() {
+		return memberDialogueId;
+	}
 
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
+	public void setMemberDialogueId(String memberDialogueId) {
+		this.memberDialogueId = memberDialogueId;
+	}
 
-    public String getInitiateMemberId() {
-        return getString(INITIATE_MEMBER_ID);
-    }
-    
-    public void setInitiateMemberId(String initiateMemberId) {
-        put(INITIATE_MEMBER_ID, initiateMemberId);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getInitiateUserId() {
-        return getString(INITIATE_USER_ID);
-    }
-    
-    public void setInitiateUserId(String initiateUserId) {
-        put(INITIATE_USER_ID, initiateUserId);
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public String getRespondMemberId() {
-        return getString(RESPOND_MEMBER_ID);
-    }
-    
-    public void setRespondMemberId(String respondMemberId) {
-        put(RESPOND_MEMBER_ID, respondMemberId);
-    }
+	public String getInitiateMemberId() {
+		return initiateMemberId;
+	}
 
-    public String getRespondUserId() {
-        return getString(RESPOND_USER_ID);
-    }
-    
-    public void setRespondUserId(String respondUserId) {
-        put(RESPOND_USER_ID, respondUserId);
-    }
+	public void setInitiateMemberId(String initiateMemberId) {
+		this.initiateMemberId = initiateMemberId;
+	}
+
+	public String getInitiateUserId() {
+		return initiateUserId;
+	}
+
+	public void setInitiateUserId(String initiateUserId) {
+		this.initiateUserId = initiateUserId;
+	}
+
+	public String getRespondMemberId() {
+		return respondMemberId;
+	}
+
+	public void setRespondMemberId(String respondMemberId) {
+		this.respondMemberId = respondMemberId;
+	}
+
+	public String getRespondUserId() {
+		return respondUserId;
+	}
+
+	public void setRespondUserId(String respondUserId) {
+		this.respondUserId = respondUserId;
+	}
+
 
 
 }

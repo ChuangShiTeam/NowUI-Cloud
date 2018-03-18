@@ -83,7 +83,7 @@ public class CourseView extends BaseView {
      */
     @Field
     @NotNull(message = "课程金额不能为空")
-    @Digits(integer = 0, fraction = 2, message = "课程金额长度超出限制")
+    @Digits(integer = 10, fraction = 2, message = "课程金额长度超出限制")
     private BigDecimal courseAmount;
     public static final String COURSE_AMOUNT = "courseAmount";
 
@@ -104,6 +104,14 @@ public class CourseView extends BaseView {
     @Length(max = 32, message = "课程封面图片长度超出限制")
     private String courseCoverImageFileId;
     public static final String COURSE_COVER_IMAGE_FILE_ID = "courseCoverImageFileId";
+    
+    /**
+     * 课程封面图片路径
+     */
+    @Field
+    @NotNull(message = "课程封面图片路径不能为空")
+    private String courseCoverImageFilePath;
+    public static final String COURSE_COVER_IMAGE_FILE_PATH = "courseCoverImageFilePath";
 
 
     public String getCourseId() {
@@ -177,6 +185,16 @@ public class CourseView extends BaseView {
     public void setCourseCoverImageFileId(String courseCoverImageFileId) {
         this.courseCoverImageFileId = courseCoverImageFileId;
     }
+
+	public String getCourseCoverImageFilePath() {
+		return courseCoverImageFilePath;
+	}
+
+	public void setCourseCoverImageFilePath(String courseCoverImageFilePath) {
+		this.courseCoverImageFilePath = courseCoverImageFilePath;
+	}
+    
+    
     
 
 }

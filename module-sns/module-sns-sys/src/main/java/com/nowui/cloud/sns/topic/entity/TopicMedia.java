@@ -84,60 +84,50 @@ public class TopicMedia extends BaseEntity {
     @Length(max = 11, message = "排序长度超出限制")
     private Integer topicMediaSort;
     public static final String TOPIC_MEDIA_SORT = "topicMediaSort";
+    
+    
+	public String getTopicMediaId() {
+		return topicMediaId;
+	}
+	public void setTopicMediaId(String topicMediaId) {
+		this.topicMediaId = topicMediaId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getTopicId() {
+		return topicId;
+	}
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+	public String getTopicMediaFileId() {
+		return topicMediaFileId;
+	}
+	public void setTopicMediaFileId(String topicMediaFileId) {
+		this.topicMediaFileId = topicMediaFileId;
+	}
+	public String getTopicMediaFilePath() {
+		return topicMediaFilePath;
+	}
+	public void setTopicMediaFilePath(String topicMediaFilePath) {
+		this.topicMediaFilePath = topicMediaFilePath;
+	}
+	public String getTopicMediaType() {
+		return topicMediaType;
+	}
+	public void setTopicMediaType(String topicMediaType) {
+		this.topicMediaType = topicMediaType;
+	}
+	public Integer getTopicMediaSort() {
+		return topicMediaSort;
+	}
+	public void setTopicMediaSort(Integer topicMediaSort) {
+		this.topicMediaSort = topicMediaSort;
+	}
 
-    public String getTopicMediaId() {
-        return getString(TOPIC_MEDIA_ID);
-    }
     
-    public void setTopicMediaId(String topicMediaId) {
-        put(TOPIC_MEDIA_ID, topicMediaId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getTopicId() {
-        return getString(TOPIC_ID);
-    }
-    
-    public void setTopicId(String topicId) {
-        put(TOPIC_ID, topicId);
-    }
-
-    public String getTopicMediaFileId() {
-        return getString(TOPIC_MEDIA_FILE_ID);
-    }
-    
-    public void setTopicMediaFileId(String topicMediaFileId) {
-        put(TOPIC_MEDIA_FILE_ID, topicMediaFileId);
-    }
-    
-    public String getTopicMediaFilePath() {
-        return getString(TOPIC_MEDIA_FILE_PATH);
-    }
-    
-    public void setTopicMediaFilePath(String topicMediaFilePath) {
-        put(TOPIC_MEDIA_FILE_PATH, topicMediaFilePath);
-    }
-
-    public String getTopicMediaType() {
-        return getString(TOPIC_MEDIA_TYPE);
-    }
-    
-    public void setTopicMediaType(String topicMediaType) {
-        put(TOPIC_MEDIA_TYPE, topicMediaType);
-    }
-
-    public Integer getTopicMediaSort() {
-        return getInteger(TOPIC_MEDIA_SORT);
-    }
-    
-    public void setTopicMediaSort(Integer topicMediaSort) {
-        put(TOPIC_MEDIA_SORT, topicMediaSort);
-    }
 }
