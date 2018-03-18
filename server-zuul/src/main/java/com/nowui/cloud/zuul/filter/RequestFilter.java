@@ -51,10 +51,12 @@ public class RequestFilter extends ZuulFilter {
 
         String contentType = request.getContentType();
 
+        System.out.println(request.getRequestURI());
+
         String jsonType = "application/json";
         String formDataType = "multipart/form-data";
         String formUrlencodedType = "application/x-www-form-urlencoded";
-        if (contentType.equals(jsonType)) {
+        if (contentType.startsWith(jsonType)) {
             String requestBody = Util.readData(request);
 
             System.out.println(requestBody);
@@ -128,35 +130,40 @@ public class RequestFilter extends ZuulFilter {
                 }
             });
 
-        } else if (contentType.equals(formDataType)) {
+        } else if (contentType.startsWith(formDataType)) {
             MultipartHttpServletRequest multipartRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+
             String token = multipartRequest.getParameter(Constant.TOKEN);
+
             String systemRequestUserId = decipherToken(token, context);
+
+            System.out.println(JSON.toJSONString(multipartRequest.getParameterMap()));
+
             List<String> params = new ArrayList<String>();
             params.add(systemRequestUserId);
+
             Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
             map.put(Constant.SYSTEM_REQUEST_USER_ID, params);
             context.setRequestQueryParams(map);
-        } else if (contentType.equals(formUrlencodedType)) {
-            Map<String, List<String>> params = context.getRequestQueryParams();
-            if (params == null) {
-                params = Maps.newHashMap();
-            }
+        } else if (contentType.startsWith(formUrlencodedType)) {
+            System.out.println(JSON.toJSONString(context.getRequest().getParameterMap()));
+
+            Map<String, List<String>> map = new HashMap<String, List<String>>(Constant.DEFAULT_LOAD_FACTOR);
 
             String token = context.getRequest().getParameter(Constant.TOKEN);
             if (!Util.isNullOrEmpty(token)) {
                 String systemRequestUserId = decipherToken(token, context);
 
-                params.put(Constant.SYSTEM_REQUEST_USER_ID, Lists.newArrayList(systemRequestUserId));
+                map.put(Constant.SYSTEM_REQUEST_USER_ID, Lists.newArrayList(systemRequestUserId));
             }
 
             String systemRequestIpAddress = Util.getIpAddress(request);
             if (!Util.isNullOrEmpty(systemRequestIpAddress)) {
 
-                params.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Lists.newArrayList(systemRequestIpAddress));
+                map.put(Constant.SYSTEM_REQUEST_IP_ADDRESS, Lists.newArrayList(systemRequestIpAddress));
             }
 
-            context.setRequestQueryParams(params);
+            context.setRequestQueryParams(map);
         }
 
         return null;
