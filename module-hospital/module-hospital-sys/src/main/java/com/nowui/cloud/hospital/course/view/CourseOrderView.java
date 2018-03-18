@@ -13,11 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 /**
- * 课程订单编号视图
+ * 课程订单视图
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Component
 @Document(collection = "course_order_info")

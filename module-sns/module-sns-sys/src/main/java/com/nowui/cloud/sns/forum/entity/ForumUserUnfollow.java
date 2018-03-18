@@ -58,39 +58,30 @@ public class ForumUserUnfollow extends BaseEntity {
     @Length(max = 32, message = "论坛编号长度超出限制")
     private String forumId;
     public static final String FORUM_ID = "forumId";
-
-    
-    public String getForumUserUnfollowId() {
-        return getString(FORUM_USER_UNFOLLOW_ID);
-    }
-    
-    public void setForumUserUnfollowId(String forumUserUnfollowId) {
-        put(FORUM_USER_UNFOLLOW_ID, forumUserUnfollowId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getMemberId() {
-        return getString(MEMBER_ID);
-    }
-
-    public void setMemberId(String memberId) {
-        put(MEMBER_ID, memberId);
-    }
-
-    public String getForumId() {
-        return getString(FORUM_ID);
-    }
-    
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
+	public String getForumUserUnfollowId() {
+		return forumUserUnfollowId;
+	}
+	public void setForumUserUnfollowId(String forumUserUnfollowId) {
+		this.forumUserUnfollowId = forumUserUnfollowId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getForumId() {
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
 
 
 }

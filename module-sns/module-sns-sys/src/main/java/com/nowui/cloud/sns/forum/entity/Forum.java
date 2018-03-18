@@ -283,212 +283,188 @@ public class Forum extends BaseEntity {
     
 
     public String getForumId() {
-        return getString(FORUM_ID);
-    }
-    
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-    
-    public String getForumMediaId() {
-        return getString(FORUM_MEDIA_ID);
-    }
-    
-    public void setForumMediaId(String forumMediaId) {
-        put(FORUM_MEDIA_ID, forumMediaId);
-    }
-
-    public String getForumMediaFilePath() {
-        return getString(FORUM_MEDIA_FILE_PATH);
-    }
-    
-    public void setForumMediaFilePath(String forumMediaFilePath) {
-        put(FORUM_MEDIA_FILE_PATH, forumMediaFilePath);
-    }
-
-    public String getForumMediaType() {
-        return getString(FORUM_MEDIA_TYPE);
-    }
-    
-    public void setForumMediaType(String forumMediaType) {
-        put(FORUM_MEDIA_TYPE, forumMediaType);
-    }
-
-//    public String getForumBackgroundMediaId() {
-//        return getString(FORUM_BACKGROUND_MEDIA_ID);
-//    }
-//    
-//    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
-//        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
-//    }
-    
-//    public String getForumBackgroundMediaFilePath() {
-//        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
-//    }
-
-//    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
-//        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
-//    }
-
-    public JSONArray getForumBackgorundMediaList() {
-        return getJSONArray(FORUM_BACKGROUND_MEDIA_LIST);
+		return forumId;
 	}
 
-	public void setForumBackgorundMediaList(JSONArray topicTipUserList) {
-        put(FORUM_BACKGROUND_MEDIA_LIST, topicTipUserList);
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
 	}
-    
-//    public String getForumBackgroundMediaType() {
-//        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
-//    }
-//    
-//    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
-//        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
-//    }
 
-    public String getForumName() {
-        return getString(FORUM_NAME);
-    }
-    
-    public void setForumName(String forumName) {
-        put(FORUM_NAME, forumName);
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getForumDescription() {
-        return getString(FORUM_DESCRIPTION);
-    }
-    
-    public void setForumDescription(String forumDescription) {
-        put(FORUM_DESCRIPTION, forumDescription);
-    }
-    
-    public String getForumModeratorUserId() {
-    	return getString(FORUM_MODERATOR_USER_ID);
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getForumMediaId() {
+		return forumMediaId;
+	}
+
+	public void setForumMediaId(String forumMediaId) {
+		this.forumMediaId = forumMediaId;
+	}
+
+	public String getForumMediaFilePath() {
+		return forumMediaFilePath;
+	}
+
+	public void setForumMediaFilePath(String forumMediaFilePath) {
+		this.forumMediaFilePath = forumMediaFilePath;
+	}
+
+	public String getForumMediaType() {
+		return forumMediaType;
+	}
+
+	public void setForumMediaType(String forumMediaType) {
+		this.forumMediaType = forumMediaType;
+	}
+
+	public JSONArray getForumBackgroundMediaList() {
+		return forumBackgroundMediaList;
+	}
+
+	public void setForumBackgroundMediaList(JSONArray forumBackgroundMediaList) {
+		this.forumBackgroundMediaList = forumBackgroundMediaList;
+	}
+
+	public String getForumName() {
+		return forumName;
+	}
+
+	public void setForumName(String forumName) {
+		this.forumName = forumName;
+	}
+
+	public String getForumModeratorUserId() {
+		return forumModeratorUserId;
 	}
 
 	public void setForumModeratorUserId(String forumModeratorUserId) {
-		put(FORUM_MODERATOR_USER_ID, forumModeratorUserId);
+		this.forumModeratorUserId = forumModeratorUserId;
 	}
 
-    public String getForumModeratorMemberId() {
-        return getString(FORUM_MODERATOR_MEMBER_ID);
-    }
-    
-    public void setForumModeratorMemberId(String forumModeratorMemberId) {
-        put(FORUM_MODERATOR_MEMBER_ID, forumModeratorMemberId);
-    }
-    
-    public String getRequestMemberId() {
-        return getString(REQUEST_MEMBER_ID);
-    }
-    
-    public void setRequestMemberId(String requestMemberId) {
-        put(REQUEST_MEMBER_ID, requestMemberId);
-    }
-    
+	public String getForumModeratorMemberId() {
+		return forumModeratorMemberId;
+	}
+
+	public void setForumModeratorMemberId(String forumModeratorMemberId) {
+		this.forumModeratorMemberId = forumModeratorMemberId;
+	}
+
+	public String getRequestMemberId() {
+		return requestMemberId;
+	}
+
+	public void setRequestMemberId(String requestMemberId) {
+		this.requestMemberId = requestMemberId;
+	}
+
 	public String getUserAvatarFilePath() {
-		return getString(USER_AVATAR_FILE_PATH);
+		return userAvatarFilePath;
 	}
 
 	public void setUserAvatarFilePath(String userAvatarFilePath) {
-		put(USER_AVATAR_FILE_PATH, userAvatarFilePath);
+		this.userAvatarFilePath = userAvatarFilePath;
 	}
 
 	public String getUserNickName() {
-		return getString(USER_NICKNAME);
+		return userNickName;
 	}
 
 	public void setUserNickName(String userNickName) {
-		put(USER_NICKNAME, userNickName);
+		this.userNickName = userNickName;
 	}
 
 	public String getMemberSignature() {
-		return getString(MEMBER_SIGNATURE);
+		return memberSignature;
 	}
 
 	public void setMemberSignature(String memberSignature) {
-		put(MEMBER_SIGNATURE, memberSignature);
+		this.memberSignature = memberSignature;
 	}
 
 	public String getForumLocation() {
-        return getString(FORUM_LOCATION);
-    }
-    
-    public void setForumLocation(String forumLocation) {
-        put(FORUM_LOCATION, forumLocation);
-    }
+		return forumLocation;
+	}
 
-    public Integer getForumSort() {
-        return getInteger(FORUM_SORT);
-    }
-    
-    public void setForumSort(Integer forumSort) {
-        put(FORUM_SORT, forumSort);
-    }
+	public void setForumLocation(String forumLocation) {
+		this.forumLocation = forumLocation;
+	}
 
-    public Boolean getForumIsTop() {
-        return getBoolean(FORUM_IS_TOP);
-    }
-    
-    public void setForumIsTop(Boolean forumIsTop) {
-        put(FORUM_IS_TOP, forumIsTop);
-    }
+	public Boolean getForumIsTop() {
+		return forumIsTop;
+	}
 
-    public Integer getForumTopLevel() {
-        return getInteger(FORUM_TOP_LEVEL);
-    }
-    
-    public void setForumTopLevel(Integer forumTopLevel) {
-        put(FORUM_TOP_LEVEL, forumTopLevel);
-    }
+	public void setForumIsTop(Boolean forumIsTop) {
+		this.forumIsTop = forumIsTop;
+	}
 
-    public Date getForumTopEndTime() {
-        return getDate(FORUM_TOP_END_TIME);
-    }
-    
-    public void setForumTopEndTime(Date forumTopEndTime) {
-        put(FORUM_TOP_END_TIME, forumTopEndTime);
-    }
+	public Integer getForumTopLevel() {
+		return forumTopLevel;
+	}
 
-    public Boolean getForumIsActive() {
-        return getBoolean(FORUM_IS_ACTIVE);
-    }
-    
-    public void setForumIsActive(Boolean forumIsActive) {
-        put(FORUM_IS_ACTIVE, forumIsActive);
-    }
+	public void setForumTopLevel(Integer forumTopLevel) {
+		this.forumTopLevel = forumTopLevel;
+	}
 
-    public String getForumAuditContent() {
-        return getString(FORUM_AUDIT_CONTENT);
-    }
-    
-    public void setForumAuditContent(String forumAuditContent) {
-        put(FORUM_AUDIT_CONTENT, forumAuditContent);
-    }
+	public Date getForumTopEndTime() {
+		return forumTopEndTime;
+	}
 
-    public String getForumAuditStatus() {
-        return getString(FORUM_AUDIT_STATUS);
-    }
-    
-    public void setForumAuditStatus(String forumAuditStatus) {
-        put(FORUM_AUDIT_STATUS, forumAuditStatus);
-    }
+	public void setForumTopEndTime(Date forumTopEndTime) {
+		this.forumTopEndTime = forumTopEndTime;
+	}
 
-    public Boolean getForumIsRecommend() {
-        return getBoolean(FORUM_IS_RECOMAND);
-    }
-    
-    public void setForumIsRecommend(Boolean forumIsRecommend) {
-        put(FORUM_IS_RECOMAND, forumIsRecommend);
-    }
+	public Boolean getForumIsActive() {
+		return forumIsActive;
+	}
+
+	public void setForumIsActive(Boolean forumIsActive) {
+		this.forumIsActive = forumIsActive;
+	}
+
+	public Boolean getForumIsRecommend() {
+		return forumIsRecommend;
+	}
+
+	public void setForumIsRecommend(Boolean forumIsRecommend) {
+		this.forumIsRecommend = forumIsRecommend;
+	}
+
+	public String getForumAuditStatus() {
+		return forumAuditStatus;
+	}
+
+	public void setForumAuditStatus(String forumAuditStatus) {
+		this.forumAuditStatus = forumAuditStatus;
+	}
+
+	public String getForumAuditContent() {
+		return forumAuditContent;
+	}
+
+	public void setForumAuditContent(String forumAuditContent) {
+		this.forumAuditContent = forumAuditContent;
+	}
+
+	public String getForumDescription() {
+		return forumDescription;
+	}
+
+	public void setForumDescription(String forumDescription) {
+		this.forumDescription = forumDescription;
+	}
+
+	public Integer getForumSort() {
+		return forumSort;
+	}
+
+	public void setForumSort(Integer forumSort) {
+		this.forumSort = forumSort;
+	}
 
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Api(value = "课程", description = "课程移动端接口管理")
 @RestController

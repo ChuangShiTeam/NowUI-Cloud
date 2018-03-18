@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 public interface CourseVideoService extends BaseService<CourseVideo, CourseVideoView> {
 

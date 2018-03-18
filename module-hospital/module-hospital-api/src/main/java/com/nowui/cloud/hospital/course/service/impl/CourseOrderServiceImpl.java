@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.List;
 
 /**
- * 课程订单编号业务实现
+ * 课程订单业务实现
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Service
 public class CourseOrderServiceImpl extends BaseServiceImpl<CourseOrderMapper, CourseOrder, CourseOrderRepository, CourseOrderView> implements CourseOrderService {

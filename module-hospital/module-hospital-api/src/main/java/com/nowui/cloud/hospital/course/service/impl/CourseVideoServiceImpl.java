@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Service
 public class CourseVideoServiceImpl extends BaseServiceImpl<CourseVideoMapper, CourseVideo, CourseVideoRepository, CourseVideoView> implements CourseVideoService {

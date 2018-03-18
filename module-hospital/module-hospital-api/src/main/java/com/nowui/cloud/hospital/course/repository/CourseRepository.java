@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Component
 public interface CourseRepository extends BaseRepository<CourseView> {

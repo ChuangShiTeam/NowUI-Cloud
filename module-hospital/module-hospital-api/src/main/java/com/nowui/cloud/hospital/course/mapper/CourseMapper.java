@@ -8,7 +8,7 @@ import com.nowui.cloud.hospital.course.entity.Course;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 public interface CourseMapper extends BaseMapper<Course> {
 

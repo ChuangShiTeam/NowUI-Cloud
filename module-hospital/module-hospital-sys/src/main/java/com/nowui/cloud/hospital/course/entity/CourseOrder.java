@@ -10,11 +10,11 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
 /**
- * 课程订单编号
+ * 课程订单
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Component
 

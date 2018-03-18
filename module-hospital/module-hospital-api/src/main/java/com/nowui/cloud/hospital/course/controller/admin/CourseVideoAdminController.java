@@ -22,7 +22,7 @@ import java.util.Map;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Api(value = "课程视频", description = "课程视频管理端接口管理")
 @RestController

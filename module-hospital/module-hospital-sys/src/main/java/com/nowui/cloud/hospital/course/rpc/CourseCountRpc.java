@@ -4,14 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * 课程分类服务调用
+ * 课程统计服务调用
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
-@Component(value = "courseCategoryRpc")
+@Component(value = "courseCountRpc")
 @FeignClient(name = "module-hospital")
-public interface CourseCategoryRpc {
+public interface CourseCountRpc {
 
 }

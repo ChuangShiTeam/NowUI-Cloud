@@ -20,18 +20,17 @@ import java.util.List;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Service
 public class CourseServiceImpl extends BaseServiceImpl<CourseMapper, Course, CourseRepository, CourseView> implements CourseService {
 
     @Override
-        public Integer countForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, String courseIntroduce) {
+        public Integer countForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle) {
             Criteria criteria = Criteria.where(CourseView.APP_ID).is(appId)
                     .and(CourseView.COURSE_AUTHOR_USER_ID).regex(".*?" + courseAuthorUserId + ".*")
                     .and(CourseView.COURSE_AUTHOR_DOCTOR_ID).regex(".*?" + courseAuthorDoctorId + ".*")
                     .and(CourseView.COURSE_TITLE).regex(".*?" + courseTitle + ".*")
-                    .and(CourseView.COURSE_INTRODUCE).regex(".*?" + courseIntroduce + ".*")
                     .and(CourseView.SYSTEM_STATUS).is(true);
 
             Query query = new Query(criteria);
@@ -42,12 +41,11 @@ public class CourseServiceImpl extends BaseServiceImpl<CourseMapper, Course, Cou
         }
 
         @Override
-        public List<CourseView> listForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, String courseIntroduce, Integer pageIndex, Integer pageSize) {
+        public List<CourseView> listForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, Integer pageIndex, Integer pageSize) {
             Criteria criteria = Criteria.where(CourseView.APP_ID).is(appId)
                     .and(CourseView.COURSE_AUTHOR_USER_ID).regex(".*?" + courseAuthorUserId + ".*")
                     .and(CourseView.COURSE_AUTHOR_DOCTOR_ID).regex(".*?" + courseAuthorDoctorId + ".*")
                     .and(CourseView.COURSE_TITLE).regex(".*?" + courseTitle + ".*")
-                    .and(CourseView.COURSE_INTRODUCE).regex(".*?" + courseIntroduce + ".*")
                     .and(CourseView.SYSTEM_STATUS).is(true);
 
             List<Order> orders = new ArrayList<Order>();

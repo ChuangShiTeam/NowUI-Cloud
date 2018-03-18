@@ -5,14 +5,14 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 课程分类移动端控制器
+ * 课程统计移动端控制器
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
-@Api(value = "课程分类", description = "课程分类移动端接口管理")
+@Api(value = "课程统计", description = "课程统计移动端接口管理")
 @RestController
-public class CourseCategoryMobileController extends BaseController {
+public class CourseCountMobileController extends BaseController {
 
 }

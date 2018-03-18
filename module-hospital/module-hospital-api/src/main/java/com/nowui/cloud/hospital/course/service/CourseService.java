@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 public interface CourseService extends BaseService<Course, CourseView> {
 
@@ -21,10 +21,9 @@ public interface CourseService extends BaseService<Course, CourseView> {
      * @param courseAuthorUserId 课程作者的userId
      * @param courseAuthorDoctorId 课程作者的医生Id
      * @param courseTitle 课程标题
-     * @param courseIntroduce 课程介绍
      * @return Integer 课程统计
      */
-    Integer countForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, String courseIntroduce);
+    Integer countForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle);
 
     /**
      * 课程列表
@@ -33,11 +32,10 @@ public interface CourseService extends BaseService<Course, CourseView> {
      * @param courseAuthorUserId 课程作者的userId
      * @param courseAuthorDoctorId 课程作者的医生Id
      * @param courseTitle 课程标题
-     * @param courseIntroduce 课程介绍
      * @param pageIndex 页码
      * @param pageSize 每页个数
      * @return List<Course> 课程列表
      */
-    List<CourseView> listForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, String courseIntroduce, Integer pageIndex, Integer pageSize);
+    List<CourseView> listForAdmin(String appId, String courseAuthorUserId, String courseAuthorDoctorId, String courseTitle, Integer pageIndex, Integer pageSize);
 
 }

@@ -18,24 +18,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 课程订单编号管理端控制器
+ * 课程订单管理端控制器
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
-@Api(value = "课程订单编号", description = "课程订单编号管理端接口管理")
+@Api(value = "课程订单", description = "课程订单管理端接口管理")
 @RestController
 public class CourseOrderAdminController extends BaseController {
 
     @Autowired
     private CourseOrderService courseOrderService;
 
-    @ApiOperation(value = "课程订单编号列表", httpMethod = "POST")
+    @ApiOperation(value = "课程订单列表", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = CourseOrderView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = CourseOrderView.COURSE_ID, value = "课程编号", required = false, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = CourseOrderView.USER_ID, value = "订阅课程的用户编号", required = false, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CourseOrderView.COURSE_ID, value = "课程编号", required = true, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = CourseOrderView.USER_ID, value = "订阅课程的用户编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
     })
@@ -65,14 +65,13 @@ public class CourseOrderAdminController extends BaseController {
                 CourseOrderView.COURSE_TRYOUT_STATUS,
                 CourseOrderView.COURSE_SUBSCRIBE_STATUS,
                 CourseOrderView.COURSE_ORDER_PAYMENT_TYPE,
-                CourseOrderView.COURSE_ORDER_PAYMENT_STATUS,
-                CourseOrderView.COURSE_ORDER_PAYMENT_AMOUNT
+                CourseOrderView.COURSE_ORDER_PAYMENT_STATUS
         );
 
         return renderJson(resultTotal, resultList);
     }
 
-    @ApiOperation(value = "课程订单编号信息")
+    @ApiOperation(value = "课程订单信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = CourseOrderView.COURSE_ORDER_ID, value = "课程订单编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CourseOrderView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
@@ -103,7 +102,7 @@ public class CourseOrderAdminController extends BaseController {
         return renderJson(result);
     }
 
-    @ApiOperation(value = "课程订单编号新增")
+    @ApiOperation(value = "课程订单新增")
     @ApiImplicitParams({
             @ApiImplicitParam(name = CourseOrderView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CourseOrderView.COURSE_ID, value = "课程编号", required = true, paramType = "query", dataType = "string"),
@@ -152,7 +151,7 @@ public class CourseOrderAdminController extends BaseController {
         return renderJson(success);
     }
 
-    @ApiOperation(value = "课程订单编号修改")
+    @ApiOperation(value = "课程订单修改")
     @ApiImplicitParams({
             @ApiImplicitParam(name = CourseOrderView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CourseOrderView.COURSE_ID, value = "课程编号", required = true, paramType = "query", dataType = "string"),
@@ -202,7 +201,7 @@ public class CourseOrderAdminController extends BaseController {
         return renderJson(success);
     }
 
-    @ApiOperation(value = "课程订单编号删除")
+    @ApiOperation(value = "课程订单删除")
     @ApiImplicitParams({
             @ApiImplicitParam(name = CourseOrderView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = CourseOrderView.SYSTEM_VERSION, value = "版本号", required = true, paramType = "query", dataType = "int"),
@@ -238,7 +237,7 @@ public class CourseOrderAdminController extends BaseController {
         return renderJson(success);
     }
 
-    @ApiOperation(value = "课程订单编号数据同步")
+    @ApiOperation(value = "课程订单数据同步")
     @RequestMapping(value = "/course/order/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> synchronizeV1() {
 

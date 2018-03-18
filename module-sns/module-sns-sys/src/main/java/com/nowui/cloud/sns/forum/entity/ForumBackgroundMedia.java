@@ -85,63 +85,48 @@ public class ForumBackgroundMedia extends BaseEntity {
     @Length(max = 5, message = "排序长度超出限制")
     private Integer forumBackgroundMediaSort;
     public static final String FORUM_BACKGROUND_MEDIA_SORT = "forumBackgroundMediaSort";
-
-
-    public String getForumBackgroundMediaId() {
-        return getString(FORUM_BACKGROUND_MEDIA_ID);
-    }
-    
-    public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
-        put(FORUM_BACKGROUND_MEDIA_ID, forumBackgroundMediaId);
-    }
-
-    public String getAppId() {
-        return getString(APP_ID);
-    }
-    
-    public void setAppId(String appId) {
-        put(APP_ID, appId);
-    }
-
-    public String getForumId() {
-        return getString(FORUM_ID);
-    }
-    
-    public void setForumId(String forumId) {
-        put(FORUM_ID, forumId);
-    }
-
-    public String getForumBackgroundMediaFileId() {
-        return getString(FORUM_BACKGROUND_MEDIA_FILE_ID);
-    }
-    
-    public void setForumBackgroundMediaFileId(String forumBackgroundMediaFileId) {
-        put(FORUM_BACKGROUND_MEDIA_FILE_ID, forumBackgroundMediaFileId);
-    }
-    
-    public String getForumBackgroundMediaFilePath() {
-        return getString(FORUM_BACKGROUND_MEDIA_FILE_PATH);
-    }
-    
-    public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
-        put(FORUM_BACKGROUND_MEDIA_FILE_PATH, forumBackgroundMediaFilePath);
-    }
-
-    public String getForumBackgroundMediaType() {
-        return getString(FORUM_BACKGROUND_MEDIA_TYPE);
-    }
-    
-    public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
-        put(FORUM_BACKGROUND_MEDIA_TYPE, forumBackgroundMediaType);
-    }
-
-    public Integer getForumBackgroundMediaSort() {
-        return getInteger(FORUM_BACKGROUND_MEDIA_SORT);
-    }
-    
-    public void setForumBackgroundMediaSort(Integer forumBackgroundMediaSort) {
-        put(FORUM_BACKGROUND_MEDIA_SORT, forumBackgroundMediaSort);
-    }
+	public String getForumBackgroundMediaId() {
+		return forumBackgroundMediaId;
+	}
+	public void setForumBackgroundMediaId(String forumBackgroundMediaId) {
+		this.forumBackgroundMediaId = forumBackgroundMediaId;
+	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getForumId() {
+		return forumId;
+	}
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+	public String getForumBackgroundMediaFileId() {
+		return forumBackgroundMediaFileId;
+	}
+	public void setForumBackgroundMediaFileId(String forumBackgroundMediaFileId) {
+		this.forumBackgroundMediaFileId = forumBackgroundMediaFileId;
+	}
+	public String getForumBackgroundMediaFilePath() {
+		return forumBackgroundMediaFilePath;
+	}
+	public void setForumBackgroundMediaFilePath(String forumBackgroundMediaFilePath) {
+		this.forumBackgroundMediaFilePath = forumBackgroundMediaFilePath;
+	}
+	public String getForumBackgroundMediaType() {
+		return forumBackgroundMediaType;
+	}
+	public void setForumBackgroundMediaType(String forumBackgroundMediaType) {
+		this.forumBackgroundMediaType = forumBackgroundMediaType;
+	}
+	public Integer getForumBackgroundMediaSort() {
+		return forumBackgroundMediaSort;
+	}
+	public void setForumBackgroundMediaSort(Integer forumBackgroundMediaSort) {
+		this.forumBackgroundMediaSort = forumBackgroundMediaSort;
+	}
 
 
 }

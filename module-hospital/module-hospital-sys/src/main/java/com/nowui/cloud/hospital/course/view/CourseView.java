@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  *
  * @author xupengfei
  *
- * 2018-03-16
+ * 2018-03-18
  */
 @Component
 @Document(collection = "course_info")
@@ -83,7 +83,7 @@ public class CourseView extends BaseView {
      */
     @Field
     @NotNull(message = "课程金额不能为空")
-    @Digits(integer = 10, fraction = 2, message = "课程金额长度超出限制")
+    @Digits(integer = 0, fraction = 2, message = "课程金额长度超出限制")
     private BigDecimal courseAmount;
     public static final String COURSE_AMOUNT = "courseAmount";
 
