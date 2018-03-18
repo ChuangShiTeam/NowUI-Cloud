@@ -210,7 +210,7 @@ public class Forum extends BaseEntity {
     @TableField
     @NotNull(message = "是否推荐不能为空")
     private Boolean forumIsRecommend;
-    public static final String FORUM_IS_RECOMAND = "forumIsRecommend";
+    public static final String FORUM_IS_RECOMMEND = "forumIsRecommend";
     
     /**
      * 审核状态

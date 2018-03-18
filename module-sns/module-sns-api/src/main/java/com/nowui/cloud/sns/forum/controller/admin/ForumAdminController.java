@@ -4,27 +4,26 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nowui.cloud.file.file.entity.enums.FileType;
-import com.nowui.cloud.file.file.rpc.FileRpc;
 import com.nowui.cloud.controller.BaseController;
-import com.nowui.cloud.member.member.rpc.MemberRpc;
+import com.nowui.cloud.file.file.entity.enums.FileType;
 import com.nowui.cloud.sns.forum.entity.Forum;
 import com.nowui.cloud.sns.forum.entity.ForumBackgroundMedia;
 import com.nowui.cloud.sns.forum.entity.enums.ForumAuditStatus;
 import com.nowui.cloud.sns.forum.service.ForumService;
-import com.nowui.cloud.sns.forum.service.ForumUserFollowService;
-import com.nowui.cloud.sns.forum.service.ForumUserUnfollowService;
+import com.nowui.cloud.sns.forum.view.ForumBackgroundMediaView;
 import com.nowui.cloud.sns.forum.view.ForumView;
-import com.nowui.cloud.sns.topic.service.TopicForumService;
 import com.nowui.cloud.util.Util;
+import com.nowui.cloud.view.CommonView;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 论坛管理端控制器
@@ -40,70 +39,60 @@ public class ForumAdminController extends BaseController {
 	@Autowired
 	 private ForumService forumService;
 	 
-	 @Autowired
-	 private TopicForumService topicForumService;
-	 
-	 @Autowired
-	 private ForumUserFollowService forumUserFollowService;
-	 
-	 @Autowired
-	 private FileRpc fileRpc;
-	 
-	 @Autowired
-	 private MemberRpc memberRpc;
-	 
-	 @Autowired
-	 private ForumUserUnfollowService forumUserUnfollowService;
-
-    @ApiOperation(value = "论坛列表")
+	 @ApiOperation(value = "论坛列表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = ForumView.APP_ID, value = "应用编号", required = true, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = ForumView.FORUM_NAME, value = "论坛名称", required = false, paramType = "query", dataType = "string"),
+        @ApiImplicitParam(name = CommonView.PAGE_INDEX, value = "分页页数", required = true, paramType = "query", dataType = "int"),
+        @ApiImplicitParam(name = CommonView.PAGE_SIZE, value = "每页数量", required = true, paramType = "query", dataType = "int"),
+    })
     @RequestMapping(value = "/forum/admin/v1/list", method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listV1() {
-    	Forum body = getEntry(Forum.class);
+    public Map<String, Object> listV1(@ApiIgnore ForumView forumView, @ApiIgnore CommonView commonView) {
        validateRequest(
-                body,
-                Forum.APP_ID,
-                Forum.FORUM_NAME,
-                Forum.FORUM_IS_ACTIVE,
-                Forum.FORUM_IS_RECOMAND,
-                Forum.FORUM_AUDIT_STATUS,
-                Forum.PAGE_INDEX,
-                Forum.PAGE_SIZE
+		    forumView,
+		    ForumView.APP_ID,
+		    ForumView.FORUM_NAME,
+		    ForumView.FORUM_IS_ACTIVE,
+		    ForumView.FORUM_IS_RECOMMEND,
+		    ForumView.FORUM_AUDIT_STATUS,
+            CommonView.PAGE_INDEX,
+            CommonView.PAGE_SIZE
        );
 
        Integer resultTotal = forumService.countForAdmin(
-               body.getAppId(), 
-               body.getForumName(), 
-               body.getForumIsActive(), 
-               body.getForumIsRecommend(),
-               body.getForumAuditStatus()
+    		   forumView.getAppId(), 
+    		   forumView.getForumName(), 
+    		   forumView.getForumIsActive(), 
+    		   forumView.getForumIsRecommend(),
+    		   forumView.getForumAuditStatus()
        );
        
        List<Forum> resultList = forumService.listForAdmin(
-    		   body.getAppId(), 
-    		   body.getForumName(), 
-    		   body.getForumIsActive(), 
-    		   body.getForumIsRecommend(), 
-    		   body.getForumAuditStatus(),
-    		   body.getPageIndex(), 
-    		   body.getPageSize()
+    		   forumView.getAppId(), 
+    		   forumView.getForumName(), 
+    		   forumView.getForumIsActive(), 
+    		   forumView.getForumIsRecommend(), 
+    		   forumView.getForumAuditStatus(),
+    		   commonView.getPageIndex(), 
+    		   commonView.getPageSize()
 	   );
        
 
        validateResponse(
-            Forum.FORUM_ID,
-            Forum.FORUM_MEDIA_FILE_PATH,
-            Forum.FORUM_MEDIA_TYPE,
-            Forum.FORUM_BACKGROUND_MEDIA_LIST,
-            Forum.FORUM_NAME,
-            Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_MODERATOR_MEMBER_ID,
-            Forum.FORUM_LOCATION,
-            Forum.FORUM_SORT,
-            Forum.FORUM_IS_TOP,
-            Forum.FORUM_TOP_LEVEL,
-            Forum.FORUM_TOP_END_TIME,
-            Forum.FORUM_IS_ACTIVE,
-            Forum.FORUM_IS_RECOMAND,
+		    ForumView.FORUM_ID,
+		    ForumView.FORUM_MEDIA_FILE_PATH,
+		    ForumView.FORUM_MEDIA_TYPE,
+		    ForumView.FORUM_BACKGROUND_MEDIA_LIST,
+		    ForumView.FORUM_NAME,
+		    ForumView.FORUM_DESCRIPTION,
+		    ForumView.FORUM_MODERATOR_MEMBER_ID,
+		    ForumView.FORUM_LOCATION,
+		    ForumView.FORUM_SORT,
+		    ForumView.FORUM_IS_TOP,
+		    ForumView.FORUM_TOP_LEVEL,
+		    ForumView.FORUM_TOP_END_TIME,
+		    ForumView.FORUM_IS_ACTIVE,
+		    ForumView.FORUM_IS_RECOMMEND,
             Forum.FORUM_AUDIT_STATUS
        );
        
@@ -114,84 +103,63 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "论坛查询")
     @RequestMapping(value = "/forum/admin/v1/find", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> findV1() {
-    	Forum body = getEntry(Forum.class);
+    public Map<String, Object> findV1(@ApiIgnore ForumView forumView, @ApiIgnore CommonView commonView) {
         validateRequest(
-                body,
-                Forum.APP_ID,
-                Forum.FORUM_ID
+        		forumView,
+        		ForumView.APP_ID,
+        		ForumView.FORUM_ID
         );
 
-        ForumView result = forumService.find(body.getForumId());
+        ForumView result = forumService.find(forumView.getForumId());
         
-        // 论坛图片
-//        File forumMediaFile = fileRpc.findV1(result.getForumMedia());
-//        forumMediaFile.keep(File.FILE_ID, File.FILE_PATH);
-//        result.put(Forum.FORUM_MEDIA, forumMediaFile);
-        
-        // 论坛背景
-//        File forumBackgroundFile = fileRpc.findV1(result.getForumBackgroundMedia());
-//        forumBackgroundFile.keep(File.FILE_ID, File.FILE_PATH);
-//        result.put(Forum.FORUM_BACKGROUND_MEDIA, forumBackgroundFile);
-        
-        // 版主昵称和头像
-//        Member forumModerator = memberRpc.nickNameAndAvatarFindV1(result.getForumModerator());
-//        if (!Util.isNullOrEmpty(forumModerator)) {
-//            
-//        }
-//        result.put(Forum.FORUM_MODERATOR, forumModerator);
-
         validateResponse(
-                Forum.FORUM_ID,
-                Forum.FORUM_MEDIA_FILE_PATH,
-                Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA_LIST,
-                Forum.FORUM_NAME,
-                Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR_MEMBER_ID,
-                Forum.FORUM_LOCATION,
-                Forum.FORUM_SORT,
-                Forum.FORUM_IS_TOP,
-                Forum.FORUM_TOP_LEVEL,
-                Forum.FORUM_TOP_END_TIME,
-                Forum.FORUM_IS_ACTIVE,
-                Forum.FORUM_IS_RECOMAND
+        		ForumView.FORUM_ID,
+        		ForumView.FORUM_MEDIA_FILE_PATH,
+        		ForumView.FORUM_MEDIA_TYPE,
+        		ForumView.FORUM_BACKGROUND_MEDIA_LIST,
+        		ForumView.FORUM_NAME,
+        		ForumView.FORUM_DESCRIPTION,
+        		ForumView.FORUM_MODERATOR_MEMBER_ID,
+        		ForumView.FORUM_LOCATION,
+        		ForumView.FORUM_SORT,
+        		ForumView.FORUM_IS_TOP,
+        		ForumView.FORUM_TOP_LEVEL,
+        		ForumView.FORUM_TOP_END_TIME,
+        		ForumView.FORUM_IS_ACTIVE,
+        		ForumView.FORUM_IS_RECOMMEND
         );
         
-        validateSecondResponse(Forum.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMedia.FORUM_BACKGROUND_MEDIA_TYPE);
+        validateSecondResponse(ForumView.FORUM_BACKGROUND_MEDIA_LIST, ForumBackgroundMediaView.FORUM_BACKGROUND_MEDIA_FILE_ID, ForumBackgroundMediaView.FORUM_BACKGROUND_MEDIA_FILE_PATH, ForumBackgroundMediaView.FORUM_BACKGROUND_MEDIA_SORT, ForumBackgroundMediaView.FORUM_BACKGROUND_MEDIA_TYPE);
 
         return renderJson(result);
     }
 
     @ApiOperation(value = "新增论坛")
     @RequestMapping(value = "/forum/admin/v1/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> saveV1() {
-    	Forum body = getEntry(Forum.class);
+    public Map<String, Object> saveV1(@ApiIgnore Forum forum, @ApiIgnore ForumView forumView, @ApiIgnore CommonView commonView) {
         validateRequest(
-            body,
-            Forum.APP_ID,
-            Forum.FORUM_MEDIA_FILE_PATH,
-            Forum.FORUM_MEDIA_TYPE,
-            Forum.FORUM_NAME,
-            Forum.FORUM_DESCRIPTION,
-            Forum.FORUM_SORT,            
-            Forum.FORUM_IS_TOP,             
-            Forum.FORUM_TOP_LEVEL,       
-            Forum.FORUM_TOP_END_TIME,    
-            Forum.FORUM_IS_ACTIVE,       
-            Forum.FORUM_IS_RECOMAND      
+        	forumView,
+            ForumView.APP_ID,
+            ForumView.FORUM_MEDIA_FILE_PATH,
+            ForumView.FORUM_MEDIA_TYPE,
+            ForumView.FORUM_NAME,
+            ForumView.FORUM_DESCRIPTION,
+            ForumView.FORUM_SORT,            
+            ForumView.FORUM_IS_TOP,             
+            ForumView.FORUM_TOP_LEVEL,       
+            ForumView.FORUM_TOP_END_TIME,    
+            ForumView.FORUM_IS_ACTIVE,       
+            ForumView.FORUM_IS_RECOMMEND   
       );
 
-      body.setForumMediaType(FileType.IMAGE.getKey());
-      body.setForumModeratorMemberId(body.getSystemRequestUserId());
-      body.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
-      body.setForumAuditContent("");
+      forumView.setForumMediaType(FileType.IMAGE.getKey());
+      forumView.setForumModeratorMemberId(commonView.getSystemRequestUserId());
+      forumView.setForumAuditStatus(ForumAuditStatus.WAIT_AUDIT.getKey());
+      forumView.setForumAuditContent("");
 
       String forumId = Util.getRandomUUID();
-      String systemRequestUserId = body.getSystemRequestUserId();
-      String appId = body.getAppId();
-
-      Forum result = forumService.save(body, forumId, systemRequestUserId);
+      String systemRequestUserId = commonView.getSystemRequestUserId();
+      Forum result = forumService.save(forum, forumId, systemRequestUserId);
       
       Boolean success = false;
 
@@ -204,32 +172,32 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "修改论坛信息")
     @RequestMapping(value = "/forum/admin/v1/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> updateV1(@RequestBody Forum body) {
+    public Map<String, Object> updateV1(@ApiIgnore Forum forum, @ApiIgnore ForumView forumView, @ApiIgnore CommonView commonView) {
         validateRequest(
-                body,
-                Forum.FORUM_ID,
-                Forum.APP_ID,
-                Forum.FORUM_MEDIA_FILE_PATH,
-                Forum.FORUM_MEDIA_TYPE,
-                Forum.FORUM_BACKGROUND_MEDIA_LIST,
-                Forum.FORUM_NAME,
-                Forum.FORUM_DESCRIPTION,
-                Forum.FORUM_MODERATOR_MEMBER_ID,
-                Forum.FORUM_LOCATION,
-                Forum.FORUM_SORT,
-                Forum.FORUM_IS_TOP,
-                Forum.FORUM_TOP_LEVEL,
-                Forum.FORUM_TOP_END_TIME,
-                Forum.FORUM_IS_ACTIVE,
-                Forum.FORUM_IS_RECOMAND,
-                Forum.SYSTEM_VERSION
+        		forumView,
+                ForumView.FORUM_ID,
+                ForumView.APP_ID,
+                ForumView.FORUM_MEDIA_FILE_PATH,
+                ForumView.FORUM_MEDIA_TYPE,
+                ForumView.FORUM_BACKGROUND_MEDIA_LIST,
+                ForumView.FORUM_NAME,
+                ForumView.FORUM_DESCRIPTION,
+                ForumView.FORUM_MODERATOR_MEMBER_ID,
+                ForumView.FORUM_LOCATION,
+                ForumView.FORUM_SORT,
+                ForumView.FORUM_IS_TOP,
+                ForumView.FORUM_TOP_LEVEL,
+                ForumView.FORUM_TOP_END_TIME,
+                ForumView.FORUM_IS_ACTIVE,
+                ForumView.FORUM_IS_RECOMMEND,
+                ForumView.SYSTEM_VERSION
         );
-        String forumId = body.getForumId();
-        String appId = body.getAppId();
-        String systemRequestUserId = body.getSystemRequestUserId();
-        Integer systemVersion = body.getSystemVersion();
+        String forumId = forumView.getForumId();
+        String appId = forumView.getAppId();
+        String systemRequestUserId = commonView.getSystemRequestUserId();
+        Integer systemVersion = forumView.getSystemVersion();
 
-        Forum result = forumService.update(body, forumId, systemRequestUserId, systemVersion);
+        Forum result = forumService.update(forum, forumId, appId, systemRequestUserId, systemVersion);
         
         Boolean success = false;
 
@@ -242,20 +210,20 @@ public class ForumAdminController extends BaseController {
 
     @ApiOperation(value = "删除论坛信息")
     @RequestMapping(value = "/forum/admin/v1/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> deleteV1(@RequestBody Forum body) {
+    public Map<String, Object> deleteV1(@ApiIgnore Forum forum, @ApiIgnore ForumView forumView, @ApiIgnore CommonView commonView) {
         validateRequest(
-                body,
-                Forum.FORUM_ID,
-                Forum.APP_ID,
-                Forum.SYSTEM_VERSION
+        		forumView,
+                ForumView.FORUM_ID,
+                ForumView.APP_ID,
+                ForumView.SYSTEM_VERSION
         );
         
-        String forumId = body.getForumId();
-        String appId = body.getAppId();
-        String systemRequestUserId = body.getSystemRequestUserId();
-        Integer systemVersion = body.getSystemVersion();
+        String forumId = forumView.getForumId();
+        String appId = forumView.getAppId();
+        String systemRequestUserId = commonView.getSystemRequestUserId();
+        Integer systemVersion = forumView.getSystemVersion();
 
-        Forum result = forumService.delete(forumId, systemRequestUserId, systemVersion);
+        Forum result = forumService.delete(forumId, appId, systemRequestUserId, systemVersion);
         Boolean success = false;
 
         if (result != null) {
@@ -267,14 +235,15 @@ public class ForumAdminController extends BaseController {
     
     @ApiOperation(value = "论坛数据同步")
     @RequestMapping(value = "/forum/admin/v1/synchronize", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> replaceV1(@RequestBody Forum body) {
+    public Map<String, Object> replaceV1() {
     	
     	List<Forum> forumlist = forumService.listByMysql();
     	
     	for (Forum forum : forumlist) {
 			ForumView forumView = new ForumView();
-			forumView.putAll(forum);
-			forumService.update(forumView);
+			forumView.copy(forum);
+			
+			forumService.saveOrUpdate(forumView, forumView.getForumId());
 		}
 
         return renderJson(true);
